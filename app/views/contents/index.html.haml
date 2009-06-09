@@ -1,0 +1,45 @@
+- use_lightview
+- use_lowpro
+- use_form
+- use_prototip
+- use_media
+- use_autocomplete
+
+- title_icon image_tag 'cabinet.png', :alt => "manage media", :class => "alignleft"
+- title 'Manage Files'
+
+- form_for :contents, :html => {:method => :get} do |f|
+  = render :partial => 'shared/autocomplete_box', :locals => {:name => 'content[filename]', :value => @search, :default => 'Search', :id => 'content_filename'}
+
+.clearboth
+%p
+%br
+%p= link_to "Upload", new_content_path
+%br
+= form_tag
+%table.hor-minimalist-b
+  %thead
+    %tr
+      - with_options :class => 'tooltip-target', :rel => default_prototip_options do |l|
+        %th{:width=>"49%", :scope=>"col"}
+          = l.link_to 'type', contents_path(:order_by => 'type', 'content[filename]' => @search)
+          %span.tooltip
+            Click to group by type
+          = l.link_to 'name', contents_path(:order_by => 'filename')
+          %span.tooltip
+            Click to order by filename
+        %th{:width=>"14%", :scope=>"col"} 
+          = l.link_to 'uploaded', contents_path(:order_by => 'created_at'), :class => 'tooltip-target', :rel => default_prototip_options
+          %span.tooltip
+            Click to order by upload date
+        %th{:width=>"14%", :scope=>"col"} 
+          = l.link_to 'period', contents_path(:order_by => 'time_period'), :class => 'tooltip-target', :rel => default_prototip_options
+          %span.tooltip
+            Click to order by associated time period
+        %th{:width=>"23%", :scope=>"col"} action
+  %tbody
+    = render :partial => 'content_list_item', :collection => @contents
+
+  
+
+

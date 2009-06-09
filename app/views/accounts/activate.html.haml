@@ -1,0 +1,23 @@
+- title 'Account Created'
+- hide_login_box
+
+%h1#page-header account created
+.yui-g
+  %p
+    %h3 Welcome to Eternos!
+      
+  %h4 Congratulations your Eternos account was sucessfully created.
+  %br 
+  %h4 
+    A confirmation email has been sent to
+    = @user.email
+  %br
+  %p
+    %h3 Ready to get started?
+  %br
+  %p
+    If you already have your login information, please enter it below to begin adding and permanently saving your priceless memories.  Otherwise, please check for our recent email and follow the instructions provided.
+  %br
+  %p
+  = render :partial => 'shared/login_form'
+ 

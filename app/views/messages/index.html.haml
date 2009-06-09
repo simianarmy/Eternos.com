@@ -1,0 +1,20 @@
+- title "Messages"
+- use_lowpro
+- use_wysiwyg
+- use_lightview
+- use_form
+- use_accordion
+
+= render :partial => 'shared/search_box', :locals => {:url => messages_path}
+
+%p= link_to 'create', new_message_path
+%p
+%br
+#vertical-accordion.accordion
+  = render :partial => 'list_item', :collection => @messages
+
+  
+
+  
+
+  

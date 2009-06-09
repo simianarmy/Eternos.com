@@ -1,0 +1,2 @@
+class PluginWithStandardPathsController < ApplicationController
+end

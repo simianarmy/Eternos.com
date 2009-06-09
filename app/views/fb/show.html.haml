@@ -1,0 +1,9 @@
+- use_form
+- title 'Page Title'
+%br
+%p
+= custom_error_messages_for :notify_email
+%br
+- form_for :notify_email, @notify_email, :url => { :controller => 'fb', :action => :create } do |f|
+  = f.text_field :email, {:class => 'withHint', :defaultValue => 'email address'}
+  = f.submit "Submit"

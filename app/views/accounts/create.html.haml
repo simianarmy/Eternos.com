@@ -1,0 +1,38 @@
+- title 'Activate Account'
+- hide_login_box
+
+%h1#page-header success!
+.yui-g
+  #accountactivate
+    %p
+      %h3 Welcome to Eternos.
+    %p
+      Congratulations! Your Eternos account has been successfully created.
+    %br
+    %p
+      You’re just minutes away now. We’ve just sent a confirmation email to
+      %b= @user.email 
+      containing instructions for activating your account. This will verify that you are the owner of this email address and the creator of this account.
+    %br
+    %p
+      If you don't see our email in the next few minutes, please check your spam/junk mail folder or
+      = link_to 'contact support', home_path('contact-support')
+    %br
+    %p
+      NOTE: 
+      %span.small
+        Also, please make sure that you’ve added 
+        = AppConfig.from_email
+        to your “safe” list within your email account settings in order to insure proper delivery.
+    %br
+    %p
+      %h3 Ready to get started?
+    %br
+    %p
+      If you already have your login information, please enter it below to begin adding and permanently saving your priceless memories.  Otherwise, please check for our recent email and follow the instructions provided.
+    %br
+    %p
+    = render :partial => 'shared/login_form'
+
+    
+      

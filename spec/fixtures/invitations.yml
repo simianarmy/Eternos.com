@@ -1,0 +1,12 @@
+# $Id$
+one:
+  sender_id: 1
+  recipient_email: MyString
+  token: MyString
+  sent_at: 2008-08-28 11:54:50
+
+two:
+  sender_id: 1
+  recipient_email: MyString
+  token: MyString
+  sent_at: 2008-08-28 11:54:50

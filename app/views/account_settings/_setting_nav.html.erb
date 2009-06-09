@@ -1,0 +1,35 @@
+<div id="account-setting-nav">
+  <ul class="setting-list">
+    <li class="menu-setting"> 
+      <%= link_to_remote "Step 1", { :url => personal_info_account_settings_path,
+        :update => "account-setting-content" }, ajax_busy_options('account-setting-content') %><br />
+      Account Info
+    </li>
+
+    <li class="menu-setting">
+      <%= link_to_remote "Step 2", { :url => online_account_settings_path,
+        :update => "account-setting-content" }, ajax_busy_options('account-setting-content') %><br>
+      Online Account
+    </li>
+
+    <li class="menu-setting">
+      <%= link_to "Step 3"%><br />
+      Email Account
+    </li>
+
+    <li class="menu-setting">
+      <%= link_to "Step 4"%><br />
+      Your History
+    </li>
+
+    <li class="menu-setting">
+      <%= link_to "Step 5"%><br />
+      Upgrades
+    </li>
+
+    <li class="menu-setting">
+      <%= link_to "Step 6"%><br />
+      Biling
+    </li>
+  </ul>
+</div>

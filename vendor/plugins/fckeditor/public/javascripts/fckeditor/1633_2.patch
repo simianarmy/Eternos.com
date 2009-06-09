@@ -1,0 +1,156 @@
+Index: _whatsnew.html
+===================================================================
+--- _whatsnew.html	(revision 1946)
++++ _whatsnew.html	(working copy)
+@@ -61,6 +61,8 @@
+ 			IE6 bug which causes floating dialogs to appear blank after opening it for the first time.</li>
+ 		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2136">#2136</a>] Fixed JavaScript error in IE 
+ 			when opening the bullet list properties dialog.</li>
++		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/1633">#1633</a>] External styles should no
++			longer interfere with the appearance of the editor and floating panels now.</li>
+ 	</ul>
+ 	<h3>
+ 		Version 2.6</h3>
+Index: editor/_source/classes/fckeditingarea.js
+===================================================================
+--- editor/_source/classes/fckeditingarea.js	(revision 1944)
++++ editor/_source/classes/fckeditingarea.js	(working copy)
+@@ -97,7 +97,7 @@
+ 		var sOverrideError = '<script type="text/javascript" _fcktemp="true">window.onerror=function(){return true;};</script>' ;
+ 
+ 		oIFrame.frameBorder = 0 ;
+-		oIFrame.width = oIFrame.height = '100%' ;
++		oIFrame.style.width = oIFrame.style.height = '100%' ;
+ 
+ 		if ( FCK_IS_CUSTOM_DOMAIN && FCKBrowserInfo.IsIE )
+ 		{
+Index: editor/_source/classes/fckpanel.js
+===================================================================
+--- editor/_source/classes/fckpanel.js	(revision 1944)
++++ editor/_source/classes/fckpanel.js	(working copy)
+@@ -66,11 +66,12 @@
+ 	else
+ 	{
+ 		var oIFrame = this._IFrame = this._Window.document.createElement('iframe') ;
++		FCKTools.ResetStyles( oIFrame );
+ 		oIFrame.src					= 'javascript:void(0)' ;
+ 		oIFrame.allowTransparency	= true ;
+ 		oIFrame.frameBorder			= '0' ;
+ 		oIFrame.scrolling			= 'no' ;
+-		oIFrame.width = oIFrame.height = 0 ;
++		oIFrame.style.width = oIFrame.style.height = '0px' ;
+ 		FCKDomTools.SetElementStyles( oIFrame,
+ 			{
+ 				position	: 'absolute',
+@@ -279,8 +280,8 @@
+ 			{
+ 				var iWidth = eMainNode.offsetWidth || eMainNode.firstChild.offsetWidth ;
+ 				var iHeight = eMainNode.offsetHeight ;
+-				me._IFrame.width = iWidth ;
+-				me._IFrame.height = iHeight ;
++				me._IFrame.style.width = iWidth + 'px' ;
++				me._IFrame.style.height = iHeight + 'px' ;
+ 
+ 			}, 0 ) ;
+ 
+@@ -305,7 +306,7 @@
+ 
+ 		// It is better to set the sizes to 0, otherwise Firefox would have
+ 		// rendering problems.
+-		this._IFrame.width = this._IFrame.height = 0 ;
++		this._IFrame.style.width = this._IFrame.style.height = '0px' ;
+ 
+ 		this._IsOpened = false ;
+ 
+Index: editor/_source/internals/fck.js
+===================================================================
+--- editor/_source/internals/fck.js	(revision 1944)
++++ editor/_source/internals/fck.js	(working copy)
+@@ -1175,3 +1175,23 @@
+ 		FCK.Events.FireEvent( "OnFocus" ) ;
+ 	}
+ }
++
++/*
++ * #1633 : Protect the editor iframe from external styles.
++ * Notice that we can't use FCKTools.ResetStyles here since FCKTools isn't
++ * loaded yet.
++ */
++(function()
++{
++	var el = window.frameElement ;
++	var width = el.width ;
++	var height = el.height ;
++	if ( /^\d+$/.test( width ) ) width += 'px' ;
++	if ( /^\d+$/.test( height ) ) height += 'px' ;
++	var style = el.style ;
++	style.border = style.padding = style.margin = 0 ;
++	style.backgroundColor = 'transparent';
++	style.backgroundImage = 'none';
++	style.width = width ;
++	style.height = height ;
++})() ;
+Index: editor/_source/internals/fckdialog.js
+===================================================================
+--- editor/_source/internals/fckdialog.js	(revision 1944)
++++ editor/_source/internals/fckdialog.js	(working copy)
+@@ -75,15 +75,6 @@
+ 			} ) ;
+ 	}
+ 
+-	var resetStyles = function( element )
+-	{
+-		element.style.cssText = 'margin:0;' +
+-			'padding:0;' +
+-			'border:0;' +
+-			'background-color:transparent;' +
+-			'background-image:none;' ;
+-	}
+-
+ 	return {
+ 		/**
+ 		 * Opens a dialog window using the standard dialog template.
+@@ -113,7 +104,7 @@
+ 
+ 			// Setup the IFRAME that will hold the dialog.
+ 			var dialog = topDocument.createElement( 'iframe' ) ;
+-			resetStyles( dialog ) ;
++			FCKTools.ResetStyles( dialog ) ;
+ 			dialog.src = FCKConfig.BasePath + 'fckdialog.html' ;
+ 
+ 			// Dummy URL for testing whether the code in fckdialog.js alone leaks memory.
+@@ -179,7 +170,7 @@
+ 		{
+ 			// Setup the DIV that will be used to cover.
+ 			cover = topDocument.createElement( 'div' ) ;
+-			resetStyles( cover ) ;
++			FCKTools.ResetStyles( cover ) ;
+ 			FCKDomTools.SetElementStyles( cover,
+ 				{
+ 					'position' : 'absolute',
+@@ -195,7 +186,7 @@
+ 			if ( FCKBrowserInfo.IsIE && !FCKBrowserInfo.IsIE7 )
+ 			{
+ 				var iframe = topDocument.createElement( 'iframe' ) ;
+-				resetStyles( iframe ) ;
++				FCKTools.ResetStyles( iframe ) ;
+ 				iframe.hideFocus = true ;
+ 				iframe.frameBorder = 0 ;
+ 				iframe.src = FCKTools.GetVoidUrl() ;
+Index: editor/_source/internals/fcktools.js
+===================================================================
+--- editor/_source/internals/fcktools.js	(revision 1944)
++++ editor/_source/internals/fcktools.js	(working copy)
+@@ -738,3 +738,12 @@
+ 
+ 	return "javascript: void(0);" ;		// All other browsers.
+ }
++
++FCKTools.ResetStyles = function( element )
++{
++	element.style.cssText = 'margin:0;' +
++		'padding:0;' +
++		'border:0;' +
++		'background-color:transparent;' +
++		'background-image:none;' ;
++}

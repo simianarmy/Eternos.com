@@ -1,0 +1,26 @@
+/ Locals:
+/ parent => time lockable object
+/ timelock => parent's TimeLock object
+/ text => Select label
+/ no_auto_submit => turn off ajax submit on change
+
+- @no_auto_submit = local_assigns.has_key?(:no_auto_submit)
+- unless parent.new_record?
+  = hidden_field_tag :time_lock_update, '1'
+  
+- @field_name = "#{parent.new_record? ? 'new_time_lock_attributes' : 'time_lock_attributes'}"
+- f.fields_for @field_name, timelock do |ff|
+  %p
+  = local_assigns.has_key?(:text) ? text : 'Post'
+  - @select_class = "toggle_on_select"
+  - @select_class += " submit_on_change" unless @no_auto_submit
+  - @unlock_date_id = dom_id(parent, "unlock_date")
+  
+  = ff.select :type, parent.time_lock_select_options, {:selected => parent.time_lock_type}, :id => dom_id(parent, "timelock_type"), :class => @select_class, :rel => "{toggleValue: #{TimeLock.date_locked}, toggleElement: '#{@unlock_date_id}'}"
+  
+  - unless parent.new_record? || @no_auto_submit
+    %a.toggleable{:id => "toggle_#{@unlock_date_id}", :href=>'#', :style=>"#{style_hidden_if(!parent.date_locked?)}"} Edit
+    
+  %span{:id => @unlock_date_id, :style => style_hidden_if(!parent.date_locked?)}
+    = ff.date_select_with_datepicker(:unlock_on, {:default => Date.today, :add_month_numbers => true, :order => [:year,:month,:day], :start_year => Date.today.year, :end_year => 100.years.from_now.year})
+    = ff.submit "Update" unless parent.new_record? || @no_auto_submit

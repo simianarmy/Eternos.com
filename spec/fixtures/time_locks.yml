@@ -1,0 +1,13 @@
+# $Id$
+#
+# TimeLock Fixtures
+
+dated:
+  lockable: first_kiss (Message)
+  unlock_on: <%= 1.year.from_now %>
+  type: TimeLock
+  
+on_death:
+  lockable: first_kiss (Message)
+  type: DeathLock
+  

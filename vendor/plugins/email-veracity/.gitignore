@@ -1,0 +1,5 @@
+*.tmproj
+.DS_Store
+/coverage
+/pkg
+/rdoc

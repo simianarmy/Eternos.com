@@ -1,0 +1,6 @@
+%fieldset
+  - fields_for :account do |f|
+    = f.text_field :name
+    = f.text_field :domain 
+    \.
+    = AppConfig['base_domain']

@@ -1,0 +1,28 @@
+%h1 Listing guest_invitations
+
+%table
+  %tr
+    %th Sender
+    %th Email
+    %th Name
+    %th Circle
+    %th Contact method
+    %th Token
+    %th Sent at
+  - @guest_invitations.each do |guest_invitation|
+    %tr
+      %td= h guest_invitation.sender_id
+      %td= h guest_invitation.email
+      %td= h guest_invitation.name
+      %td= h guest_invitation.circle_id
+      %td= h guest_invitation.contact_method
+      %td= h guest_invitation.token
+      %td= h guest_invitation.sent_at
+        
+      %td= link_to 'Show', object_url(guest_invitation)
+      %td= link_to 'Edit', edit_object_url(guest_invitation)
+      %td= link_to 'Destroy', object_url(guest_invitation), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New guest_invitation', new_object_url

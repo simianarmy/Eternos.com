@@ -1,0 +1,28 @@
+- fields_for "#{addressable}[address_attributes]", address do |addr_form|
+  - @address_form_id = dom_id(parent_object) + '_address'
+  = addr_form.hidden_field :id, :value => address ? address.id : ''
+  %label== #{location} Address
+  %br
+  %table
+    %tr
+      %td.label Street
+      %td.input= addr_form.text_field :street_1, :id => @address_form_id + '_street_1'
+    %tr
+      %td
+      %td.input= addr_form.text_field :street_2, :id => @address_form_id + '_street_2'
+    %tr
+      %td.label City
+      %td.input= addr_form.text_field :city, :id => @address_form_id + '_city'
+    %tr
+      %td.label Zip/Postal Code
+      %td.input= addr_form.text_field :postal_code, :style => "width: 100px", :id => @address_form_id + '_postal_code'
+    %tr
+      %td.label Country
+      %td.input= addr_form.collection_select :country_id, Country.find(:all, :order => :name), :id, :name, {:prompt => "Select a Country"}, :id => @address_form_id + '_country', :class => 'ajax_region_select', :region_select_id => @address_form_id + '_region', :region_url => country_regions_addresses_path, :region_id => address.nil? ? '' : address.region_id
+    %tr{:id => @address_form_id + '_region_container'}
+      %td.label Region
+      %td.input
+        = addr_form.collection_select :region_id, address_regions(address), :id, :name, {:prompt => "Select a Region", :selected => valid_for_region_select(address) ? address.region : ''}, :id => @address_form_id + '_region'
+
+  
+

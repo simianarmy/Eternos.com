@@ -1,0 +1,20 @@
+# $Id$
+wedding_ceremony_video:
+    decoratable: wedding_ceremony (Element)
+    content: wedding_ceremony_video
+    position: 1
+    
+wedding_ceremony_photo:
+    decoratable: wedding_ceremony (Element)
+    content: dog_photo
+    position: 2
+
+wedding_reception_photo:
+    decoratable: wedding_reception (Element)
+    content: wedding_reception_photo
+    position: 1
+
+kiss_photo:
+    decoratable: first_kiss (Message)
+    content: wedding_reception_photo
+    position: 1

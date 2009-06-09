@@ -1,0 +1,22 @@
+#gallery
+  %p All content here.  Grid of thumbnails?  See Vox for example.
+  - if @contents.any?
+    %p Select contents to add:
+    - form_for :decoration, :url => build_decoration_path(@parent, :action => :create_from_selection), :html => {:id => 'decoration_gallery_form'} do |f|
+      = hidden_field_tag 'selected_content'
+      - cols = 5
+      - @contents.group_by(&:type).each do |type, type_contents|
+        %h4= type.humanize.pluralize
+        %ul
+          - while type_contents.any? do
+            %li
+              - if c = type_contents.shift
+                .gallery_item[c]
+                  = image_tag c.thumbnail
+                  = c.title unless c.has_thumbnail?
+      = submit_tag 'Add Selected', :style => "width: 200px;"
+  - else
+    %p You don't have any uploaded files in your library! 
+    %p Click 'New content' tab to upload some.
+
+    

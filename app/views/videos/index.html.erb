@@ -1,0 +1,11 @@
+<% title "Videos" %>
+<p/>
+<% for video in @videos %>
+<% div_for(video) do %>    
+<%= link_to video.title, video_url(video) %> | 
+<%= link_to "Destroy", video, :confirm => 'Are you sure?', :method => :delete %>
+<% end %>
+<% end %>
+
+
+<p><%= link_to "New Video", new_content_path %></p>

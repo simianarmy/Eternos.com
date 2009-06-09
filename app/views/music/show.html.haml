@@ -1,0 +1,7 @@
+- title 'music'
+- use_media
+
+= render :partial => 'music', :object => object
+
+%p
+= link_to "Destroy", object, :confirm => 'Are you sure?', :method => :delete

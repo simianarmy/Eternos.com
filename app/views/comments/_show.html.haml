@@ -1,0 +1,19 @@
+- use_prototip
+
+.tooltip{:style=>"display:none"} View/Add comments to your entry here.
+#comments{:style=>"display:none"}
+  %p
+  %span#comments_count= pluralize(comments.size, "Comment")
+
+  #comments_list= render :partial => comments
+  %br
+  #new_comment
+    %strong Add a Comment
+    - form_remote_for :comment, :url => comments_path, :html => { :id => 'comment_form' } do |f|
+      = f.hidden_field :commentable_id, :value => object.id
+      = f.hidden_field :commentable_type, :value => object.class.to_s
+      %p
+      %label{:for=>"comment_content"} Message:
+      %br
+      = f.text_area :comment, :rows => 8
+      %p= f.submit 'Add'

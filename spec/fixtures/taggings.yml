@@ -1,0 +1,4 @@
+wedding_story_tags:
+  tag: foo_tag
+  taggable_id: <%= Fixtures.identify(:wedding_story) %>
+  taggable_type: Story

@@ -1,0 +1,32 @@
+<%= custom_error_messages_for :address_book %>
+<p/>
+<% error_handling_form_for(:address_book, address_book) do |f| %>
+	<div id="fullname">
+	    <%= render :partial => 'shared/name_form_fields', :object => address_book, :locals => {:f => f} %>
+	</div>
+	<br/>
+	<div id="address">
+	    <%= render :partial => 'addresses/address', 
+			:object => address_book.home_address,
+	    	:locals => {:addressable_class => 'address_book'} 
+	%>
+	</div>
+	<p>
+	    <%= f.time_zone_select :timezone, ActiveSupport::TimeZone.us_zones %>
+	</p>
+	<p>
+	    <div id="phone_numbers">
+	        <% @phones = address_book.phone_numbers %>
+	        <% if not @phones.empty? %>
+	        <%= render :partial => 'shared/phone_number', :collection => @phones, 
+				:locals => {:owner => 'member_detail'} %>
+	        <% else %>
+	        <%= render :partial => 'shared/phone_number', :object => PhoneNumber.new,
+				:locals => {:owner => 'address_book'} %>
+	        <% end %>
+	    </div>
+	    <%= add_phone_number_link "Add a phone number", 'address_book' %>
+	</p>
+	
+  <p><%= f.submit "Save" %></p>
+<% end %>

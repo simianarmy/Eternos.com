@@ -1,0 +1,38 @@
+- title "Story"
+- use_lightview
+- use_lowpro
+- use_form
+- use_flash
+- use_wysiwyg
+- javascript :defaults
+
+%p
+%br
+#story[@story]
+  = error_messages_for :story
+  %p
+  = render :partial => 'story_photo', :locals => {:story => @story} if @story
+
+  %p= restful_in_place_editor 'span', @story, 'title', :class => 'message_title'
+  %br
+  = render :partial => 'shared/av_attachment', :locals => {:parent => @story, :recording => @recording}
+  %p
+  %br
+  = show_wysiwyg_content(@story, :story, fckeditor_options)
+  %p
+  %br
+  %a#toggle_story_settings.toggleable{:href=>edit_story_path(@story)} Settings
+  #story_settings.hidden
+    = render :partial => 'shared/common_settings', :locals => {:object => @story}
+    
+  %br
+    
+  - if @quick_view
+    = link_to_function "Done", "$('story_view_#{dom_id(@story)}').update('')"
+  - else
+    = view_comments_link(@story)
+  %p
+  %br
+  -#= render :partial => 'elements', :object => @story
+  
+

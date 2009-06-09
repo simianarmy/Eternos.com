@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+basic:
+  amount: 10
+  name: Basic
+  user_limit: 1
+  allow_subdomain: false
+
+advanced:
+  amount: 10
+  name: Premium
+  user_limit: 1
+  allow_subdomain: true
+
+free:
+  amount: 0
+  name: Free
+  user_limit: 1
+  allow_subdomain: false

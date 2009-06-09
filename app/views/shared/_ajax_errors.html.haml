@@ -1,0 +1,8 @@
+.custom_error_messages
+  = I18n.t('activerecord.errors.template.header.oops')
+  %p
+    - if flash[:error].kind_of? Array
+      = flash[:error].join('<br/>')
+    - else
+      = flash[:error]
+

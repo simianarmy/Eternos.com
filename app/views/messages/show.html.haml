@@ -1,0 +1,25 @@
+- use_lightview
+- use_lowpro
+- use_scrollable
+- use_busy
+- use_wysiwyg
+- use_media
+
+- title "Message: #{@message.title}"
+- header "From here you can edit your entry, change your settings, add media files, add comments, or delete."
+
+.clearboth
+%br
+= render :partial => @message
+%p
+%br
+= render :partial => 'decorations/list', :locals => {:parent => @message}
+%p
+%br
+= view_comments_link(@message)
+%br
+= link_to "Destroy", message_path(@message), :method => :delete, :class => 'delete_link'
+
+
+
+

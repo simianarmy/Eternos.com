@@ -1,0 +1,17 @@
+<% title "Chronicles" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% for chronicle in @chronicles %>
+    <tr>
+      <td><%=h chronicle.name %></td>
+      <td><%= link_to "Show", chronicle %></td>
+      <td><%= link_to "Edit", edit_chronicle_path(chronicle) %></td>
+      <td><%= link_to "Destroy", chronicle, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Chronicle", new_chronicle_path %></p>

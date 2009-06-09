@@ -1,0 +1,49 @@
+%p.input
+  = f.label 'Name'
+  = f.text_field :name
+%br
+%p.input
+  = f.label 'Relationship'
+  = f.collection_select 'circle_id', current_user.circles + Circle.find_globals(:all), :id, :name, {:prompt => "Select Relationship"}
+  Other:
+  = f.text_field :new_circle_name, :value => ''
+%br
+%p.radio_group_toggle_on_click.input
+  %label Contact Method
+  %br
+  - @id = 'contact_method_' + dom_id(guest_invitation)
+  = f.radio_button 'contact_method', 'email', :id => 'toggle_email_' + @id
+  Email
+  /  = f.text_field :email
+  %br
+  = f.radio_button 'contact_method', 'phone', :id => 'toggle_phone_' + @id
+  Phone
+  %br
+  = f.radio_button 'contact_method', 'mail', :id => 'toggle_mail_' + @id
+  Mail
+  %br
+  / Email input
+  
+  %div{:id => 'email_' + @id, :style => style_hidden_if(!guest_invitation.contact_by_email?)}
+    %br
+    %label Email
+    = f.text_field :email
+  / Phone input
+  %div{:id => 'phone_' + @id, :style => style_hidden_if(!guest_invitation.contact_by_phone?)}
+    %br
+    / Generate dom id for phone numbers form
+    = form_for_phone_numbers(dom_id(guest_invitation) + '_phone_numbers', 'guest_invitation', guest_invitation.phone_numbers)
+    %br
+  / Address input
+  %div{:id => 'mail_' + @id, :style => style_hidden_if(!guest_invitation.contact_by_mail?)}
+    = render :partial => 'addresses/address', :locals => {:addressable => 'guest_invitation', :location => 'Mailing', :address => guest_invitation.address, :parent_object => guest_invitation}
+%br
+%p.input
+  = render :partial => 'shared/timelock_select', :locals => {:f => f, :parent => guest_invitation, :timelock => guest_invitation.time_lock, :text => 'Send Invitation', :no_auto_submit => true}
+  %br
+%br
+%p.inupt
+  = f.check_box :emergency_contact
+  Emergency Contact
+%br
+%p

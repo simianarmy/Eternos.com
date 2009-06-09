@@ -1,0 +1,7 @@
+page.flash_and_fade
+if !params[:update_privacy]
+  render_with :in_place_editor do |ip|
+    ip.update(@video, params)
+  end
+end
+flash.discard

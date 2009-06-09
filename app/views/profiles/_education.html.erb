@@ -1,0 +1,9 @@
+<%= custom_error_messages_for :profile %>
+<p/>
+<% remote_form_for(:profile, :url => {:action => 'update'}) do |f| %>
+<div id="education">
+	<%= render :partial => 'school', :collection => @profile.schools %>
+</div>
+<%= add_school_link "Add a school", 'profile' %>
+<p><%= f.submit 'Save' %></p>
+<% end %>

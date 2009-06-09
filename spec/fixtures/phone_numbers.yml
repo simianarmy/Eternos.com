@@ -1,0 +1,17 @@
+# $Id$
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+us_home:
+  phoneable_id: 1
+  phoneable_type: MemberDetail
+  phone_type: home
+  area_code: 206
+  number: 333-4444
+  
+intl_home:
+  phoneable_id: 1
+  phoneable_type: MemberDetail
+  phone_type: home
+  prefix: +011
+  area_code: 206
+  number: 333-4444

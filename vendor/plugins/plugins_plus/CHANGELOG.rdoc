@@ -1,0 +1,32 @@
+== master
+
+== 0.2.2 / 2008-07-13
+
+* Remove dependencies on ActiveSupport when it hasn't been loaded yet. Resolves #1
+
+== 0.2.1 / 2008-06-22
+
+* Remove log files from gems
+
+== 0.2.0 / 2008-05-05
+
+* NOTE: This has been completely rewritten from scratch
+* Removed all svn:externals references
+* Add app_integration extensions
+* Add migrations extensions
+* Add assets extensions
+* Updated documentation
+
+== 0.1.1 / 2007-09-18
+
+* Change order in which plugins are loaded (plugin_dependencies comes first)
+* Modify configuration.plugin_paths to include plugins_plus/lib
+* Add dependency on partial_plugin_list
+
+== 0.1.0 / 2007-03-31
+
+* Update to 0.1.0 releases
+
+== 0.0.1 / 2007-02-15
+
+* Initial release

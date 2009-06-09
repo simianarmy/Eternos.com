@@ -1,0 +1,12 @@
+<% title "Recipient" %>
+
+<p>
+  <strong>Name:</strong>
+  <%=h @recipient.name %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_recipient_path(@recipient) %> |
+  <%= link_to "Destroy", @recipient, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", recipients_path %>
+</p>

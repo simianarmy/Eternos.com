@@ -1,0 +1,59 @@
+Backup Daemons Research
+
+Ruby gems for Daemonizing:
+
+Daemons v1.0.10 
+http://daemons.rubyforge.org/
+
+Easy way to daemonize a .rb program with start, stop, restart commands.
+---
+
+Daemon Kit
+http://github.com/kennethkalmer/daemon-kit/tree/master
+
+Daemon Kit aims to simplify creating Ruby daemons by providing a sound application skeleton (through a generator), task specific generators (jabber bot, etc) and robust environment management code.
+
+Using simple built-in generators it is easy to created evented and non-evented daemons that perform a multitude of different tasks.
+
+Uses Daemons gem
+---
+
+Dead Simple Ruby Daemons Using Looper
+http://www.zetetic.net/blog/2009/01/21/dead-simple-ruby-daemons-using-looper/
+---
+
+Nanite - a "self assembling cluster of Ruby daemons."
+http://github.com/ezmobius/nanite/tree/master/README
+
+Complicated but could be cool if I can figure it out!
+Uses: Erlang (for RabbitMQ), Nanite gem, EventMachine gem, AMQP gem
+---
+
+Ruby Daemons: Verifying Good Behavior
+http://www.mindbucket.com/2009/02/24/ruby-daemons-verifying-good-behavior/
+
+Useful instructions on using linux tools to make sure ruby daemons are not using cpu unnecessarily
+---
+
+EventMachine
+http://rubyeventmachine.com/
+
+EventMachine is a library for Ruby, C++, and Java programs. It provides event-driven I/O using the Reactor pattern. EventMachine is designed to simultaneously meet two key needs:
+
+    * Extremely high scalability, performance and stability for the most demanding production environments; and
+    * An API that eliminates the complexities of high-performance threaded network programming, allowing engineers to concentrate on their application logic.
+---
+
+ruote
+http://openwferu.rubyforge.org/
+
+open source ruby workflow engine
+Ruote is a workflow engine written in Ruby. It’s a runtime for long running [business] processes.
+interesting...
+
+Ruote will only benefit you on the publisher side when your process needs
+more than "if response == true; job_succeeded; else job_failed; end". Ruote
+strengths (for me) lies in the ability to react on the responses. Failures
+change the entire course of the process, people get notified, actions have
+to be taken. Ruote isn't the right tool to use for "watching a directory"
+and "starting processes". It is a decision maker, it calls the shots.

@@ -1,0 +1,9 @@
+- javascript 'slideshow'
+
+- divId = info[:recording] ? 'slideshow-narrated' : 'slideshow'
+%div{:id=>divId}
+  - first = contents.first
+  - set = "set[#{dom_id(first)}]"
+  - for c in contents
+    = link_to_slideshow_slide(c, :play_link => c==first, :set => set)
+

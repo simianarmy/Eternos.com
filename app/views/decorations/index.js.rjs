@@ -1,0 +1,16 @@
+# $Id$ 
+# Update decorations scroller with latest contents
+
+# Prototype style
+
+# page.replace_html dom_id(@element) + '_scrollable_decorations',
+#   :partial => 'decorations', 
+#   :locals => {:element => @element}
+page.replace_html :decorations, :partial => 'decorations', 
+  :locals => {:parent => @parent, :decorations => @parent.decorations}
+if @parent.decorations.any?
+  page << "jQuery('div.scrollable').scrollable({size: 6})"
+  page << "jQuery('div.scrollable').scrollable().end()"
+  page.visual_effect :highlight, 'decorations', :duration => 2.0
+end
+

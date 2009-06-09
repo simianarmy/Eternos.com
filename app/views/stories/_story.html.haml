@@ -1,0 +1,22 @@
+#story[story]
+  .story_photo= render :partial => 'story_photo', :locals => {:story => story}
+  .title= link_to story.title, story_path(story)
+  .description 
+    Description:
+    = h(story.description)
+  .category
+    Category:
+    = print_categories(story.categories)
+  .time_period
+    Time Period:
+    = story.time_period.to_s
+  %p
+    Last Updated:
+    = time_ago_in_words(story.updated_at)
+    ago
+  %br
+  = story.elements.size
+  Elements
+  %br
+  = link_to_remote "Delete", :url => story_path(story), :confirm => "Are you sure?", :method => :delete
+

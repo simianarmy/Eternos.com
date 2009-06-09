@@ -1,0 +1,18 @@
+one:
+  id: 1
+  sender_id: 1
+  email: MyString
+  name: MyString
+  circle_id: 1
+  contact_method: MyString
+  token: MyString
+  sent_at: 2009-04-14 16:40:42
+two:
+  id: 2
+  sender_id: 1
+  email: MyString
+  name: MyString
+  circle_id: 1
+  contact_method: MyString
+  token: MyString
+  sent_at: 2009-04-14 16:40:42

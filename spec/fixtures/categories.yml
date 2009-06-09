@@ -1,0 +1,20 @@
+# $Id$
+thoughts:
+    name: thoughts
+    global: 0
+    
+suggestions:
+    name: suggestions
+    global: 0
+    
+events:
+    name: events
+    global: 0
+    
+not_global:
+  name: globalnot
+  global: 0
+  
+global:
+    name: default
+    global: 1

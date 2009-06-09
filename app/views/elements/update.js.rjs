@@ -1,0 +1,14 @@
+# Simple ajax updates use ajax_update, otherwise use rjs file
+page.flash_and_fade
+if params[:editorId]
+  render_with :in_place_editor do |editor|
+    editor.update(@element.send(params[:element].keys.first), params[:domId])
+  end
+else
+  if params[:element][:message]
+    render_with :wysiwyg_editor do |wysiwyg|
+      wysiwyg.update_editor_content(@element, story_element_path(@element.story, @element))
+    end
+  end
+end
+flash.discard

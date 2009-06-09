@@ -1,0 +1,16 @@
+- rowId = dom_id(content_list_item)+"_row"
+%tr{:id=>rowId}
+  %td
+    %span.content-list-file.tooltip-target{:id=>"#{rowId}_title", :rel => "{fixed: true, width: 'auto', hideOthers: true, viewport: true, hook: {target: 'topRight', tip: 'bottomLeft'}, stem: 'bottomLeft'}"}
+      = content_list_tile(content_list_item, :thumbnail => content_list_item.content_icon, :link => link_to_content(content_list_item, :thumbnail => false))
+      
+    .tooltip= tooltip_for_content(content_list_item)
+      
+  %td= content_list_item.created_at.to_s(:us)
+  %td= content_list_item.dated.to_s(:us)
+  %td
+    %div{:style=>"width: 176px;"}
+      = link_to_lightview(image_tag('editbtn.gif', :class => 'alignleft', :border => "0"), polymorphic_path(content_list_item, :dialog=>'1'), {:id => dom_id(content_list_item)}, {:rel => "'iframe'"}, :width=>800, :height=>500)
+      
+      = link_to(image_tag('deletebtn.gif', :class => 'remote_delete alignleft', :border => "0"), content_path(content_list_item), :class => 'remote_delete', :busy_id => "#{rowId}")
+      %br.clearboth

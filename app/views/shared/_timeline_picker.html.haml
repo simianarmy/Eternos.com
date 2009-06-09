@@ -1,0 +1,29 @@
+- use_calendar
+
+- @id = dom_id(object)
+#time_period.radio_group_toggle_on_click
+  %span#time_period.tooltip-target{:rel=>"{hook: {target: 'rightMiddle', tip: 'leftMiddle'}, stem: 'leftMiddle'}"}
+    Time Period
+  .tooltip
+    Choose ‘Timeless’ to keep your entry viewable forever or set the start and end dates that you wish your entry to be viewed.
+    
+  #timeless_option
+    = f.radio_button "timeless", "1", :checked=>period.empty? ? "checked" : "", :id => "toggle_timeless_" + @id
+    %span.tooltip-target{:rel=>"{hook: {target: 'rightMiddle', tip: 'leftMiddle'}, stem: 'leftMiddle'}"} 
+      Timeless
+  #dates_option
+    = f.radio_button "timeless", "0", :id => "toggle_time_period_" + @id, :checked=>period.empty? ? "" : "checked"
+    %span.tooltip-target{:rel=>"{hook: {target: 'rightMiddle', tip: 'leftMiddle'}, stem: 'leftMiddle'}"} 
+      With Dates (start & end)
+    .tooltip
+      Any combination of year/month/day down to the minute
+    %div{:id => "time_period_" + @id, :style=>style_hidden_if(period.empty?)}
+      Starting
+      %br
+      = time_period_select(object, :beginning)
+      %p
+      %br
+      Ending
+      %br
+      = time_period_select(object, :end)
+      %span#butt-wrapper-end

@@ -1,0 +1,48 @@
+- use_uploader
+
+%fieldset#content-fallback
+  %legend= 'File Upload'
+  %p
+    Select your files to upload
+  %br/
+  %label{:for => 'content-fileupload'}
+  %input#file-upload.content-fileupload{:type=>"file", :name=>"content[uploaded_data]"}
+  %input{:type=>"submit", :value=>"Upload"}
+
+#content-status.hide
+  #action-links
+    %p
+      %a#content-browse-all{:href=>"#"}= "Browse"
+      |
+      %a#content-clear{:href=>"#"}= "Clear List"
+      |
+      %a#content-upload{:href=>"#"}= "Upload"
+    
+    
+  #progress
+    %strong.overall-title 
+      Overall progress
+    %br
+    %img.progress.overall-progress{:src=>image_path('progress-bar/bar.gif')}
+		
+  #file_progress
+    %strong.current-title
+      File Progress
+    %br
+    %img.progress.current-progress{:src=>image_path('progress-bar/bar.gif')}
+		
+  #upload-status.current-text
+    Click 'Browse' to select file(s)
+    
+  #upload-success{:style=>'display:none'}
+    %br
+    %span
+      = image_tag 'upload_action_success.png' 
+      %b= 'Finished!'
+      %a#add-descriptions{:href=>'#'}
+        Add Descriptions
+  
+%ul#content-list
+
+
+

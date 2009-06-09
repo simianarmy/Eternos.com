@@ -1,0 +1,18 @@
+- use_lowpro
+- use_wysiwyg
+- use_form
+
+= custom_error_messages_for :element
+- form_for([@story, @element]) do |f|
+  = f.text_field(:title, :defaultValue => "Enter a title", :class => 'withHint')
+  %p
+    %br= fckeditor_textarea(@element, :message, fckeditor_options)
+	
+  / = # render :partial => 'shared/timeline_picker', :object => @element, 
+  / = # :locals => { :f => f, :period => @element.time_period }
+  / %p= #f.submit "Next &#8594;" 
+  %p= render :partial => 'shared/tags_form_field', :locals => {:f => f, :object => @element}
+  %p= render :partial => 'shared/access_permissions_select', :object => @element, :locals => {:f => f, :user => current_user}
+  
+  %p= f.submit "Save"
+%br

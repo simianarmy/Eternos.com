@@ -1,0 +1,7 @@
+render_with :country_regions do |region| 
+  if @regions.empty?
+    region.hide_regions(params[:select_id])
+  else
+    region.update_regions(params[:select_id], @regions)
+  end
+end

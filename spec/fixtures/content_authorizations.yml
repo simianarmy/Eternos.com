@@ -1,0 +1,17 @@
+# $Id$
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+picture_with_private_perms:
+  authorizable_id: 1
+  authorizable_type: Element
+  privacy_level: 2
+  
+picture_with_public_perms:
+  authorizable_id: 1
+  authorizable_type: Element
+  privacy_level: 1
+  
+picture_with_public_perms:
+    authorizable_id: 1
+    authorizable_type: Element
+    privacy_level: 3

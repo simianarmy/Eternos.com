@@ -1,0 +1,10 @@
+- title 'Forgot Password'
+- stylesheet 'application'
+
+%h1#page-header Forgot Password
+.yui-g
+  #forgot-password
+    = show_flash_messages
+    %p
+      If you do not receive the email within 1 hour, please
+      = link_to 'Contact Support', home_path('contact-support')

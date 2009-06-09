@@ -1,0 +1,14 @@
+- use_lowpro
+- use_busy
+
+%p
+%br
+= link_to_content(content)
+%p
+%strong Title: 
+= restful_in_place_editor 'span', content, 'title', :object => 'content', :url => content_url(content)
+%br
+= render :partial => 'shared/tags_ajax_field', :locals => {:object => content, :klass => 'content', :url => content_url(content)}
+%br
+%strong Description: 
+= restful_in_place_editor 'span', content, 'description', :object => 'content', :url => content_url(content), :value => (content.description.nil? or content.description.empty?) ? 'Add Description' : content.description, :rows => 4

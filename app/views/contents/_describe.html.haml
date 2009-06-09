@@ -1,0 +1,18 @@
+#edit_content[describe]
+  %p= link_to_content(describe)
+  %br
+  - fields_for "content[#{describe.id}]", describe do |f|
+    %p
+      = f.label 'Title'
+      = f.text_field :title 
+      %p
+      %br
+      = render :partial => 'shared/tags_form_field', :locals => {:fieldname => "content[#{describe.id}][tag_list]", :object => describe}
+      
+      = f.label 'Description'
+      %br
+      = f.text_area 'description', :size => '50x3'
+      %br
+/ Need space between elements here
+%p
+%br

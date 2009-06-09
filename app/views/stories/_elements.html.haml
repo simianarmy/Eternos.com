@@ -1,0 +1,6 @@
+#elements
+  - if @story.elements.any?
+    = render :partial => 'element', :collection => @story.elements
+  %p
+  %br
+  %h3= link_to("Add an entry", new_story_element_path(@story))

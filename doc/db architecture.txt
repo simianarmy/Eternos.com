@@ -1,0 +1,14 @@
+Database Architecture
+
+Database sharding:
+Rails gem: data_fabric
+  http://github.com/fiveruns/data_fabric/tree/master
+  
+http://highscalability.com/unorthodox-approach-database-design-coming-shard
+
+Master/Slave DB:
+http://arfon.org/master_slave_databases_with_rails/
+
+MySQL Proxy:
+http://forge.mysql.com/wiki/MySQL_Proxy
+  

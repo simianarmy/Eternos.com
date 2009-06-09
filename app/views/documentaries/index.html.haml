@@ -1,0 +1,14 @@
+%h1 Listing documentaries
+
+%table
+  %tr
+  - @documentaries.each do |documentary|
+    %tr
+        
+      %td= link_to 'Show', object_url(documentary)
+      %td= link_to 'Edit', edit_object_url(documentary)
+      %td= link_to 'Destroy', object_url(documentary), :confirm => 'Are you sure?', :method => :delete
+
+%br/
+
+=link_to 'New documentary', new_object_url

@@ -1,0 +1,29 @@
+#form_fullname
+  = render :partial => 'shared/name_form_fields', :locals => {:f => f}
+%br
+%p.input
+  = f.label 'Relationship'
+  = select_tag "guest[circle_id]", options_from_collection_for_select(current_user.circles + Circle.find_globals(:all), :id, :name, (guest && guest.circle) ? guest.circle.id : ''), {:prompt => "Select Relationship"}
+  Other:
+  = f.text_field :new_circle_name, :value => ''
+%br
+%fieldset
+  %legend Contact Info
+  %br
+  %p.input
+    %label Email
+    = f.text_field :email
+  %br
+  %p.input
+    %label Phone Numbers
+    = form_for_phone_numbers(dom_id(guest) + '_phone_numbers', 'guest[address_book]', guest.address_book.phone_numbers)
+    %br
+  %br
+  %p.input
+    = render :partial => 'addresses/address', :locals => {:addressable => 'guest[address_book]', :location => 'Mailing', :address => guest.address_book.home_address, :parent_object => guest}
+  %br
+  %p.input
+    = check_box_tag 'guest[emergency_contact]', true, guest.emergency_contact_for?(current_user)
+    Emergency Contact
+  %br
+

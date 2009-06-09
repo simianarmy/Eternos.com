@@ -1,0 +1,5 @@
+<%= error_messages_for :decoration %>
+<% form_for([story, element], :url => new_story_element_decoration_path(story, element),
+	:html => { :id => "new_content", :multipart => true } ) do |f| %>
+	<%= render :partial => 'contents/upload_form', :locals => {:f=>f} %>
+<% end %>

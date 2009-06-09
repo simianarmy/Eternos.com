@@ -1,0 +1,71 @@
+# $Id$
+module ActionView
+  module Helpers
+    module ActiveRecordHelper
+      def error_messages_for(*params)
+        options = params.extract_options!.symbolize_keys
+                  
+        if object = options.delete(:object)
+          objects = [object].flatten
+        else
+          objects = params.collect {|object_name| instance_variable_get("@#{object_name}") }.compact
+        end
+        # Discard errors without messages
+        objects.map {|object| object.errors.each { |column,error| object.errors.delete(column) if error.blank? || (error == 'is invalid') } } 
+          
+        count   = objects.inject(0) {|sum, object| sum + object.errors.count }
+        unless count.zero?
+          html = {}
+          [:id, :class].each do |key|
+            if options.include?(key)
+              value = options[key]
+              html[key] = value unless value.blank?
+            else
+              html[key] = 'errorExplanation'
+            end
+          end
+          options[:object_name] ||= params.first
+          #options[:header_message] = "#{pluralize(count, 'error')} prohibited this #{options[:object_name].to_s.gsub('_', ' ')} from being saved" unless options.include?(:header_message)
+          #options[:message] ||= 'There were problems with the following fields:' unless options.include?(:message)
+          #error_messages = objects.sum {|object| object.errors.full_messages.map {|msg| content_tag(:li, msg) } }.join
+         
+          error_messages = objects.map do |object| 
+            (options[:full_messages] ? object.errors.full_messages : object.errors).map {|error| content_tag( :li, error ) }
+          end
+
+          contents = ''
+          contents << content_tag(options[:header_tag] || :h2, options[:header_message]) unless options[:header_message].blank?
+          contents << content_tag(:p, options[:message]) unless options[:message].blank?
+          contents << content_tag(:ul, error_messages)
+
+          content_tag(:div, contents, html)
+        else
+          ''
+        end
+      end
+    end
+  end
+end
+
+module ActiveRecord
+  class Base
+    extend Searchable
+    
+    def to_str
+      self.class.to_s.underscore
+    end
+  end
+
+  class Errors
+    # Remove a single error from the collection by key. 
+    def delete(key) 
+      @errors.delete(key.to_s) 
+    end
+    
+    # Override to only use message values if not blank
+    def full_messages
+      @errors.values.flatten
+    end
+  end
+end
+

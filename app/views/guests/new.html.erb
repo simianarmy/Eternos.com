@@ -1,0 +1,19 @@
+<% title "Loved Ones" %>
+
+<%= custom_error_messages_for :guest %>
+<% error_handling_form_for @guest do |f| -%>
+<p>
+<%= f.text_field :first_name %> <%= f.text_field :last_name %>
+</p>
+<p>
+<%= f.text_field :circle, :label => "Relationship" %>
+</p>
+<p>
+<%= f.text_field :description %>
+</p>
+<p>
+<%= f.text_field :email %>
+</p>
+
+<p><%= submit_tag 'Add' %></p>
+<% end -%>

@@ -1,0 +1,10 @@
+%div[element]
+  %h4= link_to element.title, story_element_path(element.story, element)
+  %span.publish_date= time_period_or(element, :updated_at)
+  %br
+  - if element.decorations.any?
+    - first = element.decorations.first
+    - set = dom_id(element)
+    = link_to_slideshow(element.decorations.map(&:content))
+    %br
+

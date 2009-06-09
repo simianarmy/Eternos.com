@@ -1,0 +1,274 @@
+checking for Ruby version >= 1.8.2... -------------------- yes
+
+--------------------
+
+checking for Ruby version >= 1.8.5... -------------------- yes
+
+--------------------
+
+find_executable: checking for gcc... -------------------- yes
+
+--------------------
+
+find_executable: checking for Magick-config... -------------------- yes
+
+--------------------
+
+checking for ImageMagick version >= 6.3.0... -------------------- yes
+
+--------------------
+
+checking for ImageMagick version >= 6.3.5... -------------------- yes
+
+--------------------
+
+checking for HDRI disabled version of ImageMagick... -------------------- yes
+
+--------------------
+
+have_header: checking for stdint.h... -------------------- yes
+
+"gcc -E -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick   conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include <stdint.h>
+/* end */
+
+--------------------
+
+have_header: checking for sys/types.h... -------------------- yes
+
+"gcc -E -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick   conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include <sys/types.h>
+/* end */
+
+--------------------
+
+have_header: checking for magick/MagickCore.h... -------------------- yes
+
+"gcc -E -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick   conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include <magick/MagickCore.h>
+/* end */
+
+--------------------
+
+have_library: checking for InitializeMagick() in -lMagick... -------------------- no
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore  -lruby-static -lMagick  -lpthread -ldl -lobjc  "
+ld: library not found for -lMagick
+collect2: ld returned 1 exit status
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))InitializeMagick; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore  -lruby-static -lMagick  -lpthread -ldl -lobjc  "
+conftest.c: In function 't':
+conftest.c:13: error: too few arguments to function 'InitializeMagick'
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { InitializeMagick(); return 0; }
+/* end */
+
+--------------------
+
+have_library: checking for InitializeMagick() in -lMagickCore... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))InitializeMagick; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for snprintf() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,stdint.h,sys/types.h,magick/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))snprintf; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for AcquireQuantumMemory() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,stdint.h,sys/types.h,magick/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))AcquireQuantumMemory; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for AcquireImage() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,stdint.h,sys/types.h,magick/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))AcquireImage; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for AffinityImage() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,stdint.h,sys/types.h,magick/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))AffinityImage; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for AffinityImages() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,stdint.h,sys/types.h,magick/MagickCore.h... -------------------- yes
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))AffinityImages; return 0; }
+/* end */
+
+--------------------
+
+have_func: checking for ClutImageChannel() in assert.h,ctype.h,stdio.h,stdlib.h,math.h,time.h,stdint.h,sys/types.h,magick/MagickCore.h... -------------------- no
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { void ((*volatile p)()); p = (void ((*)()))ClutImageChannel; return 0; }
+/* end */
+
+"gcc -o conftest -I. -I/usr/local/lib/ruby/1.8/i686-darwin9.4.0 -I.  -I/opt/local/include/ImageMagick  -I/opt/local/include/ImageMagick  conftest.c  -L. -L/usr/local/lib  -L/opt/local/lib -L/opt/local/lib -L/usr/X11/lib -R/usr/X11/lib -L/opt/local/lib -lfreetype -lz -Wl,-framework,CoreServices -Wl,-framework,ApplicationServices -L/opt/local/lib    -L/opt/local/lib -lMagickCore -lMagickCore  -lruby-static -lMagickCore  -lpthread -ldl -lobjc  "
+conftest.c: In function 't':
+conftest.c:13: error: too few arguments to function 'ClutImageChannel'
+checked program was:
+/* begin */
+ 1: #include <assert.h>
+ 2: #include <ctype.h>
+ 3: #include <stdio.h>
+ 4: #include <stdlib.h>
+ 5: #include <math.h>
+ 6: #include <time.h>
+ 7: #include <stdint.h>
+ 8: #include <sys/types.h>
+ 9: #include <magick/MagickCore.h>
+10: 
+11: /*top*/
+12: int main() { return 0; }
+13: int t() { ClutImageChannel(); return 0; }
+/* end */
+

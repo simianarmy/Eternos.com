@@ -1,0 +1,7 @@
+- use_autocomplete
+
+= render :partial => 'shared/autocomplete_box', :locals => {:name => local_assigns.has_key?(:fieldname) ? fieldname : (object ? "#{object.to_str}[#{object.new_record? ? :tag_s : :tag_list}]" : 'tag_list'), :value => object ? object.tag_list : '', :default => 'ENTER TAGS', :id => "all_tags"}
+%span.fine-print Ex: Bobby, Amusement Park, Paris, Birthday
+/= text_field((object.new_record? ? :tag_s : :tag_list), :value => object.tag_list, :defaultValue => 'ENTER TAGS', :class => 'withHint', :autocomplete => "off")
+
+

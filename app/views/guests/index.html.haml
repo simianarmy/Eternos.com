@@ -1,0 +1,29 @@
+- use_lightview
+- use_prototip
+- use_form
+- title_icon image_tag 'contactus.png', :class => 'alignleft'
+- title 'manage people'
+- header t('guests.index.heading')
+
+#add_guest{:style => style_hidden_if(@invitation.errors.empty?)}
+  %h2 add a guest
+  %br
+  = render :partial => 'guests/new_guest', :locals => {:invitation => @invitation}
+  %br.clearboth
+
+.content_title.alignleft
+  %h2 your guests
+.alignright{:style=>"padding-top: 15px; margin-right: 15px;"}
+  %p= link_to image_tag('newguestbtn.gif', :id => "toggle_add_guest", :class => "toggleable"), '#'
+.clearboth
+- if @guests.any? || @invitations.any?
+  %table#guest_list.hor-minimalist-b
+    %thead
+      %tr
+        %th{:width=>"44%", :scope=>"col"} name
+        %th{:width=>"32%", :scope=>"col"} status
+        %th{:width=>"24%", :scope=>"col"} action
+    %tbody
+      = render :partial => 'guests/guest_list_item', :collection => @guests
+      = render :partial => 'guest_invitations/list_item', :collection => @invitations
+      

@@ -1,0 +1,6 @@
+<div id="user_bar">
+<% if current_user.get_invitation_limit > 0 %>
+<p><%= link_to 'Send invitation', new_invitation_path %></p>
+(<%= current_user.get_invitation_limit %> left)
+<% end %>
+</div>

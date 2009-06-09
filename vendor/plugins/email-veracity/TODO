@@ -1,0 +1,2 @@
+* Document everything once the API is stable.
+* Create ActiveRecord and Validatable (DataMapper) plugins.

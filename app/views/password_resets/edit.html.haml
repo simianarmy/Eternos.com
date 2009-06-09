@@ -1,0 +1,22 @@
+- title 'Change My Password'
+- hide_login_box
+
+%h1#page-header Change Password
+.yui-g
+  #session
+    %p To reset your password, enter the new password you'd like to use in the form below.  After submitting the form, you'll be asked to log in with the new password.
+    %br
+    - form_for :user, @user, :url => password_reset_path, :html => {:method => :put} do |f|
+      .yui-u.first
+        = custom_error_messages_for :user
+        %p.input
+          Password: 
+          %br
+          = f.password_field :password
+          %span.fine-print Minimum 6 characters long
+        %p.input
+          Re-enter Password: 
+          %br
+          = f.password_field :password_confirmation, :id => 'password-confirm'
+        %br
+        = submit_tag 'Update password', {:style => "width: 160px"}

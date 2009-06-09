@@ -1,0 +1,5 @@
+# $Id$
+story_thoughts:
+    category: thoughts
+    categorizable_id: <%= Fixtures.identify(:wedding_story) %>
+    categorizable_type: Story

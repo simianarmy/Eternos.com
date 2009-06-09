@@ -1,0 +1,30 @@
+Recording Pages
+
+New Recording:
+  Copy under header should explain the purpose of the recording interface
+  
+  Instructions above recorder app should explain steps taken to create recording.  It's important that the user understand the difference between Audio only and Video/Audio options.  
+  User should be instructed to do a quick test recording using the playback feature before recording a long narrative.  
+  User should be instructed to wait 3 seconds after the Record button is pushed for the software to "load" before they start their narration.
+  
+  Steps are:
+    1) Allow Flash access to Mic & Camera
+    2) Push Record Button (Rec) (should blink red if working)
+    3) Wait 3 seconds
+    4) Narrate story
+    5) Hit Stop button
+    6) Hit Play to preview/playback recording
+    7) Save to continue
+    
+Recording Saved page:
+  If recording saved on server, page will redirect to new page where user can enter metadata for the recorded message.
+  
+  Need copy with instructions on Step 2 - entering recording metadata.
+  
+  Your recording: displays status (processing, complete, error), with link to Start Over.  Clicking on link will delete previous recording and redirect to recorder app page.
+  
+  Title, time period, etc. same as for Message pages.
+
+  Do we want a description textarea, or wysiwig box here too?
+  
+  Category: do we need this?  Might be helpful to provide all the major life events as categories in order to simplify tagging requirements...  See choices for examples.

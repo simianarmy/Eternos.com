@@ -1,0 +1,43 @@
+Facebook Profile Sync API:
+
+Technologies: Rails, Javascript
+Description: Provides view developers with helper method for generating view code (HTML + JS) to provide a call to action for the user to synchronize their Profiles with their Facebook account.
+
+Rails Helper Method:
+  link_to_facebook_profile_sync
+  
+  Arguments:
+    link_text: html to display link or button for user to click
+    js_callback_func_name: name of custom javascript callback function that will be called with user's latest Facebook profile data.
+    
+Javascript callback function prototype:
+  function fb_profile_cb(json) {
+    // json = Javascript object containing Facebook profile data.
+  }
+  
+Example rails erb code:
+
+Make sure to include the 'facebook.js' support file:
+<%= javascript 'facebook' %>
+
+Check if logged in user is a facebook user
+
+<% if current_user.facebook_user? %>
+  <%= link_to_facebook_profile_sync('Test Facebook Profile Sync', 'test_js_cb_func') %>
+  <%= javascript_tag "function test_js_cb_func(json) { alert(json.status) }" %>
+<% end %>
+  
+How to read JSON object:
+
+1) Check 'status' property value for success
+Possible JSON status values:
+  200 => Success fetching and populating object with profile data
+  500 => Error, check for reason in 'error' propery
+  
+2) If status = 200, profile data is in the 'profile' property, as object.
+
+Example error JSON object:
+{"status": 500, "error": "some error message"}
+
+Example successful JSON object:
+{"status": 200, "profile": {"email_hashes": [], "has_added_app": "1", "movies": "Manos Hand of Fate", "relationship_status": "", "locale": "en_US", "current_location": {"zip": {}, "populated": true}, "work_history": [{"start_date": "2003-01", "position": "CETFO", "location": {"city": {}, "country": {}, "populated": true, "state": {}}, "company_name": "Me", "populated": true, "description": "I drink my own milkshake", "end_date": ""}], "is_app_user": "1", "allowed_restrictions": "alcohol", "pic": "http://profile.ak.facebook.com/v229/946/113/s1005737378_3584.jpg", "education_history": [{"name": "University of Washington", "degree": "", "populated": true, "year": "2010", "concentrations": ["Computer Science"]}, {"name": "University of Oregon", "degree": "", "populated": true, "year": "1995", "concentrations": ["I forget"]}], "hometown_location": {"city": "Bellevue", "zip": {}, "country": "United States", "populated": true, "state": "Washington"}, "books": "", "sex": "male", "tv": "Battlestar Galactica\nAdult Swim\nThe Wire", "pic_with_logo": "http://external.ak.fbcdn.net/safe_image.php?logo&d=94a986cde47919f8ede27a4f6f7d663d&url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv229%2F946%2F113%2Fs1005737378_3584.jpg", "birthday": "May 11, 1974", "about_me": "", "pic_small": "http://profile.ak.facebook.com/v229/946/113/t1005737378_3584.jpg", "affiliations": [], "religion": "", "profile_update_time": "0", "pic_big_with_logo": "http://external.ak.fbcdn.net/safe_image.php?logo&d=8981a3767a0ecfdbc572782adaedb2ae&url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv229%2F946%2F113%2Fn1005737378_3584.jpg", "first_name": "Marc", "pic_big": "http://profile.ak.facebook.com/v229/946/113/n1005737378_3584.jpg", "wall_count": "9", "timezone": "-7", "profile_url": "http://www.facebook.com/profile.php?id=1005737378", "notes_count": "1", "meeting_sex": [], "pic_small_with_logo": "http://external.ak.fbcdn.net/safe_image.php?logo&d=08b910a55346bea26d7eb252ab4f0f34&url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv229%2F946%2F113%2Ft1005737378_3584.jpg", "meeting_for": [], "pic_square": "http://profile.ak.facebook.com/v229/946/113/q1005737378_3584.jpg", "significant_other_id": "", "name": "Marc Mauger", "political": "Arch-conservative Federalist Santa Clause Party", "proxied_email": "apps+82855842117.1005737378.c5bef64deb29da6a280005f85b8fbe12@proxymail.facebook.com", "last_name": "Mauger", "activities": "", "hs_info": {"hs1_id": "7022", "hs2_id": "0", "hs2_name": {}, "hs1_name": "Bellevue High School", "grad_year": "1992", "populated": true}, "pic_square_with_logo": "http://external.ak.fbcdn.net/safe_image.php?logo&d=90846fdfbad706da2eeae633ba87d829&url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv229%2F946%2F113%2Fq1005737378_3584.jpg", "interests": "", "music": "", "quotes": ""}}

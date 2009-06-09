@@ -1,0 +1,7 @@
+- title "New Story Entry"
+
+%p
+%br
+%h3= link_to "Back to " + @story.title, story_path(@story)
+%br
+= render :partial => 'form', :locals => {:element => @element}

@@ -1,0 +1,16 @@
+<% title "Decoration" %>
+
+<p>
+  <strong>Element:</strong>
+  <%=h @decoration.element_id %>
+</p>
+<p>
+  <strong>Content:</strong>
+  <%=h @decoration.content_id %>
+</p>
+
+<p>
+  <%= link_to "Destroy", story_element_decoration_path(@element.story, @element, @decoration), 
+	:confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", story_element_decorations_path(@element.story, @element) %>
+</p>

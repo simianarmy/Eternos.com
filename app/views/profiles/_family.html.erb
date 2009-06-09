@@ -1,0 +1,12 @@
+<%= custom_error_messages_for :profile %>
+<p/>
+<% remote_error_handling_form_for(:profile, :url => {:action => 'update'}) do |f| %>
+
+	<%= form_field_with_label f, 'father' %>
+	<%= form_field_with_label f, 'mother' %>
+	<%= form_field_with_label f, 'children' %>
+	<%= form_field_with_label f, 'spouse' %>
+	<%= form_field_with_label f, 'marrital_status' %>
+
+<p><%= f.submit "Save" %></p>
+<% end %>

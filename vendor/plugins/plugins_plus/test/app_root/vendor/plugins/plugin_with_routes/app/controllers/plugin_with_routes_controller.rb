@@ -1,0 +1,2 @@
+class PluginWithRoutesController < ApplicationController
+end

@@ -1,0 +1,32 @@
+- use_prototip
+
+- if decorations.any?
+  %p#media-text
+    Media attached to this entry:
+    %br
+      %span.fine-print Drag & Drop to re-order
+  - scroll_id = dom_id(parent) + "_scrollable_decorations"
+  %div{:id=>"#{scroll_id}"}
+    .navi
+    %a.prevPage
+    #scroller.scrollable{:target=>"#{build_decoration_path(parent, :action => 'sort')}"}
+      #item_list.items
+        - for d in decorations
+          .decoration_item[d]
+            - id = "decorations_#{dom_id(d)}"
+            = image_tag(d.content.thumbnail, :class => 'tooltip-target', :rel => "{fixed: true, width: 'auto', hideOn: { element: 'tip', event: 'mouseout' }, hideOthers: true}", :id => id)
+            .tooltip{:style=>"display:none;"}
+              = image_tag(d.content.preview_url)
+              %br
+              = link_to 'Edit', polymorphic_path(d.content, :dialog => '1'), :class => 'popup_get', :rel => "{fullscreen: true}"
+              |
+              = link_to 'Remove', build_decoration_path(parent, :decoration => d), :class => 'remote_delete', :busy_id => 'scroller'
+    %a.nextPage
+  %br
+  .clearboth
+  #slideshow_link.catch_lightview_close= link_to_slideshow decorations.map(&:content), :recording => @recording
+  
+/ Form tag for auth token - for javascript
+= form_tag
+
+

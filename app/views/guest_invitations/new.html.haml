@@ -1,0 +1,9 @@
+%h1 New guest_invitation
+
+= error_messages_for :guest_invitation
+
+- form_for(:guest_invitation, :url => collection_url) do |f|
+  = render :partial => "form", :locals => { :f => f }
+  %p= submit_tag "Create"
+
+= link_to 'Back', collection_url

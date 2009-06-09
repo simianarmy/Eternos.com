@@ -1,0 +1,8 @@
+.slideshow
+  - first = contents.first
+  - for c in contents
+    - if c == first
+      = link_to 'Play slideshow', c.public_filename, :class => 'lightview', :rel => 'set[myset]', :title => "#{c.title} :: #{c.description} :: slideshow: true", :id => dom_id(c)
+    - else
+      = link_to '', c.public_filename, :class => 'lightview', :rel => 'set[myset]', :title => "#{c.title} :: #{c.description}", :id => dom_id(c)
+

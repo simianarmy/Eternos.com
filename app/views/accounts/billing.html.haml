@@ -1,0 +1,52 @@
+- title 'Payment Information'
+- hide_login_box
+
+.yui-g
+  = image_tag 'credit-cards.jpg', :id => 'credit-cards'
+  
+  - if @subscription.state == 'trial'
+    - if @subscription.next_renewal_at > Time.now
+      %h3= "Thank you for trying " + site_account_plan(@plan) + "!"
+      %br
+      %p
+        Your trial account will expire in 
+        = pluralize(@subscription.trial_days, 'day', 'days')
+        , at which time you will no longer have access to your account.  To maintain access to your account, enter your credit card information below.  Your first charge will happen on 
+        = @subscription.next_renewal_at.to_s(:long_day) + '.'
+    - else
+      %p
+        Your trial account has expired.  To regain access to your account, enter your credit card information below.  Your first charge will happen immediately, and you will be billed monthly thereafter.
+  - elsif @account.login?
+    %h3= "You have selected " + site_account_plan(@plan)
+    %p 
+      Simply enter your payment details below to begin your 
+      = site_account_plan(@plan)
+      account and begin sharing your life with loved ones. Our billing is secure and your privacy is assured.
+  %br
+  - if not @account.needs_payment_info?
+    #plan-info
+      %p 
+        Plan:
+        = @subscription.subscription_plan.name 
+        = '(' + link_to('Change plan', '/account/plan') + ')'
+      - if @subscription.state == 'trial'
+        %p 
+          Trial expiration date:
+          = @subscription.next_renewal_at.to_s(:long_day)
+      - else
+        - if @subscription.amount > 0
+          %p 
+            Next charge date:
+            = @subscription.next_renewal_at.to_s(:long_day)
+          %p
+            Next charge amount:
+            = number_to_currency @subscription.amount
+          %p
+            Current payment method:
+            = @subscription.paypal? ? 'PayPal' : "#{@subscription.card_number} / #{@subscription.card_expiration}"
+  - else
+    - form_for :creditcard, @creditcard, :url => { :action => 'billing' } do |f|
+      = render :partial => 'shared/credit_card_form', :locals => {:f => f}
+      / - submit_or_cancel account_path, 'Update billing information'
+      = submit_tag :submit, :value => "", :class => "submit sign-up"
+      %p.small * Payments will appear as CorpName on your billing statement.

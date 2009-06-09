@@ -1,0 +1,2 @@
+module GuestInvitationsHelper
+end

@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<title>Eternos - <%= h(yield(:title) || "Home") %></title>
+		<%= stylesheet_link_tag "application" %>
+		<%= yield(:head) %>
+		<%= yield(:javascript) %>
+	</head>
+	<body>
+		<div id="container">
+<%= show_flash_messages %>
+<center>
+<img src="/images/eternos.png"/><br/>
+<span style="font-face: arial; font-size: x-large">
+Coming soon.
+</span>
+</center>
+<br/>
+<%= render :partial => 'users/user_bar' %>
+<%- if show_title? -%>	
+	<h1><%=h yield(:title) %></h1>
+<%- end -%>
+
+<%= yield %>
+</div>
+</body>
+</html>

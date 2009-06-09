@@ -1,0 +1,3 @@
+# $Id$
+In script:
+svn_add_files.sh	- bash script to add generated files to svn.

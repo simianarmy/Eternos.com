@@ -1,0 +1,3 @@
+http://www.quarkruby.com/2007/9/20/ruby-on-rails-security-guide
+http://guides.rubyonrails.org/security.html
+http://www.slideshare.net/raesene/web-appliction-security-scotland-on-rails-presentation

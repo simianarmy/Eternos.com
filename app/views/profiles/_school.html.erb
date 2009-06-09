@@ -1,0 +1,36 @@
+<% div_for school, :class => 'school' do %>
+	<% id = school.id || 0 %>
+	<% fields_for_school(school, 'profile') do |f| %>
+	<fieldset><legend>School</legend>
+	<%= form_field_with_label f, 'name', :index => id %>
+	<%= form_field_with_label f, 'degree', :index => id %>
+	<%= form_field_with_label f, 'fields', :index => id %>
+	<p>
+	<%= f.label 'From' %>
+	<%= f.date_select 'start_at', :index => id, :order => [:year], :start_year => 1900 %>
+	<%= f.label 'To' %>
+	<%= f.date_select 'end_at', :index => id, :order => [:year], :start_year => 1900 %>
+	</p>
+	<p>
+		<%= f.label 'Country' %>
+		<%= f.collection_select :country_id, Country.find(:all), :id, :name,
+		{:prompt => "Select a Country"}, :index => id %>
+	</p>
+	<p>
+	<%= f.label 'Activies & Societies' %><br/>
+	<%= f.text_area 'activities_societies', :rows => 5, :index => id %>
+	</p>
+	<p>
+	<%= f.label 'Awards' %><br/>
+	<%= f.text_area 'awards', :rows => 5, :index => id %>
+	</p>
+	<p>
+	<%= f.label 'Recognitions' %><br/>
+	<%= f.text_area 'recognitions', :rows => 5, :index => id %>
+	</p>
+	<p>
+		<%= link_to_function("remove", "this.up('.school').remove()") %>
+	</p>
+	</fieldset>
+	<% end %>
+<% end %>

@@ -1,0 +1,8 @@
+<%= error_messages_for :recipient %>
+<% form_for @recipient do |f| %>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p><%= f.submit "Submit" %></p>
+<% end %>

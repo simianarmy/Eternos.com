@@ -1,0 +1,18 @@
+- title "Stories"
+/ lightview & lowpro use_ helpers conflict, specify lowpro includes manually
+- use_lightview
+- use_busy
+- use_lowpro
+- use_form
+- use_prototip
+
+= render :partial => 'shared/search_box', :locals => {:url => stories_path}
+
+= link_to 'Create', new_story_path
+%p
+%br
+#stories= render :partial => 'cover', :collection => @stories
+
+
+
+

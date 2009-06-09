@@ -1,0 +1,19 @@
+<% title "Decorations" %>
+<% debugger %>
+<table>
+  <tr>
+    <th>Element</th>
+    <th>Content</th>
+  </tr>
+  <% for decoration in @decorations %>
+    <tr>
+      <td><%=h decoration.element_id %></td>
+      <td><%=h decoration.content_id %></td>
+      <td><%= link_to "Show", decoration %></td>
+      <td><%= link_to "Edit", edit_decoration_path(decoration) %></td>
+      <td><%= link_to "Destroy", decoration, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Decoration", new_decoration_path %></p>

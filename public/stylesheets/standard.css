@@ -1,0 +1,651 @@
+/*
+ $Id$
+*/
+
+/* @override 
+	http://localhost:3000/stylesheets/standard.css?1230322084
+	http://localhost:3000/stylesheets/standard.css?1230944438
+	https://staging.eternos.com/stylesheets/standard.css?1231369977
+	http://staging.eternos.com/stylesheets/standard.css?1231396053
+	https://staging.eternos.com/stylesheets/standard.css?1231402069
+	http://staging.eternos.com/stylesheets/standard.css?1231402069
+	http://staging.eternos.com/stylesheets/standard.css?1231483416
+*/
+
+/* @group structure */
+
+html{
+	background: #dce7fb url('../images/bg-html.png') repeat-x 0 top;
+}
+
+#container{
+	width: 892px;
+	margin: auto;
+	padding: 0px 84px 0px 98px;
+	background: url('../images/background_cloud.jpg') no-repeat center top;
+	height: 100px;
+}
+
+body{
+	margin: 0px;
+	padding: 0px;
+	color: #868585;
+	font-family: Arial;
+	font-size: 15px;
+}
+
+.clearer{
+	clear: both;
+}
+
+/* @end */
+
+/* @group text */
+
+h1{
+	color: #2ea4ff;
+	font-size: 48px;
+	line-height: 48px;
+	font-family: 'Century Gothic';
+	font-weight: lighter;
+	padding: 0px;
+	margin: 0px;
+}
+
+h2{
+	color: #2ea4ff;
+	font-size: 36px;
+	line-height: 36px;
+	font-family: 'Century Gothic';
+	font-weight: lighter;
+	margin: 0px;
+	padding-bottom: .5em;
+}
+
+h3{
+	color: #2ea4ff;
+	font-size: 18px;
+	line-height: 18px;
+	padding: 0px;
+	margin: 0px 0px 8px 0px;
+	font-family: 'Century Gothic';
+	font-weight: lighter;
+}
+
+
+
+a{
+	color: #2ea4ff;
+	text-decoration: none;
+}
+
+p{
+	margin: 0px;
+	padding: 0px 0px 18px 0px;
+}
+
+/* @end */
+
+/* @group header */
+
+#header{
+	height: 84px;
+	position: relative;
+	margin-bottom: 5px;
+}
+
+#header img#eternos_logo{
+	margin: 0px 0px;
+}
+
+#header #login{
+	font-family: 'Century Gothic';
+	color: #868585;
+	background-color: yellow;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 5px 10px 10px;
+	width: 391px;
+	height: 70px;
+	background: url('../images/bg-login.png') no-repeat;
+}
+
+#header #login p{
+	margin: 0px 0px 0px 5px;
+	font-size: 13px;
+	padding: 0px;
+}
+
+#header #login input{
+	margin-top: 5px;
+	margin-right: 3px;
+	float: left;
+}
+
+#header #login input#go-button{
+	margin-left: 5px;
+}
+
+/* @end */
+
+/* @group home */
+
+#payload{
+	margin: 0px;
+	padding: 0px;
+	background: url('../images/bg-payload.png') no-repeat;
+	height: 403px;
+	width: 890px;
+	padding: 26px;
+}
+
+#payload #content{
+	height: 403px;
+	width: 838px;
+	overflow: hidden;
+}
+
+#payload #content #left{
+	float: left;
+	width: 354px;
+}
+
+#payload #content #right{
+	float: right;
+	width: 454px;
+}
+
+#payload #content #right a img{
+	margin-top: 10px;
+	float: right;
+}
+
+
+img#videobox{
+	margin-bottom: .5em;
+}
+
+/* @end */
+
+/* @group credit card */
+
+#creditcard{
+	height: 516px;
+	width: 890px;
+	padding: 26px;
+	margin: 0px;
+	background: url('../images/background_cc.png') no-repeat;
+}
+
+#creditcard #content{
+	background: url('../images/background_cc_innerbox.png') no-repeat;
+	width: 742px;
+	height: 351px;
+	padding: 26px;
+}
+
+#creditcard #content #left{
+	width: 361px;
+	float: left;
+}
+
+#creditcard #content #left h3#secure-header{
+	margin-top: .5em;
+}
+
+
+#creditcard #content #right{
+	width: 361px;
+	float: right;
+}
+
+#creditcard #content #right a img{
+	float: right;
+	margin-top: 15px;
+}
+
+/* @end */
+
+/* @group getting started */
+
+#gettingstarted{
+	height: 460px;
+	width: 890px;
+	padding: 26px;
+	margin: 0px;
+	background: url('../images/background_cc.png') no-repeat;
+}
+
+
+
+#gettingstarted #content{
+	background: url('../images/background_gs_innerbox.png') no-repeat;
+	width: 743px;
+	height: 351px;
+	padding: 26px;	
+}
+
+#gettingstarted #content #left{
+	width: 361px;
+	float: left;
+}
+
+#gettingstarted #content #right{
+	width: 361px;
+	float: right;
+}
+
+#gettingstarted a img{
+	float: right;
+	margin-top: px;
+}
+
+/* @end */
+
+/* @group account created */
+
+
+#accountcreated{
+	height: 516px;
+	width: 890px;
+	padding: 26px;
+	margin: 0px;
+	background: url('../images/background_cc.png') no-repeat;
+}
+
+#accountcreated #content{
+	background: url('../images/background_cc_innerbox.png') no-repeat;
+	width: 742px;
+	height: 351px;
+	padding: 26px;
+}
+
+div.ros #accountcreated,
+div.ros #accountcreated #content {
+	background: none;
+}
+/* @end */
+
+/* @group processing */
+
+#processing{
+	height: 516px;
+	width: 890px;
+	padding: 26px;
+	margin: 0px;
+	background: url('../images/background_cc.png') no-repeat;
+}
+
+#processing #content{
+	background: url('../images/background_cc_innerbox.png') no-repeat;
+	width: 742px;
+	height: 351px;
+	padding: 26px;
+}
+
+#processing #content p{
+	line-height: 1.6em;
+}
+#processing #content .inline{
+	display: inline;
+	line-height: 65px;
+	vertical-align: bottom;
+}
+
+#processing #content img{
+	margin-top: 25px;
+	margin-right: 25px;
+}
+
+/* @end */
+
+/* @group select level */
+
+#select_level{
+	height: 516px;
+	width: 890px;
+	padding: 26px;
+	margin: 0px;
+	background: url('../images/background_cc.png') no-repeat;
+}
+
+#select_level #content{
+	background: url('../images/background_cc_innerbox.png') no-repeat;
+	width: 742px;
+	height: 351px;
+	padding: 26px;
+}
+
+#select_level #content #top{
+	clear: both;
+}
+
+#select_level #content #left{
+	width: 361px;
+	float: left;
+}
+
+
+#select_level #content #left .button{
+	float: left; 
+	width: 10px;
+}
+
+#select_level #content #left
+#select_level #content #left .button{
+	float: left; 
+	width: 10px;
+}
+
+#select_level #content #left .blurb{
+	float: right; 
+	width: 320px;
+	font-family: Arial;
+	font-size: 11px;
+	font-style: italic;
+}
+
+#select_level #content #left .blurb h3{
+	font-family: Arial;
+	font-weight: bold;
+	font-style: normal;
+	font-size: 13px;
+}
+
+#select_level #content #left .blurb h3 .grey{
+	color: #666666;
+}
+
+#select_level #content #right{
+	width: 361px;
+	float: right;
+}
+
+
+#select_level #content #right table tr th{
+
+	padding: 10px;
+
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: bold;
+
+	color: #858585;
+}
+
+#select_level #content #right table tr th.clear{
+	background: none;
+}
+
+/* table headers */
+
+
+#select_level #content #right table th.basic{
+	background:  url(../images/table-basic-bg.png) no-repeat top;
+}
+
+#select_level #content #right table th.silver{
+	background:  url(../images/table-silver-bg.png) no-repeat top;
+}
+
+#select_level #content #right table th.gold{
+	background:  url(../images/table-gold-bg.png) no-repeat top;
+}
+
+/* more table */
+
+#select_level #content #right table .basic{
+	background-color: #f5fbfd;
+}
+
+#select_level #content #right table .silver{
+	background-color: #f0f5fe;
+}
+
+#select_level #content #right table .gold{
+	background-color: #dbf1fa;
+}
+
+#select_level #content #right table tr td{
+	padding:;
+	width: 80px;
+	font-size: 12px;
+	color: #858585;
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#select_level #content #right table td.title{
+	width: 120px;
+	text-align: left;
+}
+
+/* table footers */
+
+
+#select_level #content #right table tr.bottom td.basic{
+	background: url(../images/table-basic-ft-bg.png) no-repeat;
+}
+
+#select_level #content #right table tr.bottom td.silver{
+	background: url(../images/table-silver-ft-bg.png) no-repeat;
+}
+
+#select_level #content #right table tr.bottom td.gold{
+	background: url(../images/table-gold-ft-bg.png) no-repeat;
+}
+
+/* @end */
+
+/* @group footer */
+
+#footerwrapper{
+	height: 100%;
+	width: 100%;
+}
+
+#footer{
+	background: url('../images/bg-footer.png') no-repeat;
+	margin-top: 7px;
+	padding-top: 20px;
+	height: 68px;
+	text-align: center;
+	font-family: Verdana;
+	font-size: 11px;
+	color: #858585;
+	position: absolute;
+	bottom: 0px;
+	width: 892px;
+}
+
+#footer a{
+	color: #2ea4ff;
+	text-decoration: none;
+}
+
+#footer ul{
+	margin: 0px;
+	padding: 0px;
+	margin: auto;
+}
+
+#footer li{
+	display: inline;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-right: 1px solid #000;
+}
+
+#footer li.last {
+	border: none;
+}
+
+/* @end */
+
+/* @group icons */
+
+.icon-silver-star{
+	background: url(../images/icon-silver-star.png) no-repeat;
+	padding: 2px 0 5px 20px;
+}
+
+.icon-gold-star{
+	background: url(../images/icon-gold-star.png) no-repeat;
+	padding: 2px 0 5px 20px;
+}
+
+/* @end */
+
+/* @group row template */
+
+.row{
+	width: 355px;
+	font-size: 11px;
+	line-height: 24px;
+}
+
+.label{
+	width: 100px;
+	float: left;
+	text-align: right;
+}
+
+.data{
+	width: 235px;
+	float: right;
+	text-align: left;
+}
+
+/* @end */
+
+/* @group session */
+
+div#session{
+	height: 516px;
+	width: 890px;
+	padding: 26px;
+	margin: 0px;
+	background: url('../images/background_cc.png') no-repeat;
+
+}
+
+
+/* @end */
+
+/* @group flash notices */
+
+div#flash_notice{
+	margin-bottom: 2em;
+	color: #c51c21;
+}
+
+/* @end */
+
+/* @group scaffold */
+
+#flash_notice, #flash_error {
+  padding: 5px 8px;
+  margin: 10px 0;
+  width: 820px;
+}
+
+#flash_notice {
+  background-color: #CFC;
+  border: solid 1px #6C6;
+}
+
+#flash_error {
+  background-color: #FCC;
+  border: solid 1px #C66;
+}
+
+.field_error {
+	background-color: #FCC;
+}
+
+.fieldWithErrors {
+  display: inline;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid #CF0000;
+  padding: 0px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: 0px;
+  background-color: #c00;
+  color: #fff;
+}
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 8px;
+}
+#errorExplanation ul {
+  margin: 2px 24px;
+}
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: disc;
+}
+
+#user_bar {
+	position: absolute;
+	right: -30px;
+	top: 23px;
+
+  background-color: salmon;
+  border: solid 1px black;
+  padding: 1px 10px;
+  font-size: 11px;
+
+}
+.editable_text:hover {
+	background-color: #ffff99;	/* From Scriptaculous controls.js */
+}
+#upload_links {
+  background-color: #E0FFFF;
+  border: 1px;
+  padding: 1px 10px;
+  word-spacing: 5px;
+}
+
+
+
+
+/* @end */
+
+/* @group ros */
+
+div.ros {
+	background: url('../images/bg-payload.png') no-repeat;	
+	position: relative;
+	padding: 1em;
+	/* height only added for debug */
+	height: 500px;
+}	
+
+
+/* @end */
+
+/* @group links */
+
+a img {
+  border: none;
+}
+
+
+
+
+/* @end */

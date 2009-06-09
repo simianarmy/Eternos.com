@@ -1,0 +1,23 @@
+- if phone_number
+  - phone_count = begin phone_number_counter rescue 0 end
+  
+  .pn[phone_number]
+    - fields_for_phone_number(phone_number, owner) do |phone_form|
+      %label Phone
+      Type:
+      = phone_form.select :phone_type, PhoneNumber::PhoneTypes, {}
+      %br
+      Prefix: 
+      = phone_form.text_field :prefix, :size => 4, :style => "width: 30px"
+      Area Code: 
+      = phone_form.text_field :area_code, :size => 3, :style => "width: 30px"
+      Number: 
+      = phone_form.text_field :number, :size => 10, :style => "width: 90px"
+      Extension: 
+      = phone_form.text_field :extension, :size => 6, :style => "width: 30px"
+      
+      = link_to_function("remove", "this.up('.pn').remove()") if phone_count > 0
+      %p
+      %br
+      %p
+

@@ -1,0 +1,9 @@
+%div{:id=>dom_id(object, "wysiwyg_editor")}
+  #drop-container.fckeditor-drop-container
+    = render :partial => 'shared/fckeditor', :locals => {:object => object, :fieldname => fieldname, :options => options}
+
+-# Overly complex prototype-based wysiwig editor show/hide logic below.
+-# Use FCKEditor Preview() instead, if possible
+-#= link_to_function 'Edit' do |page|
+  -# page.render_with :wysiwyg_editor do |editor|
+    -# editor.show_editor(fieldname, object, options)

@@ -1,0 +1,6 @@
+page.flash_and_fade
+if not @element.errors
+  page.insert_html :bottom, :decorations, :partial => 'decorations/form', 
+    :locals => {:story => @story, :element => @element}
+end
+flash.discard

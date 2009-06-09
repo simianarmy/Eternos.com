@@ -1,0 +1,5 @@
+= custom_error_messages_for :invitation
+- form_for invitation do |f|
+  = render :partial => 'guest_invitations/form', :locals => {:f => f, :guest_invitation => invitation}
+  = submit_tag 'Save'
+  = link_to 'Cancel', '#', :id => "toggle_add_guest", :class => "toggleable"

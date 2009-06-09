@@ -1,0 +1,26 @@
+<%= calendar_date_select_includes %>
+<% use_lightview %>
+<p><br/></p>
+<p>
+	<% if video.has_flash? %>
+		<%= show_video_player(video.web_video) %>
+	<% else %>
+		<span id="flash_notice">your video file is being processed</span>
+	<% end %>
+</p>
+
+<%= render :partial => 'contents/show', :locals => { :content => video } %>
+
+<div id="date_taken">
+<strong>Date Taken at:</strong>
+<%= content_date_select(video) %>
+</div>
+<%= observe_field :video_taken_at, :url => video_path(video),
+	:method => :put,
+	:on => "blur",
+  :with => "'video[taken_at]='+escape($('video_taken_at').value)"
+%>
+</p>
+<p>
+	<%= render :partial => 'contents/show_footer', :object => video %>
+</p>

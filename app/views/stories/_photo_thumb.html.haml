@@ -1,0 +1,4 @@
+= show_story_photo(story)
+%br
+%span{:style=>"font-size: x-small"}= link_to((story.has_photo? ? 'Change Cover Photo' : 'Add Cover Photo'), '#', :id => "toggle_photo_file_form", :class => "toggleable")
+

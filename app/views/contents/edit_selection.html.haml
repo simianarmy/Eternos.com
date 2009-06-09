@@ -1,0 +1,20 @@
+- title 'Add Descriptions'
+- use_lightview
+- use_form
+- use_js_cookies
+
+%p
+#content-description
+  - form_for :contents, :url => {:action => :update_selection}, :html => {:id => 'content_descriptions_form'} do |f|
+    #content-description-batch-settings
+      - if @contents.size > 1
+        = f.label 'Tags for all'
+        %p= render :partial => 'shared/tags_form_field', :locals => {:f => f}
+        %br
+      = render :partial => 'shared/access_permissions_select', :locals => {:object => Content.new, :user => current_user}
+    %p
+    %br
+    = render :partial => 'describe', :collection => @contents
+    %br
+    = submit_tag 'Save'
+

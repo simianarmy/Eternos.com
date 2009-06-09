@@ -1,0 +1,8 @@
+page.flash_and_fade
+
+page.update_common_settings(@story, @common_settings) if @common_settings
+render_with :in_place_editor do |ip| 
+  ip.update(@story, params)
+end
+
+flash.discard

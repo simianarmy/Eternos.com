@@ -1,0 +1,9 @@
+- title 'account settings'
+#header-sync-facebook
+  = link_to_remote "Sync With Facebook", :url => facebook_sync_account_settings_path, :update => "account-setting-content"
+#account-setting
+  = render :partial => 'setting_nav'
+  #account-setting-content
+    .form_field
+      - form_remote_tag :url => save_personal_info_account_settings_path do
+        = render :partial => 'accounts/personal_info'

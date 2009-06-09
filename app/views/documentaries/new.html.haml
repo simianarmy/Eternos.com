@@ -1,0 +1,25 @@
+- title "New Story"
+- use_lightview
+- use_soundmanager
+
+= custom_error_messages_for :documentary
+- unless @recording.new_record?
+  - form_for @documentary do |f|
+    = f.hidden_field 'recording_id', :value => @recording.id
+    %p
+      Your recording: 
+      - if @recording.complete?
+        = link_to_recording(@recording) 
+      - else
+        = @recording.state
+      = link_to 'Start Over', new_documentary_path(:redo=>'1')
+    %p
+    %br
+    = render :partial => 'stories/form', :locals => {:f => f, :story => @documentary}
+- else
+  %p.input
+    Record your message here
+  %br
+  = render :partial => 'recordings/recorder'
+
+

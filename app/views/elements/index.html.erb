@@ -1,0 +1,13 @@
+<% title "Story Elements" %>
+<p><%= link_to "Back", story_path(@story) %></p>
+<div id="elements">
+	<% @elements.each do |el| %>
+	<p>
+  		<%= link_to el.title, story_element_path(@story, el) %>
+		<br/>
+		<%= h truncate(el.message, :length => 60) %>
+	</p>
+	<% end %>
+</div>
+
+<p><%= link_to "New Element", new_story_element_path(@story) %></p>

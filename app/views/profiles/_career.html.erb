@@ -1,0 +1,18 @@
+<% div_for career, :class => 'career' do %>
+	<% id = career.id || 0 %>
+	<% fields_for_job(career, 'profile') do |f| %>
+	<fieldset><legend>Career</legend>
+	<%= form_field_with_label f, 'company', :index => id %>
+	<%= form_field_with_label f, 'title', :index => id %>
+	<%= form_field_with_label f, 'description', :index => id %>
+
+		<%= f.label 'From' %>
+		<%= f.date_select 'start_at', :index => id, :order => [:month, :year], :start_year => 1900 %>
+		<%= f.label 'To' %>
+		<%= f.date_select 'end_at', :index => id, :order => [:month, :year], :start_year => 1900 %>
+
+	<br/>
+	<%= link_to_function("remove", "this.up('.career').remove()") %>
+	</fieldset>
+	<% end %>
+<% end %>

@@ -1,0 +1,17 @@
+# $Id$
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+no_content:
+    story: wedding_story
+    title: thoughts
+    message: no content here
+    
+wedding_ceremony:
+    story: wedding_story
+    title: my wedding
+    message: This is my wedding
+    
+wedding_reception:
+    story: wedding_story
+    title: my stupid dog
+    message: doggie in wedding

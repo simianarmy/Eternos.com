@@ -1,0 +1,8 @@
+Relationship: 
+= guest.current_circle.name
+%br
+Email: 
+= guest.email
+%br
+Phone Numbers:
+= guest.address_book.phone_numbers.map(&:to_s).join('br') if guest.address_book

@@ -1,0 +1,68 @@
+= custom_error_messages_for :subscription, :header_message => "Errors encountered with your payment:"
+%p
+.yui-u.first
+  = custom_error_messages_for :creditcard, :header_message => "Errors encountered with your payment information:", :full_messages => true
+  
+  - if @subscription
+    %p.input
+      = radio_button_tag :paypal, "", !@subscription.paypal?
+      Pay with a credit card
+  
+  %p Name on Card
+  %p.input 
+    First
+    = text_field :creditcard, :first_name
+  %p.input
+    Last
+    = text_field :creditcard, :last_name
+  %p.input 
+    Card Number
+    = text_field :creditcard, :number
+  %p.input 
+    Type
+    = select :creditcard, :type, [['Visa', 'visa'], ['MasterCard', 'master'], ['American Express', 'american_express']]
+  %p.input.month 
+    Expiration
+    = select_month(Date.today, :add_month_numbers => true, :prefix => 'creditcard')
+    = select :creditcard, :year, (Time.now.year .. 10.years.from_now.year)
+  %p.input 
+    CVV
+    = text_field :creditcard, :verification_value, :size => 4, :id => "security-code"
+    = link_to image_tag('cvv.gif', :size => '51x31', :align => 'top'), ''
+    
+    
+  #secure-transaction
+    %h3 Safe and Secure Transaction
+    %p.small Transaction verified secure by the following:
+    = link_to image_tag('McAfee.jpg'), ''
+    = link_to image_tag('GeoTrust.jpg'), ''
+    = link_to image_tag('SecTransactions.jpg'), ''
+    
+  - if @subscription
+    %p.input
+      = radio_button_tag :paypal, "", @subscription.paypal?
+      Pay with PayPal
+      
+.yui-u
+  = custom_error_messages_for :address, :header_message => "Errors encountered with your address:", :full_messages => true
+  %p.input 
+    Billing Address
+    = text_field :address, :address1
+    = text_field :address, :address2
+  %p.input 
+    City
+    = text_field :address, :city
+  %p.input
+    State / Province
+    = text_field :address, :state
+  %p.input 
+    Postal Code
+    = text_field :address, :zip
+  %p.input
+    Country
+    = collection_select :address, :country, Country.find(:all), :name, :name, {:prompt => "Select a Country"}
+    / = country_select :address, :country, ['United States', 'Canada']  
+  %p.input
+    Phone
+    = text_field :address, :phone
+

@@ -1,0 +1,21 @@
+# $Id$
+#
+# Connection settings for AMQP message queue server
+
+common: &default_settings
+  user: backupd
+  pass: b4ckUrlIF3
+  host: localhost
+  vhost: /eternos
+  
+development:
+  <<: *default_settings
+  
+test:
+  <<: *default_settings
+  
+staging:
+  <<: *default_settings
+  
+production:
+  <<: *default_settings

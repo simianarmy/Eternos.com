@@ -1,0 +1,23 @@
+# $Id$
+# What happened to Foxy Fixtures support?
+
+wedding_story_member_comment:
+  user_id: <%= Fixtures.identify(:member) %>
+  title: oh yeah
+  comment: MyText
+  commentable_id: <%= Fixtures.identify(:wedding_story) %>
+  commentable_type: Story
+
+wedding_ceremony_element_member_comment:
+  user_id: <%= Fixtures.identify(:member) %>
+  title: oh me too
+  comment: MyText
+  commentable_id: <%= Fixtures.identify(:wedding_ceremony) %>
+  commentable_type: Element
+  
+wedding_story_guest_comment:
+  user_id: <%= Fixtures.identify(:guest) %>
+  title: hoo hoo
+  comment: blah blah
+  commentable_id: <%= Fixtures.identify(:wedding_story) %>
+  commentable_type: Story

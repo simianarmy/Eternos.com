@@ -1,0 +1,163 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--
+ * 	Image upload dialog window.
+ *
+ *  File Authors:
+ * 		Alfonso Martínez de Lizarrondo
+ *
+ * Based on fck_image.html
+ * 
+-->
+<html>
+	<head>
+	<title>Image Properties</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="robots" content="noindex, nofollow">
+		<script src="fck_image/fck_image.js" type="text/javascript"></script>
+		<script type="text/javascript">
+
+if (FCKTools.GetStyleHtml)
+	document.write( FCKTools.GetStyleHtml( GetCommonDialogCss( FCKConfig.FullBasePath + 'dialog/' ) ) ) ;
+else
+	document.write( '<link href="' + oEditor.FCKConfig.SkinPath + 'fck_dialog.css" type="text/css" rel="stylesheet">' ) ;
+
+		</script>
+	</head>
+<body scroll="no" style="overflow: hidden">
+		<div id="divInfo" style="height:100%;">
+			<div id="divUpload">
+					<form id="frmUpload" method="post" target="UploadWindow" enctype="multipart/form-data" action="" onsubmit="return CheckUpload();">
+						<label fckLang="EuImgSelectFileLbl">Select file</label><br />
+						<input id="txtUploadFile" style="width:100%; padding:3px 2px;" type="file" size="40" name="NewFile" /><br />
+						<script type="text/javascript">
+							document.write( '<iframe name="UploadWindow" style="display: none" src="' + FCKTools.GetVoidUrl() + '"><\/iframe>' ) ;
+						</script>
+					</form>
+				
+					<div id="fromServer" style="margin: 1.5em 0;">
+						<label for="btnBrowse" fcklang="DlgEUSelectServer">Or Select a picture from the server</label><br>
+						<input id="btnBrowse" onclick="BrowseServer();" type="button" value="Browse Server"
+							fcklang="DlgEuBtnBrowseServer" />
+					</div>
+
+					<div id="fromExternal" style="margin: 1.5em 0 0 0;">
+						<label for="txtPaste" fcklang="DlgEuPasteURL">Or paste an image from another site</label><br>
+						<input type="text" name="txtPaste" id="txtPaste" value="http://">
+					</div>
+
+					<input id="btnUpload" type="button" value="Continue" fckLang="EuImgContinueBtn" onclick='Ok()'/>
+
+					<input id="txtUrl" type="text" style="display:none"/>
+			</div>
+
+			<div id="divProperties" style="display:none">
+			
+			<table cellspacing="1" cellpadding="1" border="0" width="100%" height="100%">
+				<tr>
+					<td valign="top">
+						<table cellspacing="0" cellpadding="0" width="100%" border="0">
+							<tr>
+								<td valign="top">
+									<br />
+									<span fcklang="EuImageSize">Image Size</span>
+									<table cellspacing="0" cellpadding="0" border="0">
+										<tr>
+										<td nowrap="nowrap">
+											<span fcklang="DlgImgWidth">Width</span>&nbsp;</td>
+										<td>
+												<input type="text" size="3" id="txtWidth" onkeyup="OnSizeChanged('Width',this.value);"></td>
+										<td rowspan="2">
+											<div id="btnLockSizes" class="BtnLocked" onmouseover="this.className = (bLockRatio ? 'BtnLocked' : 'BtnUnlocked' ) + ' BtnOver';"
+												onmouseout="this.className = (bLockRatio ? 'BtnLocked' : 'BtnUnlocked' );" title="Lock Sizes"
+												onclick="SwitchLock(this);">
+											</div>
+										</td>
+										<td rowspan="2">
+											<div id="btnResetSize" class="BtnReset" onmouseover="this.className='BtnReset BtnOver';"
+												onmouseout="this.className='BtnReset';" title="Reset Size" onclick="ResetSizes();">
+											</div>
+										</td>
+										</tr>
+										<tr>
+										<td nowrap="nowrap">
+											<span fcklang="DlgImgHeight">Height</span>&nbsp;</td>
+										<td>
+												<input type="text" size="3" id="txtHeight" onkeyup="OnSizeChanged('Height',this.value);"></td>
+										</tr>
+									</table>
+									<br />
+							
+								<span fcklang="EuImageClass">Class</span><br />
+								<select id="cmbClass" onchange="UpdatePreview();">
+								</select>
+
+							<table cellspacing="0" cellpadding="0" border="0" style="display:none">
+									<tr>
+										<td nowrap="nowrap">
+											<span fcklang="DlgImgBorder">Border</span>&nbsp;</td>
+										<td>
+											<input type="text" size="2" value="" id="txtBorder" onkeyup="UpdatePreview();" /></td>
+										</tr>
+										<tr>
+										<td nowrap="nowrap">
+											<span fcklang="DlgImgHSpace">HSpace</span>&nbsp;</td>
+										<td>
+											<input type="text" size="2" id="txtHSpace" onkeyup="UpdatePreview();" /></td>
+										</tr>
+										<tr>
+										<td nowrap="nowrap">
+											<span fcklang="DlgImgVSpace">VSpace</span>&nbsp;</td>
+										<td>
+											<input type="text" size="2" id="txtVSpace" onkeyup="UpdatePreview();" /></td>
+										</tr>
+										<tr>
+										<td nowrap="nowrap">
+											<span fcklang="DlgImgAlign">Align</span>&nbsp;</td>
+										<td>
+											<select id="cmbAlign" onchange="UpdatePreview();">
+												<option value="" selected="selected"></option>
+												<option fcklang="DlgImgAlignLeft" value="left">Left</option>
+												<option fcklang="DlgImgAlignAbsBottom" value="absBottom">Abs Bottom</option>
+												<option fcklang="DlgImgAlignAbsMiddle" value="absMiddle">Abs Middle</option>
+												<option fcklang="DlgImgAlignBaseline" value="baseline">Baseline</option>
+												<option fcklang="DlgImgAlignBottom" value="bottom">Bottom</option>
+												<option fcklang="DlgImgAlignMiddle" value="middle">Middle</option>
+												<option fcklang="DlgImgAlignRight" value="right">Right</option>
+												<option fcklang="DlgImgAlignTextTop" value="textTop">Text Top</option>
+												<option fcklang="DlgImgAlignTop" value="top">Top</option>
+											</select>
+										</td>
+										</tr>
+									</table>
+								</td>
+								<td>&nbsp;&nbsp;&nbsp;</td>
+								<td width="100%" valign="top">
+									<table cellpadding="0" cellspacing="0" width="100%" style="TABLE-LAYOUT: fixed">
+										<tr>
+										<td>
+											<span fcklang="DlgImgPreview">Preview</span></td>
+									</tr>
+									<tr>
+											<td valign="top">
+											<iframe class="ImagePreviewArea" src="fck_image/fck_image_preview.html" frameborder="0"
+												marginheight="0" marginwidth="0"></iframe>
+										</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span fckLang="EuDlgImgAlt">Short Description</span><br />
+						<input id="txtAlt" style="WIDTH: 100%" type="text"><br />
+					</td>
+				</tr>
+			</table>
+		</div>
+
+
+	</body>
+</html>

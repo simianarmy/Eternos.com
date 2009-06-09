@@ -1,0 +1,47 @@
+<div id="topbar">
+    	<div class="title1">Press</div>
+    </div>
+    <div id="content-container">
+    	<table class="table1">
+        	<tr>
+            	<td class="col1" valign="top">
+                	<%= render :partial => 'left_nav' %>
+
+                </td>
+                <td class="col2" valign="top">&nbsp;</td>
+                <td class="col3" valign="top">
+                	<span class="subtitle1">Company:</span>
+                    <span class="subtitle2">Press</span>
+                    <br /><br />
+                    <div class="textarea3">
+                    	Eternos believes in strong media relationships and is open to speaking with bloggers, traditional media, radio and television media.  Request a copy of <%= mail_to "press@eternos.com?subject=Press Kit Request", "our press kit",  :encode => "hex"  %> today.
+                    </div>
+					<br /><br />
+					<div style="clear:both"></div>
+                    <div class="subtitle3">Influential Blogs</div>
+                    <div class="list1">
+                    	<div class="dot"><%= image_tag("dot.gif") %></div>
+                        <div class="textarea2">Forthcoming</div>
+                    </div>
+    
+					<div style="clear:both"></div>
+                    <div class="subtitle3">Traditional Media</div>
+                    <div class="list1">
+                    	<div class="dot"><%= image_tag("dot.gif") %></div>
+                        <div class="textarea2">Forthcoming</div>
+                    </div>
+ 
+					<div style="clear:both"></div>
+                    <div class="subtitle3">Radio and Television</div>
+                    <div class="list1">
+                    	<div class="dot"><%= image_tag("dot.gif") %></div>
+                        <div class="textarea2">Forthcoming</div>
+                    </div>
+                  
+                    <div style="clear:both"></div>
+                </td>
+            </tr>
+         </table>
+    </div>
+    <div style="clear:both"></div>
+    <img src="images/body-bottom.png"  />

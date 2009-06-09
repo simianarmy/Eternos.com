@@ -1,0 +1,6 @@
+page.visual_effect :highlight, dom_id(@guest)
+page.flash_and_fade
+flash.discard
+page.hide dom_id(@guest) + "_edit_row"
+page.replace_html dom_id(@guest) + "_relationship", @guest.current_circle.name
+page.replace_html dom_id(@guest) + "_name", @guest.name

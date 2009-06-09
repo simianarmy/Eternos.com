@@ -1,0 +1,33 @@
+= custom_error_messages_for :user, :full_messages => true
+
+= f.hidden_field :invitation_token
+%p.input#fb-name
+%p.input#first-name-input
+  First Name:
+  = f.text_field :first_name, :id => "first-name"
+%p.input#last-name-input
+  Last Name:
+  = f.text_field :last_name, :id => "last-name"
+%p.input
+  Email Address:
+  = f.text_field :email, :id => 'email'
+  / %span.fine-print This will serve as your login name, and must be a valid email address
+- unless user.facebook_user?
+  %p.input#password-input
+    Password:
+    = f.password_field :password
+    %span.fine-print Minimum 6 characters long
+  %p.input#password-conf-input
+    Password again:
+    = f.password_field :password_confirmation, :id => 'password-confirm'
+    %span.fine-print Confirm your password by entering it again
+- if user.new_record?
+  %br
+  %p.captcha_box
+    = recaptcha_tags :ssl => true, :style => "text-align: right;"
+  %br
+  %p.input.accept  
+    I accept the 
+    = link_to 'Terms and Conditions', '/about/terms'
+    = check_box_tag :terms_of_service, "1", @checked, {:id => 'terms_of_service'}
+	

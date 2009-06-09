@@ -1,0 +1,178 @@
+/*
+# $Id$
+*/
+
+a img {
+  border: none;
+}
+
+a {
+  color: #0000FF;
+}
+
+.clear {
+  clear: both;
+  height: 0px;
+  overflow: hidden;
+}
+
+/*#container {
+  width: 75%;
+  margin: 0 auto;
+  background-color: #FFF;
+  padding: 20px 40px;
+  border: solid 1px black;
+  margin-top: 20px;
+}
+*/
+#flash_notice, #flash_error {
+  padding: 5px 8px;
+  margin: 10px 0;
+}
+
+#flash_notice {
+  background-color: #CFC;
+  border: solid 1px #6C6;
+}
+
+#flash_error {
+  background-color: #FCC;
+  border: solid 1px #C66;
+}
+
+/* I'm adding this for multiple flash error boxes on one page */
+.custom_error_messages {
+	padding: 5px 8px;
+  margin: 10px 0;
+  background-color: #FCC;
+  border: solid 1px #C66;
+}
+
+.field_error {
+	background-color: #FCC;
+}
+
+.fieldWithErrors {
+  display: inline;
+  border-color: red;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid #CF0000;
+  padding: 0px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: 0px;
+  background-color: #c00;
+  color: #fff;
+}
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 8px;
+}
+#errorExplanation ul {
+  margin: 2px 24px;
+}
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: disc;
+}
+
+#user_bar {
+  float: right;
+  background-color: #DDD;
+  border: solid 1px black;
+  padding: 1px 10px;
+  font-size: 11px;
+}
+.editable_text:hover {
+	background-color: #ffff99;	/* From Scriptaculous controls.js */
+}
+#upload_links {
+  background-color: #E0FFFF;
+  border: 1px;
+  padding: 1px 10px;
+  word-spacing: 5px;
+}
+
+.hidden {
+	display:none;
+}
+
+.hint {
+  color: #aaa;
+  font-style: italic;
+}
+
+.disabled
+{
+	background-color: white;
+	filter:alpha(opacity=50); /* IE */
+	opacity: 0.5; /* Safari, Opera */
+	-moz-opacity:0.50; /* FireFox */
+	z-index: 20;
+	height: 100%;
+	width: 100%;
+	background-repeat:no-repeat;
+	background-position:center;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+input {
+	padding: 5px;
+	margin: 0 0 0 5px;
+	width: 245px;
+	border:1px solid #C7C7C7;
+	color:#5f5f5f;
+	font-size: 16px;
+}
+
+input[type=text] {
+	width: 245px;
+}
+
+input[type=submit] {
+	width: 100px;
+}
+
+#title input[type=text] {
+	width: 400px;
+}
+	
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+	border-color: #02419e;
+	border-style: solid;
+	border-width: 3px;
+	background-color: lightyellow;
+}
+
+.fine-print {
+	width: 255px;
+	text-align: left;
+	margin: 3PX 0 10px 90px;
+	font-style: italic;
+	font-size: 9px;
+	display: block;
+}
+
+div.autocomplete{background-color: #fff; border: 1px solid #999; overflow: auto;} 
+div.autocomplete ul{list-style-type:none; margin:0px; padding:0px;} 
+div.autocomplete ul li.selected { background-color: #ffb;} 
+div.autocomplete ul li{list-style-type:none; display:block; margin:0; padding:2px; cursor:pointer;} 
+
+div.draggable {
+	cursor: move;
+}
+

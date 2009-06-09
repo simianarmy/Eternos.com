@@ -1,0 +1,28 @@
+- javascript :content_authorization
+
+- object = Content.new
+#batch_permissions
+  %label{:for => "Privacy Settings"} Privacy Settings
+  = select_tag  "contents[privacy_settings][authorization]", options_for_select(object.authorization_select_options), :id => "contents_privacy_settings_authorization"
+  %br
+  #auth_select_partial
+    %table
+      %tr
+        %th Circles
+        %th Guests
+      %tr
+        %td
+          - current_user.circles.each do |c|
+            = check_box_tag "contents[privacy_settings][circles][]", c.id, object.authorized_for_group?(c)
+            = c.name
+            %br
+        %td
+          - current_user.loved_ones.each do |g|
+            = check_box_tag "contents[privacy_settings][guests][]", g.id, object.authorized_for_user?(g)
+            = g.full_name
+            %br
+
+  - if object.authorization != ContentAuthorization::AuthPartial
+    = javascript_tag "$('auth_select_partial').hide()"
+  
+  = observe_field "contents_privacy_settings_authorization", :function => "toggle_guest_authorization_choices(value, #{ContentAuthorization::AuthPartial})", :on => :change, :with => "contents[privacy_settings][authorization]"

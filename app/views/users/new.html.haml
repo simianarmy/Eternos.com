@@ -1,0 +1,31 @@
+- title 'Create Account'
+- use_lowpro
+- use_form
+- stylesheet 'application'
+
+%h1#page-header account information
+.yui-g
+  - if current_user and current_user.account.reached_user_limit?
+    %p You have reached the maximum number of users you can have with your account level.  You can either delete some of your users or <a href="/account/plan">upgrade your account</a> to be able to create a new user.
+  - else
+    #share-your-life
+      %h2 begin sharing your life.
+      %p Upload and save the precious moments of your life for future generations
+      %p Keep friends and loved ones involved and up-to-date with your family’s growth
+      %p Share virtually everything: movies, pictures, documents, music, and more
+  
+    %p Please enter account information
+    %br
+    / %span{:style=>"font-size:small"}
+    /  Do you have an OpenID account?  If so, 
+    /  = link_to 'Signup with OpenID', login_path
+  
+    - form_for @user, :html => {:class => 'form_with_terms'} do |f|
+      .yui-u.first
+        = render :partial => 'form', :locals => {:f => f, :user => @user}
+        %br 
+        %br
+        %br
+      
+      = submit_tag 'continue', :value => 'Continue', :id => 'submit_button', :class => "submit continue", :style => "width: 300px;"
+

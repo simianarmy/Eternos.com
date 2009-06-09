@@ -1,0 +1,8 @@
+<% title @rec.type.humanize %>
+
+<%= render :partial => @rec %>
+
+<p>
+  <%= link_to "Destroy", @rec, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", recordings_path %>
+</p>

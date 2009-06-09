@@ -1,0 +1,8 @@
+#category_show
+  %p
+    Category:
+    %span#toggle_category_select.editable_text.toggleable
+      = object.category.nil? ? 'Select one' : object.category.name
+
+#category_select{:style=>"display:none"}
+  = display_category_select(object, :categories => current_user.categories, :ajax => true)

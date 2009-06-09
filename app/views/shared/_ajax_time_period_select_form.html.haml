@@ -1,0 +1,5 @@
+- form_for object, :html => {:class => 'remote_form', :rel => "{busy_id: 'time_period_select'}"} do |f|
+  = render :partial => 'shared/timeline_picker', :locals => {:object => object, :f => f, :period => period }
+  = f.submit "Update", :name => 'time_period_update'
+  = link_to_function "cancel", "toggle_show_select_display('time_period')"
+

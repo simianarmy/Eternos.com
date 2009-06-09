@@ -1,0 +1,5 @@
+Installation:
+
+http://github.com/ezmobius/nanite/tree/master/
+
+Use git clone for amqp gem: git://github.com/dj2/amqp.git

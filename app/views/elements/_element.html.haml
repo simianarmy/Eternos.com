@@ -1,0 +1,11 @@
+%div[element]
+  %p= restful_in_place_editor 'span', element, 'title', :url => story_element_url(story, element), :class => 'message_title'
+  %br
+  %a#toggle_element_settings.toggleable{:href=>edit_story_element_path(element.story, element)} Settings
+  #element_settings{:style=>"display:none;"}
+    = render :partial => 'shared/common_settings', :locals => {:object => element}
+  %br
+  Message:
+  %br
+  = show_wysiwyg_content(element, 'message', :update_url => story_element_url(story, element))
+  

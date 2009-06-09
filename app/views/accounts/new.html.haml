@@ -1,0 +1,39 @@
+- title 'create account'
+- javascript 'CustomFormElements', 'facebook'
+- use_form
+- hide_login_box
+
+%h1#page-header account information
+.yui-g
+  #share-your-life
+    %h2 begin sharing your life.
+    %p Upload and save the precious moments of your life for future generations
+    %p Keep friends and loved ones involved and up-to-date with your family’s growth
+    %p Share virtually everything: movies, pictures, documents, music, and more
+  
+  #create-account-fb-connect
+    = fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :long)
+    %br
+  %br
+    
+  #normal-account-form
+    %p Please enter required account information.
+    /
+      %br
+        %span{:style=>"font-size:small"}
+          Do you have an OpenID account?  If so, 
+          = link_to 'Signup with OpenID', login_path
+     
+    - form_tag(:action => 'create', :class => 'form_with_terms', :id => "sign-up") do
+      = hidden_field_tag 'plan', @plan.name
+      = hidden_field_tag 'user[facebook_id]', @user.facebook_id
+      .yui-u.first
+        %p
+        - if @plan.allow_subdomain
+          = render :partial => 'subdomain_form_fields', :locals => {}
+
+        - fields_for @user, :html => {:id => 'new_user_form'} do |f|
+          = render :partial => 'user_form', :locals => {:f => f, :user => @user}
+      %p
+      %br &nbsp; 
+      = submit_tag 'continue', :value => 'Continue', :class => "submit continue", :style => "width: 300px"

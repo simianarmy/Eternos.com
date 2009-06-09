@@ -1,0 +1,3 @@
+- form_for object, :html => {:class => 'remote_form', :rel => "{busy_id: 'message_permissions'}"} do |f|
+  = render :partial => 'shared/access_permissions_select', :locals => {:f => f, :object => object, :user => current_user}
+

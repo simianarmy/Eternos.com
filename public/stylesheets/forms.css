@@ -1,0 +1,140 @@
+/* $Id$
+ * Forms & input
+ */
+
+p.input {
+	text-align: right;
+	margin: 0 0 10px 0;
+	clear: both;
+}
+
+td.label {
+	float: right;
+	text-align: right;
+}
+
+form p {
+	font-size: 11px;
+}
+
+/* @group Forms */
+
+form#sign-up {
+	
+}
+
+input {
+	padding: 5px;
+	margin: 0 0 0 5px;
+	width: 245px;
+	border:1px solid #C7C7C7;
+	color:#5f5f5f;
+	font-size: 16px;
+}
+
+input#username,
+input#password {
+	padding: 5px 10px;
+	margin: 8px 25px 0 0;
+	font-size: 11px;
+	width: 250px;
+}
+
+input.login {
+	background: url(../images/login-button.png) no-repeat;
+	border: none;
+	color: #fff;
+	font-size: 14px;
+	padding: 3px 0px 4px;
+	width: 90px;
+}
+
+input.submit {
+	background: url(../images/submit-button.jpg) no-repeat;
+	border: none;
+	width: 300px;
+	height: 58px;
+	color: #fff;
+	font-size: 22px;
+}
+
+input.continue {
+	background: url(../images/continue.jpg) no-repeat;
+	float: right;
+	margin-right: 30px;
+	text-align: left;
+	padding: 0 0 5px 20px;
+}
+
+input.sign-up {
+	margin-top: 25px;
+	margin-left: 60px;
+	margin-bottom: 0;
+}
+
+input#security-code {
+	width: 40px;
+}
+
+input#postal-code {
+	width: 110px;
+	margin: 10px 135px 0 5px;
+}
+
+input.verification {
+	margin: 20px 0 0;
+}
+
+input#address {
+	margin-top: 5px;
+}
+
+input#password {
+	padding: 5px;
+	margin: 0 0 0 5px;
+	width: 245px;
+}
+
+input#password-created {
+	margin-top: 8px;
+	margin-left: 0;
+}
+
+p.accept input {
+	width: 10px;
+	margin-right: 117px;
+}
+
+input.level {
+	width: 12px;
+	margin-right: 15px;
+}
+
+input#basic {
+	margin-right: 12px;
+}
+
+@/* embeds the openid image in the text field */
+input#openid_url {
+   background: url(http://openid.net/login-bg.gif) no-repeat;
+   background-color: #fff;
+   background-position: 0 50%;
+   color: #000;
+   padding-left: 18px;
+}
+
+span.select {
+	position: absolute;
+	margin: 0 0px 0 4px;
+	padding: 0 20px 0 5px;
+	border: 1px solid #c7c7c7;
+	width: 230px; /* With the padding included, the width is 260 pixels: the actual width of the image. */	
+	height: 21px;
+	text-align: left;
+	font: 12px/21px arial,sans-serif;
+	background:  url(../images/drop-down-arrow.jpg) no-repeat right;
+	overflow: hidden;
+}
+
+
+/* @end */

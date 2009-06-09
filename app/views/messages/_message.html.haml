@@ -1,0 +1,10 @@
+%div[message]
+  %p= restful_in_place_editor 'span', message, 'title', :class => 'message_title'
+  %a#toggle_message_settings.toggleable{:href=>edit_message_path(message)} Settings
+  #message_settings{:style=>"display:none;"}
+    = render :partial => 'shared/common_settings', :locals => {:object => message}
+  %br
+  %br
+  = show_wysiwyg_content(message, 'message', :update_url => message_path(message))
+    
+  /= edit_wysiwyg_link(message, 'message', :update_url => message_path(message))

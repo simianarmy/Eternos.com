@@ -1,0 +1,9 @@
+<h1 id="page-header">Account created</h1>
+<div class="yui-g">
+  <p> Thank you for creating an account!</p>  <br />
+  <p> You will automatically logged in</p>
+  <div id="counter"></div>
+  <p>Or <%= link_to "Click here", member_home_path   %> to logged in now</p>
+</div>
+
+<%= javascript_tag "timer.init(0,10,'counter', '#{member_home_path}');" %>

@@ -1,0 +1,25 @@
+- use_prototip
+- use_wysiwyg
+- use_form
+
+= custom_error_messages_for :message
+
+#input_fields
+  %p#title.input
+    = f.text_field :title, :value => @message.title, :class => 'withHint', :defaultValue => 'ENTER A TITLE'
+  %br  
+  = render :partial => 'shared/new_common_settings', :locals => {:f => f, :object => @message, :category => false}
+  %p
+  %br
+  = show_wysiwyg_content(@message, :message, fckeditor_options)
+  %br
+  #gallery
+    = render :partial => 'shared/artifacts_picker', :locals => {:artifacts => @artifacts}
+  /
+    %p.input
+      = f.label "Cover Photo"
+      = f.file_field :photo  
+  %br
+  %p= f.submit :Create
+
+

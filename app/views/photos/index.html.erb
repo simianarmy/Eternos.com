@@ -1,0 +1,10 @@
+<% title "Photos" %>
+<p/>
+<% for photo in @photos %>
+<% div_for(photo) do %>    
+<%= link_to photo.title, photo_url(photo) %> | 
+<%= link_to "Destroy", photo, :confirm => 'Are you sure?', :method => :delete %>
+<% end %>
+<% end %>
+
+<p><%= link_to "New Photo", new_content_path %></p>

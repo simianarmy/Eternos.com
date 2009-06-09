@@ -1,0 +1,29 @@
+# $Id$
+Adding $Id$ property to file:
+	svn propset svn:keywords "Id" myfile.pl
+
+Automatically set Id property to new files:
+	1) modify subversion config file (~/.subversion/config)
+		[miscellany]
+		enable-auto-props = yes 
+		[auto-props]
+		*.pl = svn:keywords=Revision Id
+	
+	2) update existing files
+	find . -type f | grep -v '/\.svn/' | grep -v '/vendor/' | egrep "\.(rb|erb|js|yml|conf|txt|sh)$" > list
+	for FILE in `cat list`
+	do
+	perl -pi -le 'print "# \$Id\$" if $. == 1' $FILE
+	svn propset svn:keywords "Id Revision" $FILE
+	done
+	
+Sed/Perl file line manipulation:
+	sed '1,2d' temp.txt
+	will print all but the first 2 lines, but not affect the original file.
+	perl -pe '$_=""if 1..2' temp.txt
+	will print all but the first 2 lines, but not affect the original file.
+	perl -i -pe '$_=""if 1..2' temp.txt
+	will delete the first 2 lines from the file.
+	If course, all these are opening and closing the file behind the scenes.
+ 
+	sed 's/\# \$Id\$/\/* \$Id$ *\//' 

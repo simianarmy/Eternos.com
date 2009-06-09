@@ -1,0 +1,4 @@
+/* jQuery style */
+
+jQuery('#<%= "#{dom_id(@element)}_scrollable_decorations" %>').html("<%= escape_javascript(render(:partial => 'decorations', :locals => {:element => @element})) %>");
+jQuery('div.scrollable').scrollable().reload().end();

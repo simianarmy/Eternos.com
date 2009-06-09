@@ -1,0 +1,11 @@
+.accordion-toggle.message-list-item-header[list_item]
+  = list_item.title
+  -
+  %span.publish_date= time_period_or(list_item, :updated_at)
+  |
+  = link_to 'Edit', message_path(list_item)
+.accordion-content[list_item]
+  %br
+  = show_wysiwyg_content(list_item, 'message', :update_url => message_path(list_item))
+
+  

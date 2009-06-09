@@ -1,0 +1,11 @@
+#story_photo_thumbnail
+  #thumb_and_toggle_link
+    = render :partial => 'stories/photo_thumb', :locals => {:story => story}
+  #photo_file_form{:style=>"display: none"}
+    - form_for story, :url => formatted_story_path(story, :js), :html => {:target => "upload_frame", :multipart => true} do |f|
+      = f.file_field :photo
+      %br
+      = f.submit story.has_photo? ? 'Update' : 'Add'
+
+  %iframe#upload_frame{:name=>"upload_frame", :style=>"display: none"}
+

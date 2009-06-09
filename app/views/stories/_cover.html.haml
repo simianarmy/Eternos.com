@@ -1,0 +1,19 @@
+%div[cover]
+  #cover[cover]
+    - view_id = "story_view_#{dom_id(cover)}"
+    %h3.story-title= link_to cover.title, polymorphic_path(cover)
+    %span.publish_date= time_period_or(cover, :updated_at)
+    -#%span.story-description
+      -#= truncate(cover.story, :length => 60)
+    %br
+      - if cover.elements.any?
+        %span.fine-print= pluralize(cover.elements.size, 'entry')
+      /= link_to_remote_busy(dom_id(cover), "Add an entry", :update => view_id, :url => new_story_element_path(cover), :method => :get
+    %p
+      = link_to_remote_busy(dom_id(cover), 'Edit', :update => view_id, :url => story_path(cover), :method => :get)
+      |
+      = link_to 'Preview', '#'
+  
+  %div{:id => view_id}
+  %br
+

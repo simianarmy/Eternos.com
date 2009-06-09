@@ -1,0 +1,16 @@
+# Simple ajax updates use ajax_update, otherwise use rjs file
+if params[:editorId] and [:title].include?(params[:message].keys.first.to_sym) 
+  render_with :in_place_editor do |editor|
+    editor.display_update(@message.send(params[:message].keys.first), params[:domId])
+  end
+else
+  page.flash_and_fade
+  # if params[:message][:message]
+  #     render_with :wysiwyg_editor do |wysiwyg|
+  #       wysiwyg.update_content('message', @message, :update_url => message_path(@message))
+  #     end
+  if @common_settings
+    page.update_common_settings(@message, @common_settings)
+  end
+  flash.discard
+end

@@ -1,0 +1,9 @@
+/ Refresh decorations on add media popup close
+:javascript
+  // This doesn't work - but it should:
+  //Event.observe($('add_media'), ...
+  
+  Event.observe(document, 'lightview:hidden', function(evt) {
+    #{remote_function({:url => build_decoration_path(parent), :method => :get}.merge(ajax_busy_options('decorations')))};
+  });
+  

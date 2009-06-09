@@ -1,0 +1,15 @@
+- use_lightview
+
+= fckeditor_textarea(object, fieldname, fckeditor_options.merge(:ajax => true, :value => options[:value], :defaultValue => '', :class => 'withHint'))
+%br
+#wysiwyg_preview{:style => "display:none;"}
+= link_to 'Preview', options[:preview_url], :class => 'wysiwyg_preview'
+|
+Link to media selector here?
+-#gallery
+  -#= render :partial => 'shared/artifacts_picker', :locals => {:artifacts => @artifacts}
+
+-#= link_to_function 'Cancel', "$('#{wysiwyg_editor_domid(object)}').hide(); $('#{wysiwyg_content_domid(object)}').show(); $('edit_wysiwyg').show();"
+/ |
+- unless object.new_record?
+  = link_to_remote 'Save', {:url => options[:update_url], :method => :put, :before => fckeditor_before_js(object, fieldname), :with => "'#{object.to_str}[#{fieldname}]='+encodeURIComponent($('#{fckeditor_element_id(object, fieldname)}_hidden').value)"}.merge(ajax_busy_options(dom_id(object, "wysiwyg_editor")))

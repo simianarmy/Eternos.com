@@ -1,0 +1,13 @@
+- title 'user settings'
+- header 'edit your login & personal info here'
+
+= custom_error_messages_for :account
+- form_for :account, :url => { :action => 'update' }, :html => { :method => :put } do |f|
+  %p
+  - if @account.plan.allow_subdomain
+    = render :partial => 'subdomain_form_fields', :locals => {}
+
+  - f.fields_for :user, @user do |f|
+    = render :partial => 'users/form', :locals => {:f => f, :user => @user}
+
+  = submit_or_cancel account_path, 'Update'

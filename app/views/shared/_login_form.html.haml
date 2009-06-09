@@ -1,0 +1,19 @@
+- use_form
+%br
+%p= authlogic_facebook_login_button
+- form_for_using_ssl user_session do |f|
+  %br
+  %p.account-verification
+    Login: 
+    %br
+    = f.text_field :login, {:id => "username", :class => 'withHint', :defaultValue => 'email address'}
+  %p.account-verification
+    Password: 
+    %br
+    = f.password_field :password, {:id => "password-created"}
+  = submit_tag 'submit', :value => 'login', :class => "login verification", :disable_with => "Signing in&hellip;"
+  %p
+    = check_box_tag 'user_session[remember_me]'
+    Remember me
+%br
+%p= link_to 'forgot login?', new_password_reset_path

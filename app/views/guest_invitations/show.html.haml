@@ -1,0 +1,7 @@
+- use_form
+- title 'Guest Invitation Info'
+%p
+%br
+- form_for @guest_invitation, :action => :update, :html => {:id => dom_id(@guest_invitation, "edit") + "_form", :class => 'remote_form', :rel => "{busy_id: '#{@item_edit_id}_form'}"} do |f|
+  = render :partial => 'guest_invitations/form', :locals => {:f => f, :guest_invitation => @guest_invitation, :id => dom_id(@guest_invitation, "edit")}
+  = submit_tag 'Save'

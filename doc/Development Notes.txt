@@ -1,0 +1,185 @@
+Architecture:
+
+Adding Restful Authentication with Email activation & OpenID
+	Problems testing email activation (no proper functional tests).
+	Using action_mailer_optional_tls plugin in order to use Gmail's SMTP servers.
+	Problems getting OpenID to work...applying upgrades from:
+		http://leancode.com/2007/04/02/open_id_authentication-part-1/
+
+Database Server on Amazon EC2? 
+	Running MySQL on EC2 + EBS for storage:
+	http://developer.amazonwebservices.com/connect/entry.jspa?externalID=1663&categoryID=100
+
+[Cloud] Storage/Backup: 
+	Amazon S3
+	AWS+S3 Integration: http://clarkware.com/cgi/blosxom/2007/02/01#RubyS3Library
+	Coming up with integrated CDN soon!
+	Nirvanix: http://www.nirvanix.com/company.aspx
+	CloudSwitch
+	
+Search/Indexing: 
+  Sphinx - High-perf, Craigslist uses
+    thinking_sphinx rails plugin: thinking_sphinx
+    
+General:
+
+File DL & uploads:
+  http://www.therailsway.com/2009/2/22/file-downloads-done-right
+  http://www.therailsway.com/2009/4/23/uploading-files
+  
+Merchant/Payment Processing:
+	http://railskits.com/saas/ - purchased
+	active_merchant plugin
+
+Performance Monitoring / Profiling:
+	NewRelic RPM
+	
+Error Handling:
+	Exception Notifications: http://railscasts.com/episodes/104-exception-notifications
+	Hosted Error Reports: http://www.hoptoadapp.com/welcome
+
+Generating RSS Feed: http://railscasts.com/episodes/87-generating-rss-feeds
+
+Blogging Plugin: http://github.com/vigetlabs/bloget/tree/master
+Threaded Comments: http://github.com/jackdempsey/acts_as_commentable/tree/master
+
+Video Streaming/Playback:
+	http + S3 as streaming server
+	Adobe streaming media server
+
+Transcoding Video:
+	http://devblog.rorcraft.com/2007/8/18/how-to-compile-ffmpeg-on-mac-and-linux
+	transcoding to Flash: FFMPEG open source library
+		sudo port install ffmpeg +lame +libogg +vorbis +faac +faad +xvid +x264 +a52
+	Rvideo gem wraps ffmpeg - Install instructions @ http://rvideo.rubyforge.org/
+	
+	www.zencoder.tv - Zencoder is a commercial video transcoder built by Slantwise Design. Zencoder uses RVideo for its video processing, but adds file queuing, distributed transcoding, a web-based transcoder dashboard, and more.
+	www.encoding.com
+	
+ACL/Role Management: 
+	http://code.google.com/p/rolerequirement/
+	http://metautonomo.us/2008/09/30/easy-role-based-authorization/
+
+Username as subdomain: 
+	Account Location plugin (http://github.com/rails/account_location/tree/master)
+	
+ActsAsArchivable: allows easy searching by date
+
+ActsAsScheduled: allows scheduling objects for lookup
+		
+Security:
+
+Encrypting Files + Serving with ngynx:
+	http://www.onehub.com/past/2008/4/14/encrypting_your_files_with_rails/
+	
+SSL:
+	http://www.ricroberts.com/articles/2008/09/25/setting-up-ssl-for-rails-and-testing-it-locally
+	Creating self-signed SSL certs for testing: http://httpd.apache.org/docs/2.0/ssl/ssl_faq.html#selfcert
+			
+UI:
+
+Flash uploader: http://digitarald.de/project/fancyupload/
+  Issues related to Rails 2.2 & SWFUploader: http://jimneath.org/2008/05/15/swfupload-paperclip-and-ruby-on-rails/
+
+Lightbox/Tooltips: http://www.nickstakenburg.com/projects/lightview/
+
+Infinite Scrolling: http://railscasts.com/episodes/114-endless-page
+
+Page Elements Scrolling: http://flowplayer.org/demos/scrollable.htm
+
+Accordion: http://www.stickmanlabs.com/accordion/
+
+Time Picker: http://www.nogray.com/time_picker.php
+
+Advanced Searching: http://railscasts.com/episodes/111-advanced-search-form
+
+Drag & Drop JS: http://www.hunlock.com/examples/dragdrop.html
+
+Crazy html5 video demo: http://standblog.org/blog/post/2009/04/15/Making-video-a-first-class-citizen-of-the-Web
+
+Media Player in JS:
+  http://paulbakaus.com/2009/05/07/meet-the-uberplayer/
+  
+Audio Player:
+	Like jango.com's
+	Javascript: SoundManager2
+	http://msteigerwalt.com/widgets/sounds/v1.0/
+	Playlist format: http://en.wikipedia.org/wiki/PLS_(file_format)
+	XSPF Flash Playlist player: http://musicplayer.sourceforge.net/
+	Flowplayer with cover art: http://community.flowplayer.org/demo/mp3
+	
+WYSIWYG Text Editors:
+	http://agilewebdevelopment.com/plugins/easy_fckeditor
+	http://agilewebdevelopment.com/plugins/yui_rich_text_editor
+	MCE plugin?
+  FCKEditor drag & drop: http://www.fckeditor.net/forums/viewtopic.php?f=5&t=6155
+  Image Browser for FCKEditor: http://drupal.org/project/imagebrowser
+	
+Canvas with Drag & Drop: http://www.ernestdelgado.com/public-tests/canvasphoto/
+
+Full-screen text editor: http://www.hogbaysoftware.com/products/writeroom
+
+Flash Players:
+	Flowplayer
+	Custom (Eric Fiscus)
+	
+Cameraphone/webcam Integration:
+	http://ajaxian.com/archives/input-camera
+	Red5 Recorder App: http://swik.net/Peter-Thomas/Incremental+Operations/How+to+record+RTMP+flash+video+streams+using+Red5/b4fey
+		http://softmarket.ro/freelance-jobs/auction_details/471872/flash-webcam-capture-application.html
+	Flash Recorder 2.3
+		http://www.vista-files.org/programs/ovation-it-consulting/flash-video-recorder.html
+	List of Webcam Recorder Sites
+	http://www.webtvwire.com/online-video-recorders-how-to-record-upload-webcam-videos-to-the-internet/	
+	Webcam recording as service
+		http://www.seetheface.com/siteclip/
+	http://www.avchat.net/avchat-video-recorder.php
+	
+Story/Blog Inteface:
+	Backpack "Pages" functionality: http://www.backpackit.com/demos/create_page/
+	
+Photo Gallery: 
+	http://smoothgallery.jondesign.net/getting-started/
+	http://www.nickstakenburg.com/projects/lightview/
+	CoolIris.com Flash/Browser plugin
+
+Top Photo-Sharing Sites to allow importing from:
+	Flickr
+	Facebook
+	SmugMug
+	Picasa
+	Photobucket
+	
+Emailed content support: 
+  MMS2R
+
+Customer Support Chat App: https://www.intellichat.com/?c=518
+Animated actors for support: www.livefaceonweb.com
+
+Address Form Javascript w/ Google Maps:
+	http://addresschooser.mapeed.com/doc/
+	
+Flash Video Preview? http://eskimotube.com/show.php?search=shy%20love
+	For Timeline, Videos Preview 
+
+Useful Ajax Examples:
+	http://feeds.feedburner.com/~r/ajaxian/~3/441848210/groups-of-50-ajax-examples
+Tagging: http://agilewebdevelopment.com/plugins/acts_as_taggable_on_steroids
+	per-user tagging (not sure if needed): http://www.slashdotdash.net/articles/2006/04/29/acts_as_taggable-per-user-tagging
+
+Scrolling Elements w/ Ajax:
+	http://feeds.feedburner.com/~r/ajaxian/~3/442067279/a-better-scrollable-component-using-jquery
+		
+Social Network content backup:
+  http://quiteuseful.co.uk/post/77002079/social-network-backups
+  
+Needed:
+	Fancy Photo Album
+	Internationalization: Now built into Rails 2.2
+
+Legal Stuff:
+  Collecting signatures online: https://rightsignature.com/
+  
+Misc.
+ http://www.fofronline.com/experiments/parallax/#experiment
+	

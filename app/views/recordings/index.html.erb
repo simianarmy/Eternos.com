@@ -1,0 +1,11 @@
+<% title "Recordings" %>
+<p/>
+<% for rec in @contents %>
+<% div_for(rec) do %>    
+<%= link_to rec.title, polymorphic_url(rec) %> | 
+<%= link_to "Destroy", rec, :confirm => 'Are you sure?', :method => :delete %>
+<% end %>
+<% end %>
+
+
+<p><%= link_to "New Recording", new_recording_path %></p>

@@ -1,0 +1,18 @@
+EC2 deployment
+
+Free:
+
+Rubber:
+Setting up an EC2 node using a Capistrano-like Ruby tool (Rubber)
+  http://wiki.github.com/wr0ngway/rubber
+
+EC2 on Rails
+Elastic Rails
+PoolParty
+scalr
+
+Commercial:
+RightScale
+Heroku
+EngineYard
+Morph Labs

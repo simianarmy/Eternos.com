@@ -1,0 +1,16 @@
+- title 'guest details'
+%br
+%p= @guest.full_name
+%p= @guest.email
+%p
+  %strong Relationship:
+  %br
+  = @guest.current_circle.name
+%p
+  %strong Phone Numbers:
+  %br
+  - @guest.address_book.phone_numbers.each do |pn|
+    = pn.to_s
+    %br
+%p
+  = link_to "Destroy", @guest, :confirm => 'Are you sure?', :method => :delete

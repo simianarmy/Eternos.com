@@ -1,0 +1,6 @@
+- form_for object, :html => {:class => 'remote_form', :rel => "{busy_id: 'category_select'}"} do |f|
+  = render :partial => 'shared/category_select_form', :object => object, :locals => {:f => f, :categories => categories}
+  = f.submit "Update", :name => 'category_update'
+  = link_to "cancel", '#', :class => 'toggleable', :id => "toggle_category_select"
+
+

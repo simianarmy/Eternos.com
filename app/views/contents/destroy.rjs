@@ -1,0 +1,4 @@
+page.flash_and_fade
+page.remove_item dom_id(@content)
+page.remove_item dom_id(@content) + "_row"
+flash.discard

@@ -1,0 +1,30 @@
+- use_tabs
+- use_busy
+- use_lightview
+- use_lowpro
+- title 'Select your media from one of the tabbed options'
+
+- url_opts = {:ref_type => @parent.class.to_s, :ref_id => @parent, :dialog => '1'}
+%p
+%br
+#new_decoration
+  %ul.tabselector#tabcontrol1
+    %li.tab-unselected#upload_content_tab
+      = link_to 'Upload content', new_content_path(url_opts), :class => 'popup_get', :id => "new_decoration_content", :rel => "{fullscreen: true}"
+    %li.tab-unselected#browse_library_tab= link_to_ajax_tab 'browse_library', gallery_contents_path(url_opts)
+  
+  %ul.panes#panecontrol1
+    %li.pane-unselected#upload_content_pane
+    %li.pane-unselected#browse_library_pane
+
+%h3= link_to 'Finished', '#', :onclick => "parent.Lightview.hide();"
+/ Called after new content uploaded
+:javascript
+  //Event.observe(document, 'lightview:hidden', function(event) {
+    // Hide parent lightview - simulate close button click
+    //parent.Lightview.hide();
+  //});
+
+    
+
+  

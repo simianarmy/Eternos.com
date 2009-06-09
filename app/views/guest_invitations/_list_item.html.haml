@@ -1,0 +1,23 @@
+- @domId = dom_id(list_item)
+- @item_edit_id = @domId + "_edit_row"
+%tr{:id => @domId}
+  %td
+    %span.tooltip-target{:id => @domId + "_name", :rel => "{#{default_prototip_options}, fixed: true, viewport: true}"}
+      = list_item.name
+    .tooltip
+      = render :partial => 'guest_invitations/tooltips/guest_info', :locals => {:guest => list_item}
+  %td
+    %span{:id => @domId + "_relationship"}= invitation_status_text(list_item)
+  %td
+    %div{:style=>"width: 176px;"}
+      = link_to image_tag('editbtn.gif', :class => 'alignleft toggleable', :id => "toggle_#{@item_edit_id}"), guest_invitation_path(list_item), :id => @domId + "_edit"
+      = link_to image_tag('deletebtn.gif', :class => 'remote_delete alignleft'), guest_invitation_path(list_item), :id => @domId + "_delete"
+      %br.clearboth
+      
+%tr.hidden{:id => @item_edit_id}
+  %td{:colspan=>"3"}
+    %div{:id => @item_edit_id + "_form"}
+      - form_for list_item, :action => :update, :html => {:id => @item_edit_id + "_form", :class => 'remote_form', :rel => "{busy_id: '#{@item_edit_id}_form'}"} do |f|
+        = render :partial => 'guest_invitations/form', :locals => {:f => f, :guest_invitation => list_item, :id => @item_edit_id}
+        = submit_tag 'Save' 
+        = link_to 'Finished', '#', :id => "toggle_#{@item_edit_id}", :class => "toggleable"

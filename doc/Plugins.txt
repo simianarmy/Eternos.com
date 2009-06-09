@@ -1,0 +1,51 @@
+# $Id$
+Managed with Piston 1.9+:
+
+restful_authentication
+
+Unmanaged:
+
+action_mailer_optional_tls
+acts_as_state_machine
+javascripter
+nifty-generators
+open_id_authentication
+attachment_fu
+rspec
+rspec-rails
+acts_as_taggable_on_steroids
+in_place_editing
+exception_notification
+app_config
+ssl_requirement - whole site should be behind ssl?
+active_merchant
+has_addresses
+acts_as_enumeration
+plugins_plus (required by has_addresses)
+validates_email_format_of
+plugin_test_helper
+lucifer
+foreign_key_migrations
+ignore_nil
+acts_as_list
+workling
+spawn
+after_commit
+#easy-fckeditor
+responds_to_parent
+render_with
+acts_as_restricted
+acts_as_commentable
+render_with
+presentation_object
+role_requirement
+scope_out
+xss_terminate
+active_merchant
+acts_as_paranoid (fucking things up?)
+acts_as_archivable
+acts_as_soft_deletable
+fckeditor - requires patch: http://dev.fckeditor.net/ticket/1633
+
+
+

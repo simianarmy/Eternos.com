@@ -1,0 +1,63 @@
+AMQP
+
+Message Queue Protocol for the backup jobs
+
+Why not SQS / memcached?  
+Better performance, handles higher concurrent loads, written for "Enterprise" apps like financial industry transactions.
+
+RabbitMQ (Erlang) is implementation of AMQP
+about 1.2 million messages/sec on modest hardware
+
+RabbitMQ + Ruby Links
+http://www.rubyinside.com/rabbitmq-a-fast-reliable-queuing-option-for-rubyists-1681.html
+http://everburning.com/news/tag/rabbitmq/
+http://hopper.squarespace.com/blog/2008/7/22/simple-amqp-library-for-ruby.html
+http://weblog.asceth.com/2009/02/13/ruby-amqp-rabbitmq-for-data-processing-win.html
+http://kallistec.com/2009/05/15/basic-topic-publishing-with-amqp/
+
+Installation:
+1) Install Erlang
+2) Download rabbitmq source
+3) Move unpacked source to erlang lib dir
+4) run: rabbitmq-server from erlang dir
+
+sudo sbin/rabbitmqctl add_vhost /eternos
+sudo sbin/rabbitmqctl add_user backupd b4ckUrlIF3
+sudo sbin/rabbitmqctl add_user bkupworker passpass 
+sudo sbin/rabbitmqctl map_user_vhost backupd /eternos
+sudo sbin/rabbitmqctl map_user_vhost bkupworker /eternos
+
+
+The Ruby AMQP bindings are written using the EventMachine framework
+Install:
+git clone git://github.com/dj2/amqp.git
+cd amqp
+rake gem
+gem install amqp-NNN.gem
+
+---
+
+From "Messaging and Ruby" - The Big Picture
+http://www.opensourcery.co.za/2008/07/07/messaging-and-ruby-part-1-the-big-picture/
+
+Up until now I’ve used some insane combinations of Distributed Ruby, SQS, “Roll your own ActiveRecord queue”, REST and who even knows what else to achieve some levels of ’scalability’ and ‘asynchronous processing’.
+...
+However, this roll-your-own messaging systems are not scalable or reliable. You need the wisdom of crowds at your disposal. You need to draw on the knowledge of guys who’ve built systems for Fortune 500’s, built systems for telco’s, built systems for financial markets, built systems for medical care, built systems for aviation, etc.
+---
+
+Possible usage:
+
+= Publisher =
+
+1. Backup job accepted
+2. Prepare "work": (required content backup processes) (JSON) and push into AMQP durable exchange
+3. Listen on another durable queue for feedback
+4. React to feedback: update backup dates & completion stats
+5. Rinse and repeat
+
+= Consumer =
+
+1. Subscribe to a message queue
+2. Receive "work" (JSON)
+3. Process instructions
+4. Send feedback to publisher

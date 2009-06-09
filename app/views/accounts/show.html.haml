@@ -1,0 +1,28 @@
+- title 'account settings'
+
+%p{:style=>"padding-top:1em"}
+  %p
+    %strong Member since:
+    = @account.created_at.to_s(:long)
+    %br
+  %p
+    %strong Current subscription plan:
+    = @plan.name
+    %br
+  - unless @plan.free?
+    %p
+      %strong Next bill date: 
+      = @subscription.next_renewal_at.to_s(:long_day)
+      on 
+      = @subscription.card_number
+      = link_to 'change card', '#' #edit_credit_card_account_path
+  %p
+    %strong Space used: 
+    = number_to_human_size current_user.contents.map(&:size).sum
+  %br
+
+%ul
+  %li= link_to('login info', edit_account_url)
+  %li= link_to('change plan', plan_account_url)
+  %li= link_to('billing info', billing_account_url)
+

@@ -1,0 +1,21 @@
+- title "Blog Entry"
+- use_lightview
+- use_lowpro
+- use_busy
+- use_wysiwyg
+- stylesheet 'screen'
+
+
+.story_title.alignright
+  %h3== story: #{link_to @story.title, story_path(@story)}
+
+.clearboth
+%br
+= render :partial => @element, :locals => {:story => @story}
+= view_comments_link(@element)
+%p
+%br
+= render :partial => 'decorations/list', :locals => {:parent => @element}
+%p
+%br
+= link_to "Destroy", story_element_path(@story, @element), :method => :delete, :class => 'delete_link'

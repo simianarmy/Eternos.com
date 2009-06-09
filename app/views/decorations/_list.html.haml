@@ -1,0 +1,10 @@
+- use_scrollable
+
+#decorations= render :partial => 'decorations/decorations', :locals => {:parent => parent, :decorations => parent.decorations}
+/ end decorations
+#add_decoration_media
+  = link_to 'Add Media', build_decoration_path(parent, :action => :new, :dialog=>1), :class => 'popup_get tooltip-target', :id => 'add_media_link', :rel => "{fullscreen: true}"
+  .tooltip{:style=>"display:none;"}
+    Add pictures, documents or other files to support your entry.
+
+= render :partial => 'decorations/after_create', :locals => {:parent => parent}

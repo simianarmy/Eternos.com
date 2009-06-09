@@ -1,0 +1,9 @@
+<% div_for content do %>
+
+<%=	link_to content.title, polymorphic_path(content) %> |
+      <%= link_to_remote "Delete",
+		:url => content_path(content),
+		:confirm => "Are you sure?",
+		:method => :delete %>
+<% end %>
+<br/>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+first_kiss:
+  member: member
+  title: first kiss
+  message: <b>Big Dog</b>
+  
+best_lay:
+  member: member
+  title: big sex
+  message: ruv you rong time

@@ -1,0 +1,15 @@
+== DESCRIPTION:
+
+more to come...
+
+== RUNNINGS THE TESTS
+
+To run the tests this needs to be installed as a plugin. The Shoulda 
+plugin/rubygem and the hardmock library also need to be installed.
+
+gem install Shoulda
+gem install hardmock
+
+== LICENSE:
+
+See MIT-LICENSE

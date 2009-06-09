@@ -1,0 +1,26 @@
+- use_tabs
+- stylesheet 'forms'
+- title_icon image_tag 'people.png', :class => 'alignleft'
+- title 'your profile'
+
+.alignleft
+.sub_menu.alignright
+  %ul.tabselector#tabcontrol1
+    %li.tab-selected#general_tab= link_to_tab 'general'
+    %li.tab-unselected#personal_tab= link_to_tab 'personal'
+    %li.tab-unselected#careers_tab= link_to_tab 'careers'
+    %li.tab-unselected#education_tab= link_to_tab 'education'
+.clearboth
+
+.form_field
+  = custom_error_messages_for :profile
+  - error_handling_form_for(@profile.profile, :url => {:action => 'update'}) do |f|
+    %ul.panes#panecontrol1
+      %li.pane-selected#general_pane= render :partial => 'general'
+      %li.pane-unselected#personal_pane= render :partial => 'personal'
+      %li.pane-unselected#careers_pane= render :partial => 'careers'
+      %li.pane-unselected#education_pane= render :partial => 'education'
+    %p.textright
+      = image_submit_tag 'saveinfobtn.gif'
+
+

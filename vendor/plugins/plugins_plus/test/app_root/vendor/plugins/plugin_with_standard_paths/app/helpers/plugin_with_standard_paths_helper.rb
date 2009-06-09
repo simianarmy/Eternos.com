@@ -1,0 +1,2 @@
+module PluginWithStandardPathsHelper
+end

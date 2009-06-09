@@ -1,0 +1,35 @@
+<% title "Documents" %>
+
+<table>
+  <tr>
+    <th>Size</th>
+    <th>Type</th>
+    <th>Title</th>
+    <th>Filename</th>
+    <th>Thumbnail</th>
+    <th>Bitrate</th>
+    <th>Parent</th>
+    <th>Width</th>
+    <th>Height</th>
+    <th>Content Type</th>
+  </tr>
+  <% for document in @documents %>
+    <tr>
+      <td><%=h document.size %></td>
+      <td><%=h document.type %></td>
+      <td><%=h document.title %></td>
+      <td><%=h document.filename %></td>
+      <td><%=h document.thumbnail %></td>
+      <td><%=h document.bitrate %></td>
+      <td><%=h document.parent_id %></td>
+      <td><%=h document.width %></td>
+      <td><%=h document.height %></td>
+      <td><%=h document.content_type %></td>
+      <td><%= link_to "Show", document %></td>
+      <td><%= link_to "Edit", edit_document_path(document) %></td>
+      <td><%= link_to "Destroy", document, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Document", new_document_path %></p>

@@ -1,0 +1,8 @@
+Email:
+  Gmail IMAP:
+    Python app: http://www.gmail-backup.com/
+    http://www.intelliadmin.com/blog/index.php/2009/02/backup-your-gmail-account/
+    
+Twitter:
+  Use Ruby HTTPClient library instead of net/http
+  http://dev.ctor.org/http-access2

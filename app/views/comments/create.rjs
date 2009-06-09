@@ -1,0 +1,7 @@
+page.insert_html :bottom, :comments_list, :partial => 'comment', :object => @comment
+page.visual_effect :highlight, dom_id(@comment)
+page.replace_html :toggle_comments, "Comments (#{@comment.commentable.comments.size})"
+page.replace_html :comments_count, pluralize(@comment.commentable.comments.size, 'Comment')
+page[:comment_form].reset
+page.flash_and_fade
+flash.discard

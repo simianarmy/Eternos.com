@@ -1,0 +1,19 @@
+Rails + Subversion:
+http://wiki.rubyonrails.com/rails/pages/HowtoUseRailsWithSubversion
+
+http://www.rubyinside.com/19-rails-tricks-most-rails-coders-dont-know-131.html
+
+Project Management Software:
+	mingle: http://studios.thoughtworks.com/mingle-agile-project-management
+	
+Design to html service:
+	www.psd2html
+	
+Flash content mashup builder: sproutbuilder.com
+
+Open Source Flash: http://osflash.org/red5 - Free Streaming Audio/Video Server
+	Possible source for audio/video recorder
+
+Similar idea of site in Rails
+  http://memoryplace.sourceforge.net/doc/
+  Memory Place is a browser based application which utilises a relational database to manage indigenous knowledge.

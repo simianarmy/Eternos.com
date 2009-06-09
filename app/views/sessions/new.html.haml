@@ -1,0 +1,15 @@
+- hide_login_box
+- use_lowpro
+- use_form
+- title "Login"
+
+%h1#page-header Login
+.yui-g
+  #session
+    = show_flash_messages
+    = custom_error_messages_for :user
+    = render :partial => 'shared/login_form'
+    %br
+    %p= link_to 'forgot login?', forgot_password_path
+      
+    

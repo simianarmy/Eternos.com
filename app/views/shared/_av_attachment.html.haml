@@ -1,0 +1,14 @@
+- if not recording.new_record?
+  #recording
+    Attached recording: 
+    - if recording.complete?
+      = link_to_recording(recording) 
+    - else
+      = recording.state
+      = link_to_recording(recording, :title => 'Preview') + "|" unless recording.error?
+    
+    = detach_recording_link(recording, :parent => parent.to_str)
+  = attach_recording_link('Redo', :parent => parent.to_str, :div => :av_recording)
+- else
+  = attach_recording_link('Record your message', :parent => parent.to_str, :div => :av_recording)
+#av_recording

@@ -1,0 +1,13 @@
+- use_flashplayer
+:javascript
+  var FlowplayerSwfUrl = "#{video_player_swf_url}"
+
+#video_title
+  - unless options[:filename] == false
+    %span= object.to_s
+    %br
+%div.video_player{:id=>dom_id(object), :url => "#{object.absolute_url(request)}",  :rel=>"#{options.to_json}"}
+
+- if options[:hidden]
+  :javascript
+    $('#{dom_id(object)}').hide()

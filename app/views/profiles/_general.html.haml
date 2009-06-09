@@ -1,0 +1,42 @@
+- javascript 'facebook'
+
+- if current_user.facebook_user?
+  = link_to_facebook_profile_sync('Test Facebook Profile Sync', 'test_js_cb_func')
+  = javascript_tag "function test_js_cb_func(json) { alert(json); }"
+  %br
+- fields_for @profile.address_book do |ab|
+  = render :partial => 'shared/name_form_fields', :locals => {:f => ab}
+  %br
+  #birthdate
+    = ab.label 'Birth date'
+    = ab.date_select :birthdate, :start_year => 1900
+  %p
+  %br
+  #home_address
+    = render :partial => 'addresses/address', :locals => {:addressable => 'address_book', :location => 'Home', :parent_object => @profile, :address => @profile.home_address}
+  %p
+  #phone_numbers
+    - if not @profile.phone_numbers.empty?
+      = ab.label 'Phone numbers'
+      = render :partial => 'shared/phone_number', :collection => @profile.phone_numbers, :locals => {:owner => 'address_book'}
+      = add_phone_number_link "Add a phone number", 'address_book'
+  %p
+  %br
+  %label Online
+  %table.online
+    %tr
+      %td.label Website
+      %td.input= ab.text_field 'website'
+    %tr
+      %td.label AOL
+      %td.input= ab.text_field 'aol'
+    %tr
+      %td.label ICQ
+      %td.input= ab.text_field 'icq'
+    %tr
+      %td.label MSN
+      %td.input= ab.text_field 'msn'
+    %tr
+      %td.label Skype
+      %td.input= ab.text_field 'skype'
+		

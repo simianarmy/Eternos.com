@@ -1,0 +1,12 @@
+<% title "Chronicle" %>
+
+<p>
+  <strong>Name:</strong>
+  <%=h @chronicle.name %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_chronicle_path(@chronicle) %> |
+  <%= link_to "Destroy", @chronicle, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", chronicles_path %>
+</p>

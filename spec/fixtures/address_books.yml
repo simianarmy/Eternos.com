@@ -1,0 +1,14 @@
+# $Id$
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+member_one:
+  user: member
+  first_name: MyString
+  last_name: MyString
+  birthdate: 2008-10-08
+
+guest_one:
+  user: guest
+  first_name: MyString
+  last_name: MyString
+  birthdate: 2008-10-08

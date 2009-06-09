@@ -1,0 +1,545 @@
+/* @override 
+	http://localhost/~ng/eternos-barns/css/screen.css
+	http://localhost/~anbarns/Eternos/css/screen.css
+*/
+
+/* @group Universal */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	background: url(../images/backgrounds/html-xrepeat.png) repeat-x 0 top;
+}
+
+body {
+	font: medium Arial, Sans-Serif;
+}
+
+/* @group Paragraphs  */
+
+p {
+	font-size: 15px;
+	color: #5f5f5f;
+}
+
+p.small {
+	font-size: 12px;
+	margin: 5px 0;
+}
+
+p.input {
+	text-align: right;
+	margin: 0 0 10px 0;
+	clear: both;
+}
+
+p.input span.fine-print {
+	width: 255px;
+	float: right;
+	text-align: left;
+	margin: 3PX 0 10px 90px;
+	font-style: italic;
+	font-size: 9px;
+	display: block;
+}
+
+form p {
+	font-size: 11px;
+}
+
+p.month,
+p.year {
+	margin-bottom: 15px;
+}
+
+p.confirmation {
+	margin: 0 0 30px 0;
+	width: 720px;
+}
+
+p.account-description {
+	font-size: 11px;
+	font-style: italic;
+	width: 255px;
+	margin-left: 35px;
+	margin-bottom: 15px;
+}
+
+p.account-verification {
+	color: #5f5f5f;
+	font-size: 11px;
+	width: 300px;
+	float: left;
+}
+
+p.loading {
+	font-weight: bold;
+	float: right;
+	margin: 55px 190px 0 0;
+}
+
+/* @end */
+
+/* @group Links */
+
+a {
+	text-decoration: none;
+	color: #02419e;
+}
+
+a.get-started {
+	float: right;
+	margin: 25px 30px 0 0;
+}
+
+a#security-help {
+	margin: 0 130px 0 10px;
+}
+
+a.button {
+	float: right;
+	margin: 25px 30px 0 0;
+}
+
+
+
+/* @end */
+
+/* @group Headers */
+
+h2 {
+	color: #02419e;
+	font: 35px Arial, Sans-Serif;
+}
+
+h3 {
+	color: #02419e;
+	font-size: 18px;
+	margin: 0 0 10px 0;
+}
+
+h3.welcome {
+	margin: 0 0 25px 0;
+}
+
+h3.account-type {
+	margin-bottom: 0;
+}
+
+h3.account-type span {
+	color: #5f5f5f;
+	font-size: 13px;
+	position: relative;
+}
+
+/* @end */
+
+/* @group Images */
+
+img {
+	border: none;
+}
+
+img#credit-cards {
+	float: right;
+	margin: 0 25px 0 0;
+}
+
+img#loading-graphic {
+	margin: 30px 30px 60px 80px;
+}
+
+/* @end */
+
+/* @group Forms */
+
+form#sign-up {
+	
+}
+
+input {
+	padding: 5px;
+	margin: 0 0 0 5px;
+	width: 245px;
+	color: #c7c7c7;
+	border: 1px solid #c7c7c7;
+	font-size: 16px;
+}
+
+input#username,
+input#password {
+	padding: 5px 10px;
+	margin: 8px 25px 0 0;
+	font-size: 11px;
+	width: 250px;
+}
+
+input.login {
+	background: url(../images/login-button.png) no-repeat;
+	border: none;
+	color: #fff;
+	font-size: 14px;
+	padding: 3px 0px 4px;
+	width: 90px;
+}
+
+input.submit {
+	background: url(../images/submit-button.jpg) no-repeat;
+	border: none;
+	width: 200px;
+	height: 58px;
+	color: #fff;
+	font-size: 22px;
+}
+
+input.continue {
+	background: url(../images/continue.jpg) no-repeat;
+	float: right;
+	margin-right: 30px;
+	text-align: left;
+	padding: 0 0 5px 20px;
+	width: 300px;
+	height:53px;
+}
+
+input.continue-new {
+	background: url(../images/continue.jpg) no-repeat;
+	float: right;
+	margin-right: 30px;
+	text-align: left;
+}
+
+
+input.sign-up {
+	margin-top: 20px;
+	margin-left: 60px;
+	margin-bottom: 0;
+}
+
+input#security-code {
+	width: 40px;
+}
+
+input#postal-code {
+	width: 110px;
+	margin: 10px 135px 0 5px;
+}
+
+input.verification {
+	margin: 20px 0 0;
+}
+
+input#address {
+	margin-top: 5px;
+}
+
+input#password {
+	padding: 5px;
+	margin: 0 0 0 5px;
+	width: 245px;
+}
+
+input#password-created {
+	margin-top: 8px;
+	margin-left: 0;
+}
+
+p.accept input {
+	width: 10px;
+	margin-right: 117px;	
+}
+
+input.level {
+	width: 12px;
+	margin-right: 15px;
+}
+
+input#basic {
+	margin-right: 12px;
+}
+
+span.select {
+	position: absolute;
+	margin: 0 0px 0 4px;
+	padding: 0 20px 0 5px;
+	border: 1px solid #c7c7c7;
+	width: 230px; /* With the padding included, the width is 260 pixels: the actual width of the image. */	
+	height: 21px;
+	text-align: left;
+	font: 12px/21px arial,sans-serif;
+	background:  url(../images/drop-down-arrow.jpg) no-repeat right;
+	overflow: hidden;
+}
+
+
+/* @end */
+
+/* @group Table */
+
+table.plans-table {
+	width: 355px;
+	height: 220px;
+	margin-bottom: 20px;
+}
+
+table.plans-table th {
+	text-align: center;
+	border: 1px solid#fff;
+}
+
+table.plans-table th img {
+	margin-right: 5px;
+}
+
+table th.gold {
+	background: #dbf1fa url(../images/gold-table-top.jpg) no-repeat;
+	width: 84px;
+	height: 25px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666;
+}
+
+table th.silver {
+	background: #f0f5fe url(../images/silver-table-top.jpg) no-repeat;
+	width: 83px;
+	height: 25px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666;
+}
+
+table th.basic {
+	background: #f5fbfd url(../images/basic-table-top.jpg) no-repeat;
+	height: 25px;
+	width: 83px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #666;
+}
+
+table.plans-table td {
+	text-align: center;
+	border: 1px solid #fff;
+	height: 4px;
+}
+
+
+
+table td.gold {
+	background-color: #dbf1fa;
+	font-size: 12px;
+}
+
+table td.last-gold {
+	background: #dbf1fa url(../images/gold-table-bottom.jpg) no-repeat bottom;
+}
+
+table td.silver {
+	background-color: #f0f5fe;
+	font-size: 12px;
+}
+
+table td.last-silver {
+	background: #f0f5fe url(../images/silver-table-bottom.jpg) no-repeat bottom;
+}
+
+table td.basic {
+	background-color: #f5fbfd;
+	font-size: 12px;
+
+}
+
+table td.last-basic {
+	background: #f5fbfd url(../images/basic-table-bottom.jpg) no-repeat bottom;
+}
+
+td.title {
+	font-size: 12px;
+	color: #5f5f5f;
+	width: 120px;
+}
+
+td.title-plans {
+	text-align: left;
+	font-size: 12px;
+	color: #5f5f5f;
+	width: 180px;
+}
+
+/* @end */
+
+#custom-doc { 
+	 overflow: hidden;
+	 background: url(../images/backgrounds/bg-main.jpg) no-repeat;
+}
+
+#wrapper {
+	width: 890px;
+	margin: auto;
+}
+
+/* @end */
+
+/* @group Header-Wrapper */
+
+#hd {
+	padding: 10px 0;
+	margin: 0 0 0 8px;
+	width: 300px;
+	float: left;
+}
+
+#login {
+	height: 70px;
+	width: 415px;
+	float: right;
+	background: url(../images/backgrounds/member-login.png) no-repeat;
+}
+
+#login h3 {
+	color: #5f5f5f;
+	font-size: 13px;
+	margin: 8px 0 2px 20px;
+}
+
+#login p {
+	float: right;
+	margin: 8px 25px 0 0;
+	font-size: 11px;
+}
+
+#login input#username,
+#login input#password {
+	width: 114px;
+	padding: 2px 15px;
+}
+
+#login input#username {
+	margin: 0 0 0 20px;
+}
+
+#login input#password {
+	margin: 0 0 0 5px;
+}
+
+/* @end */
+
+/* @group Body */
+
+#bd {
+	clear: both;
+	background: #fff url(../images/backgrounds/body-bottom.png) bottom no-repeat;
+	padding-bottom: 20px;
+	margin: 0 0 30px 0;
+}
+
+h1.front-page {
+	background: url(../images/backgrounds/body-top.png) no-repeat top;
+}
+
+h1#page-header {
+	color: #02419e;
+	font-size: 36px;
+	padding: 20px 0 10px 22px;
+	background: url(../images/backgrounds/body-top.png) no-repeat top;
+	border-bottom: 1px solid #b4becc;
+}
+
+.yui-g {
+	min-height: 335px;
+	padding: 15px 50px 0 50px;
+	border-left: 1px solid #b4becc;
+	border-right: 1px solid #b4becc;
+}
+
+div.first {
+	margin: 25px 30px 0;
+	float: left;
+}
+
+
+div.yui-u {
+	margin: 25px 20px 0 0;
+	float: left;
+	width: 365px !important;
+}
+
+#demonstration {
+	width: 355px;
+	float: left;
+	margin: 0 50px 0 0;
+}
+
+#demonstration h2 {
+	margin: 15px 0 0 0;
+}
+
+#share-your-life {
+	float: right;
+	width: 400px;
+	height: 320px;
+	background: url(../images/backgrounds/bg-family.jpg) no-repeat;
+}
+
+#share-your-life h2 {
+	font-size: 42px;
+	width: 310px;
+	margin-bottom: 30px;
+	margin-left: 50px;
+}
+
+#share-your-life p {
+	font-size: 17px;
+	margin-bottom: 20px;
+	margin-left: 50px;
+	width: 320px;
+	font-weight: bold;
+}
+
+div#secure-transaction {
+	margin-left: 25px;
+}
+
+/* @end */
+
+/* @group Footer */
+
+#ft {
+	
+}
+
+#ft p#footer-info {
+	text-align: center;
+	margin-bottom: 20px;
+	font: 10px Verdana, Sans-Serif;
+}
+
+#ft ul#footer-links {
+	text-align: center;
+	font: 11px Verdana, Sans-Serif;
+}
+
+#ft ul#footer-links li {
+	list-style: none;
+	display: inline;
+	border-left: 1px solid #000;
+	padding: 0 20px;
+}
+
+#ft ul#footer-links li:first-child {
+	border-left: none;
+}
+
+/* @end */
+
+/* @group Front Page Specific */
+
+div.frontpage {
+	padding: 15px 0 0 30px;
+}
+
+/* @end */

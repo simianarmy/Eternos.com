@@ -1,0 +1,26 @@
+<div id="fullname">
+    <%= render :partial => 'shared/name_form_fields', :locals => {:f => f} %>
+</div>
+<br/>
+<div id="address">
+    <%= render :partial => 'addresses/address', 
+		:object => @member_details.home_address,
+    	:locals => {:addressable_class => 'member_detail'} 
+%>
+</div>
+<p>
+    <%= f.time_zone_select :timezone, ActiveSupport::TimeZone.us_zones %>
+</p>
+<p>
+    <div id="phone_numbers">
+        <% @phones = @member_details.phone_numbers %>
+        <% if not @phones.empty? %>
+        <%= render :partial => 'shared/phone_number', :collection => @phones, 
+			:locals => {:owner => 'member_detail'} %>
+        <% else %>
+        <%= render :partial => 'shared/phone_number', :object => PhoneNumber.new,
+			:locals => {:owner => 'member_detail'} %>
+        <% end %>
+    </div>
+    <%= add_phone_number_link "Add a phone number", 'member_details' %>
+</p>

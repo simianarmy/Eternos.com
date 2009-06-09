@@ -1,0 +1,17 @@
+- if artifacts.any?
+  %p drag contents into your text editor
+  %br
+  - cols = 5
+  - artifacts.group_by(&:type).each do |type, type_contents|
+    %h4= type.humanize.pluralize
+    %ul
+      - type_contents.each do |c|
+        - @class = "gallery_item"
+        -# Make non-image objects draggable for fckeditor drag & drop
+        - @class += " draggable" unless c.has_thumbnail?
+        %li
+          %div{:id=>dom_id(c, "artifact"), :class => @class, :rel => {:title => c.title, :url => c.url}.to_json}
+            = image_tag c.thumbnail, :id => dom_id(c, "artifact")
+            = c.title unless c.has_thumbnail?
+- else
+  %p You don't have any uploaded files in your library! 

@@ -1,0 +1,35 @@
+<%= custom_error_messages_for :profile %>
+<p/>
+<% remote_form_for(:profile, :url => {:action => 'update'}) do |f| %>
+<p><%= f.label 'Gender' %>
+	<%= f.radio_button :gender, 'male' %> Male 
+	<%= f.radio_button :gender, 'female' %> Female
+	<%= f.radio_button :gender, 'other' %> Transgender
+</p>
+	<%= form_field_with_label f, 'nickname' %>
+
+	<%= form_field_with_label f, 'sexual_orientation' %>
+
+	<%= form_field_with_label f, 'height' %>
+
+	<%= form_field_with_label f, 'weight' %>
+
+	<%= form_field_with_label f, 'race' %>
+
+	<%= form_field_with_label f, 'ethnicity' %>
+
+	<%= form_field_with_label f, 'religion' %>
+<p>
+	<% fields_for 'profile[address]', @profile.birth_address do |f| %>
+		<%= form_field_with_label f, 'city', :label => 'Birth City' %>
+		<br/>
+		<%= f.label 'Birth Country' %>
+		<%= f.collection_select :country_id, Country.find(:all), :id, :name,
+		{:prompt => "Select a Country"} %>
+		<%= f.hidden_field 'location_type', :value => Address::Birth %>
+		<%= f.hidden_field :id %>
+	<% end %>
+</p>
+<p><%= f.submit "Save" %></p>
+
+<% end %>

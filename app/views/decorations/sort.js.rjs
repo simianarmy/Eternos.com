@@ -1,0 +1,1 @@
+page.replace_html :slideshow_link, link_to_slideshow(@decorations.map(&:content))

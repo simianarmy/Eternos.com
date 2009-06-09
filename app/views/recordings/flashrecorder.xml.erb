@@ -1,0 +1,31 @@
+<CONFIG>
+	<SETTINGS>
+		<PLAYER_SETTINGS Name="License" Value="<%= FLASH_RECORDER_KEY %>"/>
+		<PLAYER_SETTINGS Name="SiteURL" Value="<%= "http://#{AppConfig.base_domain}/" %>"/>
+		<PLAYER_SETTINGS Name="ServerURL" Value="<%= "rtmp://#{AppConfig.base_domain}/messageRecorder" %>"/>
+		<PLAYER_SETTINGS Name="FPS" Value="10" /> 
+		<PLAYER_SETTINGS Name="AudioRate" Value="11"/>
+		<PLAYER_SETTINGS Name="VideoWidth" Value="320"/> 
+		<PLAYER_SETTINGS Name="VideoHeight" Value="240"/>
+		<PLAYER_SETTINGS Name="VideoCompression" Value="0"/>
+		<PLAYER_SETTINGS Name="AudioGain" Value="70"/>
+		<PLAYER_SETTINGS Name="SaveScript" Value="/recordings/create/?_eternos.com_session=<%= u session.session_id %>&amp;authenticity_token=<%= u(form_authenticity_token) if protect_against_forgery? -%>&amp;recording_id_session_key=<%= @parent %>_last_recording&amp;parent_id=<%= ignore_nil { cookies[RECORDING_CONTENT_PARENT_COOKIE] } %>"/>
+		<PLAYER_SETTINGS Name="AudioActivity" Value="50"/>
+		<PLAYER_SETTINGS Name="VideoActivity" Value="50"/>	
+		<PLAYER_SETTINGS Name="MaxRecordingTime" Value="300"/>		
+		<PLAYER_SETTINGS Name="Color" Value="0x000077"/>
+		<PLAYER_SETTINGS Name="EmbedURL" Value="<%= video_player_swf_url %>"/>	
+		<PLAYER_SETTINGS Name="ShareURL" Value=""/>	
+		<PLAYER_SETTINGS Name="LogoURL" Value="<%= image_path 'eternos_recorder_trans.gif' %>"/>	
+		<PLAYER_SETTINGS Name="RedirectURL" Value="<%= @redirect_on_save_url %>"/>
+		<PLAYER_SETTINGS Name="ShowLinkButton" Value="false"/>
+	</SETTINGS>
+	<MSG>
+		<ERROR Name="Saving" Value="Saving Recording..."/>
+		<ERROR Name="SaveSuccess" Value="Your recording has been saved!  Please wait."/>
+		<ERROR Name="SaveError" Value="Sorry, there was an error saving your recording."/>
+		<ERROR Name="NoMic" Value="You do not have a microphone installed"/>
+        <ERROR Name="NoCam" Value="You do not have a camera installed"/>
+	</MSG>
+</CONFIG>
+<% cookies.delete(RECORDING_CONTENT_PARENT_COOKIE) %>

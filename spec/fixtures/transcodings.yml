@@ -1,0 +1,21 @@
+# $Id$
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+DEFAULTS: &DEFAULTS
+    size: 8898594
+    filename: <%= File.expand_path(File.dirname(__FILE__) + '/spec/fixtures/flash_movie.flv') %>
+    parent_id: <%= Fixtures.identify(:mp4_movie) %>
+    width: 400
+    height: 460
+    duration: 04:00:00
+    video_codec: flv
+    audio_codec: lamemp3
+    fps: 1234
+    
+raw_mp4:
+    state: raw
+    <<: *DEFAULTS
+
+processed_mp4:
+    state: processed
+    <<: *DEFAULTS

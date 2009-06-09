@@ -1,0 +1,13 @@
+- use_scrollable
+
+%div{:id => id, :class => "scrollable horizontal"}
+  .navi
+  %a.prev
+  .items= render :partial => 'decoration', :collection => element.decorations
+  %a.next
+
+:javascript
+  jQuery(document).ready(function($){
+    // Using jquery.scrollable code
+    $("##{id}").scrollable();
+  });

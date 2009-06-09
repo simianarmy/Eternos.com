@@ -1,0 +1,2 @@
+%ul.flat{:style=>style_hidden_if(options[:hidden])}
+  %li= link_to audio, formatted_audio_url(audio, :mp3), :class => 'sm2_link timing', :duration=>audio.duration, :id => dom_id(audio)

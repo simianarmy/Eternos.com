@@ -1,0 +1,6 @@
+<div class="comment" id="<%= dom_id(comment) %>">
+	<span class="comment_user"><%= comment_author_link(comment) %> said:</span><br/>
+	<span class="comment_text"><%= h comment.comment %></span><br/>
+	<span class="comment_date"><%= comment.created_at %></span>
+	<br/>
+</div>

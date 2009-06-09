@@ -1,0 +1,17 @@
+<% title "Recipients" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% for recipient in @recipients %>
+    <tr>
+      <td><%=h recipient.name %></td>
+      <td><%= link_to "Show", recipient %></td>
+      <td><%= link_to "Edit", edit_recipient_path(recipient) %></td>
+      <td><%= link_to "Destroy", recipient, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Recipient", new_recipient_path %></p>

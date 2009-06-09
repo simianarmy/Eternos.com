@@ -1,0 +1,12 @@
+# $Id$
+regionless:
+  name: Antarctica
+  official_name: Antarctica
+  alpha_2_code: AQ
+  alpha_3_code: ATA
+  
+with_regions:
+  name: United States
+  official_name: United States of America
+  alpha_2_code: US
+  alpha_3_code: USA

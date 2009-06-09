@@ -1,0 +1,12 @@
+page.select('.custom_error_messages, .custom_notice').each {|err| err.hide()}
+if flash[:error] 
+  page.insert_html :top, dom_id(@guest_invitation) + "_edit_row_form", format_ajax_errors
+else
+  page.insert_html :top, dom_id(@guest_invitation) + "_edit_row_form", format_ajax_notice
+  page.delay(3) do
+    page.visual_effect :fade, :flash_notice
+  end
+  page.replace_html dom_id(@guest_invitation) + "_name", @guest_invitation.name
+  page.replace_html dom_id(@guest_invitation) + "_relationship", invitation_status_text(@guest_invitation)
+end
+flash.discard

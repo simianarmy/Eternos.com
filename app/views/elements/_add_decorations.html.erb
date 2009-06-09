@@ -1,0 +1,7 @@
+<p>
+<%= error_messages_for :decoration %>
+<% form_remote_for(:decoration, :url => story_element_decorations_path(@element.story, @element),
+	:html => { :id => "new_content", :multipart => true } ) do |f| %>
+	<%= render :partial => 'contents/upload_form', :locals => {:f=>f} %>
+<% end %>
+<p>

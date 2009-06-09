@@ -1,0 +1,310 @@
+# $Id$
+"en-US":
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%e %b"
+      long: "%B %e, %Y"
+      only_day: "%e"
+
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    order: [ :year, :month, :day ]
+  
+  time:
+    formats:
+      default: "%a %b %d %H:%M:%S %Z %Y"
+      time: "%H:%M"
+      short: "%d %b %H:%M"
+      long: "%B %d, %Y %H:%M"
+      only_second: "%S"
+      
+      datetime:
+        formats:
+          default: "%Y-%m-%dT%H:%M:%S%Z"
+          
+    am: 'am'
+    pm: 'pm'
+
+  # Used in array.to_sentence.
+  support:
+    array:
+        sentence_connector: "and"
+        skip_last_comma: false
+  number:
+      # Used in number_with_delimiter()
+      # These are also the defaults for 'currency', 'percentage', 'precision', and 'human'
+      format:
+        # Sets the separator between the units, for more precision (e.g. 1.0 / 2.0 == 0.5)
+        separator: "."
+        # Delimets thousands (e.g. 1,000,000 is a million) (always in groups of three)
+        delimiter: ","
+        # Number of decimals, behind the separator (the number 1 with a precision of 2 gives: 1.00)
+        precision: 3
+
+      # Used in number_to_currency()
+      currency:
+        format:
+          # Where is the currency sign? %u is the currency unit, %n the number (default: $5.00)
+          format: "%u%n"
+          unit: "$"
+          # These three are to override number.format and are optional
+          separator: "."
+          delimiter: ","
+          precision: 2
+
+      # Used in number_to_percentage()
+      percentage:
+        format:
+          # These three are to override number.format and are optional
+          # separator: 
+          delimiter: ""
+          # precision: 
+
+      # Used in number_to_precision()
+      precision:
+        format:
+          # These three are to override number.format and are optional
+          # separator:
+          delimiter: ""
+          # precision:
+
+      # Used in number_to_human_size()
+      human:
+        format:
+          # These three are to override number.format and are optional
+          # separator: 
+          delimiter: ""
+          precision: 1
+
+  # Used in distance_of_time_in_words(), distance_of_time_in_words_to_now(), time_ago_in_words()
+  datetime:
+      distance_in_words:
+        half_a_minute: "half a minute"
+        less_than_x_seconds:
+          one:   "less than 1 second"
+          other: "less than {{count}} seconds"
+        x_seconds:
+          one:   "1 second"
+          other: "{{count}} seconds"
+        less_than_x_minutes:
+          one:   "less than a minute"
+          other: "less than {{count}} minutes"
+        x_minutes:
+          one:   "1 minute"
+          other: "{{count}} minutes"
+        about_x_hours:
+          one:   "about 1 hour"
+          other: "about {{count}} hours"
+        x_days:
+          one:   "1 day"
+          other: "{{count}} days"
+        about_x_months:
+          one:   "about 1 month"
+          other: "about {{count}} months"
+        x_months:
+          one:   "1 month"
+          other: "{{count}} months"
+        about_x_years:
+          one:   "about 1 year"
+          other: "about {{count}} years"
+        over_x_years:
+          one:   "over 1 year"
+          other: "over {{count}} years"
+
+  activerecord:
+      errors:
+        template:
+          header:
+            oops: "<span class='error_header_title'>Oops, Looks like something wasn't right!</span>"
+            one:    "1 error prohibited this {{model}} from being saved"
+            other:  "{{count}} errors prohibited this {{model}} from being saved"
+          # The variable :count is also available
+          body: "<span class=\"error_header_message\"><b>Mistakes are marked below in red.</b>
+      Scroll down, correct the errors and resubmit the form.  
+      If you continue to experience problems please {{email_link}} so we can give you a hand. Thanks.</span>"
+      
+        # The values :model, :attribute and :value are always available for interpolation
+        # The value :count is available when applicable. Can be used for pluralization.
+        messages:
+          inclusion: "is not included in the list"
+          exclusion: "is reserved"
+          invalid: "is invalid"
+          confirmation: "doesn't match confirmation"
+          accepted: "must be accepted"
+          empty: "can't be empty"
+          blank: "can't be blank"
+          too_long: "is too long (maximum is {{count}} characters)"
+          too_short: "is too short (minimum is {{count}} characters)"
+          wrong_length: "is the wrong length (should be {{count}} characters)"
+          taken: "has already been taken"
+          not_a_number: "is not a number"
+          greater_than: "must be greater than {{count}}"
+          greater_than_or_equal_to: "must be greater than or equal to {{count}}"
+          equal_to: "must be equal to {{count}}"
+          less_than: "must be less than {{count}}"
+          less_than_or_equal_to: "must be less than or equal to {{count}}"
+          odd: "must be odd"
+          even: "must be even"
+          # Append your own errors here or at the model/attributes scope.
+
+        # You can define own errors for models or model attributes.
+        # The values :model, :attribute and :value are always available for interpolation.
+        #
+        # For example,
+        #   models:
+        #     user:
+        #       blank: "This is a custom blank message for {{model}}: {{attribute}}"
+        #       attributes:
+        #         login:
+        #           blank: "This is a custom blank message for User login"
+        # Will define custom blank validation message for User model and 
+        # custom blank validation message for login attribute of User model.
+        models:
+          user:
+            attributes:
+              first_name:
+                blank: "Please enter your first name"
+              last_name:
+                blank: "Please enter your last name"
+              password:
+                too_short: "Password must be at least 6 characters long"
+                confirmation: "Passwords do not match"
+              password_confirmation:
+                blank: "Password confirmation is required"
+              email:
+                taken: "Email address belongs to an existing account"
+              terms_of_service:
+                accepted: "Please Accept Terms of Service"
+              invitation_id:
+                blank: "Invitation is required"
+                taken: "Invitation code has already been used"
+          
+          address:
+            attributes:
+              street_1:
+                blank: 'Please enter a street address'
+              city:
+                blank: 'Please enter a city'
+              country_id:
+                blank: 'Please enter a country'
+              region_id:
+                blank: 'Please enter a region'
+      
+          guest_invitation:
+            attributes:
+              sender:
+                blank: "Unknown sender"
+              circle:
+                blank: "Please select a relationship"
+              contact_method:
+                blank: "Please select at least one contact method (Email, Phone, or Mail) and fill in the entry"
+              name:
+                blank: "Please enter the guest's name"
+            
+      # Translate model names. Used in Model.human_name().
+      models:
+        # For example,
+        #   user: "Dude"
+        # will translate User model name to "Dude"
+        
+      # Translate model attribute names. Used in Model.human_attribute_name(attribute).
+      attributes:
+        # For example,
+        #   user:
+        #     login: "Handle"
+        # will translate User attribute "login" as "Handle"
+        
+  models:
+    time_period:
+      timeless: "Timeless"
+    
+    content_authorization:
+      options:
+        public:
+          select_option: "Public: anyone who visits the site can view, including non-members"
+        private:
+          select_option: "Private: all invited people can view (Default)"
+        partial:
+          select_option: "Selected: only selected people or groups can view"
+        invisible:
+          select_option: "Invisible: Only I can view"
+    
+    time_lock:
+      none:
+        select_option: "Immediately"
+      dated:
+        select_option: "At a future date"
+        
+    death_lock:
+      select_option: "After my passing"
+   
+  form:
+    input:
+      tags:
+        hint: "ENTER TAGS"
+        description: "Tags are keywords that describe your content and make them easily categorizable and searchable.  Separate tags with a comma."
+          
+  # AuthLogic messages
+  authlogic:
+    error_messages:
+      login_blank: Login can not be blank
+      login_not_found: Login is not valid
+      login_invalid: Login should use only letters, numbers, spaces, and .-_@ please.
+      consecutive_failed_logins_limit_exceeded: Consecutive failed logins limit exceeded, account is disabled.
+      email_invalid: Email should look like an email address.
+      password_blank: Please enter a password
+      password_confirmation_blank: Please enter a password confirmation
+      password_invalid: Password is not valid
+      password_confirmation_invalid: Password confirmation is not valid
+      not_active: Your account is not active
+      not_confirmed: Your account is not confirmed
+      not_approved: Your account is not approved
+      no_authentication_details: You did not provide any details for authentication.
+    models:
+      user_session: UserSession
+    attributes:
+      user_session:
+        login: login
+        email: email
+        password: password
+        remember_me: remember me
+        
+  # ActiveMailer objects  
+  mailers:
+    guest:
+      invitation:
+        subject: "{{sender}} has invited you to view their Eternos.com life story"
+        
+  # Pages by controller name
+  
+  home:
+    giftofyou:
+      heading: "the gift of you"
+      paragraph: "Eternos provides an ideal and intuitive means for capturing, storing and sharing valuable moments of your life for future generations, loved ones, and distant relatives."
+    shareyourlife:
+      heading: "share your life"
+      paragraph: "Easily, safely, and permanently store virtually anything for posterity while enjoying total control of privacy and confidentiality settings."
+      document: "Document your life with easy to use tools that let you share:"
+      media_list: "photos, videos, music, audio, documents &amp; blogs"
+
+  messages:
+    new:
+      title: "new blog entry"
+      header: 'Enter your thoughts, stories, and recollections for posterity. This section is much like a blog or diary and entries will be saved forever or until you decide to delete or remove them.'
+      message: '<span style="font-size: x-large">Write your story here</span><p/><br/>Add your photos, music, and videos by dragging and dropping.'
+        
+  guests:
+    index:
+      heading: "Add family members, loved ones, and other people close to you and your family. By adding someone as a guest, you are inviting them to view your stories and media. You will be able add or remove guests at any time.
+      <p><br>
+      As people can sometimes change employers, it is best when entering guest email addresses to enter a personal webmail address (e.g. hotmail, yahoo, gmail, etc.) and not a corporate, or 'work' email address.
+      <p><br>
+      Choose at least one guest as an emergency contact and be sure to enter a phone number for that guest. In the event of your untimely death, we will notify your specified emergency contact(s)."
+      
+  user_sessions:
+    new:
+      login_failed: Sorry, we couldn't log you in with that username and password.  Please try again.
+  

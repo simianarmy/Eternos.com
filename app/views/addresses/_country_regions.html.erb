@@ -1,0 +1,7 @@
+<% if regions.empty? %>
+	<option value="">No Regions Found</option>
+<% else %>
+	<% for r in regions %>
+		<option value="<%= r[0][:id] %>"><%= r[0][:name] %></option>
+	<% end %>
+<% end %>

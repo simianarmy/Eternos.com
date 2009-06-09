@@ -1,0 +1,9 @@
+<% title "Document" %>
+
+<%= render :partial => 'contents/show', :locals => { :content => @document } %>
+
+<p>
+  <%= link_to "Edit", edit_document_path(@document) %> |
+  <%= link_to "Destroy", @document, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", documents_path %>
+</p>
