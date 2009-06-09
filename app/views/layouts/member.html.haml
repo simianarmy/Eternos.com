@@ -4,12 +4,12 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - stylesheet 'member', 'screen', 'application'
-    - javascript :defaults
-    
+    - stylesheet 'member', 'screen', 'application', '../javascripts/lightview/css/lightview'
+    - javascript :defaults, 'scriptaculous', 'lightview/js/lightview'
     - use_lowpro unless @no_prototype
     = yield(:head)
     = yield(:javascript)
+    = calendar_date_select_includes "blue"
     
     / end bundle
   %body

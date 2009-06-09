@@ -49,7 +49,7 @@ Rails::Initializer.run do |config|
   config.gem "ruby-openid", :lib => "openid", :version => ">= 2.1.2"
   config.gem 'image_science'
   config.gem 'rmagick', :lib => "RMagick", :version => ">= 2.9.2"
-  
+  config.gem "calendar_date_select"
   config.gem 'ezcrypto'
   config.gem 'starling', :lib => "starling", :version => ">= 0.9.8"
   config.gem 'aws-s3', :lib => "aws/s3", :version => ">= 0.5.1"

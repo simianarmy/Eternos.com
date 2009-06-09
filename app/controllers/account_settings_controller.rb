@@ -40,7 +40,8 @@ class AccountSettingsController < ApplicationController
         }
       else
         format.js{
-          flash[:error] = "Cant sync with facebook";
+          find_user_profile
+          flash.now[:error] = "Cant sync with facebook";
           render :action => 'personal_info', :layout => false
         }
       end
