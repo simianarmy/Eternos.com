@@ -74,7 +74,7 @@
   </p>
    <p>
     <%= ab.label "Birthdate" %>
-    <%= date_select_onchange(ab, :birthdate, "submit_form_personal") %>
+    <%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:year,:month,:day], :start_year => Date.today.year, :end_year => 100.years.ago.year}) %>
   </p>
 <%- end -%>
 
