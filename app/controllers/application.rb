@@ -12,9 +12,21 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
   include SslRequirement
   
+  #RAILS_ENV = 'maintenance'
+  
   # May work w/ 2.2+
-  #rescue_from ActionController::RoutingError, :with => :route_not_found
-  #rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+
+  #comment this statement if you want to test the rescue page in development mode
+  unless ActionController::Base.consider_all_requests_local
+    rescue_from ActionController::RoutingError, ActionView::MissingTemplate,
+      ActionController::UnknownAction,
+      :with => :route_not_found
+    rescue_from  ActiveRecord::RecordInvalid,ActiveRecord::StaleObjectError,
+      ActiveRecord::RecordNotSaved, ActionController::RoutingError::NameError, ActiveRecord::RecordNotFound, :with => :server_error
+    #rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+  end
+
+  before_filter :check_enable_mainenaince_mode
   
   helper :all # include all helpers, all the time
   #helper_method :current_account, :admin?
@@ -37,9 +49,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging "password", "password_confirmation", "cc_number", "creditcard"
   
   layout :dynamic_layout
-  
-  protected
-  
+
   def set_time_zone
     Time.zone = @current_user.time_zone if @current_user
   end
@@ -239,7 +249,18 @@ class ApplicationController < ActionController::Base
   end
 
   def route_not_found
-    render :text => 'What the fuck are you looking for ?', :status => :not_found
+    #render :text => 'What the fuck are you looking for ?', :status => :not_found
+    render :template => "/errors/404.html.erb", :status => "404", :layout => 'errors.html.erb'
+  end
+
+  def server_error
+    render :template => "/errors/500.html.erb", :status => "500", :layout => 'errors.html.erb'
+  end
+
+  def check_enable_mainenaince_mode
+    if RAILS_ENV == 'maintenance'
+      render :template => "/errors/maintenance.html.erb", :status => "maintenance", :layout => 'errors.html.erb'
+    end
   end
   
   def invalid_method

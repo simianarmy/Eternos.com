@@ -1,0 +1,15 @@
+<%= image_tag "errors/body-top2.gif" %>
+<div id="content-container2">
+  <div id="bg2">
+    <%= image_tag "errors/ups2.png", :class=> "ups" %>
+    <div class="notification-box2">
+      Our site ran into unexpected error. We have notified our staff, <br />
+      and we will redirect you to our home page in <span id="counter"></span>
+    </div>
+    <div style="clear:both"></div>
+    <%= link_to "",  root_path, :class=> "home-btn2" %>
+  </div>
+</div>
+
+<%= image_tag "errors/body-bottom.png" %>
+<%= javascript_tag "timer.init(0,10,'counter', '#{root_path}');" %>
