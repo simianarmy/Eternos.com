@@ -582,29 +582,32 @@ ActiveRecord::Schema.define(:version => 20090401230612) do
   
   create_table :backup_sources, :force => true do |t|
     t.string :auth_login, :auth_password, :rss_url
-    t.boolean :auth_confirmed, :full_backup
+    t.boolean :auth_confirmed, :disabled, :needs_initial_scan, :null => false, :default => false
     t.string :auth_error
     t.datetime :last_backup_at
-    t.date :latest_day_backed_up
+    t.date :earliest_day_backed_up, :latest_day_backed_up
     t.datetime :created_at, :updated_at
     t.integer :user_id, :backup_site_id
+    t.boolean :skip_video, :null => false, :default => false
   end
   
   add_index :backup_sources, ["user_id", "backup_site_id"], :unique => true, 
     :name => "user_backup_site"
   
-  create_table :backup_site_dates, :force => true do |t|
-    t.integer :backup_site_id
-    t.date :backed_up_on
-    t.string :status
+  create_table :backup_source_days, :force => true do |t|
+    t.integer :backup_source_id
+    t.date :backup_day
+    t.datetime :created_at, :updated_at
+    t.integer :status_id, :skip_count, :null => false, :default => 0
+    t.boolean :in_progress, :skip, :null => false, :default => false
   end
   
-  add_index :backup_site_dates, [:backup_site_id, :backed_up_on], :unique => true, 
-    :name => 'backup_site_date'
+  add_index :backup_source_days, [:backup_source_id, :backup_day], :unique => true, 
+    :name => 'backup_dates'
     
   create_table :backup_jobs, :force => true do |t|
     t.integer :percent_complete, :size
-    t.boolean :cancelled
+    t.boolean :cancelled, :null => false, :default => false
     t.string :status
     t.integer :user_id
     t.datetime :created_at, :updated_at, :finished_at
@@ -622,14 +625,20 @@ ActiveRecord::Schema.define(:version => 20090401230612) do
   add_index :backup_job_archives, ["user_id"], :name => "user_id"
   add_index :backup_job_archives, ["finished_at"], :name => "finished_at"
   
-  create_table :backup_workers, :force => true do |t|
-    t.integer :backup_job_id, :backup_site_id
-    t.integer :percent_complete, :size
-    t.datetime :started_at, :finished_at
+  create_table :backup_source_jobs, :force => true do |t|
+    t.integer :backup_job_id, :backup_source_id
+    t.integer :size, :days
     t.datetime :created_at, :updated_at
-    t.string :job_name
+    t.string :status
     t.text :errors, :messages
   end
   
-  add_index :backup_workers, [:backup_job_id, :backup_site_id], :name => "user_id"
+  add_index :backup_source_jobs, [:backup_job_id, :backup_source_id], :name => "backup_job_source"
+  
+  create_table :notify_emails, :force => true do |t|
+    t.string :email
+    t.datetime :created_at, :sent_at
+    t.text :keywords, :referrer
+  end
+  add_index :notify_emails, ['email'], :unique => true
 end

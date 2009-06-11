@@ -7,12 +7,14 @@ common: &default_settings
   pass: b4ckUrlIF3
   host: localhost
   vhost: /eternos
+  logging: false
   
 development:
   <<: *default_settings
   
 test:
   <<: *default_settings
+  logging: true
   
 staging:
   <<: *default_settings

@@ -8,9 +8,10 @@ require 'mq'
 module MessageQueue   
   module Backup
     Exchange          = 'backups'
-    WorkerExchange    = 'bu_workers'
-    WorkerTopicQueue  = 'backup_workers'
-    PendingJobsQueue  = 'new_jobs'
+    WorkerExchange    = 'backup_workers'
+    WorkerTopicQueue  = 'backup_job'
+    PendingJobsQueue  = 'pending_backups'
+    FeedbackQueue     = 'ruote_backup_feedback'
   end
   
   class << self
@@ -18,14 +19,14 @@ module MessageQueue
     
     ConfigPath = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'config')
     DefaultConfig = 'amqp.yml'
-    DefaultEnv = RAILS_ENV || 'production'
+    DefaultEnv = 'production'
     
     # Return mq server connection settings in a hash
     def connect_params(config_file=DefaultConfig, env=DefaultEnv)
       f = File.join(ConfigPath, config_file)
       begin
-        conf = YAML.load_file(f)
-        conf[env].symbolize_keys!
+        @conf ||= YAML.load_file(f)
+        @conf[env].symbolize_keys!
       rescue
         raise("Unable to load mq config file: #{f}: " + $!)
       end
@@ -71,15 +72,15 @@ module MessageQueue
     end
     
     def backup_worker_topic_route(site)
-      [WorkerExchange, site].join('.')
+      ['worker', site].join('.')
     end
     
     def backup_worker_topic
-      MQ.topic(WorkerExchange)
+      MQ.new.topic(WorkerExchange)
     end
     
-    def backup_worker_subscriber_queue(site)
-      MQ.queue(WorkerTopicQueue).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
+    def backup_worker_subscriber_queue(site, queue=WorkerTopicQueue)
+      MQ.queue(queue).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
     end
     
     def create_topic_queue(channel, queue, options={})

@@ -13,6 +13,7 @@ Java: JDK 6u11
 apache-ant: 1.7.1
 Red5: 0.7.0
 
+
 Ensure 'GatewayPorts yes' is enabled in the remote development server's sshd config
 
 Rails/Apache:
@@ -23,6 +24,7 @@ passenger
 yum Packages:
 ImageMagick
 ImageMagick-devel
+readline-devel
 
 Install from source:
 $ sudo wget ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick.tar.gz  

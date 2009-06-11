@@ -20,13 +20,20 @@ Installation:
 2) Download rabbitmq source
 3) Move unpacked source to erlang lib dir
 4) run: rabbitmq-server from erlang dir
+5) Add rabbitmqctl sbin to path
 
-sudo sbin/rabbitmqctl add_vhost /eternos
-sudo sbin/rabbitmqctl add_user backupd b4ckUrlIF3
-sudo sbin/rabbitmqctl add_user bkupworker passpass 
-sudo sbin/rabbitmqctl map_user_vhost backupd /eternos
-sudo sbin/rabbitmqctl map_user_vhost bkupworker /eternos
+# To start server:
+sudo rabbitmq-server -detached
 
+sudo rabbitmqctl add_vhost /eternos
+sudo rabbitmqctl add_user backupd b4ckUrlIF3
+sudo rabbitmqctl add_user bkupworker passpass 
+sudo rabbitmqctl map_user_vhost backupd /eternos
+sudo rabbitmqctl map_user_vhost bkupworker /eternos
+
+For runtime stats:
+sudo rabbitmqctl list_exchanges -p /eternos
+(See rabbitmqctl output for others)
 
 The Ruby AMQP bindings are written using the EventMachine framework
 Install:
