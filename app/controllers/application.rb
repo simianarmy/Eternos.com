@@ -17,14 +17,14 @@ class ApplicationController < ActionController::Base
   # May work w/ 2.2+
 
   #comment this statement if you want to test the rescue page in development mode
-  #unless ActionController::Base.consider_all_requests_local
+  unless ActionController::Base.consider_all_requests_local
     rescue_from ActionController::RoutingError, ActionView::MissingTemplate,
       ActionController::UnknownAction,
       :with => :route_not_found
     rescue_from  ActiveRecord::RecordInvalid,ActiveRecord::StaleObjectError,
       ActiveRecord::RecordNotSaved, ActionController::RoutingError::NameError, ActiveRecord::RecordNotFound, :with => :server_error
     #rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
-  #end
+  end
 
   before_filter :check_enable_mainenaince_mode
   

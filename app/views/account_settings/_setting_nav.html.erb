@@ -1,13 +1,17 @@
-<%= link_to_remote "", { :url => personal_info_account_settings_path,
-  :update => "account-setting-content" }, :class => "step1-active" %>
+<div id="account-setting-nav">
 
-<%= link_to_remote "", { :url => online_account_settings_path,
-  :update => "account-setting-content" }, :class => "step2-btn" %>
+  <%- link_class = active_link == "step1" ? "step1-active" : "step1-btn"  -%>
+  <%= link_to_remote "", { :url => personal_info_account_settings_path}, :class =>  link_class %>
 
-<%= link_to "", "", :class => "step3-btn"%>
+  <%- link_class = active_link == "step2" ? "step2-active" : "step2-btn"  -%>
+  <%= link_to_remote "", { :url => online_account_settings_path }, :class => link_class %>
 
-<%= link_to "", "", :class => "step4-btn"%>
+  <%= link_to "", "", :class => "step3-btn"%>
 
-<%= link_to "", "", :class => "step5-btn"%>
+  <%= link_to "", "", :class => "step4-btn"%>
 
-<%= link_to "", "", :class => "step6-btn"%>
+  <%= link_to "", "", :class => "step5-btn"%>
+
+  <%= link_to "", "", :class => "step6-btn"%>
+
+</div>

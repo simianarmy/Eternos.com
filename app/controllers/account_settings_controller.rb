@@ -15,7 +15,11 @@ class AccountSettingsController < ApplicationController
   def personal_info
     find_user_profile
     respond_to do |format|
-      format.js { render :layout => false }
+      format.js do
+        render :update do |page|
+          setup_layout_account_setting(page, "step1", "account_settings/personal_info")
+        end
+      end
     end
   end
 
@@ -51,7 +55,11 @@ class AccountSettingsController < ApplicationController
 
   def online
     respond_to do |format|
-      format.js { render :layout => false }
+      format.js do
+        render :update do |page|
+          setup_layout_account_setting(page, "step2", "account_settings/online")
+        end
+      end
     end  
   end
 

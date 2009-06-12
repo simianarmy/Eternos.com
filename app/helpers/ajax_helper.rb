@@ -54,4 +54,15 @@ module AjaxHelper
   def format_ajax_notice
     render :partial => 'shared/ajax_notice'
   end
+
+  def setup_layout_account_setting(page, active_link, partial_content)
+    page.replace "account-setting-nav", :partial => "account_settings/setting_nav",
+      :locals => {:active_link => active_link }, :layout => false
+    page.replace "account-setting-content", :partial => partial_content, :layout => false
+  end
+
+  def link_to_show_hide(id, name = "", option = {})
+    link_to_function name, "$('#{id}').show();", option
+  end
+  
 end

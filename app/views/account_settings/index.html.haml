@@ -4,11 +4,10 @@
   .popuptop
   .popup-content
     .top-box
-      / = link_to_remote "", close_lightview_js, :class => "stop-btn"
       = link_to_close_lightview("", {:class => "stop-btn"})
       .clear
       .top-box2
-        .acc-title
+        #account-setting-title.acc-title
           Account Setup
         .top-rightbox
           = link_to_remote "", { :url => facebook_sync_account_settings_path, :update => "account-setting-content"} , :class => "fb-btn"
@@ -19,9 +18,10 @@
           .clear
         .clear
     .popup-content-left
-      = render :partial => "setting_nav"
-    #account-setting-content
-      .pop-content-right
+      = render :partial => "setting_nav", :locals => { :active_link => "step1" }
+    
+    .pop-content-right
+      #account-setting-content
         - form_remote_tag :url => save_personal_info_account_settings_path do
           = render :partial => 'accounts/personal_info'
     .clear
