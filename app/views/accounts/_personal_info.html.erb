@@ -117,7 +117,11 @@
       <tr>
         <td class="coll-form1" valign="center">Birthdate</td>
 	    <td class="coll-form2" valign="center">:</td>
-	    <td class="coll-form3" valign="center"> <%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:year,:month,:day], :start_year => Date.today.year, :end_year => 100.years.ago.year}) %> </td>
+	    <td class="coll-form3" valign="center"> 
+				<div class="birthdate-box">
+					<%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year}) %>
+				</div>
+			</td>
       </tr>
 
     <%- end -%>

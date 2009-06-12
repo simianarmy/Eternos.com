@@ -1,6 +1,5 @@
 - title 'account settings'
 - use_calendar()
-
 .popup-container
   .popuptop
   .popup-content
@@ -10,6 +9,7 @@
       .clear
       .top-box2
         .acc-title
+          Account Setup
         .top-rightbox
           = link_to_remote "", { :url => facebook_sync_account_settings_path, :update => "account-setting-content"} , :class => "fb-btn"
           .clear

@@ -52,7 +52,11 @@ module LayoutHelper
   # asset inclusion helpers
   def use_lightview
     stylesheet "/javascripts/lightview/css/lightview.css"
-    js_include prototype, scriptaculous, "lightview/js/lightview"
+    use_lightview_only_js
+  end
+  
+  def use_lightview_only_js
+    js_include prototype, scriptaculous, "lightview/js/lightview" 
   end
   
   def use_jquery

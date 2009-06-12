@@ -10,7 +10,7 @@ input#openid_url {
 }
 
 input#login_button {
-	background: url(../images/login-button2.gif) no-repeat;
+	background: url(/images/login-button2.gif) no-repeat;
 	border: none;
 	color: #fff;
 	font-size: 14px;

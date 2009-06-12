@@ -11,12 +11,12 @@ body{
 #topbar{
 	width:875px;
 	height:35px;
-	background:white url(../images/errors/body-top.png) no-repeat;
+	background:white url(/images/errors/body-top.png) no-repeat;
 	padding:15px 0 0 15px;
 }
 
 #content-container{
-	background:url(../images/errors/body.png) repeat-y;
+	background:url(/images/errors/body.png) repeat-y;
 	width:860px;
 	height:auto;
 	border-top:#b4becc solid 1px;
@@ -24,7 +24,7 @@ body{
 }
 
 #content-container2{
-	background:url(../images/errors/body.png) repeat-y;
+	background:url(/images/errors/body.png) repeat-y;
 	width:860px;
 	height:auto;
 	padding:0 15px 0 20px;
@@ -52,7 +52,7 @@ body{
 .col2{
 	width:2px;
 	height:auto;
-	background:url(../images/errors/borderv.gif) repeat-y;
+	background:url(/images/errors/borderv.gif) repeat-y;
 }
 
 .col3{
@@ -73,7 +73,7 @@ body{
 .navbtn1{
 	width:150px;
 	height:17px;
-	background:url(../images/errors/navbtn.gif) 0 17px;
+	background:url(/images/errors/navbtn.gif) 0 17px;
 	display:block;
 	font-family:arial;
 	font-size:11px;
@@ -86,7 +86,7 @@ body{
 }
 
 .navbtn1:hover{
-	background:url(../images/errors/navbtn.gif) 0 0;
+	background:url(/images/errors/navbtn.gif) 0 0;
 	color:#2ea4ff;
 }
 
@@ -236,14 +236,14 @@ body{
 .im{
 	width:340px;
 	height:52px;
-	background:url(../images/errors/imbtn.jpg) 0 0;
+	background:url(/images/errors/imbtn.jpg) 0 0;
 	display:block;
 	border:none;
 	margin-top:37px;
 }
 
 .im:hover{
-	background:url(../images/errors/imbtn.jpg) 0 52px;
+	background:url(/images/errors/imbtn.jpg) 0 52px;
 }
 
 .popup-container{
@@ -256,15 +256,15 @@ body{
 .popuptop{
 	width:650px;
 	height:11px;
-	background:url('../images/errors/popup-top.png') transparent no-repeat;
+	background:url('/images/errors/popup-top.png') transparent no-repeat;
 	_background-image: none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/errors/popup-top.png',sizingMethod='scale');
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/errors/popup-top.png',sizingMethod='scale');
 }
 
 .popup-content{
 	width:650px;
-	height:420px;
-	background:url(../images/errors/popup-content.png) repeat-y;
+	height:auto;
+	background:url(/images/errors/popup-content.png) repeat-y;
 	margin:0;
 	padding:0;
 }
@@ -275,22 +275,17 @@ body{
 	margin:0;
 }
 
-a.stop-btn{
+.stop-btn{
 	width:80px;
 	height:36px;
 	display:block;
 	margin-top:-25px;
-	z-index:999;
-	background:url('../images/errors/save-btn.png') 0 0 transparent;
-	_background-image: none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/errors/save-btn.png',sizingMethod='scale');
+	background:url(/images/errors/save-btn.png) 0 0;
 	float:right;
 }
 
-a.stop-btn:hover{
-	background:url('images/save-btn.png') 0 36px transparent;
-	_background-image: none;
-	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/errors/save-btn.png',sizingMethod='scale');
+.stop-btn:hover{
+	background:url(/images/errors/save-btn.png) 0 36px;
 }
 
 
@@ -300,7 +295,7 @@ a.stop-btn:hover{
 	font-family:arial;
 	font-size:20px;
 	color:#02419e;
-	padding:0 0 ;
+	padding:0;
 	float:left;
 }
 
@@ -326,30 +321,34 @@ a.stop-btn:hover{
 .fb-btn{
 	width:134px;
 	height:21px;
-	background:url(../images/errors/fb-btn.png) 0 0;
+	background:url(/images/errors/fb-btn.png) 0 0;
 	border:none;
 	display:block;
 	float:right;
 }
 
 .fb-btn:hover{
-	background:url(../images/errors/fb-btn.png) 0 21px;
+	background:url(/images/errors/fb-btn.png) 0 21px;
 }
 
 .right{	float:right;}
 
-.left{float:left;}
+.left{float:left;margin:5px 0 5px 5px;}
 
-.left2{float:left;margin-left:20px;}
+.left2{float:left;margin:5px 0 5px 20px;}
 
 .top-text1{
-	margin-top:5px;
+	margin-top:2px;
 	float:right
 }
 
 .top-text2{
-	margin-top:4px;
+	margin-top:6px;
 	float:left
+}
+
+.birthdate-box{
+	margin:5px;
 }
 
 .popup-content-left{
@@ -388,62 +387,62 @@ a.stop-btn:hover{
 .network-box{
 	width:451px;
 	height:100px;
-	background:url(../images/errors/fb-box.gif) repeat-y;
+	background:url(/images/errors/fb-box.gif) repeat-y;
 	padding:10px 0 0 0;
 }
 
 a.fb-btn2{
 	width:77px;
 	height:77px;
-	background:url(../images/errors/fb-btn2.gif) 0 0;
-	margin:0 5px 0 5px;
+	background:url(/images/errors/fb-btn2.gif) 0 0;
+	margin:0 5px 5px 5px;
 	float:left;
 }
 
 a.fb-btn2:hover{
-	background:url(../images/errors/fb-btn2.gif) 0 77px;
+	background:url(/images/errors/fb-btn2.gif) 0 77px;
 }
 
 a.twitter-btn{
 	width:165px;
 	height:47px;
-	background:url(../images/errors/twitter-btn.gif) 0 0;
+	background:url(/images/errors/twitter-btn.gif) 0 0;
 	margin:20px 0 0 5px;
 	float:left;
 }
 
 a.twitter-btn:hover{
-	background:url(../images/errors/twitter-btn.gif) 0 47px;
+	background:url(/images/errors/twitter-btn.gif) 0 47px;
 }
 
 a.rss-btn{
 	width:77px;
 	height:77px;
-	background:url(../images/errors/rss-btn.gif) 0 0;
+	background:url(/images/errors/rss-btn.gif) 0 0;
 	margin:0 5px 0 0;
 	float:left;
 }
 
 a.rss-btn:hover{
-	background:url(../images/errors/rss-btn.gif) 0 77px;
+	background:url(/images/errors/rss-btn.gif) 0 77px;
 }
 
 a.flickr-btn{
 	width:130px;
 	height:47px;
-	background:url(../images/errors/flickr-btn.gif) 0 0;
+	background:url(/images/errors/flickr-btn.gif) 0 0;
 	margin:20px 5px 0 5px;
 	float:left;
 }
 
 a.flickr-btn:hover{
-	background:url(../images/errors/flickr-btn.gif) 0 47px;
+	background:url(/images/errors/flickr-btn.gif) 0 47px;
 }
 
-.fb-active{width:77px; height:77px; background:url(../images/errors/fb-active.gif); float:left;margin:0 10px 0 20px}
-.twitter-active{width:175px; height:52px; background:url(../images/errors/twitter-active.gif); float:left;margin:0 10px 0 10px}
-.flickr-active{width:175px; height:52px; background:url(../images/errors/flickr-active.gif); float:left;margin:0 10px 0 10px}
-.rss-active{width:77px; height:77px; background:url(../images/errors/rss-active.gif); float:left;margin:0 10px 0 10px}
+.fb-active{width:77px; height:77px; background:url(/images/errors/fb-active.gif); float:left;margin:0 10px 0 20px}
+.twitter-active{width:175px; height:52px; background:url(/images/errors/twitter-active.gif); float:left;margin:0 10px 0 10px}
+.flickr-active{width:175px; height:52px; background:url(/images/errors/flickr-active.gif); float:left;margin:0 10px 0 10px}
+.rss-active{width:77px; height:77px; background:url(/images/errors/rss-active.gif); float:left;margin:0 10px 0 10px}
 
 .submit-btn{
 	width:98px;
@@ -457,79 +456,79 @@ a.flickr-btn:hover{
 	font-size:11px;
 	margin:0 0 0 100px;
 	padding-top:4px;
-	background:url(../images/errors/submit-btn.gif) 0 0;
+	background:url(/images/errors/submit-btn.gif) 0 0;
 }
 
 .submit-btn:hover{
-	background:url(../images/errors/submit-btn.gif) 0 22px;
+	background:url(/images/errors/submit-btn.gif) 0 22px;
 }
 
 /*step button---------------------------------------------------------------------------------------------------------------*/
 
-a.step1-btn{width:140px;height:43px;background:url(../images/errors/step1.png) 0 0;display:block;margin-bottom:15px;}
-a.step1-btn:hover{background:url(../images/errors/step1.png) 0 43px;}
+a.step1-btn{width:140px;height:43px;background:url(/images/errors/step1.png) 0 0;display:block;margin-bottom:15px;}
+a.step1-btn:hover{background:url(/images/errors/step1.png) 0 43px;}
 
-a.step2-btn{width:140px;height:43px;background:url(../images/errors/step2.png) 0 0;display:block;margin-bottom:15px;}
-a.step2-btn:hover{background:url(../images/errors/step2.png) 0 43px;}
+a.step2-btn{width:140px;height:43px;background:url(/images/errors/step2.png) 0 0;display:block;margin-bottom:15px;}
+a.step2-btn:hover{background:url(/images/errors/step2.png) 0 43px;}
 
-a.step3-btn{width:140px;height:43px;background:url(../images/errors/step3.png) 0 0;display:block;margin-bottom:15px;}
-a.step3-btn:hover{background:url(../images/errors/step3.png) 0 43px;}
+a.step3-btn{width:140px;height:43px;background:url(/images/errors/step3.png) 0 0;display:block;margin-bottom:15px;}
+a.step3-btn:hover{background:url(/images/errors/step3.png) 0 43px;}
 
-a.step4-btn{width:140px;height:43px;background:url(images/step4.png) 0 0;display:block;margin-bottom:15px;}
-a.step4-btn:hover{background:url(../images/errors/step4.png) 0 43px;}
+a.step4-btn{width:140px;height:43px;background:url(/images/errors/step4.png) 0 0;display:block;margin-bottom:15px;}
+a.step4-btn:hover{background:url(/images/errors/step4.png) 0 43px;}
 
-a.step5-btn{width:140px;height:43px;background:url(images/step5.png) 0 0;display:block;margin-bottom:15px;}
-a.step5-btn:hover{background:url(../images/errors/step5.png) 0 43px;}
+a.step5-btn{width:140px;height:43px;background:url(/images/errors/step5.png) 0 0;display:block;margin-bottom:15px;}
+a.step5-btn:hover{background:url(/images/errors/step5.png) 0 43px;}
 
-a.step6-btn{width:140px;height:43px;background:url(images/step6.png) 0 0;display:block;margin-bottom:15px;}
-a.step6-btn:hover{background:url(../images/errors/step6.png) 0 43px;}
+a.step6-btn{width:140px;height:43px;background:url(/images/errors/step6.png) 0 0;display:block;margin-bottom:15px;}
+a.step6-btn:hover{background:url(/images/errors/step6.png) 0 43px;}
 
 /*complete step button------------------------------------------------------------------------------------------------------*/
 
-a.step1complete-btn{width:140px;height:43px;background:url(../images/errors/step1-complete.png) 0 0;display:block;margin-bottom:15px;}
-a.step1complete-btn:hover{background:url(../images/errors/step1-complete.png) 0 43px;}
+a.step1complete-btn{width:140px;height:43px;background:url(/images/errors/step1-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step1complete-btn:hover{background:url(/images/errors/step1-complete.png) 0 43px;}
 
-a.step2complete-btn{width:140px;height:43px;background:url(../images/errors/step2-complete.png) 0 0;display:block;margin-bottom:15px;}
-a.step2complete-btn:hover{background:url(../images/errors/step2-complete.png) 0 43px;}
+a.step2complete-btn{width:140px;height:43px;background:url(/images/errors/step2-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step2complete-btn:hover{background:url(/images/errors/step2-complete.png) 0 43px;}
 
-a.step3complete-btn{width:140px;height:43px;background:url(../images/errors/step3-complete.png) 0 0;display:block;margin-bottom:15px;}
-a.step3complete-btn:hover{background:url(../images/errors/step3-complete.png) 0 43px;}
+a.step3complete-btn{width:140px;height:43px;background:url(/images/errors/step3-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step3complete-btn:hover{background:url(/images/errors/step3-complete.png) 0 43px;}
 
-a.step4complete-btn{width:140px;height:43px;background:url(../images/errors/step4-complete.png) 0 0;display:block;margin-bottom:15px;}
-a.step4complete-btn:hover{background:url(../images/errors/step4-complete.png) 0 43px;}
+a.step4complete-btn{width:140px;height:43px;background:url(/images/errors/step4-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step4complete-btn:hover{background:url(/images/errors/step4-complete.png) 0 43px;}
 
-a.step5complete-btn{width:140px;height:43px;background:url(../images/errors/step5-complete.png) 0 0;display:block;margin-bottom:15px;}
-a.step5complete-btn:hover{background:url(../images/errors/step5-complete.png) 0 43px;}
+a.step5complete-btn{width:140px;height:43px;background:url(/images/errors/step5-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step5complete-btn:hover{background:url(/images/errors/step5-complete.png) 0 43px;}
 
-a.step6complete-btn{width:140px;height:43px;background:url(../images/errors/step6-complete.png) 0 0;display:block;margin-bottom:15px;}
-a.step6complete-btn:hover{background:url(../images/errors/step6-complete.png) 0 43px;}
+a.step6complete-btn{width:140px;height:43px;background:url(/images/errors/step6-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step6complete-btn:hover{background:url(/images/errors/step6-complete.png) 0 43px;}
 
 /*incomplete step button----------------------------------------------------------------------------------------------------*/
 
-a.step1incomplete-btn{width:140px;height:43px;background:url(../images/errors/step1-incomplete.png) 0 0;display:block;margin-bottom:15px;}
-a.step1incomplete-btn:hover{background:url(../images/errors/step1-incomplete.png) 0 43px;}
+a.step1incomplete-btn{width:140px;height:43px;background:url(/images/errors/step1-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step1incomplete-btn:hover{background:url(/images/errors/step1-incomplete.png) 0 43px;}
 
-a.step2incomplete-btn{width:140px;height:43px;background:url(../images/errors/step2-incomplete.png) 0 0;display:block;margin-bottom:15px;}
-a.step2incomplete-btn:hover{background:url(../images/errors/step2-incomplete.png) 0 43px;}
+a.step2incomplete-btn{width:140px;height:43px;background:url(/images/errors/step2-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step2incomplete-btn:hover{background:url(/images/errors/step2-incomplete.png) 0 43px;}
 
-a.step3incomplete-btn{width:140px;height:43px;background:url(../images/errors/step3-incomplete.png) 0 0;display:block;margin-bottom:15px;}
-a.step3incomplete-btn:hover{background:url(../images/errors/step3-incomplete.png) 0 43px;}
+a.step3incomplete-btn{width:140px;height:43px;background:url(/images/errors/step3-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step3incomplete-btn:hover{background:url(/images/errors/step3-incomplete.png) 0 43px;}
 
-a.step4incomplete-btn{width:140px;height:43px;background:url(../images/errors/step4-incomplete.png) 0 0;display:block;margin-bottom:15px;}
-a.step4incomplete-btn:hover{background:url(../images/errors/step4-incomplete.png) 0 43px;}
+a.step4incomplete-btn{width:140px;height:43px;background:url(/images/errors/step4-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step4incomplete-btn:hover{background:url(/images/errors/step4-incomplete.png) 0 43px;}
 
-a.step5incomplete-btn{width:140px;height:43px;background:url(../images/errors/step5-incomplete.png) 0 0;display:block;margin-bottom:15px;}
-a.step5incomplete-btn:hover{background:url(../images/errors/step5-incomplete.png) 0 43px;}
+a.step5incomplete-btn{width:140px;height:43px;background:url(/images/errors/step5-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step5incomplete-btn:hover{background:url(/images/errors/step5-incomplete.png) 0 43px;}
 
-a.step6incomplete-btn{width:140px;height:43px;background:url(../images/errors/step6-incomplete.png) 0 0;display:block;margin-bottom:15px;}
-a.step6incomplete-btn:hover{background:url(../images/errors/step6-incomplete.png) 0 43px;}
+a.step6incomplete-btn{width:140px;height:43px;background:url(/images/errors/step6-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 0 43px;}
 
-.step1-active{width:140px;height:43px;background:url(../images/errors/step1.png) 0 43px;display:block;margin-bottom:15px;}
-.step2-active{width:140px;height:43px;background:url(../images/errors/step2.png) 0 43px;display:block;margin-bottom:15px;}
-.step3-active{width:140px;height:43px;background:url(../images/errors/step3.png) 0 43px;display:block;margin-bottom:15px;}
-.step4-active{width:140px;height:43px;background:url(../images/errors/step4.png) 0 43px;display:block;margin-bottom:15px;}
-.step5-active{width:140px;height:43px;background:url(../images/errors/step5.png) 0 43px;display:block;margin-bottom:15px;}
-.step6-active{width:140px;height:43px;background:url(../images/errors/step6.png) 0 43px;display:block;margin-bottom:15px;}
+.step1-active{width:140px;height:43px;background:url(/images/errors/step1.png) 0 43px;display:block;margin-bottom:15px;}
+.step2-active{width:140px;height:43px;background:url(/images/errors/step2.png) 0 43px;display:block;margin-bottom:15px;}
+.step3-active{width:140px;height:43px;background:url(/images/errors/step3.png) 0 43px;display:block;margin-bottom:15px;}
+.step4-active{width:140px;height:43px;background:url(/images/errors/step4.png) 0 43px;display:block;margin-bottom:15px;}
+.step5-active{width:140px;height:43px;background:url(/images/errors/step5.png) 0 43px;display:block;margin-bottom:15px;}
+.step6-active{width:140px;height:43px;background:url(/images/errors/step6.png) 0 43px;display:block;margin-bottom:15px;}
 
 .table-form1{
 	width:445px;
@@ -575,6 +574,7 @@ a.step6incomplete-btn:hover{background:url(../images/errors/step6-incomplete.png
 	font-family:arial;
 	font-size:14px;
 	color:#404142;
+	margin-top:10px;
 }
 
 .title3{
@@ -587,14 +587,14 @@ a.step6incomplete-btn:hover{background:url(../images/errors/step6-incomplete.png
 a.plusminus{
 	width:7px;
 	height:7px;
-	background:url(../images/errors/plusminus.png) 0 0;
+	background:url(/images/errors/plusminus.png) 0 0;
 	display:block;
 	float:left;
-	margin-top:3px;
+	margin-top:-3px;
 }
 
 a.plusminus:hover{
-	background:url(../images/errors/plusminus.png) 0 7px;
+	background:url(/images/errors/plusminus.png) 0 7px;
 }
 
 .line1{width:417px;float:left;margin-right:5px;}
@@ -664,7 +664,7 @@ a.plusminus:hover{
 	display:block;
 	margin:0;
 	padding:0;
-	background:url(../images/errors/404-bg.jpg) no-repeat;
+	background:url(/images/errors/404-bg.jpg) no-repeat;
 }
 
 #bg2{
@@ -673,7 +673,7 @@ a.plusminus:hover{
 	display:block;
 	margin:0;
 	padding:0;
-	background:url(../images/errors/error-bg.jpg) no-repeat;
+	background:url(/images/errors/error-bg.jpg) no-repeat;
 }
 
 #bg3{
@@ -682,7 +682,7 @@ a.plusminus:hover{
 	display:block;
 	margin:0;
 	padding:0;
-	background:url(../images/errors/maintenence-bg.jpg) no-repeat;
+	background:url(/images/errors/maintenence-bg.jpg) no-repeat;
 }
 
 .ups{
@@ -703,25 +703,25 @@ a.plusminus:hover{
 	width:225px;
 	height:151px;
 	display:block;
-	background:url(../images/errors/home-btn.jpg) 0 0;
+	background:url(/images/errors/home-btn.jpg) 0 0;
 	margin-top:32px;
 }
 
 .home-btn:hover{
-	background:url(../images/errors/home-btn.jpg) 0 151px;
+	background:url(/images/errors/home-btn.jpg) 0 151px;
 }
 
 .home-btn2{
 	width:55px;
 	height:68px;
 	display:block;
-	background:url(../images/errors/home-btn2.png) 0 0;
+	background:url(/images/errors/home-btn2.png) 0 0;
 	margin:180px 10px 0 0;
 	float:right;
 }
 
 .home-btn2:hover{
-	background:url(../images/errors/home-btn2.png) 0 71px;
+	background:url(/images/errors/home-btn2.png) 0 71px;
 }
 
 .text-btn{
@@ -762,13 +762,13 @@ a.plusminus:hover{
 	color:#4a4a4a;
 	text-align:left;
 	text-decoration:none;
-	background: url(../images/errors/btn1.gif) 0 0;
+	background: url(/images/errors/btn1.gif) 0 0;
 	display:block;
 }
 
 a.email_btn:hover{
 	color:#606060;
-	background: url(../images/errors/btn1.gif) 0 52px;
+	background: url(/images/errors/btn1.gif) 0 52px;
 
 }
 
