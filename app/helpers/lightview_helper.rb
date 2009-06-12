@@ -76,9 +76,9 @@ module LightviewHelper
   end
 
   # returns link to hide a lightview
-  def link_to_close_lightview(name=nil)
+  def link_to_close_lightview(name=nil, option={})
     name ||= 'Close'
-    link_to_function name, close_lightview_js
+    link_to_function name, close_lightview_js, option
   end
   
   # returns js to hide a lightview

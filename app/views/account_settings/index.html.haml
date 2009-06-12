@@ -1,10 +1,29 @@
 - title 'account settings'
 - use_calendar()
-#header-sync-facebook
-  = link_to_remote "Sync With Facebook", :url => facebook_sync_account_settings_path, :update => "account-setting-content"
-#account-setting
-  = render :partial => 'setting_nav'
-  #account-setting-content
-    .form_field
-      - form_remote_tag :url => save_personal_info_account_settings_path do
-        = render :partial => 'accounts/personal_info'
+
+.popup-container
+  .popuptop
+  .popup-content
+    .top-box
+      / = link_to_remote "", close_lightview_js, :class => "stop-btn"
+      = link_to_close_lightview("", {:class => "stop-btn"})
+      .clear
+      .top-box2
+        .acc-title
+        .top-rightbox
+          = link_to_remote "", { :url => facebook_sync_account_settings_path, :update => "account-setting-content"} , :class => "fb-btn"
+          .clear
+          .top-text1
+            &nbsp;Always do this
+          = check_box_tag :faebook_sync
+          .clear
+        .clear
+    .popup-content-left
+      = render :partial => "setting_nav"
+    #account-setting-content
+      .pop-content-right
+        - form_remote_tag :url => save_personal_info_account_settings_path do
+          = render :partial => 'accounts/personal_info'
+    .clear
+  = image_tag "errors/popup-footer.png" 
+

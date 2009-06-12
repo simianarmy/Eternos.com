@@ -6,13 +6,13 @@ module ApplicationHelper
     object.text_field(method, :onchange => "$('#{button_target}').click();")
   end
 
-  def radio_submit_onclick(object, method, value, button_target, default)
+  def radio_submit_onclick(object, method, value, button_target, default, className)
     if !default.blank? and default == value
       checked = true
     else
       checked = false
     end
-    object.radio_button(method, value, :onClick => "$('#{button_target}').click();", :checked => checked)
+    object.radio_button(method, value, :onClick => "$('#{button_target}').click();", :checked => checked, :class => className)
   end
 
   def date_select_onchange(object, method, button_target)
