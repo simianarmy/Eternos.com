@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :invitation
   has_one :address_book, :dependent => :destroy
   has_many :comments
+  has_many :online_accounts
   
   # Authentication: AuthLogic
   acts_as_authentic do |c|
