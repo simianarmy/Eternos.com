@@ -7,4 +7,8 @@ class MemberHomeController < ApplicationController
   def index
     @name = current_user.name
   end
+  
+  def online_account
+    
+  end
 end
