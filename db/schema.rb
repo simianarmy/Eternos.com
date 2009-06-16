@@ -103,8 +103,8 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   add_index "backup_jobs", ["user_id"], :name => "user_id"
 
   create_table "backup_sites", :force => true do |t|
-    t.string "name"
-    t.string "type"
+    t.enum    "name", :limit => [:twitter, :flickr, :facebook]
+    t.string  "type"
   end
 
   add_index "backup_sites", ["name"], :name => "name"
@@ -353,19 +353,6 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   end
 
   add_index "notify_emails", ["email"], :name => "index_notify_emails_on_email"
-
-  create_table "online_accounts", :force => true do |t|
-    t.integer  "user_id"
-    t.enum     "name",           :limit => [:Twitter, :Flickr, :Facebook], :default => :Twitter
-    t.string   "username"
-    t.string   "password"
-    t.boolean  "disabled"
-    t.datetime "times_accessed"
-    t.datetime "last_accessed"
-    t.datetime "failed_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "open_id_authentication_associations", :force => true do |t|
     t.integer "issued"
@@ -683,5 +670,7 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
 
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
+  
+  BackupSite.create([{:name => "facebook"}, {:name => "twitter"}, {:name => "flickr"}])
 
 end

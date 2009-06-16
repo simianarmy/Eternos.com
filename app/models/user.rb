@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :first_name, :last_name, :email, :facebook_id,
-    :password, :password_confirmation, :identity_url, :invitation_token
+    :password, :password_confirmation, :identity_url, :invitation_token, :terms_of_service
   
   # Validate first,last name
   validates_presence_of :first_name

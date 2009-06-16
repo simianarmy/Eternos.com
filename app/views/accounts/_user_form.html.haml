@@ -29,5 +29,5 @@
   %p.input.accept  
     I accept the 
     = link_to 'Terms and Conditions', '/about/terms'
-    = check_box_tag :terms_of_service, "1", @checked, {:id => 'terms_of_service'}
+    = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @checked}
 	
