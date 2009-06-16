@@ -4,18 +4,21 @@ class BackupSourcesController < ApplicationController
   require_role "Member"
   
   def create
-    if params[:site_name] 
-      online_account = BackupSource.find_or_create_by_auth_login(params[:backup_source][:auth_login])
+    if params[:site_name]
+      backup_site = BackupSite.find_by_name(params[:site_name])
       case params[:site_name]
         when "facebook"
           #TODO:
         when "twitter"
-          httpauth = Twitter::HTTPAuth.new(online_account.auth_login, online_account.auth_password)
+          httpauth = Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password])
           base = Twitter::Base.new(httpauth)
           if base.verify_credentials
-            BackupSource.create(params[:backup_source].merge(:user_id => current_user.id))
-            online_account.save!
-            message = "Twitter account Activated"
+            backup_source = BackupSource.new(params[:backup_source].merge({:user_id => current_user.id, :backup_site_id => backup_site.id}))
+            message = if backup_source.save
+              "Twitter account activated"
+            else
+              "Your account already activated"
+            end
           else
             message = "Twitter account is not valid"
           end
