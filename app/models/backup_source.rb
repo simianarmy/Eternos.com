@@ -12,4 +12,12 @@ class BackupSource < ActiveRecord::Base
   named_scope :confirmed, :conditions => {:auth_confirmed => true}
   named_scope :needs_scan, :conditions => {:needs_initial_scan => true}
   
+  def login_failed!(error) 
+    update_attributes(:last_login_attempt_at => Time.now, :auth_error => error)
+  end
+  
+  def logged_in!
+    t = Time.now
+    update_attributes(:last_login_attempt_at => t, :last_login_at => t, :auth_error => nil)
+  end
 end

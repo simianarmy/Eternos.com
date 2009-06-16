@@ -1,5 +1,9 @@
-class FacebookProfile < ActiveRecord::Base
+# $Id$
 
+# Facebook Profile class
+
+class FacebookProfile < ActiveRecord::Base
+  # For "sync with facebook" functionality
   def self.convert_fb_profile_to_sync_with_local_setup(fb_hash)
     address_book = Hash.new
     profile = Hash.new
@@ -11,5 +15,4 @@ class FacebookProfile < ActiveRecord::Base
     profile[:political_views] = fb_hash[:political]
     return address_book, profile
   end
-
 end

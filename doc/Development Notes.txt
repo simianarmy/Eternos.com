@@ -20,6 +20,8 @@ Database Server on Amazon EC2?
 Search/Indexing: 
   Sphinx - High-perf, Craigslist uses
     thinking_sphinx rails plugin: thinking_sphinx
+  http://railscasts.com/episodes/111-advanced-search-form
+  Xapian
     
 General:
 
@@ -78,6 +80,9 @@ SSL:
 			
 UI:
 
+CSS: 
+  http://www.blueprintcss.org/
+
 Flash uploader: http://digitarald.de/project/fancyupload/
   Issues related to Rails 2.2 & SWFUploader: http://jimneath.org/2008/05/15/swfupload-paperclip-and-ruby-on-rails/
 
@@ -90,8 +95,6 @@ Page Elements Scrolling: http://flowplayer.org/demos/scrollable.htm
 Accordion: http://www.stickmanlabs.com/accordion/
 
 Time Picker: http://www.nogray.com/time_picker.php
-
-Advanced Searching: http://railscasts.com/episodes/111-advanced-search-form
 
 Drag & Drop JS: http://www.hunlock.com/examples/dragdrop.html
 

@@ -9,9 +9,8 @@ class FacebookProfilesController < ApplicationController
     @response = {}
     if facebook_session && (fb_user = facebook_session.user)
       begin
-        if fb_user.populate(*Facebooker::User::FIELDS)
-          profile = {}
-          Facebooker::User::FIELDS.each {|f| profile[f] = fb_user.send(f)}
+        profile = FacebookUserProfile.populate(fb_user)
+        if profile.any?
           @response = {:status => 200, :profile => profile}
         else
           @response = {:status => 500, :error => 'Populate method failed'}

@@ -120,6 +120,7 @@ require 'tag_extensions'
 require 'association_proxy'
 require 'rvideo'
 require 'mime/types'
+require 'facebook_user_profile'
 
 # Various global constant strings
 FLOWPLAYER_PRODUCT_KEY = '$3894b992d106ccc5f56'

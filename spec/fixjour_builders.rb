@@ -148,8 +148,7 @@ Fixjour  do
       :member => new_member,
       :title => Faker::Lorem.sentence,
       :message => Faker::Lorem.paragraph,
-      :tag_s => Faker::Lorem.words.join(',')
-    )
+      :tag_s => Faker::Lorem.words.join(','))
   end
   
   define_builder(PhoneNumber) do |klass, overrides|
@@ -159,6 +158,11 @@ Fixjour  do
       :number => Faker.numerify('###-####'))
   end
     
+  define_builder(Profile) do |klass, overrides|
+    klass.new(
+      :member => new_member)
+  end
+  
   define_builder(Recording) do |klass, overrides|
     overrides.process(:type) do |type|
       overrides[:filename] = "audiorecording.flv" if type == :audio

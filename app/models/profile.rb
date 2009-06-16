@@ -1,3 +1,5 @@
+# $Id$
+
 class Profile < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
   with_options :dependent => :destroy do |m|
@@ -8,6 +10,9 @@ class Profile < ActiveRecord::Base
   validates_existence_of :member, :message => 'Could not find the owner of this profile'
   validates_associated :careers, :message => 'Some required career fields are missing'
   validates_associated :schools, :messages => 'Some required education fields are missing'
+  
+  serialize :facebook_data
+  xss_terminate :except => [ :facebook_data ] # conflicts w/serialize
   
   include Addressable
   after_update :save_associations
