@@ -64,6 +64,36 @@ class AccountSettingsController < ApplicationController
     end  
   end
 
+  def email_account
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          setup_layout_account_setting(page, "step3", "account_settings/email_account")
+        end
+      end
+    end  
+  end
+
+  def upgrades
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          setup_layout_account_setting(page, "step5", "account_settings/upgrades")
+        end
+      end
+    end
+  end
+
+  def billings
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          setup_layout_account_setting(page, "step6", "account_settings/billings")
+        end
+      end
+    end
+  end
+
   def save_personal_info
     find_user_profile
     initialize_from_params

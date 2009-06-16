@@ -6,12 +6,15 @@
   <%- link_class = active_link == "step2" ? "step2-active" : "step2-btn"  -%>
   <%= link_to_remote "", { :url => online_account_settings_path}, :class => link_class %>
 
-  <%= link_to "", "", :class => "step3-btn"%>
+  <%- link_class = active_link == "step3" ? "step3-active" : "step3-btn"  -%>
+  <%= link_to_remote "", { :url => email_account_account_settings_path}, :class => link_class %>
 
   <%= link_to "", "", :class => "step4-btn"%>
 
-  <%= link_to "", "", :class => "step5-btn"%>
+  <%- link_class = active_link == "step5" ? "step5-active" : "step5-btn"  -%>
+  <%= link_to_remote "", { :url => upgrades_account_settings_path}, :class => link_class %>
 
-  <%= link_to "", "", :class => "step6-btn"%>
+  <%- link_class = active_link == "step6" ? "step6-active" : "step6-btn"  -%>
+  <%= link_to_remote "", { :url => billings_account_settings_path}, :class => link_class %>
 
 </div>
