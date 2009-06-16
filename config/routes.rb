@@ -2,7 +2,7 @@
 
 ActionController::Routing::Routes.draw do |map|
 
-  map.resources :online_accounts
+  map.resources :backup_sources
   
   map.resources :account_settings, :collection => {:online => :get, :save_personal_info => :post,
     :personal_info => :get, :facebook_sync => :get}

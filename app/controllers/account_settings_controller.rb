@@ -54,7 +54,7 @@ class AccountSettingsController < ApplicationController
   end
 
   def online
-    @online_account = OnlineAccount.new
+    @online_account = BackupSource.new
     respond_to do |format|
       format.js do
         render :update do |page|
