@@ -1,41 +1,51 @@
 <div id="account-setting-content">
   <div class="title3">Online Account</div>
   <div class="network-icon-box">
-    <%#= link_to_show_hide('facebook-box', "", {:class => "fb-btn2"})  %>
-        <a herf="#" onclick="$('form-box').show(); $('online_account').value='facebook'" class="fb-btn2"></a>
-        <a herf="#" onclick="$('form-box').show(); $('online_account').value='twitter'" class="twitter-btn"></a>
-	<a herf="#" onclick="$('form-box').show(); $('online_account').value='flickr'" class="flickr-btn"></a>
-	<a herf="#" onclick="$('form-box').show(); $('online_account').value='rss'" class="rss-btn"></a>
+    <%= link_to_show_hide('', "", {:class => "fb-btn2"})  %>
+    <%= link_to_show_hide('twitter-box', "", {:class => "twitter-btn", :id => "twitter-link"})  %>
+    <%= link_to_show_hide('', "", {:class => "flickr-btn"})  %>
+    <%= link_to_show_hide('', "", {:class => "rss-btn"})  %>
   </div>
 
   <div style="clear:both"></div> 
+
+  <%= render :partial => "shared/rjs_message" %>
   
   <div class="network-popup-box"></div>
-  <div class="network-login-box" id="form-box" style="display:none;">
-    <%= image_tag "errors/fb-top-box.gif" %>
-  <form action="/online_account" id='form-online-account' method='post'>
-    <%= hidden_field_tag "online_account", "test" %>
-      <div class="network-box">
-        <table class="table-form2" align="left">
-          <tr>
-                <td class="coll-form4" valign="center">Username</td>
-                    <td class="coll-form2" valign="center">:</td>
-                    <td class="coll-form5" valign="center"><input type="textbox" class="textbox1" name="username"></td>
-              </tr>
-              <tr>
-            <td class="coll-form4" valign="center">Password</td>
-                    <td class="coll-form2" valign="center">:</td>
-                    <td class="coll-form5" valign="center"><input type="textbox" class="textbox1" name="password"></td>
-              </tr>
-            </table>
-            <table class="table-form3" align="left">
-              <tr>
-                <td width="100%" align="right"><a href="#" class="submit-btn">Submit</a></td>
-              </tr>
-            </table>
+  <div class="network-login-box" id="form-box">
+   <div id="twitter-box" style="display:none;">
+     <% form_remote_for @online_account, :id=> 'form-online-account'  do |f| %>
+       <%= image_tag "errors/twitter-top-box.gif" %>
+       <%= hidden_field_tag :name, "twitter" %>
+       <div class="network-box">
+         <table class="table-form2" align="left">
+            <tr>
+              <td class="coll-form4" valign="center">Username</td>
+              <td class="coll-form2" valign="center">:</td>
+              <td class="coll-form5" valign="center">
+                <%= f.text_field :username, :class => "textbox1" %>
+              </td>
+            </tr>
+            <tr>
+              <td class="coll-form4" valign="center">Password</td>
+              <td class="coll-form2" valign="center">:</td>
+              <td class="coll-form5" valign="center">
+                <%= f.password_field :password, :class => "textbox1" %>
+              </td>
+            </tr>
+          </table>
+          <table class="table-form3" align="left">
+            <tr>
+              <td width="100%" align="right">
+                <%= f.submit "Submit", :class => "submit-btn" %>
+              </td>
+            </tr>
+          </table>
       </div>
-      </form>
-    <%= image_tag "errors/fb-box-footer.gif" %>
+     <%- end -%>
+     <%= image_tag "errors/fb-box-footer.gif" %>
+   </div>
+
   </div>
   
 </div>
