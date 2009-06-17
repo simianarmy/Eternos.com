@@ -10,7 +10,8 @@
         #account-setting-title.acc-title
           Account Setup
         .top-rightbox
-          = link_to_remote "", { :url => facebook_sync_account_settings_path, :update => "account-setting-content"} , :class => "fb-btn"
+          #sync-message
+          = link_to_remote "", { :url => facebook_sync_account_settings_path} , :class => "fb-btn"
           .clear
           .top-text1
             &nbsp;Always do this

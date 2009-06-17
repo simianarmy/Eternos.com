@@ -25,32 +25,46 @@ class AccountSettingsController < ApplicationController
 
   #still in progress
   def facebook_sync
+    find_user_profile
     saved = false
     if facebook_session && (fb_user = facebook_session.user)
       if fb_user.populate(*Facebooker::User::FIELDS)
-        find_user_profile
+        
         facebook_profile = {}
         Facebooker::User::FIELDS.each {|f| facebook_profile[f] = fb_user.send(f)}
         @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
         saved = update_personal_info
       end
     end
-
+   
     respond_to do|format|
       if saved
-        format.js{
-          flash[:notice] = "Successfully sync with facebook";
-          render :action => 'personal_info', :layout => false
-        }
+        format.js do
+          render :update do |page|
+            @sync_message = "Sync Successfull"
+            setup_layout_account_setting(page, "step1", "account_settings/personal_info")
+            page.replace "sync-message", :partial => "account_settings/sync_message"
+          end
+        end  
       else
-        format.js{
-          find_user_profile
-          flash.now[:error] = "Cant sync with facebook";
-          render :action => 'personal_info', :layout => false
-        }
+        format.js do
+          render :update do |page|
+            @sync_message = "Can't sync with facebook"
+            page.replace "sync-message", :partial => "account_settings/sync_message"
+          end
+        end
       end
     end
     
+  rescue
+     respond_to do|format|
+        format.js do
+          render :update do |page|
+            @sync_message = "Can't sync with facebook"
+            page.replace "sync-message", :partial => "account_settings/sync_message"
+          end
+        end
+    end
   end
 
   def online
