@@ -88,7 +88,7 @@ var Lightview = {
         height: 300,
         menubar: 'top',
         closeButton: 'small',
-        overflow: 'auto'
+        overflow: 'hidden'
       },
       iframe: {
         width: 400,

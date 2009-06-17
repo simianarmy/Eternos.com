@@ -3,6 +3,12 @@
  *
  * http://www.nickstakenburg.com/projects/lightview
 */
+tbody.scrollContent {
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: auto;
+        height: 350px;
+} 
 
 #lightview {
 	position: absolute;
