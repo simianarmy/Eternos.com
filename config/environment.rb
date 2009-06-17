@@ -63,6 +63,11 @@ Rails::Initializer.run do |config|
   config.gem 'amqp'
   config.gem 'chronic', :version => '>= 0.2.3'
   config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
+  config.gem 'mash', :version => '>= 0.0.3'
+  config.gem 'oauth', :version => '>= 0.3.4'
+  config.gem 'crack', :version => '>= 0.1.2'
+  config.gem 'httparty', :version => '>= 0.4.3'
+  
   #config.gem 'memcache-client', :version => ">= 1.7.1"
   #config.gem 'flvtool2', :version => ">= 1.0.6"
   

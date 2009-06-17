@@ -1,5 +1,8 @@
+# $Id$
+
+require 'twitter'
+
 class BackupSourcesController < ApplicationController
-  require 'twitter'
   before_filter :login_required
   require_role "Member"
   

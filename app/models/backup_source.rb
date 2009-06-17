@@ -4,6 +4,7 @@ class BackupSource < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
   belongs_to :backup_site
   has_many :backup_source_days
+  has_many :backup_photo_albums
   
   validates_presence_of :auth_login
   validates_presence_of :auth_password
@@ -11,6 +12,9 @@ class BackupSource < ActiveRecord::Base
   
   named_scope :confirmed, :conditions => {:auth_confirmed => true}
   named_scope :needs_scan, :conditions => {:needs_initial_scan => true}
+  named_scope :photo_album, lambda {|id| 
+    { :joins => :backup_photo_albums, :conditions => {'backup_photo_albums.source_album_id' => id} }
+  }
   
   def login_failed!(error) 
     update_attributes(:last_login_attempt_at => Time.now, :auth_error => error)

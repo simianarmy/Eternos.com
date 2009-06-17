@@ -293,6 +293,24 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
 
   add_index "elements", ["story_id"], :name => "story_id"
 
+  create_table :backup_photo_albums, :force => true do |t|
+    t.integer :backup_source_id, :source_album_id, :cover_id, :null => false
+    t.integer :size, :null => false, :default => 0
+    t.string :name, :location, :modified
+    t.text :description
+    t.datetime :created_at, :updated_at
+  end
+  add_index :backup_photo_albums, :backup_source_id
+  add_index :backup_photo_albums, :source_album_id
+  
+  create_table :backup_photos, :force => true do |t|
+    t.integer :backup_photo_album_id, :source_photo_id, :null => false
+    t.integer :content_id
+    t.datetime :created_at, :updated_at
+  end
+  add_index :backup_photos, :backup_photo_album_id
+  add_index :backup_photos, :source_photo_id
+  
   create_table "guest_invitations", :force => true do |t|
     t.integer  "sender_id",                        :null => false
     t.integer  "circle_id"
