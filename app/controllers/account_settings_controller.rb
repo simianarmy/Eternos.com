@@ -7,8 +7,30 @@ class AccountSettingsController < ApplicationController
   
   def index
     find_user_profile
+    check_facebook_sync
     respond_to do |format|
       format.js { render :layout => false }
+    end
+  end
+
+  def always_sync_with_facebook
+    if params[:facebook_sync]
+      save = current_user.update_attribute(:always_sync_with_facebook, true)
+    else
+      save = current_user.update_attribute(:always_sync_with_facebook, false)
+    end
+    respond_to do |format|
+      format.js do
+        if save
+          render :nothing => true
+        else
+          render :update do |page|
+             @sync_message = "Can't set reminder for facebook sync"
+             page.replace "sync-message", :partial => "account_settings/sync_message"
+             page.visual_effect :highlight, "sync-message"
+          end
+        end
+      end
     end
   end
 
@@ -23,20 +45,9 @@ class AccountSettingsController < ApplicationController
     end
   end
 
-  #still in progress
   def facebook_sync
     find_user_profile
-    saved = false
-    if facebook_session && (fb_user = facebook_session.user)
-      if fb_user.populate(*Facebooker::User::FIELDS)
-        
-        facebook_profile = {}
-        Facebooker::User::FIELDS.each {|f| facebook_profile[f] = fb_user.send(f)}
-        @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
-        saved = update_personal_info
-      end
-    end
-   
+    saved = merge_with_facebook
     respond_to do|format|
       if saved
         format.js do
@@ -152,6 +163,26 @@ class AccountSettingsController < ApplicationController
       @user = current_user
       @address_book = @user.address_book
       @profile  = Profile.find_or_create_by_user_id(@user.id)
+   end
+
+   def check_facebook_sync
+     if @user.always_sync_with_facebook
+       @checked_always_sync = true
+       merge_with_facebook
+     end
+   end
+
+   def merge_with_facebook
+     saved = false
+     if facebook_session && (fb_user = facebook_session.user)
+       if fb_user.populate(*Facebooker::User::FIELDS)
+          facebook_profile = {}
+          Facebooker::User::FIELDS.each {|f| facebook_profile[f] = fb_user.send(f)}
+          @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
+          saved = update_personal_info
+        end
+      end
+      return saved
    end
 
 end

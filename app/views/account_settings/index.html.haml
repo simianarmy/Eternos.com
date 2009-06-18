@@ -15,7 +15,9 @@
           .clear
           .top-text1
             &nbsp;Always do this
-          = check_box_tag :faebook_sync
+          - form_remote_tag :url => always_sync_with_facebook_account_settings_path do
+            = check_box_submit_on_click "facebook_sync", "submit_form_sync", 1, @checked_always_sync
+            = hidden_submit("submit_form_sync")
           .clear
         .clear
     .popup-content-left

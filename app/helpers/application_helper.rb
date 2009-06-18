@@ -2,6 +2,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def check_box_submit_on_click(method, button_target, value, default, option={})
+    action = { :onclick => "$('#{button_target}').click();" }
+    option.update(action)
+    check_box_tag(method, value, default, option)
+   end
+  
   def time_zone_submit_onselect(object, method,  button_target, priority = nil, option={}, html_option = {})
     action = {:onchange => "$('#{button_target}').click();"}
     html_option.update(action)
