@@ -66,7 +66,7 @@ class AccountsController < ApplicationController
         #rennder :action => 'thanks', :layout => false
       end
     else
-      @checked = true
+      @checked = false
       render :action => 'new'#:layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
     end
   end
@@ -172,7 +172,7 @@ class AccountsController < ApplicationController
   def dashboard
     render :text => 'Dashboard action, engage!', :layout => true
   end
-
+  
   protected
   
     def load_object
