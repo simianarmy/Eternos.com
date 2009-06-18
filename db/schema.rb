@@ -691,4 +691,5 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   
   BackupSite.create([{:name => "facebook"}, {:name => "twitter"}, {:name => "flickr"}])
 
+  add_column "users", "always_sync_with_facebook", :boolean
 end
