@@ -131,37 +131,44 @@ a {
 }
 
 input {
-	padding: 5px;
-	margin: 0 0 0 5px;
-	width: 245px;
-	border:1px solid #C7C7C7;
-	color:#5f5f5f;
-	font-size: 16px;
+	margin: 0 0 5px 5px;
+	font-size: 11px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
+	color:#898989;
 }
 
 input[type=text] {
-	width: 245px;
+	font-size: 11px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
+	color:#898989;
 }
 
 input[type=submit] {
-	width: 100px;
+	width: 98px;
 }
 
 #title input[type=text] {
-	width: 400px;
+	font-size: 11px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
+	color:#898989;
 }
 	
 input[type=text]:focus, input[type=password]:focus, textarea:focus {
-	border-color: #02419e;
-	border-style: solid;
-	border-width: 3px;
+	border:1px solid #898989;
+	color:#898989;
 	background-color: lightyellow;
 }
 
 .fine-print {
 	width: 255px;
 	text-align: left;
-	margin: 3PX 0 10px 90px;
+	margin: 3px 0 10px 90px;
 	font-style: italic;
 	font-size: 9px;
 	display: block;

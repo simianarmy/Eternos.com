@@ -445,24 +445,6 @@ a.flickr-btn:hover{
 .flickr-active{width:175px; height:52px; background:url(../images/errors/lickr-active.gif); float:left;margin:0 10px 0 10px}
 .rss-active{width:77px; height:77px; background:url(../images/errors/rss-active.gif); float:left;margin:0 10px 0 10px}
 
-.submit-btn{
-	width:98px;
-	height:18px;
-	display:block;
-	text-align:center;
-	font-family:arial;
-	font-weight:bold;
-	color:white;
-	text-decoration:none;
-	font-size:11px;
-	margin:0 0 0 100px;
-	padding-top:4px;
-	background:url(../images/errors/submit-btn.gif) 0 0;
-}
-
-.submit-btn:hover{
-	background:url(../images/errors/submit-btn.gif) 0 22px;
-}
 
 /*step button---------------------------------------------------------------------------------------------------------------*/
 
@@ -560,13 +542,14 @@ a.step6incomplete-btn:hover{background:url(../images/errors/step6-incomplete.png
 	margin-top:10px;
 }
 
-.coll-form1{width:100px; text-align:left;}
-.coll-form2{width:5px; text-align:left;}
-.coll-form3{width:330px; text-align:left;}
-.coll-form4{width:200px; text-align:right}
-.coll-form5{width:200px; text-align:left}
 
-.textbox1{width:175px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}
+.coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form2{width:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form3{width:330px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form4{width:200px; text-align:right;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form5{width:200px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+
+.textbox1{width:240px;height:14px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox2{width:50px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox3{width:176px;margin:2px 0 2px 0;}
 .textbox4{width:90px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}

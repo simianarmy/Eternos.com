@@ -185,6 +185,19 @@ body{
 	color:#636972;
 }
 
+.textarea6{
+	width:445px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#636972;
+	text-align:justify;
+	line-height:20px;
+	border-top:1px solid #393b3e;
+	margin:10px 0 0 20px;
+	padding-top:10px;
+}
+
 .bluetext{
 	font-family:arial;
 	font-size:11px;
@@ -386,7 +399,7 @@ body{
 
 .network-box{
 	width:451px;
-	height:100px;
+	height:auto;
 	background:url(/images/errors/fb-box.gif) repeat-y;
 	padding:10px 0 0 0;
 }
@@ -446,16 +459,17 @@ a.flickr-btn:hover{
 
 .submit-btn{
 	width:98px;
-	height:18px;
+	height:22px;
 	display:block;
 	text-align:center;
 	font-family:arial;
 	font-weight:bold;
 	color:white;
 	text-decoration:none;
+	border:none;
 	font-size:11px;
-	margin:0 0 0 100px;
 	padding-top:4px;
+	margin-right:-5px;
 	background:url(/images/errors/submit-btn.gif) 0 0;
 }
 
@@ -559,13 +573,13 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin-top:10px;
 }
 
-.coll-form1{width:100px; text-align:left;}
-.coll-form2{width:5px; text-align:left;}
-.coll-form3{width:330px; text-align:left;}
-.coll-form4{width:200px; text-align:right}
-.coll-form5{width:200px; text-align:left}
+.coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form2{width:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form3{width:330px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form4{width:200px; text-align:right;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form5{width:200px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 
-.textbox1{width:175px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}
+.textbox1{width:240px;height:14px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox2{width:50px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox3{width:176px;margin:2px 0 2px 0;}
 .textbox4{width:90px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}
@@ -581,7 +595,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	font-family:arial;
 	font-size:14px;
 	color:#404142;
-	margin:5px 0 0 20px;
+	margin:10px 0 0 20px;
 }
 
 a.plusminus{

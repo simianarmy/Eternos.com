@@ -26,22 +26,33 @@ form#sign-up {
 input {
 	padding: 5px;
 	margin: 0 0 0 5px;
-	width: 245px;
-	border:1px solid #C7C7C7;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
 	color:#5f5f5f;
-	font-size: 16px;
+	font-size: 11px;
 }
 
-input#username,
+input#username{
+	padding: 5px 10px;
+	margin: 8px 25px 0 0;
+	font-size: 11px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
+}
+
 input#password {
 	padding: 5px 10px;
 	margin: 8px 25px 0 0;
 	font-size: 11px;
-	width: 250px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
 }
 
 input.login {
-	background: url(../images/login-button.png) no-repeat;
+	background: url(/images/login-button.png) no-repeat;
 	border: none;
 	color: #fff;
 	font-size: 14px;
@@ -50,7 +61,7 @@ input.login {
 }
 
 input.submit {
-	background: url(../images/submit-button.jpg) no-repeat;
+	background: url(/images/submit-button.jpg) no-repeat;
 	border: none;
 	width: 300px;
 	height: 58px;
@@ -59,7 +70,7 @@ input.submit {
 }
 
 input.continue {
-	background: url(../images/continue.jpg) no-repeat;
+	background: url(/images/continue.jpg) no-repeat;
 	float: right;
 	margin-right: 30px;
 	text-align: left;
@@ -90,9 +101,12 @@ input#address {
 }
 
 input#password {
-	padding: 5px;
-	margin: 0 0 0 5px;
-	width: 245px;
+	padding: 5px 10px;
+	margin: 8px 25px 0 0;
+	font-size: 11px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
 }
 
 input#password-created {
@@ -120,7 +134,7 @@ input#openid_url {
    background-color: #fff;
    background-position: 0 50%;
    color: #000;
-   padding-left: 18px;
+   padding-left: 14px;
 }
 
 span.select {
@@ -132,7 +146,7 @@ span.select {
 	height: 21px;
 	text-align: left;
 	font: 12px/21px arial,sans-serif;
-	background:  url(../images/drop-down-arrow.jpg) no-repeat right;
+	background:  url(/images/drop-down-arrow.jpg) no-repeat right;
 	overflow: hidden;
 }
 
