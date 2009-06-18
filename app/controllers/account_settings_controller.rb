@@ -44,6 +44,7 @@ class AccountSettingsController < ApplicationController
             @sync_message = "Sync Successfull"
             setup_layout_account_setting(page, "step1", "account_settings/personal_info")
             page.replace "sync-message", :partial => "account_settings/sync_message"
+            page.visual_effect :highlight, "sync-message"
           end
         end  
       else
@@ -51,6 +52,7 @@ class AccountSettingsController < ApplicationController
           render :update do |page|
             @sync_message = "Can't sync with facebook"
             page.replace "sync-message", :partial => "account_settings/sync_message"
+            page.visual_effect  :highlight, "sync-message"
           end
         end
       end
@@ -62,6 +64,7 @@ class AccountSettingsController < ApplicationController
           render :update do |page|
             @sync_message = "Can't sync with facebook"
             page.replace "sync-message", :partial => "account_settings/sync_message"
+            page.visual_effect :highlight, "sync-message"
           end
         end
     end

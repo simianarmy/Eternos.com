@@ -11,7 +11,7 @@
           Account Setup
         .top-rightbox
           #sync-message
-          = link_to_remote "", { :url => facebook_sync_account_settings_path} , :class => "fb-btn"
+          = link_to_remote "", { :url => facebook_sync_account_settings_path, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();"} , :class => "fb-btn"
           .clear
           .top-text1
             &nbsp;Always do this
@@ -22,9 +22,9 @@
       = render :partial => "setting_nav", :locals => { :active_link => "step1" }
     
     .pop-content-right
+      = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
       #account-setting-content
-        - form_remote_tag :url => save_personal_info_account_settings_path do
-          = render :partial => 'accounts/personal_info'
+        = render :partial => 'accounts/personal_info'
     .clear
   = image_tag "errors/popup-footer.png" 
 

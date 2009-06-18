@@ -1,4 +1,5 @@
-<table class="table-form1" align="left">
+<% form_remote_tag :url => save_personal_info_account_settings_path do %>
+  <table>
   <tbody class="scrollContent">
     <tr>
       <td colspan="3">
@@ -49,6 +50,14 @@
           <div class="top-text2">&nbsp;Transgender</div>
 		</td>
 	  </tr>
+      <tr>
+        <td class="coll-form1" valign="center">Timezone</td>
+		<td class="coll-form2" valign="center">:</td>
+		<td class="coll-form3" valign="center"> 
+          <%= time_zone_submit_onselect(ab, :timezone, "submit_form_personal" ) %>
+        </td>
+      </tr>
+      
     <%- end -%>
 
     <%- fields_for @profile do |profile| -%>
@@ -108,7 +117,7 @@
 	    <td class="coll-form2" valign="center">:</td>
 	    <td class="coll-form3" valign="center"> 
 				<div class="birthdate-box">
-					<%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year}) %>
+					<%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year}, {:onchange => "$('submit_form_personal').click();"}) %>
 				</div>
 			</td>
       </tr>
@@ -117,3 +126,4 @@
   </tbody>
 </table>
 <%= hidden_submit("submit_form_personal") %>
+<%- end -%>

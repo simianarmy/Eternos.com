@@ -2,6 +2,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def time_zone_submit_onselect(object, method,  button_target, priority = nil, option={}, html_option = {})
+    action = {:onchange => "$('#{button_target}').click();"}
+    html_option.update(action)
+    object.time_zone_select(method, priority, option, html_option)
+  end
+  
   def text_field_submit_onchange(object, method, button_target)
     object.text_field(method, :onchange => "$('#{button_target}').click();")
   end
