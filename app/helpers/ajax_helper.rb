@@ -59,6 +59,7 @@ module AjaxHelper
     page.replace "account-setting-nav", :partial => "account_settings/setting_nav",
       :locals => {:active_link => active_link }, :layout => false
     page.replace "account-setting-content", :partial => partial_content, :layout => false
+    page.visual_effect :blind_down, "account-setting-content"
   end
 
   def link_to_show_hide(id, name = "", option = {})
