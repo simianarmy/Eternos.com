@@ -6,5 +6,5 @@ class Circle < ActiveRecord::Base
   
   validates_presence_of :name, :message => "Please Select a Relationship"
   
-  scope_out :globals, :conditions => ['user_id = 0'], :order => :name
+  named_scope :globals, :conditions => {:user_id => 0}, :order => :name
 end

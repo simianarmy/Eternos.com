@@ -3,9 +3,10 @@
 class Profile < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
   with_options :dependent => :destroy do |m|
-    m.has_many :addresses, :as => :addressable, :extend => Address::AssociationMethods
+    m.has_many :addresses, :as => :addressable
     m.has_many :careers, :class_name => 'Job'
     m.has_many :schools
+    m.has_one :facebook_content
   end
   validates_existence_of :member, :message => 'Could not find the owner of this profile'
   validates_associated :careers, :message => 'Some required career fields are missing'

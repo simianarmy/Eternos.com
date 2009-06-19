@@ -69,3 +69,24 @@ module ActiveRecord
   end
 end
 
+module MIME
+  class Type
+    def typical_file_extension
+      @glob_patterns.first.gsub("*", "") if @glob_patterns
+    end
+  end  
+
+  module Magic
+    class << self
+      def check(filename)
+        check_special(filename) ||
+        open(filename) { |f|
+          check_magics_with_priority(f, 80) ||
+          check_magics_with_priority(f, 0) ||
+          check_default(f)
+        }
+      end
+    end
+  end
+end
+

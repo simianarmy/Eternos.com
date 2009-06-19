@@ -52,6 +52,21 @@ Fixjour  do
         :member => new_member)
   end
   
+  define_builder(BackupPhoto) do |klass, overrides|
+    klass.new(:backup_photo_album => new_backup_photo_album,
+      :source_photo_id => 100,
+      :source_url => 'http://www.jpg',
+      :caption => Faker::Lorem.sentence,
+      :tags => Faker::Lorem.words(3))
+  end
+  
+  define_builder(BackupPhotoAlbum) do |klass, overrides|
+    klass.new(:backup_source => new_backup_source,
+      :source_album_id => 1000,
+      :name => Faker::Lorem.sentence,
+      :modified => Time.now.to_i.to_s)
+  end
+  
   define_builder(BackupSite) do |klass, overrides|
     klass.new(:name => Faker::Internet.domain_name)
   end
@@ -102,6 +117,12 @@ Fixjour  do
       :uploaded_data => overrides[:data] || text_file, 
       :taken_at => 1.year.ago,
       :owner => overrides[:owner] || new_member)
+  end
+  
+  define_builder(FacebookContent) do |klass, overrides|
+    klass.new(
+      :profile => new_profile, 
+      :friends => Faker::Lorem.paragraph)
   end
   
   define_builder(Element) do |klass, overrides|

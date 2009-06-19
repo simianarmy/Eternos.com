@@ -7,7 +7,7 @@ class Category < ActiveRecord::Base
   
   validates_presence_of :name, :message => "Please Enter A Category Name"
 
-  scope_out :globals, :conditions => ['global = 1'], :order => :name
+  named_scope :globals, :conditions => {:global => 1}, :order => :name
   
   def global?
     global

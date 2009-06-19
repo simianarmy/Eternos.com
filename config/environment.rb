@@ -67,7 +67,7 @@ Rails::Initializer.run do |config|
   config.gem 'oauth', :version => '>= 0.3.4'
   config.gem 'crack', :version => '>= 0.1.2'
   config.gem 'httparty', :version => '>= 0.4.3'
-  
+  config.gem 'rio', :version => '>= 0.4.2'
   #config.gem 'memcache-client', :version => ">= 1.7.1"
   #config.gem 'flvtool2', :version => ">= 1.0.6"
   
@@ -125,6 +125,7 @@ require 'tag_extensions'
 require 'association_proxy'
 require 'rvideo'
 require 'mime/types'
+require 'shared-mime-info'
 require 'facebook_user_profile'
 
 # Various global constant strings

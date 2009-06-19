@@ -31,6 +31,7 @@ class Content < ActiveRecord::Base
   searches_on 'contents.filename'
   
   before_create :set_title
+  before_create :set_content_type_by_content
   after_commit_on_create :attachment_changed!
   
   named_scope :recordings, :conditions => {:parent_id => nil, :is_recording => true}
@@ -90,9 +91,11 @@ class Content < ActiveRecord::Base
   
   # From mime-types gem - added as class methods here as helper 
   # for class factory
-  def self.detect_mimetype(data)
-    return MIME::InvalidContentType unless data
-    MIME::Types.type_for(data.original_filename).to_s
+  def self.detect_mimetype(data_or_filename)
+    return MIME::InvalidContentType unless data_or_filename
+    f = data_or_filename.respond_to?(:original_filename) ? data_or_filename.original_filename : data_or_filename
+    types = MIME::Types.type_for(f)
+    types.any? ? types.first.content_type : MIME::InvalidContentType
   end
   
   # Returns proper class type based on content_type
@@ -117,6 +120,7 @@ class Content < ActiveRecord::Base
   end
   
   # Instance methods
+  
   
   def validate
     if parent_id.nil?
@@ -222,11 +226,28 @@ class Content < ActiveRecord::Base
     end
   end
   
-  private
+  protected
   
+  # before_create callback
   def set_title
     if filename && (title.blank? || (title == "Document"))
       self.title = File.basename(filename, File.extname(filename)).titleize
     end
+    true
   end
+  
+  # before_create callback described @ 
+  # http://www.rorsecurity.info/journal/2009/2/27/mime-sniffing-countermeasures.html
+  # to ensure proper mime-type extension is used for filename
+  #
+  def set_content_type_by_content
+    mime = MIME.check_magics(self.temp_path) #try magic numbers first
+    mime = MIME.check(self.temp_path) if self.content_type.nil? #do other checks if it failed
+    if mime
+      self.content_type = mime.to_s
+      self.filename += mime.typical_file_extension unless mime.match_filename?(self.filename)
+    end
+    true
+  end
+  
 end

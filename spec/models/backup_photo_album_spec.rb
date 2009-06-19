@@ -2,20 +2,13 @@
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-module FacebookPhotoAlbumSpecHelper
-  def create_album
-    FacebookPhotoAlbum.new(Facebooker::Album.new(:aid => "100", 
-      :size=> 2, :link => 'link_url', :cover_pid => '10', :name => 'test album',
-      :modified => '1244850471', :aid => '100', :populated => true, :location => 'nowwhere'))
-  end
-end
-
 describe BackupPhotoAlbum do
+  include FacebookerSpecHelper
   include FacebookPhotoAlbumSpecHelper
   
   before(:each) do
     @source = create_backup_source
-    @album = create_album
+    @album = new_album
   end
   
   it "should create object on import" do
@@ -32,6 +25,10 @@ describe BackupPhotoAlbum do
   describe "initialized" do
     before(:each) do
       @backup = BackupPhotoAlbum.import @source, @album
+    end
+    
+    it "should have no photos" do
+      @backup.backup_photos.should be_empty
     end
     
     describe "on modified?" do
@@ -51,10 +48,50 @@ describe BackupPhotoAlbum do
         @album.name = 'new name'
         @album.size = 3
         @album.aid = 1000
-        @backup.modify @album
+        @backup.save_album @album
         @backup.reload.name.should == 'new name'
         @backup.size.should == 3
         @backup.source_album_id.should == og_aid
+      end
+    end
+    
+    describe "on save photos" do
+      before(:each) do
+        @photo = new_photo
+      end
+      
+      describe "association" do
+        it "should save collection of photo objects" do
+          @backup.backup_photos.expects(:import).with(@photo)
+          @backup.save_photos([@photo])
+        end
+      
+        it "should create photo object" do
+          lambda {
+            @backup.save_photos([@photo])
+          }.should change(BackupPhoto, :count).by(1)
+        end
+      
+        it "should not add the same photo object to association" do
+          lambda {
+            2.times { @backup.save_photos([@photo]) }
+          }.should change(BackupPhoto, :count).by(1)
+        end
+      
+        it "new photo object should be saved in association with valid attributes" do
+          @backup.save_photos([@photo])
+          @backup.backup_photos.should have(1).thing
+          photo = @backup.backup_photos.first
+          photo.caption.should == @photo.caption
+          photo.source_url.should == @photo.source_url
+          photo.tags.should == nil
+        end
+        
+        it "should save photo with tags array" do
+          @photo.tags = @tags = %w[foo, foo shoo]
+          @backup.save_photos([@photo])
+          @backup.backup_photos.first.tags.should == @tags
+        end
       end
     end
   end

@@ -1,15 +1,14 @@
 # $Id$
 
-# Helper class to normalize facebook photo album attributes
-# NOTE:
-# Should be used as model for other site photo album classes (ie. Flickr)
-# and later moved into a module with hierarchies.
 
+# Should be used as model for other site classes (ie. Flickr)
+
+require 'backup_content_proxies'
 require 'facebooker'
 
-class FacebookPhotoAlbum
-  class InvalidAlbumClassError < StandardError; end
-    
+class FacebookPhotoAlbum < BackupPhotoAlbumProxy
+  attr_reader :album
+  
   def initialize(a)
     raise InvalidAlbumClassError unless a.class == Facebooker::Album
     @album = a
@@ -22,8 +21,22 @@ class FacebookPhotoAlbum
   def cover_id
     @album.cover_pid
   end
+end
+
+class FacebookPhoto < BackupPhotoProxy
+  attr_reader :photo
+  attr_accessor :tags
   
-  def method_missing(sym, *args, &block)
-    @album.send sym, *args, &block
+  def initialize(p)
+    raise InvalidPhotoClassError unless p.class == Facebooker::Photo
+    @photo = p
+  end
+  
+  def id
+    @photo.pid
+  end
+  
+  def source_url
+    @photo.src_big
   end
 end

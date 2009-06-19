@@ -2,7 +2,7 @@
 
 class AddressBook < ActiveRecord::Base
   belongs_to :user
-  has_many  :addresses, :as => :addressable, :extend => Address::AssociationMethods
+  has_many  :addresses, :as => :addressable
   has_many :phone_numbers, :as => :phoneable, :dependent => :destroy
   has_attached_file :photo
  

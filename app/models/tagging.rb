@@ -4,7 +4,7 @@ class Tagging < ActiveRecord::Base
   belongs_to :taggable, :polymorphic => true
   belongs_to :user
   
-  scope_out :tagged_with, :conditions => [],
+  named_scope :tagged_with, :conditions => [],
     :joins => "JOIN tags ON tags.id = taggings.tag_id",
     :group => "tag_id", 
     :order => 'tags.name'

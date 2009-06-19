@@ -102,6 +102,29 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
 
   add_index "backup_jobs", ["user_id"], :name => "user_id"
 
+  create_table :backup_photo_albums, :force => true do |t|
+    t.integer :backup_source_id, :source_album_id, :null => false
+    t.integer :cover_id
+    t.integer :size, :null => false, :default => 0
+    t.string :name, :location, :modified
+    t.text :description
+    t.datetime :created_at, :updated_at
+  end
+  add_index :backup_photo_albums, :backup_source_id
+  add_index :backup_photo_albums, :source_album_id
+  
+  create_table :backup_photos, :force => true do |t|
+    t.integer :backup_photo_album_id, :source_photo_id, :null => false
+    t.integer :content_id
+    t.string :caption, :tags
+    t.text :source_url
+    t.datetime :created_at, :updated_at
+    t.boolean :downloaded, :null => true, :default => false
+  end
+  add_index :backup_photos, :backup_photo_album_id
+  add_index :backup_photos, :source_photo_id
+  
+  
   create_table "backup_sites", :force => true do |t|
     t.enum    "name", :limit => [:twitter, :flickr, :facebook]
     t.string  "type"
@@ -293,23 +316,13 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
 
   add_index "elements", ["story_id"], :name => "story_id"
 
-  create_table :backup_photo_albums, :force => true do |t|
-    t.integer :backup_source_id, :source_album_id, :cover_id, :null => false
-    t.integer :size, :null => false, :default => 0
-    t.string :name, :location, :modified
-    t.text :description
-    t.datetime :created_at, :updated_at
+  create_table "facebook_contents", :force => true do |t|
+    t.integer :profile_id, :null => false
+    t.text :friends, :groups
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-  add_index :backup_photo_albums, :backup_source_id
-  add_index :backup_photo_albums, :source_album_id
-  
-  create_table :backup_photos, :force => true do |t|
-    t.integer :backup_photo_album_id, :source_photo_id, :null => false
-    t.integer :content_id
-    t.datetime :created_at, :updated_at
-  end
-  add_index :backup_photos, :backup_photo_album_id
-  add_index :backup_photos, :source_photo_id
+  add_index "facebook_contents", [:profile_id]
   
   create_table "guest_invitations", :force => true do |t|
     t.integer  "sender_id",                        :null => false

@@ -16,11 +16,7 @@ require 'yaml'
 
 class S3Uploader
   
-  S3_CONFIG = YAML.load_file(File.dirname(__FILE__)  + 
-                             '/../config/amazon_s3.yml')['development']
-  
-  
-
+  S3_CONFIG = YAML.load_file(File.join(RAILS_ROOT, 'config', 'amazon_s3.yml'))[RAILS_ENV]
   
   def initialize(file_name, public_path, content_type)
     @bucket_name = S3_CONFIG['bucket_name']
@@ -28,8 +24,6 @@ class S3Uploader
     @public_path = public_path
     @content_type = content_type
   end
-  
-  
   
   def connect
     AWS::S3::Base.establish_connection!(
@@ -55,7 +49,7 @@ class S3Uploader
     AWS::S3::S3Object.store(@public_path, 
                             open(@file_name), 
                             @bucket_name, 
-                            :access => :public_read,
+                            #:access => :public_read,
                             :content_type => @content_type)
   end
   

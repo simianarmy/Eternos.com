@@ -356,3 +356,26 @@ module TimeLockSpecHelper
     new_story
   end
 end
+
+module FacebookerSpecHelper
+  def new_facebooker_album
+    Facebooker::Album.new(:aid => "100", :size=> 2, :link => 'link_url', :cover_pid => '10', 
+      :name => 'test album', :modified => '1244850471', :aid => '100', :populated => true, 
+      :location => 'nowwhere')
+  end
+  
+  def new_facebooker_photo
+    Facebooker::Photo.new(:aid => "100", :pid => "123", :caption => "some pic", :populated => true,
+      :src_big => 'http://somewhere.jpg', :tags => [])
+  end
+end
+    
+module FacebookPhotoAlbumSpecHelper
+  def new_album(album=new_facebooker_album)
+    FacebookPhotoAlbum.new(album)
+  end
+  
+  def new_photo(photo=new_facebooker_photo)
+    FacebookPhoto.new(photo)
+  end
+end

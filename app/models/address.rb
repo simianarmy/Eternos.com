@@ -58,10 +58,10 @@ class Address < ActiveRecord::Base
   Billing = LocationTypes['Billing']
   DefaultLocationType = Home
   
-  scope_out :home, :conditions => ['location_type = ?', Home]
-  scope_out :business, :conditions => ['location_type = ?', Business]
-  scope_out :billing, :conditions => ['location_type = ?', Billing]
-  scope_out :birth, :conditions => ['location_type = ?', Birth]
+  named_scope :home, :conditions      => {:location_type => Home}
+  named_scope :business, :conditions  => {:location_type => Business}
+  named_scope :billing, :conditions   => {:location_type => Billing}
+  named_scope :birth, :conditions     => {:location_type => Birth}
   
   # Returns true if address location is one that needs validation
   def validatible_location

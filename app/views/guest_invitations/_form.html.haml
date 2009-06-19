@@ -4,7 +4,7 @@
 %br
 %p.input
   = f.label 'Relationship'
-  = f.collection_select 'circle_id', current_user.circles + Circle.find_globals(:all), :id, :name, {:prompt => "Select Relationship"}
+  = f.collection_select 'circle_id', current_user.circles + Circle.globals(:all), :id, :name, {:prompt => "Select Relationship"}
   Other:
   = f.text_field :new_circle_name, :value => ''
 %br
