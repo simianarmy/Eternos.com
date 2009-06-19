@@ -7,7 +7,7 @@ common: &default_settings
   secret_key: 304f41d2cbf4cc6c3667bd1258800ef9
   canvas_page_name: eternos
   pretty_errors: true
-  set_asset_host_to_callback_url: true
+  set_asset_host_to_callback_url: false
   
 development:
   <<: *default_settings

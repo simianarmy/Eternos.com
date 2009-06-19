@@ -31,6 +31,7 @@ class Content < ActiveRecord::Base
   searches_on 'contents.filename'
   
   before_create :set_title
+  # TODO: Make this work w/ attachment_fu
   before_create :set_content_type_by_content
   after_commit_on_create :attachment_changed!
   
@@ -75,7 +76,8 @@ class Content < ActiveRecord::Base
     if options[:content_type]
       type = class_from_content_type(options[:content_type])
     else
-      type = class_from_content_type(detect_mimetype(options[:uploaded_data]))
+      type = class_from_content_type(content_type = detect_mimetype(options[:uploaded_data]))
+      options[:content_type] = content_type
     end
   
     begin
@@ -239,13 +241,18 @@ class Content < ActiveRecord::Base
   # before_create callback described @ 
   # http://www.rorsecurity.info/journal/2009/2/27/mime-sniffing-countermeasures.html
   # to ensure proper mime-type extension is used for filename
-  #
+  # Modified by me to actually work :)
+  
   def set_content_type_by_content
-    mime = MIME.check_magics(self.temp_path) #try magic numbers first
-    mime = MIME.check(self.temp_path) if self.content_type.nil? #do other checks if it failed
-    if mime
-      self.content_type = mime.to_s
-      self.filename += mime.typical_file_extension unless mime.match_filename?(self.filename)
+    check_file = self.full_filename || self.temp_path
+    if File.exists? check_file
+      mime = MIME.check_magics(check_file) #try magic numbers first
+      mime ||= MIME.check(check_file) if self.content_type.nil? #do other checks if it failed
+    
+      if mime
+        self.content_type = mime.to_s
+        self.filename += mime.typical_file_extension unless mime.match_filename?(self.filename)
+      end
     end
     true
   end

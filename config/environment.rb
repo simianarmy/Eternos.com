@@ -30,6 +30,13 @@ PERMISSION_DENIED_REDIRECTION = '/member_home'
 # The method your auth scheme uses to store the location to redirect back to
 STORE_LOCATION_METHOD = :store_location
 
+# Various global constant strings
+FLOWPLAYER_PRODUCT_KEY  = '$3894b992d106ccc5f56'
+YAHOO_APP_ID            = 'YxNApcLV34EgbS7EoRCAgGY4hJvSX_fQeW9uayDJ0yUbtxH8dhZXKjOSI7k8Gic7'
+FLASH_RECORDER_KEY      = 'zyrc234mq7hbs6ptw5d1v9n0j8xfkg'
+MOD_PORTER_SECRET       = 'sh4mAlam4d1nGd0ng'
+RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID' # TODO: check if used
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -127,12 +134,6 @@ require 'rvideo'
 require 'mime/types'
 require 'shared-mime-info'
 require 'facebook_user_profile'
-
-# Various global constant strings
-FLOWPLAYER_PRODUCT_KEY = '$3894b992d106ccc5f56'
-YAHOO_APP_ID = 'YxNApcLV34EgbS7EoRCAgGY4hJvSX_fQeW9uayDJ0yUbtxH8dhZXKjOSI7k8Gic7'
-FLASH_RECORDER_KEY = 'zyrc234mq7hbs6ptw5d1v9n0j8xfkg'
-RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 

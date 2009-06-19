@@ -4,11 +4,12 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  # Mixins
-  #include AuthenticatedSystem
+  # For Apache mod_porter (file upload optimizer)
+  # Must match PorterSharedSecret value in http config virtual host
+  self.mod_porter_secret = MOD_PORTER_SECRET
+  
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
   include RoleRequirementSystem
-
   include ExceptionNotifiable
   include SslRequirement
   

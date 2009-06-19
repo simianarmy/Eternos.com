@@ -12,6 +12,7 @@ window.addEvent('domready', function() {
 	form_url += (form_url.indexOf("?") == -1 ? "?" : "&") +
 		'_eternos.com_session=<%= u session.session_id %>&authenticity_token=<%= u form_authenticity_token -%>';
 
+  //alert('upload form = ' + form_url)
 	var swiffy = new FancyUpload2($('content-status'), $('content-list'), {
 		url: form_url,
 		fieldName: 'content[uploaded_data]',

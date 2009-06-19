@@ -13,7 +13,10 @@ Java: JDK 6u11
 apache-ant: 1.7.1
 Red5: 0.7.0
 
-
+Apache2 Modules:
+  libapreq2 2.12 (for ModPorter)
+  mod_porter  http://modporter.com/install.html
+  
 Ensure 'GatewayPorts yes' is enabled in the remote development server's sshd config
 
 Rails/Apache:

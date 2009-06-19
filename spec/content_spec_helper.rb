@@ -6,7 +6,7 @@ module ContentSpecHelper
    end
 
    def image_file
-     fixture_file_upload('drinky crow.jpg', 'image/jpeg')
+     fixture_file_upload('porsche.jpg', 'image/jpeg')
    end
 
    def audio_file
