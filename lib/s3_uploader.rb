@@ -59,17 +59,18 @@ class S3Uploader
     ) unless AWS::S3::Base.connected?
   end
 
-  def url(path)
+  def url(key=@key_name)
     s3_protocol = config[:use_ssl] ? 'https://' : 'http://'
     s3_hostname = config[:server] || AWS::S3::DEFAULT_HOST
     s3_port     = config[:use_ssl] ? 443 : 80
 
-    File.join(s3_protocol + s3_hostname + ":#{s3_port}", bucket.to_s, path)
+    File.join(s3_protocol + s3_hostname + ":#{s3_port}", bucket.to_s, key)
   end
   
   
   def upload(file_path, file_name, content_type)
-    puts "Storing #{file_name} in bucket: #{@bucket.to_s}..."
+    @key_name = file_name
+    RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{@bucket}"
     @bucket.store(file_name, open(file_path), :content_type => content_type)
   end
   

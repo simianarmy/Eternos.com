@@ -12,9 +12,9 @@ class UploadsWorker < Workling::Base
     begin
       content.start_cloud_upload!
       
-      s3 = S3Uploader.new(content.full_filename, content.public_filename, content.content_type)
-      s3.upload
-      content.update_attributes(:cdn_url => s3.url)
+      s3 = S3Uploader.new
+      object = s3.upload(content.full_filename, content.public_filename, content.content_type)
+      content.update_attributes(:s3_key => object.key)
       
       content.finish_cloud_upload!
     rescue 

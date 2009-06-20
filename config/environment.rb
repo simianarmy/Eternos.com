@@ -75,6 +75,7 @@ Rails::Initializer.run do |config|
   config.gem 'crack', :version => '>= 0.1.2'
   config.gem 'httparty', :version => '>= 0.4.3'
   config.gem 'rio', :version => '>= 0.4.2'
+  config.gem 'shared-mime-info'
   #config.gem 'memcache-client', :version => ">= 1.7.1"
   #config.gem 'flvtool2', :version => ">= 1.0.6"
   
