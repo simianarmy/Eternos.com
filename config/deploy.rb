@@ -1,13 +1,13 @@
 # $Id$
 set :application, "eternos"
 set :domain, "#{application}.com"
-set :svn_user, ENV['svn_user'] || "edpdevadmin"
+set :svn_user, ENV['svn_user'] || "marc"
 set :svn_password, ENV['svn_password'] || Proc.new { Capistrano::CLI.password_prompt('SVN Password: ') }
 set :repository,
   Proc.new { "--username #{svn_user} " +
              "--password #{svn_password} " +
              #"--no-auth-cache " + 
-             "https://72.3.253.143/svn/costa/#{domain}/trunk" }
+             "https://eternos.unfuddle.com/svn/eternos_www/trunk" }
              
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
@@ -83,7 +83,7 @@ namespace :deploy do
   
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
-    run "cd #{release_path} && whenever -s environment=#{stage} --update-crontab #{application}"
+    run "cd #{release_path} && ./vendor/gems/javan-whenever-0.3.0/bin/whenever -s environment=#{stage} --update-crontab #{application}"
   end
 end
 
