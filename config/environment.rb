@@ -55,7 +55,6 @@ Rails::Initializer.run do |config|
   
   config.gem "ruby-openid", :lib => "openid", :version => ">= 2.1.2"
   config.gem 'image_science'
-  config.gem 'rmagick', :lib => "RMagick", :version => ">= 2.9.2"
   config.gem 'ezcrypto'
   config.gem 'starling', :lib => "starling", :version => ">= 0.9.8"
   config.gem 'aws-s3', :lib => "aws/s3", :version => ">= 0.5.1"
@@ -75,6 +74,7 @@ Rails::Initializer.run do |config|
   config.gem 'oauth', :version => '>= 0.3.4'
   config.gem 'crack', :version => '>= 0.1.2'
   config.gem 'httparty', :version => '>= 0.4.3'
+  config.gem 'ruby-hmac'
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
   #config.gem 'memcache-client', :version => ">= 1.7.1"

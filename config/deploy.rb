@@ -59,7 +59,7 @@ namespace :deploy do
   
   desc "migrate database"
   task :migrate do
-    run "cd #{release_path} && rake RAILS_ENV=#{stage} db:auto:migrate" 
+    run "cd #{current_path} && rake RAILS_ENV=#{stage} db:auto:migrate" 
   end
   
   desc "Custom actions for setup"
