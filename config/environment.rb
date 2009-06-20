@@ -69,6 +69,7 @@ Rails::Initializer.run do |config|
   config.gem 'facebooker'
   config.gem 'amqp'
   config.gem 'chronic', :version => '>= 0.2.3'
+  # Must be installed on system, no in vendor/gems!
   config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
   config.gem 'mash', :version => '>= 0.0.3'
   config.gem 'oauth', :version => '>= 0.3.4'

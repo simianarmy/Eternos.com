@@ -83,13 +83,13 @@ namespace :deploy do
   
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
-    run "cd #{release_path} && ./vendor/gems/javan-whenever-0.3.0/bin/whenever -s environment=#{stage} --update-crontab #{application}"
+    run "cd #{release_path} && whenever -s environment=#{stage} --update-crontab #{application}"
   end
 end
 
 #after "deploy:symlink", "deploy:build_native"
 after "deploy:symlink", "deploy:cleanup"
-after "deploy:symlink", "deploy:update_crontab"
+#after "deploy:symlink", "deploy:update_crontab"
 after "deploy:update_code", "deploy:symlink_shared"
 after "deploy:restart", "deploy:restart_mq"
 
