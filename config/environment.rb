@@ -74,7 +74,7 @@ Rails::Initializer.run do |config|
   config.gem 'oauth', :version => '>= 0.3.4'
   config.gem 'crack', :version => '>= 0.1.2'
   config.gem 'httparty', :version => '>= 0.4.3'
-  config.gem 'ruby-hmac'
+  config.gem 'ruby-hmac', :lib => 'hmac'
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
   #config.gem 'memcache-client', :version => ">= 1.7.1"

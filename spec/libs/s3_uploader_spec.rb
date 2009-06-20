@@ -50,5 +50,15 @@ describe S3Uploader do
       @s3.upload(@object.full_filename, @object.public_filename, @object.content_type)
       AWS::S3::S3Object.exists?(@object.public_filename, @bucket_name).should be_true
     end
+    
+    it "should raise error if key queried before an upload" do
+      lambda { @s3.key }.should raise_error
+    end
+    
+    it "should return object key on upload" do
+      @object = create_content(:type => :photo)
+      key = @s3.upload(@object.full_filename, @object.public_filename, @object.content_type)
+      key.should == @s3.key
+    end
   end
 end

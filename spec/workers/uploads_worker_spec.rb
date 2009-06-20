@@ -21,8 +21,8 @@ describe UploadsWorker do
   
     it "should upload a file to the cloud service and update container state" do 
       @uploader.expects(:upload).with(@content.full_filename, @content.public_filename, @content.content_type)
-      @uploader.expects(:url).returns('foo')
-      @content.expects(:update_attributes).with(:cdn_url => 'foo')
+      @uploader.expects(:key).returns('foo')
+      @content.expects(:update_attributes).with(:s3_key => 'foo')
       @content.expects(:finish_cloud_upload!)
       call_worker
     end
@@ -37,13 +37,14 @@ describe UploadsWorker do
   
   describe "S3 upload" do
     before(:each) do
-      @content = create_content(:photo)
+      @content = create_content(:type => :photo)
     end
     
-    it "should save content S3 url in object" do
+    it "should save content S3 key" do
       @s3 = S3Uploader.new
       call_worker(@content.id)
-      @content.reload.url.should == @s3.url(@content.public_filename)
+      @content.reload.s3_key.should_not be_nil
+      @content.s3_key.should == S3Uploader.path_to_key(@content.public_filename)
     end
   end
 end

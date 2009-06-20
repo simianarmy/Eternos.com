@@ -39,12 +39,18 @@ class S3Uploader
   # Initialize with some kind of bucket.  Options are
   # :media
   
+  def self.path_to_key(path)
+    # Strip leading /
+    path.sub(/^\//, '')
+  end
+  
   def initialize(bucket=nil)
     @bucket = case bucket
     when :media, nil
       S3Buckets::Media
     end
     connect
+    @bucket.find rescue AWS::S3::Bucket.create(@bucket.to_s)
   end
   
   def config
@@ -59,6 +65,12 @@ class S3Uploader
     ) unless AWS::S3::Base.connected?
   end
 
+  def key
+    # Strip leading / if key is public path
+    raise "S3 Key not defined" unless @key_name
+    self.class.path_to_key @key_name
+  end
+  
   def url(key=@key_name)
     s3_protocol = config[:use_ssl] ? 'https://' : 'http://'
     s3_hostname = config[:server] || AWS::S3::DEFAULT_HOST
@@ -67,11 +79,12 @@ class S3Uploader
     File.join(s3_protocol + s3_hostname + ":#{s3_port}", bucket.to_s, key)
   end
   
-  
+  # Stores file to S3 current bucket.  Returns stored object's key
   def upload(file_path, file_name, content_type)
     @key_name = file_name
     RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{@bucket}"
     @bucket.store(file_name, open(file_path), :content_type => content_type)
+    key
   end
   
   def store(name, value)
@@ -87,19 +100,19 @@ module AWS
   module S3
     class S3Object
       class << self
-        # def store_with_cache_control(key, data, bucket = nil, options = {})
-        #           if (options['Cache-Control'].blank?)
-        #             options['Cache-Control'] = 'max-age=315360000'
-        #           end
-        #           # If bucket calls store, no bucket arg so it must be options hash
-        #           if bucket && bucket.kind_of?(Hash)
-        #             store_without_cache_control(key, data, options)
-        #           else
-        #             store_without_cache_control(key, data, bucket, options)
-        #           end
-        #         end
-        #         
-        #         alias_method_chain :store, :cache_control
+        def store_with_cache_control(key, data, bucket = nil, options = {})
+          if (options['Cache-Control'].blank?)
+            options['Cache-Control'] = 'max-age=315360000'
+          end
+          # If bucket calls store, no bucket arg so it must be options hash
+          if bucket && bucket.kind_of?(Hash)
+            store_without_cache_control(key, data, options)
+          else
+            store_without_cache_control(key, data, bucket, options)
+          end
+        end
+
+        alias_method_chain :store, :cache_control
       end
     end
   end
