@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090614074816) do
+ActiveRecord::Schema.define(:version => 20090622133326) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.string   "street_1",         :null => false
     t.string   "city",             :null => false
     t.string   "postal_code",      :null => false
+    t.integer  "user_id"
   end
 
   create_table "albums", :force => true do |t|
@@ -70,10 +71,10 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
 
   create_table "av_attachments", :force => true do |t|
     t.integer  "av_attachable_id"
+    t.integer  "recording_id"
     t.string   "av_attachable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "recording_id"
   end
 
   create_table "backup_job_archives", :force => true do |t|
@@ -92,9 +93,9 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   create_table "backup_jobs", :force => true do |t|
     t.integer  "percent_complete"
     t.integer  "size"
+    t.boolean  "cancelled",        :default => false, :null => false
     t.string   "status"
     t.integer  "user_id"
-    t.boolean  "cancelled",        :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "finished_at"
@@ -102,51 +103,60 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
 
   add_index "backup_jobs", ["user_id"], :name => "user_id"
 
-  create_table :backup_photo_albums, :force => true do |t|
-    t.integer :backup_source_id, :source_album_id, :null => false
-    t.integer :cover_id
-    t.integer :size, :null => false, :default => 0
-    t.string :name, :location, :modified
-    t.text :description
-    t.datetime :created_at, :updated_at
+  create_table "backup_photo_albums", :force => true do |t|
+    t.integer  "backup_source_id",                :null => false
+    t.integer  "source_album_id",                 :null => false
+    t.integer  "cover_id",                        :null => false
+    t.integer  "size",             :default => 0, :null => false
+    t.string   "name"
+    t.string   "location"
+    t.string   "modified"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-  add_index :backup_photo_albums, :backup_source_id
-  add_index :backup_photo_albums, :source_album_id
-  
-  create_table :backup_photos, :force => true do |t|
-    t.integer :backup_photo_album_id, :source_photo_id, :null => false
-    t.integer :content_id
-    t.string :caption, :tags
-    t.text :source_url
-    t.datetime :created_at, :updated_at
-    t.boolean :downloaded, :null => true, :default => false
+
+  add_index "backup_photo_albums", ["backup_source_id"], :name => "index_backup_photo_albums_on_backup_source_id"
+  add_index "backup_photo_albums", ["source_album_id"], :name => "index_backup_photo_albums_on_source_album_id"
+
+  create_table "backup_photos", :force => true do |t|
+    t.integer  "backup_photo_album_id",                    :null => false
+    t.integer  "source_photo_id",                          :null => false
+    t.integer  "content_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "source_url"
+    t.string   "tags"
+    t.string   "caption"
+    t.boolean  "downloaded",            :default => false
   end
-  add_index :backup_photos, :backup_photo_album_id
-  add_index :backup_photos, :source_photo_id
-  
-  
+
+  add_index "backup_photos", ["backup_photo_album_id"], :name => "index_backup_photos_on_backup_photo_album_id"
+  add_index "backup_photos", ["source_photo_id"], :name => "index_backup_photos_on_source_photo_id"
+
   create_table "backup_sites", :force => true do |t|
-    t.enum    "name", :limit => [:twitter, :flickr, :facebook]
-    t.string  "type"
+    t.enum   "name", :limit => [:twitter, :flickr, :facebook]
+    t.string "type"
   end
 
   add_index "backup_sites", ["name"], :name => "name"
 
   create_table "backup_source_days", :force => true do |t|
+    t.integer  "backup_source_id"
     t.date     "backup_day"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "status_id",        :default => 0,     :null => false
-    t.boolean  "in_progress",      :default => false, :null => false
-    t.integer  "backup_source_id"
-    t.boolean  "skip",             :default => false, :null => false
     t.integer  "skip_count",       :default => 0,     :null => false
+    t.boolean  "in_progress",      :default => false, :null => false
+    t.boolean  "skip",             :default => false, :null => false
   end
 
-  add_index "backup_source_days", ["backup_day"], :name => "backup_dates", :unique => true
+  add_index "backup_source_days", ["backup_source_id", "backup_day"], :name => "backup_dates", :unique => true
 
   create_table "backup_source_jobs", :force => true do |t|
     t.integer  "backup_job_id"
+    t.integer  "backup_source_id"
     t.integer  "size"
     t.integer  "days"
     t.datetime "created_at"
@@ -154,7 +164,6 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.string   "status"
     t.text     "errors"
     t.text     "messages"
-    t.integer  "backup_source_id"
   end
 
   add_index "backup_source_jobs", ["backup_job_id", "backup_source_id"], :name => "backup_job_source"
@@ -165,17 +174,17 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.string   "auth_password"
     t.string   "rss_url"
     t.boolean  "auth_confirmed",         :default => false, :null => false
+    t.boolean  "disabled",               :default => false, :null => false
+    t.boolean  "needs_initial_scan",     :default => false, :null => false
     t.string   "auth_error"
     t.datetime "last_backup_at"
+    t.date     "earliest_day_backed_up"
     t.date     "latest_day_backed_up"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "backup_site_id"
-    t.boolean  "disabled",               :default => false, :null => false
     t.boolean  "skip_video",             :default => false, :null => false
-    t.date     "earliest_day_backed_up"
-    t.boolean  "needs_initial_scan",     :default => false, :null => false
     t.datetime "last_login_attempt_at"
     t.datetime "last_login_at"
   end
@@ -186,13 +195,13 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.datetime "last_successful_backup_at"
     t.datetime "last_failed_backup_at"
     t.datetime "last_backup_finished_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean  "in_progress"
     t.boolean  "disabled"
     t.text     "last_errors"
     t.text     "last_messages"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "last_backup_job_id"
   end
 
@@ -267,11 +276,12 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.string   "duration"
     t.integer  "version"
     t.string   "processing_error_message"
-    t.string   "cdn_url", "s3_key"
+    t.string   "cdn_url"
+    t.boolean  "is_recording",             :default => false,      :null => false
     t.text     "description"
     t.string   "fps"
     t.string   "state"
-    t.boolean  "is_recording",             :default => false,      :null => false
+    t.string   "s3_key"
   end
 
   create_table "countries", :force => true do |t|
@@ -317,27 +327,40 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   add_index "elements", ["story_id"], :name => "story_id"
 
   create_table "facebook_contents", :force => true do |t|
-    t.integer :profile_id, :null => false
-    t.text :friends, :groups
+    t.integer  "profile_id", :null => false
+    t.text     "friends"
+    t.text     "groups"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-  add_index "facebook_contents", [:profile_id]
-  
+
+  add_index "facebook_contents", ["profile_id"], :name => "index_facebook_contents_on_profile_id"
+
+  create_table "families", :force => true do |t|
+    t.integer  "profile_id", :null => false
+    t.string   "name"
+    t.string   "type"
+    t.datetime "birthdate"
+    t.boolean  "living",    :default => true
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "guest_invitations", :force => true do |t|
     t.integer  "sender_id",                        :null => false
     t.integer  "circle_id"
     t.string   "email"
     t.string   "name"
     t.string   "contact_method"
+    t.string   "token"
+    t.string   "status"
+    t.datetime "send_on"
     t.datetime "sent_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "attempts",          :default => 0, :null => false
     t.boolean  "emergency_contact"
-    t.string   "token"
-    t.datetime "send_on"
-    t.string   "status"
   end
 
   create_table "invitations", :force => true do |t|
@@ -361,6 +384,32 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   end
 
   add_index "jobs", ["profile_id"], :name => "profile_id"
+
+  create_table "medical_conditions", :force => true do |t|
+    t.integer  "profile_id",     :null => false
+    t.string   "name"
+    t.text     "diagnosis"
+    t.text     "treatment"
+    t.text     "notes"
+    t.datetime "diagnosis_date"
+    t.datetime "treatment_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "medicals", :force => true do |t|
+    t.integer  "profile_id",     :null => false
+    t.string   "name"
+    t.string   "blood_type"
+    t.string   "disorder"
+    t.string   "physician_name"
+    t.string   "physician_phone"
+    t.string   "dentist_name"
+    t.string   "dentist_phone"
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "messages", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -449,7 +498,7 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.datetime "death_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text   "facebook_data"
+    t.text     "facebook_data"
   end
 
   add_index "profiles", ["user_id"], :name => "user_id"
@@ -493,6 +542,11 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
+    t.string   "type"
+    t.text     "notes"
+    t.datetime "start_at"
+    t.datetime "end_at"
   end
 
   add_index "relationships", ["user_id"], :name => "user_id"
@@ -544,6 +598,7 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   create_table "stories", :force => true do |t|
     t.integer  "user_id",                           :null => false
     t.string   "title",                             :null => false
+    t.text     "story"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start_at"
@@ -555,7 +610,6 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
     t.datetime "photo_updated_at"
     t.integer  "category_id"
     t.string   "type"
-    t.text     "story"
   end
 
   add_index "stories", ["user_id"], :name => "user_id"
@@ -667,42 +721,40 @@ ActiveRecord::Schema.define(:version => 20090614074816) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "login",                                                     :null => false
-    t.string   "email",                                                     :null => false
+    t.string   "login",                                                          :null => false
+    t.string   "email",                                                          :null => false
     t.string   "crypted_password"
+    t.string   "password_salt"
+    t.string   "perishable_token"
+    t.string   "persistence_token",                                              :null => false
+    t.integer  "login_count",                             :default => 0,         :null => false
+    t.integer  "failed_login_count",                      :default => 0,         :null => false
+    t.datetime "last_request_at"
+    t.datetime "last_login_at"
+    t.datetime "current_login_at"
+    t.string   "last_login_ip"
+    t.string   "current_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "activation_code",      :limit => 40
+    t.string   "activation_code",           :limit => 40
     t.datetime "activated_at"
     t.string   "identity_url"
-    t.string   "state",                              :default => "passive", :null => false
+    t.string   "state",                                   :default => "passive", :null => false
     t.datetime "deleted_at"
     t.integer  "invitation_id"
-    t.integer  "invitation_limit",                   :default => 0,         :null => false
+    t.integer  "invitation_limit",                        :default => 0,         :null => false
     t.string   "type"
     t.integer  "account_id"
     t.string   "last_name"
     t.string   "first_name"
-    t.string   "password_salt"
-    t.integer  "facebook_uid",         :limit => 8
-    t.datetime "last_request_at"
-    t.string   "current_login_ip"
-    t.datetime "current_login_at"
-    t.integer  "login_count",                        :default => 0,         :null => false
-    t.string   "persistence_token",                                         :null => false
-    t.string   "last_login_ip"
-    t.datetime "last_login_at"
     t.string   "email_hash"
-    t.string   "perishable_token"
-    t.integer  "failed_login_count",                 :default => 0,         :null => false
+    t.integer  "facebook_uid",              :limit => 8
     t.string   "facebook_secret_key"
     t.string   "facebook_session_key"
+    t.boolean  "always_sync_with_facebook"
   end
 
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
-  
-  BackupSite.create([{:name => "facebook"}, {:name => "twitter"}, {:name => "flickr"}])
 
-  add_column "users", "always_sync_with_facebook", :boolean
 end
