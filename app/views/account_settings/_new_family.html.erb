@@ -1,0 +1,15 @@
+<% unless @families.blank? %>
+  <% @families.each do |family| -%>
+    <tr id="new-family-<%= family.id%>">
+      <td class="coll-form1" valign="center"><%= family.name %></td>
+      <td class="coll-form1" valign="center"><%= family.type %></td>
+      <td class="coll-form1" valign="center"><%#= family.birtdate %></td>
+      <td class="coll-form1" valign="center"><%= family.living %></td>
+      <td class="coll-form1" valign="center"><%= family.notes %></td>
+      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+                                                                :url => {:action => 'remove_family', :id => family}, 
+                                                                :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

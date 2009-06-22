@@ -1,0 +1,19 @@
+<% unless @schools.blank? %>
+  <% @schools.each do |school| -%>
+    <tr id="new-school-<%= school.id%>">
+      <td class="coll-form1" valign="center"><%= school.name %></td>
+      <td class="coll-form1" valign="center"><%= school.degree %></td>
+      <td class="coll-form1" valign="center"><%= school.fields %></td>
+      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
+      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
+      <td class="coll-form1" valign="center"><%= school.activities_societies %></td>
+      <td class="coll-form1" valign="center"><%= school.awards %></td>
+      <td class="coll-form1" valign="center"><%= school.recognitions %></td>
+      <td class="coll-form1" valign="center"><%= school.notes %></td>
+      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+                                                                :url => {:action => 'remove_school', :id => school}, 
+                                                                :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

@@ -1,0 +1,17 @@
+<% unless @medicals.blank? %>
+  <% @medicals.each do |medical| -%>
+    <tr id="new-medical-<%= medical.id%>">
+      <td class="coll-form1" valign="center"><%= medical.blood_type %></td>
+      <td class="coll-form1" valign="center"><%= medical.disorder %></td>
+      <td class="coll-form1" valign="center"><%= medical.physician_name %></td>
+      <td class="coll-form1" valign="center"><%= medical.physician_phone %></td>
+      <td class="coll-form1" valign="center"><%= medical.dentist_name %></td>
+      <td class="coll-form1" valign="center"><%= medical.dentist_phone %></td>
+      <td class="coll-form1" valign="center"><%= medical.notes %></td>
+      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+                                                                :url => {:action => 'remove_medical', :id => medical}, 
+                                                                :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

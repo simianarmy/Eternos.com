@@ -1,0 +1,15 @@
+<% unless @relationships.blank? %>
+  <% @relationships.each do |relationship| -%>
+    <tr id="new-relationship-<%= relationship.id%>">
+      <td class="coll-form1" valign="center"><%= relationship.name %></td>
+      <td class="coll-form1" valign="center"><%= relationship.type %></td>
+      <td class="coll-form1" valign="center"><%#= family.birtdate %></td>
+      <td class="coll-form1" valign="center"><%#= family.birtdate %></td>
+      <td class="coll-form1" valign="center"><%= relationship.notes %></td>
+      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+                                                                :url => {:action => 'remove_relationship', :id => relationship}, 
+                                                                :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

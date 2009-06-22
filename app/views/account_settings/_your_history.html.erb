@@ -1,0 +1,204 @@
+<div id="account-setting-content">
+  <% form_remote_for @address, :url => {:action => 'add_another_address'} do -%>
+    <h3>Adderess</h3>
+    (<%= link_to_function "+", "addRowAddress();" %>) Add another address
+    <table align="left" border="1" id="table-history-addresses">
+      <thead>
+        <tr>
+          <td class="coll-form3" valign="center">Location Type</td>
+          <td class="coll-form3" valign="center">Street</td>
+          <td class="coll-form3" valign="center">Country</td>
+          <td class="coll-form3" valign="center">Region</td>
+          <td class="coll-form3" valign="center">City</td>
+          <td class="coll-form3" valign="center">Postal Code</td>
+          <td class="coll-form3" valign="center">Move In</td>
+          <td class="coll-form3" valign="center">Move Out</td>
+          <td class="coll-form3" valign="center">Action</td>
+        </tr>      
+      </thead>
+      <tbody id="table-addresses">
+        <%= render :partial => 'new_address', :locals => {:addresses => @addresses} %>
+      </tbody>
+    </table>
+    <div>
+        <%= submit_tag 'Save', :id => 'save-button-address', :style => 'display:none;', :class => 'btn-save' %>
+    </div>
+  <% end -%>
+  
+  <br>
+  <br>
+  <% form_remote_for @job, :url => {:action => 'add_another_job'} do -%>
+    <h3>Jobs</h3>
+    (<%= link_to_function "+", "addRowJob();" %>) Add another job
+    <table align="left" border="1" id="table-history-jobs">
+      <thead>
+        <tr>
+          <td class="coll-form3" valign="center">Company</td>
+          <td class="coll-form3" valign="center">Title</td>
+          <td class="coll-form3" valign="center">Description</td>
+          <td class="coll-form3" valign="center">Start Date</td>
+          <td class="coll-form3" valign="center">End Date</td>
+          <td class="coll-form3" valign="center">Notes</td>
+          <td class="coll-form3" valign="center">Action</td>
+        </tr>      
+      </thead>
+      <tbody id="table-jobs">
+        <%= render :partial => 'new_job', :locals => {:jobs => @jobs} %>
+      </tbody>
+    </table>
+    <div>
+        <%= submit_tag 'Save', :id => 'save-button-job', :style => 'display:none;', :class => 'btn-save' %>
+    </div>
+  <% end -%>
+  
+  <br>
+  <br>
+  <% form_remote_for @school, :url => {:action => 'add_another_school'} do -%>
+    <h3>Schools</h3>
+    (<%= link_to_function "+", "addRowSchool();" %>) Add another school
+    <table align="left" border="1" id="table-history-schools">
+      <thead>
+        <tr>
+          <td class="coll-form3" valign="center">School Name</td>
+          <td class="coll-form3" valign="center">Degree</td>
+          <td class="coll-form3" valign="center">Fields of Study</td>
+          <td class="coll-form3" valign="center">Start Date</td>
+          <td class="coll-form3" valign="center">End Date</td>
+          <td class="coll-form3" valign="center">Activities</td>
+          <td class="coll-form3" valign="center">Awards</td>
+          <td class="coll-form3" valign="center">Recognitions</td>
+          <td class="coll-form3" valign="center">Notes</td>
+          <td class="coll-form3" valign="center">Action</td>
+        </tr>      
+      </thead>
+      <tbody id="table-schools">
+        <%= render :partial => 'new_school', :locals => {:schools => @schools} %>
+      </tbody>
+    </table>
+    <div>
+        <%= submit_tag 'Save', :id => 'save-button-school', :style => 'display:none;', :class => 'btn-save' %>
+    </div>
+  <% end -%>
+  
+  <br>
+  <br>
+  <% form_remote_for @medical, :url => {:action => 'add_another_medical'} do -%>
+    <h3>Medical Information</h3>
+    (<%= link_to_function "+", "addRowMedical();" %>) Add another medical information
+    <table align="left" border="1" id="table-history-medicals">
+      <thead>
+        <tr>
+          <td class="coll-form3" valign="center">Blood Type</td>
+          <td class="coll-form3" valign="center">Genetic Desorders</td>
+          <td class="coll-form3" valign="center">Primary Physician Name</td>
+          <td class="coll-form3" valign="center">Primary Physician Phone</td>
+          <td class="coll-form3" valign="center">Primary Dentist Name</td>
+          <td class="coll-form3" valign="center">Primary Dentist Phone</td>
+          <td class="coll-form3" valign="center">Notes</td>
+          <td class="coll-form3" valign="center">Action</td>
+        </tr>      
+      </thead>
+      <tbody id="table-medicals">
+        <%= render :partial => 'new_medical', :locals => {:medicals => @medicals} %>
+      </tbody>
+    </table>
+    <div>
+        <%= submit_tag 'Save', :id => 'save-button-medical', :style => 'display:none;', :class => 'btn-save' %>
+    </div>
+  <% end -%>
+  
+  <br>
+  <br>
+  <% form_remote_for @medical_condition, :url => {:action => 'add_another_medical_condition'} do -%>
+    <h3>Medical Condition</h3>
+    (<%= link_to_function "+", "addRowMedicalCondition();" %>) Add another medical condition
+    <table align="left" border="1" id="table-history-medical-conditions">
+      <thead>
+        <tr>
+          <td class="coll-form3" valign="center">Name</td>
+          <td class="coll-form3" valign="center">Diagnosis</td>
+          <td class="coll-form3" valign="center">Treatment</td>
+          <td class="coll-form3" valign="center">Notes</td>
+          <td class="coll-form3" valign="center">Action</td>
+        </tr>      
+      </thead>
+      <tbody id="table-medical-conditions">
+        <%= render :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions} %>
+      </tbody>
+    </table>
+    <div>
+        <%= submit_tag 'Save', :id => 'save-button-medical-condition', :style => 'display:none;', :class => 'btn-save' %>
+    </div>
+  <% end -%>
+  
+  <br>
+  <br>
+  <% form_remote_for @family, :url => {:action => 'add_another_family'} do -%>
+    <h3>Family Relationship</h3>
+    (<%= link_to_function "+", "addRowFamily();" %>) Add another family
+    <table align="left" border="1" id="table-history-families">
+      <thead>
+        <tr>
+          <td class="coll-form3" valign="center">Name</td>
+          <td class="coll-form3" valign="center">Type</td>
+          <td class="coll-form3" valign="center">Birtdate</td>
+          <td class="coll-form3" valign="center">Living</td>
+          <td class="coll-form3" valign="center">Notes</td>
+          <td class="coll-form3" valign="center">Action</td>
+        </tr>      
+      </thead>
+      <tbody id="table-families">
+        <%= render :partial => 'new_family', :locals => {:families => @families} %>
+      </tbody>
+    </table>
+    <div>
+        <%= submit_tag 'Save', :id => 'save-button-family', :style => 'display:none;', :class => 'btn-save' %>
+    </div>
+  <% end -%>
+  
+  <br>
+  <br>
+  <% form_remote_for @relationship, :url => {:action => 'add_another_relationship'} do -%>
+    <h3>Prior Relationship</h3>
+    (<%= link_to_function "+", "addRowRelationship();" %>) Add another relationship
+    <table align="left" border="1" id="table-history-relationships">
+      <thead>
+        <tr>
+          <td class="coll-form3" valign="center">Name</td>
+          <td class="coll-form3" valign="center">Type</td>
+          <td class="coll-form3" valign="center">Start at</td>
+          <td class="coll-form3" valign="center">End at</td>
+          <td class="coll-form3" valign="center">Notes</td>
+          <td class="coll-form3" valign="center">Action</td>
+        </tr>      
+      </thead>
+      <tbody id="table-relationships">
+        <%= render :partial => 'new_relationship', :locals => {:relationships => @relationships} %>
+      </tbody>
+    </table>
+    <div>
+        <%= submit_tag 'Save', :id => 'save-button-relationship', :style => 'display:none;', :class => 'btn-save' %>
+    </div>
+  <% end -%>
+
+</div>
+
+<script>
+  window.types = new Array();
+  window.countries = new Array();
+  window.types_relationship = new Array();
+
+  <% Relationship::TYPES_RELATIONSHIP.each do |type| -%>
+    window.types_relationship.push(["<%= type %>", "<%= type %>"]);
+  <% end %>
+  
+  <% Family::TYPES.each do |type| -%>
+    window.types.push(["<%= type %>", "<%= type %>"]);
+  <% end %>
+  
+  <% Country.find(:all, :order => {:name => " ASC"}).each_with_index do |country, index| -%>
+    window.countries.push([<%= country.id %>, "<%= country.name %>"]);
+  <% end %>
+</script>  
+
+  

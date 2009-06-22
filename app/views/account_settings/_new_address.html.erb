@@ -1,0 +1,21 @@
+<% unless @addresses.blank? %>
+  <% @addresses.each do |address| -%>
+    <tr id="new-address-<%= address.id%>">
+      <td class="coll-form1" valign="center"><%= address.location_type %></td>
+      <td class="coll-form1" valign="center">
+        Street 1:<br><%= address.street_1 %> <br>
+        Street 2:<br><%= address.street_2 %> <br>
+      </td>
+      <td class="coll-form1" valign="center"><%= address.country.name %></td>
+      <td class="coll-form1" valign="center"><%= address.region.name %></td>
+      <td class="coll-form1" valign="center"><%= address.city %></td>
+      <td class="coll-form1" valign="center"><%= address.postal_code %></td>
+      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
+      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
+      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+                                                                :url => {:action => 'remove_address', :id => address}, 
+                                                                :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

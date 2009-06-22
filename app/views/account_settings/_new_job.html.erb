@@ -1,0 +1,16 @@
+<% unless @jobs.blank? %>
+  <% @jobs.each do |job| -%>
+    <tr id="new-job-<%= job.id%>">
+      <td class="coll-form1" valign="center"><%= job.company %></td>
+      <td class="coll-form1" valign="center"><%= job.title %></td>
+      <td class="coll-form1" valign="center"><%= job.description %></td>
+      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
+      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
+      <td class="coll-form1" valign="center"><%#= job.notes %></td>
+      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+                                                                :url => {:action => 'remove_job', :id => job}, 
+                                                                :confirm => "Are you sure?" %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
