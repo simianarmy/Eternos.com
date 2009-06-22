@@ -102,6 +102,221 @@ class AccountSettingsController < ApplicationController
     end  
   end
 
+  def your_history
+    find_history
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          setup_layout_account_setting(page, "step4", "account_settings/your_history")
+        end
+      end
+    end  
+  end
+
+  def add_another_address
+    0.upto(params[:addresses].length) do |i|
+      Address.create(:location_type => params[:addresses]["location_type"][i],
+                     :city => params[:addresses]["city"][i],
+                     :street_1 => params[:addresses]["street_1"][i],
+                     :street_2 => params[:addresses]["street_2"][i],
+                     :postal_code => params[:addresses]["postal_code"][i],
+                     :country_id => params[:addresses]["country_id"][i],
+                     :region_id => params[:addresses]["region_id"][i],
+                     :postal_code => params[:addresses]["postal_code"][i],
+                     :user_id => current_user.id)
+    end
+    @addresses = Address.find_all_by_user_id(current_user.id)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.remove "add-new-address"
+          page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
+        end
+      end
+    end
+  end
+  
+  def remove_address
+    @address = Address.find(params[:id])
+    @address.destroy
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.visual_effect :highlight, "new-address-#{@address.id}"
+          page.remove "new-address-#{@address.id}"
+        end
+      end
+    end 
+  end
+
+  def add_another_job
+    params[:jobs].each_value do |val|
+      Job.create(val.merge(:profile_id => current_user.id))
+    end
+    @jobs = Job.find_all_by_profile_id(current_user.id)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.remove "add-new-job"
+          page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
+        end
+      end
+    end
+  end
+  
+  def remove_job
+    @job = Job.find(params[:id])
+    @job.destroy
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.visual_effect :highlight, "new-job-#{@job.id}"
+          page.remove "new-job-#{@job.id}"
+        end
+      end
+    end 
+  end
+  
+  def add_another_school
+    params[:schools].each_value do |val|
+      School.create(val.merge(:profile_id => current_user.id))
+    end
+    @schools = School.find_all_by_profile_id(current_user.id)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.remove "add-new-school"
+          page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
+        end
+      end
+    end
+  end
+  
+  def remove_school
+    @school = School.find(params[:id])
+    @school.destroy
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.visual_effect :highlight, "new-school-#{@school.id}"
+          page.remove "new-school-#{@school.id}"
+        end
+      end
+    end 
+  end
+  
+  def add_another_medical
+    params[:medicals].each_value do |val|
+      Medical.create(val.merge(:profile_id => current_user.id))
+    end
+    @medicals = Medical.find_all_by_profile_id(current_user.id)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.remove "add-new-medical"
+          page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
+        end
+      end
+    end
+  end
+  
+  def remove_medical
+    @medical = Medical.find(params[:id])
+    @medical.destroy
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.visual_effect :highlight, "new-medical-#{@medical.id}"
+          page.remove "new-medical-#{@medical.id}"
+        end
+      end
+    end 
+  end
+  
+  def add_another_medical_condition
+    params[:medical_conditions].each_value do |val|
+      MedicalCondition.create(val.merge(:profile_id => current_user.id))
+    end
+    @medical_conditions = MedicalCondition.find_all_by_profile_id(current_user.id)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.remove "add-new-medical-condition"
+          page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
+        end
+      end
+    end
+  end
+  
+  def remove_medical_condition
+    @medical_condition = MedicalCondition.find(params[:id])
+    @medical_condition.destroy
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.visual_effect :highlight, "new-medical-condition-#{@medical_condition.id}"
+          page.remove "new-medical-condition-#{@medical_condition.id}"
+        end
+      end
+    end 
+  end
+  
+  def add_another_family
+    params[:families].each_value do |val|
+      Family.create(val.merge(:profile_id => current_user.id))
+    end
+    @families = Family.find_all_by_profile_id(current_user.id)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.remove "add-new-family"
+          page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
+        end
+      end
+    end
+  end
+  
+  def remove_family
+    @family = Family.find(params[:id])
+    @family.destroy
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.visual_effect :highlight, "new-family-#{@family.id}"
+          page.remove "new-family-#{@family.id}"
+        end
+      end
+    end 
+  end
+  
+  def add_another_relationship
+    params[:relationships].each_value do |val|
+      Relationship.create(val.merge(:user_id => current_user.id))
+    end
+    @relationships = Relationship.find_all_by_user_id(current_user.id)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.remove "add-new-relationship"
+          page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
+        end
+      end
+    end
+  end
+  
+  def remove_relationship
+    @relationship = Relationship.find(params[:id])
+    @relationship.destroy
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.visual_effect :highlight, "new-relationship-#{@relationship.id}"
+          page.remove "new-relationship-#{@relationship.id}"
+        end
+      end
+    end 
+  end
+  
   def upgrades
     respond_to do |format|
       format.js do
@@ -140,6 +355,19 @@ class AccountSettingsController < ApplicationController
 
     end 
     
+  end
+  
+  def select_region
+    @regions = Region.find_all_by_country_id(params[:id])
+    if @regions
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            page.replace_html "#{params[:cols_id]}", :partial => 'select_region', :locals => {:regions => @regions}
+          end
+        end
+      end 
+    end
   end
   
   private
@@ -183,6 +411,23 @@ class AccountSettingsController < ApplicationController
         end
       end
       return saved
+   end
+   
+   def find_history
+      @addresses = Address.find_all_by_user_id(current_user.id)
+      @jobs = Job.find_all_by_profile_id(current_user.id)
+      @schools = School.find_all_by_profile_id(current_user.id)
+      @medicals = Medical.find_all_by_profile_id(current_user.id)
+      @medical_conditions = MedicalCondition.find_all_by_profile_id(current_user.id)
+      @families = Family.find_all_by_profile_id(current_user.id)
+      @relationships = Relationship.find_all_by_user_id(current_user.id)
+      @address = Address.new
+      @job = Job.new
+      @school = School.new
+      @medical = Medical.new
+      @medical_condition = MedicalCondition.new
+      @family = Family.new
+      @relationship = Relationship.new
    end
 
 end

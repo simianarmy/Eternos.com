@@ -5,8 +5,15 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :backup_sources
   
   map.resources :account_settings, :collection => {:online => :get, :save_personal_info => :post,
-    :personal_info => :get, :facebook_sync => :get, :email_account => :get, :upgrades => :get, :billings => :get,
-    :always_sync_with_facebook => :get}
+    :personal_info => :get, :facebook_sync => :get, :email_account => :get, :your_history => :get, :upgrades => :get, :billings => :get,
+    :always_sync_with_facebook => :get, :select_region => :get, 
+    :add_another_address => :post, :remove_address => :delete,
+    :add_another_job => :post, :remove_job => :delete,
+    :add_another_medical => :post, :remove_medical => :delete,
+    :add_another_medical_condition => :post, :remove_medical_condition => :delete,
+    :add_another_family => :post, :remove_family => :delete,
+    :add_another_relationship => :post, :remove_relationship => :delete,
+    :add_another_school => :post, :remove_school => :delete}
   map.resources :backup_sites
 
   # Redirect requests to flashrecorder xml config file to proper location
