@@ -17,6 +17,17 @@ Fixjour  do
       :full_domain => 'test.host')
   end
   
+  define_builder(ActivityStream) do |klass, overrides|
+    klass.new(
+      :member => new_member,
+      :backup_site => new_backup_site)
+  end
+  
+  define_builder(ActivityStreamItem) do |klass, overrides|
+    klass.new(
+      :activity_stream => new_activity_stream)
+  end
+  
   define_builder(Address) do |klass, overrides|
     klass.protected :addressable
     
@@ -68,7 +79,7 @@ Fixjour  do
   end
   
   define_builder(BackupSite) do |klass, overrides|
-    klass.new(:name => Faker::Internet.domain_name)
+    klass.new(:name => 'facebook')
   end
   
   define_builder(BackupSource) do |klass, overrides|
@@ -117,6 +128,11 @@ Fixjour  do
       :uploaded_data => overrides[:data] || text_file, 
       :taken_at => 1.year.ago,
       :owner => overrides[:owner] || new_member)
+  end
+  
+  define_builder(FacebookActivityStreamItem) do |klass, overrides|
+    klass.new(
+      :activity_stream => new_activity_stream)
   end
   
   define_builder(FacebookContent) do |klass, overrides|

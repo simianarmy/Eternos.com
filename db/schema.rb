@@ -757,4 +757,17 @@ ActiveRecord::Schema.define(:version => 20090622133326) do
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
 
+  create_table :activity_streams, :force => true do |t|
+    t.integer :user_id, :backup_site_id, :null => false
+  end
+  add_index :activity_streams, [:user_id]
+
+  create_table :activity_stream_items, :force => true do |t|
+    t.integer :activity_stream_id
+    t.integer :created_at, :updated_at
+    t.datetime :published_on
+    t.text :message, :attachment_data
+    t.string :type, :activity_type, :attachment_type
+  end
+  add_index :activity_stream_items, [:activity_stream_id]
 end

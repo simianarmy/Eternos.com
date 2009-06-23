@@ -5,7 +5,6 @@ describe S3Uploader do
   before(:each) do
     @s3 = S3Uploader.new
     @bucket_name = @s3.bucket.to_s
-    AWS::S3::Bucket.create(@bucket_name)
     @bucket = @s3.bucket.find
   end
   
@@ -55,10 +54,10 @@ describe S3Uploader do
       lambda { @s3.key }.should raise_error
     end
     
-    it "should return object key on upload" do
+    it "should return generate object key on upload" do
       @object = create_content(:type => :photo)
-      key = @s3.upload(@object.full_filename, @object.public_filename, @object.content_type)
-      key.should == @s3.key
+      @s3.upload(@object.full_filename, @object.public_filename, @object.content_type)
+      @s3.key.should_not be_nil
     end
   end
 end

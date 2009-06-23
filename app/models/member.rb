@@ -16,6 +16,7 @@ class Member < User
     m.has_many :backup_job_archives
     m.has_many :backup_sources
     m.has_many :backup_sites, :through => :backup_sources
+    m.has_many :activity_streams
     m.has_one :backup_state
     m.has_one :profile
   end

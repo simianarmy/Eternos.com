@@ -379,3 +379,24 @@ module FacebookPhotoAlbumSpecHelper
     FacebookPhoto.new(photo)
   end
 end
+
+module ActivityStreamProxySpecHelper
+  def create_stream_proxy_item
+    item = ActivityStreamProxy.new
+    item.updated = item.created = Time.now.to_i
+    item.message = 'blah blah'
+    item.type = 'status'
+    item.attachment = nil
+    item
+  end
+  
+  def create_stream_proxy_item_with_attachment(type)
+    item = ActivityStreamProxy.new
+    item.updated = item.created = Time.now.to_i
+    item.message = 'blah blah'
+    item.attachment_type = type
+    item.type = 'post'
+    item.attachment = {type => {'src' => 'http://', 'href' => 'http://', 'stuff' => 'here'}, 'type' => type}
+    item
+  end
+end
