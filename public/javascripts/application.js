@@ -116,7 +116,7 @@ function addRowAddress(){
   
   var inputCity       = new Element('input', { name: "addresses[city][]", type: "text"});
   var inputPostalCode = new Element('input', { name: "addresses[postal_code][]", type: "text"});
-  var selectMoveIn    = new Element('select', { name: "", type: "text"});
+  var selectMoveIn    = new Element('select', { name: "", type: "text", id:'move-in'});
   var selectMoveOut   = new Element('select', { name: "", type: "text"});
   
   var strong1 = new Element('strong', {});
@@ -461,7 +461,7 @@ function addRowMedicalCondition(){
   var div5 = new Element('div', {align: "center"});
   
   var btn = new Element('input', {type: "button", 'class': "btn-blue", value: "Cancel"});
-  btn.writeAttribute('onclick', 'deleteRowMedicalCondition(\'form-medical-condition-'+window.counter_medial_condition+'\')');
+  btn.writeAttribute('onclick', 'deleteRowMedicalCondition(\'form-medical-condition-'+window.counter_medical_condition+'\')');
   
   //td1
   tr.appendChild(td1);
@@ -496,9 +496,10 @@ function addRowMedicalCondition(){
 
 window.counter_family = 1;
 function addRowFamily(){
-  var tr              = new Element('tr', { id:'add-new-family', Class:'form-family-'+window.counter_family});
-  var inputName       = new Element('input', { name: "families["+window.counter_family+"][name]", type: "text"});
-  var selectType       = new Element('select', { name: "families["+window.counter_family+"][type]"});
+  var tr               = new Element('tr', { id:'add-new-family', Class:'form-familiy-'+window.counter_family });
+  var inputName        = new Element('input', { name: "families["+window.counter_family+"][name]", type: "text" });
+  var inputHiddenField = new Element('input', { name: "families["+window.counter_family+"][family_type]", type: "text", style: "display:none;", id:"custom-family-type-"+window.counter_family });
+  var selectType       = new Element('select', { name: "families["+window.counter_family+"][family_type]", id:"select-family-type-"+window.counter_family });
     for(var i=0; i< window.types.length; i++){
     var optn = document.createElement("option");
     optn.value = window.types[i][0];
@@ -523,6 +524,9 @@ function addRowFamily(){
   var td6 = new Element('td', {bgcolor: "#333333"});
   var div6 = new Element('div', {align: "center"});
   
+  var linkOther = new Element('a', { href:"#", onClick:'toggleCustomTextFamily('+window.counter_family+');', id:"link-family-other-"+window.counter_family });
+  var linkBack  = new Element('a', { href:"#", onClick:'toggleCustomTextFamily('+window.counter_family+');', style:"display:none;", id:"link-family-back-"+window.counter_family });
+  
   var btn = new Element('input', {type: "button", 'class': "btn-blue", value: "Cancel"});
   btn.writeAttribute('onclick', 'deleteRowFamily(\'form-familiy-'+window.counter_family+'\')');
   
@@ -532,9 +536,14 @@ function addRowFamily(){
   div1.appendChild(inputName);
   
   //td2
+  linkOther.innerHTML = "Other";
+  linkBack.innerHTML = "Back";
   tr.appendChild(td2);
   td2.appendChild(div2);
   div2.appendChild(selectType);
+  div2.appendChild(linkOther);
+  div2.appendChild(linkBack);
+  div2.appendChild(inputHiddenField);
   
   //td3
   tr.appendChild(td3);
@@ -567,7 +576,8 @@ window.counter_relationship = 1;
 function addRowRelationship(){
   var tr               = new Element('tr', { id:'add-new-relationship', Class:'form-relationship-'+window.counter_relationship});
   var inputName        = new Element('input', { name: "relationships["+window.counter_relationship+"][name]", type: "text"});
-  var selectType       = new Element('select', { name: "relationships["+window.counter_relationship+"][type]"});
+  var inputHiddenField = new Element('input', { name: "relationships["+window.counter_relationship+"][relationship_type]", type: "text", style:"display:none", id:"custom-relation-type-"+window.counter_relationship });
+  var selectType       = new Element('select', { name: "relationships["+window.counter_relationship+"][relationship_type]", id:"select-relation-type-"+window.counter_relationship });
     for(var i=0; i< window.types_relationship.length; i++){
     var optn = document.createElement("option");
     optn.value = window.types_relationship[i][0];
@@ -592,6 +602,9 @@ function addRowRelationship(){
   var td6 = new Element('td', {bgcolor: "#333333"});
   var div6 = new Element('div', {align: "center"});
   
+  var linkOther = new Element('a', { href:"#", onClick:'toggleCustomTextRelation('+window.counter_relationship+');', id:"link-relation-back-"+window.counter_relationship });
+  var linkBack  = new Element('a', { href:"#", onClick:'toggleCustomTextRelation('+window.counter_relationship+');', style:"display:none;", id:"link-relation-other-"+window.counter_relationship });
+  
   var btn = new Element('input', {type: "button", 'class': "btn-blue", value: "Cancel"});
   btn.writeAttribute('onclick', 'deleteRowRelationship(\'form-relationship-'+window.counter_relationship+'\')');
  
@@ -601,9 +614,14 @@ function addRowRelationship(){
   div1.appendChild(inputName);
   
   //td2
+  linkOther.innerHTML = "Other";
+  linkBack.innerHTML = "Back";
   tr.appendChild(td2);
   td2.appendChild(div2);
   div2.appendChild(selectType);
+  div2.appendChild(linkOther);
+  div2.appendChild(linkBack);
+  div2.appendChild(inputHiddenField);
   
   //td3
   tr.appendChild(td3);
@@ -630,6 +648,20 @@ function addRowRelationship(){
   
   window.counter_relationship++
   
+}
+
+function toggleCustomTextRelation(id){
+  $('select-relation-type-'+id).toggle();
+  $('custom-relation-type-'+id).toggle();
+  $('link-relation-back-'+id).toggle();
+  $('link-relation-other-'+id).toggle();
+}
+
+function toggleCustomTextFamily(id){
+  $('select-family-type-'+id).toggle();
+  $('custom-family-type-'+id).toggle();
+  $('link-family-back-'+id).toggle();
+  $('link-family-other-'+id).toggle();
 }
 
 function getRegion(val,elementId){
