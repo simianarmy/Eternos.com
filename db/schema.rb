@@ -770,4 +770,9 @@ ActiveRecord::Schema.define(:version => 20090622133326) do
     t.string :type, :activity_type, :attachment_type
   end
   add_index :activity_stream_items, [:activity_stream_id]
+  
+  rename_column :relationships, :type, :relationship_type
+  
+  rename_column :families, :type, :family_type
+  
 end
