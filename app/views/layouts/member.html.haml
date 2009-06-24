@@ -5,7 +5,7 @@
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
     - stylesheet 'member', 'screen', 'application'
-    - javascript(:defaults, 'scriptaculous') unless @no_prototype
+    - javascript(:defaults, 'scriptaculous','account_setup') unless @no_prototype
     - use_lowpro unless @no_prototype
     = yield(:head)
     = yield(:javascript)
