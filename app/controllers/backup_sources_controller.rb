@@ -20,7 +20,7 @@ class BackupSourcesController < ApplicationController
             message = if backup_source.save
               "Twitter account activated"
             else
-              "Your account already activated"
+              "activated"
             end
           else
             message = "Twitter account is not valid"
@@ -42,7 +42,7 @@ class BackupSourcesController < ApplicationController
       format.js{
         render :update do |page|
          page.replace "rjs-message", :partial => "shared/rjs_message", :layout => false
-         page.visual_effect :highlight, 'rjs-message'
+         #page.visual_effect :highlight, 'rjs-message'
         end
       }
     end
