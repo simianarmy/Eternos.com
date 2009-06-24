@@ -565,14 +565,14 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .step6-active{width:140px;height:43px;background:url(/images/errors/step6.png) 0 43px;display:block;margin-bottom:15px;}
 
 .table-form1{
-	width:445px;
+	width:450px;
 	height:auto;
 	border:none;
 	font-family:arial;
 	font-size:11px;
 	color:#393b3e;
 	text-align:left;
-	margin-left:20px;
+	margin:0 20px 0 20px;
 }
 
 .table-form2{
@@ -591,6 +591,17 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	height:auto;
 	border:none;
 	margin-top:10px;
+}
+
+.table-form4{
+	width:440px;
+	height:auto;
+	border:none;
+	font-family:arial;
+	font-size:11px;
+	color:#393b3e;
+	text-align:left;
+	margin:0 20px 0 10px;
 }
 
 .table1{
@@ -653,7 +664,7 @@ a.plusminus:hover{
 
 .line2{width:100%;float:left;margin-right:5px;}
 
-.line3{width:460px; height:1px; background:url(/images/dotted.gif) repeat-x; margin-top:10px;}
+.line3{width:440px; height:1px; background:url(/images/dotted.gif) repeat-x; margin:10px 0 0 10px;}
 
 .notification-box1{
 	width:665px;
@@ -881,4 +892,12 @@ h5{
 
 .add1-text:hover{
 	color:#54b9f9;
+}
+
+.message_online{
+	font-family:arial;
+	font-size:12px;
+	font-weight:bold;
+	color:#4a4a4a;
+	margin:-50px 0 0 98px;
 }
