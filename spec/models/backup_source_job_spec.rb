@@ -23,11 +23,10 @@ describe BackupSourceJob do
       BackupSourceJob.new.save.should be_false
     end
     
-    it "should create objects repeatedly without blowing up" do
+    it "should create object with source & job id specified" do
       lambda {
-        create_backup_source_job(:backup_source => @backup_source, :backup_job => @backup_job)
-        create_backup_source_job(:backup_source => @backup_source)
-      }.should change(BackupSourceJob, :count).by(2)
+        BackupSourceJob.create(:backup_source_id => @backup_source.id, :backup_job_id => 100)
+      }.should change(BackupSourceJob, :count).by(1)
     end
     
     it "should raise exception if same source & job used to create record" do

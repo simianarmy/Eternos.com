@@ -39,7 +39,9 @@ class BackupPhotoAlbum < ActiveRecord::Base
   # Saves any new photos in album
   def save_photos(photos)
     return unless photos && photos.any?
+    logger.debug "Saving backup photos: #{photos.inspect}"
     new_photo_ids = photos.map(&:id)
+    logger.debug "Photo ids: #{new_photo_ids.inspect}"
     existing_photo_ids = backup_photos.map(&:source_photo_id)
     
     # Delete old photos
@@ -50,6 +52,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
     # Add all new photos
     photos.each do |p|
       next if existing_photo_ids.include? p.id
+      logger.debug "Adding backup photo: #{p}"
       backup_photos.import p
     end
   end
