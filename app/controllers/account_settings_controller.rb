@@ -103,7 +103,7 @@ class AccountSettingsController < ApplicationController
   end
 
   def your_history
-    find_history
+    find_object_history
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -114,18 +114,13 @@ class AccountSettingsController < ApplicationController
   end
 
   def add_another_address
-    0.upto(params[:addresses].length) do |i|
-      Address.create(:location_type => params[:addresses]["location_type"][i],
-                     :city => params[:addresses]["city"][i],
-                     :street_1 => params[:addresses]["street_1"][i],
-                     :street_2 => params[:addresses]["street_2"][i],
-                     :postal_code => params[:addresses]["postal_code"][i],
-                     :country_id => params[:addresses]["country_id"][i],
-                     :region_id => params[:addresses]["region_id"][i],
-                     :postal_code => params[:addresses]["postal_code"][i],
-                     :user_id => current_user.id)
+    params[:addresses].each_value do |val|
+      @address = Address.new(val.merge(:user_id => current_user.id))
+      @address.addressable = current_user.profile
+      @address.save!
     end
-    @addresses = Address.find_all_by_user_id(current_user.id)
+    
+    find_address
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -153,7 +148,8 @@ class AccountSettingsController < ApplicationController
     params[:jobs].each_value do |val|
       Job.create(val.merge(:profile_id => current_user.id))
     end
-    @jobs = Job.find_all_by_profile_id(current_user.id)
+    
+    find_job
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -181,7 +177,8 @@ class AccountSettingsController < ApplicationController
     params[:schools].each_value do |val|
       School.create(val.merge(:profile_id => current_user.id))
     end
-    @schools = School.find_all_by_profile_id(current_user.id)
+    
+    find_school
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -209,7 +206,8 @@ class AccountSettingsController < ApplicationController
     params[:medicals].each_value do |val|
       Medical.create(val.merge(:profile_id => current_user.id))
     end
-    @medicals = Medical.find_all_by_profile_id(current_user.id)
+    
+    find_medical
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -237,7 +235,8 @@ class AccountSettingsController < ApplicationController
     params[:medical_conditions].each_value do |val|
       MedicalCondition.create(val.merge(:profile_id => current_user.id))
     end
-    @medical_conditions = MedicalCondition.find_all_by_profile_id(current_user.id)
+    
+    find_medical_condition
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -265,7 +264,8 @@ class AccountSettingsController < ApplicationController
     params[:families].each_value do |val|
       Family.create(val.merge(:profile_id => current_user.id))
     end
-    @families = Family.find_all_by_profile_id(current_user.id)
+    
+    find_family
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -293,7 +293,8 @@ class AccountSettingsController < ApplicationController
     params[:relationships].each_value do |val|
       Relationship.create(val.merge(:user_id => current_user.id))
     end
-    @relationships = Relationship.find_all_by_user_id(current_user.id)
+    
+    find_relationship
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -363,7 +364,7 @@ class AccountSettingsController < ApplicationController
       respond_to do |format|
         format.js do
           render :update do |page|
-            page.replace_html "#{params[:cols_id]}", :partial => 'select_region', :locals => {:regions => @regions}
+            page.replace_html "select-region-#{params[:cols_id]}", :partial => 'select_region', :locals => {:regions => @regions, :element => params[:cols_id]}
           end
         end
       end 
@@ -413,21 +414,49 @@ class AccountSettingsController < ApplicationController
       return saved
    end
    
-   def find_history
-      @addresses = Address.find_all_by_user_id(current_user.id)
-      @jobs = Job.find_all_by_profile_id(current_user.id)
-      @schools = School.find_all_by_profile_id(current_user.id)
-      @medicals = Medical.find_all_by_profile_id(current_user.id)
-      @medical_conditions = MedicalCondition.find_all_by_profile_id(current_user.id)
-      @families = Family.find_all_by_profile_id(current_user.id)
-      @relationships = Relationship.find_all_by_user_id(current_user.id)
-      @address = Address.new
-      @job = Job.new
-      @school = School.new
-      @medical = Medical.new
-      @medical_condition = MedicalCondition.new
-      @family = Family.new
-      @relationship = Relationship.new
+   def find_object_history
+     find_address
+     find_job
+     find_school
+     find_medical
+     find_medical_condition
+     find_family
+     find_relationship
+     @address = Address.new
+     @job = Job.new
+     @school = School.new
+     @medical = Medical.new
+     @medical_condition = MedicalCondition.new
+     @family = Family.new
+     @relationship = Relationship.new
+   end
+   
+   def find_address
+     @addresses = current_user.profile.addresses
+   end
+   
+   def find_job
+     @jobs = current_user.profile.careers
+   end
+   
+   def find_school
+     @schools = current_user.profile.schools
+   end
+   
+   def find_medical
+     @medicals = current_user.profile.medicals
+   end
+   
+   def find_medical_condition
+     @medical_conditions = current_user.profile.medical_conditions
+   end
+   
+   def find_family
+     @families = current_user.profile.families
+   end
+   
+   def find_relationship
+     @relationships = Relationship.find_all_by_user_id(current_user.id)
    end
 
 end

@@ -1,63 +1,15 @@
 <div id="account-setting-content">
   <% form_remote_for @address, :url => {:action => 'add_another_address'} do -%>
-		<table width="460" id="table-history-addresses" border="0" cellspacing="0" cellpadding="0">
-	  <thead class="scrollContent">
-	    <tr>
-	      <td colspan="2">
-		    <div class="title2">Address</div>
-	  	  </td>
-				<td colspan="1" align="right">
-		    	<%= link_to_function "+ Add Address", "addRowAddress();", :class => 'add1-text' %>
-		  	</td>
-	    </tr>
-			<tr>
-	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
-	    </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Location Type</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Street</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Country</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Region</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">City</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Postal Code</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Move In</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Move Out</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Action</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
+   <table width="460" id="table-history-addresses" border="0" cellspacing="0" cellpadding="0">
+     <thead class="scrollContent">
+        <tr>
+          <td colspan="2">
+            <div class="title2">Address</div>
+          </td>
+          <td colspan="1" align="right">
+          <%= link_to_function "+ Add Address", "addRowAddress();", :class => 'add1-text' %>
+          </td>
+        </tr>
       </thead>
       <tbody id="table-addresses">
         <%= render :partial => 'new_address', :locals => {:addresses => @addresses} %>
@@ -72,7 +24,7 @@
 
   <% form_remote_for @job, :url => {:action => 'add_another_job'} do -%>
     <table width="460" id="table-history-jobs" border="0" cellspacing="0" cellpadding="0">
-	  <thead class="scrollContent">
+	<thead class="scrollContent">
 	    <tr>
 	      <td colspan="2">
 		    <div class="title2">Job</div>
@@ -81,49 +33,6 @@
 		    	<%= link_to_function "+ Add another job", "addRowJob();", :class => 'add1-text' %>
 		  	</td>
 	    </tr>
-			<tr>
-	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
-	    </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Company</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Country</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Title</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Description</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Start Date</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">End Date</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Notes</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Action</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
       </thead>
       <tbody id="table-jobs">
         <%= render :partial => 'new_job', :locals => {:jobs => @jobs} %>
@@ -147,59 +56,6 @@
 		    	<%= link_to_function "+ Add School", "addRowSchool();", :class => 'add1-text' %>
 		  	</td>
 	    </tr>
-			<tr>
-	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
-	    </tr>
-			<tr>
-        <td class="coll-form6" valign="center">School Name</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Degree</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Fields of Study</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Start Date</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">End Date</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Activities</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Awards</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Recognitions</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Notes</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Action</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
       </thead>
       <tbody id="table-jobs">
         <%= render :partial => 'new_school', :locals => {:schools => @schools} %>
@@ -223,49 +79,7 @@
 		    	<%= link_to_function "+ Add Medical Information", "addRowMedical();", :class => 'add1-text' %>
 		  	</td>
 	    </tr>
-			<tr>
-	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
-	    </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Blood Type</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Genetic Desorders</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Primary Physician Name</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Primary Physician Phone</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Primary Dentist Name</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Primary Dentist Phone</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Notes</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
-			<tr>
-        <td class="coll-form6" valign="center">Action</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"></td>
-      </tr>
+			
       </thead>
       <tbody id="table-jobs">
         <%= render :partial => 'new_medical', :locals => {:medicals => @medicals} %>
@@ -289,34 +103,6 @@
 			    	<%= link_to_function "+ Add Medical Condition", "addRowMedicalCondition();", :class => 'add1-text' %>
 			  	</td>
 		    </tr>
-				<tr>
-		      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
-		    </tr>
-				<tr>
-	        <td class="coll-form6" valign="center">Name</td>
-		    	<td class="coll-form2" valign="center">:</td>
-		    	<td class="coll-form3" valign="center"></td>
-	      </tr>
-				<tr>
-	        <td class="coll-form6" valign="center">Diagnosis</td>
-		    	<td class="coll-form2" valign="center">:</td>
-		    	<td class="coll-form3" valign="center"></td>
-	      </tr>
-				<tr>
-	        <td class="coll-form6" valign="center">Treatment</td>
-		    	<td class="coll-form2" valign="center">:</td>
-		    	<td class="coll-form3" valign="center"></td>
-	      </tr>
-				<tr>
-	        <td class="coll-form6" valign="center">Notes</td>
-		    	<td class="coll-form2" valign="center">:</td>
-		    	<td class="coll-form3" valign="center"></td>
-	      </tr>
-				<tr>
-	        <td class="coll-form6" valign="center">Action</td>
-		    	<td class="coll-form2" valign="center">:</td>
-		    	<td class="coll-form3" valign="center"></td>
-	      </tr>
 	      </thead>
 	      <tbody id="table-jobs">
 	        <%= render :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions} %>
@@ -341,39 +127,6 @@
 				    	<%= link_to_function "+ Add Family", "addRowFamily();", :class => 'add1-text' %>
 				  	</td>
 			    </tr>
-					<tr>
-			      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
-			    </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Name</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Type</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Birtdate</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Living</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Notes</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Action</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
 		      </thead>
 		      <tbody id="table-jobs">
 		        <%= render :partial => 'new_family', :locals => {:families => @families} %>
@@ -398,39 +151,7 @@
 				    	<%= link_to_function "+ Add Relationship", "addRowRelationship();", :class => 'add1-text' %>
 				  	</td>
 			    </tr>
-					<tr>
-			      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
-			    </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Name</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Type</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Start at</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">End at</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Notes</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
-					<tr>
-		        <td class="coll-form6" valign="center">Action</td>
-			    	<td class="coll-form2" valign="center">:</td>
-			    	<td class="coll-form3" valign="center"></td>
-		      </tr>
+
 		      </thead>
 		      <tbody id="table-jobs">
 		        <%= render :partial => 'new_relationship', :locals => {:relationships => @relationships} %>

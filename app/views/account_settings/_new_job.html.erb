@@ -1,16 +1,52 @@
 <% unless @jobs.blank? %>
   <% @jobs.each do |job| -%>
-    <tr id="new-job-<%= job.id%>">
-      <td class="coll-form1" valign="center"><%= job.company %></td>
-      <td class="coll-form1" valign="center"><%= job.title %></td>
-      <td class="coll-form1" valign="center"><%= job.description %></td>
-      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
-      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
-      <td class="coll-form1" valign="center"><%#= job.notes %></td>
-      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+    <tr id="new-job-<%= job.id%>"></tr>
+  			<tr>
+	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
+	    </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Company</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= job.company %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Country</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Title</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= job.title %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Description</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= job.description %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Start Date</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">End Date</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Notes</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%#= job.notes %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Action</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove', 
                                                                 :url => {:action => 'remove_job', :id => job}, 
-                                                                :confirm => "Are you sure?" %>
-      </td>
-    </tr>
+                                                                :confirm => "Are you sure?" %>  
+                </td>
+      </tr>
+    
   <% end %>
 <% end %>

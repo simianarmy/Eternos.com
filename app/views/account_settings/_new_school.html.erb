@@ -1,19 +1,61 @@
 <% unless @schools.blank? %>
   <% @schools.each do |school| -%>
-    <tr id="new-school-<%= school.id%>">
-      <td class="coll-form1" valign="center"><%= school.name %></td>
-      <td class="coll-form1" valign="center"><%= school.degree %></td>
-      <td class="coll-form1" valign="center"><%= school.fields %></td>
-      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
-      <td class="coll-form1" valign="center"><%#= f.time_select %></td>
-      <td class="coll-form1" valign="center"><%= school.activities_societies %></td>
-      <td class="coll-form1" valign="center"><%= school.awards %></td>
-      <td class="coll-form1" valign="center"><%= school.recognitions %></td>
-      <td class="coll-form1" valign="center"><%= school.notes %></td>
-      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+    <tr id="new-school-<%= school.id%>"></tr>
+			<tr>
+	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
+	    </tr>
+			<tr>
+        <td class="coll-form6" valign="center">School Name</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= school.name %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Degree</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= school.degree %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Fields of Study</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= school.fields %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Start Date</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">End Date</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Activities</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= school.activities_societies %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Awards</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= school.awards %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Recognitions</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= school.recognitions %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Notes</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= school.notes %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Action</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove', 
                                                                 :url => {:action => 'remove_school', :id => school}, 
                                                                 :confirm => "Are you sure?" %>
-      </td>
-    </tr>
+                </td>
+      </tr>
   <% end %>
 <% end %>

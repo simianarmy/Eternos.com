@@ -1,56 +1,59 @@
 <% unless @addresses.blank? %>
   <% @addresses.each do |address| -%>
-		<tr id="new-address-<%= address.id%>">
-      <td class="coll-form6" valign="center">Location Type</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center"><%= address.location_type %></td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">Street</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center">
-    		 Street 1:<br><%= address.street_1 %> <br>
-	       Street 2:<br><%= address.street_2 %> <br>
-    	</td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">Country</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center"><%= address.country.name %></td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">Region</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center"><%= address.region.name %></td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">City</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center"><%= address.city %></td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">Postal Code</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center"><%= address.postal_code %></td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">Move In</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">Move Out</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
-    </tr>
-		<tr>
-      <td class="coll-form6" valign="center">Action</td>
-    	<td class="coll-form2" valign="center">:</td>
-    	<td class="coll-form3" valign="center">
-					<%= link_to_remote 'Remove', 
-                :url => {:action => 'remove_address', :id => address}, 
-                :confirm => "Are you sure?" %>
-			</td>
-    </tr>
+     <tr id="new-address-<%= address.id%>"></tr>
+			<tr>
+	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
+	    </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Location Type</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.location_type %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Street</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center">
+                  Street 1:<br><%= address.street_1 %> <br>
+                  Street 2:<br><%= address.street_2 %> <br>
+                </td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Country</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.country.name %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Region</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.region.name %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">City</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.city %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Postal Code</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.postal_code %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Move In</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Move Out</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%#= f.time_select %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Action</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove', 
+                                                          :url => {:action => 'remove_address', :id => address}, 
+                                                          :confirm => "Are you sure?" %>
+                </td>
+      </tr>
   <% end %>
 <% end %>

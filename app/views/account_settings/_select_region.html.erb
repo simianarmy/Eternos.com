@@ -1,4 +1,4 @@
-<select id='region-id' name='addresses[region_id][]'>
+<select id='region-id' name="addresses[<%= element %>][region_id]">
   <% @regions.each do |reg| -%>
     <option value='<%= reg.id %>'> <%= reg.name %></option>
   <% end %>

@@ -2,10 +2,10 @@
 window.counter = 1;
 function addRowAddress(){
   var tr              = new Element('tr', { id:'add-new-address', Class:'form-address-'+window.counter});
-  var inputLocType    = new Element('input', { name: "addresses[location_type][]", type: "text"});
-  var inputStreet1    = new Element('input', { name: "addresses[street_1][]", type: "text"});
-  var inputStreet2    = new Element('input', { name: "addresses[street_2][]", type: "text"});
-  var selectCountry   = new Element('select', { name: "addresses[country_id][]", id: "country-id"});
+  var inputLocType    = new Element('input', { name: "addresses["+window.counter+"][location_type]", type: "text"});
+  var inputStreet1    = new Element('input', { name: "addresses["+window.counter+"][street_1]", type: "text"});
+  var inputStreet2    = new Element('input', { name: "addresses["+window.counter+"][street_2]", type: "text"});
+  var selectCountry   = new Element('select', { name: "addresses["+window.counter+"][country_id]", id: "country-id"});
   
     var optn = document.createElement("option");
     optn.value = 0;
@@ -22,17 +22,17 @@ function addRowAddress(){
   var td4 = new Element('td', {bgcolor: "#333333"});
   var div4 = new Element('div', {align: "center", id: "select-region-"+window.counter});
   
-  var elementId = div4.id;
-  selectCountry.writeAttribute('onchange', 'getRegion(this.value,\''+elementId+'\')');
+//  var elementId = div4.id;
+  selectCountry.writeAttribute('onchange', 'getRegion(this.value,\''+window.counter+'\')');
     
-  var selectRegion = new Element('select', { name: "addresses[region_id][]", id: "region-id"});
+  var selectRegion = new Element('select', { name: "addresses["+window.counter+"][region_id]", id: "region-id"});
   var opt = document.createElement("option");
   opt.value = "1";
   opt.text = "Select Region First";
   selectRegion.options.add(opt);
   
-  var inputCity       = new Element('input', { name: "addresses[city][]", type: "text"});
-  var inputPostalCode = new Element('input', { name: "addresses[postal_code][]", type: "text"});
+  var inputCity       = new Element('input', { name: "addresses["+window.counter+"][city]", type: "text"});
+  var inputPostalCode = new Element('input', { name: "addresses["+window.counter+"][postal_code]", type: "text"});
   var selectMoveIn    = new Element('select', { name: "", type: "text", id:'move-in'});
   var selectMoveOut   = new Element('select', { name: "", type: "text"});
   
@@ -582,7 +582,7 @@ function toggleCustomTextFamily(id){
 }
 
 function getRegion(val,elementId){
-  new Ajax.Request('account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id=' + elementId});return false;
+  new Ajax.Request('account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'' });return false;
 }
 
 function deleteRowAddress(child){

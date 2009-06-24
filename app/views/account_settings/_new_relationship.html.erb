@@ -1,15 +1,41 @@
 <% unless @relationships.blank? %>
   <% @relationships.each do |relationship| -%>
-    <tr id="new-relationship-<%= relationship.id%>">
-      <td class="coll-form1" valign="center"><%= relationship.name %></td>
-      <td class="coll-form1" valign="center"><%= relationship.relationship_type %></td>
-      <td class="coll-form1" valign="center"><%#= family.birtdate %></td>
-      <td class="coll-form1" valign="center"><%#= family.birtdate %></td>
-      <td class="coll-form1" valign="center"><%= relationship.notes %></td>
-      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
-                                                                :url => {:action => 'remove_relationship', :id => relationship}, 
-                                                                :confirm => "Are you sure?" %>
-      </td>
-    </tr>
+    <tr id="new-relationship-<%= relationship.id%>"></tr>
+					<tr>
+			      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
+			    </tr>
+					<tr>
+		        <td class="coll-form6" valign="center">Name</td>
+			    	<td class="coll-form2" valign="center">:</td>
+			    	<td class="coll-form3" valign="center"><%= relationship.name %></td>
+		      </tr>
+					<tr>
+		        <td class="coll-form6" valign="center">Type</td>
+			    	<td class="coll-form2" valign="center">:</td>
+			    	<td class="coll-form3" valign="center"><%= relationship.relationship_type %></td>
+		      </tr>
+					<tr>
+		        <td class="coll-form6" valign="center">Start at</td>
+			    	<td class="coll-form2" valign="center">:</td>
+			    	<td class="coll-form3" valign="center"><%#= family.birtdate %></td>
+		      </tr>
+					<tr>
+		        <td class="coll-form6" valign="center">End at</td>
+			    	<td class="coll-form2" valign="center">:</td>
+			    	<td class="coll-form3" valign="center"><%#= family.birtdate %></td>
+		      </tr>
+					<tr>
+		        <td class="coll-form6" valign="center">Notes</td>
+			    	<td class="coll-form2" valign="center">:</td>
+			    	<td class="coll-form3" valign="center"><%= relationship.notes %></td>
+		      </tr>
+					<tr>
+		        <td class="coll-form6" valign="center">Action</td>
+			    	<td class="coll-form2" valign="center">:</td>
+			    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove', 
+                                                                        :url => {:action => 'remove_relationship', :id => relationship}, 
+                                                                        :confirm => "Are you sure?" %>
+                                </td>
+		      </tr>
   <% end %>
 <% end %>

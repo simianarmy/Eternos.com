@@ -8,6 +8,7 @@ class Profile < ActiveRecord::Base
     m.has_many :schools
     m.has_many :medicals
     m.has_many :medical_conditions
+    m.has_many :families
     m.has_one :facebook_content
   end
   validates_existence_of :member, :message => 'Could not find the owner of this profile'

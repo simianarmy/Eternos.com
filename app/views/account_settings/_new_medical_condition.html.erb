@@ -1,14 +1,36 @@
 <% unless @medical_conditions.blank? %>
   <% @medical_conditions.each do |medical_cond| -%>
-    <tr id="new-medical-condition-<%= medical_cond.id%>">
-      <td class="coll-form1" valign="center"><%= medical_cond.name %></td>
-      <td class="coll-form1" valign="center"><%= medical_cond.diagnosis %></td>
-      <td class="coll-form1" valign="center"><%= medical_cond.treatment %></td>
-      <td class="coll-form1" valign="center"><%= medical_cond.notes %></td>
-      <td class="coll-form1" valign="center"><%= link_to_remote 'Remove', 
+    <tr id="new-medical-condition-<%= medical_cond.id%>"></tr>
+				<tr>
+		      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
+		    </tr>
+				<tr>
+	        <td class="coll-form6" valign="center">Name</td>
+		    	<td class="coll-form2" valign="center">:</td>
+		    	<td class="coll-form3" valign="center"><%= medical_cond.name %></td>
+	      </tr>
+				<tr>
+	        <td class="coll-form6" valign="center">Diagnosis</td>
+		    	<td class="coll-form2" valign="center">:</td>
+		    	<td class="coll-form3" valign="center"><%= medical_cond.diagnosis %></td>
+	      </tr>
+				<tr>
+	        <td class="coll-form6" valign="center">Treatment</td>
+		    	<td class="coll-form2" valign="center">:</td>
+		    	<td class="coll-form3" valign="center"><%= medical_cond.treatment %></td>
+	      </tr>
+				<tr>
+	        <td class="coll-form6" valign="center">Notes</td>
+		    	<td class="coll-form2" valign="center">:</td>
+		    	<td class="coll-form3" valign="center"><%= medical_cond.notes %></td>
+	      </tr>
+				<tr>
+	        <td class="coll-form6" valign="center">Action</td>
+		    	<td class="coll-form2" valign="center">:</td>
+		    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove', 
                                                                 :url => {:action => 'remove_medical_condition', :id => medical_cond}, 
                                                                 :confirm => "Are you sure?" %>
-      </td>
-    </tr>
+                        </td>
+	      </tr>
   <% end %>
 <% end %>
