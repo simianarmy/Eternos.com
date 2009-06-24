@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :invitation
   has_one :address_book, :dependent => :destroy
   has_many :comments
-  has_many :online_accounts
+  has_many :backup_sources, :dependent => :destroy
   
   # Authentication: AuthLogic
   acts_as_authentic do |c|
@@ -83,7 +83,13 @@ class User < ActiveRecord::Base
   MemberRole        = 'Member'
   GuestRole         = 'Guest'
   
-  
+  def backup_site_names
+    rv = []
+    backup_sources.each do |backup|
+      rv << backup.backup_site.name.to_s
+    end
+    rv
+  end
   # We are going to connect this user object with a facebook id. But only ever one account.
   def link_fb_connect(fb_user_id)
     unless fb_user_id.nil?

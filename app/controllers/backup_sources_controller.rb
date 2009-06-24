@@ -16,11 +16,15 @@ class BackupSourcesController < ApplicationController
           httpauth = Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password])
           base = Twitter::Base.new(httpauth)
           if base.verify_credentials
-            backup_source = BackupSource.new(params[:backup_source].merge({:user_id => current_user.id, :backup_site_id => backup_site.id}))
-            message = if backup_source.save
-              "Twitter account activated"
+
+            backup_source = BackupSource.find_by_user_id(current_user.id, :conditions => ["backup_site_id = 1 and auth_login = ? ", params[:backup_source][:auth_login]])
+            if backup_source.nil?
+              backup_source = BackupSource.new(params[:backup_source].merge({:user_id => current_user.id, :backup_site_id => backup_site.id}))
             else
-              "activated"
+              backup_source.attributes = params[:backup_source]
+            end
+            if backup_source.save
+              message = "activated"
             end
           else
             message = "Twitter account is not valid"
@@ -41,8 +45,18 @@ class BackupSourcesController < ApplicationController
     respond_to do |format|
       format.js{
         render :update do |page|
-         page.replace "rjs-message", :partial => "shared/rjs_message", :layout => false
-         #page.visual_effect :highlight, 'rjs-message'
+         if message != "activated"
+           page.replace "rjs-message", :partial => "shared/rjs_message", :layout => false
+           page["twitter-link"].removeClassName('twitter-active')
+           page["twitter-link"].addClassName('twitter-btn')
+           page.visual_effect :highlight, 'rjs-message'
+         else
+           @rjs_message =  ""
+           page.replace "rjs-message", :partial => "shared/rjs_message", :layout => false
+           page["twitter-link"].removeClassName('twitter-btn')
+           page["twitter-link"].addClassName('twitter-active')
+         end
+
         end
       }
     end

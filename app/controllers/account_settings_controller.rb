@@ -83,6 +83,7 @@ class AccountSettingsController < ApplicationController
 
   def online
     @online_account = BackupSource.new
+    @recent_backup_sites = current_user.backup_site_names
     respond_to do |format|
       format.js do
         render :update do |page|

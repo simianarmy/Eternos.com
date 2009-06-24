@@ -387,13 +387,13 @@ body{
 .network-popup-box{
 	width:481px;
 	height:40px;
-	margin:10px 0 0 0;
+	margin:5px 0 0 0;
 }
 
 .network-login-box{
 	width:431px;
 	height:auto;
-	margin:10px 0 0 0;
+	margin:5px 0 0 0;
 	padding-left:10px;
 }
 
@@ -453,7 +453,7 @@ a.flickr-btn:hover{
 }
 
 .fb-active{width:77px; height:77px; background:url(/images/errors/fb-active.gif); float:left;margin:0 10px 0 20px}
-.twitter-active{width:175px; height:52px; background:url(/images/errors/twitter-active.gif); float:left;margin:0 10px 0 10px}
+.twitter-active{width:165px; height:94px; background:url(/images/errors/twitter-active.gif); float:left;margin:0 ;}
 .flickr-active{width:175px; height:52px; background:url(/images/errors/flickr-active.gif); float:left;margin:0 10px 0 10px}
 .rss-active{width:77px; height:77px; background:url(/images/errors/rss-active.gif); float:left;margin:0 10px 0 10px}
 
