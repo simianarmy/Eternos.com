@@ -4,7 +4,7 @@ require 'rio'
 
 class BackupPhoto < ActiveRecord::Base
   belongs_to :backup_photo_album
-  belongs_to :photo, :foreign_key => 'content_id'
+  belongs_to :photo, :foreign_key => 'content_id', :dependent => :destroy
   
   validates_presence_of :source_url
   validates_uniqueness_of :source_photo_id, :scope => :backup_photo_album_id
@@ -38,11 +38,11 @@ class BackupPhoto < ActiveRecord::Base
       :description => caption,
       :filename => File.basename(filename),
       :temp_path => File.new(filename)) do |p|    
-        p.tag_with(tags.join(','), @member) unless tags.empty?
+        p.tag_with(tags.join(','), @member) if tags
         update_attribute(:content_id, p.id)
       end
     end
-    t.rm
+    rio(filename).delete
   end
     
 end

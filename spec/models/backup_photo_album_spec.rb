@@ -58,6 +58,7 @@ describe BackupPhotoAlbum do
     describe "on save photos" do
       before(:each) do
         @photo = new_photo
+        BackupPhoto.any_instance.stubs(:source_url).returns(@photo_url = File.dirname(__FILE__) + '/../../public/images/board.gif')
       end
       
       describe "association" do
@@ -66,7 +67,7 @@ describe BackupPhotoAlbum do
           @backup.save_photos([@photo])
         end
       
-        it "should create photo object" do
+        it "should save new photos" do
           lambda {
             @backup.save_photos([@photo])
           }.should change(BackupPhoto, :count).by(1)
@@ -78,12 +79,20 @@ describe BackupPhotoAlbum do
           }.should change(BackupPhoto, :count).by(1)
         end
       
+        it "should delete photos that are not in the album anymore" do
+          @backup.save_photos([@photo])
+          orig = @backup.backup_photos.first
+          @backup.save_photos([@newone = new_photo])
+          @backup.reload.backup_photos.size.should == 1
+          @backup.backup_photos.first.should_not == orig
+        end
+        
         it "new photo object should be saved in association with valid attributes" do
           @backup.save_photos([@photo])
           @backup.backup_photos.should have(1).thing
           photo = @backup.backup_photos.first
           photo.caption.should == @photo.caption
-          photo.source_url.should == @photo.source_url
+          photo.source_url.should == @photo_url
           photo.tags.should == nil
         end
         

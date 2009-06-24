@@ -16,8 +16,8 @@ class Profile < ActiveRecord::Base
   validates_associated :schools, :messages => 'Some required education fields are missing'
   
   serialize :facebook_data
-  xss_terminate :except => [ :facebook_data ] # conflicts w/serialize
-  
+  xss_terminate :except => [ :facebook_data ]
+    
   include Addressable
   after_update :save_associations
     
@@ -25,6 +25,14 @@ class Profile < ActiveRecord::Base
     addresses.find_birth(:first) || addresses.build(:location_type => Address::Birth)
   end
   
+  def marshal_data
+    [Marshal.dump(string)].pack('m*')
+  end
+  
+  def unmarshal
+    Marshal.load(str.unpack("m")[0])
+  end
+
   private
   
   def save_associations

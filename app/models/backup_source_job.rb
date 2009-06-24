@@ -7,7 +7,7 @@ class BackupSourceJob < ActiveRecord::Base
   validates_presence_of :backup_source
   validates_presence_of :backup_job
   
-  serialize :errors
+  serialize :error_messages
   serialize :messages
-  xss_terminate :except => [ :errors, :messages ] # conflicts w/serialize
+  xss_terminate :except => [ :error_messages, :messages ] # conflicts w/serialize
 end

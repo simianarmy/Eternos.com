@@ -3,7 +3,7 @@
 
 # Should be used as model for other site classes (ie. Flickr)
 
-require 'backup_content_proxies'
+require 'backup_content_proxy'
 require 'facebooker'
 
 class FacebookPhotoAlbum < BackupPhotoAlbumProxy

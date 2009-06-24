@@ -6,6 +6,8 @@ require 'spec/autorun'
 require 'spec/rails'
 require 'rspec_rails_mocha'
 require 'fixjour'
+require "tempfile"
+require "test/unit"
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
@@ -365,8 +367,9 @@ module FacebookerSpecHelper
   end
   
   def new_facebooker_photo
-    Facebooker::Photo.new(:aid => "100", :pid => "123", :caption => "some pic", :populated => true,
-      :src_big => 'http://somewhere.jpg', :tags => [])
+    Facebooker::Photo.new(:aid => "100", :pid => rand(Time.now), 
+      :caption => Faker::Lorem.sentence, :populated => true,
+      :src_big => "http://#{Faker::Internet.domain_name}/pic.jpg", :tags => Faker::Lorem.words)
   end
 end
     

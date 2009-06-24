@@ -3,7 +3,7 @@
 # Module contains helper methods that wrap Facebooker::User class methods
 # for accessing Facebook Profile data
 
-require 'facebooker'
+require 'facebooker' unless defined? Facebooker
 
 module FacebookUserProfile
   Fields = Facebooker::User::FIELDS

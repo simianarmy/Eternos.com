@@ -9,6 +9,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
   end
   
   validates_presence_of :backup_source
+  validates_uniqueness_of :source_album_id, :scope => :backup_source_id
   
   EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
   
@@ -38,18 +39,18 @@ class BackupPhotoAlbum < ActiveRecord::Base
   # Saves any new photos in album
   def save_photos(photos)
     return unless photos && photos.any?
+    new_photo_ids = photos.map(&:id)
+    existing_photo_ids = backup_photos.map(&:source_photo_id)
     
-    # Get existing album photo source ids
-    photo_ids = backup_photos.map(&:source_photo_id)
+    # Delete old photos
+    backup_photos.each do |p|
+      p.destroy unless new_photo_ids.include? p.source_photo_id
+    end
     
     # Add all new photos
     photos.each do |p|
-      next if photo_ids.include? p.id
+      next if existing_photo_ids.include? p.id
       backup_photos.import p
-    end
-    # Delete old photos
-    photo_ids.each do |pid|
-      p.destroy unless photos.map(&:id).include? pid
     end
   end
 end

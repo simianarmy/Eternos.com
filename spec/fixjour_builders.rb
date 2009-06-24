@@ -99,6 +99,13 @@ Fixjour  do
       :skip => false)
   end
   
+  define_builder(BackupSourceJob) do |klass, overrides|
+    klass.protected :backup_source, :backup_job
+    klass.new(
+      :backup_source => new_backup_source,
+      :backup_job => new_backup_job)
+  end
+  
   define_builder(Category) do |klass, overrides|
      klass.new(:name => 'global', :global => 1)
    end
