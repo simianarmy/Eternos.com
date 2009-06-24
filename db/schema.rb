@@ -181,7 +181,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.integer  "size"
     t.integer  "days"
     t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "finished_at"
     t.string   "status"
     t.text     "messages"
     t.integer  "backup_source_id"

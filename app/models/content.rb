@@ -1,6 +1,8 @@
 # $Id$
 
-class Content < ActiveRecord::Base  
+class Content < ActiveRecord::Base
+  include AfterCommit::ActiveRecord
+  
   has_many :decorations, :dependent => :destroy
   has_many :elements, :through => :decorations
   belongs_to :owner, :class_name => 'Member', :foreign_key => 'user_id'
@@ -33,7 +35,6 @@ class Content < ActiveRecord::Base
   before_create :set_title
   # TODO: Make this work w/ attachment_fu
   before_create :set_content_type_by_content
-  after_commit_on_create :attachment_changed!
   
   named_scope :recordings, :conditions => {:parent_id => nil, :is_recording => true}
   
@@ -122,7 +123,6 @@ class Content < ActiveRecord::Base
   end
   
   # Instance methods
-  
   
   def validate
     if parent_id.nil?
@@ -229,6 +229,10 @@ class Content < ActiveRecord::Base
   end
   
   protected
+  
+  def after_commit_on_create
+    attachment_changed!
+  end
   
   # before_create callback
   def set_title
