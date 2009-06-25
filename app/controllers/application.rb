@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   before_filter :check_enable_mainenaince_mode
   
   helper :all # include all helpers, all the time
-  #helper_method :current_account, :admin?
+  
   helper_method :current_user_session, :current_user
   helper_method :current_account, :admin?
   

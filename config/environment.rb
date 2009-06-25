@@ -67,7 +67,7 @@ Rails::Initializer.run do |config|
   #config.gem 'authlogic'
   config.gem 'amqp'
   config.gem 'chronic', :version => '>= 0.2.3'
-  # Must be installed on system, no in vendor/gems!
+  # Must be installed on system, not in vendor/gems!
   config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
   config.gem 'mash', :version => '>= 0.0.3'
   config.gem 'oauth', :version => '>= 0.3.4'
@@ -76,6 +76,7 @@ Rails::Initializer.run do |config|
   config.gem 'ruby-hmac', :lib => 'hmac'
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
+  config.gem 'facebooker-eternos', :lib => 'facebooker'
   #config.gem 'memcache-client', :version => ">= 1.7.1"
   #config.gem 'flvtool2', :version => ">= 1.0.6"
   

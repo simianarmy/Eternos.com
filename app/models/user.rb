@@ -27,7 +27,8 @@ class User < ActiveRecord::Base
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :first_name, :last_name, :email, :facebook_id,
-    :password, :password_confirmation, :identity_url, :invitation_token, :terms_of_service
+    :password, :password_confirmation, :identity_url, 
+    :invitation_token, :terms_of_service
   
   # Validate first,last name
   validates_presence_of :first_name
@@ -42,7 +43,7 @@ class User < ActiveRecord::Base
     u.validates_uniqueness_of   :invitation_id
   end
   before_create :set_invitation_limit, :make_activation_code
-  after_create :register_user_to_fb
+  #after_create :register_user_to_fb
   after_create :initialize_address_book
   
   acts_as_state_machine :initial => :pending
@@ -84,12 +85,13 @@ class User < ActiveRecord::Base
   GuestRole         = 'Guest'
   
   def backup_site_names
-    rv = []
-    backup_sources.each do |backup|
-      rv << backup.backup_site.name.to_s
+    returning Array.new do |names|
+      backup_sources.each do |backup|
+        names << backup.backup_site.name.to_s
+      end
     end
-    rv
   end
+  
   # We are going to connect this user object with a facebook id. But only ever one account.
   def link_fb_connect(fb_user_id)
     unless fb_user_id.nil?
@@ -118,6 +120,12 @@ class User < ActiveRecord::Base
   
   def facebook_user?
     return !facebook_id.nil? && facebook_id > 0
+  end
+  
+  def set_facebook_session_keys(session_key, secret_key='')
+    self.facebook_session_key = session_key
+    self.facebook_secret_key = secret_key
+    save(false)
   end
   
   # Returns true if the user has just been activated.
