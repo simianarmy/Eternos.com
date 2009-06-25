@@ -25,6 +25,7 @@ class BackupPhoto < ActiveRecord::Base
   # Downloads from source & create new Content object with data
   
   def download
+    return
     return unless source_url
     
     filename = File.join(Dir::tmpdir, URI::parse(source_url).path.split('/').last)

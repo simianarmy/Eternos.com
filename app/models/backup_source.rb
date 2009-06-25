@@ -28,5 +28,5 @@ class BackupSource < ActiveRecord::Base
   
   def photo_album(id)
     backup_photo_albums.find_by_source_album_id(id)
-  end
+  end    
 end

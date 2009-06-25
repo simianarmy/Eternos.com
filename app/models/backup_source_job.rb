@@ -10,4 +10,12 @@ class BackupSourceJob < ActiveRecord::Base
   serialize :error_messages
   serialize :messages
   xss_terminate :except => [ :error_messages, :messages ] # conflicts w/serialize
+  
+  def successful?
+    status && (status == BackupStatus::Success)
+  end
+  
+  def reset_progress
+    update_attribute(:percent_complete, 0)
+  end
 end

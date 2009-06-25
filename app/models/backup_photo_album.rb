@@ -4,7 +4,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
   belongs_to :backup_source
   has_many :backup_photos, :dependent => :destroy do
     def import(photo)
-      create({:source_photo_id => photo.id}.merge(photo.to_h))
+      create({:source_photo_id => photo.id.to_s}.merge(photo.to_h))
     end
   end
   
@@ -32,14 +32,17 @@ class BackupPhotoAlbum < ActiveRecord::Base
   # Save album properies & any associated photos
   def save_album(album, photos=nil)
     if update_attributes(album.to_h)
+      logger.debug "*******SAVING PHOTOS******"
+      logger.debug photos.inspect if photos
       save_photos(photos) if photos
     end
   end
   
   # Saves any new photos in album
   def save_photos(photos)
+    logger.debug "*******SAVING PHOTOS******"
+    logger.debug "Saving backup photos: #{photos.inspect}" if photos
     return unless photos && photos.any?
-    logger.debug "Saving backup photos: #{photos.inspect}"
     new_photo_ids = photos.map(&:id)
     logger.debug "Photo ids: #{new_photo_ids.inspect}"
     existing_photo_ids = backup_photos.map(&:source_photo_id)

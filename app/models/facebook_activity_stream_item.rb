@@ -5,8 +5,9 @@
 
 class FacebookActivityStreamItem < ActivityStreamItem
   # Creates object from a ActivityStreamProxy instance
-  def self.create_from_proxy(item)
-    create(:created_at => item.created,
+  def self.create_from_proxy(stream_id, item)
+    create(:activity_stream_id => stream_id,
+      :created_at => item.created,
       :updated_at => item.updated,
       :published_on => Time.at(item.created),
       :message => item.message,

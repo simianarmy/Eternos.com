@@ -180,9 +180,10 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.integer  "backup_job_id"
     t.integer  "size"
     t.integer  "days"
+    t.integer  "percent_complete",      :default => 0, :null => false
     t.datetime "created_at"
     t.datetime "finished_at"
-    t.string   "status"
+    t.integer  "status", :null => false, :default => 0
     t.text     "messages"
     t.integer  "backup_source_id"
     t.text     "error_messages"
