@@ -1,7 +1,7 @@
 - use_lowpro
 - use_prototip
 - title 'Member Home'
-= javascript_tag "window._token = '#{form_authenticity_token}'"
+= javascript_tag "window._token = '#{form_authenticity_token}'; var lightview_height = 0.5*window.innerHeight"
 - javascript('account_setup')
 - stylesheet "popup"
 - use_lightview
@@ -49,6 +49,7 @@
     = image_tag 'configure.png', :alt => "account settings"
   
   #dashitemtext.alignleft
-    %h2= link_to_lightview("account settings", account_setting_path, {:class => "account-setting"}, {}, {:autosize => true, :closeButton => false })
+    %h2
+      %a.account-setting{'href'=>'"#"', 'onclick' => "Lightview.show({href:'/account/setting', options:{ajax:{evalScripts:true,parameters:'&authenticity_token=' + encodeURIComponent( window._token )}, autosize:false, closeButton:false, height: lightview_height, width: 700}, rel:'ajax'});return false;"} account settings
     %p As your Eternos account is meant to stay with for the long haul, your personal information will undoubtably change during your stay with us. Easily change your password, update your billing information, or upgrade/update your plan as your life and needs continue to evolve.
   .clearboth
