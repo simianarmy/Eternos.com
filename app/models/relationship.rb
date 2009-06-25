@@ -8,5 +8,4 @@ class Relationship < ActiveRecord::Base
 #  validates_existence_of :guest, :message => "Guest not found"
 #  validates_existence_of :circle, :message => "Circle not found"
   
-  TYPES_RELATIONSHIP = ["Dating","Engaged","Married","Divorced","Civil","Union","Other"]
 end

@@ -126,6 +126,7 @@ class AccountSettingsController < ApplicationController
       format.js do
         render :update do |page|
           page.remove "add-new-address"
+          page.hide "save-button-address"
           page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
         end
       end
@@ -147,7 +148,7 @@ class AccountSettingsController < ApplicationController
 
   def add_another_job
     params[:jobs].each_value do |val|
-      Job.create(val.merge(:profile_id => current_user.id))
+      Job.create(val.merge(:profile_id => current_user.profile))
     end
     
     find_job
@@ -176,7 +177,7 @@ class AccountSettingsController < ApplicationController
   
   def add_another_school
     params[:schools].each_value do |val|
-      School.create(val.merge(:profile_id => current_user.id))
+      School.create(val.merge(:profile_id => current_user.profile))
     end
     
     find_school
@@ -205,7 +206,7 @@ class AccountSettingsController < ApplicationController
   
   def add_another_medical
     params[:medicals].each_value do |val|
-      Medical.create(val.merge(:profile_id => current_user.id))
+      Medical.create(val.merge(:profile_id => current_user.profile))
     end
     
     find_medical
@@ -234,7 +235,7 @@ class AccountSettingsController < ApplicationController
   
   def add_another_medical_condition
     params[:medical_conditions].each_value do |val|
-      MedicalCondition.create(val.merge(:profile_id => current_user.id))
+      MedicalCondition.create(val.merge(:profile_id => current_user.profile))
     end
     
     find_medical_condition
@@ -263,7 +264,7 @@ class AccountSettingsController < ApplicationController
   
   def add_another_family
     params[:families].each_value do |val|
-      Family.create(val.merge(:profile_id => current_user.id))
+      Family.create(val.merge(:profile_id => current_user.profile))
     end
     
     find_family

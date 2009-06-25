@@ -90,6 +90,21 @@ body{
 	color:#2ea4ff;
 }
 
+.title4{
+	font-family:arial;
+	font-size:12px;
+	font-weight:bold;
+	color:#404142;
+}
+
+.blue-btn3{
+	font-family:arial;
+	font-size:11px;
+	color:#407ddf;
+	margin: 0 5px 0 0;
+	text-decoration:none;
+}
+
 .subtitle1{
 	font-family:arial;
 	font-size:18px;
@@ -616,6 +631,16 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	font-weight:bold;
 	padding:3px 0 0 2px;
 	background:#6694e3;
+}
+
+.popup-newbox{
+	width:421px;
+	height:auto;
+	margin:10px 0 0 20px;
+	padding:10px;
+	float:left;
+	background:#dde3eb;
+	border:solid 1px #ced3da;
 }
 
 .coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}

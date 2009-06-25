@@ -153,7 +153,7 @@
 			    </tr>
 
 		      </thead>
-		      <tbody id="table-jobs">
+		    <tbody id="table-relationships">
 		        <%= render :partial => 'new_relationship', :locals => {:relationships => @relationships} %>
 		      </tbody>
 		    </table>
@@ -169,15 +169,15 @@
   window.countries = new Array();
   window.types_relationship = new Array();
 
-  <% Relationship::TYPES_RELATIONSHIP.each do |type| -%>
-    window.types_relationship.push(["<%= type %>", "<%= type %>"]);
+  <% Circle.find(:all, :order => {:name => " ASC"}).each do |type| -%>
+    window.types_relationship.push([<%= type.id %>, "<%= type.name %>"]);
   <% end %>
   
   <% Family::TYPES.each do |type| -%>
     window.types.push(["<%= type %>", "<%= type %>"]);
   <% end %>
   
-  <% Country.find(:all, :order => {:name => " ASC"}).each_with_index do |country, index| -%>
+  <% Country.find(:all, :order => {:name => " ASC"}).each do |country| -%>
     window.countries.push([<%= country.id %>, "<%= country.name %>"]);
   <% end %>
 </script>  
