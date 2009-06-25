@@ -65,7 +65,6 @@ Rails::Initializer.run do |config|
   config.gem 'packr', :version => ">= 1.0.2"
   config.gem 'mime-types', :lib => "mime/types", :version => '>= 1.16'
   #config.gem 'authlogic'
-  config.gem 'facebooker'
   config.gem 'amqp'
   config.gem 'chronic', :version => '>= 0.2.3'
   # Must be installed on system, no in vendor/gems!

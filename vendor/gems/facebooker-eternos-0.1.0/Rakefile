@@ -1,0 +1,15 @@
+# Rakefile
+require 'rubygems'
+require 'rake'
+require 'echoe'
+
+Echoe.new('facebooker-eternos', '0.1.0') do |p|
+  p.description    = "Facebooker gem - with upgrades"
+  p.url            = "http://facebooker.rubyforge.org"
+  p.author         = "Marc Mauger"
+  p.email          = "marc@eternos.com"
+  p.ignore_pattern = ["tmp/*", "script/*"]
+  p.development_dependencies = []
+end
+
+Dir["#{File.dirname(__FILE__)}/tasks/*.rake"].sort.each { |ext| load ext }
