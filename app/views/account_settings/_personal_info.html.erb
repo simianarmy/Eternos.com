@@ -1,3 +1,8 @@
-<div id="account-setting-content">
+<div id="account-setting-content" class="makeScroll">
   <%= render :partial => "accounts/personal_info" %>
 </div>
+<%= javascript_tag "Scroller.reset('account-setting-content')" %>
+<script languange="javscript">
+  height = window.innerHeight;
+  $('account-setting-content').style.height = 0.7*height  + "px";
+</script>

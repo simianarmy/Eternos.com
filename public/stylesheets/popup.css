@@ -926,3 +926,34 @@ h5{
 	color:#4a4a4a;
 	margin:-50px 0 0 98px;
 }
+
+#account-setting-content{
+  overflow-y: auto;
+  overflow-x: hidden;
+  width:468px !important;
+}
+
+.scroll-track{
+ height:10px;
+ width:7px;
+ background:silver;
+}
+
+.scroll-handle{
+ height:3px;
+ width:7px;
+ background:#222b33;
+ cursor:pointer;
+ }
+
+.scroll-track-top{
+  height:5px;
+  width:7px;
+ background:red;
+}
+
+.scroll-track-bot{
+  height:5px;
+  width:7px;
+  background:red;
+}

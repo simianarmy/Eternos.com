@@ -1,13 +1,17 @@
 <div id="account-setting-nav">
 
   <%- link_class = active_link == "step1" ? "step1-active" : "step1-btn"  -%>
-  <%= link_to_remote "", { :url => personal_info_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');"}, :class =>  link_class %>
+  <%= link_to_remote "", { :url => personal_info_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", :complete => "$('progress-bar').hide();" }, :class =>  link_class %>
+
+  <%= button_to_remote "", { :url => personal_info_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", :complete => "$('progress-bar').hide();" }, :class =>  link_class, :id => "step1", :style => "display:none;" %>
+
+
 
   <%- link_class = active_link == "step2" ? "step2-active" : "step2-btn"  -%>
-  <%= link_to_remote "", { :url => online_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');"}, :class => link_class %>
+  <%= link_to_remote "", { :url => online_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", :complete => "$('progress-bar').hide();"}, :class => link_class %>
 
   <%- link_class = active_link == "step3" ? "step3-active" : "step3-btn"  -%>
-  <%= link_to_remote "", { :url => email_account_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');"}, :class => link_class %>
+  <%= link_to_remote "", { :url => email_account_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", :complete => "$('progress-bar').hide();"}, :class => link_class %>
 
   <%- link_class = active_link == "step4" ? "step4-active" : "step4-btn"  -%>
   <%= link_to_remote "", { :url => your_history_account_settings_path}, :class => link_class %>
