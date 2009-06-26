@@ -41,8 +41,26 @@ function getMonth(selectMonth){
   return selectMonth;
 }
 
-function getYear(){
+function getYear(selectYear){
+  y = new Date();
+  y = y.getFullYear();
   
+  var optn = document.createElement("option");
+  optn.value = "";
+  optn.text = " ";
+  selectYear.options.add(optn);
+  var optn = document.createElement("option");
+  optn.value = y;
+  optn.text = y;
+  selectYear.options.add(optn);
+
+  for(var i=1; i<=10; i++){
+    var optn = document.createElement("option");
+    optn.value = y-i;
+    optn.text = y-i;
+    selectYear.options.add(optn);
+  }
+  return selectYear;
 }
 
 window.counter = 1;
@@ -74,10 +92,13 @@ function addRowAddress(){
   
   var inputCity       = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][city]", type: "text"});
   var inputPostalCode = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][postal_code]", type: "text"});
-  var selectMoveIn    = new Element('select', { name: "", type: "text"});
-  
-  var selectMoveOut   = new Element('select', { Class: "textbox5", name: "", type: "text"});
-  
+  var selectMoveInDay    = new Element('select', { name: "addresses["+window.counter+"][day_in]", type: "text"});
+  var selectMoveInMonth    = new Element('select', { name: "addresses["+window.counter+"][month_in]", type: "text"});
+  var selectMoveInYear    = new Element('select', { name: "addresses["+window.counter+"][year_in]", type: "text"});
+  var selectMoveOutDay   = new Element('select', { name: "addresses["+window.counter+"][day_out]", type: "text"});
+  var selectMoveOutMonth   = new Element('select', { name: "addresses["+window.counter+"][month_out]", type: "text"});
+  var selectMoveOutYear   = new Element('select', { name: "addresses["+window.counter+"][year_out]", type: "text"});
+
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-address"});
   
   var tr1 = new Element('tr', {});
@@ -211,7 +232,9 @@ function addRowAddress(){
   tr9.appendChild(td91);
   tr9.appendChild(td92);
   tr9.appendChild(td93);
-    td93.appendChild(getDay(selectMoveIn));
+    td93.appendChild(getDay(selectMoveInDay));
+    td93.appendChild(getMonth(selectMoveInMonth));
+    td93.appendChild(getYear(selectMoveInYear));
 
   //tr10
   td101.innerHTML = "Move Out";
@@ -219,7 +242,9 @@ function addRowAddress(){
   tr10.appendChild(td101);
   tr10.appendChild(td102);
   tr10.appendChild(td103);
-    td103.appendChild(selectMoveOut);
+    td103.appendChild(getDay(selectMoveOutDay));
+    td103.appendChild(getMonth(selectMoveOutMonth));
+    td103.appendChild(getYear(selectMoveOutYear));
   
   divParent.appendChild(tr1);
   divParent.appendChild(tr2);
@@ -243,9 +268,13 @@ window.counter_job = 1;
 function addRowJob(){
   var inputCompany     = new Element('input', { Class: "textbox5", name: "jobs["+window.counter_job+"][company]", type: "text"});
   var inputTitle       = new Element('input', { Class: "textbox5", name: "jobs["+window.counter_job+"][title]", type: "text"});
-  var inputDescription = new Element('textarea', { Class: "textbox5", name: "jobs["+window.counter_job+"][description]", rows: "5", cols: "10"});
-  var selectStart      = new Element('select', { Class: "textbox5", name: "jobs["+window.counter_job+"][start_at]"});
-  var selectEnd        = new Element('select', { Class: "textbox5", name: "jobs["+window.counter_job+"][end_at]"});
+  var inputDescription = new Element('textarea', { name: "jobs["+window.counter_job+"][description]", rows: "5", cols: "10"});
+  var selectStartDay      = new Element('select', { name: "jobs["+window.counter_job+"][start_day]"});
+  var selectStartMonth      = new Element('select', { name: "jobs["+window.counter_job+"][start_month]"});
+  var selectStartYear      = new Element('select', { name: "jobs["+window.counter_job+"][start_year]"});
+  var selectEndDay        = new Element('select', { name: "jobs["+window.counter_job+"][end_day]"});
+  var selectEndMonth        = new Element('select', { name: "jobs["+window.counter_job+"][end_month]"});
+  var selectEndYear        = new Element('select', { name: "jobs["+window.counter_job+"][end_year]"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-job"});
   
@@ -326,7 +355,9 @@ function addRowJob(){
   tr6.appendChild(td61);
   tr6.appendChild(td62);
   tr6.appendChild(td63);
-    td63.appendChild(selectStart);
+    td63.appendChild(getDay(selectStartDay));
+    td63.appendChild(getMonth(selectStartMonth));
+    td63.appendChild(getYear(selectStartYear));
 
   //tr7
   td71.innerHTML = "End At";
@@ -334,7 +365,9 @@ function addRowJob(){
   tr7.appendChild(td71);
   tr7.appendChild(td72);
   tr7.appendChild(td73);
-    td73.appendChild(selectEnd);
+    td73.appendChild(getDay(selectEndDay));
+    td73.appendChild(getMonth(selectEndMonth));
+    td73.appendChild(getYear(selectEndYear));
 
   divParent.appendChild(tr1);
   divParent.appendChild(tr2);
@@ -354,12 +387,16 @@ function addRowSchool(){
   var inputName         = new Element('input', { Class: "textbox5", name: "schools["+window.counter_school+"][name]", type: "text"});
   var inputDegree       = new Element('input', { Class: "textbox5", name: "schools["+window.counter_school+"][degree]", type: "text"});
   var inputFields       = new Element('input', { Class: "textbox5", name: "schools["+window.counter_school+"][fields]", type: "text"});
-  var selectStart       = new Element('select', { Class: "textbox5", name: "schools["+window.counter_school+"][start_at]"});
-  var selectEnd         = new Element('select', { Class: "textbox5", name: "schools["+window.counter_school+"][end_at]"});
-  var inputActivities   = new Element('textarea', { Class: "textbox5", name: "schools["+window.counter_school+"][activities_societies]", rows: "5", cols: "10"});
-  var inputAwards       = new Element('textarea', { Class: "textbox5", name: "schools["+window.counter_school+"][awards]", rows: "5", cols: "10"});
-  var inputRecognitions = new Element('textarea', { Class: "textbox5", name: "schools["+window.counter_school+"][recognitions]", rows: "5", cols: "10"});
-  var inputNotes        = new Element('textarea', { Class: "textbox5", name: "schools["+window.counter_school+"][notes]", rows: "5", cols: "10"});
+  var selectStartDay       = new Element('select', { name: "schools["+window.counter_school+"][start_day]"});
+  var selectStartMonth       = new Element('select', { name: "schools["+window.counter_school+"][start_month]"});
+  var selectStartYear       = new Element('select', { name: "schools["+window.counter_school+"][start_year]"});
+  var selectEndDay         = new Element('select', { name: "schools["+window.counter_school+"][end_day]"});
+  var selectEndMonth         = new Element('select', { name: "schools["+window.counter_school+"][end_month]"});
+  var selectEndYear         = new Element('select', { name: "schools["+window.counter_school+"][end_year]"});
+  var inputActivities   = new Element('textarea', { name: "schools["+window.counter_school+"][activities_societies]", rows: "5", cols: "10"});
+  var inputAwards       = new Element('textarea', { name: "schools["+window.counter_school+"][awards]", rows: "5", cols: "10"});
+  var inputRecognitions = new Element('textarea', { name: "schools["+window.counter_school+"][recognitions]", rows: "5", cols: "10"});
+  var inputNotes        = new Element('textarea', { name: "schools["+window.counter_school+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-school"});
   
@@ -460,7 +497,9 @@ function addRowSchool(){
   tr6.appendChild(td61);
   tr6.appendChild(td62);
   tr6.appendChild(td63);
-    td63.appendChild(selectStart);
+    td63.appendChild(getDay(selectStartDay));
+    td63.appendChild(getMonth(selectStartMonth));
+    td63.appendChild(getYear(selectStartYear));
 
   //tr7
   td71.innerHTML = "End At";
@@ -468,7 +507,9 @@ function addRowSchool(){
   tr7.appendChild(td71);
   tr7.appendChild(td72);
   tr7.appendChild(td73);
-    td73.appendChild(selectEnd);
+    td73.appendChild(getDay(selectEndDay));
+    td73.appendChild(getMonth(selectEndMonth));
+    td73.appendChild(getYear(selectEndYear));
 
   //tr7
   td81.innerHTML = "Activities";
@@ -772,7 +813,9 @@ function addRowFamily(){
     selectType.options.add(optn);
     }
   
-  var selectBirtdate  = new Element('select', { Class: "textbox5", name: "families["+window.counter_family+"][birtdate]"});
+  var selectBirtdateDay  = new Element('select', { name: "families["+window.counter_family+"][birtdate_day]"});
+  var selectBirtdateMonth  = new Element('select', { name: "families["+window.counter_family+"][birtdate_month]"});
+  var selectBirtdateYear  = new Element('select', { name: "families["+window.counter_family+"][birtdate_year]"});
   var inputLiving     = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][living]", type: "checkbox", value:"1", checked:"checked"});
   var inputNotes      = new Element('textarea', { name: "families["+window.counter_family+"][notes]", rows: "5", cols: "10"});
   
@@ -855,7 +898,9 @@ function addRowFamily(){
   tr5.appendChild(td51);
   tr5.appendChild(td52);
   tr5.appendChild(td53);
-    td53.appendChild(selectBirtdate);
+    td53.appendChild(getDay(selectBirtdateDay));
+    td53.appendChild(getMonth(selectBirtdateMonth));
+    td53.appendChild(getYear(selectBirtdateYear));
 
   //tr6
   td61.innerHTML = "Living";
@@ -905,8 +950,12 @@ function addRowRelationship(){
     selectType.options.add(optn);
     }
   
-  var selectStart     = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][start_at]"});
-  var selectEnd       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][end_at]"});
+  var selectStartDay     = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][start_day]"});
+  var selectStartMonth     = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][start_month]"});
+  var selectStartYear     = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][start_year]"});
+  var selectEndDay       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][end_day]"});
+  var selectEndMonth       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][end_month]"});
+  var selectEndYear       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][end_year]"});
   var inputNotes      = new Element('textarea', { name: "relationships["+window.counter_relationship+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-relationship"});
@@ -988,7 +1037,9 @@ function addRowRelationship(){
   tr5.appendChild(td51);
   tr5.appendChild(td52);
   tr5.appendChild(td53);
-    td53.appendChild(selectStart);
+    td53.appendChild(getDay(selectStartDay));
+    td53.appendChild(getMonth(selectStartMonth));
+    td53.appendChild(getYear(selectStartYear));
 
   //tr6
   td61.innerHTML = "Start End";
@@ -996,7 +1047,9 @@ function addRowRelationship(){
   tr6.appendChild(td61);
   tr6.appendChild(td62);
   tr6.appendChild(td63);
-    td63.appendChild(selectEnd);
+    td63.appendChild(getDay(selectEndDay));
+    td63.appendChild(getMonth(selectEndMonth));
+    td63.appendChild(getYear(selectEndYear));
 
   //tr7
   td71.innerHTML = "Notes";
