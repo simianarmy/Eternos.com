@@ -97,12 +97,22 @@ body{
 	color:#404142;
 }
 
+.title6{
+	width:380px;
+	font-family:arial;
+	font-size:12px;
+	font-weight:bold;
+	color:#404142;
+	float:left;
+}
+
 .blue-btn3{
 	font-family:arial;
 	font-size:11px;
 	color:#407ddf;
 	margin: 0 5px 0 0;
 	text-decoration:none;
+	float:left;
 }
 
 .subtitle1{
@@ -512,6 +522,26 @@ a.flickr-btn:hover{
 	background:url(/images/submit2.gif) 0 20px;
 }
 
+.submit-btn3{
+	width:84px;
+	height:18px;
+	display:block;
+	text-align:center;
+	font-family:arial;
+	color:black;
+	text-decoration:none;
+	border:none;
+	font-size:11px;
+	padding-top:2px;
+	margin:0;
+	background:url(/images/submit2.gif) 0 0;
+}
+
+.submit-btn3:hover{
+	color:white;
+	background:url(/images/submit2.gif) 0 20px;
+}
+
 /*step button---------------------------------------------------------------------------------------------------------------*/
 
 a.step1-btn{width:140px;height:43px;background:url(/images/errors/step1.png) 0 0;display:block;margin-bottom:15px;}
@@ -636,7 +666,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .popup-newbox{
 	width:421px;
 	height:auto;
-	margin:10px 0 0 10px;
+	margin-top:10px;
 	padding:10px;
 	float:left;
 	background:#dde3eb;
@@ -652,11 +682,13 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .coll-form7{width:130px; height:30px; text-align:right;font-family:arial;font-size:11px;color:#393b3e;}
 
 
-.textbox1{width:240px;height:14px;border:1px solid #898989; margin:2px 0 2px 0;}
-.textbox2{width:50px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}
-.textbox3{width:176px;margin:2px 0 2px 0;}
-.textbox4{width:90px;height:18px;border:1px solid #898989; margin:2px 0 2px 0;}
-.textbox5{width:188px;height:12px;border:1px solid #898989; margin:2px 0 2px 5px;}
+.textbox1{width:240px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
+.textbox2{width:50px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
+.textbox3{width:176px; height:20px ;margin:2px 0 2px 0;}
+.textbox4{width:90px; height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
+.textbox5{width:188px; height:20px;border:1px solid #898989; margin:2px 0 2px 5px;}
+
+.textarea1{width:188px; height:100px;border:1px solid #898989; margin:2px 0 2px 5px;}
 
 .title2{
 	font-family:arial;
@@ -932,6 +964,18 @@ h5{
 }
 
 .add1-text:hover{
+	color:#54b9f9;
+}
+
+.remove-btn{
+	font-family:arial;
+	font-size:11px;
+	color:#0590e8;
+	text-decoration:none;
+	float:right;
+}
+
+.remove-btn:hover{
 	color:#54b9f9;
 }
 
