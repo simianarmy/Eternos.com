@@ -24,7 +24,7 @@ class Subscription < ActiveRecord::Base
       self.send("#{f}=", plan.send(f))
     end
     self.subscription_plan = plan
-    self.state = 'active' unless (plan.amount > 0 && plan.trial_period)
+    self.state = 'active' unless (plan.amount && plan.amount > 0 && plan.trial_period)
   end
   
   def trial_days
@@ -95,7 +95,7 @@ class Subscription < ActiveRecord::Base
   end
   
   def needs_payment_info?
-    self.card_number.blank? && self.subscription_plan.amount > 0
+    self.card_number.blank? && self.subscription_plan.amount && self.subscription_plan.amount > 0
   end
   
   def self.find_expiring_trials(renew_at = 7.days.from_now)
