@@ -62,7 +62,7 @@ class AccountsController < ApplicationController
         session[:account_id] = @account.id
         render :action => 'billing'
       else
-        flash_redirect "Account created!", member_home_path
+        flash_redirect "Account created!", request.env["HTTP_REFERER"].sub("https", "http") + "member_home"
         #rennder :action => 'thanks', :layout => false
       end
     else
