@@ -9,9 +9,9 @@ class AccountsController < ApplicationController
   before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :update]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
-  
-  #ssl_required :billing, :cancel, :new, :create, :plans
-  #ssl_allowed :thanks, :canceled, :paypal
+  before_filter :check_logged_in
+  ssl_required :billing, :cancel, :new, :create, :plans
+  ssl_allowed :thanks, :canceled, :paypal
   
   def new
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
@@ -29,7 +29,7 @@ class AccountsController < ApplicationController
       if User.find_by_facebook_uid(params[:user][:facebook_id])
         # Login manually & redirect to member home
         UserSession.create
-        redirect_to member_home_path
+        redirect_to member_dashboard
         return
       end
     end
@@ -62,7 +62,7 @@ class AccountsController < ApplicationController
         session[:account_id] = @account.id
         render :action => 'billing'
       else
-        flash_redirect "Account created!", request.env["HTTP_REFERER"].sub("https", "http") + "member_home"
+        flash_redirect "Your account has been created.",  member_dashboard
         #rennder :action => 'thanks', :layout => false
       end
     else
@@ -226,4 +226,9 @@ class AccountsController < ApplicationController
       (@user = @subscription.account.admin).pending?
     end
     
+    def check_logged_in
+      if current_user
+         redirect_to member_dashboard
+      end
+    end
 end

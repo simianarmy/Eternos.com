@@ -214,6 +214,10 @@ class ApplicationController < ActionController::Base
     include DecorationsHelper
   end
   
+  def member_dashboard
+    "http://" + request.domain + "/member_home"
+  end
+  
   private
   
   def current_user_session
