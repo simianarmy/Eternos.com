@@ -783,5 +783,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
 
   remove_column :relationships, :relationship_type
+  
+  add_column :addresses, :start_at, :datetime
+  add_column :addresses, :end_at, :datetime
     
 end

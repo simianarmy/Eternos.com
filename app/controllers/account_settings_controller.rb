@@ -116,7 +116,11 @@ class AccountSettingsController < ApplicationController
 
   def add_another_address
     params[:addresses].each_value do |val|
-      @address = Address.new(val.merge(:user_id => current_user.id))
+      start_at = Time.local(val[:year_in],val[:month_in],val[:day_in])
+      end_at = Time.local(val[:year_out],val[:month_out],val[:day_out])
+      val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
+      val.delete_if{|k, v| ["year_in", "month_in", "day_in", "year_out", "month_out", "day_out"].include?(k)}
+      @address = Address.new(val)
       @address.addressable = current_user.profile
       @address.save!
     end
@@ -136,11 +140,12 @@ class AccountSettingsController < ApplicationController
   def remove_address
     @address = Address.find(params[:id])
     @address.destroy
+    
+    find_address
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.visual_effect :highlight, "new-address-#{@address.id}"
-          page.remove "new-address-#{@address.id}"
+          page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
         end
       end
     end 
@@ -148,7 +153,11 @@ class AccountSettingsController < ApplicationController
 
   def add_another_job
     params[:jobs].each_value do |val|
-      Job.create(val.merge(:profile_id => current_user.profile))
+      start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
+      end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+      val.merge!(:profile_id => current_user.profile, :start_at => start_at, :end_at => end_at)
+      val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
+      Job.create(val)
     end
     
     find_job
@@ -156,6 +165,7 @@ class AccountSettingsController < ApplicationController
       format.js do
         render :update do |page|
           page.remove "add-new-job"
+          page.hide "save-button-job"
           page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
         end
       end
@@ -165,11 +175,12 @@ class AccountSettingsController < ApplicationController
   def remove_job
     @job = Job.find(params[:id])
     @job.destroy
+    
+    find_job
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.visual_effect :highlight, "new-job-#{@job.id}"
-          page.remove "new-job-#{@job.id}"
+          page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
         end
       end
     end 
@@ -177,7 +188,11 @@ class AccountSettingsController < ApplicationController
   
   def add_another_school
     params[:schools].each_value do |val|
-      School.create(val.merge(:profile_id => current_user.profile))
+      start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
+      end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+      val.merge!(:profile_id => current_user.profile, :start_at => start_at, :end_at => end_at)
+      val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
+      School.create(val)
     end
     
     find_school
@@ -185,6 +200,7 @@ class AccountSettingsController < ApplicationController
       format.js do
         render :update do |page|
           page.remove "add-new-school"
+          page.hide "save-button-school"
           page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
         end
       end
@@ -194,11 +210,12 @@ class AccountSettingsController < ApplicationController
   def remove_school
     @school = School.find(params[:id])
     @school.destroy
+    
+    find_school
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.visual_effect :highlight, "new-school-#{@school.id}"
-          page.remove "new-school-#{@school.id}"
+          page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
         end
       end
     end 
@@ -206,7 +223,7 @@ class AccountSettingsController < ApplicationController
   
   def add_another_medical
     params[:medicals].each_value do |val|
-      Medical.create(val.merge(:profile_id => current_user.profile))
+      Medical.create(val)
     end
     
     find_medical
@@ -214,6 +231,7 @@ class AccountSettingsController < ApplicationController
       format.js do
         render :update do |page|
           page.remove "add-new-medical"
+          page.hide "save-button-medical"
           page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
         end
       end
@@ -223,11 +241,12 @@ class AccountSettingsController < ApplicationController
   def remove_medical
     @medical = Medical.find(params[:id])
     @medical.destroy
+    
+    find_medical
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.visual_effect :highlight, "new-medical-#{@medical.id}"
-          page.remove "new-medical-#{@medical.id}"
+          page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
         end
       end
     end 
@@ -243,6 +262,7 @@ class AccountSettingsController < ApplicationController
       format.js do
         render :update do |page|
           page.remove "add-new-medical-condition"
+          page.hide "save-button-medical-condition"
           page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
         end
       end
@@ -252,11 +272,12 @@ class AccountSettingsController < ApplicationController
   def remove_medical_condition
     @medical_condition = MedicalCondition.find(params[:id])
     @medical_condition.destroy
+    
+    find_medical_condition
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.visual_effect :highlight, "new-medical-condition-#{@medical_condition.id}"
-          page.remove "new-medical-condition-#{@medical_condition.id}"
+          page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
         end
       end
     end 
@@ -264,7 +285,10 @@ class AccountSettingsController < ApplicationController
   
   def add_another_family
     params[:families].each_value do |val|
-      Family.create(val.merge(:profile_id => current_user.profile))
+      birtdate = Time.local(val[:birtdate_year],val[:birtdate_month],val[:birtdate_day])
+      val.merge!(:profile_id => current_user.profile, :birthdate => birtdate)
+      val.delete_if{|k, v| ["birtdate_year", "birtdate_month", "birtdate_day"].include?(k)}
+      Family.create(val)
     end
     
     find_family
@@ -272,6 +296,7 @@ class AccountSettingsController < ApplicationController
       format.js do
         render :update do |page|
           page.remove "add-new-family"
+          page.hide "save-button-family"
           page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
         end
       end
@@ -281,11 +306,12 @@ class AccountSettingsController < ApplicationController
   def remove_family
     @family = Family.find(params[:id])
     @family.destroy
+    
+    find_family
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.visual_effect :highlight, "new-family-#{@family.id}"
-          page.remove "new-family-#{@family.id}"
+          page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
         end
       end
     end 
@@ -293,7 +319,11 @@ class AccountSettingsController < ApplicationController
   
   def add_another_relationship
     params[:relationships].each_value do |val|
-      Relationship.create(val.merge(:user_id => current_user.id))
+      start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
+      end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+      val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
+      val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
+      Relationship.create(val)
     end
     
     find_relationship
@@ -301,6 +331,7 @@ class AccountSettingsController < ApplicationController
       format.js do
         render :update do |page|
           page.remove "add-new-relationship"
+          page.hide "save-button-relationship"
           page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
         end
       end
@@ -310,11 +341,12 @@ class AccountSettingsController < ApplicationController
   def remove_relationship
     @relationship = Relationship.find(params[:id])
     @relationship.destroy
+    
+    find_relationship
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.visual_effect :highlight, "new-relationship-#{@relationship.id}"
-          page.remove "new-relationship-#{@relationship.id}"
+          page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
         end
       end
     end 

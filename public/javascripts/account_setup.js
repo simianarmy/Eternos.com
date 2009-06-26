@@ -102,10 +102,9 @@ function addRowAddress(){
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-address"});
   
   var tr1 = new Element('tr', {});
-    var td1 = new Element('td', {colspan: "2"});
-      var div1 = new Element('div', {Class: "title4"});
-    var td11 = new Element('td', {align:"right", colspan: "2"});
-       var linkCancel = new Element('a', { href:"#", onClick:'deleteFormAddress();', Class: "blue-btn3" });
+    var td1 = new Element('td', {colspan: "3"});
+      var div1 = new Element('div', {Class: "title6"});
+      var linkCancel = new Element('a', { href:"#", onClick:'deleteFormAddress();', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -162,8 +161,7 @@ function addRowAddress(){
   linkCancel.innerHTML = "Cancel";
   tr1.appendChild(td1);
     td1.appendChild(div1);
-  tr1.appendChild(td11);
-    td11.appendChild(linkCancel);
+  	td1.appendChild(linkCancel);
     
   //tr2
   tr2.appendChild(td2);
@@ -279,10 +277,9 @@ function addRowJob(){
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-job"});
   
   var tr1 = new Element('tr', {});
-    var td1 = new Element('td', {colspan: "2"});
-      var div1 = new Element('div', {Class: "title4"});
-    var td11 = new Element('td', {align:"right", colspan: "2"});
-       var linkCancel = new Element('a', { href:"#", onClick:'deleteFormJob();', Class: "blue-btn3" });
+    var td1 = new Element('td', {colspan: "3"});
+      var div1 = new Element('div', {Class: "title6"});
+		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormJob();', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -318,8 +315,7 @@ function addRowJob(){
   linkCancel.innerHTML = "Cancel";
   tr1.appendChild(td1);
     td1.appendChild(div1);
-  tr1.appendChild(td11);
-    td11.appendChild(linkCancel);
+    td1.appendChild(linkCancel);
     
   //tr2
   tr2.appendChild(td2);
@@ -401,10 +397,9 @@ function addRowSchool(){
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-school"});
   
   var tr1 = new Element('tr', {});
-    var td1 = new Element('td', {colspan: "2"});
-      var div1 = new Element('div', {Class: "title4"});
-    var td11 = new Element('td', {align:"right", colspan: "2"});
-       var linkCancel = new Element('a', { href:"#", onClick:'deleteFormSchool();',Class: "blue-btn3" });
+  var td1 = new Element('td', {colspan: "3"});
+    var div1 = new Element('div', {Class: "title6"});
+		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormSchool();', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -460,8 +455,7 @@ function addRowSchool(){
   linkCancel.innerHTML = "Cancel";
   tr1.appendChild(td1);
     td1.appendChild(div1);
-  tr1.appendChild(td11);
-    td11.appendChild(linkCancel);
+    td1.appendChild(linkCancel);
     
   //tr2
   tr2.appendChild(td2);
@@ -573,10 +567,9 @@ function addRowMedical(){
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-medical"});
   
   var tr1 = new Element('tr', {});
-    var td1 = new Element('td', {colspan: "2"});
-      var div1 = new Element('div', {Class: "title4"});
-    var td11 = new Element('td', {align:"right", colspan: "2"});
-       var linkCancel = new Element('a', { href:"#", onClick:'deleteFormMedical();',Class: "blue-btn3" });
+  var td1 = new Element('td', {colspan: "3"});
+    var div1 = new Element('div', {Class: "title6"});
+		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormMedical();', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -622,8 +615,7 @@ function addRowMedical(){
   linkCancel.innerHTML = "Cancel";
   tr1.appendChild(td1);
     td1.appendChild(div1);
-  tr1.appendChild(td11);
-    td11.appendChild(linkCancel);
+    td1.appendChild(linkCancel);
     
   //tr2
   tr2.appendChild(td2);
@@ -710,10 +702,9 @@ function addRowMedicalCondition(){
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-medical-condition"});
   
   var tr1 = new Element('tr', {});
-    var td1 = new Element('td', {colspan: "2"});
-      var div1 = new Element('div', {Class: "title4"});
-    var td11 = new Element('td', {align:"right", colspan: "2"});
-       var linkCancel = new Element('a', { href:"#", onClick:'deleteFormMedicalCondition();',Class: "blue-btn3" });
+  var td1 = new Element('td', {colspan: "3"});
+    var div1 = new Element('div', {Class: "title6"});
+		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormMedicalCondition();', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -744,8 +735,7 @@ function addRowMedicalCondition(){
   linkCancel.innerHTML = "Cancel";
   tr1.appendChild(td1);
     td1.appendChild(div1);
-  tr1.appendChild(td11);
-    td11.appendChild(linkCancel);
+    td1.appendChild(linkCancel);
     
   //tr2
   tr2.appendChild(td2);
@@ -822,10 +812,9 @@ function addRowFamily(){
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-family"});
   
   var tr1 = new Element('tr', {});
-    var td1 = new Element('td', {colspan: "2"});
-      var div1 = new Element('div', {Class: "title4"});
-    var td11 = new Element('td', {align:"right", colspan: "2"});
-       var linkCancel = new Element('a', { href:"#", onClick:'deleteFormFamily();',Class: "blue-btn3" });
+  var td1 = new Element('td', {colspan: "3"});
+    var div1 = new Element('div', {Class: "title6"});
+		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormFamily();', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -864,8 +853,7 @@ function addRowFamily(){
   linkCancel.innerHTML = "Cancel";
   tr1.appendChild(td1);
     td1.appendChild(div1);
-  tr1.appendChild(td11);
-    td11.appendChild(linkCancel);
+    td1.appendChild(linkCancel);
     
   //tr2
   tr2.appendChild(td2);
@@ -960,11 +948,10 @@ function addRowRelationship(){
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-relationship"});
   
-  var tr1 = new Element('tr', {});
-    var td1 = new Element('td', {colspan: "2"});
-      var div1 = new Element('div', {Class: "title4"});
-    var td11 = new Element('td', {align:"right", colspan: "2"});
-       var linkCancel = new Element('a', { href:"#", onClick:'deleteFormRelationship();',Class: "blue-btn3" });
+ var tr1 = new Element('tr', {});
+  var td1 = new Element('td', {colspan: "3"});
+    var div1 = new Element('div', {Class: "title6"});
+		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormRelationship();', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -1003,8 +990,7 @@ function addRowRelationship(){
   linkCancel.innerHTML = "Cancel";
   tr1.appendChild(td1);
     td1.appendChild(div1);
-  tr1.appendChild(td11);
-    td11.appendChild(linkCancel);
+    td1.appendChild(linkCancel);
     
   //tr2
   tr2.appendChild(td2);
