@@ -2,7 +2,8 @@ class AccountsController < ApplicationController
   include ModelControllerMethods
   require_role "Member", :except => [:new, :create, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :update, :plan, :billing, :cancel, :dashboard]
-   
+  
+  before_filter :load_facebook_connect
   before_filter :set_facebook_session 
   before_filter :build_user, :only => [:new, :create]
   before_filter :build_plan, :only => [:new, :create]

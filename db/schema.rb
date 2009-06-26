@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090624162633) do
+ActiveRecord::Schema.define(:version => 20090626174850) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -29,9 +29,9 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.text     "message"
     t.text     "attachment_data"
     t.string   "attachment_type"
-    t.integer  "activity_stream_id", :null => false
     t.string   "activity_type"
     t.string   "type"
+    t.integer  "activity_stream_id", :null => false
   end
 
   add_index "activity_stream_items", ["activity_stream_id"], :name => "index_activity_stream_items_on_activity_stream_id"
@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "custom_region"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "start_at"
+    t.datetime "end_at"
     t.string   "street_1",         :null => false
     t.string   "city",             :null => false
     t.string   "postal_code",      :null => false
@@ -157,7 +159,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "backup_photos", ["source_photo_id"], :name => "index_backup_photos_on_source_photo_id"
 
   create_table "backup_sites", :force => true do |t|
-    t.enum   "name", :limit => [:twitter, :flickr, :facebook]
+    t.string "name", :null => false
     t.string "type"
   end
 
@@ -180,13 +182,13 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.integer  "backup_job_id"
     t.integer  "size"
     t.integer  "days"
-    t.integer  "percent_complete",      :default => 0, :null => false
     t.datetime "created_at"
-    t.datetime "finished_at"
-    t.integer  "status", :null => false, :default => 0
+    t.integer  "status",           :default => 0, :null => false
     t.text     "messages"
     t.integer  "backup_source_id"
     t.text     "error_messages"
+    t.datetime "finished_at"
+    t.integer  "percent_complete", :default => 0, :null => false
   end
 
   add_index "backup_source_jobs", ["backup_job_id", "backup_source_id"], :name => "backup_job_source"
@@ -208,7 +210,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.boolean  "disabled",               :default => false, :null => false
     t.boolean  "skip_video",             :default => false, :null => false
     t.date     "earliest_day_backed_up"
-    t.boolean  "needs_initial_scan",     :default => false, :null => false
+    t.boolean  "needs_initial_scan",     :default => true, :null => false
     t.datetime "last_login_attempt_at"
     t.datetime "last_login_at"
   end
@@ -570,7 +572,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "end_at"
     t.text     "notes"
     t.datetime "start_at"
-    t.string   "relationship_type"
   end
 
   add_index "relationships", ["user_id"], :name => "user_id"
@@ -762,6 +763,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "last_name"
     t.string   "first_name"
     t.string   "password_salt"
+    t.integer  "facebook_uid",              :limit => 8
     t.datetime "last_request_at"
     t.string   "current_login_ip"
     t.datetime "current_login_at"
@@ -772,8 +774,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "email_hash"
     t.string   "perishable_token"
     t.integer  "failed_login_count",                      :default => 0,         :null => false
-    t.integer  "facebook_uid",              :limit => 8
-    t.integer  "facebook_desktop_uid",      :limit => 8
     t.string   "facebook_secret_key"
     t.string   "facebook_session_key"
     t.boolean  "always_sync_with_facebook"
@@ -781,10 +781,5 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
 
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
-
-  remove_column :relationships, :relationship_type
-  
-  add_column :addresses, :start_at, :datetime
-  add_column :addresses, :end_at, :datetime
-    
 end
+    

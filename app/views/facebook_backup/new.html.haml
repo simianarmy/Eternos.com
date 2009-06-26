@@ -1,4 +1,15 @@
+- use_lightview
 - title 'Add Eternos Facebook Backup App'
 
+Log in to Facebook now to get started!
+%br
+= debug @auth_token
 = debug @login_url
-= link_to 'Click here to install Eternos Backup to your Facebook Account', @login_url
+= link_to image_tag("http://static.ak.facebook.com/images/devsite/facebook_login.gif"), @login_url, :class => 'popup_get'
+%p
+%br
+#continue{:style=>"display:none;"}
+  = link_to "Next Step", :action => 'authenticate', :auth_token => @auth_token
+
+:javascript
+  Event.observe(document, 'lightview:hidden', function(evt) { $('continue').show() })

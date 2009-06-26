@@ -2,6 +2,7 @@
 class HomeController < ApplicationController
   layout 'public'
   ssl_allowed :index
+  before_filter :load_facebook_connect
   before_filter :set_facebook_session 
   before_filter :redirect_if_logged_in, :only => :index
   

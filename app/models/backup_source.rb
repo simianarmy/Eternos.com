@@ -7,10 +7,16 @@ class BackupSource < ActiveRecord::Base
   has_many :backup_photo_albums
   has_many :backup_source_jobs
   
-  validates_presence_of :auth_login
+  #validates_presence_of :auth_login
   #validates_presence_of :auth_password
   validates_uniqueness_of :user_id, :scope => :backup_site_id
   
+  named_scope :by_site, lambda {|name|
+    {
+      :joins => :backup_site,
+      :conditions => {'backup_sites.name' => name}
+    }
+  }
   named_scope :confirmed, :conditions => {:auth_confirmed => true}
   named_scope :needs_scan, :conditions => {:needs_initial_scan => true}
   named_scope :photo_album, lambda {|id| 
@@ -24,6 +30,14 @@ class BackupSource < ActiveRecord::Base
   def logged_in!
     t = Time.now
     update_attributes(:last_login_attempt_at => t, :last_login_at => t, :auth_error => nil)
+  end
+  
+  def confirmed?
+    auth_confirmed
+  end
+  
+  def confirmed!
+    update_attribute(:auth_confirmed, true)
   end
   
   def photo_album(id)

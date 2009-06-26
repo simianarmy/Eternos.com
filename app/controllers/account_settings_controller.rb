@@ -3,6 +3,7 @@
 class AccountSettingsController < ApplicationController
   before_filter :login_required
   require_role "Member"
+  before_filter :load_facebook_connect
   before_filter :set_facebook_session
   
   def index

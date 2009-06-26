@@ -1,0 +1,17 @@
+- use_lightview
+- title 'Facebook Backup Permissions'
+
+Offline Access:
+%br
+- if @offline_url
+  = link_to 'Allow offline access', @offline_url, :class => 'popup_get'
+- else
+  %font{:style => "color:green"} Granted
+%p
+%br
+Stream Access:
+%br
+- if @stream_url
+  = link_to 'Allow stream read access', @stream_url, :class => 'popup_get'
+- else
+  %font{:style => "color:green"} Granted

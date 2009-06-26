@@ -122,12 +122,6 @@ class User < ActiveRecord::Base
     return !facebook_id.nil? && facebook_id > 0
   end
   
-  def set_facebook_session_keys(session_key, secret_key='')
-    self.facebook_session_key = session_key
-    self.facebook_secret_key = secret_key
-    save(false)
-  end
-  
   # Returns true if the user has just been activated.
   def recently_activated?
     @activated

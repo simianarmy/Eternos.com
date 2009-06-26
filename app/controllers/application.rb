@@ -26,18 +26,16 @@ class ApplicationController < ActionController::Base
       ActiveRecord::RecordNotSaved, ActionController::RoutingError::NameError, ActiveRecord::RecordNotFound, :with => :server_error
     #rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
   end
-
-  before_filter :check_enable_mainenaince_mode
   
   helper :all # include all helpers, all the time
   
   helper_method :current_user_session, :current_user
   helper_method :current_account, :admin?
+  helper_method :facebook_session
   
   before_filter :set_time_zone
   before_filter :set_locale
-  
-  helper_method :facebook_session
+  before_filter :check_enable_maintenaince_mode
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -226,6 +224,17 @@ class ApplicationController < ActionController::Base
   
   private
   
+  # Facebook Apps methods
+  
+  def load_facebook_connect
+    Facebooker.load_configuration(File.join(RAILS_ROOT, 'config', 'facebooker.yml'))
+  end
+  
+  def load_facebook_desktop
+    Facebooker.load_configuration(File.join(RAILS_ROOT, 'config', 'facebooker_desktop.yml'))
+    Facebooker::Session.current = FacebookDesktopApp::Session.create
+  end
+  
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
@@ -261,16 +270,16 @@ class ApplicationController < ActionController::Base
 
   def route_not_found
     #render :text => 'What the fuck are you looking for ?', :status => :not_found
-    render :template => "/errors/404.html.erb", :status => "404", :layout => 'errors.html.erb'
+    render :template => "/errors/404", :status => "404", :layout => 'errors'
   end
 
   def server_error
-    render :template => "/errors/500.html.erb", :status => "500", :layout => 'errors.html.erb'
+    render :template => "/errors/500", :status => "500", :layout => 'errors'
   end
 
-  def check_enable_mainenaince_mode
+  def check_enable_maintenaince_mode
     if RAILS_ENV == 'maintenance'
-      render :template => "/errors/maintenance.html.erb", :status => "maintenance", :layout => 'errors.html.erb'
+      render :template => "/errors/maintenance", :status => "maintenance", :layout => 'errors'
     end
   end
   
