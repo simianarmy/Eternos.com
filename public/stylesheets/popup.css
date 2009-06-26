@@ -672,6 +672,22 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin:10px 0 0 20px;
 }
 
+.title5{
+	font-family:arial;
+	font-size:14px;
+	color:#404142;
+	margin-top:10px;
+	width:240px;
+	float:left;
+}
+
+.add-btn-box{
+	width:200px;
+	float:left;
+	margin-top:10px;
+	text-align:right;
+}
+
 a.plusminus{
 	width:7px;
 	height:7px;
