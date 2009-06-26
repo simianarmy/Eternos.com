@@ -636,7 +636,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .popup-newbox{
 	width:421px;
 	height:auto;
-	margin:10px 0 0 20px;
+	margin:10px 0 0 10px;
 	padding:10px;
 	float:left;
 	background:#dde3eb;
@@ -934,26 +934,26 @@ h5{
 }
 
 .scroll-track{
- height:10px;
- width:7px;
- background:silver;
+  	height:10px;
+  	width:5px;
+  	background:silver;
 }
 
 .scroll-handle{
- height:3px;
- width:7px;
- background:#222b33;
+ height:7px;
+ width:5px;
+ background:#2ea4ff;
  cursor:pointer;
  }
 
 .scroll-track-top{
-  height:5px;
-  width:7px;
- background:red;
+  height:9px;
+  width:5px;
+  background:url(/images/errors/arrow-up.gif);
 }
 
 .scroll-track-bot{
-  height:5px;
-  width:7px;
-  background:red;
+  height:9px;
+  width:5px;
+  background:url(/images/errors/arrow-bot.gif);
 }
