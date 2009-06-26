@@ -1,7 +1,7 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
-
+  map.resource :facebook_backup, :controller => 'facebook_backup'
   map.resources :backup_sources
   
   map.resources :account_settings, :collection => {:online => :get, :save_personal_info => :post,

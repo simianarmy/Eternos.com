@@ -762,7 +762,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "last_name"
     t.string   "first_name"
     t.string   "password_salt"
-    t.integer  "facebook_uid",              :limit => 8
     t.datetime "last_request_at"
     t.string   "current_login_ip"
     t.datetime "current_login_at"
@@ -773,6 +772,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "email_hash"
     t.string   "perishable_token"
     t.integer  "failed_login_count",                      :default => 0,         :null => false
+    t.integer  "facebook_uid",              :limit => 8
+    t.integer  "facebook_desktop_uid",      :limit => 8
     t.string   "facebook_secret_key"
     t.string   "facebook_session_key"
     t.boolean  "always_sync_with_facebook"

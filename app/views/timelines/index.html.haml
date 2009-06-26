@@ -1,0 +1,29 @@
+- title 'Backup data (RAW)'
+%p
+%br
+.fb_profile
+  %br Facebook Profile
+  = debug @facebook_profile
+  %hr
+  %br Friends
+  = debug @facebook_friends
+  %hr
+  %br Groups
+  = debug @facebook_groups
+  %hr
+  %br Photo Albums
+  - @photo_albums.flatten.each do |a|
+    = debug a
+    %br
+    - a.backup_photos.each do |p|
+      = debug p
+      %br
+      = image_tag p.source_url
+      %hr
+  %hr
+  %br Activity Streams
+  - @activity_streams.each do |stream|
+    = debug stream
+    %br
+    - stream.activity_stream_items.each do |item|
+      = debug item
