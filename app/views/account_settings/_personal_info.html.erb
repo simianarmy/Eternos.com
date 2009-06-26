@@ -1,12 +1,4 @@
 <div id="account-setting-content" class="makeScroll">
   <%= render :partial => "accounts/personal_info" %>
 </div>
-<%= javascript_tag "Scroller.reset('account-setting-content')" %>
-<script languange="javscript">
-  height = window.innerHeight;
-  if (height <= 600 )
-    heightDiv = 0.63*height;
-  else
-    heightDiv = 0.7*height;
-  $('account-setting-content').style.height = heightDiv + "px";
-</script>
+<%= javascript_tag "Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');" %>
