@@ -4,5 +4,9 @@
 <%= javascript_tag "Scroller.reset('account-setting-content')" %>
 <script languange="javscript">
   height = window.innerHeight;
-  $('account-setting-content').style.height = 0.7*height  + "px";
+  if (height <= 600 )
+    heightDiv = 0.63*height;
+  else
+    heightDiv = 0.7*height;
+  $('account-setting-content').style.height = heightDiv + "px";
 </script>

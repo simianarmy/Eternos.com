@@ -215,7 +215,13 @@ class ApplicationController < ActionController::Base
   end
   
   def member_dashboard
-    "http://" + request.domain + "/member_home"
+    url = ""
+    if request.domain == "localhost"
+      url = "http://" + request.host_with_port + "/member_home"
+    else
+      url = "http://" + request.domain + "/member_home"
+    end
+    url
   end
   
   private
