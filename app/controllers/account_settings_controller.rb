@@ -406,6 +406,29 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  def backup_contact_emails
+    gmail = Contacts::Gmail.new(params[:gmail][:username], params[:gmail][:password])
+    gmail.contacts.each do |n, e|
+      ContactEmail.create({:profile_id => current_user.id, :name => n, :email => e})
+    end
+    
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html "flash-message", :text => "Your contact emails was successfully saved."
+        end
+      end
+    end
+  rescue Contacts::AuthenticationError => message
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html "flash-message", :text => message.to_s
+        end
+      end
+    end
+  end
+  
   private
 
    def update_personal_info

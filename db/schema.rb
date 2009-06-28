@@ -784,5 +784,13 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
   
   add_column("jobs", "notes", :text)
   
+  create_table "contact_emails", :force => true do |t|
+    t.integer "profile_id"
+    t.string  "name"
+    t.string  "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+  
 end
     

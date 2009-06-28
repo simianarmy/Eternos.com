@@ -53,6 +53,7 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
   
+  config.gem 'contacts'
   config.gem "ruby-openid", :lib => "openid", :version => ">= 2.1.2"
   config.gem 'image_science'
   config.gem 'ezcrypto'
@@ -152,5 +153,6 @@ default_url_options[:host] = 'localhost'
 # Disable email validator domain lookups
 EmailVeracity::Config[:lookup] = false
 
+# Change this keys with your own domain
 ENV['RECAPTCHA_PUBLIC_KEY'] = '6Le7nwYAAAAAAEbuaM378Df7UkAr1vuM_52el9Bg'
 ENV['RECAPTCHA_PRIVATE_KEY'] = '6Le7nwYAAAAAAOdPcWOZSu8K4P1CRFC1Djyn1pMw'
