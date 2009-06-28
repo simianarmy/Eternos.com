@@ -781,5 +781,8 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
 
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
+  
+  add_column("jobs", "notes", :text)
+  
 end
     
