@@ -1,0 +1,74 @@
+--- !ruby/object:Gem::Specification 
+name: contacts
+version: !ruby/object:Gem::Version 
+  version: 1.0.13
+platform: ruby
+authors: 
+- Lucas Carlson
+autorequire: contacts
+bindir: bin
+cert_chain: []
+
+date: 2009-01-08 00:00:00 +00:00
+default_executable: 
+dependencies: 
+- !ruby/object:Gem::Dependency 
+  name: json
+  type: :runtime
+  version_requirement: 
+  version_requirements: !ruby/object:Gem::Requirement 
+    requirements: 
+    - - ">="
+      - !ruby/object:Gem::Version 
+        version: 0.4.1
+    version: 
+description: Ridiculously easy contact list information from various providers including Yahoo, Gmail, and Hotmail
+email: lucas@rufy.com
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- lib/contacts
+- lib/contacts/base.rb
+- lib/contacts/gmail.rb
+- lib/contacts/hotmail.rb
+- lib/contacts/plaxo.rb
+- lib/contacts/yahoo.rb
+- lib/contacts.rb
+- LICENSE
+- Rakefile
+- README
+- examples/grab_contacts.rb
+has_rdoc: true
+homepage: http://rubyforge.org/projects/contacts
+licenses: []
+
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: 
+- A json parser
+rubyforge_project: 
+rubygems_version: 1.3.4
+signing_key: 
+specification_version: 2
+summary: Ridiculously easy contact list information from various providers including Yahoo, Gmail, and Hotmail
+test_files: []
+
