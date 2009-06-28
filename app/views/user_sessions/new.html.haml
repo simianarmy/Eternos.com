@@ -8,5 +8,5 @@
   #session
     = show_flash_messages
     = custom_error_messages_for :user
-    = render :partial => 'shared/login_form'
+    = render :partial => 'shared/login_form', :locals => {:user_session => @user_session}
 

@@ -10,7 +10,7 @@ module FormsHelper
     options = args.extract_options!
     options[:url] ||= {}
     options[:url].merge!(:protocol => 'https', :only_path => false)
-    args << options
+    args << options  
     form_for(record_or_name_or_array, *args, &block)
   end
   

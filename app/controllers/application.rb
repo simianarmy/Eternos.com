@@ -130,6 +130,12 @@ class ApplicationController < ActionController::Base
     super
   end
 
+  def ssl_prohibited 
+    if request.ssl? 
+      redirect_to "http://#{request.host}#{request.request_uri}"
+    end 
+  end 
+    
   # Helper for content authorization form ajax updates
   def ajax_authorization_update(object)
     flash[:notice] = "Successfully updated authorizations."
@@ -210,16 +216,6 @@ class ApplicationController < ActionController::Base
     include Singleton
     include ActionView::Helpers::NumberHelper
     include DecorationsHelper
-  end
-  
-  def member_dashboard
-    url = ""
-    if request.domain == "localhost"
-      url = "http://" + request.host_with_port + "/member_home"
-    else
-      url = "http://" + request.domain + "/member_home"
-    end
-    url
   end
   
   private
