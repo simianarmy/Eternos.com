@@ -26,13 +26,12 @@ class BackupPhotoAlbum < ActiveRecord::Base
   # Checks passed album object for differences with this instance
   def modified?(album)
     return !album.modified.blank? if self.modified.nil?
-    album.modified > self.modified
+    (album.modified > self.modified) || (album.size != self.size)
   end
   
   # Save album properies & any associated photos
   def save_album(album, photos=nil)
     if update_attributes(album.to_h)
-      logger.debug "*******SAVING PHOTOS******"
       logger.debug photos.inspect if photos
       save_photos(photos) if photos
     end
@@ -40,11 +39,8 @@ class BackupPhotoAlbum < ActiveRecord::Base
   
   # Saves any new photos in album
   def save_photos(photos)
-    logger.debug "*******SAVING PHOTOS******"
-    logger.debug "Saving backup photos: #{photos.inspect}" if photos
     return unless photos && photos.any?
     new_photo_ids = photos.map(&:id)
-    logger.debug "Photo ids: #{new_photo_ids.inspect}"
     existing_photo_ids = backup_photos.map(&:source_photo_id)
     
     # Delete old photos
@@ -55,7 +51,6 @@ class BackupPhotoAlbum < ActiveRecord::Base
     # Add all new photos
     photos.each do |p|
       next if existing_photo_ids.include? p.id
-      logger.debug "Adding backup photo: #{p}"
       backup_photos.import p
     end
   end
