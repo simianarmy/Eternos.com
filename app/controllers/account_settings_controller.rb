@@ -156,7 +156,7 @@ class AccountSettingsController < ApplicationController
     params[:jobs].each_value do |val|
       start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
       end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
-      val.merge!(:profile_id => current_user.profile, :start_at => start_at, :end_at => end_at)
+      val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
       val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
       Job.create(val)
     end
@@ -191,7 +191,7 @@ class AccountSettingsController < ApplicationController
     params[:schools].each_value do |val|
       start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
       end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
-      val.merge!(:profile_id => current_user.profile, :start_at => start_at, :end_at => end_at)
+      val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
       val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
       School.create(val)
     end
@@ -224,7 +224,7 @@ class AccountSettingsController < ApplicationController
   
   def add_another_medical
     params[:medicals].each_value do |val|
-      Medical.create(val)
+      Medical.create(val.merge(:profile_id => current_user.profile.id))
     end
     
     find_medical
@@ -255,7 +255,7 @@ class AccountSettingsController < ApplicationController
   
   def add_another_medical_condition
     params[:medical_conditions].each_value do |val|
-      MedicalCondition.create(val.merge(:profile_id => current_user.profile))
+      MedicalCondition.create(val.merge(:profile_id => current_user.profile.id))
     end
     
     find_medical_condition
@@ -287,7 +287,7 @@ class AccountSettingsController < ApplicationController
   def add_another_family
     params[:families].each_value do |val|
       birtdate = Time.local(val[:birtdate_year],val[:birtdate_month],val[:birtdate_day])
-      val.merge!(:profile_id => current_user.profile, :birthdate => birtdate)
+      val.merge!(:profile_id => current_user.profile.id, :birthdate => birtdate)
       val.delete_if{|k, v| ["birtdate_year", "birtdate_month", "birtdate_day"].include?(k)}
       Family.create(val)
     end
