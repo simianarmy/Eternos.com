@@ -95,24 +95,24 @@ function addRowAddress(){
   var selectRegion = new Element('select', { Class: "textbox5", name: "addresses["+window.counter+"][region_id]", id: "region-id"});
   var opt = document.createElement("option");
   opt.value = "1";
-  opt.text = "Select Region First";
+  opt.text = "Select Country First";
   selectRegion.options.add(opt);
   
   var inputCity       = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][city]", type: "text"});
   var inputPostalCode = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][postal_code]", type: "text"});
-  var selectMoveInDay    = new Element('select', { name: "addresses["+window.counter+"][day_in]", type: "text"});
-  var selectMoveInMonth    = new Element('select', { name: "addresses["+window.counter+"][month_in]", type: "text"});
-  var selectMoveInYear    = new Element('select', { name: "addresses["+window.counter+"][year_in]", type: "text"});
-  var selectMoveOutDay   = new Element('select', { name: "addresses["+window.counter+"][day_out]", type: "text"});
-  var selectMoveOutMonth   = new Element('select', { name: "addresses["+window.counter+"][month_out]", type: "text"});
-  var selectMoveOutYear   = new Element('select', { name: "addresses["+window.counter+"][year_out]", type: "text"});
+  var selectMoveInDay    = new Element('select', { Class: "selectbox-day", name: "addresses["+window.counter+"][day_in]", type: "text"});
+  var selectMoveInMonth    = new Element('select', { Class: "selectbox-month", name: "addresses["+window.counter+"][month_in]", type: "text"});
+  var selectMoveInYear    = new Element('select', { Class: "selectbox-year", name: "addresses["+window.counter+"][year_in]", type: "text"});
+  var selectMoveOutDay   = new Element('select', { Class: "selectbox-day", name: "addresses["+window.counter+"][day_out]", type: "text"});
+  var selectMoveOutMonth   = new Element('select', { Class: "selectbox-month", name: "addresses["+window.counter+"][month_out]", type: "text"});
+  var selectMoveOutYear   = new Element('select', { Class: "selectbox-year", name: "addresses["+window.counter+"][year_out]", type: "text"});
 
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-address"});
   
-  var tr1 = new Element('tr', {});
+  var tr1 = new Element('tr');
     var td1 = new Element('td', {colspan: "3"});
       var div1 = new Element('div', {Class: "title6"});
-      var linkCancel = new Element('a', { href:"#", onClick:'deleteFormAddress();', Class: "blue-btn3" });
+      var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormAddress();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -264,7 +264,7 @@ function addRowAddress(){
   divParent.appendChild(tr9);
   divParent.appendChild(tr10);
   $('table-addresses').appendChild(divParent);
-  $('save-button-address').show();
+  $('save-button-address').show();    
   
   window.counter++
 }
@@ -274,20 +274,21 @@ window.counter_job = 1;
 function addRowJob(){
   var inputCompany     = new Element('input', { Class: "textbox5", name: "jobs["+window.counter_job+"][company]", type: "text"});
   var inputTitle       = new Element('input', { Class: "textbox5", name: "jobs["+window.counter_job+"][title]", type: "text"});
-  var inputDescription = new Element('textarea', { name: "jobs["+window.counter_job+"][description]", rows: "5", cols: "10"});
-  var selectStartDay      = new Element('select', { name: "jobs["+window.counter_job+"][start_day]"});
-  var selectStartMonth      = new Element('select', { name: "jobs["+window.counter_job+"][start_month]"});
-  var selectStartYear      = new Element('select', { name: "jobs["+window.counter_job+"][start_year]"});
-  var selectEndDay        = new Element('select', { name: "jobs["+window.counter_job+"][end_day]"});
-  var selectEndMonth        = new Element('select', { name: "jobs["+window.counter_job+"][end_month]"});
-  var selectEndYear        = new Element('select', { name: "jobs["+window.counter_job+"][end_year]"});
+  var inputDescription = new Element('textarea', { Class: "textarea1", name: "jobs["+window.counter_job+"][description]", rows: "5", cols: "10"});
+  var selectStartDay      = new Element('select', { Class: "selectbox-day", name: "jobs["+window.counter_job+"][start_day]"});
+  var selectStartMonth      = new Element('select', { Class: "selectbox-month", name: "jobs["+window.counter_job+"][start_month]"});
+  var selectStartYear      = new Element('select', { Class: "selectbox-year", name: "jobs["+window.counter_job+"][start_year]"});
+  var selectEndDay        = new Element('select', { Class: "selectbox-day", name: "jobs["+window.counter_job+"][end_day]"});
+  var selectEndMonth        = new Element('select', { Class: "selectbox-month", name: "jobs["+window.counter_job+"][end_month]"});
+  var selectEndYear        = new Element('select', { Class: "selectbox-year", name: "jobs["+window.counter_job+"][end_year]"});
+  var inputNotes = new Element('textarea', { Class: "textarea1", name: "jobs["+window.counter_job+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-job"});
   
   var tr1 = new Element('tr', {});
     var td1 = new Element('td', {colspan: "3"});
       var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormJob();', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormJob();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -317,6 +318,11 @@ function addRowJob(){
     var td71 = new Element('td', {Class: "coll-form1", valign:"center"});
     var td72 = new Element('td', {Class: "coll-form2", valign:"center"});
     var td73 = new Element('td', {Class: "coll-form3", valign:"center"});
+  
+  var tr8 = new Element('tr');
+    var td81 = new Element('td', {Class: "coll-form1", valign:"center"});
+    var td82 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td83 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   //tr1
   div1.innerHTML = "Add New Job";
@@ -373,6 +379,14 @@ function addRowJob(){
     td73.appendChild(getMonth(selectEndMonth));
     td73.appendChild(getYear(selectEndYear));
 
+  //tr8
+  td81.innerHTML = "Notes";
+  td82.innerHTML = ":";
+  tr8.appendChild(td81);
+  tr8.appendChild(td82);
+  tr8.appendChild(td83);
+    td83.appendChild(inputNotes);
+
   divParent.appendChild(tr1);
   divParent.appendChild(tr2);
   divParent.appendChild(tr3);
@@ -380,6 +394,7 @@ function addRowJob(){
   divParent.appendChild(tr5);
   divParent.appendChild(tr6);
   divParent.appendChild(tr7);
+  divParent.appendChild(tr8);
   $('table-jobs').appendChild(divParent);
   $('save-button-job').show();
   
@@ -391,23 +406,23 @@ function addRowSchool(){
   var inputName         = new Element('input', { Class: "textbox5", name: "schools["+window.counter_school+"][name]", type: "text"});
   var inputDegree       = new Element('input', { Class: "textbox5", name: "schools["+window.counter_school+"][degree]", type: "text"});
   var inputFields       = new Element('input', { Class: "textbox5", name: "schools["+window.counter_school+"][fields]", type: "text"});
-  var selectStartDay       = new Element('select', { name: "schools["+window.counter_school+"][start_day]"});
-  var selectStartMonth       = new Element('select', { name: "schools["+window.counter_school+"][start_month]"});
-  var selectStartYear       = new Element('select', { name: "schools["+window.counter_school+"][start_year]"});
-  var selectEndDay         = new Element('select', { name: "schools["+window.counter_school+"][end_day]"});
-  var selectEndMonth         = new Element('select', { name: "schools["+window.counter_school+"][end_month]"});
-  var selectEndYear         = new Element('select', { name: "schools["+window.counter_school+"][end_year]"});
-  var inputActivities   = new Element('textarea', { name: "schools["+window.counter_school+"][activities_societies]", rows: "5", cols: "10"});
-  var inputAwards       = new Element('textarea', { name: "schools["+window.counter_school+"][awards]", rows: "5", cols: "10"});
-  var inputRecognitions = new Element('textarea', { name: "schools["+window.counter_school+"][recognitions]", rows: "5", cols: "10"});
-  var inputNotes        = new Element('textarea', { name: "schools["+window.counter_school+"][notes]", rows: "5", cols: "10"});
+  var selectStartDay       = new Element('select', { Class: "selectbox-day", name: "schools["+window.counter_school+"][start_day]"});
+  var selectStartMonth       = new Element('select', { Class: "selectbox-month", name: "schools["+window.counter_school+"][start_month]"});
+  var selectStartYear       = new Element('select', { Class: "selectbox-year", name: "schools["+window.counter_school+"][start_year]"});
+  var selectEndDay         = new Element('select', { Class: "selectbox-day", name: "schools["+window.counter_school+"][end_day]"});
+  var selectEndMonth         = new Element('select', { Class: "selectbox-month", name: "schools["+window.counter_school+"][end_month]"});
+  var selectEndYear         = new Element('select', { Class: "selectbox-year", name: "schools["+window.counter_school+"][end_year]"});
+  var inputActivities   = new Element('textarea', { Class: "textarea1", name: "schools["+window.counter_school+"][activities_societies]", rows: "5", cols: "10"});
+  var inputAwards       = new Element('textarea', { Class: "textarea1", name: "schools["+window.counter_school+"][awards]", rows: "5", cols: "10"});
+  var inputRecognitions = new Element('textarea', { Class: "textarea1", name: "schools["+window.counter_school+"][recognitions]", rows: "5", cols: "10"});
+  var inputNotes        = new Element('textarea', { Class: "textarea1", name: "schools["+window.counter_school+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-school"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormSchool();', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormSchool();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -565,19 +580,19 @@ function addRowSchool(){
 window.counter_medical = 1;
 function addRowMedical(){
   var inputBlood          = new Element('input', { Class: "textbox5", name: "medicals["+window.counter_medical+"][blood_type]", type: "text"});
-  var inputDisorder       = new Element('textarea', { Class: "textbox5", name: "medicals["+window.counter_medical+"][disorder]", rows: "5", cols: "10"});
+  var inputDisorder       = new Element('textarea', { Class: "textarea1", name: "medicals["+window.counter_medical+"][disorder]", rows: "5", cols: "10"});
   var inputPhysicianName  = new Element('input', { Class: "textbox5", name: "medicals["+window.counter_medical+"][physician_name]", type: "text"});
   var inputPhysicianPhone = new Element('input', { Class: "textbox5", name: "medicals["+window.counter_medical+"][physician_phone]", type: "text"});
   var inputDentistName    = new Element('input', { Class: "textbox5", name: "medicals["+window.counter_medical+"][dentist_name]", type: "text"});
   var inputDentistPhone   = new Element('input', { Class: "textbox5", name: "medicals["+window.counter_medical+"][dentist_phone]", type: "text"});
-  var inputNotes          = new Element('textarea', { Class: "textbox5", name: "medicals["+window.counter_medical+"][notes]", rows: "5", cols: "10"});
+  var inputNotes          = new Element('textarea', { Class: "textarea1", name: "medicals["+window.counter_medical+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-medical"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormMedical();', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormMedical();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -703,16 +718,16 @@ function addRowMedical(){
 window.counter_medical_condition = 1;
 function addRowMedicalCondition(){
   var inputName       = new Element('input', { Class: "textbox5", name: "medical_conditions["+window.counter_medical_condition+"][name]", type: "text"});
-  var inputDiagnosis  = new Element('textarea', { name: "medical_conditions["+window.counter_medical_condition+"][diagnosis]", rows: "5", cols: "10"});
-  var inputTreatment  = new Element('textarea', { name: "medical_conditions["+window.counter_medical_condition+"][treatment]", rows: "5", cols: "10"});
-  var inputNotes      = new Element('textarea', { name: "medical_conditions["+window.counter_medical_condition+"][notes]", rows: "5", cols: "10"});
+  var inputDiagnosis  = new Element('textarea', { Class: "textarea1", name: "medical_conditions["+window.counter_medical_condition+"][diagnosis]", rows: "5", cols: "10"});
+  var inputTreatment  = new Element('textarea', { Class: "textarea1", name: "medical_conditions["+window.counter_medical_condition+"][treatment]", rows: "5", cols: "10"});
+  var inputNotes      = new Element('textarea', { Class: "textarea1", name: "medical_conditions["+window.counter_medical_condition+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-medical-condition"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormMedicalCondition();', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormMedicalCondition();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -797,7 +812,7 @@ window.counter_family = 1;
 function addRowFamily(){
   var inputName        = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][name]", type: "text" });
   var inputHiddenField = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][family_type]", type: "text", style: "display:none;", id:"custom-family-type-"+window.counter_family });
-  var selectType       = new Element('select', { Class: "textbox5", name: "families["+window.counter_family+"][family_type]", id:"select-family-type-"+window.counter_family });
+  var selectType       = new Element('select', { Class: "selectbox-type", name: "families["+window.counter_family+"][family_type]", id:"select-family-type-"+window.counter_family });
     
     var optn = document.createElement("option");
     optn.value = "-";
@@ -811,18 +826,18 @@ function addRowFamily(){
     selectType.options.add(optn);
     }
   
-  var selectBirtdateDay  = new Element('select', { name: "families["+window.counter_family+"][birtdate_day]"});
-  var selectBirtdateMonth  = new Element('select', { name: "families["+window.counter_family+"][birtdate_month]"});
-  var selectBirtdateYear  = new Element('select', { name: "families["+window.counter_family+"][birtdate_year]"});
-  var inputLiving     = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][living]", type: "checkbox", value:"1", checked:"checked"});
-  var inputNotes      = new Element('textarea', { name: "families["+window.counter_family+"][notes]", rows: "5", cols: "10"});
+  var selectBirtdateDay  = new Element('select', { Class: "selectbox-day", name: "families["+window.counter_family+"][birtdate_day]"});
+  var selectBirtdateMonth  = new Element('select', { Class: "selectbox-month", name: "families["+window.counter_family+"][birtdate_month]"});
+  var selectBirtdateYear  = new Element('select', { Class: "selectbox-year", name: "families["+window.counter_family+"][birtdate_year]"});
+  var inputLiving     = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][living]", type: "checkbox", value:"1", checked:"checked" });
+  var inputNotes      = new Element('textarea', { Class: "textarea1", name: "families["+window.counter_family+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-family"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormFamily();', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormFamily();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -931,7 +946,7 @@ window.counter_relationship = 1;
 function addRowRelationship(){
   var inputName        = new Element('input', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][name]", type: "text"});
   var inputHiddenField = new Element('input', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][circle_id]", type: "text", style:"display:none", id:"custom-relation-type-"+window.counter_relationship });
-  var selectType       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][circle_id]", id:"select-relation-type-"+window.counter_relationship });
+  var selectType       = new Element('select', { Class: "selectbox-type", name: "relationships["+window.counter_relationship+"][circle_id]", id:"select-relation-type-"+window.counter_relationship });
     
     var optn = document.createElement("option");
     optn.value = "-";
@@ -946,20 +961,20 @@ function addRowRelationship(){
     selectType.options.add(optn);
     }
   
-  var selectStartDay     = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][start_day]"});
-  var selectStartMonth     = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][start_month]"});
-  var selectStartYear     = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][start_year]"});
-  var selectEndDay       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][end_day]"});
-  var selectEndMonth       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][end_month]"});
-  var selectEndYear       = new Element('select', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][end_year]"});
-  var inputNotes      = new Element('textarea', { name: "relationships["+window.counter_relationship+"][notes]", rows: "5", cols: "10"});
+  var selectStartDay     = new Element('select', { Class: "selectbox-day", name: "relationships["+window.counter_relationship+"][start_day]"});
+  var selectStartMonth     = new Element('select', { Class: "selectbox-month", name: "relationships["+window.counter_relationship+"][start_month]"});
+  var selectStartYear     = new Element('select', { Class: "selectbox-year", name: "relationships["+window.counter_relationship+"][start_year]"});
+  var selectEndDay       = new Element('select', { Class: "selectbox-day", name: "relationships["+window.counter_relationship+"][end_day]"});
+  var selectEndMonth       = new Element('select', { Class: "selectbox-month", name: "relationships["+window.counter_relationship+"][end_month]"});
+  var selectEndYear       = new Element('select', { Class: "selectbox-year", name: "relationships["+window.counter_relationship+"][end_year]"});
+  var inputNotes      = new Element('textarea', { Class: "textarea1", name: "relationships["+window.counter_relationship+"][notes]", rows: "5", cols: "10"});
   
   var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-relationship"});
   
- var tr1 = new Element('tr', {});
+ var tr1 = new Element('tr');
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'deleteFormRelationship();', Class: "blue-btn3" });
+	var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormRelationship();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
