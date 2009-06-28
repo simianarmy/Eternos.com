@@ -7,50 +7,14 @@
 - stylesheet "popup"
 - use_lightview
 
+%h3 Timeline Page
 
-/ left column
-.content_title.alignleft
-  #dashitemicon.alignleft
-    = image_tag('notebook.png', :alt => "create")
-  
-  #dashitemtext.alignleft
-    %h2
-      = link_to 'create', new_story_path
-    
-    %p Use this simple form for creating written or spoken story entries. Easily add pictures, documents or files to your story or recording and choose to whom it will be visible, as well as when and how long it will appear.
-  %br.clearboth
-  
-  #dashitemicon.alignleft
-    = image_tag 'cabinet-big.png', :alt => "your files"
-  
-  #dashitemtext.alignleft
-    %h2= link_to 'manage files', contents_path
-    %p A picture is worth a thousand words. Here you can upload and manage your media – add pictures, videos, articles or other documents worth saving for posterity.
-  %br.clearboth
-      
-  #dashitemicon.alignleft
-    = image_tag 'organizer.png', :alt => "people"
-  
-  #dashitemtext.alignleft
-    %h2= link_to 'people', guests_path
-    %p Add or remove guests. In this section, you can easily add, remove or otherwise manage your guest list.
-  %br.clearboth
+For our July 15th launch, we are placing the YourLife Timeline page here.
 
-/ right column
-.content_title.alignleft
-  #dashitemicon.alignleft
-    = image_tag 'previeicon.png', :alt => "preview profile"
-  
-  #dashitemtext.alignleft
-    %h2= link_to 'profile', profile_path
-    %p As your life changes, so should your profile. Here you can easily make changes to update your profile information or change your profile picture.
-  %br.clearboth
-  
-  #dashitemicon.alignleft
-    = image_tag 'configure.png', :alt => "account settings"
-  
-  #dashitemtext.alignleft
-    %h2
-      %a.account-setting{'href'=>'"#"', 'onclick' => "Lightview.show({href:'/account/setting', options:{ajax:{evalScripts:true,parameters:'&authenticity_token=' + encodeURIComponent( window._token )}, autosize:false, closeButton:false, height: lightview_height, width: 700}, rel:'ajax'});return false;"} account settings
-    %p As your Eternos account is meant to stay with for the long haul, your personal information will undoubtably change during your stay with us. Easily change your password, update your billing information, or upgrade/update your plan as your life and needs continue to evolve.
-  .clearboth
+%br
+%br
+
+%li Diary, Messages, Profile, People pages will be disabled until those features are complete
+%li First time the user logs in, we are going to auto-pop up the account setup lightbox
+%li THE ONLY FUNCTIONALITY for July 15th release is: ACCOUNT SETUP, TIMELIME, FEEDBACK
+%li We will perfect these CORE features, and then every 2 weeks start releasing all SUPPLEMENTARY FEATURES
