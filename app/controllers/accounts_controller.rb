@@ -229,7 +229,7 @@ class AccountsController < ApplicationController
     
     def check_logged_in
       if current_user
-         redirect_to member_dashboard
+         redirect_to "/member_home"
       end
     end
 end

@@ -409,7 +409,7 @@ class AccountSettingsController < ApplicationController
   def backup_contact_emails
     gmail = Contacts::Gmail.new(params[:gmail][:username], params[:gmail][:password])
     gmail.contacts.each do |n, e|
-      ContactEmail.create({:profile_id => current_user.id, :name => n, :email => e})
+      ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})
     end
     
     respond_to do |format|
