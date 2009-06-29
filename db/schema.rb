@@ -792,5 +792,8 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.datetime "updated_at"
   end
   
+  rename_column("addresses", "start_at", "moved_in_on")
+  rename_column("addresses", "end_at", "moved_out_on")
+  
 end
     
