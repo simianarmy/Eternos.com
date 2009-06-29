@@ -1,5 +1,5 @@
 <div id="account-setting-content" class="makeScroll" style="height:220px;">
-  <% form_remote_for @address, :url => {:action => 'add_another_address'} do -%>
+  
    <table id="table-history-addresses" class="table-form4" border="0" cellspacing="0" cellpadding="0">
      <thead class="scrollContent">
         <tr>
@@ -14,14 +14,19 @@
         <%= render :partial => 'new_address', :locals => {:addresses => @addresses} %>
       </tbody>
     </table>
-    <div>
+
+    <% form_remote_for @address,
+                                :url => {:action => 'add_another_address'},
+                                :complete => 'rstCountAddress();' do -%>
+      <div id="table-form-address"></div>
+      <div>
         <%= submit_tag 'Save', :id => 'save-button-address', :style => 'display:none;', :class => 'submit-btn3' %>
-    </div>
-  <% end -%>
-  
+      </div>
+    <% end -%>  
+    <%= hidden_field_tag "form_address" %>
+    
 	<div class="line3"></div>
 
-  <% form_remote_for @job, :url => {:action => 'add_another_job'} do -%>
     <table class="table-form4" id="table-history-jobs" border="0" cellspacing="0" cellpadding="0">
 	<thead class="scrollContent">
 	    <tr>
@@ -36,14 +41,19 @@
         <%= render :partial => 'new_job', :locals => {:jobs => @jobs} %>
       </tbody>
     </table>
+  <% form_remote_for @job, 
+                        :url => {:action => 'add_another_job'},
+                        :complete => 'rstCountJob();' do -%>
+    <div id="table-form-job"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-job', :style => 'display:none;', :class => 'submit-btn3' %>
     </div>
   <% end -%>
+  <%= hidden_field_tag "form_job" %>
   
 	<div class="line3"></div>
 
-  <% form_remote_for @school, :url => {:action => 'add_another_school'} do -%>
+  
 		<table class="table-form4" id="table-history-schools" border="0" cellspacing="0" cellpadding="0">
 	  <thead class="scrollContent">
 	    <tr>
@@ -58,14 +68,18 @@
         <%= render :partial => 'new_school', :locals => {:schools => @schools} %>
       </tbody>
     </table>
+  <% form_remote_for @school, 
+                    :url => {:action => 'add_another_school'},
+                    :complete => 'rstCountSchool();' do -%>
+    <div id="table-form-school"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-school', :style => 'display:none;', :class => 'submit-btn3' %>
     </div>
   <% end -%>
+  <%= hidden_field_tag "form_school" %>
   
 	<div class="line3"></div>
 
-  <% form_remote_for @medical, :url => {:action => 'add_another_medical'} do -%>
 	<table class="table-form4" id="table-history-medicals" border="0" cellspacing="0" cellpadding="0">
 	  <thead class="scrollContent">
 	    <tr>
@@ -80,14 +94,18 @@
         <%= render :partial => 'new_medical', :locals => {:medicals => @medicals} %>
       </tbody>
     </table>
+  <% form_remote_for @medical, 
+                                :url => {:action => 'add_another_medical'},
+                                :complete => 'rstCountMedical();' do -%>
+    <div id="table-form-medical"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-medical', :style => 'display:none;', :class => 'submit-btn3' %>
     </div>
   <% end -%>
+  <%= hidden_field_tag "form_medical" %>
   
   <div class="line3"></div>
 
-  <% form_remote_for @medical_condition, :url => {:action => 'add_another_medical_condition'} do -%>
 	<table class="table-form4" id="table-history-medical-conditions" border="0" cellspacing="0" cellpadding="0">
 		  <thead class="scrollContent">
 		    <tr>
@@ -102,14 +120,17 @@
 	        <%= render :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions} %>
 	      </tbody>
 	    </table>
+  <% form_remote_for @medical_condition,
+                                        :url => {:action => 'add_another_medical_condition'},
+                                        :complete => 'rstCountMedicalCondition();' do -%>
+    <div id="table-form-medical-condition"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-medical-condition', :style => 'display:none;', :class => 'submit-btn3' %>
     </div>
   <% end -%>
+  <%= hidden_field_tag "form_medical_condition" %>
   
   <div class="line3"></div>
-
-  <% form_remote_for @family, :url => {:action => 'add_another_family'} do -%>
 
 		<table class="table-form4" id="table-history-families" border="0" cellspacing="0" cellpadding="0">
 			  <thead class="scrollContent">
@@ -125,14 +146,17 @@
 		        <%= render :partial => 'new_family', :locals => {:families => @families} %>
 		      </tbody>
 		    </table>
+  <% form_remote_for @family, 
+                                :url => {:action => 'add_another_family'},
+                                :complete => 'rstCountFamily();' do -%>
+    <div id="table-form-family"></div>
     <div>
-        <%= submit_tag 'Save', :id => 'save-button-family', :style => 'display:none;', :class => 'submit-btn3' %>
+        <%= submit_tag 'Save', :id => 'save-button-family', :style => 'display:none;', :class => 'submit-btn3', :onclick => 'window.counter = 1;' %>
     </div>
   <% end -%>
+  <%= hidden_field_tag "form_family" %>
   
   <div class="line3"></div>
-
-  <% form_remote_for @relationship, :url => {:action => 'add_another_relationship'} do -%>
 
 		<table class="table-form4" id="table-history-families" border="0" cellspacing="0" cellpadding="0">
 			  <thead class="scrollContent">
@@ -149,11 +173,16 @@
 		        <%= render :partial => 'new_relationship', :locals => {:relationships => @relationships} %>
 		      </tbody>
 		    </table>
+  <% form_remote_for @relationship,
+                                    :url => {:action => 'add_another_relationship'},
+                                    :complete => 'rstCountRelationship();' do -%>
+    <div id="table-form-relationship"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-relationship', :style => 'display:none;', :class => 'submit-btn3' %>
     </div>
   <% end -%>
-
+  <%= hidden_field_tag "form_relationship" %>
+  
 </div>
 
 <script>

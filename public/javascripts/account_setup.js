@@ -9,7 +9,7 @@ function setDinamycHeight(id){
 function getDay(selectDay){
   var optn = document.createElement("option");
   optn.value = "";
-  optn.text = " ";
+  optn.text = "Day:";
   selectDay.options.add(optn);
 
   for(var i=1; i<=31; i++){
@@ -22,22 +22,22 @@ function getDay(selectDay){
 }
 
 function getMonth(selectMonth){
-  months = new Array([1, "January"],
-                     [2, "Febuary"],
-                     [3, "March"],
-                     [4, "April"],
+  months = new Array([1, "Jan"],
+                     [2, "Feb"],
+                     [3, "Mar"],
+                     [4, "Apr"],
                      [5, "May"],
-                     [6, "June"],
-                     [7, "July"],
-                     [8, "Agust"],
-                     [9, "September"],
-                     [10, "Oktober"],
-                     [11, "November"],
-                     [12, "Desember"])
+                     [6, "Jun"],
+                     [7, "Jul"],
+                     [8, "Aug"],
+                     [9, "Sep"],
+                     [10, "Okt"],
+                     [11, "Nov"],
+                     [12, "Des"])
   
   var optn = document.createElement("option");
   optn.value = "";
-  optn.text = " ";
+  optn.text = "Month:";
   selectMonth.options.add(optn);
   
   for(var i=0; i<months.length; i++){
@@ -55,7 +55,7 @@ function getYear(selectYear){
   
   var optn = document.createElement("option");
   optn.value = "";
-  optn.text = " ";
+  optn.text = "Year:";
   selectYear.options.add(optn);
   var optn = document.createElement("option");
   optn.value = y;
@@ -76,11 +76,12 @@ function addRowAddress(){
   var inputLocType    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][location_type]", type: "text"});
   var inputStreet1    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_1]", type: "text"});
   var inputStreet2    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_2]", type: "text"});
+  var imgLoading      = new Element('img', { src: "/images/spinner.gif", style: "display:none", id:"loading-image" });
   var selectCountry   = new Element('select', { Class: "textbox5", name: "addresses["+window.counter+"][country_id]", id: "country-id"});
   
     var optn = document.createElement("option");
     optn.value = 0;
-    optn.text = "  ";
+    optn.text = "Select Country:";
     selectCountry.options.add(optn);
 
   for(var i=0; i< window.countries.length; i++){
@@ -92,10 +93,10 @@ function addRowAddress(){
   
   selectCountry.writeAttribute('onchange', 'getRegion(this.value,\''+window.counter+'\')');
     
-  var selectRegion = new Element('select', { Class: "textbox5", name: "addresses["+window.counter+"][region_id]", id: "region-id"});
+  var selectRegion = new Element('select', { Class: "textbox5", name: "addresses["+window.counter+"][region_id]", id: "region-id", disabled: "disabled" });
   var opt = document.createElement("option");
   opt.value = "1";
-  opt.text = "Select Country First";
+  opt.text = "Select Country First:";
   selectRegion.options.add(opt);
   
   var inputCity       = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][city]", type: "text"});
@@ -107,7 +108,7 @@ function addRowAddress(){
   var selectMoveOutMonth   = new Element('select', { Class: "selectbox-month", name: "addresses["+window.counter+"][month_out]", type: "text"});
   var selectMoveOutYear   = new Element('select', { Class: "selectbox-year", name: "addresses["+window.counter+"][year_out]", type: "text"});
 
-  var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-address"});
+  var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-address"});
   
   var tr1 = new Element('tr');
     var td1 = new Element('td', {colspan: "3"});
@@ -206,6 +207,7 @@ function addRowAddress(){
   tr5.appendChild(td52);
   tr5.appendChild(td53);
     td53.appendChild(selectCountry);
+    td53.appendChild(imgLoading);
 
   //tr6
   td61.innerHTML = "Region";
@@ -252,19 +254,20 @@ function addRowAddress(){
     td103.appendChild(getMonth(selectMoveOutMonth));
     td103.appendChild(getYear(selectMoveOutYear));
   
-  divParent.appendChild(tr1);
-  divParent.appendChild(tr2);
-  divParent.appendChild(tr3);
-  divParent.appendChild(tr11);
-  divParent.appendChild(tr4);
-  divParent.appendChild(tr5);
-  divParent.appendChild(tr6);
-  divParent.appendChild(tr7);
-  divParent.appendChild(tr8);
-  divParent.appendChild(tr9);
-  divParent.appendChild(tr10);
-  $('table-addresses').appendChild(divParent);
+  tableParent.appendChild(tr1);
+  tableParent.appendChild(tr2);
+  tableParent.appendChild(tr3);
+  tableParent.appendChild(tr11);
+  tableParent.appendChild(tr4);
+  tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
+  tableParent.appendChild(tr7);
+  tableParent.appendChild(tr8);
+  tableParent.appendChild(tr9);
+  tableParent.appendChild(tr10);
+  $('table-form-address').appendChild(tableParent);
   $('save-button-address').show();    
+  $('form_address').value = window.counter;    
   
   window.counter++
 }
@@ -283,7 +286,7 @@ function addRowJob(){
   var selectEndYear        = new Element('select', { Class: "selectbox-year", name: "jobs["+window.counter_job+"][end_year]"});
   var inputNotes = new Element('textarea', { Class: "textarea1", name: "jobs["+window.counter_job+"][notes]", rows: "5", cols: "10"});
   
-  var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-job"});
+  var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-job"});
   
   var tr1 = new Element('tr', {});
     var td1 = new Element('td', {colspan: "3"});
@@ -387,16 +390,17 @@ function addRowJob(){
   tr8.appendChild(td83);
     td83.appendChild(inputNotes);
 
-  divParent.appendChild(tr1);
-  divParent.appendChild(tr2);
-  divParent.appendChild(tr3);
-  divParent.appendChild(tr4);
-  divParent.appendChild(tr5);
-  divParent.appendChild(tr6);
-  divParent.appendChild(tr7);
-  divParent.appendChild(tr8);
-  $('table-jobs').appendChild(divParent);
+  tableParent.appendChild(tr1);
+  tableParent.appendChild(tr2);
+  tableParent.appendChild(tr3);
+  tableParent.appendChild(tr4);
+  tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
+  tableParent.appendChild(tr7);
+  tableParent.appendChild(tr8);
+  $('table-form-job').appendChild(tableParent);
   $('save-button-job').show();
+  $('form_job').value = window.counter_job;
   
   window.counter_job++
 }
@@ -417,7 +421,7 @@ function addRowSchool(){
   var inputRecognitions = new Element('textarea', { Class: "textarea1", name: "schools["+window.counter_school+"][recognitions]", rows: "5", cols: "10"});
   var inputNotes        = new Element('textarea', { Class: "textarea1", name: "schools["+window.counter_school+"][notes]", rows: "5", cols: "10"});
   
-  var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-school"});
+  var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-school"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
@@ -560,19 +564,20 @@ function addRowSchool(){
   tr11.appendChild(td113);
     td113.appendChild(inputNotes);
   
-  divParent.appendChild(tr1);
-  divParent.appendChild(tr2);
-  divParent.appendChild(tr3);
-  divParent.appendChild(tr4);
-  divParent.appendChild(tr5);
-  divParent.appendChild(tr6);
-  divParent.appendChild(tr7);
-  divParent.appendChild(tr8);
-  divParent.appendChild(tr9);
-  divParent.appendChild(tr10);
-  divParent.appendChild(tr11);  
-  $('table-schools').appendChild(divParent);
+  tableParent.appendChild(tr1);
+  tableParent.appendChild(tr2);
+  tableParent.appendChild(tr3);
+  tableParent.appendChild(tr4);
+  tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
+  tableParent.appendChild(tr7);
+  tableParent.appendChild(tr8);
+  tableParent.appendChild(tr9);
+  tableParent.appendChild(tr10);
+  tableParent.appendChild(tr11);  
+  $('table-form-school').appendChild(tableParent);
   $('save-button-school').show();
+  $('form_school').value = window.counter_school;
   
   window.counter_school++
 }
@@ -587,7 +592,7 @@ function addRowMedical(){
   var inputDentistPhone   = new Element('input', { Class: "textbox5", name: "medicals["+window.counter_medical+"][dentist_phone]", type: "text"});
   var inputNotes          = new Element('textarea', { Class: "textarea1", name: "medicals["+window.counter_medical+"][notes]", rows: "5", cols: "10"});
   
-  var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-medical"});
+  var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-medical"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
@@ -700,17 +705,18 @@ function addRowMedical(){
   tr9.appendChild(td93);
     td93.appendChild(inputNotes);
   
-  divParent.appendChild(tr1);
-  divParent.appendChild(tr2);
-  divParent.appendChild(tr3);
-  divParent.appendChild(tr4);
-  divParent.appendChild(tr5);
-  divParent.appendChild(tr6);
-  divParent.appendChild(tr7);
-  divParent.appendChild(tr8);
-  divParent.appendChild(tr9);
-  $('table-medicals').appendChild(divParent);
+  tableParent.appendChild(tr1);
+  tableParent.appendChild(tr2);
+  tableParent.appendChild(tr3);
+  tableParent.appendChild(tr4);
+  tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
+  tableParent.appendChild(tr7);
+  tableParent.appendChild(tr8);
+  tableParent.appendChild(tr9);
+  $('table-form-medical').appendChild(tableParent);
   $('save-button-medical').show();
+  $('form_medical').value = window.counter_medical;
   
   window.counter_medical++
 }
@@ -722,7 +728,7 @@ function addRowMedicalCondition(){
   var inputTreatment  = new Element('textarea', { Class: "textarea1", name: "medical_conditions["+window.counter_medical_condition+"][treatment]", rows: "5", cols: "10"});
   var inputNotes      = new Element('textarea', { Class: "textarea1", name: "medical_conditions["+window.counter_medical_condition+"][notes]", rows: "5", cols: "10"});
   
-  var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-medical-condition"});
+  var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-medical-condition"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
@@ -796,14 +802,15 @@ function addRowMedicalCondition(){
   tr6.appendChild(td63);
     td63.appendChild(inputNotes);
   
-  divParent.appendChild(tr1);
-  divParent.appendChild(tr2);
-  divParent.appendChild(tr3);
-  divParent.appendChild(tr4);
-  divParent.appendChild(tr5);
-  divParent.appendChild(tr6);
-  $('table-medical-conditions').appendChild(divParent);
+  tableParent.appendChild(tr1);
+  tableParent.appendChild(tr2);
+  tableParent.appendChild(tr3);
+  tableParent.appendChild(tr4);
+  tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
+  $('table-form-medical-condition').appendChild(tableParent);
   $('save-button-medical-condition').show();
+  $('form_medical_condition').value = window.counter_medical_condition;
   
   window.counter_medical_condition++
 }
@@ -816,7 +823,7 @@ function addRowFamily(){
     
     var optn = document.createElement("option");
     optn.value = "-";
-    optn.text = "  ";
+    optn.text = "Select:";
     selectType.options.add(optn);
     
     for(var i=0; i< window.types.length; i++){
@@ -832,7 +839,7 @@ function addRowFamily(){
   var inputLiving     = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][living]", type: "checkbox", value:"1", checked:"checked" });
   var inputNotes      = new Element('textarea', { Class: "textarea1", name: "families["+window.counter_family+"][notes]", rows: "5", cols: "10"});
   
-  var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-family"});
+  var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-family"});
   
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
@@ -929,15 +936,16 @@ function addRowFamily(){
   tr7.appendChild(td73);
     td73.appendChild(inputNotes);
 
-  divParent.appendChild(tr1);
-  divParent.appendChild(tr2);
-  divParent.appendChild(tr3);
-  divParent.appendChild(tr4);
-  divParent.appendChild(tr5);
-  divParent.appendChild(tr6);
-  divParent.appendChild(tr7);
-  $('table-families').appendChild(divParent);
+  tableParent.appendChild(tr1);
+  tableParent.appendChild(tr2);
+  tableParent.appendChild(tr3);
+  tableParent.appendChild(tr4);
+  tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
+  tableParent.appendChild(tr7);
+  $('table-form-family').appendChild(tableParent);
   $('save-button-family').show();
+  $('form_family').value = window.counter_family;
   
   window.counter_family++
 }
@@ -950,7 +958,7 @@ function addRowRelationship(){
     
     var optn = document.createElement("option");
     optn.value = "-";
-    optn.text = "  ";
+    optn.text = "Select:";
     selectType.options.add(optn);
     
     for(var i=0; i< window.types_relationship.length; i++){
@@ -969,7 +977,7 @@ function addRowRelationship(){
   var selectEndYear       = new Element('select', { Class: "selectbox-year", name: "relationships["+window.counter_relationship+"][end_year]"});
   var inputNotes      = new Element('textarea', { Class: "textarea1", name: "relationships["+window.counter_relationship+"][notes]", rows: "5", cols: "10"});
   
-  var divParent = new Element('div', {Class: "popup-newbox", id:"add-new-relationship"});
+  var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-relationship"});
   
  var tr1 = new Element('tr');
   var td1 = new Element('td', {colspan: "3"});
@@ -1068,15 +1076,16 @@ function addRowRelationship(){
   tr7.appendChild(td73);
     td73.appendChild(inputNotes);
 
-  divParent.appendChild(tr1);
-  divParent.appendChild(tr2);
-  divParent.appendChild(tr3);
-  divParent.appendChild(tr4);
-  divParent.appendChild(tr5);
-  divParent.appendChild(tr6);
-  divParent.appendChild(tr7);
-  $('table-relationships').appendChild(divParent);
+  tableParent.appendChild(tr1);
+  tableParent.appendChild(tr2);
+  tableParent.appendChild(tr3);
+  tableParent.appendChild(tr4);
+  tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
+  tableParent.appendChild(tr7);
+  $('table-form-relationship').appendChild(tableParent);
   $('save-button-relationship').show();
+  $('form_relationship').value = window.counter_relationship;
   
   window.counter_relationship++
 }
@@ -1096,40 +1105,112 @@ function toggleCustomTextFamily(id){
 }
 
 function getRegion(val,elementId){
-  new Ajax.Request('account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'' });return false;
+  new Ajax.Request('account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'',
+                   onLoading:function(request){$('loading-image').show();}, 
+                   onComplete:function(request){$('loading-image').hide();} });return false;
 }
 
 function deleteFormAddress(){
   $('add-new-address').remove();  
-  $('save-button-address').hide();
+  if ($('form_address').value == "1"){
+    $('save-button-address').hide();
+    window.counter = 1;
+  }else{
+    val = $('form_address').value;
+    $('form_address').value =(val - 1);
+  }
 }
 
 function deleteFormJob(){
   $('add-new-job').remove();    
-  $('save-button-job').hide();
+  if ($('form_job').value == "1"){
+    $('save-button-job').hide();
+    window.counter_job = 1;
+  }else{
+    val = $('form_job').value;
+    $('form_job').value =(val - 1);
+  }
 }
 
 function deleteFormSchool(){
   $('add-new-school').remove();
-  $('save-button-school').hide();
+  if ($('form_school').value == "1"){
+    $('save-button-school').hide();
+    window.counter_school = 1;
+  }else{
+    val = $('form_school').value;
+    $('form_school').value =(val - 1);
+  }
 }
 
 function deleteFormMedical(){
   $('add-new-medical').remove();    
-  $('save-button-medical').hide();
+  if ($('form_medical').value == "1"){
+    $('save-button-medical').hide();
+    window.counter_medical = 1;
+  }else{
+    val = $('form_medical').value;
+    $('form_medical').value =(val - 1);
+  }
 }
 
 function deleteFormMedicalCondition(){
   $('add-new-medical-condition').remove();   
-  $('save-button-medical-condition').hide();
+  if ($('form_medical_condition').value == "1"){
+    $('save-button-medical-condition').hide();
+    window.counter_medical_condition = 1;
+  }else{
+    val = $('form_medical_condition').value;
+    $('form_medical_condition').value =(val - 1);
+  }
 }
 
 function deleteFormFamily(){
   $('add-new-family').remove();
-  $('save-button-family').hide();
+  if ($('form_family').value == "1"){
+    $('save-button-family').hide();
+    window.counter_family = 1;
+  }else{
+    val = $('form_family').value;
+    $('form_family').value =(val - 1);
+  }
 }
 
 function deleteFormRelationship(){
   $('add-new-relationship').remove();        
-  $('save-button-relationship').hide();
+  if ($('form_relationship').value == "1"){
+    $('save-button-relationship').hide();
+    window.counter_relationship = 1;
+  }else{
+    val = $('form_relationship').value;
+    $('form_relationship').value =(val - 1);
+  }
+}
+
+function rstCountAddress(){
+  window.counter = 1;
+}
+
+function rstCountJob(){
+  window.counter_job = 1;
+}
+
+function rstCountSchool(){
+  window.counter_school = 1;
+}
+
+function rstCountMedical(){
+  window.counter_medical = 1;
+}
+
+function rstCountMedicalCondition(){
+  window.counter_medical_condition = 1;
+}
+
+function rstCountFamily(){
+  window.counter_family = 1;
+}
+
+function rstCountRelationship(){
+  window.counter_relationship = 1;
 }

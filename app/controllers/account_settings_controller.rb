@@ -119,7 +119,7 @@ class AccountSettingsController < ApplicationController
     params[:addresses].each_value do |val|
       start_at = Time.local(val[:year_in],val[:month_in],val[:day_in])
       end_at = Time.local(val[:year_out],val[:month_out],val[:day_out])
-      val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
+      val.merge!(:user_id => current_user.id, :moved_in_on => start_at, :moved_out_on => end_at)
       val.delete_if{|k, v| ["year_in", "month_in", "day_in", "year_out", "month_out", "day_out"].include?(k)}
       @address = Address.new(val)
       @address.addressable = current_user.profile
@@ -146,10 +146,10 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
+        page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
         end
       end
-    end 
+    end
   end
 
   def add_another_job
