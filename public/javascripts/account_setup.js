@@ -1,7 +1,7 @@
 function setDinamycHeight(id){
   height = window.innerHeight;
   if (height <= 600 )
-    heightDiv = 0.63*height;
+    heightDiv = 0.68*height;
   else
     heightDiv = 0.7*height;
   $(id).style.height = heightDiv + "px";
