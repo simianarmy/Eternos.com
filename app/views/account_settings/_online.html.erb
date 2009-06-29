@@ -26,20 +26,24 @@
                                          :complete => "$('progress-bar').hide();"  do |f| %>
        <%= image_tag "errors/twitter-top-box.gif" %>
        <%= hidden_field_tag :site_name, "twitter" %>
+       <%- if !@activated_twitter.nil? -%>
+         <%- username = @activated_twitter.auth_login -%>
+         <%- password = @activated_twitter.auth_password -%>
+       <%- end  -%>
        <div class="network-box">
          <table class="table-form2" align="left">
             <tr>
               <td class="coll-form4" valign="center">Username</td>
               <td class="coll-form2" valign="center">:</td>
               <td class="coll-form5" valign="center">
-                <%= f.text_field :auth_login, :class => "textbox1" %>
+                <%= f.text_field :auth_login, :class => "textbox1", :value => username %>
               </td>
             </tr>
             <tr>
               <td class="coll-form4" valign="center">Password</td>
               <td class="coll-form2" valign="center">:</td>
               <td class="coll-form5" valign="center">
-                <%= f.password_field :auth_password, :class => "textbox1" %>
+                <%= f.password_field :auth_password, :class => "textbox1", :value => password %>
               </td>
             </tr>
           </table>

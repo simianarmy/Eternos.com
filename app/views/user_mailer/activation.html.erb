@@ -1,7 +1,147 @@
-Congratulations, your account has been activated!  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Email Notification</title>
+<style>
+  body{
+	margin:0;
+	padding:0;
+}
 
-A bunch of text should go here telling you what to do next...
+#email-body{
+	width:665px;
+	height:601px;
+	background:white url(<%= @url %>/email/bg-email.gif) no-repeat;
+	padding-left:72px;
+}
 
-Login: <%= @user.login %>
+.email-top{
+	width:737px;
+	height:60px;
+	padding-top:10px;
+}
 
-<%= @url %>
+#email-box{
+	background:url(<%= @url %>/email/email-box.png) repeat-y;
+	width:552px;
+	height:auto;
+	padding:10px 15px 10px 20px;
+}
+
+.email-notification-box{
+	width:540px;
+	height:auto;
+	background:#44aeff;
+	padding:4px 0 4px 0;
+	margin:0 0 20px 0;
+	font-family:arial;
+	font-size:14px;
+	color:white;
+	font-weight:bold;
+	text-align:center;
+}
+
+.textarea6{
+	width:535px;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	font-weight:bold;
+	color:#333333;
+	text-align:justify;
+	line-height:20px;
+}
+
+.textarea7{
+	width:540px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#333333;
+	text-align:justify;
+	line-height:20px;
+	padding-top:10px;
+}
+
+.dotted{
+	width:540px;
+	height:1px;
+	background:url(<%= @url %>/email/dotted.gif) repeat-x;
+	margin-top:10px;
+}
+
+.blue-btn{
+	font-family:arial;
+	font-size:11px;
+	color:#61b6dd;
+	margin: 0 5px 0 0;
+	text-decoration:none;
+}
+
+.blue-btn:hover{
+	color:#2270c8;
+	text-decoration:underline;
+}
+
+.blue-btn2{
+	font-family:arial;
+	font-size:11px;
+	color:#61b6dd;
+	margin-top:10px;
+	font-weight:bold;
+}
+
+.blue-btn2:hover{
+	color:#2270c8;
+}
+
+#copyright-text{
+	width:580px;
+	height:auto;
+	text-align:center;
+	font-family:arial;
+	font-size:10px;
+	color:#4b4b4b;
+	padding-top:10px;
+}
+img {behavior:url("pngbehavior.htc");}
+</style>
+</head>
+<body>
+	<div id="email-body">
+		<div class="email-top"><%= image_tag @url + "/email/email-logo.png" %></div>
+		<img src="images/box-top.png" />
+		<div id="email-box">
+			<center>
+				<div class="email-notification-box">Congratulations, your account has been activated!</div>
+			</center>
+			<div class="textarea6">
+				<i>Suspendisse potenti—Fusce eu ante in sapien vestibulum sagittis. Cras purus. Nunc rhoncus.Donec imperdiet, nibh sit amet pharetra placerat, tortor purus condimentum lectus</i>
+			</div>
+			<br />
+			<div class="textarea7">
+				Donec imperdiet, nibh sit amet pharetra placerat, tortor purus condimentum lectus, at dignissim nibh velit vitae sem. Nunc condimentum blandit tortorphasellus facilisis neque vitae purus Aliquam aliquet, est a ullamcorper condimentum, <a href="#" class="blue-btn">tellus nulla fringilla elit</a>, a iaculis nulla turpis sed wisi. Fusce volutpat. Etiam sodales ante id nunc. Proin ornare dignissim lacus. Nunc porttitor nunc a sem. Sed sollicitudin velit eu magna. Aliquam erat volutpat. Vivamus ornare est non wisi. Proin vel quam. Vivamus egestas. Nunc tempor diam vehicula mauris. Nullam sapien eros, facilisis vel, eleifend non, auctor dapibus, pede...
+			</div>
+			<br />
+			<a href="#" class="blue-btn2">Read More</a>
+			<div class="dotted"></div>
+			<div class="textarea7">
+				Login: <%= @user.email %>
+			</div>
+			<div class="dotted"></div>
+			<div class="textarea7">
+				Regards,<br />
+				Eternos - company slogan
+				<br /><br />
+				<%= link_to "Contact eternos support", @supoort_url, :class => "blue-btn" %><br />
+                manage your
+                <%= link_to "account preference", @manage_url, :class=> "blue-btn"   %>.
+
+			</div>
+		</div>
+        <%= image_tag @url + "images/email/box-bottom.png" %>
+			<div id="copyright-text">Copyright (c) 2008-2009, Eon Digital Preservation, Inc. All rights reserved.</div>
+	</div>
+</body>
+</html>

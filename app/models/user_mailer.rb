@@ -9,7 +9,10 @@ class UserMailer < ActionMailer::Base
   def activation(user)
     setup_email(user)
     @subject    += 'Your account has been activated!'
-    @body[:url]  = "http://#{AppConfig.base_domain}/"
+    @user = user
+    @body[:url]  = url_for(:controller => "images") #"http://#{AppConfig.base_domain}/"
+    @body[:supoort_url] = url_for(:controller => "about", :action => "contact")
+    @body[:manage_url] = url_for(:controller => "member_home")
   end
   
   def invitation(invitation, signup_url)
@@ -27,5 +30,6 @@ class UserMailer < ActionMailer::Base
       @subject     = "[#{AppConfig.base_domain}] "
       @sent_on     = Time.now
       @body[:user] = user
+      @content_type = "text/html"
     end
 end
