@@ -53,7 +53,6 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
   
-  config.gem 'contacts'
   config.gem "ruby-openid", :lib => "openid", :version => ">= 2.1.2"
   config.gem 'image_science'
   config.gem 'ezcrypto'
@@ -78,6 +77,9 @@ Rails::Initializer.run do |config|
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
   config.gem 'facebooker-eternos', :lib => 'facebooker'
+  # Rails can't find this gem even though it is in vendor/gems
+  #config.gem 'contacts'
+  
   #config.gem 'memcache-client', :version => ">= 1.7.1"
   #config.gem 'flvtool2', :version => ">= 1.0.6"
   
