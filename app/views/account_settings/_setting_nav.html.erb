@@ -3,7 +3,7 @@
   <%- link_class = active_link == "step1" ? "step1-active" : "step1-btn"  -%>
   <%= link_to_remote "", { :url => personal_info_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", :complete => "$('progress-bar').hide();" }, :class =>  link_class %>
 
-  <%= button_to_remote "", { :url => personal_info_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", :complete => "$('progress-bar').hide();" }, :class =>  link_class, :id => "step1", :style => "display:none;" %>
+  <%= button_to_remote "", { :url => personal_info_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');", :complete => "$('process_message').hide();" }, :class =>  link_class, :id => "step1", :style => "display:none;" %>
 
 
 

@@ -31,7 +31,8 @@
         #inner_menu.alignright
           %ul#navlist
             %li.home= link_to 'homepage', member_home_path
-            %li.support= link_to_lightview("account setup", account_setting_path, {:class => "account-setting"}, {:title => "'Account Setup'"},{:autosize => false, :width => 900, :height => 700})
+            %li.support
+              %a.account-setting{'href'=>'"#"', 'onclick' => "Lightview.show({href:'/account/setting', options:{ajax:{evalScripts:true,parameters:'&authenticity_token=' + encodeURIComponent( window._token )}, autosize:false, closeButton:false, height: lightview_height, width: 700}, rel:'ajax'});return false;"} account settings
             %li.logout= link_to 'log out', logout_path
         .clearboth
         
