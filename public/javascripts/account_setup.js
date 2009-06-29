@@ -7,12 +7,7 @@ function setDinamycHeight(id){
   $(id).style.height = heightDiv + "px";
 }
 function getDay(selectDay){
-  var optn = document.createElement("option");
-  optn.value = "";
-  optn.text = "Day:";
-  selectDay.options.add(optn);
-
-  for(var i=1; i<=31; i++){
+   for(var i=1; i<=31; i++){
     var optn = document.createElement("option");
     optn.value = i;
     optn.text = i;
@@ -34,12 +29,7 @@ function getMonth(selectMonth){
                      [10, "Okt"],
                      [11, "Nov"],
                      [12, "Des"])
-  
-  var optn = document.createElement("option");
-  optn.value = "";
-  optn.text = "Month:";
-  selectMonth.options.add(optn);
-  
+                   
   for(var i=0; i<months.length; i++){
     var optn = document.createElement("option");
     optn.value = months[i][0];
@@ -53,10 +43,6 @@ function getYear(selectYear){
   y = new Date();
   y = y.getFullYear();
   
-  var optn = document.createElement("option");
-  optn.value = "";
-  optn.text = "Year:";
-  selectYear.options.add(optn);
   var optn = document.createElement("option");
   optn.value = y;
   optn.text = y;
@@ -821,11 +807,6 @@ function addRowFamily(){
   var inputHiddenField = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][family_type]", type: "text", style: "display:none;", id:"custom-family-type-"+window.counter_family });
   var selectType       = new Element('select', { Class: "selectbox-type", name: "families["+window.counter_family+"][family_type]", id:"select-family-type-"+window.counter_family });
     
-    var optn = document.createElement("option");
-    optn.value = "-";
-    optn.text = "Select:";
-    selectType.options.add(optn);
-    
     for(var i=0; i< window.types.length; i++){
     var optn = document.createElement("option");
     optn.value = window.types[i][0];
@@ -955,11 +936,6 @@ function addRowRelationship(){
   var inputName        = new Element('input', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][name]", type: "text"});
   var inputHiddenField = new Element('input', { Class: "textbox5", name: "relationships["+window.counter_relationship+"][circle_id]", type: "text", style:"display:none", id:"custom-relation-type-"+window.counter_relationship });
   var selectType       = new Element('select', { Class: "selectbox-type", name: "relationships["+window.counter_relationship+"][circle_id]", id:"select-relation-type-"+window.counter_relationship });
-    
-    var optn = document.createElement("option");
-    optn.value = "-";
-    optn.text = "Select:";
-    selectType.options.add(optn);
     
     for(var i=0; i< window.types_relationship.length; i++){
 

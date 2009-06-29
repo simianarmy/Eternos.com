@@ -538,9 +538,10 @@ a.flickr-btn:hover{
 	color:black;
 	text-decoration:none;
 	border:none;
+        float:left;
 	font-size:11px;
 	padding-top:2px;
-	margin:8px 0 0 10px; 
+	margin:8px 5px 0 10px; 
 	background:url(/images/submit2.gif) 0 0;
 }
 
@@ -682,6 +683,17 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin:10px 20px 0 10px;
 }
 
+.error-message{
+	width:440px;
+	height:auto;
+	border:none;
+	font-family:arial;
+	font-size:11px;
+	color:#393b3e;
+	text-align:left;
+	margin:10px 20px 0 10px;
+}
+
 .coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form2{width:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form3{width:330px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
@@ -695,8 +707,8 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .textbox2{width:50px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox3{width:176px; height:20px ;margin:2px 0 2px 0;}
 .textbox4{width:90px; height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
-.selectbox-day{width:53px; height:20px;border:1px solid #898989; margin:2px 4px 2px 5px;}
-.selectbox-month{width:68px; height:20px;border:1px solid #898989; margin:2px 4px 2px 5px;}
+.selectbox-day{width:43px; height:20px;border:1px solid #898989; margin:2px 4px 2px 5px;}
+.selectbox-month{width:51px; height:20px;border:1px solid #898989; margin:2px 4px 2px 5px;}
 .selectbox-year{width:56px; height:20px;border:1px solid #898989; margin:2px 4px 2px 5px;}
 
 .selectbox-type{width:85px; height:20px;border:1px solid #898989; margin:2px 3px 2px 5px;}

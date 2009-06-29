@@ -39,6 +39,7 @@ class Address < ActiveRecord::Base
     m.validates_presence_of :country_id, :on => :create
     m.validates_presence_of :region_id,
                             :if => :known_region_required?
+    m.validates_numericality_of :postal_code                      
 #  validates_presence_of :custom_region,
 #                          :message => 'Custom Region!?',
 #                          :if => :custom_region_required?

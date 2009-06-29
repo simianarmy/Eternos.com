@@ -17,11 +17,16 @@
 
     <% form_remote_for @address,
                                 :url => {:action => 'add_another_address'},
-                                :complete => 'rstCountAddress();' do -%>
+                                :loading => "$('image-loading-address').show();",
+                                :complete => "rstCountAddress();$('image-loading-address').hide();" do -%>
+                               
       <div id="table-form-address"></div>
       <div>
         <%= submit_tag 'Save', :id => 'save-button-address', :style => 'display:none;', :class => 'submit-btn3' %>
+        <%= image_tag "spinner.gif", :id => 'image-loading-address', :style => 'display:none;' %>
       </div>
+      <br>
+      <div id="error-message-address" class="error-message"></div> 
     <% end -%>  
     <%= hidden_field_tag "form_address" %>
     
@@ -43,11 +48,15 @@
     </table>
   <% form_remote_for @job, 
                         :url => {:action => 'add_another_job'},
-                        :complete => 'rstCountJob();' do -%>
+                        :loading => "$('image-loading-job').show();",
+                        :complete => "rstCountJob();$('image-loading-job').hide();" do -%>
     <div id="table-form-job"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-job', :style => 'display:none;', :class => 'submit-btn3' %>
+        <%= image_tag "spinner.gif", :id => 'image-loading-job', :style => 'display:none;' %>
     </div>
+    <br>
+    <div id="error-message-job" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_job" %>
   
@@ -70,11 +79,15 @@
     </table>
   <% form_remote_for @school, 
                     :url => {:action => 'add_another_school'},
-                    :complete => 'rstCountSchool();' do -%>
+                    :loading => "$('image-loading-school').show();",
+                    :complete => "rstCountSchool();$('image-loading-school').hide();" do -%>
     <div id="table-form-school"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-school', :style => 'display:none;', :class => 'submit-btn3' %>
+        <%= image_tag "spinner.gif", :id => 'image-loading-school', :style => 'display:none;' %>
     </div>
+    <br>
+    <div id="error-message-school" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_school" %>
   
@@ -96,11 +109,15 @@
     </table>
   <% form_remote_for @medical, 
                                 :url => {:action => 'add_another_medical'},
-                                :complete => 'rstCountMedical();' do -%>
+                                :loading => "$('image-loading-medical').show();",
+                                :complete => "rstCountMedical();$('image-loading-medical').hide();" do -%>
     <div id="table-form-medical"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-medical', :style => 'display:none;', :class => 'submit-btn3' %>
+        <%= image_tag "spinner.gif", :id => 'image-loading-medical', :style => 'display:none;' %>
     </div>
+    <br>
+    <div id="error-message-medical" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_medical" %>
   
@@ -122,11 +139,15 @@
 	    </table>
   <% form_remote_for @medical_condition,
                                         :url => {:action => 'add_another_medical_condition'},
-                                        :complete => 'rstCountMedicalCondition();' do -%>
+                                        :loading => "$('image-loading-medical-condition').show();",
+                                        :complete => "rstCountMedicalCondition();$('image-loading-medical-condition').hide();" do -%>
     <div id="table-form-medical-condition"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-medical-condition', :style => 'display:none;', :class => 'submit-btn3' %>
+        <%= image_tag "spinner.gif", :id => 'image-loading-medical-condition', :style => 'display:none;' %>
     </div>
+    <br>
+    <div id="error-message-medical-condition" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_medical_condition" %>
   
@@ -148,11 +169,15 @@
 		    </table>
   <% form_remote_for @family, 
                                 :url => {:action => 'add_another_family'},
-                                :complete => 'rstCountFamily();' do -%>
+                                :loading => "$('image-loading-family').show();",
+                                :complete => "rstCountFamily();$('image-loading-family').hide();" do -%>
     <div id="table-form-family"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-family', :style => 'display:none;', :class => 'submit-btn3', :onclick => 'window.counter = 1;' %>
+        <%= image_tag "spinner.gif", :id => 'image-loading-family', :style => 'display:none;' %>
     </div>
+    <br>
+    <div id="error-message-family" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_family" %>
   
@@ -175,11 +200,15 @@
 		    </table>
   <% form_remote_for @relationship,
                                     :url => {:action => 'add_another_relationship'},
-                                    :complete => 'rstCountRelationship();' do -%>
+                                    :loading => "$('image-loading-relationship').show();",
+                                    :complete => "rstCountRelationship();$('image-loading-relationship').hide();" do -%>
     <div id="table-form-relationship"></div>
     <div>
         <%= submit_tag 'Save', :id => 'save-button-relationship', :style => 'display:none;', :class => 'submit-btn3' %>
+        <%= image_tag "spinner.gif", :id => 'image-loading-relationship', :style => 'display:none;' %>
     </div>
+    <br>
+    <div id="error-message-relationship" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_relationship" %>
   

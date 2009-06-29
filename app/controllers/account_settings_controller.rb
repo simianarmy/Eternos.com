@@ -116,23 +116,31 @@ class AccountSettingsController < ApplicationController
   end
 
   def add_another_address
-    params[:addresses].each_value do |val|
-      start_at = Time.local(val[:year_in],val[:month_in],val[:day_in])
-      end_at = Time.local(val[:year_out],val[:month_out],val[:day_out])
-      val.merge!(:user_id => current_user.id, :moved_in_on => start_at, :moved_out_on => end_at)
-      val.delete_if{|k, v| ["year_in", "month_in", "day_in", "year_out", "month_out", "day_out"].include?(k)}
-      @address = Address.new(val)
-      @address.addressable = current_user.profile
-      @address.save!
-    end
-    
-    find_address
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.remove "add-new-address"
-          page.hide "save-button-address"
-          page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
+    begin
+      params[:addresses].each_value do |val|
+        start_at = Time.local(val[:year_in],val[:month_in],val[:day_in])
+        end_at = Time.local(val[:year_out],val[:month_out],val[:day_out])
+        val.merge!(:user_id => current_user.id, :moved_in_on => start_at, :moved_out_on => end_at)
+        val.delete_if{|k, v| ["year_in", "month_in", "day_in", "year_out", "month_out", "day_out"].include?(k)}
+        @address = Address.new(val)
+        @address.addressable = current_user.profile
+        @address.save!
+      end
+      
+      find_address
+      render :update do |page|
+        page.remove "add-new-address"
+        page.hide "save-button-address"
+        page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-address", :inline => "<%= error_messages_for 'address' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                        
         end
       end
     end
@@ -153,21 +161,30 @@ class AccountSettingsController < ApplicationController
   end
 
   def add_another_job
-    params[:jobs].each_value do |val|
-      start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-      end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
-      val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
-      val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
-      Job.create(val)
-    end
-    
-    find_job
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.remove "add-new-job"
-          page.hide "save-button-job"
-          page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
+    begin
+      params[:jobs].each_value do |val|
+        start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
+        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+        val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
+        val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
+        @job = Job.new(val)
+        @job.save!
+      end
+
+      find_job
+      render :update do |page|
+        page.remove "add-new-job"
+        page.hide "save-button-job"
+        page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-job", :inline => "<%= error_messages_for 'job' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                            
         end
       end
     end
@@ -188,23 +205,32 @@ class AccountSettingsController < ApplicationController
   end
   
   def add_another_school
-    params[:schools].each_value do |val|
-      start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-      end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
-      val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
-      val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
-      School.create(val)
-    end
-    
-    find_school
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.remove "add-new-school"
-          page.hide "save-button-school"
-          page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
-        end
+    begin
+      params[:schools].each_value do |val|
+        start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
+        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+        val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
+        val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
+        @school = School.new(val)
+        @school.save!
       end
+
+      find_school
+      render :update do |page|
+        page.remove "add-new-school"
+        page.hide "save-button-school"
+        page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-school", :inline => "<%= error_messages_for 'school' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                             
+        end
+      end  
     end
   end
   
@@ -223,19 +249,28 @@ class AccountSettingsController < ApplicationController
   end
   
   def add_another_medical
-    params[:medicals].each_value do |val|
-      Medical.create(val.merge(:profile_id => current_user.profile.id))
-    end
-    
-    find_medical
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.remove "add-new-medical"
-          page.hide "save-button-medical"
-          page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
-        end
+    begin
+      params[:medicals].each_value do |val|
+        @medical = Medical.new(val.merge(:profile_id => current_user.profile.id))
+        @medical.save!
       end
+
+      find_medical
+      render :update do |page|
+        page.remove "add-new-medical"
+        page.hide "save-button-medical"
+        page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-medical", :inline => "<%= error_messages_for 'medical' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                             
+        end
+      end    
     end
   end
   
@@ -254,19 +289,28 @@ class AccountSettingsController < ApplicationController
   end
   
   def add_another_medical_condition
-    params[:medical_conditions].each_value do |val|
-      MedicalCondition.create(val.merge(:profile_id => current_user.profile.id))
-    end
-    
-    find_medical_condition
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.remove "add-new-medical-condition"
-          page.hide "save-button-medical-condition"
-          page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
-        end
+    begin
+      params[:medical_conditions].each_value do |val|
+        @medical_condition = MedicalCondition.create(val.merge(:profile_id => current_user.profile.id))
+        @medical_condition.save!
       end
+
+      find_medical_condition
+      render :update do |page|
+        page.remove "add-new-medical-condition"
+        page.hide "save-button-medical-condition"
+        page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-medical-condition", :inline => "<%= error_messages_for 'medical_condition' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                            
+        end
+      end    
     end
   end
   
@@ -285,22 +329,31 @@ class AccountSettingsController < ApplicationController
   end
   
   def add_another_family
-    params[:families].each_value do |val|
-      birtdate = Time.local(val[:birtdate_year],val[:birtdate_month],val[:birtdate_day])
-      val.merge!(:profile_id => current_user.profile.id, :birthdate => birtdate)
-      val.delete_if{|k, v| ["birtdate_year", "birtdate_month", "birtdate_day"].include?(k)}
-      Family.create(val)
-    end
-    
-    find_family
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.remove "add-new-family"
-          page.hide "save-button-family"
-          page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
-        end
+    begin
+      params[:families].each_value do |val|
+        birtdate = Time.local(val[:birtdate_year],val[:birtdate_month],val[:birtdate_day])
+        val.merge!(:profile_id => current_user.profile.id, :birthdate => birtdate)
+        val.delete_if{|k, v| ["birtdate_year", "birtdate_month", "birtdate_day"].include?(k)}
+        @family = Family.new(val)
+        @family.save!
       end
+
+      find_family
+      render :update do |page|
+        page.remove "add-new-family"
+        page.hide "save-button-family"
+        page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-family", :inline => "<%= error_messages_for 'family' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                            
+        end
+      end   
     end
   end
   
@@ -319,23 +372,32 @@ class AccountSettingsController < ApplicationController
   end
   
   def add_another_relationship
-    params[:relationships].each_value do |val|
-      start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-      end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
-      val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
-      val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
-      Relationship.create(val)
-    end
-    
-    find_relationship
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.remove "add-new-relationship"
-          page.hide "save-button-relationship"
-          page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
-        end
+    begin
+      params[:relationships].each_value do |val|
+        start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
+        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+        val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
+        val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
+        @relationship = Relationship.create(val)
+        @relationship.save!
       end
+
+      find_relationship
+      render :update do |page|
+        page.remove "add-new-relationship"
+        page.hide "save-button-relationship"
+        page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-relationship", :inline => "<%= error_messages_for 'relationship' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                             
+        end
+      end   
     end
   end
   
