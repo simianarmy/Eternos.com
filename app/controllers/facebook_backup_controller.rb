@@ -27,7 +27,7 @@ class FacebookBackupController < ApplicationController
         flash[:notice] = "Login successful!"
         redirect_to :action => :permissions
       else
-        raise "Unable to secure login @session"
+        raise "Unable to secure login session"
       end
     rescue Exception => e
       flash[:error] = "Authentication error in Facebook app: #{e.to_s}"
@@ -63,9 +63,8 @@ class FacebookBackupController < ApplicationController
   end
   
   def load_backup_source
-    @backup_source = current_user.backup_sources.by_site(BackupSite::Facebook).first
+    @backup_source = current_user.backup_sources.by_site(BackupSite::Facebook).first 
     @backup_source ||= current_user.backup_sources.create(
-      :backup_site => BackupSite.find_by_name(BackupSite::Facebook),
-      :auth_login => '')
+      :backup_site => BackupSite.find_by_name(BackupSite::Facebook))
   end
 end

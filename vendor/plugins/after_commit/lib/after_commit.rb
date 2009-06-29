@@ -75,7 +75,7 @@ unless defined? AFTER_COMMIT_PATCH_APPLIED
   AFTER_COMMIT_PATCH_APPLIED=true   # in my test setup this was executed twice resulting in an infinite recursion  
   
   Object.subclasses_of(ActiveRecord::ConnectionAdapters::AbstractAdapter).each do |klass|
-    puts "Applying after_commit patch to: #{klass}"
+    RAILS_DEFAULT_LOGGER.info "Applying after_commit patch to: #{klass}"
     klass.send(:include, AfterCommit::ConnectionAdapters)
   end
 

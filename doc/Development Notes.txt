@@ -144,8 +144,10 @@ Story/Blog Inteface:
 	
 Photo Gallery: 
 	http://smoothgallery.jondesign.net/getting-started/
-	http://www.nickstakenburg.com/projects/lightview/
+	http://www.nickstakenburg.com/projects/lightview/ - Purchased
 	CoolIris.com Flash/Browser plugin
+	* Mac MobileMe Gallery UI Using css + jQuery:
+	  http://net.tutsplus.com/tutorials/javascript-ajax/recreating-the-mobileme-web-gallery-interface/
 
 Top Photo-Sharing Sites to allow importing from:
 	Flickr
