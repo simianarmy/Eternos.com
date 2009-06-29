@@ -30,7 +30,7 @@ class AccountsController < ApplicationController
       if User.find_by_facebook_uid(params[:user][:facebook_id])
         # Login manually & redirect to member home
         UserSession.create
-        redirect_to "/member_home"
+        redirect_to member_home_path
         return
       end
     end
@@ -63,7 +63,7 @@ class AccountsController < ApplicationController
         session[:account_id] = @account.id
         render :action => 'billing'
       else
-        flash_redirect "Your account has been created.",  "/member_home"
+        flash_redirect "Your account has been created.", member_home_url
         #rennder :action => 'thanks', :layout => false
       end
     else
@@ -229,7 +229,7 @@ class AccountsController < ApplicationController
     
     def check_logged_in
       if current_user
-         redirect_to "/member_home"
+         redirect_to member_home_path
       end
     end
 end

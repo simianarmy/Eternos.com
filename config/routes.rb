@@ -103,7 +103,7 @@ ActionController::Routing::Routes.draw do |map|
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.login '/login', :controller => 'user_sessions', :action => 'new', :secure => true
   map.logout '/logout', :controller => 'user_sessions', :action => 'destroy'
-  map.member_home '/member_home', :controller => 'member_home'
+  map.member_home '/member_home', :controller => 'member_home', :protocol => 'http'
   map.begin_story '/begin_story', :controller => 'stories', :action => 'begin_story'
     
   # From SaaS Kit
