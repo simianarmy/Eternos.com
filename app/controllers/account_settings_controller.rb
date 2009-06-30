@@ -5,12 +5,15 @@ class AccountSettingsController < ApplicationController
   require_role "Member"
   before_filter :load_facebook_connect
   before_filter :set_facebook_session
+  layout 'account_setup'
   
   def index
     find_user_profile
     check_facebook_sync
+    
     respond_to do |format|
-      format.js { render :layout => false }
+      format.js 
+      format.html 
     end
   end
 

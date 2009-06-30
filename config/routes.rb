@@ -97,7 +97,7 @@ ActionController::Routing::Routes.draw do |map|
   # Required for openid redirect w/ restful auth
   # map.open_id_complete 'session', :controller => 'sessions', :action => "create", :requirements => { :method => :get }
   #map.resource :session
-  map.account_setting '/account/setting', :controller => 'account_settings'
+  
   map.about '/about', :controller => 'about'
   map.signup '/invitation/:invitation_token', :controller => 'users', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil

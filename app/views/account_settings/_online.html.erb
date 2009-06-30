@@ -15,8 +15,16 @@
   </div>
   <div class="network-login-box" id="form-box">
     <div id="facebook-box" style="display:none;">
-      <%= link_to "Authorize Offline Access", "http://www.facebook.com/authorize.php?api_key=43939b7016411de08f5791c9ea6e0273&v=1.0&ext_perm=offline_access&next=http://localhost:3000", :popup => true %><br />
-      <%= link_to "Authorize Stream Access", "http://www.facebook.com/authorize.php?api_key=43939b7016411de08f5791c9ea6e0273&v=1.0&ext_perm=read_stream &next=http://localhost:3000", :popup => true %>
+      <% content_tag :div, :id => 'facebook-login' do %>
+        <%= link_to image_tag("http://static.ak.facebook.com/images/devsite/facebook_login.gif"), 
+          @login_url, :class => 'popup_get' -%>
+        <% content_tag :div, :id => "fb-continue", :style=>"display:none;" do %>
+          <%= link_to "Next Step", :action => 'authenticate', :auth_token => @auth_token -%>
+        <% end -%>
+        <%= javascript_tag "
+          Event.observe(document, 'lightview:hidden', function(evt) { $('fb-continue').show() })" 
+        -%>
+      <% end -%>
     </div>
     <div id="twitter-box" style="display:none;">
       <%= render :partial => "shared/rjs_message" %>

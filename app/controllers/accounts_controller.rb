@@ -10,7 +10,11 @@ class AccountsController < ApplicationController
   before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :update]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
-  before_filter :check_logged_in
+  
+  before_filter :require_no_user, :only => [:new, :create]
+  # Need more fine-grained control than redirect for all actions
+  #before_filter :check_logged_in
+  
   ssl_required :billing, :cancel, :new, :create, :plans
   ssl_allowed :thanks, :canceled, :paypal
   
@@ -30,7 +34,7 @@ class AccountsController < ApplicationController
       if User.find_by_facebook_uid(params[:user][:facebook_id])
         # Login manually & redirect to member home
         UserSession.create
-        redirect_to member_home_path
+        redirect_to member_home_url
         return
       end
     end
@@ -227,9 +231,7 @@ class AccountsController < ApplicationController
       (@user = @subscription.account.admin).pending?
     end
     
-    def check_logged_in
-      if current_user
-         redirect_to member_home_path
-      end
+    def check_logged_in      
+      redirect_to member_home_url if current_user
     end
 end

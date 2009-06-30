@@ -1,5 +1,7 @@
+- use_calendar
+
 - title 'account settings'
-- use_calendar()
+
 .popup-container
   .popuptop
   .popup-content
@@ -26,7 +28,7 @@
     .pop-content-right
       = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
       #process_message
-        Retreiving Data ...
+        Retrieving Data ...
       = render :partial => 'account_settings/personal_info'
     .clear
   = image_tag "errors/popup-footer.png"

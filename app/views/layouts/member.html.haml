@@ -5,7 +5,7 @@
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
     - stylesheet 'member', 'screen', 'application'
-    - javascript(:defaults, 'scriptaculous') unless @no_prototype
+    - javascript prototype, scriptaculous unless @no_prototype
     - use_lowpro unless @no_prototype
     = yield(:head)
     = yield(:javascript)
@@ -32,7 +32,7 @@
           %ul#navlist
             %li.home= link_to 'homepage', member_home_path
             %li.support
-              %a.account-setting{'href'=>'"#"', 'onclick' => "Lightview.show({href:'/account/setting', options:{ajax:{evalScripts:true,parameters:'&authenticity_token=' + encodeURIComponent( window._token )}, autosize:false, closeButton:false, height: lightview_height, width: 620}, rel:'ajax'});return false;"} account settings
+              = link_to_lightview 'account settings', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '620'}
             %li.logout= link_to 'log out', logout_path
         .clearboth
         
@@ -59,6 +59,10 @@
       #bd
       = render :partial => 'shared/site_footer'
     
+    / For lightview options
+    = javascript_tag "var auth_token = '#{form_authenticity_token}'"
+    = javascript_tag "var lightview_height = 0.9*window.innerHeight"
+      
     / Start Getsatisfaction widget code here
     :plain
     <style type='text/css'>@import url('http://s3.amazonaws.com/getsatisfaction.com/feedback/feedback.css');</style>
