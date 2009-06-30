@@ -84,9 +84,11 @@ class AccountSettingsController < ApplicationController
         end
     end
   end
-
+  
   def online
     @online_account = BackupSource.new
+    @feed_url = FeedUrl.new
+    @feed_urls = current_user.profile.feed_urls
     @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
     respond_to do |format|
       format.js do

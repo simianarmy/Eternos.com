@@ -550,6 +550,26 @@ a.flickr-btn:hover{
 	background:url(/images/submit2.gif) 0 20px;
 }
 
+.submit-btn4{
+	width:84px;
+	height:20px;
+	display:block;
+	text-align:center;
+	font-family:arial;
+	color:black;
+	text-decoration:none;
+	border:none;
+        float:right;
+	font-size:11px;
+	padding-top:2px;
+	background:url(/images/submit2.gif) 0 0;
+}
+
+.submit-btn4:hover{
+	color:white;
+	background:url(/images/submit2.gif) 0 20px;
+}
+
 /*step button---------------------------------------------------------------------------------------------------------------*/
 
 a.step1-btn{width:140px;height:43px;background:url(/images/errors/step1.png) 0 0;display:block;margin-bottom:15px;}

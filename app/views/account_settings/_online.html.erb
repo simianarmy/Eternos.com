@@ -1,11 +1,11 @@
 <div id="account-setting-content">
   <div class="title3">Online Account</div>
   <div class="network-icon-box">
-    <%= link_to_show_hide('facebook-box', "", {:class => "fb-btn2", :id => "fb-button"}, ["twitter-box"] )  %>
+    <%= link_to_show_hide('facebook-box', "", {:class => "fb-btn2", :id => "fb-button"}, ["twitter-box","rss-box"] )  %>
     <%- className = @recent_backup_sites.include?("twitter") ? "twitter-active" : "twitter-btn" -%>
-    <%= link_to_show_hide('twitter-box', "", {:class => className, :id => "twitter-link"}, ["facebook-box"])  %>
+    <%= link_to_show_hide('twitter-box', "", {:class => className, :id => "twitter-link"}, ["facebook-box","rss-box"])  %>
     <%= link_to_show_hide('', "", {:class => "flickr-btn"})  %>
-    <%= link_to_show_hide('', "", {:class => "rss-btn"})  %>
+    <%= link_to_show_hide('rss-box', "", {:class => "rss-btn"}, ["facebook-box","twitter-box"])  %>
   </div>
 
   <div style="clear:both"></div> 
@@ -67,6 +67,25 @@
      <%- end -%>
      <%= image_tag "errors/fb-box-footer.gif" %>
    </div>
+
+   <div id="rss-box" style="display:none;">
+     <div id="error-message-rss"></div>
+       <% form_remote_for @feed_url,
+                                   :url => add_feed_url_backup_sources_path,
+                                   :loading => "$('progress-bar').show();",
+                                   :complete => "$('progress-bar').hide();"  do |f| %>
+            <tr>
+              <td class="coll-form4" valign="center">URL</td>
+              <td class="coll-form2" valign="center">:</td>
+              <td class="coll-form5" valign="center">
+                <%= f.text_field :url, :class => "textbox1" %><%= f.submit "Submit", :class => "submit-btn4" %>
+              </td>
+            </tr>
+       <% end %>
+       <div id="url-list"><%= render :partial => 'shared/url_list' %></div>
+   </div>
+   
+   
 
   </div>
   

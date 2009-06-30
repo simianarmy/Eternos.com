@@ -1,0 +1,13 @@
+<% unless @feed_urls.blank? %>
+  <br>
+  <h5>List of your URL</h5>
+  <table class="table-form2" align="left">
+    <% @feed_urls.each do |feed| -%>
+      <tr>
+        <td valign="right"></td>
+        <td valign="center">:</td>
+        <td valign="right"><%= feed.url %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

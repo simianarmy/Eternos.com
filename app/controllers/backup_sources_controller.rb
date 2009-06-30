@@ -38,6 +38,29 @@ class BackupSourcesController < ApplicationController
      render_message("Twitter account is not valid")
   end
 
+  def add_feed_url
+    begin
+      @feed_url = FeedUrl.new(params[:feed_url].merge(:profile_id => current_user.profile.id))
+      if @feed_url.save!
+        @feed_urls = current_user.profile.feed_urls
+        render :update do |page|
+          page[:feed_url_url].value = ""
+          page.replace_html "url-list", :partial => 'shared/url_list', :locals => {:feed_urls => @feed_urls}
+        end
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render :update do |page|
+        page.replace_html "error-message-rss", :inline => "<%= error_messages_for 'feed_url' %>"
+        page[:errorExplanation].visual_effect :highlight,
+                                              :startcolor => "#ea8c8c",
+                                              :endcolor => "#cfe9fa"
+        page.delay(4) do
+          page[:errorExplanation].remove                            
+        end
+      end
+    end
+  end
+  
   private
 
   def render_message(message)

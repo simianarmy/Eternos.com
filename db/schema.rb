@@ -794,6 +794,13 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
   
   rename_column("addresses", "start_at", "moved_in_on")
   rename_column("addresses", "end_at", "moved_out_on")
+    
+  create_table "feed_urls", :force => true do |t|
+    t.integer "profile_id"
+    t.string  "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
   
 end
     
