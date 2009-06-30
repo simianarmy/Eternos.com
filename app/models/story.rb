@@ -16,6 +16,7 @@ class Story < ActiveRecord::Base
   acts_as_taggable_custom :owner_method => :member
   acts_as_time_locked
   acts_as_av_attachable
+  acts_as_decoratable
   
   include Categorizable
   

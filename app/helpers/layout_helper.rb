@@ -50,6 +50,11 @@ module LayoutHelper
   end
   
   # asset inclusion helpers
+  def use_orig_lightview
+    stylesheet '/javascripts/lightview2.5/css/lightview.css'
+    js_include prototype, scriptaculous, 'lightview2.5/js/lightview'
+  end
+  
   def use_lightview
     stylesheet "/javascripts/lightview/css/lightview.css"
     use_lightview_only_js
@@ -82,7 +87,7 @@ module LayoutHelper
   end
   
   def use_lowpro
-    js_include prototype, scriptaculous, 'lowpro', 'behaviors'
+    js_include prototype, scriptaculous, 'lowpro', 'defaultvalueactsashint', 'behaviors'
   end
   
   def use_prototip
@@ -93,7 +98,7 @@ module LayoutHelper
   
   def use_form
     use_lowpro
-    js_include 'CustomFormElements', 'defaultvalueactsashint'
+    js_include 'CustomFormElements'
     use_busy
   end
   

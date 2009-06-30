@@ -13,6 +13,6 @@ module CategoriesHelper
   
   # Returns categories collection passed + global categories, for form select
   def categories_for_select(cats)
-    Category.find_globals(:all) + cats
+    Category.globals(:all) + cats
   end
 end

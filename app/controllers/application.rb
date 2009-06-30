@@ -290,7 +290,7 @@ class ApplicationController < ActionController::Base
     elsif current_user && !current_user.role.nil?
       current_user.role.downcase
     else
-      "public"
+      'public'
     end
   end
   

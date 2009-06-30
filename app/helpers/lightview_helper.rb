@@ -105,10 +105,11 @@ module LightviewHelper
   # (2nd-level arguments -see comments at top of file)
   def get_default_lightview_options
     {
+      
        :autosize => true,
        #:resizeDuration => 0.1,
-       :ajax => options_for_javascript({ :evalScripts => true,
-       :parameters => "'&authenticity_token=' + encodeURIComponent( window._token )"
+       :ajax => options_for_javascript({ :method => "'get'", :evalScripts => true,
+         :parameters => "'&authenticity_token=' + encodeURIComponent('#{form_authenticity_token}')"
         }) # this is so any js in the displayed page is available (e.g. for autocompleter)
     }
   end

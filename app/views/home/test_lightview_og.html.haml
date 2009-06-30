@@ -1,0 +1,24 @@
+- use_orig_lightview
+- use_lowpro
+!!!
+%html{html_attrs('en')}
+  %head
+    %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
+    / bundle do
+    - stylesheet 'screen', 'application'
+    
+    = yield(:head)
+    = yield(:javascript)
+    / end bundle
+  %body
+    Testing OG Lightview
+
+    = link_to 'Pop to photo', '/images/porsche.jpg', :class => 'lightview'
+    %br
+    = link_to 'Pop with ajax', '/', :class => 'lightview', :rel => 'ajax', :title => " :: :: topclose: true, autosize: true"
+    %br
+    = link_to 'Pop with iframe', '/', :class => 'lightview', :rel => 'iframe', :title => " :: :: topclose: true, autosize: true"
+    %br
+    = link_to 'Pop with iframe to self', '/test_lightview?'+Time.now.to_i.to_s, :class => 'popup_get'
+
+

@@ -1,10 +1,9 @@
 - title "Story"
-- use_lightview
+- use_orig_lightview
 - use_lowpro
 - use_form
 - use_flash
 - use_wysiwyg
-- javascript :defaults
 
 %p
 %br
@@ -19,6 +18,9 @@
   %p
   %br
   = show_wysiwyg_content(@story, :story, fckeditor_options)
+  %p
+  %br
+  = render :partial => 'decorations/list', :locals => {:parent => @story}
   %p
   %br
   %a#toggle_story_settings.toggleable{:href=>edit_story_path(@story)} Settings

@@ -64,7 +64,7 @@ class Member < User
 
   # Returns all circles = (global + user's)
   def all_circles
-    (circles + Circle.find_all_globals).uniq
+    (circles + Circle.globals).uniq
   end
   
   # Adds relationship for guest
