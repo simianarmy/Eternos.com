@@ -6,7 +6,7 @@ set :svn_password, ENV['svn_password'] || Proc.new { Capistrano::CLI.password_pr
 set :repository,
   Proc.new { "--username #{svn_user} " +
              "--password #{svn_password} " +
-             #"--no-auth-cache " + 
+             "--no-auth-cache " + 
              "https://eternos.unfuddle.com/svn/eternos_www/trunk" }
              
 # If you aren't deploying to /u/apps/#{application} on the target
@@ -42,8 +42,8 @@ namespace :deploy do
   end
   desc "Restart Application"
   task :restart, :roles => :app do
-    run "cd #{current_path} && rake tmp:cache:clear"
-    run "cd #{current_path} && rake tmp:assets:clear"
+    run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:cache:clear"
+    run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:assets:clear"
     run "touch #{current_path}/tmp/restart.txt"
   end
   
