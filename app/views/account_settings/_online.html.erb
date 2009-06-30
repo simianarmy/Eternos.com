@@ -3,7 +3,7 @@
   <div class="network-icon-box">
     <%= #link_to_show_hide('facebook-box', "", {:class => "fb-btn2", :id => "fb-button"}, ["twitter-box","rss-box"] )  
     %>
-    <%= link_to '', new_facebook_backup_path, :class => "lightview fb-btn2", :id => "fb-button", :rel => 'iframe' %>
+    <%= link_to '', new_facebook_backup_path, :class => "lightview fb-btn2", :title => 'Authorize Facebook Backup :: :: width: 640, height: 800', :id => "fb-button", :rel => 'iframe' %>
     <%- className = @recent_backup_sites.include?("twitter") ? "twitter-active" : "twitter-btn" -%>
     <%= link_to_show_hide('twitter-box', "", {:class => className, :id => "twitter-link"}, ["facebook-box","rss-box"])  %>
     <%= link_to_show_hide('', "", {:class => "flickr-btn"})  %>

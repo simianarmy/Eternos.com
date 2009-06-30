@@ -1,4 +1,4 @@
-- use_orig_lightview
+- use_lightview
 - use_lowpro
 - title 'Enable Facebook Backup'
 
@@ -6,7 +6,7 @@ Some text here please!!!
 %br
 -#= debug @auth_token
 -#= debug @login_url
-= link_to image_tag("http://static.ak.facebook.com/images/devsite/facebook_login.gif"), @login_url, :class => 'popup_get'
+= link_to image_tag("http://static.ak.facebook.com/images/devsite/facebook_login.gif"), @login_url, :class => 'facebook lightview', :rel => 'iframe', :title => ':: :: width: 640, height: 800'
 %p
 %br
 #continue{:style=>"display:none;"}
