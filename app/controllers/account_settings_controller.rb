@@ -294,7 +294,7 @@ class AccountSettingsController < ApplicationController
   def add_another_medical_condition
     begin
       params[:medical_conditions].each_value do |val|
-        @medical_condition = MedicalCondition.create(val.merge(:profile_id => current_user.profile.id))
+        @medical_condition = MedicalCondition.new(val.merge(:profile_id => current_user.profile.id))
         @medical_condition.save!
       end
 
@@ -381,7 +381,7 @@ class AccountSettingsController < ApplicationController
         end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
         val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
         val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
-        @relationship = Relationship.create(val)
+        @relationship = Relationship.new(val)
         @relationship.save!
       end
 
