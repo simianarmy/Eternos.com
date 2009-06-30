@@ -1,4 +1,5 @@
-- use_lightview
+- use_orig_lightview
+- use_lowpro
 - title 'Facebook Backup Permissions'
 
 Offline Access:
@@ -15,3 +16,7 @@ Stream Access:
   = link_to 'Allow stream read access', @stream_url, :class => 'popup_get'
 - else
   %font{:style => "color:green"} Granted
+%p
+%br
+= link_to_function 'Finished', 'parent.Lightview.hide()'
+  

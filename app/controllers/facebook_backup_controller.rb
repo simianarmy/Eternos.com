@@ -7,11 +7,17 @@ class FacebookBackupController < ApplicationController
   require_role "Member"
   before_filter :load_facebook_desktop
   before_filter :load_session
-  before_filter :load_backup_source, :except => [:new]
+  before_filter :load_backup_source
+  layout 'dialog'
   
   def new
-    @auth_token = @session.auth_token
-    @login_url = @session.login_url
+    # Make sure user not already authenticated
+    if @backup_source.confirmed?
+      redirect_to :action => :permissions
+    else
+      @auth_token = @session.auth_token
+      @login_url = @session.login_url
+    end
   end
   
   def authenticate

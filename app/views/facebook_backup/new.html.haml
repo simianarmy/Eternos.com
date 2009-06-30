@@ -1,7 +1,8 @@
-- use_lightview
-- title 'Add Eternos Facebook Backup App'
+- use_orig_lightview
+- use_lowpro
+- title 'Enable Facebook Backup'
 
-Log in to Facebook now to get started!
+Some text here please!!!
 %br
 -#= debug @auth_token
 -#= debug @login_url
@@ -9,6 +10,7 @@ Log in to Facebook now to get started!
 %p
 %br
 #continue{:style=>"display:none;"}
+  Follow text directions!
   = link_to "Next Step", :action => 'authenticate', :auth_token => @auth_token
 
 :javascript

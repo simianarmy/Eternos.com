@@ -1,0 +1,12 @@
+- stylesheet 'member', 'screen', 'application', 'popup'
+- use_lowpro
+- use_lightview
+- javascript 'account_setup', 'scroller', 'slider'
+
+= link_to 'Pop to photo', '/images/porsche.jpg', :class => 'lightview'
+%br
+= link_to 'Pop with ajax', '/', :class => 'lightview', :rel => 'ajax', :title => " :: :: autosize: true"
+%br
+= link_to 'Pop with iframe', '/', :class => 'lightview', :rel => 'iframe', :title => " :: :: autosize: true"
+%br
+= link_to 'Pop to self', '?'+Time.now.to_i.to_s, :class => 'popup_get'
