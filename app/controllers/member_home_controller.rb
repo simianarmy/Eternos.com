@@ -8,4 +8,6 @@ class MemberHomeController < ApplicationController
     @name = current_user.name
   end
   
+  def test_lightview
+  end
 end
