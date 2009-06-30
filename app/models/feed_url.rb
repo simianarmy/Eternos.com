@@ -6,7 +6,7 @@ class FeedUrl < ActiveRecord::Base
   validate :validate_rss_feed
   
   def validate_rss_feed
-    errors.add(:url, " invalid RSS feed") unless parse_rss_feed?
+    errors.add(:url, " is invalid RSS feed") unless parse_rss_feed?
   end
   
 private  
