@@ -4,10 +4,11 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - stylesheet 'member', 'application'
+    - stylesheet 'member', 'screen', 'application', '/javascripts/lightview/css/lightview'
     / Put these in partials as needed: javascript :defaults, 'CustomFormElements', 'cvi_busy_lib'
     = yield(:head)
     = yield(:javascript)
+    = javascript_include_tag prototype, scriptaculous, 'lightview/js/lightview'
     / end bundle
   %body
     #container
