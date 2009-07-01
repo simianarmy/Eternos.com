@@ -27,9 +27,7 @@
     
     .pop-content-right
       = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
-      #process_message
-        Retrieving Data ...
       = render :partial => 'account_settings/personal_info'
     .clear
   = image_tag "errors/popup-footer.png"
-  = javascript_tag "$('step1').click();"
+  / = javascript_tag "$('step1').click();"

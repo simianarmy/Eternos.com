@@ -94,7 +94,7 @@ var Lightview = {
         width: 400,
         height: 300,
         menubar: 'top',
-        scrolling: true,
+        scrolling: false,
         closeButton: 'small'
       },
       inline: {
