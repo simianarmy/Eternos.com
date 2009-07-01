@@ -8,6 +8,24 @@ body{
 	background:#292c32;
 }
 
+.network-box2{
+	width:451px;
+	height:50px;
+	background:url(/images/errors/fb-box.gif) repeat-y;
+	padding:20px 0 0 0;
+}
+
+.table-form5{
+	width:400px;
+	height:auto;
+	border:none;
+	font-family:arial;
+	font-size:11px;
+	color:#393b3e;
+	text-align:left;
+	margin-left:40px;
+}
+
 #process_message{
   padding: 4px 0 4px 5px;
   font-size: 14px;
@@ -542,7 +560,7 @@ a.flickr-btn:hover{
 	font-size:11px;
 	padding-top:2px;
 	margin:8px 5px 0 10px; 
-	background:url(/images/submit2.gif) 0 0;
+	background:url(/images/errors/submit-btn.gif) 0 0;
 }
 
 .submit-btn3:hover{
@@ -714,6 +732,8 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin:10px 20px 0 10px;
 }
 
+
+
 .coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form2{width:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form3{width:330px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
@@ -721,7 +741,6 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .coll-form5{width:200px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form6{width:100px; text-align:left;font-family:arial;font-size:11px;color:#808080;}
 .coll-form7{width:130px; height:30px; text-align:right;font-family:arial;font-size:11px;color:#393b3e;}
-
 
 .textbox1{width:240px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox2{width:50px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
@@ -734,7 +753,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .selectbox-type{width:85px; height:20px;border:1px solid #898989; margin:2px 3px 2px 5px;}
 
 .textbox5{width:188px; height:20px;border:1px solid #898989; margin:2px 3px 2px 5px;}
-
+.textbox6{width:175px;height:18px;border:1px solid #898989; margin:2px 0 2px 0; float:left;}
 .textarea1{width:188px; height:100px;border:1px solid #898989; margin:2px 0 2px 5px;}
 
 .title2{

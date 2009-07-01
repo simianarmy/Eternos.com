@@ -61,21 +61,29 @@
      <%= image_tag "errors/fb-box-footer.gif" %>
    </div>
 
-   <div id="rss-box" style="display:none;">
-     <div id="error-message-rss"></div>
-       <% form_remote_for @feed_url,
+   <div class="network-login-box" id="form-box">
+     <div id="rss-box" style="display:none;">
+       <div id="error-message-rss"></div>
+        <%= image_tag "errors/rss-top.gif" %>
+       <div class="network-box2">
+         <% form_remote_for @feed_url,
                                    :url => add_feed_url_backup_sources_path,
                                    :loading => "$('progress-bar').show();",
                                    :complete => "$('progress-bar').hide();"  do |f| %>
-            <tr>
-              <td class="coll-form4" valign="center">URL</td>
-              <td class="coll-form2" valign="center">:</td>
-              <td class="coll-form5" valign="center">
-                <%= f.text_field :url, :class => "textbox1" %><%= f.submit "Submit", :class => "submit-btn4" %>
-              </td>
-            </tr>
-       <% end %>
+
+         <table class="table-form5" align="left">
+		   <tr>
+		     <td class="coll-form4" valign="center">URL</td>
+			 <td class="coll-form2" valign="center">:</td>
+			 <td class="coll-form5" valign="center"><%= f.text_field :url, :class => "textbox6" %><%= f.submit "Submit", :class => "submit-btn3" %></td>
+			 </tr>
+		</table>
+            
+         <% end %>
+       </div>
+       <%= image_tag "errors/fb-box-footer.gif" %>
        <div id="url-list"><%= render :partial => 'shared/url_list' %></div>
+     </div>
    </div>
    
    

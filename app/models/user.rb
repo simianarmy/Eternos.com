@@ -88,8 +88,10 @@ class User < ActiveRecord::Base
     names = Array.new
     activated_twitter = nil
     backup_sources.each do |backup|
-      names << backup.backup_site.name.to_s
-      activated_twitter = backup if backup.backup_site.name.to_s == "twitter"
+      if !backup.backup_site.nil?
+        names << backup.backup_site.name.to_s
+        activated_twitter = backup if backup.backup_site.name.to_s == "twitter"
+      end
     end
     return names, activated_twitter
   end
