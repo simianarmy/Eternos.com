@@ -398,14 +398,14 @@ td.title-plans {
 	height: 70px;
 	width: 415px;
 	float: right;
-	padding:7px 0 0 10px;
+	padding:0;
 	background: url(/images/backgrounds/member-login.png) no-repeat;
 }
 
 #login h3 {
 	color: #5f5f5f;
 	font-size: 13px;
-	margin: 8px 0 2px 20px;
+	margin: 8px 0 0 20px;
 }
 
 #login p {
@@ -417,11 +417,11 @@ td.title-plans {
 #login input#username,
 #login input#password {
 	width: 114px;
-	padding: 2px 14px;
+	padding: 2px 12px;
 }
 
 #login input#username {
-	margin: 0 0 0 4px;
+	margin: 0 0 0 20px;
 }
 
 #login input#password {
