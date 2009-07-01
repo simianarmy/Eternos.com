@@ -444,7 +444,7 @@ body{
 	width:431px;
 	height:auto;
 	margin:5px 0 0 0;
-	padding-left:10px;
+	padding-left:7px;
 }
 
 .network-box{
@@ -569,23 +569,23 @@ a.flickr-btn:hover{
 }
 
 .submit-btn4{
-	width:84px;
-	height:20px;
+	width:100px;
+	height:24px;
 	display:block;
 	text-align:center;
 	font-family:arial;
-	color:black;
+	font-weight:bold;
+	color:white;
 	text-decoration:none;
-	border:none;
-        float:right;
 	font-size:11px;
-	padding-top:2px;
-	background:url(/images/submit2.gif) 0 0;
+	padding-top:4px;
+	margin: 2px 0 0 5px;
+	background:url(/images/errors/submit-btn.gif) 0 0;
+	float:left;
 }
 
 .submit-btn4:hover{
-	color:white;
-	background:url(/images/submit2.gif) 0 20px;
+	background:url(/images/errors/submit-btn.gif) 0 22px;
 }
 
 /*step button---------------------------------------------------------------------------------------------------------------*/
@@ -741,6 +741,8 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .coll-form5{width:200px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form6{width:100px; text-align:left;font-family:arial;font-size:11px;color:#808080;}
 .coll-form7{width:130px; height:30px; text-align:right;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form8{width:30px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form9{width:400px; text-align:left;font-family:arial;font-size:11px;color:#808080;}
 
 .textbox1{width:240px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox2{width:50px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
@@ -753,7 +755,8 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .selectbox-type{width:85px; height:20px;border:1px solid #898989; margin:2px 3px 2px 5px;}
 
 .textbox5{width:188px; height:20px;border:1px solid #898989; margin:2px 3px 2px 5px;}
-.textbox6{width:175px;height:18px;border:1px solid #898989; margin:2px 0 2px 0; float:left;}
+.textbox6{width:175px;height:25px;border:1px solid #898989; margin:2px 0 2px 0; float:left;}
+.textbox7{width:225px;height:25px;border:1px solid #898989; margin:2px 0 2px 0; float:left;}
 .textarea1{width:188px; height:100px;border:1px solid #898989; margin:2px 0 2px 5px;}
 
 .title2{

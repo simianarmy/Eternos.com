@@ -138,13 +138,13 @@ input {
 	border:1px solid #898989;
 	color:#898989;
 }
-
-input[type=text] {
-	font-size: 11px;
-	width:240px;
-	height:14px;
-	border:1px solid #898989;
-	color:#898989;
+/**/
+/*input[type=text] {*/
+/*	font-size: 11px;*/
+/*	width:240px;*/
+/*	height:14px;*/
+/*	border:1px solid #898989;*/
+/*	color:#898989;*/
 }
 
 input[type=submit] {
