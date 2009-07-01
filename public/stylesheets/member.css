@@ -1,4 +1,4 @@
-/* Global Settings */
+input#login_button/* Global Settings */
 
 * { padding: 0; margin: 0; }
 .clearboth { clear: both ; }
@@ -26,7 +26,7 @@ body {
 #content { width: 861px; margin: 0 auto; padding-left: 29px; background: url(/images/contentbg.gif) repeat-y;}
 #header { height: 78px; }
 #logo { margin: 6px 24px; width: 172px;}
-#login { background:  url(/images/loginbg.gif) bottom no-repeat; width: 391px; height: 55px; padding: 0 18px;}
+#login { background:  url(/images/loginbg.gif) bottom no-repeat; width: 391px; height: 55px; padding: 0 10px;}
 #login input.styled1 { background: url(/images/white.gif); border: 1px solid #b4becc; color: #c7c7c7; padding: 3px; margin-right: 5px; width: 135px; }
 
 

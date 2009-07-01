@@ -11,7 +11,7 @@
 }
 
 html {
-	background: url(../images/backgrounds/html-xrepeat.png) repeat-x 0 top;
+	background: url(/images/backgrounds/html-xrepeat.png) repeat-x 0 top;
 }
 
 body {
@@ -171,14 +171,15 @@ input {
 
 input#username,
 input#password {
-	padding: 5px 10px;
-	margin: 8px 25px 0 0;
+	padding: 5px;
+	margin: 3px 10px 0 0;
 	font-size: 11px;
-	width: 250px;
+	width: 230px;
+	height:15px;
 }
 
 input.login {
-	background: url(../images/login-button.png) no-repeat;
+	background: url(/images/login-button.png) no-repeat;
 	border: none;
 	color: #fff;
 	font-size: 14px;
@@ -187,7 +188,7 @@ input.login {
 }
 
 input.submit {
-	background: url(../images/submit-button.jpg) no-repeat;
+	background: url(/images/submit-button.jpg) no-repeat;
 	border: none;
 	width: 200px;
 	height: 58px;
@@ -196,7 +197,7 @@ input.submit {
 }
 
 input.continue {
-	background: url(../images/continue.jpg) no-repeat;
+	background: url(/images/continue.jpg) no-repeat;
 	float: right;
 	margin-right: 30px;
 	text-align: left;
@@ -206,7 +207,7 @@ input.continue {
 }
 
 input.continue-new {
-	background: url(../images/continue.jpg) no-repeat;
+	background: url(/images/continue.jpg) no-repeat;
 	float: right;
 	margin-right: 30px;
 	text-align: left;
@@ -239,7 +240,7 @@ input#address {
 input#password {
 	padding: 5px;
 	margin: 0 0 0 5px;
-	width: 245px;
+	width: 235px;
 }
 
 input#password-created {
@@ -270,7 +271,7 @@ span.select {
 	height: 21px;
 	text-align: left;
 	font: 12px/21px arial,sans-serif;
-	background:  url(../images/drop-down-arrow.jpg) no-repeat right;
+	background:  url(/images/drop-down-arrow.jpg) no-repeat right;
 	overflow: hidden;
 }
 
@@ -295,7 +296,7 @@ table.plans-table th img {
 }
 
 table th.gold {
-	background: #dbf1fa url(../images/gold-table-top.jpg) no-repeat;
+	background: #dbf1fa url(/images/gold-table-top.jpg) no-repeat;
 	width: 84px;
 	height: 25px;
 	font-size: 12px;
@@ -304,7 +305,7 @@ table th.gold {
 }
 
 table th.silver {
-	background: #f0f5fe url(../images/silver-table-top.jpg) no-repeat;
+	background: #f0f5fe url(/images/silver-table-top.jpg) no-repeat;
 	width: 83px;
 	height: 25px;
 	font-size: 12px;
@@ -313,7 +314,7 @@ table th.silver {
 }
 
 table th.basic {
-	background: #f5fbfd url(../images/basic-table-top.jpg) no-repeat;
+	background: #f5fbfd url(/images/basic-table-top.jpg) no-repeat;
 	height: 25px;
 	width: 83px;
 	font-size: 12px;
@@ -335,7 +336,7 @@ table td.gold {
 }
 
 table td.last-gold {
-	background: #dbf1fa url(../images/gold-table-bottom.jpg) no-repeat bottom;
+	background: #dbf1fa url(/images/gold-table-bottom.jpg) no-repeat bottom;
 }
 
 table td.silver {
@@ -344,7 +345,7 @@ table td.silver {
 }
 
 table td.last-silver {
-	background: #f0f5fe url(../images/silver-table-bottom.jpg) no-repeat bottom;
+	background: #f0f5fe url(/images/silver-table-bottom.jpg) no-repeat bottom;
 }
 
 table td.basic {
@@ -354,7 +355,7 @@ table td.basic {
 }
 
 table td.last-basic {
-	background: #f5fbfd url(../images/basic-table-bottom.jpg) no-repeat bottom;
+	background: #f5fbfd url(/images/basic-table-bottom.jpg) no-repeat bottom;
 }
 
 td.title {
@@ -374,7 +375,7 @@ td.title-plans {
 
 #custom-doc { 
 	 overflow: hidden;
-	 background: url(../images/backgrounds/bg-main.jpg) no-repeat;
+	 background: url(/images/backgrounds/bg-main.jpg) no-repeat;
 }
 
 #wrapper {
@@ -397,7 +398,8 @@ td.title-plans {
 	height: 70px;
 	width: 415px;
 	float: right;
-	background: url(../images/backgrounds/member-login.png) no-repeat;
+	padding:7px 0 0 10px;
+	background: url(/images/backgrounds/member-login.png) no-repeat;
 }
 
 #login h3 {
@@ -415,15 +417,15 @@ td.title-plans {
 #login input#username,
 #login input#password {
 	width: 114px;
-	padding: 2px 15px;
+	padding: 2px 14px;
 }
 
 #login input#username {
-	margin: 0 0 0 20px;
+	margin: 0 0 0 4px;
 }
 
 #login input#password {
-	margin: 0 0 0 5px;
+	margin: 0 0 0 3px;
 }
 
 /* @end */
@@ -432,20 +434,20 @@ td.title-plans {
 
 #bd {
 	clear: both;
-	background: #fff url(../images/backgrounds/body-bottom.png) bottom no-repeat;
+	background: #fff url(/images/backgrounds/body-bottom.png) bottom no-repeat;
 	padding-bottom: 20px;
 	margin: 0 0 30px 0;
 }
 
 h1.front-page {
-	background: url(../images/backgrounds/body-top.png) no-repeat top;
+	background: url(/images/backgrounds/body-top.png) no-repeat top;
 }
 
 h1#page-header {
 	color: #02419e;
 	font-size: 36px;
 	padding: 20px 0 10px 22px;
-	background: url(../images/backgrounds/body-top.png) no-repeat top;
+	background: url(/images/backgrounds/body-top.png) no-repeat top;
 	border-bottom: 1px solid #b4becc;
 }
 
@@ -482,7 +484,7 @@ div.yui-u {
 	float: right;
 	width: 400px;
 	height: 320px;
-	background: url(../images/backgrounds/bg-family.jpg) no-repeat;
+	background: url(/images/backgrounds/bg-family.jpg) no-repeat;
 }
 
 #share-your-life h2 {

@@ -6,16 +6,23 @@ input#openid_url {
    background-color: #fff;
    background-position: 0 50%;
    color: #000;
-   padding-left: 18px;
+   padding-left:10px;
 }
 
 input#login_button {
 	background: url(/images/login-button.png) no-repeat;
 	border: none;
 	color: #fff;
-	font-size: 14px;
-	padding: 1px 0 4px 0;
-	width: 70px;
+	font-size: 12px;
+	padding: 1px;
+	width: 91px;
+	height:23px;
+	margin:2px 0 0 0;
+	cursor:pointer;
+}
+
+input#login_button:hover {
+	background: url(/images/button-login.png) no-repeat;
 }
 
 div#loader{

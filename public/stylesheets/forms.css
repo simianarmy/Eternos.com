@@ -34,8 +34,8 @@ input {
 }
 
 input#username{
-	padding: 5px 10px;
-	margin: 8px 25px 0 0;
+	padding: 5px;
+	margin: 8px 10px 0 0;
 	font-size: 11px;
 	width:240px;
 	height:14px;
@@ -43,8 +43,8 @@ input#username{
 }
 
 input#password {
-	padding: 5px 10px;
-	margin: 8px 25px 0 0;
+	padding: 5px;
+	margin: 8px 10px 0 0;
 	font-size: 11px;
 	width:240px;
 	height:14px;
@@ -98,15 +98,6 @@ input.verification {
 
 input#address {
 	margin-top: 5px;
-}
-
-input#password {
-	padding: 5px 10px;
-	margin: 8px 25px 0 0;
-	font-size: 11px;
-	width:240px;
-	height:14px;
-	border:1px solid #898989;
 }
 
 input#password-created {
