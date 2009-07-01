@@ -1,12 +1,14 @@
 class FeedUrl < ActiveRecord::Base
   belongs_to :profile
   
-  validates_presence_of :url
+  validate do |feed|
+    feed.errors.add("", "Please enter a URL") if feed.url.blank?
+  end
   
   validate :validate_rss_feed
   
   def validate_rss_feed
-    errors.add(:url, " is invalid RSS feed") unless parse_rss_feed?
+    errors.add("", "Invalid RSS feed URL") unless parse_rss_feed?
   end
   
 private  

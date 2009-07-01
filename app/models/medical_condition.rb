@@ -1,5 +1,7 @@
 class MedicalCondition < ActiveRecord::Base
   belongs_to :profile
   
-  validates_presence_of :name, :message => "Please enter a medical condition name"
+  validate do |medical_condition|
+    medical_condition.errors.add("", "Please enter a medical condition name") if medical_condition.name.blank?
+  end
 end

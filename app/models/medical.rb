@@ -1,5 +1,7 @@
 class Medical < ActiveRecord::Base
   belongs_to :profile
   
-  validates_presence_of :name, :message => "Please enter a medical name"
+  validate do |medical|
+    medical.errors.add("", "Please enter a medical name") if medical.name.blank?
+  end
 end

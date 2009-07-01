@@ -3,6 +3,9 @@
 class Job < ActiveRecord::Base
   belongs_to :profile
   
-  validates_presence_of :company, :message => 'Please enter a company name'
-  validates_presence_of :title, :message => 'Please enter a title (position)'
+  validate do |job|
+    job.errors.add("", "Please enter a company name") if job.company.blank?
+    job.errors.add("", "Please enter a title") if job.title.blank?
+  end
+  
 end
