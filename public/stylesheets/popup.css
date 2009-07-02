@@ -528,7 +528,7 @@ a.flickr-btn:hover{
 
 .submit-btn2{
 	width:84px;
-	height:20px;
+	height:16px;
 	display:block;
 	text-align:center;
 	font-family:arial;
@@ -537,6 +537,7 @@ a.flickr-btn:hover{
 	border:none;
 	font-size:11px;
 	margin:5px;
+	padding-top:4px;
 	background:url(/images/submit2.gif) 0 0;
 }
 
@@ -740,6 +741,10 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 
 .coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form2{width:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+
+.coll-form1b{width:100px; padding-top:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+.coll-form2b{width:5px; padding-top:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+
 .coll-form3{width:330px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form4{width:200px; text-align:right;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form5{width:200px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
@@ -776,6 +781,10 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 #address_book_19-birthdate-date-sel-dd{width:45px; height:20px;text-align:center;margin:0 3px 0 -5px;}
 #address_book_19-birthdate-date-sel-mm{width:115px; height:20px;text-align:center;margin:0 3px 0 0;}
 #address_book_19-birthdate-date-sel{width:70px; height:20px;text-align:center;margin:0 3px 0 0;}
+
+#address_book_20-birthdate-date-sel-dd{width:45px; height:20px;text-align:center;margin:0 3px 0 -5px;}
+#address_book_20-birthdate-date-sel-mm{width:115px; height:20px;text-align:center;margin:0 3px 0 0;}
+#address_book_20-birthdate-date-sel{width:70px; height:20px;text-align:center;margin:0 3px 0 0;}
 #fd-but-address_book_19-birthdate-date-sel{margin-top:2px}
 
 #backup_source_auth_login{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
@@ -786,12 +795,14 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .selectbox-month{width:60px; height:20px;margin:2px 6px 2px 7px;}
 .selectbox-year{width:60px; height:20px;margin:2px 4px 2px 5px;}
 
-.selectbox-type{width:85px; height:20px;border:1px solid #898989; margin:2px 3px 2px 5px;}
+.selectbox-type{width:85px; height:20px; margin:2px 3px 2px 5px;}
 
-.textbox5{width:188px; height:20px;margin:2px 3px 2px 5px;}
+.textbox5{width:188px; height:20px;border:1px solid #898989;margin:2px 3px 2px 5px;}
 .textbox6{width:175px;height:25px;border:1px solid #898989; margin:2px 0 2px 0; float:left;}
 .textbox7{width:225px;height:25px;border:1px solid #898989; margin:2px 0 2px 0; float:left;}
+.textbox8{width:188px; height:20px;margin:2px 3px 2px 5px;}
 .textarea1{width:188px; height:100px;border:1px solid #898989; margin:2px 0 2px 5px;}
+
 
 .title2{
 	font-family:arial;

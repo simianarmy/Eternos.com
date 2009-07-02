@@ -60,11 +60,11 @@ function addRowAddress(){
   var inputStreet1    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_1]", type: "text"});
   var inputStreet2    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_2]", type: "text"});
   var imgLoading      = new Element('img', { src: "/images/spinner.gif", style: "display:none", id:"loading-image" });
-  var selectCountry   = new Element('select', { Class: "textbox5", name: "addresses["+window.counter+"][country_id]", id: "country-id"});
+  var selectCountry   = new Element('select', { Class: "textbox8", name: "addresses["+window.counter+"][country_id]", id: "country-id"});
   
     var optn = document.createElement("option");
     optn.value = 0;
-    optn.text = "Select Country:";
+    optn.text = "Select Country";
     selectCountry.options.add(optn);
 
   for(var i=0; i< window.countries.length; i++){
@@ -76,10 +76,10 @@ function addRowAddress(){
   
   selectCountry.writeAttribute('onchange', 'getRegion(this.value,\''+window.counter+'\')');
     
-  var selectRegion = new Element('select', { Class: "textbox5", name: "addresses["+window.counter+"][region_id]", id: "region-id", disabled: "disabled" });
+  var selectRegion = new Element('select', { Class: "textbox8", name: "addresses["+window.counter+"][region_id]", id: "region-id", disabled: "disabled" });
   var opt = document.createElement("option");
   opt.value = "1";
-  opt.text = "Select Country First:";
+  opt.text = "Select Country First";
   selectRegion.options.add(opt);
   
   var inputCity       = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][city]", type: "text"});
@@ -291,8 +291,8 @@ function addRowJob(){
     var td43 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr5 = new Element('tr');
-    var td51 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td52 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td51 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td52 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td53 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr6 = new Element('tr');
@@ -306,8 +306,8 @@ function addRowJob(){
     var td73 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr8 = new Element('tr');
-    var td81 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td82 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td81 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td82 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td83 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   //tr1
@@ -441,23 +441,23 @@ function addRowSchool(){
     var td73 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr8 = new Element('tr');
-    var td81 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td82 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td81 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td82 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td83 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr9 = new Element('tr');
-    var td91 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td92 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td91 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td92 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td93 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr10 = new Element('tr');
-    var td101 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td102 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td101 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td102 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td103 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr11 = new Element('tr');
-    var td111 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td112 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td111 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td112 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td113 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   //tr1
@@ -592,8 +592,8 @@ function addRowMedical(){
     var td33 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr4 = new Element('tr');
-    var td41 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td42 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td41 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td42 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td43 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr5 = new Element('tr');
@@ -617,8 +617,8 @@ function addRowMedical(){
     var td83 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr9 = new Element('tr');
-    var td91 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td92 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td91 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td92 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td93 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   //tr1
@@ -849,8 +849,8 @@ function addRowFamily(){
     var td63 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr7 = new Element('tr');
-    var td71 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td72 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td71 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td72 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td73 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var linkOther = new Element('a', { href:"#", onClick:'toggleCustomTextFamily('+window.counter_family+');', id:"link-family-other-"+window.counter_family });
@@ -982,8 +982,8 @@ function addRowRelationship(){
     var td63 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr7 = new Element('tr');
-    var td71 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td72 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td71 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td72 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td73 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var linkOther = new Element('a', { href:"#", onClick:'toggleCustomTextRelation('+window.counter_relationship+');', id:"link-relation-back-"+window.counter_relationship });
