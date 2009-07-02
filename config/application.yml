@@ -12,7 +12,7 @@ development:
   <<: *default_settings
   app_name: Eternos Dev
   from_email: dev@eternos.com
-  base_domain: eternos
+  base_domain: staging.eternos.com
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   
 test:

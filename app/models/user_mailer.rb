@@ -10,9 +10,10 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     @subject    += 'Your account has been activated!'
     @user = user
-    @body[:url]  = url_for(:controller => "images") #"http://#{AppConfig.base_domain}/"
-    @body[:supoort_url] = url_for(:controller => "about", :action => "contact")
-    @body[:manage_url] = url_for(:controller => "member_home")
+    base_domain = "http://" + AppConfig.base_domain
+    @body[:images_url] = base_domain + "/images"
+    @body[:support_url] = base_domain + "/about/contact"
+    @body[:manage_url] = base_domain + "/member_home"
   end
   
   def invitation(invitation, signup_url)

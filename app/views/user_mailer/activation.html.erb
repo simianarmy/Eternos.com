@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Email Notification</title>
 </head>
-<body style="width:665px;height:601px;background:white url(<%= @url %>/email/bg-email.gif) no-repeat;padding-left:72px;">
+<body style="width:665px;height:601px;background:white url(<%= @images_url %>/email/bg-email.gif) no-repeat;padding-left:72px;">
 			<table width="582" border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td align="left" style="height:60px; padding-top:10px"><%= image_tag @url + "/email/email-logo.png" %><br /><br /></td>
+					<td align="left" style="height:60px; padding-top:10px"><%= image_tag @images_url + "/email/email-logo.png" %><br /><br /></td>
 				</tr>
 				<tr>
-					<td><%= image_tag @url + "images/email/box-top.png" %></td>
+					<td><%= image_tag @images_url + "images/email/box-top.png" %></td>
 				</tr>
 				<tr>
-					<td width="552" style="background:url(<%= @url %>/email/email-box.png) repeat-y;	padding:10px 15px 10px 20px;">
+					<td width="552" style="background:url(<%= @images_url %>/email/email-box.png) repeat-y;	padding:10px 15px 10px 20px;">
 						<table width="540" border="0" cellpadding="0" cellspacing="0">
 							<tr>
 								<td bgcolor="#44aeff" style="padding:4px 0 4px 0;" align="center">
@@ -50,7 +50,7 @@
 									<br />Regards,<br />
 									Eternos - company slogan
 									<br /><br />
-									<%= link_to "Contact eternos support", @supoort_url, :class => "blue-btn" %><br />
+									<%= link_to "Contact eternos support", @support_url, :class => "blue-btn" %><br />
 									manage your <%= link_to "account preference", @manage_url, :class=> "blue-btn"   %>.
 									<br />
 								</td>
@@ -59,7 +59,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td><%= image_tag @url + "images/email/box-bottom.png" %></td>
+					<td><%= image_tag @images_url + "images/email/box-bottom.png" %></td>
 				</tr>
 				<tr>
 					<td align="left">
