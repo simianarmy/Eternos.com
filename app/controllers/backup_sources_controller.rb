@@ -42,7 +42,7 @@ class BackupSourcesController < ApplicationController
     begin
       @feed_url = FeedUrl.new(params[:feed_url].merge(:profile_id => current_user.profile.id))
       if @feed_url.save!
-        @feed_urls = current_user.profile.feed_urls
+        find_feed_rss_url
         render :update do |page|
           page[:feed_url_url].value = ""
           page.replace_html "url-list", :partial => 'shared/url_list', :locals => {:feed_urls => @feed_urls}
@@ -58,6 +58,16 @@ class BackupSourcesController < ApplicationController
           page[:errorExplanation].remove                            
         end
       end
+    end
+  end
+  
+  def destroy_feed_url
+    @feed = FeedUrl.find(params[:id])
+    @feed.destroy
+    
+    find_feed_rss_url
+    render :update do |page|
+      page.replace_html "url-list", :partial => 'shared/url_list', :locals => {:feed_urls => @feed_urls}
     end
   end
   
@@ -84,4 +94,9 @@ class BackupSourcesController < ApplicationController
       }
     end
   end
+  
+  def find_feed_rss_url
+    @feed_urls = current_user.profile.feed_urls
+  end
+  
 end

@@ -2,7 +2,7 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resource :facebook_backup, :controller => 'facebook_backup'
-  map.resources :backup_sources, :collection => {:add_feed_url => :post }
+  map.resources :backup_sources, :collection => {:add_feed_url => :post, :destroy_feed_url => :delete }
   
   map.resources :account_settings, :collection => {:online => :get, :save_personal_info => :post,
                                                   :personal_info => :get, :facebook_sync => :get, :email_account => :get,

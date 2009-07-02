@@ -4,10 +4,8 @@ class FeedUrl < ActiveRecord::Base
   validate do |feed|
     feed.errors.add("", "Please enter a URL") if feed.url.blank?
   end
-  
-  validate :validate_rss_feed
-  
-  def validate_rss_feed
+ 
+  def validate
     errors.add("", "Invalid RSS feed URL") unless parse_rss_feed?
   end
   
