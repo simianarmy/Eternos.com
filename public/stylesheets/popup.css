@@ -528,22 +528,15 @@ a.flickr-btn:hover{
 
 .submit-btn2{
 	width:84px;
-	height:16px;
+	height:20px;
 	display:block;
-	text-align:center;
-	font-family:arial;
-	color:black;
-	text-decoration:none;
-	border:none;
-	font-size:11px;
 	margin:5px;
-	padding-top:4px;
-	background:url(/images/submit2.gif) 0 0;
+	background:url(/images/submit3.gif) 0 0;
 }
 
 .submit-btn2:hover{
 	color:white;
-	background:url(/images/submit2.gif) 0 20px;
+	background:url(/images/submit3.gif) 0 20px;
 }
 
 .submit-btn3{
@@ -777,11 +770,6 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 #profile_sexual_orientation{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
 #address_book_website{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
 #address_book_ssn{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-
-#address_book_20-birthdate-date-sel-dd{width:45px; height:20px;text-align:center;margin:0 3px 0 -5px;}
-#address_book_20-birthdate-date-sel-mm{width:115px; height:20px;text-align:center;margin:0 3px 0 0;}
-#address_book_20-birthdate-date-sel{width:70px; height:20px;text-align:center;margin:0 3px 0 0;}
-#fd-but-address_book_20-birthdate-date-sel{margin-top:2px}
 
 #backup_source_auth_login{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 #backup_source_auth_password{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
