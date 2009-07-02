@@ -1,6 +1,8 @@
 class FeedUrl < ActiveRecord::Base
   belongs_to :profile
   
+  validates_uniqueness_of :url, :scope => :profile_id, :message => " has already been taken"
+  
   validate do |feed|
     feed.errors.add("", "Please enter a URL") if feed.url.blank?
   end
