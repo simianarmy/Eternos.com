@@ -5,54 +5,54 @@
 	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
 	    </tr>
 			<tr>
-        <td class="coll-form6" valign="center">School Name</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.name %></td>
+        <td class="coll-form6" valign="top">School Name</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.name %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Degree</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.degree %></td>
+        <td class="coll-form6" valign="top">Degree</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.degree %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Fields of Study</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.fields %></td>
+        <td class="coll-form6" valign="top">Fields of Study</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.fields %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Start Date</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.start_at.to_date %></td>
+        <td class="coll-form6" valign="top">Start Date</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.start_at.to_date %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">End Date</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.end_at.to_date %></td>
+        <td class="coll-form6" valign="top">End Date</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.end_at.to_date %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Activities</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.activities_societies %></td>
+        <td class="coll-form6" valign="top">Activities</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.activities_societies %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Awards</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.awards %></td>
+        <td class="coll-form6" valign="top">Awards</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.awards %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Recognitions</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.recognitions %></td>
+        <td class="coll-form6" valign="top">Recognitions</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.recognitions %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Notes</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= school.notes %></td>
+        <td class="coll-form6" valign="top">Notes</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= school.notes %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center"></td>
-	    	<td class="coll-form2" valign="center"></td>
-	    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove',
+        <td class="coll-form6" valign="top"></td>
+	    	<td class="coll-form2" valign="top"></td>
+	    	<td class="coll-form3" valign="top"><%= link_to_remote 'Remove',
                                                                 :html => {:class => 'remove-btn'},
                                                                 :url => {:action => 'remove_school', :id => school}, 
                                                                 :confirm => "Are you sure?" %>

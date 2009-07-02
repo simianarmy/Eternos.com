@@ -6,19 +6,19 @@
 		<center>
        <h4 id="flash-message"></h4>
     <% form_remote_for :gmail, :url => {:action => 'backup_contact_emails'}, :html => {:id => "backup_email_address"}, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();" do |f| -%>
-		<table width="400" class="table1" border="0" cellspacing="0" cellpadding="0">
+		<table class="table1" border="0" cellspacing="0" cellpadding="0">
 			 	<tr>
 	        <td colspan="3" class="titlebox1">Your Gmail Account</td>
 	      </tr>
 	      <tr>
-	        <td class="coll-form7" valign="bottom">&nbsp;&nbsp;Email</td>
+	        <td class="coll-form7" valign="bottom">Email</td>
 		    	<td class="coll-form2" valign="bottom">:</td>
-		    	<td class="coll-form3" valign="bottom"><%= f.text_field :username %></td>
+		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.text_field :username %></td>
 	      </tr>
 	      <tr>
-	        <td class="coll-form7" valign="bottom">&nbsp;&nbsp;Password</td>
+	        <td class="coll-form7" valign="bottom">Password</td>
 		    	<td class="coll-form2" valign="bottom">:</td>
-		    	<td class="coll-form3" valign="bottom"><%= f.password_field :password %></td>
+		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.password_field :password %></td>
 	      </tr>
 				<tr>
 	        <td width="100%" align="right" colspan="3"><%= submit_tag "Submit", {:id => "button_submit", :style => "display:none"} %><a href="#" class="submit-btn2" onclick="$('button_submit').click()">Submit</a></td>

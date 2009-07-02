@@ -5,44 +5,44 @@
 	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
 	    </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Blood Type</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= medical.blood_type %></td>
+        <td class="coll-form6" valign="top">Blood Type</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= medical.blood_type %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Genetic Desorders</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= medical.disorder %></td>
+        <td class="coll-form6" valign="top">Genetic Desorders</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= medical.disorder %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Primary Physician Name</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= medical.physician_name %></td>
+        <td class="coll-form6" valign="top">Primary Physician Name</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= medical.physician_name %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Primary Physician Phone</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= medical.physician_phone %></td>
+        <td class="coll-form6" valign="top">Primary Physician Phone</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= medical.physician_phone %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Primary Dentist Name</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= medical.dentist_name %></td>
+        <td class="coll-form6" valign="top">Primary Dentist Name</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= medical.dentist_name %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Primary Dentist Phone</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= medical.dentist_phone %></td>
+        <td class="coll-form6" valign="top">Primary Dentist Phone</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= medical.dentist_phone %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Notes</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= medical.notes %></td>
+        <td class="coll-form6" valign="top">Notes</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= medical.notes %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center"></td>
-	    	<td class="coll-form2" valign="center"></td>
-	    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove',
+        <td class="coll-form6" valign="top"></td>
+	    	<td class="coll-form2" valign="top"></td>
+	    	<td class="coll-form3" valign="top"><%= link_to_remote 'Remove',
                                                                 :html => {:class => 'remove-btn'},
                                                                 :url => {:action => 'remove_medical', :id => medical}, 
                                                                 :confirm => "Are you sure?" %>

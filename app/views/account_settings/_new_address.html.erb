@@ -2,57 +2,57 @@
   <table>
   <% @addresses.each do |address| -%>
 			<tr>
-	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
+	      <td colspan="3" height="10px" valign="top"><hr class="line2" /></td>
 	    </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Location Type</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.location_type %></td>
+        <td class="coll-form6" valign="top">Location Type</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.location_type %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Street1</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.street_1 %></td>
+        <td class="coll-form6" valign="top">Street1</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.street_1 %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Street2</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.street_2 %></td>
+        <td class="coll-form6" valign="top">Street2</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.street_2 %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Country</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.country.name %></td>
+        <td class="coll-form6" valign="top">Country</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.country.name %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Region</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.region.name %></td>
+        <td class="coll-form6" valign="top">Region</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.region.name %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">City</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.city %></td>
+        <td class="coll-form6" valign="top">City</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.city %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Postal Code</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.postal_code %></td>
+        <td class="coll-form6" valign="top">Postal Code</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.postal_code %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Move In</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.moved_in_on.to_date %></td>
+        <td class="coll-form6" valign="top">Move In</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.moved_in_on.to_date %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center">Move Out</td>
-	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.moved_out_on.to_date %></td>
+        <td class="coll-form6" valign="top">Move Out</td>
+	    	<td class="coll-form2" valign="top">:</td>
+	    	<td class="coll-form3" valign="top"><%= address.moved_out_on.to_date %></td>
       </tr>
 			<tr>
-        <td class="coll-form6" valign="center"></td>
-	    	<td class="coll-form2" valign="center"></td>
-	    	<td class="coll-form3" valign="center"><%= link_to_remote 'Remove',
+        <td class="coll-form6" valign="top"></td>
+	    	<td class="coll-form2" valign="top"></td>
+	    	<td class="coll-form3" 	><%= link_to_remote 'Remove',
                                                           :html => {:class => 'remove-btn'},
                                                           :url => {:action => 'remove_address', :id => address}, 
                                                           :confirm => "Are you sure?" %>
