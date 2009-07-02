@@ -11,8 +11,10 @@
     = yield(:javascript)
     
     / end bundle
-  %body
-    #wrapper
+    - if current_user.login_count == 1
+      %body{:onload => "Lightview.show({href:'/account_settings', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+encodeURIComponent('e9f487d61964e2f303a5643129da8a538412c3c9')}, autosize:false, closeButton:false, height:lightview_height, width:620},rel:'iframe'});return false;"}
+    - else
+      %body
       #header
         #logo.alignleft
           %h1= link_to((image_tag 'eternos.gif', :id => 'eternos_logo', :border => '0'),  root_path)
