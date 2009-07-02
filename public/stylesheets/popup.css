@@ -764,28 +764,24 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 #address_book_gender_female{margin:5px 3px 5px 28px;}
 #address_book_gender_transgender{margin:5px 3px 5px 28px;}
 
-#address_book_first_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#address_book_middle_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#address_book_last_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#address_book_name_suffix{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#address_book_name_title{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#profile_height{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#profile_weight{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#profile_race{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#profile_religion{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#profile_political_views{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#profile_sexual_orientation{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#address_book_website{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#address_book_ssn{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-
-#address_book_19-birthdate-date-sel-dd{width:45px; height:20px;text-align:center;margin:0 3px 0 -5px;}
-#address_book_19-birthdate-date-sel-mm{width:115px; height:20px;text-align:center;margin:0 3px 0 0;}
-#address_book_19-birthdate-date-sel{width:70px; height:20px;text-align:center;margin:0 3px 0 0;}
+#address_book_first_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_middle_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_last_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_name_suffix{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_name_title{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_height{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_weight{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_race{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_religion{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_political_views{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_sexual_orientation{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_website{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_ssn{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
 
 #address_book_20-birthdate-date-sel-dd{width:45px; height:20px;text-align:center;margin:0 3px 0 -5px;}
 #address_book_20-birthdate-date-sel-mm{width:115px; height:20px;text-align:center;margin:0 3px 0 0;}
 #address_book_20-birthdate-date-sel{width:70px; height:20px;text-align:center;margin:0 3px 0 0;}
-#fd-but-address_book_19-birthdate-date-sel{margin-top:2px}
+#fd-but-address_book_20-birthdate-date-sel{margin-top:2px}
 
 #backup_source_auth_login{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 #backup_source_auth_password{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
