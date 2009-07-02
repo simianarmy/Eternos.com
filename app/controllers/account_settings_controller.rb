@@ -7,6 +7,36 @@ class AccountSettingsController < ApplicationController
   before_filter :set_facebook_session
   layout 'account_setup'
   
+  def set_feed_url
+    @feed = FeedUrl.find(params[:id])
+    @feed.url = params[:value]
+    if @feed.save
+      render :text => @feed.send(:url).to_s
+    else
+      render :text => "Invalid RSS feed URL"
+    end
+  end
+  
+  def set_contact_name
+    @contact = ContactEmail.find(params[:id])
+    @contact.name = params[:value]
+    if @contact.save
+      render :text => @contact.send(:name).to_s
+    else
+      render :text => params[:value]
+    end
+  end
+  
+  def set_contact_email
+    @contact = ContactEmail.find(params[:id])
+    @contact.email = params[:value]
+    if @contact.save
+      render :text => @contact.send(:email).to_s
+    else
+      render :text => params[:value]
+    end
+  end
+  
   def index
     find_user_profile
     check_facebook_sync
@@ -98,8 +128,9 @@ class AccountSettingsController < ApplicationController
       end
     end  
   end
-
+  
   def email_account
+    find_contact_email
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -120,6 +151,16 @@ class AccountSettingsController < ApplicationController
     end  
   end
 
+  def delete_contact_email
+    @contact_email = ContactEmail.find(params[:id])
+    @contact_email.destroy
+    
+    find_contact_email
+    render :update do |page|
+      page.replace_html "email-contact-list", :partial => 'shared/email_account_list', :locals => {:contact_email => @contact_email}
+    end
+  end
+  
   def add_another_address
     begin
       params[:addresses].each_value do |val|
@@ -589,6 +630,10 @@ class AccountSettingsController < ApplicationController
    
    def find_relationship
      @relationships = Relationship.find_all_by_user_id(current_user.id)
+   end
+   
+   def find_contact_email
+     @contact_emails = current_user.profile.contact_emails
    end
 
 end

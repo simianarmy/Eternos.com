@@ -13,6 +13,7 @@ class Profile < ActiveRecord::Base
     m.has_many :medical_conditions
     m.has_many :families
     m.has_many :feed_urls
+    m.has_many :contact_emails
     m.has_one :facebook_content
   end
   

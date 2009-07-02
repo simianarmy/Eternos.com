@@ -1,0 +1,23 @@
+<% unless @contact_emails.blank? %>
+  <br>
+  <h5>List of your emails</h5>
+  <table class="table-form2" align="left">
+      <tr>
+        <td valign="right">Name</td>
+        <td valign="center">Email</td>
+        <td valign="right">Action</td>
+      </tr>
+    <% @contact_emails.each do |@contact| -%>
+      <tr>
+        <td valign="right"><%= in_place_editor_field(:contact, 'name')%></td>
+        <td valign="right"><%= in_place_editor_field(:contact, 'email')%></td>
+        <td valign="left"><%= link_to_remote 'Remove', 
+                                                      :url => {:controller => 'account_settings', :action => 'delete_contact_email', :id => @contact},
+                                                      :confirm => 'Are you sure?',
+                                                      :loading => "$('progress-bar').show();",
+                                                      :complete => "$('progress-bar').hide();" %>    
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
