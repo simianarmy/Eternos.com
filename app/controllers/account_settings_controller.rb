@@ -134,7 +134,8 @@ class AccountSettingsController < ApplicationController
       
       find_address
       render :update do |page|
-        page.remove "add-new-address"
+        page.remove "table-form-address"
+        page.insert_html :bottom, "table-form-address-wrapper", "<div id=\"table-form-address\"></div>"
         page.hide "save-button-address"
         page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
       end
@@ -178,7 +179,8 @@ class AccountSettingsController < ApplicationController
 
       find_job
       render :update do |page|
-        page.remove "add-new-job"
+        page.remove "table-form-job"
+        page.insert_html :bottom, "table-form-job-wrapper", "<div id=\"table-form-job\"></div>"
         page.hide "save-button-job"
         page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
       end
@@ -222,7 +224,8 @@ class AccountSettingsController < ApplicationController
 
       find_school
       render :update do |page|
-        page.remove "add-new-school"
+        page.remove "table-form-school"
+        page.insert_html :bottom, "table-form-school-wrapper", "<div id=\"table-form-school\"></div>"
         page.hide "save-button-school"
         page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
       end
@@ -262,7 +265,8 @@ class AccountSettingsController < ApplicationController
 
       find_medical
       render :update do |page|
-        page.remove "add-new-medical"
+        page.remove "table-form-medical"
+        page.insert_html :bottom, "table-form-medical-wrapper", "<div id=\"table-form-medical\"></div>"
         page.hide "save-button-medical"
         page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
       end
@@ -302,7 +306,8 @@ class AccountSettingsController < ApplicationController
 
       find_medical_condition
       render :update do |page|
-        page.remove "add-new-medical-condition"
+        page.remove "table-form-medical-condition"
+        page.insert_html :bottom, "table-form-medical-condition-wrapper", "<div id=\"table-form-medical-condition\"></div>"
         page.hide "save-button-medical-condition"
         page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
       end
@@ -345,7 +350,8 @@ class AccountSettingsController < ApplicationController
 
       find_family
       render :update do |page|
-        page.remove "add-new-family"
+        page.remove "table-form-family"
+        page.insert_html :bottom, "table-form-family-wrapper", "<div id=\"table-form-family\"></div>"
         page.hide "save-button-family"
         page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
       end
@@ -389,7 +395,8 @@ class AccountSettingsController < ApplicationController
 
       find_relationship
       render :update do |page|
-        page.remove "add-new-relationship"
+        page.remove "table-form-relationship"
+        page.insert_html :bottom, "table-form-relationship-wrapper", "<div id=\"table-form-relationship\"></div>"
         page.hide "save-button-relationship"
         page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
       end
