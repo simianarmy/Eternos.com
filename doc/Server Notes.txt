@@ -12,6 +12,7 @@ mysql: 5.0.45
 Java: JDK 6u11
 apache-ant: 1.7.1
 Red5: 0.7.0
+memcached
 
 Apache2 Modules:
   libapreq2 2.12 (for ModPorter)
@@ -23,6 +24,9 @@ Rails/Apache:
 passenger
 	gem install passenger
 	passenger-install-apache2-module
+	
+Ruby gems
+memcache-client-1.7.4
 
 yum Packages:
 ImageMagick

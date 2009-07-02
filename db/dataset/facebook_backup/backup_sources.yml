@@ -1,0 +1,20 @@
+--- 
+backup_source_00001: 
+  auth_confirmed: true
+  auth_error: 
+  auth_login: jodie_nader
+  auth_password: voluptatem
+  backup_site_id: 1
+  created_at: 2009-06-30 23:26:00 Z
+  disabled: false
+  earliest_day_backed_up: 
+  id: 1
+  last_backup_at: 
+  last_login_at: 2009-06-30 23:26:00 Z
+  last_login_attempt_at: 2009-06-30 23:26:00 Z
+  latest_day_backed_up: 
+  needs_initial_scan: true
+  rss_url: 
+  skip_video: false
+  updated_at: 2009-06-30 23:26:00 Z
+  user_id: 1

@@ -1,3 +1,5 @@
 Using mod_deflate for Apache:
 http://www.ricroberts.com/articles/2009/04/09/boost-speed-and-save-bandwidth-with-mod_deflate-for-apache
 
+Using memcached with Rails:
+http://www.ridingtheclutch.com/2009/01/08/cache-anything-easily-with-rails-and-memcached.html

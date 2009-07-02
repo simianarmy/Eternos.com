@@ -159,3 +159,6 @@ EmailVeracity::Config[:lookup] = false
 # Change this keys with your own domain
 ENV['RECAPTCHA_PUBLIC_KEY'] = '6Le7nwYAAAAAAEbuaM378Df7UkAr1vuM_52el9Bg'
 ENV['RECAPTCHA_PRIVATE_KEY'] = '6Le7nwYAAAAAAOdPcWOZSu8K4P1CRFC1Djyn1pMw'
+
+CACHE = MemCache.new('127.0.0.1')
+

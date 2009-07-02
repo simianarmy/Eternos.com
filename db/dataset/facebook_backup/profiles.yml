@@ -1,0 +1,147 @@
+--- 
+profile_00001: 
+  children: 
+  created_at: 2009-06-30 23:26:00 Z
+  death_date: 
+  ethnicity: 
+  facebook_data: 
+    :about_me: ""
+    :activities: ""
+    :affiliations: 
+    - !ruby/object:Facebooker::Affiliation 
+      name: Seattle, WA
+      nid: "67108883"
+      populated: true
+      status: ""
+      type: region
+      year: "0"
+    :allowed_restrictions: alcohol
+    :birthday: June 22, 1973
+    :books: Wheel Of Time
+    :current_location: !ruby/object:Facebooker::Location 
+      populated: true
+      zip: "98116"
+    :education_history: 
+    - !ruby/object:Facebooker::EducationInfo 
+      concentrations: 
+      - Computer Science
+      degree: ""
+      name: University of Southern California
+      populated: true
+      year: "1993"
+    - !ruby/object:Facebooker::EducationInfo 
+      concentrations: 
+      - Botany
+      degree: ""
+      name: University of Wyoming
+      populated: true
+      year: "1997"
+    :email_hashes: []
+
+    :first_name: Andrew
+    :has_added_app: "1"
+    :hometown_location: !ruby/object:Facebooker::Location 
+      city: Valencia
+      country: United States
+      populated: true
+      state: California
+      zip: {}
+
+    :hs_info: !ruby/object:Facebooker::EducationInfo::HighschoolInfo 
+      grad_year: "1991"
+      hs1_id: "2272"
+      hs1_name: William S. Hart Senior High
+      hs2_id: "0"
+      hs2_name: {}
+
+      populated: true
+    :interests: ""
+    :is_app_user: "1"
+    :last_name: Edmond
+    :locale: en_US
+    :meeting_for: 
+    - Friendship
+    - Networking
+    :meeting_sex: 
+    - female
+    :movies: The Thing (1982), Godfather, The Notebook, Across the Universe, Fight Club
+    :music: ""
+    :name: Andrew Edmond
+    :notes_count: ""
+    :pic: http://profile.ak.facebook.com/v230/1085/109/s504883639_3091.jpg
+    :pic_big: http://profile.ak.facebook.com/v230/1085/109/n504883639_3091.jpg
+    :pic_big_with_logo: http://external.ak.fbcdn.net/safe_image.php?logo&amp;d=b68723b4823b6c57186c624875b0afc2&amp;url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv230%2F1085%2F109%2Fn504883639_3091.jpg
+    :pic_small: http://profile.ak.facebook.com/v230/1085/109/t504883639_3091.jpg
+    :pic_small_with_logo: http://external.ak.fbcdn.net/safe_image.php?logo&amp;d=833b33f7d46e95eec5639f2dafd5efab&amp;url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv230%2F1085%2F109%2Ft504883639_3091.jpg
+    :pic_square: http://profile.ak.facebook.com/v230/1085/109/q504883639_3091.jpg
+    :pic_square_with_logo: http://external.ak.fbcdn.net/safe_image.php?logo&amp;d=5e73c3b843fc5adf61ecabdf61f5e219&amp;url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv230%2F1085%2F109%2Fq504883639_3091.jpg
+    :pic_with_logo: http://external.ak.fbcdn.net/safe_image.php?logo&amp;d=91edf8b437dd17ee8b0486258fa566a1&amp;url=http%3A%2F%2Fprofile.ak.facebook.com%2Fv230%2F1085%2F109%2Fs504883639_3091.jpg
+    :political: Libertarian
+    :profile_update_time: "0"
+    :profile_url: http://www.facebook.com/profile.php?id=504883639
+    :proxied_email: apps+109701370954.504883639.ac7a5eda699ebc4478f6455ac41b40a0@proxymail.facebook.com
+    :quotes: ""
+    :relationship_status: In a Relationship
+    :religion: Spiritual but not religious
+    :sex: male
+    :significant_other_id: 
+    :timezone: "-7"
+    :tv: ""
+    :wall_count: "64"
+    :work_history: 
+    - !ruby/object:Facebooker::WorkInfo 
+      company_name: Andrew Edmond Consulting
+      description: ""
+      end_date: ""
+      location: !ruby/object:Facebooker::Location 
+        city: {}
+
+        country: {}
+
+        populated: true
+        state: {}
+
+      populated: true
+      position: Managing Partner
+      start_date: 0000-00
+    - !ruby/object:Facebooker::WorkInfo 
+      company_name: GridNetworks, Inc
+      description: ""
+      end_date: 2007-12
+      location: !ruby/object:Facebooker::Location 
+        city: {}
+
+        country: {}
+
+        populated: true
+        state: {}
+
+      populated: true
+      position: Chief Architect
+      start_date: 2004-12
+    - !ruby/object:Facebooker::WorkInfo 
+      company_name: Accretive Technologies Inc.
+      description: ""
+      end_date: 2001-04
+      location: !ruby/object:Facebooker::Location 
+        city: {}
+
+        country: {}
+
+        populated: true
+        state: {}
+
+      populated: true
+      position: CEO
+      start_date: 1997-06
+  gender: 
+  height: 
+  id: 1
+  nickname: 
+  political_views: 
+  race: 
+  religion: 
+  sexual_orientation: 
+  updated_at: 2009-06-30 23:26:00 Z
+  user_id: 1
+  weight: 

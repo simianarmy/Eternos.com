@@ -27,9 +27,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :profile
   map.resource :facebook_profile
   map.resource :fb, :controller => 'fb'
+  map.resource :timeline
+  map.resource :wysiwyg_preview
   
   map.resources :user_sessions, :comments, :content_authorizations, :documents, 
-    :audio, :videos, :web_videos, :photos, :invitations, :address_books, :timelines, 
+    :audio, :videos, :web_videos, :photos, :invitations, :address_books, 
     :guests, :recordings, :guest_invitations, :password_resets
   map.resources :musics, :controller => 'music'
   map.resources :users , :member => { :suspend   => :put,
@@ -60,8 +62,6 @@ ActionController::Routing::Routes.draw do |map|
   end
     
   map.resources :addresses, :collection => { :country_regions => :post }
-
-  map.resource :wysiwyg_preview
   
   # The priority is based upon order of creation: first created -> highest priority.
 

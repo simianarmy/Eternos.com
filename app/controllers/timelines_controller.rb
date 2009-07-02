@@ -11,7 +11,7 @@ class TimelinesController < ApplicationController
     layout 'guest'
   end
   
-  def index
+  def show
     # Right now just raw info for debug output
     @profile = current_user.profile
     @facebook_profile = @profile.facebook_data
@@ -25,6 +25,18 @@ class TimelinesController < ApplicationController
     @activity_streams = current_user.activity_streams
   end
   
+  def search
+    @results = TimelineSearch.search(params[:search])
+    @results[:request] = request.to_s
+    debugger
+    respond_to do |format|
+      format.html # show.html.haml
+      format.js { render :json => @results.to_json }
+    end
+  end
+  
+  private
+    
   def find_host
     @host = current_user.get_host
   end
