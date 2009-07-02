@@ -11,7 +11,7 @@
     = yield(:javascript)
     
     / end bundle
-    - onLoad = current_user.login_count == 1 ? "Lightview.show({href:'/account_settings', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+encodeURIComponent('e9f487d61964e2f303a5643129da8a538412c3c9')}, autosize:false, closeButton:false, height:lightview_height, width:620},rel:'iframe'});return false;" : ""
+    - onLoad = current_user.login_count == 1 ? "Lightview.show({href:'/account_settings', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+encodeURIComponent('e9f487d61964e2f303a5643129da8a538412c3c9')}, autosize:false, closeButton:false, height:lightview_height, width:640},rel:'iframe'});return false;" : ""
   %body{:onload => onLoad}
     #wrapper
       #header
@@ -33,7 +33,7 @@
           %ul#navlist
             %li.home= link_to 'homepage', member_home_path
             %li.support
-              = link_to_lightview 'account settings', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '620'}
+              = link_to_lightview 'account settings', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '640'}
             %li.logout= link_to 'log out', logout_path
         .clearboth
         
