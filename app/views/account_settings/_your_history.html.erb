@@ -25,7 +25,7 @@
         <%= submit_tag 'Save', :id => 'save-button-address', :style => 'display:none;', :class => 'submit-btn3' %>
         <%= image_tag "spinner.gif", :id => 'image-loading-address', :style => 'display:none;' %>
       </div>
-      <br>
+      <br />
       <div id="error-message-address" class="error-message"></div> 
     <% end -%>  
     <%= hidden_field_tag "form_address" %>
@@ -56,7 +56,7 @@
         <%= submit_tag 'Save', :id => 'save-button-job', :style => 'display:none;', :class => 'submit-btn3' %>
         <%= image_tag "spinner.gif", :id => 'image-loading-job', :style => 'display:none;' %>
     </div>
-    <br>
+    <br />
     <div id="error-message-job" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_job" %>
@@ -87,7 +87,7 @@
         <%= submit_tag 'Save', :id => 'save-button-school', :style => 'display:none;', :class => 'submit-btn3' %>
         <%= image_tag "spinner.gif", :id => 'image-loading-school', :style => 'display:none;' %>
     </div>
-    <br>
+    <br />
     <div id="error-message-school" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_school" %>
@@ -117,7 +117,7 @@
         <%= submit_tag 'Save', :id => 'save-button-medical', :style => 'display:none;', :class => 'submit-btn3' %>
         <%= image_tag "spinner.gif", :id => 'image-loading-medical', :style => 'display:none;' %>
     </div>
-    <br>
+    <br />
     <div id="error-message-medical" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_medical" %>
@@ -147,7 +147,7 @@
         <%= submit_tag 'Save', :id => 'save-button-medical-condition', :style => 'display:none;', :class => 'submit-btn3' %>
         <%= image_tag "spinner.gif", :id => 'image-loading-medical-condition', :style => 'display:none;' %>
     </div>
-    <br>
+    <br />
     <div id="error-message-medical-condition" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_medical_condition" %>
@@ -177,7 +177,7 @@
         <%= submit_tag 'Save', :id => 'save-button-family', :style => 'display:none;', :class => 'submit-btn3', :onclick => 'window.counter = 1;' %>
         <%= image_tag "spinner.gif", :id => 'image-loading-family', :style => 'display:none;' %>
     </div>
-    <br>
+    <br />
     <div id="error-message-family" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_family" %>
@@ -193,7 +193,6 @@
 							<div style="clear:both"></div>
 		        </td>
 			    </tr>
-
 		      </thead>
 		    <tbody id="table-relationships">
 		        <%= render :partial => 'new_relationship', :locals => {:relationships => @relationships} %>
@@ -208,7 +207,7 @@
         <%= submit_tag 'Save', :id => 'save-button-relationship', :style => 'display:none;', :class => 'submit-btn3' %>
         <%= image_tag "spinner.gif", :id => 'image-loading-relationship', :style => 'display:none;' %>
     </div>
-    <br>
+    <br />
     <div id="error-message-relationship" class="error-message"></div> 
   <% end -%>
   <%= hidden_field_tag "form_relationship" %>

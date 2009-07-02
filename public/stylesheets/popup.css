@@ -139,6 +139,18 @@ body{
 	float:right;
 }
 
+.blue-btn4{
+	font-family:arial;
+	font-size:11px;
+	color:#407ddf;
+	margin: 0 5px 0 0;
+	text-decoration:none;
+}
+
+.blue-btn4:hover{
+	text-decoration:underline;
+}
+
 .subtitle1{
 	font-family:arial;
 	font-size:18px;
@@ -673,7 +685,6 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .table-form3{
 	width:440px;
 	height:auto;
-	border:none;
 	margin-top:10px;
 }
 
@@ -686,6 +697,13 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	color:#393b3e;
 	text-align:left;
 	margin:0 20px 0 10px;
+}
+
+.table-form6{
+	width:446px;
+	height:auto;
+	border:solid 2px #8bcdff;
+	margin-top:10px;
 }
 
 .table1{
@@ -746,6 +764,11 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .coll-form8{width:30px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form9{width:400px; text-align:left;font-family:arial;font-size:11px;color:#808080;}
 
+.coll-form10{width:120px; height:30px;text-align:center;font-family:arial;font-size:11px;color:white;border-bottom:1px dotted #353a3e}
+.coll-form11{width:280px; height:30px;text-align:center;font-family:arial;font-size:11px;color:white;border-bottom:1px dotted #353a3e}
+.coll-form12{width:120px; height:30px;text-align:center;font-family:arial;font-size:11px;color:#353a3e;border-bottom:1px dotted #353a3e}
+.coll-form13{width:260px; height:30px;text-align:left;font-family:arial;font-size:11px;color:#353a3e;border-bottom:1px dotted #353a3e; padding-left:20px;}
+
 .textbox1{width:240px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox2{width:50px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox3{width:176px; height:20px ;margin:2px 0 2px 0;}
@@ -757,23 +780,23 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 #address_book_gender_female{margin:5px 3px 5px 28px;}
 #address_book_gender_transgender{margin:5px 3px 5px 28px;}
 
-#address_book_first_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_middle_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_last_name{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_name_suffix{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_name_title{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_height{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_weight{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_race{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_religion{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_political_views{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_sexual_orientation{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_website{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_ssn{width:240px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_first_name{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_middle_name{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_last_name{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_name_suffix{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_name_title{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_height{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_weight{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_race{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_religion{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_political_views{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_sexual_orientation{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_website{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_ssn{width:235px; height:16px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
 
 #backup_source_auth_login{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 #backup_source_auth_password{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
-#feed_url_url{width:200px; height:22px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+#feed_url_url{width:200px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 
 .selectbox-day{width:45px; height:20px;margin:2px 4px 2px 5px;}
 .selectbox-month{width:60px; height:20px;margin:2px 6px 2px 7px;}
@@ -809,6 +832,13 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin-top:10px;
 	width:240px;
 	float:left;
+}
+
+.title7{
+	font-family:arial;
+	font-size:14px;
+	color:#404142;
+	margin:10px 0 0 0;
 }
 
 .add-btn-box{

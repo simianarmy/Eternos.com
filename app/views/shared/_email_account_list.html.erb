@@ -1,21 +1,22 @@
 <% unless @contact_emails.blank? %>
-  <br>
-  <h5>List of your emails</h5>
-  <table class="table-form2" align="left">
-      <tr>
-        <td valign="right">Name</td>
-        <td valign="center">Email</td>
-        <td valign="right">Action</td>
+  <br />
+	<div class="title7">List of your emails</div>
+  <table class="table-form6" border="0" cellpadding="0" cellspacing="0">
+      <tr bgcolor="#8bcdff">
+        <td class="coll-form10" bgcolor="#8bcdff" align="center">Name</td>
+        <td class="coll-form11" bgcolor="#8bcdff" align="center">Email</td>
+        <td class="coll-form10" bgcolor="#8bcdff" align="center">Action</td>
       </tr>
     <% @contact_emails.each do |@contact| -%>
       <tr>
-        <td valign="right"><%= in_place_editor_field(:contact, 'name')%></td>
-        <td valign="right"><%= in_place_editor_field(:contact, 'email')%></td>
-        <td valign="left"><%= link_to_remote 'Remove', 
+        <td class="coll-form12" valign="center"><%= in_place_editor_field(:contact, 'name')%></td>
+        <td class="coll-form13" valign="center"><%= in_place_editor_field(:contact, 'email')%></td>
+        <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
                                                       :url => {:controller => 'account_settings', :action => 'delete_contact_email', :id => @contact},
                                                       :confirm => 'Are you sure?',
                                                       :loading => "$('progress-bar').show();",
-                                                      :complete => "$('progress-bar').hide();" %>    
+                                                      :complete => "$('progress-bar').hide();",
+ 																											:html => {:class => "blue-btn4"}%>    
         </td>
       </tr>
     <% end %>

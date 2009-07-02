@@ -723,23 +723,23 @@ function addRowMedicalCondition(){
       var hr = new Element('hr', {Class: "line1"});
   
   var tr3 = new Element('tr');
-    var td31 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td32 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td31 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td32 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td33 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr4 = new Element('tr');
-    var td41 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td42 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td41 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td42 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td43 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr5 = new Element('tr');
-    var td51 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td52 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td51 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td52 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td53 = new Element('td', {Class: "coll-form3", valign:"center"});
   
   var tr6 = new Element('tr');
-    var td61 = new Element('td', {Class: "coll-form1", valign:"center"});
-    var td62 = new Element('td', {Class: "coll-form2", valign:"center"});
+    var td61 = new Element('td', {Class: "coll-form1b", valign:"top"});
+    var td62 = new Element('td', {Class: "coll-form2b", valign:"top"});
     var td63 = new Element('td', {Class: "coll-form3", valign:"center"});
    
   //tr1
@@ -814,7 +814,7 @@ function addRowFamily(){
   var selectBirtdateDay  = new Element('select', { Class: "selectbox-day", name: "families["+window.counter_family+"][birtdate_day]"});
   var selectBirtdateMonth  = new Element('select', { Class: "selectbox-month", name: "families["+window.counter_family+"][birtdate_month]"});
   var selectBirtdateYear  = new Element('select', { Class: "selectbox-year", name: "families["+window.counter_family+"][birtdate_year]"});
-  var inputLiving     = new Element('input', { Class: "textbox5", name: "families["+window.counter_family+"][living]", type: "checkbox", value:"1", checked:"checked" });
+  var inputLiving     = new Element('input', { name: "families["+window.counter_family+"][living]", type: "checkbox", value:"1", checked:"checked" });
   var inputNotes      = new Element('textarea', { Class: "textarea1", name: "families["+window.counter_family+"][notes]", rows: "5", cols: "10"});
   
   var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-family"});
