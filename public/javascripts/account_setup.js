@@ -1,9 +1,6 @@
 function setDinamycHeight(id){
   height = window.innerHeight;
-  if (height <= 600 )
-    heightDiv = 0.68*height;
-  else
-    heightDiv = 0.7*height;
+  heightDiv = 0.75*height;
   $(id).style.height = heightDiv + "px";
 }
 function getDay(selectDay){
