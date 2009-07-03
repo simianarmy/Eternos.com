@@ -116,28 +116,53 @@ class AccountSettingsController < ApplicationController
   end
   
   def online
-    @online_account = BackupSource.new
-    @feed_url = FeedUrl.new
-    @feed_urls = current_user.profile.feed_urls
-    @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          setup_layout_account_setting(page, "step2", "account_settings/online")
+    @feed_urls = current_user.profile.feed_urls.paginate :page => params[:page], :per_page => 10
+    if params[:method].blank?
+      @online_account = BackupSource.new
+      @feed_url = FeedUrl.new
+      @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
+      
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            if params[:page].blank?
+              setup_layout_account_setting(page, "step2", "account_settings/online")
+            end
+            page.replace_html 'result-urls', :partial => 'shared/url_list'
+          end
         end
       end
-    end  
+    else
+      @feed = FeedUrl.find(params[:id])
+      @feed.destroy
+      
+      render :update do |page|
+        page.remove "url-list-#{@feed.id}"
+      end
+    end
   end
   
   def email_account
-    find_contact_email
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          setup_layout_account_setting(page, "step3", "account_settings/email_account")
+    @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
+    if params[:method].blank?
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            if params[:page].blank?
+              setup_layout_account_setting(page, "step3", "account_settings/email_account")
+            end
+            page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
+          end
         end
       end
-    end  
+    else
+      @contact_email = ContactEmail.find(params[:id])
+      @contact_email.destroy
+
+      render :update do |page|
+        page.remove "contact-list-#{@contact_email.id}"
+      end
+    end
   end
 
   def your_history
@@ -149,16 +174,6 @@ class AccountSettingsController < ApplicationController
         end
       end
     end  
-  end
-
-  def delete_contact_email
-    @contact_email = ContactEmail.find(params[:id])
-    @contact_email.destroy
-    
-    find_contact_email
-    render :update do |page|
-      page.replace_html "email-contact-list", :partial => 'shared/email_account_list', :locals => {:contact_email => @contact_email}
-    end
   end
   
   def add_another_address
@@ -630,10 +645,6 @@ class AccountSettingsController < ApplicationController
    
    def find_relationship
      @relationships = Relationship.find_all_by_user_id(current_user.id)
-   end
-   
-   def find_contact_email
-     @contact_emails = current_user.profile.contact_emails
    end
 
 end

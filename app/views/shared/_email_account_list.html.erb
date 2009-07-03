@@ -8,17 +8,22 @@
         <td class="coll-form10" bgcolor="#8bcdff" align="center">Action</td>
       </tr>
     <% @contact_emails.each do |@contact| -%>
-      <tr>
+      <tr id="contact-list-<%=@contact.id%>">
         <td class="coll-form12" valign="center"><%= in_place_editor_field(:contact, 'name')%></td>
         <td class="coll-form13" valign="center"><%= in_place_editor_field(:contact, 'email')%></td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
-                                                      :url => {:controller => 'account_settings', :action => 'delete_contact_email', :id => @contact},
+                                                      :url => {:action => 'email_account', :id => @contact},
                                                       :confirm => 'Are you sure?',
+                                                      :with => "'method=delete'", 
                                                       :loading => "$('progress-bar').show();",
                                                       :complete => "$('progress-bar').hide();",
- 																											:html => {:class => "blue-btn4"}%>    
+ 						      :html => {:class => "blue-btn4"}%>    
         </td>
       </tr>
     <% end %>
   </table>
+  <br>
+  <br>
+  <br>
+<%= will_paginate(@contact_emails) %>
 <% end %>

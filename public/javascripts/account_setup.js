@@ -1,3 +1,29 @@
+document.observe("dom:loaded", function() {
+  // the element in which we will observe all clicks and capture
+  // ones originating from pagination links
+  var container = $(document.body)
+
+  if (container) {
+    var img = new Image
+    img.src = '/images/spinner.gif'
+
+    function createSpinner() {
+      new Element('img', { src: img.src, 'class': 'spinner' })
+    }
+
+    container.observe('click', function(e) {
+      var el = e.element()
+      if (el.match('.pagination a')) {
+        el.up('.pagination').insert(createSpinner())
+        new Ajax.Request(el.href, { asynchronous:true, evalScripts:true, method: 'get',
+                        onLoading:function(request){$('progress-bar').show();}, 
+                        onComplete:function(request){$('progress-bar').hide();} })
+        e.stop()
+      }
+    })
+  }
+})
+
 function setDinamycHeight(id){
   height = window.innerHeight;
   heightDiv = 0.75*height;

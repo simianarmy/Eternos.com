@@ -61,16 +61,6 @@ class BackupSourcesController < ApplicationController
     end
   end
   
-  def destroy_feed_url
-    @feed = FeedUrl.find(params[:id])
-    @feed.destroy
-    
-    find_feed_rss_url
-    render :update do |page|
-      page.replace_html "url-list", :partial => 'shared/url_list', :locals => {:feed_urls => @feed_urls}
-    end
-  end
-  
   private
 
   def render_message(message)
