@@ -1,8 +1,11 @@
 # $Id$
+
+require 'timeline_search'
+
 class TimelinesController < ApplicationController
   before_filter :login_required
   require_role ['Guest', 'Member']
-  
+
   def guest_index
     find_host
     permit "guest of :host" do
@@ -11,7 +14,18 @@ class TimelinesController < ApplicationController
     layout 'guest'
   end
   
+  # Display timeline page
+  # Determine initial timeline beginning & end dates.
+  # Collect any other data that the timeline page needs on load.
+  # All other requests will be done via AJAX queries.0
   def show
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
+  def debug
     # Right now just raw info for debug output
     @profile = current_user.profile
     @facebook_profile = @profile.facebook_data
@@ -25,14 +39,18 @@ class TimelinesController < ApplicationController
     @activity_streams = current_user.activity_streams
   end
   
+  # GET /timeline/search/member_id/start_date/end_date/*opts
   def search
-    @results = TimelineSearch.search(params[:search])
-    @results[:request] = request.to_s
-    debugger
-    respond_to do |format|
-      format.html # show.html.haml
-      format.js { render :json => @results.to_json }
-    end
+    # Member or guest view
+    member_view = (params[:id].to_i == current_user.id)
+    filters = parse_search_filters
+    
+    @response = TimelineRequestResponse.new(request.url)
+    @response.results = filters[:fake] ? 
+      TimelineSearchFaker.new([params[:start_date], params[:end_date]], filters).results : 
+      TimelineSearch.new(params[:id], [params[:start_date], params[:end_date]], filters).results
+    
+    render :text => @response.to_json
   end
   
   private
@@ -41,4 +59,11 @@ class TimelinesController < ApplicationController
     @host = current_user.get_host
   end
   
+  def parse_search_filters
+    (params[:filters] || []).inject({}) do |res, el| 
+      k,v = el.to_s.split('=')
+      res[k.to_sym] = v.nil? ? "1" : v
+      res
+    end
+  end
 end

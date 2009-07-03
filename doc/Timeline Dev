@@ -1,0 +1,125 @@
+Timeline development guidelines
+
+TIMELINE Project
+  Interactive javascript timeline that displays any events of a Member's life in chronoligical order.
+  
+- You will be implementing a member Timeline using the SIMILE Javascript library 
+Home: http://www.simile-widgets.org/timeline/
+Docs: http://code.google.com/p/simile-widgets/wiki/Timeline
+
+- You should familiarize yourself with the SIMILE Javascript technology before you do any implementation work.  
+
+- Use Andrew's mockup designs to plan the Timeline/Content display interaction.
+
+- Initial page load view:
+  GET /timeline/1
+  Controller: TimelinesController
+  Action: show
+  
+  The timeline should be displayed as shown in the design mockups, using the appropriate dates as visual guides to member event data.
+  
+  TIMELINE 
+  - The timeline should display the entire lifespan of a user:
+    - Lifespan beginning: The earliest of the following:
+      - Member's birthday (from profile or facebook)
+      - Member Content objects Content.taken_at
+      - Member Stories Story.start_at
+      - Member ActivityStreamItem ActivityStreamItem.published_on
+      
+    - Lifespan end: The latest of the following:
+      - Member death date (not applicable right now)
+      - Member Content objects Content.taken_at
+      - Member Stories Story.start_at
+      - Member ActivityStreamItem ActivityStreamItem.published_on
+      - Current date
+    
+    - Since determining the earliest & latest initial dates for a timeline are so db-intensive, you will want to cache the information with an expiration of 12 hours.  I will provide you with the Rails cache methods to read/store this data.
+    
+  - All requests after the page loads will be via Ajax queries.
+  - Use Prototype's Ajax Classes & Functions to make Ajax requests & to parse results.
+  http://www.prototypejs.org/learn/introduction-to-ajax
+    - It will be easier for you to code if you use the Rails Prototype helpers for Ajax calls, but if you want to program "closer to the metal", then go ahead.
+    
+  CONTENT PANE
+  - The "content" portion of the page, underneath the Timeline app should display the last 15-20 events from a member life, in reverse chronological order (more recent to least, starting at the top).
+  A list of items that can be displayed in the content pane, by date:
+    Facebook activity:
+      # of wall posts
+      # of photos added
+    Twitter activity:
+      # of "tweets"
+    Blog activity:
+      # of blog posts
+    Email activity:
+      # of emails sent
+      # of emails received
+    Vlog activity:
+      # of stories created
+      # of stories updated
+      # of contents added (media)
+    
+  
+- UI Interaction after page load:
+  The content pane will update dynamically based on the current Timeline cursor position.  Whenever the timeline cursor is dragged to a new date, it will trigger a callback on mouseup, passing the new current cursor date to the callback method.
+  
+  The callback method must take the date and create an Ajax REST request to retrieve the member's events that match the given date.
+  Possible date formats for the callback method:
+    DATE: string
+      Format:
+      YEAR: YYYY - To retrieve activity for a single year
+      MONTH: YYYY-MM - To retrieve activity for a single month
+      DAY: YYYY-MM-DD - To retrive activity for a single day
+    RANGE: array object
+      Format:
+      [START_DATE, END_DATE] - 2 DATE strings representing the range of days to retrieve activity for.
+  
+  There will be more options for the REST request in the future, for now we will focus on dates.
+  
+  Format of activities Ajax REST query:
+    For single dates:
+      GET /timeline/search/member_id/date
+    For date range:
+      GET /timeline/search/member_id/start_date,end_date
+    
+  Activities Ajax query response format:
+    http://eternos.unfuddle.com/projects/1/notebooks/1/pages/7/latest
+    
+  - Parse format using String object's evalJSON() function:
+    var data = response_text.evalJSON();
+    
+    - response result element format
+      {
+        searchClass: email|twitter|story|blog|facebook|other,
+        title: text,
+        caption: text,
+        summary: text,
+        time: datetime,
+        previewImgUrl: string,
+        data: {}
+      }
+      
+      - Use previewImgUrl to display a thumbnail to the data (consult Andrew/Rizki for design styles)
+      
+      - data object:
+        The data object in the result element depends on the searchClass value.  Each searchClass contains very different metadata describing the activity.  In order for you to see how to parse each type of searchClass, I will be adding a "Fake" data generator that you can call using the activities Ajax query.  It will return some random content for you to expermiment with.  It doesn't matter what date values you send, the response will always contain some data, unless you pass some extra parameters to the query for specific responses:
+        
+      Fake Data Generator Requests:
+        GET /timeline/fake/member_id/date
+        GET /timeline/fake/member_id/start_date,end_date
+    
+      - Optional parameters:
+        error: To force an error response: 
+          GET /timeline/fake/member_id/date/error
+        
+        empty: To force an empty results array:
+         GET /timeline/fake/member_id/date/empty
+         
+        activity types: To force results to only contain specific searchClasses:
+        GET  /timeline/fake/member_id/date/type=[email|twitter|story|blog|facebook]
+
+Dumping Timeline data into fixtures:
+
+rake db:dataset:dump_fixtures DATASET=timeline INCLUDE=ActivityStreamItem,ActivityStream,BackupPhotoAlbum,BackupPhoto,BackupSite,BackupSourceJob,BackupSource,BackupState,FacebookContent
+  
+    
+  

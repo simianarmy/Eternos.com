@@ -4,11 +4,14 @@
 
 class TimelineRequestResponse
   # events: collection of TimelineEvent objects
-  def initialize(opts={})
-    @events = []
+  attr_writer :results
+  
+  def initialize(uri)
+    @results = []
     @status = 200
     @details = nil
     @response = {
+      :request => uri,
       :resultCount => 0,
       :previousDataUri => nil,
       :futureDataUri => nil,
@@ -17,8 +20,9 @@ class TimelineRequestResponse
   end
   
   def to_json
-    @response[:resultCount] = @events.size
-    @response[:results] ||= @events.map(&:to_json)
-    @response.to_json
+    @response.merge!(:resultCount => @results.size,
+      :results => @results,
+      :status => @status,
+      :responseDetails => @details).to_json
   end
 end

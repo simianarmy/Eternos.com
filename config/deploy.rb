@@ -43,7 +43,7 @@ namespace :deploy do
   desc "Restart Application"
   task :restart, :roles => :app do
     run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:cache:clear"
-    run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:assets:clear"
+    #run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:assets:clear"
     run "touch #{current_path}/tmp/restart.txt"
   end
   

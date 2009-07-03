@@ -142,6 +142,15 @@ end
     end
   end
 
+  
+  describe "a mocked member is signed in", :shared => true do
+    include UserSpecHelper
+    before( :each ) do
+      @user = @member = mock_model(Member, :has_role_requirement? => true)
+      @controller.stubs(:current_user).returns(@user)
+    end
+  end
+
   describe "an admin is signed in", :shared => true do
     before( :each ) do
       @user = @admin = create_user(:admin => true)

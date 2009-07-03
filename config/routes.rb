@@ -21,8 +21,6 @@ ActionController::Routing::Routes.draw do |map|
   # Redirect requests to flashrecorder xml config file to proper location
   map.connect ':anywhere/flashrecorder.xml', :controller => 'recordings', 
     :action => 'flashrecorder', :format => 'xml'
-  map.auto_complete ':controller/:action', :requirements => { :action => /auto_complete_for_\w+/ },
-    :conditions => { :method => :get }
   
   # Singleton resources    
   map.resource :profile
@@ -30,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :fb, :controller => 'fb'
   map.resource :timeline
   map.resource :wysiwyg_preview
-  
+    
   map.resources :user_sessions, :comments, :content_authorizations, :documents, 
     :audio, :videos, :web_videos, :photos, :invitations, :address_books, 
     :guests, :recordings, :guest_invitations, :password_resets
@@ -99,6 +97,7 @@ ActionController::Routing::Routes.draw do |map|
   # map.open_id_complete 'session', :controller => 'sessions', :action => "create", :requirements => { :method => :get }
   #map.resource :session
   
+  # Named routes
   map.about '/about', :controller => 'about'
   map.signup '/invitation/:invitation_token', :controller => 'users', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
@@ -106,7 +105,11 @@ ActionController::Routing::Routes.draw do |map|
   map.logout '/logout', :controller => 'user_sessions', :action => 'destroy'
   map.member_home '/member_home', :controller => 'member_home', :protocol => 'http'
   map.begin_story '/begin_story', :controller => 'stories', :action => 'begin_story'
-    
+  map.timeline_search '/timeline/search/:id/:start_date/:end_date/*filters', 
+    :controller => 'timelines', :action => "search", :conditions => { :method => :get }
+  map.auto_complete ':controller/:action', :requirements => { :action => /auto_complete_for_\w+/ },
+    :conditions => { :method => :get }
+  
   # From SaaS Kit
   map.plans '/signup', :controller => 'accounts', :action => 'plans', :requirements => { :method => :get }
   map.thanks '/signup/thanks', :controller => 'accounts', :action => 'thanks'
@@ -114,7 +117,7 @@ ActionController::Routing::Routes.draw do |map|
   map.new_account '/signup/:plan', :controller => 'accounts', :action => 'new', :plan => nil
   map.forgot_password '/account/forgot', :controller => 'sessions', :action => 'forgot'
   map.reset_password '/account/reset/:token', :controller => 'sessions', :action => 'reset'
-  
+    
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home", :action => 'index'         
   map.home ':page', :controller => 'home', :action => 'show'
