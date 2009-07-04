@@ -50,7 +50,7 @@ class TimelinesController < ApplicationController
       TimelineSearchFaker.new([params[:start_date], params[:end_date]], filters).results : 
       TimelineSearch.new(params[:id], [params[:start_date], params[:end_date]], filters).results
     
-    render :text => @response.to_json
+    render :json => @response.to_json
   end
   
   private

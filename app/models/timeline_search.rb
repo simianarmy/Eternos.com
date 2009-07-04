@@ -19,7 +19,7 @@ class TimelineSearchFaker
   
   def initialize(dates, options)
     @options = options
-    @member = Member.find_by_name('TIMELINE_TESTER')
+    @member = Member.by_name('TIMELINE_TESTER')
     @facebook_source = @member.backup_sources.by_site(BackupSite::Facebook).first
   end
   
@@ -40,10 +40,12 @@ class TimelineSearchFaker
     TimelineEvent.new(obj)
   end
   
+  # Returns random activity
   def get_activity_stream_item
     @member.activity_streams.rand.items.rand
   end
   
+  # Returns random photo from random album
   def get_backup_photo
     @facebook_source.backup_photo_albums.rand.backup_photos.rand
   end
