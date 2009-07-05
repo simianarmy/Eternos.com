@@ -116,7 +116,7 @@ class AccountSettingsController < ApplicationController
   end
   
   def online
-    @feed_urls = current_user.profile.feed_urls.paginate :page => params[:page], :per_page => 10
+    @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
     if params[:method].blank?
       @online_account = BackupSource.new
       @feed_url = FeedUrl.new
@@ -133,11 +133,11 @@ class AccountSettingsController < ApplicationController
         end
       end
     else
-      @feed = FeedUrl.find(params[:id])
-      @feed.destroy
-      
+      if f = current_user.backup_sources.find(params[:id].to_i)
+        f.destroy
+      end
       render :update do |page|
-        page.remove "url-list-#{@feed.id}"
+        page.remove "url-list-#{params[:id]}"
       end
     end
   end

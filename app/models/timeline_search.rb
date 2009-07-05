@@ -19,7 +19,7 @@ class TimelineSearchFaker
   
   def initialize(dates, options)
     @options = options
-    @member = Member.by_name('TIMELINE_TESTER')
+    @member = Member.by_name('TIMELINE_TEST').first || Member.find(options[:user_id])
     @facebook_source = @member.backup_sources.by_site(BackupSite::Facebook).first
   end
   

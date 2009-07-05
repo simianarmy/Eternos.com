@@ -3,11 +3,11 @@
 require 'facebook_desktop'
 
 class FacebookBackupController < ApplicationController
-  before_filter :login_required
-  require_role "Member"
+  before_filter :login_required, :except => [:authorized, :removed]
+  require_role "Member", :except => [:authorized, :removed]
   before_filter :load_facebook_desktop
   before_filter :load_session
-  before_filter :load_backup_source
+  before_filter :load_backup_source, :except => [:authorized, :removed]
   layout 'dialog'
   
   def new
@@ -53,13 +53,31 @@ class FacebookBackupController < ApplicationController
     @stream_url = @session.permission_url(:read_stream) unless @session.user.has_permission?(:read_stream)
   end
   
+  # Called by Facebook after 1st time app authorization.  Passes a bunch of fb_sig_* values.
+  # May be definitive way to ensure proper authentication, replacing the authenticate action.
+  # Problem is, no Rails session info passed so can't lookup user to save facebook info!
+  # For now, simply save params to log.  Data might be parsed separately if needed.
+  
+  # Important params:
+  # fb_sig_user: User's Facebook ID
+  # fb_sig_authorize: "1" = authorized
+  # fb_sig_ss: User's session secret
   def authorized
+    RAILS_DEFAULT_LOGGER.info "#{self.to_s}:authorized called by Facebook:\n"
+    RAILS_DEFAULT_LOGGER.info params.inspect
+    
+    render :nothing => true, :status => 200
   end
   
   def removed
+    RAILS_DEFAULT_LOGGER.info "#{self.to_s}:removed called by Facebook:\n"
+    RAILS_DEFAULT_LOGGER.info params.inspect
+    
+    render :nothing => true, :status => 200
   end
   
   def canvas
+    render :nothing => true, :status => 200
   end
   
   private

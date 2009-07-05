@@ -46,9 +46,10 @@ class TimelinesController < ApplicationController
     filters = parse_search_filters
     
     @response = TimelineRequestResponse.new(request.url)
-    @response.results = filters[:fake] ? 
-      TimelineSearchFaker.new([params[:start_date], params[:end_date]], filters).results : 
-      TimelineSearch.new(params[:id], [params[:start_date], params[:end_date]], filters).results
+    search = filters[:fake] ? 
+      TimelineSearchFaker.new([params[:start_date], params[:end_date]], filters) : 
+      TimelineSearch.new(params[:id], [params[:start_date], params[:end_date]], filters)
+    @response.results = search.results
     
     render :json => @response.to_json
   end

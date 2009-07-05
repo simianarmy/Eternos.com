@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090626174850) do
+ActiveRecord::Schema.define(:version => 20090624162633) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -79,13 +79,15 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.string   "custom_region"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "start_at"
-    t.datetime "end_at"
     t.string   "street_1",         :null => false
     t.string   "city",             :null => false
     t.string   "postal_code",      :null => false
     t.integer  "user_id"
+    t.date     "moved_out_on"
+    t.date     "moved_in_on"
   end
+
+  add_index "addresses", ["user_id"], :name => "user_id"
 
   create_table "albums", :force => true do |t|
     t.datetime "created_at"
@@ -193,9 +195,9 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
 
   add_index "backup_source_jobs", ["backup_job_id", "backup_source_id"], :name => "backup_job_source"
   add_index "backup_source_jobs", ["backup_job_id"], :name => "index_backup_source_jobs_on_backup_job_id"
-  add_index "backup_source_jobs", ["backup_job_id"], :name => "user_id"
 
   create_table "backup_sources", :force => true do |t|
+    t.string   "type",                  :null => true
     t.string   "auth_login"
     t.string   "auth_password"
     t.string   "rss_url"
@@ -210,12 +212,12 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.boolean  "disabled",               :default => false, :null => false
     t.boolean  "skip_video",             :default => false, :null => false
     t.date     "earliest_day_backed_up"
-    t.boolean  "needs_initial_scan",     :default => true, :null => false
+    t.boolean  "needs_initial_scan",     :default => true,  :null => false
     t.datetime "last_login_attempt_at"
     t.datetime "last_login_at"
   end
 
-  add_index "backup_sources", ["user_id", "backup_site_id"], :name => "user_backup_site", :unique => true
+  add_index "backup_sources", ["user_id", "backup_site_id"], :name => "user_backup_site"
 
   create_table "backup_states", :force => true do |t|
     t.datetime "last_successful_backup_at"
@@ -239,7 +241,8 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.datetime "updated_at"
     t.boolean  "global",     :default => false
   end
-
+  add_index "categories", ["name"]
+  
   create_table "categorizations", :force => true do |t|
     t.integer  "category_id",        :null => false
     t.integer  "categorizable_id"
@@ -256,7 +259,8 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.datetime "updated_at"
     t.integer  "user_id",    :null => false
   end
-
+  add_index "circles", ["user_id"], :name => "user_id"
+  
   create_table "comments", :force => true do |t|
     t.string   "title",            :limit => 50, :default => ""
     t.text     "comment"
@@ -265,6 +269,15 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.integer  "commentable_id"
     t.string   "commentable_type"
     t.integer  "user_id",                        :default => 0,  :null => false
+  end
+  add_index "comments", ["user_id"], :name => "user_id"
+  
+  create_table "contact_emails", :force => true do |t|
+    t.integer  "profile_id"
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "content_accessors", :force => true do |t|
@@ -373,6 +386,13 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.string   "family_type"
   end
 
+  create_table "feed_urls", :force => true do |t|
+    t.integer  "profile_id"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "guest_invitations", :force => true do |t|
     t.integer  "sender_id",                        :null => false
     t.integer  "circle_id"
@@ -407,6 +427,7 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
     t.string  "description"
     t.date    "start_at"
     t.date    "end_at"
+    t.text    "notes"
   end
 
   add_index "jobs", ["profile_id"], :name => "profile_id"
@@ -781,26 +802,5 @@ ActiveRecord::Schema.define(:version => 20090626174850) do
 
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
-  
-  add_column("jobs", "notes", :text)
-  
-  create_table "contact_emails", :force => true do |t|
-    t.integer "profile_id"
-    t.string  "name"
-    t.string  "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-  
-  rename_column("addresses", "start_at", "moved_in_on")
-  rename_column("addresses", "end_at", "moved_out_on")
-    
-  create_table "feed_urls", :force => true do |t|
-    t.integer "profile_id"
-    t.string  "url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-  
+
 end
-    

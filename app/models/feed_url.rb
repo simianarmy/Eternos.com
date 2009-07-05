@@ -1,36 +1,45 @@
-class FeedUrl < ActiveRecord::Base
-  belongs_to :profile
-  
-  validates_uniqueness_of :url, :scope => :profile_id, :message => " has already been taken"
-  
-  validate do |feed|
-    feed.errors.add("", "Please enter a URL") if feed.url.blank?
-  end
- 
-  def validate
-    errors.add("", "Invalid RSS feed URL") unless parse_rss_feed?
-  end
+# $Id$
+
+# BackupSource STI class child
+
+require 'feedzirra'
+
+class FeedUrl < BackupSource
+  validates_presence_of :rss_url, :message => "Please enter a RSS feed URL"
+  validates_uniqueness_of :rss_url, :scope => :user_id, :message => "Feed has already been saved"
+  validate :validate_feed
   
 private  
-  def parse_rss_feed?
-    require 'rexml/document'
-    require 'net/http'
-    
-    xml = REXML::Document.new Net::HTTP.get(URI.parse(self.url))
-    data = {
-      :title    => xml.root.elements['channel/title'].text,
-      :home_url => xml.root.elements['channel/link'].text,
-      :rss_url  => self.url,
-      :items    => []
-    }
-    xml.elements.each '//item' do |item|
-      new_items = {} and item.elements.each do |e|
-        new_items[e.name.gsub(/^dc:(\w)/,"\1").to_sym] = e.text
+  def validate_feed
+    unless self.rss_url.blank?
+      begin
+        Feedzirra::Feed.fetch_and_parse(self.rss_url, 
+          :on_failure => lambda { |url, response_code, response_header, response_body| 
+            errors.add(:rss_url, "Invalid RSS feed URL: #{response_body}")
+          } )
+      rescue Exception => e
+        errors.add(:rss_url, "Invalid RSS feed (could not verify contents)")
       end
-      data[:items] << new_items
     end
-    return true if data
-  rescue
-    return false
   end
+    # require 'rexml/document'
+    #     require 'net/http'
+    #     
+    #     xml = REXML::Document.new Net::HTTP.get(URI.parse(self.url))
+    #     data = {
+    #       :title    => xml.root.elements['channel/title'].text,
+    #       :home_url => xml.root.elements['channel/link'].text,
+    #       :rss_url  => self.url,
+    #       :items    => []
+    #     }
+    #     xml.elements.each '//item' do |item|
+    #       new_items = {} and item.elements.each do |e|
+    #         new_items[e.name.gsub(/^dc:(\w)/,"\1").to_sym] = e.text
+    #       end
+    #       data[:items] << new_items
+    #     end
+    #     return true if data
+    #   rescue
+    #     return false
+    #   end
 end

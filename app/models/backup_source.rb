@@ -7,10 +7,6 @@ class BackupSource < ActiveRecord::Base
   has_many :backup_photo_albums
   has_many :backup_source_jobs
   
-  #validates_presence_of :auth_login
-  #validates_presence_of :auth_password
-  validates_uniqueness_of :user_id, :scope => :backup_site_id
-  
   named_scope :by_site, lambda {|name|
     {
       :joins => :backup_site,

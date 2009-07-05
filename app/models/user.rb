@@ -79,6 +79,10 @@ class User < ActiveRecord::Base
   alias_attribute :name, :full_name
   alias_attribute :facebook_id, :facebook_uid
   
+  named_scope :by_name, lambda { |n|
+    { :conditions => ["CONCAT_WS(' ', first_name, last_name) = ?", n] }
+  }
+  
   # Roles
   AdminRole         = 'Admin'
   MemberRole        = 'Member'

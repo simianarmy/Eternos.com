@@ -5,5 +5,5 @@ class FacebookContent < ActiveRecord::Base
   
   serialize :friends
   serialize :groups
-  xss_terminate :except => [ :friends, :groups ] # working?
+  xss_terminate :except => [ :friends, :groups ] 
 end

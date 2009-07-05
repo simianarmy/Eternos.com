@@ -39,25 +39,16 @@ class BackupSourcesController < ApplicationController
   end
 
   def add_feed_url
-    begin
-      @feed_url = FeedUrl.new(params[:feed_url].merge(:profile_id => current_user.profile.id))
-      if @feed_url.save!
-        find_feed_rss_url
-        render :update do |page|
-          page[:feed_url_url].value = ""
-          page.replace_html "url-list", :partial => 'shared/url_list', :locals => {:feed_urls => @feed_urls}
-        end
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-rss", :inline => "<%= error_messages_for 'feed_url' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                            
-        end
-      end
+    if @feed_url = FeedUrl.create(:user_id => current_user.id, 
+        :rss_url => params[:feed_url][:rss_url], 
+        :backup_site_id => BackupSite.find_by_name(BackupSite::Blog).id)
+      current_user.backup_sources << @feed_url
+      # Get paginated list of feeds, ordered by most recent
+      @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate(
+        :page => params[:page], :per_page => 10, :order => 'created_at DESC')
+    end
+    respond_to do |format|
+      format.js
     end
   end
   
@@ -83,10 +74,6 @@ class BackupSourcesController < ApplicationController
         end
       }
     end
-  end
-  
-  def find_feed_rss_url
-    @feed_urls = current_user.profile.feed_urls
   end
   
 end
