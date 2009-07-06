@@ -21,6 +21,13 @@ describe FeedUrl do
       @feed.rss_url = 'http://simian187.vox.com/library/posts/atom.xml'
       @feed.should be_valid
     end
+    
+    it "should set auth confirmation to true if valid feed" do
+      lambda {
+        @feed.rss_url = 'http://simian187.vox.com/library/posts/atom.xml'
+        @feed.should be_valid
+      }.should change(@feed, :confirmed?).from(false).to(true)
+    end
   end
   
   describe "on create" do

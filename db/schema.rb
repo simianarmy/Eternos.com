@@ -386,6 +386,17 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "family_type"
   end
 
+  create_table "feed_entries", :force => true do |t|
+    t.integer "feed_url_id", :null => false
+    t.string  "name"
+    t.text    "summary"
+    t.string  "url"
+    t.datetime  "published_at"
+    t.string  "guid"
+  end
+  add_index "feed_entries", ["guid"], :name => "feed_entries_guid"
+  add_index "feed_entries", ["feed_url_id", "guid"], :name => "feed_url_id_guid", :unique => true
+  
   create_table "feed_urls", :force => true do |t|
     t.integer  "profile_id"
     t.string   "url"

@@ -13,9 +13,9 @@ private
   def validate_feed
     unless self.rss_url.blank?
       begin
-        Feedzirra::Feed.fetch_and_parse(self.rss_url, 
-          :on_failure => lambda { |url, response_code, response_header, response_body| 
-            errors.add(:rss_url, "Invalid RSS feed URL: #{response_body}")
+        Feedzirra::Feed.fetch_and_parse(self.rss_url, :timeout => 30,
+          :on_success => lambda { self.auth_confirmed = true },
+          :on_failure => lambda { errors.add(:rss_url, "Invalid RSS feed")
           } )
       rescue Exception => e
         errors.add(:rss_url, "Invalid RSS feed (could not verify contents)")
