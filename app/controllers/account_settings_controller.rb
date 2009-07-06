@@ -541,11 +541,13 @@ class AccountSettingsController < ApplicationController
     gmail.contacts.each do |n, e|
       ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})
     end
+    @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
     
     respond_to do |format|
       format.js do
         render :update do |page|
           page.replace_html "flash-message", :text => "Your contact emails was successfully saved."
+          page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
         end
       end
     end
