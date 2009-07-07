@@ -8,7 +8,7 @@ class FeedUrl < BackupSource
   has_one :feed, :foreign_key => 'backup_source_id'
   
   validates_presence_of :rss_url, :message => "Please enter a RSS feed URL"
-  validates_uniqueness_of :rss_url, :scope => :user_id, :message => "Feed has already been saved"
+  validates_uniqueness_of :rss_url, :scope => :user_id, :on => :create, :message => "Feed has already been saved"
   validate :validate_feed
   
   # Create Feed with feed metadata in @feed 

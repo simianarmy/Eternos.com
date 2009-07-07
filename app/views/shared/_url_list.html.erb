@@ -6,13 +6,14 @@
       <tr id="url-list-<%= feed.id %>">
         <td valign="right"></td>
         <td valign="center">:</td>
-        <td valign="right">
-        <%= #restful_in_place_editor('span', feed, 'rss_url', :url => online_account_settings_path(:id=>feed.id)) 
-        %>
-        <%= feed.rss_url %>
+        <td valign="right"><%= restful_in_place_editor(:span, :feed, :rss_url, 
+                                        {:value => feed.rss_url,
+                                         :id => feed.id,
+                                         :url => set_feed_url_account_settings_path(:id => feed.id)})%>
         </td>
         <td valign="left"><%= link_to_remote 'Remove', 
-                                                      :url => {:action => 'online', :id => feed},
+                                                      :html => {:class => 'blue-btn4'},
+                                                      :url => {:controller => 'account_settings', :action => 'online', :id => feed},
                                                       :confirm => 'Are you sure?',
                                                       :with => "'method=delete'", 
                                                       :loading => "$('progress-bar').show();",
@@ -21,8 +22,6 @@
       </tr>
     <% end %>
   </table>
-  <br>
-  <br>
   <br>
 <%= will_paginate(@feed_urls) %>
 <% end %>

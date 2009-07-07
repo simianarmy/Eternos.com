@@ -9,11 +9,15 @@ class AccountSettingsController < ApplicationController
   
   def set_feed_url
     @feed = FeedUrl.find(params[:id])
-    @feed.url = params[:value]
+    @feed.rss_url = params[:value]
     if @feed.save
-      render :text => @feed.send(:url).to_s
+      render :update do |page|
+        page[params[:editorId]].innerHTML = "#{@feed.rss_url}"
+      end
     else
-      render :text => "Invalid RSS feed URL"
+      render :update do |page|
+        page[params[:editorId]].innerHTML = "Invalid RSS feed URL"
+      end
     end
   end
   
@@ -21,7 +25,9 @@ class AccountSettingsController < ApplicationController
     @contact = ContactEmail.find(params[:id])
     @contact.name = params[:value]
     if @contact.save
-      render :text => @contact.send(:name).to_s
+      render :update do |page|
+        page[params[:editorId]].innerHTML = "#{@contact.name}"
+      end
     else
       render :text => params[:value]
     end
@@ -31,7 +37,9 @@ class AccountSettingsController < ApplicationController
     @contact = ContactEmail.find(params[:id])
     @contact.email = params[:value]
     if @contact.save
-      render :text => @contact.send(:email).to_s
+      render :update do |page|
+        page[params[:editorId]].innerHTML = "#{@contact.email}"
+      end
     else
       render :text => params[:value]
     end

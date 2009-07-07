@@ -29,6 +29,13 @@ function setDinamycHeight(id){
   heightDiv = 0.75*height;
   $(id).style.height = heightDiv + "px";
 }
+
+function resetDinamycHeight(id){
+  heightDiv = 335;
+  $(id).style.height = heightDiv + "px";
+  $(id).style.overflow = "hidden";
+}
+
 function getDay(selectDay){
    for(var i=1; i<=31; i++){
     var optn = document.createElement("option");
