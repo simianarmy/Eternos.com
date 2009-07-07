@@ -28,6 +28,10 @@ class BackupSource < ActiveRecord::Base
     update_attributes(:last_login_attempt_at => t, :last_login_at => t, :auth_error => nil)
   end
   
+  def auth_required?
+    true
+  end
+  
   def confirmed?
     auth_confirmed
   end

@@ -1,0 +1,21 @@
+Getting weird errors from Feedzirra code -
+Notes on building curl & curb for Ruby + Feedzirra 
+
+1) Remove existing libcurl library files
+sudo port uninstall curl (OS X)
+
+2) sudo gem uninstall curb
+3) Install curl from source
+http://curl.download.nextag.com/download/curl-7.19.5.tar.gz
+cd curl
+./configure
+sudo make install
+
+4) sudo gem install pauldix-feedzirra
+
+5) Build taf2-curb gem
+git clone git://github.com/taf2/curb.git
+cd curb
+sudo rake install
+
+

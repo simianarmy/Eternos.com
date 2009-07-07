@@ -5,8 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe FeedUrl do
   describe "on new" do
     before(:each) do
-      @feed = FeedUrl.new
-      @railscasts_url = 'http://feeds.feedburner.com/railscasts' 
+      @feed = new_feed_url(:rss_url => '')
     end
     
     it "should not be valid without required attributes" do
@@ -32,7 +31,7 @@ describe FeedUrl do
   
   describe "on create" do
     before(:each) do
-      @feed = FeedUrl.new(:rss_url => 'http://feeds.feedburner.com/railscasts')
+      @feed = new_feed_url
     end
     
     it "should create FeedUrl object" do
@@ -43,8 +42,15 @@ describe FeedUrl do
     
     it "should only save the same feed url once" do
       lambda {
-        FeedUrl.create(:rss_url => 'http://feeds.feedburner.com/railscasts')
+        create_feed_url
       }.should change(FeedUrl, :count).by(1)
+    end
+    
+    it "should create Feed object" do
+      @feed.feed.should be_nil
+      @feed.save
+      @feed.feed.should be_a Feed
+      @feed.rss_url.should == @feed.feed.feed_url_s
     end
   end
 end

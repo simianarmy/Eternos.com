@@ -5,15 +5,25 @@
 require 'feedzirra'
 
 class FeedUrl < BackupSource
+  has_one :feed, :foreign_key => 'backup_source_id'
+  
   validates_presence_of :rss_url, :message => "Please enter a RSS feed URL"
   validates_uniqueness_of :rss_url, :scope => :user_id, :message => "Feed has already been saved"
   validate :validate_feed
   
-private  
+  # Create Feed with feed metadata in @feed 
+  after_create :save_feed
+  
+  def auth_required?
+    !auth_login.blank? || !auth_password.blank?
+  end
+  
+  private
+  
   def validate_feed
     unless self.rss_url.blank?
       begin
-        Feedzirra::Feed.fetch_and_parse(self.rss_url, :timeout => 30,
+        @feed_info = Feedzirra::Feed.fetch_and_parse(self.rss_url, :timeout => 30,
           :on_success => lambda { self.auth_confirmed = true },
           :on_failure => lambda { errors.add(:rss_url, "Invalid RSS feed")
           } )
@@ -22,24 +32,12 @@ private
       end
     end
   end
-    # require 'rexml/document'
-    #     require 'net/http'
-    #     
-    #     xml = REXML::Document.new Net::HTTP.get(URI.parse(self.url))
-    #     data = {
-    #       :title    => xml.root.elements['channel/title'].text,
-    #       :home_url => xml.root.elements['channel/link'].text,
-    #       :rss_url  => self.url,
-    #       :items    => []
-    #     }
-    #     xml.elements.each '//item' do |item|
-    #       new_items = {} and item.elements.each do |e|
-    #         new_items[e.name.gsub(/^dc:(\w)/,"\1").to_sym] = e.text
-    #       end
-    #       data[:items] << new_items
-    #     end
-    #     return true if data
-    #   rescue
-    #     return false
-    #   end
+  
+  def save_feed
+    create_feed(:title => @feed_info.title.sanitize, 
+      :url => @feed_info.url,
+      :feed_url_s => @feed_info.feed_url,
+      :etag => @feed_info.etag,
+      :last_modified => @feed_info.last_modified)
+  end
 end

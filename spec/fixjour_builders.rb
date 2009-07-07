@@ -155,6 +155,13 @@ Fixjour  do
       :message => Faker::Lorem.paragraph,
       :tag_s => Faker::Lorem.words.join(','))
   end
+  
+  define_builder(FeedUrl) do |klass, overrides|
+    klass.new(
+      :rss_url => 'http://feeds.feedburner.com/railscasts',
+      :member => new_member,
+      :backup_site => new_backup_site)
+  end
 
   define_builder(Guest) do |klass, overrides|
     klass.protected :circle_id
