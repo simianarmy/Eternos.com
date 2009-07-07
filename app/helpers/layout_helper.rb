@@ -153,6 +153,11 @@ module LayoutHelper
   def style_hidden_if(expression)
     expression ? "display:none;" : ""
   end
+
+  def use_timeline_js
+    javascript "timeline_helper"
+    javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
+  end
   
   private
   

@@ -19,7 +19,6 @@ class TimelinesController < ApplicationController
   # Collect any other data that the timeline page needs on load.
   # All other requests will be done via AJAX queries.0
   def show
-    
     respond_to do |format|
       format.html
     end
