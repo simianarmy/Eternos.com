@@ -15,7 +15,7 @@ ActionController::Routing::Routes.draw do |map|
                                                   :add_another_family => :post, :remove_family => :delete,
                                                   :add_another_relationship => :post, :remove_relationship => :delete,
                                                   :backup_contact_emails => :post, :add_another_school => :post, :remove_school => :delete, 
-                                                  :set_feed_url => :put, :set_contact_name => :put,:set_contact_email => :put}
+                                                  :set_feed_rss_url => :put, :set_contact_name => :put,:set_contact_email => :put}
   map.resources :backup_sites
 
   # Redirect requests to flashrecorder xml config file to proper location

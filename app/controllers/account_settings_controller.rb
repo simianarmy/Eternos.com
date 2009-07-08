@@ -7,17 +7,13 @@ class AccountSettingsController < ApplicationController
   before_filter :set_facebook_session
   layout 'account_setup'
   
-  def set_feed_url
+  def set_feed_rss_url
     @feed = FeedUrl.find(params[:id])
     @feed.rss_url = params[:value]
     if @feed.save
-      render :update do |page|
-        page[params[:editorId]].innerHTML = "#{@feed.rss_url}"
-      end
+      render :text => @feed.send(:rss_url).to_s
     else
-      render :update do |page|
-        page[params[:editorId]].innerHTML = "Invalid RSS feed URL"
-      end
+      render :text => "Invalid RSS feed URL"
     end
   end
   
@@ -25,9 +21,7 @@ class AccountSettingsController < ApplicationController
     @contact = ContactEmail.find(params[:id])
     @contact.name = params[:value]
     if @contact.save
-      render :update do |page|
-        page[params[:editorId]].innerHTML = "#{@contact.name}"
-      end
+      render :text => @contact.send(:name).to_s
     else
       render :text => params[:value]
     end
@@ -37,9 +31,7 @@ class AccountSettingsController < ApplicationController
     @contact = ContactEmail.find(params[:id])
     @contact.email = params[:value]
     if @contact.save
-      render :update do |page|
-        page[params[:editorId]].innerHTML = "#{@contact.email}"
-      end
+      render :text => @contact.send(:email).to_s
     else
       render :text => params[:value]
     end

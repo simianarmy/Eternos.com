@@ -6,12 +6,9 @@ module AjaxHelper
   # Borrows some from editable_content_tag that I found after finishing this
   def restful_in_place_editor(elemtype, obj, attr, options={}, editOptions = {}, ajaxOptions = {})
     objname = options.has_key?(:object) ? options[:object] : obj.class.to_s.downcase
-    #domid = dom_id(obj) + "_#{attr}"
-    # get unix id of DOM
-    domid = "#{obj}_#{attr}_#{options[:id]}_in_place_editor"
+    domid = dom_id(obj) + "_#{attr}"
     options[:url] = url_for(obj) unless options.has_key? :url
-    options[:id] = domid #unless options.has_key? :id
-    options[:class] = "in_place_editor_field"
+    options[:id] = domid unless options.has_key? :id
     
     #edops = jsonify editOptions
     #ajops = jsonify ajaxOptions
@@ -30,9 +27,7 @@ module AjaxHelper
       { onLoading: function(transport, element){load_busy($('#{domid}'))}, 
         method: 'put'
       }",
-      #:with => "'domId=#{domid}&#{objname}[#{attr}]=' +escape($F(Form.findFirstElement(form)))",
-      #get variable value to assign attribute
-      :with => "'value='+escape($F(Form.findFirstElement(form)))",
+      :with => "'domId=#{domid}&#{objname}[#{attr}]=' +escape($F(Form.findFirstElement(form)))",
       :script => true,
       :cols => 40,
       :saving_text => "Updating..."
@@ -67,6 +62,15 @@ module AjaxHelper
   end
 
   def link_to_show_hide(id, name = "", option = {}, element_to_hide=[])
+    action = "$('#{id}').show();"
+    element_to_hide.each do |element|
+      action += "$('#{element}').hide();"
+    end
+    link_to_function name, action, option
+  end
+  
+  #This method used only for Online Account
+  def link_to_show_hide_online(id, name = "", option = {}, element_to_hide=[])
     action = "$('#{id}').show();"
     element_to_hide.each do |element|
       action += "$('#{element}').hide();"

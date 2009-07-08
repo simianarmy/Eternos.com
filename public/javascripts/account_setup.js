@@ -31,7 +31,7 @@ function setDinamycHeight(id){
 }
 
 function resetDinamycHeight(id){
-  heightDiv = 335;
+  heightDiv = 350;
   $(id).style.height = heightDiv + "px";
   $(id).style.overflow = "hidden";
 }
@@ -92,7 +92,7 @@ function addRowAddress(){
   var inputLocType    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][location_type]", type: "text"});
   var inputStreet1    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_1]", type: "text"});
   var inputStreet2    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_2]", type: "text"});
-  var imgLoading      = new Element('img', { src: "/images/spinner.gif", style: "display:none", id:"loading-image" });
+  var imgLoading      = new Element('img', { src: "/images/spinner.gif", style: "display:none", id:"loading-image-"+window.counter });
   var selectCountry   = new Element('select', { Class: "textbox8", name: "addresses["+window.counter+"][country_id]", id: "country-id"});
   
     var optn = document.createElement("option");
@@ -1112,8 +1112,8 @@ function toggleCustomTextFamily(id){
 
 function getRegion(val,elementId){
   new Ajax.Request('account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'',
-                   onLoading:function(request){$('loading-image').show();}, 
-                   onComplete:function(request){$('loading-image').hide();} });return false;
+                   onLoading:function(request){$('loading-image-'+elementId).show();}, 
+                   onComplete:function(request){$('loading-image-'+elementId).hide();} });return false;
 }
 
 function deleteFormAddress(){

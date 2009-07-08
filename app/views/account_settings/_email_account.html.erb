@@ -1,11 +1,15 @@
 <div id="account-setting-content" class="makeScroll">
-  <div class="title3">Backup Your Gmail Account</div>
+  <div class="title3"><h3>Backup Your Gmail Account</h3></div>
   <div class="textarea6">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac magna id erat interdum cursus. Curabitur nisi metus, rhoncus in mattis ac, mattis at orci. Cras placerat lectus in magna cursus dictum. Fusce lacinia feugiat ullamcorper. Aliquam et magna risus. Curabitur rhoncus nisl sit amet elit fringilla ut tincidunt justo imperdiet.
 		<br /><br />
 		<center>
        <h4 id="flash-message"></h4>
-    <% form_remote_for :gmail, :url => {:action => 'backup_contact_emails'}, :html => {:id => "backup_email_address"}, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();" do |f| -%>
+    <% form_remote_for :gmail,
+                                :url => {:action => 'backup_contact_emails'},
+                                :html => {:id => "backup_email_address"},
+                                :loading => "$('progress-bar').show();",
+                                :complete => "$('progress-bar').hide();Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');" do |f| -%>
 		<table class="table1" border="0" cellspacing="0" cellpadding="0">
 			 	<tr>
 	        <td colspan="3" class="titlebox1">Your Gmail Account</td>

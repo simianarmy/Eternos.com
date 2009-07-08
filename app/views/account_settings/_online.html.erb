@@ -1,12 +1,12 @@
 <div id="account-setting-content" class="makeScroll">
-  <div class="title3">Online Account</div>
+  <div class="title3"><h3>Online Account</h3></div>
   <div class="network-icon-box">
     <%= #link_to_show_hide('facebook-box', "", {:class => "fb-btn2", :id => "fb-button"}, ["twitter-box","rss-box"] )  
     %>
     <%= link_to '', new_facebook_backup_path, :class => "lightview fb-btn2", :title => 'Authorize Facebook Backup :: :: width: 640, height: 800', :id => "fb-button", :rel => 'iframe' %>
     <%- className = @recent_backup_sites.include?("twitter") ? "twitter-active" : "twitter-btn" -%>
-    <%= link_to_show_hide('twitter-box', "", {:class => className, :id => "twitter-link"}, ["facebook-box","rss-box"])  %>
-    <%= link_to_show_hide('rss-box', "", {:class => "rss-btn"}, ["facebook-box","twitter-box"])  %>
+    <%= link_to_show_hide_online('twitter-box', "", {:class => className, :id => "twitter-link"}, ["facebook-box","rss-box"])  %>
+    <%= link_to_show_hide_online('rss-box', "", {:class => "rss-btn"}, ["facebook-box","twitter-box"])  %>
   </div>
 
   <div style="clear:both"></div> 
@@ -20,10 +20,10 @@
     </div>
     <div id="twitter-box" style="display:none;">
       <%= render :partial => "shared/rjs_message" %>
-      <% form_remote_for @online_account, :url => backup_sources_path,
-                                         :html => {:id=> 'form-online-account'},
-                                         :loading => "$('progress-bar').show();",
-                                         :complete => "$('progress-bar').hide();"  do |f| %>
+      <% form_remote_for @online_account,  :url => backup_sources_path,
+                                           :html => {:id=> 'form-online-account'},
+                                           :loading => "$('progress-bar').show();",
+                                           :complete => "$('progress-bar').hide();"  do |f| %>
        <%= image_tag "errors/twitter-top-box.gif" %>
        <%= hidden_field_tag :site_name, "twitter" %>
        <%- if !@activated_twitter.nil? -%>

@@ -1,7 +1,7 @@
 class Family < ActiveRecord::Base
   belongs_to :profile
   
-  validates_presence_of :name, :message => "Please enter a family name"
+  validates_presence_of :name, :message => " can't be blank"
   TYPES = ["Brother","Sister","Mother","Father","Aunt","Uncle","Other"]
 
 end   
