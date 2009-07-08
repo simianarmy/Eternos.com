@@ -22,17 +22,17 @@ describe Feed do
       end
       
       it "should not add new entries if feed not updated" do
-        lambda {
-          @feed.update_from_feed
-        }.should_not change(@feed.entries, :count)
+        @feed.update_from_feed
+        @feed.expects(:add_entries).never
       end
       
-      it "should add new entries if feed last modified < new entry date" do
-        latest_entry = @feed.entries.latest.first
-        @feed.update_attributes(:etag => nil, :last_modified => latest_entry.published_at - 10)
+      it "should add new entries only" do
+        @feed.entries.latest.first.destroy
+        recent = @feed.entries.reload.latest.first
+        @feed.update_attributes(:etag => nil, :last_modified => recent.published_at)
         lambda {
           @feed.update_from_feed
-        }.should_not change(@feed.entries, :count)
+        }.should change(@feed.entries, :count).by(1)
       end
     end
   end

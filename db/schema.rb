@@ -25,21 +25,22 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.integer  "created_at"
     t.integer  "updated_at"
     t.datetime "published_on"
+    t.string   "guid"
     t.text     "message"
     t.text     "attachment_data"
     t.string   "attachment_type"
     t.string   "activity_type"
     t.string   "type"
-    t.integer  "activity_stream_id", :null => false
+    t.integer  "activity_stream_id"
   end
   add_index "activity_stream_items", ["activity_stream_id"]
 
   create_table "activity_streams", :force => true do |t|
     t.integer "user_id",        :null => false
-    t.integer "backup_site_id", :null => false
+    t.datetime "last_activity_at"
   end
   add_index "activity_streams", ["user_id"]
-
+  
   create_table "address_books", :force => true do |t|
     t.integer  "user_id",            :null => false
     t.string   "first_name"
@@ -380,9 +381,11 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   
   create_table "feed_entries", :force => true do |t|
     t.integer "feed_id", :null => false
+    t.string  "author"
     t.string  "name"
     t.text    "summary"
-    t.text    "content"
+    t.text    "rss_content"
+    t.text    "url_content"
     t.text    "categories"
     t.string  "url"
     t.datetime  "published_at"

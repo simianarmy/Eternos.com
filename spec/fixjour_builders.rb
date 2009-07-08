@@ -19,11 +19,17 @@ Fixjour  do
   
   define_builder(ActivityStream) do |klass, overrides|
     klass.new(
-      :member => new_member,
-      :backup_site => new_backup_site)
+      :member => new_member)
   end
   
   define_builder(ActivityStreamItem) do |klass, overrides|
+    klass.protected :type
+    
+    overrides.process(:type) do |type|
+      overrides[:type] = nil
+      klass = type.constantize
+    end
+    
     klass.new(
       :activity_stream => new_activity_stream)
   end
@@ -137,11 +143,6 @@ Fixjour  do
       :owner => overrides[:owner] || new_member)
   end
   
-  define_builder(FacebookActivityStreamItem) do |klass, overrides|
-    klass.new(
-      :activity_stream => new_activity_stream)
-  end
-  
   define_builder(FacebookContent) do |klass, overrides|
     klass.new(
       :profile => new_profile, 
@@ -156,11 +157,25 @@ Fixjour  do
       :tag_s => Faker::Lorem.words.join(','))
   end
   
+  define_builder(Feed) do |klass, overrides|
+    klass.new(
+      :feed_url => new_feed_url,
+      :title => Faker::Name.first_name)
+  end
+  
+  define_builder(FeedEntry) do |klass, overrides|
+    klass.new(
+      :feed => new_feed,
+      :name => Faker::Name.first_name,
+      :summary => Faker::Lorem.sentence,
+      :guid => Faker::Lorem.words(3).join(':'))
+  end
+  
   define_builder(FeedUrl) do |klass, overrides|
     klass.new(
       :rss_url => 'http://feeds.feedburner.com/railscasts',
       :member => new_member,
-      :backup_site => new_backup_site)
+      :backup_site => new_backup_site(:name => 'blog'))
   end
 
   define_builder(Guest) do |klass, overrides|

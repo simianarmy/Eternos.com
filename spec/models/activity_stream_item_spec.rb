@@ -9,20 +9,14 @@ describe ActivityStreamItem do
     }.should change(ActivityStreamItem, :count).by(1)
   end
   
-  describe "" do
-    before(:each) do
-      @item = new_activity_stream_item
-    end
-  end
-  
   describe "facebook item" do
     before(:each) do
-      @item = new_facebook_activity_stream_item
+      @item = new_activity_stream_item :type => 'FacebookActivityStreamItem'
       @proxy = create_stream_proxy_item
     end
     
     it "should have facebook type" do
-      @item.should be_an_instance_of FacebookActivityStreamItem
+      @item.should be_a FacebookActivityStreamItem
     end
     
     it "should create a new instance from a proxy object" do
@@ -38,6 +32,33 @@ describe ActivityStreamItem do
       @item.attachment_type.should == 'photo'
       @item.attachment_data.should be_a Hash
       @item.attachment_data['photo'].should_not be_empty
+    end
+    
+    it "should find with named scope" do
+      @item.save
+      ActivityStreamItem.facebook.latest.first.should == @item
+    end
+  end
+  
+  describe "twitter item" do
+    before(:each) do
+      @item = new_activity_stream_item :type => 'TwitterActivityStreamItem'
+      @proxy = create_stream_proxy_item
+    end
+    
+    it "should have twitter type" do
+      @item.should be_a TwitterActivityStreamItem
+    end
+    
+    it "should create a new instance from a proxy object" do
+      @item = TwitterActivityStreamItem.create_from_proxy @proxy
+      @item.activity_type.should == 'status'
+      @item.message.should == @proxy.message
+    end
+    
+    it "should find with named scope" do
+      @item.save
+      ActivityStreamItem.twitter.latest.first.should == @item
     end
   end
 end

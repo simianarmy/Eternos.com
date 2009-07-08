@@ -16,13 +16,13 @@ class Member < User
     m.has_many :backup_job_archives
     m.has_many :backup_sources
     m.has_many :backup_sites, :through => :backup_sources
-    m.has_many :activity_streams
+    m.has_one :activity_stream
     m.has_one :backup_state
     m.has_one :profile
   end
 
-  after_create :activate!
-
+  after_create :create_associations_and_activate
+  
   # Scoped finders
   named_scope :with_backup_targets,
     :joins => :backup_sources, 
@@ -113,4 +113,9 @@ class Member < User
   
   private
     
+  def create_associations_and_activate
+    activate!
+    create_activity_stream
+    create_profile
+  end
 end

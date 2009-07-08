@@ -2,21 +2,35 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Member do
-   before(:each) do
-     @member = new_member
-   end
-   
-   it "should have member role" do
-     @member.role.should == 'Member'
-   end
-   
-   it "should have relationships association" do
-     @member.should respond_to :loved_ones
-   end
-  
-   it "should have contents association" do
-     @member.should respond_to :contents
-   end
+  before(:each) do
+    @member = new_member
+  end
+
+  it "should have member role" do
+    @member.role.should == 'Member'
+  end
+
+  it "should have relationships association" do
+    @member.should respond_to :loved_ones
+  end
+
+  it "should have contents association" do
+    @member.should respond_to :contents
+  end
+end
+
+describe "on create" do
+  before(:each) do
+    @member = create_member
+  end
+
+  it "should have a profile object" do
+    @member.profile.should_not be_nil
+  end
+
+  it "should have an activity stream object" do
+    @member.activity_stream.should_not be_nil
+  end
 end
 
 describe Member, "once activated" do
@@ -54,9 +68,8 @@ describe Member, "once activated" do
         @info = {:job_id => 1}
         @member.backup_state.expects(:finished!).with(@info)
         @member.backup_finished!(@info)
-      endrequire "../../app/controllers/account_settings_controller"
+      end
       
-    
       it "should save backup state even in none exists" do
         @info = {:job_id => 1}
         BackupState.expects(:new).returns(@bs)
