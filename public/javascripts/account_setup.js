@@ -96,7 +96,7 @@ function addRowAddress(){
   var selectCountry   = new Element('select', { Class: "textbox8", name: "addresses["+window.counter+"][country_id]", id: "country-id"});
   
     var optn = document.createElement("option");
-    optn.value = 0;
+    optn.value = "";
     optn.text = "Select Country";
     selectCountry.options.add(optn);
 
@@ -111,7 +111,7 @@ function addRowAddress(){
     
   var selectRegion = new Element('select', { Class: "textbox8", name: "addresses["+window.counter+"][region_id]", id: "region-id", disabled: "disabled" });
   var opt = document.createElement("option");
-  opt.value = "1";
+  opt.value = "";
   opt.text = "Select Country First";
   selectRegion.options.add(opt);
   
