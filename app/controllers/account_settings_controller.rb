@@ -537,25 +537,36 @@ class AccountSettingsController < ApplicationController
   end
   
   def backup_contact_emails
-    gmail = Contacts::Gmail.new(params[:gmail][:username], params[:gmail][:password])
-    gmail.contacts.each do |n, e|
-      ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})
-    end
-    @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
-    
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "flash-message", :text => "Your contact emails was successfully saved."
-          page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
+    begin
+      gmail = Contacts::Gmail.new(params[:gmail][:username], params[:gmail][:password])
+      GmailAccount.create!(
+        :user_id => current_user.id,
+        :auth_login => params[:gmail][:username], 
+        :auth_password => params[:gmail][:password], 
+        :auth_confirmed => true,
+        :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
+        :last_login_at => Time.now)
+
+      # Save email account contacts
+      gmail.contacts.each do |n, e|
+        ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})
+      end
+      @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
+
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            page.replace_html "flash-message", :text => "Your email account was successfully saved."
+            page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
+          end
         end
       end
-    end
-  rescue Contacts::AuthenticationError => message
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "flash-message", :text => message.to_s
+    rescue Exception => message
+      respond_to do |format|
+        format.js do
+          render :update do |page|
+            page.replace_html "flash-message", :text => message.to_s
+          end
         end
       end
     end

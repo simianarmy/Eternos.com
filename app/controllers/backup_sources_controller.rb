@@ -13,13 +13,11 @@ class BackupSourcesController < ApplicationController
         when "facebook"
           #TODO:
         when "twitter"
-          httpauth = Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password])
-          base = Twitter::Base.new(httpauth)
-          if base.verify_credentials
-
-            backup_source = BackupSource.find_by_user_id(current_user.id, :conditions => ["backup_site_id = 1 and auth_login = ? ", params[:backup_source][:auth_login]])
+          base = Twitter::Base.new(Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password]))
+          if base.verify_credentials            
+            backup_source = current_user.backup_sources.by_site(BackupSite::Twitter).find_by_auth_login(params[:backup_source][:auth_login])
             if backup_source.nil?
-              backup_source = BackupSource.new(params[:backup_source].merge({:user_id => current_user.id, :backup_site_id => backup_site.id}))
+              backup_source = current_user.backup_sources.new(params[:backup_source].merge({:backup_site_id => backup_site.id}))
             else
               backup_source.attributes = params[:backup_source]
             end
