@@ -139,7 +139,15 @@ body{
 	float:right;
 }
 
-.blue-btn4{
+.blue-btn4, .editor_cancel_link{
+	font-family:arial;
+	font-size:11px;
+	color:#407ddf;
+	margin: 0 5px 0 0;
+	text-decoration:none;
+}
+
+.editor_cancel_link{
 	font-family:arial;
 	font-size:11px;
 	color:#407ddf;
@@ -148,6 +156,10 @@ body{
 }
 
 .blue-btn4:hover{
+	text-decoration:underline;
+}
+
+.editor_cancel_link:hover{
 	text-decoration:underline;
 }
 
