@@ -7,4 +7,8 @@ class TimelineEvent
   def initialize(object)
     @event = object
   end
+  
+  def events
+    @event.to_json
+  end
 end

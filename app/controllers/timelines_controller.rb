@@ -19,6 +19,7 @@ class TimelinesController < ApplicationController
   # Collect any other data that the timeline page needs on load.
   # All other requests will be done via AJAX queries.0
   def show
+    @member = current_user
     respond_to do |format|
       format.html
     end
@@ -41,14 +42,17 @@ class TimelinesController < ApplicationController
   # GET /timeline/search/member_id/start_date/end_date/*opts
   def search
     # Member or guest view
-    member_view = (params[:id].to_i == current_user.id)
-    filters = parse_search_filters
+    
+#    member_view = (params[:id].to_i == current_user.id)
+#    filters = parse_search_filters
+#    
+#    @response = TimelineRequestResponse.new(request.url)
+#    search = filters[:fake] ? 
+#      TimelineSearchFaker.new([params[:start_date], params[:end_date]], filters) : 
+#      TimelineSearch.new(params[:id], [params[:start_date], params[:end_date]], filters)
+#    @response.results = search.results
     
     @response = TimelineRequestResponse.new(request.url)
-    search = filters[:fake] ? 
-      TimelineSearchFaker.new([params[:start_date], params[:end_date]], filters) : 
-      TimelineSearch.new(params[:id], [params[:start_date], params[:end_date]], filters)
-    @response.results = search.results
     
     render :json => @response.to_json
   end

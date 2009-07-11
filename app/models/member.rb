@@ -111,6 +111,11 @@ class Member < User
     save(false)
   end
   
+  # temporary function to get member lifespan beginning-end
+  def lifespan_beginning_and_end
+    "#{20.years.ago.to_date}/#{DateTime.now.to_date.to_s}/"
+  end
+  
   private
     
   def create_associations_and_activate

@@ -23,4 +23,9 @@ module TimelinesHelper
       object.time_period.to_s
     end
   end
+  
+  # populate timeline events for a user/member
+  def populate_timeline_events(member)
+    javascript_tag "new Ajax.Request('/timeline/search/#{member.id}/#{member.lifespan_beginning_and_end}', { method:'get' });"
+  end
 end
