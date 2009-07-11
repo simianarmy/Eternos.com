@@ -1,0 +1,56 @@
+MIME-Version: 1.0
+Date: Thu, 9 Jul 2009 09:37:11 -0700
+Received: by 10.151.112.13; Thu, 9 Jul 2009 09:37:11 -0700 (PDT)
+Message-ID: <25051d790907090937s44659f0ao@mail.gmail.com>
+Subject: raw email subject
+From: Gmail Team <mail-noreply@google.com>
+To: Eternos Tester <eternosdude@gmail.com>
+Content-Type: multipart/alternative; boundary=00151751222eb585e6046e48775a
+
+--00151751222eb585e6046e48775a
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+To spice up your inbox with colors and themes, check out the Themes tab
+under Settings.
+
+* Click here to customize Gmail =BB<http://mail.google.com/mail/#settings/t=
+hemes>
+*
+Enjoy!
+
+- The Gmail Team
+
+Please note that Themes are not available if you're using Internet Explorer
+6.0. To take advantage of the latest Gmail features, please upgrade to a
+fully supported
+browser<http://mail.google.com/support/bin/answer.py?answer=3D6557&hl=3Den&=
+utm_source=3Dwel-eml&utm_medium=3Deml&utm_campaign=3Den>
+.
+
+--00151751222eb585e6046e48775a
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+<font face="Arial, Helvetica, sans-serif">
+<p>To spice up your inbox with colors and themes, check out the Themes tab
+under Settings.</p>
+
+<p><strong><a href="http://mail.google.com/mail/#settings/themes">
+Click here to customize Gmail &#187;</a></strong></p>
+
+Enjoy!
+
+<p>- The Gmail Team</p>
+
+<p><font size="-2" color="#999">Please note that Themes are not available if
+you're using Internet Explorer 6.0. To take advantage of the latest Gmail
+features, please
+<a href="http://mail.google.com/support/bin/answer.py?answer=6557&hl=en&utm_source=wel-eml&utm_medium=eml&utm_campaign=en"><font color="#999">
+upgrade to a fully supported browser</font></a>.</font></p>
+
+</font>
+</html>
+
+--00151751222eb585e6046e48775a--

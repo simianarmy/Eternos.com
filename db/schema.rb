@@ -98,6 +98,24 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.integer  "recording_id"
   end
 
+  create_table "backup_emails", :force => true do |t|
+    t.integer :backup_source_id,  :null => false
+    t.string  :message_id
+    t.string  :subject
+    t.string  :sender
+    t.datetime  :received_at
+    t.timestamps
+  end
+  add_index "backup_emails", ['backup_source_id']
+  
+  create_table "email_contents", :force => true do |t|
+    t.integer :backup_email_id, :null => false
+    t.integer :bytes,    :null => false, :default => 0
+    t.string  :s3_key
+    t.binary  :contents
+  end
+  add_index 'email_contents', ['backup_email_id']
+  
   create_table "backup_job_archives", :force => true do |t|
     t.datetime "started_at"
     t.datetime "finished_at"

@@ -62,6 +62,12 @@ Fixjour  do
       :user => new_user)
   end
   
+  define_builder(BackupEmail) do |klass, overrides|
+    klass.new(:backup_source => new_backup_source,
+      :message_id => Faker::Lorem.words(3).join(':'),
+      :subject => Faker::Lorem.sentence)
+  end
+  
   define_builder(BackupJob) do |klass, overrides|
     klass.new(:size => rand(1000) * 1.kilobyte,
         :status => 'ok',
