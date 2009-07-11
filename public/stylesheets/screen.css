@@ -71,8 +71,9 @@ p.account-description {
 p.account-verification {
 	color: #5f5f5f;
 	font-size: 11px;
-	width: 300px;
+	width: auto;
 	float: left;
+	margin-right:5px;
 }
 
 p.loading {
@@ -183,8 +184,21 @@ input.login {
 	border: none;
 	color: #fff;
 	font-size: 14px;
-	padding: 3px 0px 4px;
+	padding: 3px 0 4px 0;
 	width: 90px;
+	height:23px;
+	cursor:pointer;
+}
+
+input.login:hover {
+	background: url(/images/button-login.png) no-repeat;
+}
+
+.text-left{
+	text-align:left;
+	font-family:arial;
+	font-size:12px;
+	margin-left:-5px;
 }
 
 input.submit {
@@ -245,6 +259,11 @@ input#password {
 
 input#password-created {
 	margin-top: 8px;
+	margin-left: 0;
+}
+
+input#password-created2 {
+	margin-top: 4px;
 	margin-left: 0;
 }
 
