@@ -78,6 +78,7 @@ Rails::Initializer.run do |config|
   config.gem 'shared-mime-info'
   config.gem 'facebooker-eternos', :lib => 'facebooker'
   config.gem 'simianarmy-feedzirra', :lib => 'feedzirra', :source => 'http://gems.github.com'
+  
   # Rails can't find this gem even though it is in vendor/gems
   #config.gem 'contacts'
   
@@ -160,6 +161,9 @@ EmailVeracity::Config[:lookup] = false
 # Change this keys with your own domain
 ENV['RECAPTCHA_PUBLIC_KEY'] = '6Le7nwYAAAAAAEbuaM378Df7UkAr1vuM_52el9Bg'
 ENV['RECAPTCHA_PRIVATE_KEY'] = '6Le7nwYAAAAAAOdPcWOZSu8K4P1CRFC1Djyn1pMw'
+
+Rubaidh::GoogleAnalytics.tracker_id = 'UA-9243545-1'
+Rubaidh::GoogleAnalytics.local_javascript = true
 
 CACHE = MemCache.new('127.0.0.1')
 

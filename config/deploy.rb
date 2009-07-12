@@ -87,11 +87,15 @@ namespace :deploy do
   task :update_crontab, :roles => :db do
     run "cd #{release_path} && whenever -s environment=#{stage} --update-crontab #{application}"
   end
+
+  desc "Update local Google Analytics files"
+  task :google_analytics, :role => :web do
+    run "cd #{current_path} && rake google_analytics:update RAILS_ENV=#{stage}"
+  end
 end
 
-#after "deploy:symlink", "deploy:build_native"
+after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
-#after "deploy:symlink", "deploy:update_crontab"
 after "deploy:update_code", "deploy:symlink_shared"
 after "deploy:restart", "deploy:restart_mq"
 

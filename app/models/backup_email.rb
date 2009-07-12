@@ -26,12 +26,12 @@ class BackupEmail < ActiveRecord::Base
       self.subject      = e.subject
       self.sender       = e.from
       self.received_at  = e.date
-      self.email_content = EmailContent.new(:bytes => e.body.size, :contents => Marshal.dump(e))
+      self.email_content = EmailContent.new(:bytes => e.body.size, :contents => raw_email)
     end
   end
   
   def body
-    Marshal.load(email_content.contents).body rescue nil
+    TMail::Mail.parse(email_content.contents).body rescue nil
   end
   
   def size

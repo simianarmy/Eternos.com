@@ -8,13 +8,14 @@ class ActivityStreamItem < ActiveRecord::Base
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
     create!(
-      :created_at => item.created,
-      :updated_at => item.updated,
-      :published_on => Time.at(item.created),
-      :message => item.message,
-      :activity_type => item.type,
-      :attachment_data => item.attachment_data,
-      :attachment_type => item.attachment_type)
+      :guid             => item.id,
+      :created_at       => item.created,
+      :updated_at       => item.updated,
+      :published_on     => Time.at(item.created),
+      :message          => item.message,
+      :activity_type    => item.type,
+      :attachment_data  => item.attachment_data,
+      :attachment_type  => item.attachment_type)
   end
   
   named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
