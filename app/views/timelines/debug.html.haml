@@ -21,9 +21,7 @@
       = image_tag p.source_url
       %hr
   %hr
-  %br Activity Streams
-  - @activity_streams.each do |stream|
-    = debug stream
-    %br
-    - stream.activity_stream_items.each do |item|
-      = debug item
+  %br Activity Stream  
+  %br
+  - @activity_stream.items.each do |item|
+    = debug item

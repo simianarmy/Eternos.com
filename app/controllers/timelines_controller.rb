@@ -29,32 +29,33 @@ class TimelinesController < ApplicationController
     # Right now just raw info for debug output
     @profile = current_user.profile
     @facebook_profile = @profile.facebook_data
-    @facebook_friends = @profile.facebook_content.friends
-    @facebook_groups = @profile.facebook_content.groups
+    if @profile.facebook_content
+      @facebook_friends = @profile.facebook_content.friends
+      @facebook_groups = @profile.facebook_content.groups
+    end
     if bs = current_user.backup_sources
       bs.each do |source|
         (@photo_albums ||= []) << source.backup_photo_albums
       end
     end
-    @activity_streams = current_user.activity_streams
+    @activity_stream = current_user.activity_stream || current_user.build_activity_stream
   end
   
   # GET /timeline/search/member_id/start_date/end_date/*opts
   def search
     # Member or guest view
     
-#    member_view = (params[:id].to_i == current_user.id)
-#    filters = parse_search_filters
-#    
-#    @response = TimelineRequestResponse.new(request.url)
-#    search = filters[:fake] ? 
-#      TimelineSearchFaker.new([params[:start_date], params[:end_date]], filters) : 
-#      TimelineSearch.new(params[:id], [params[:start_date], params[:end_date]], filters)
-#    @response.results = search.results
+    member_view = (params[:id].to_i == current_user.id)
+        
+    # Rails has already parsed the url into params hash for us - no point in doing it again.
+    @response = TimelineRequestResponse.new(request.url, params).execute
     
-    @response = TimelineRequestResponse.new(request.url)
-    
-    render :json => @response.to_json
+    respond_to do |format|
+      format.js {
+        render :json => @response.to_json
+      }
+      format.html
+    end
   end
   
   private
@@ -63,11 +64,4 @@ class TimelinesController < ApplicationController
     @host = current_user.get_host
   end
   
-  def parse_search_filters
-    (params[:filters] || []).inject({}) do |res, el| 
-      k,v = el.to_s.split('=')
-      res[k.to_sym] = v.nil? ? "1" : v
-      res
-    end
-  end
 end

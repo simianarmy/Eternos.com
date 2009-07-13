@@ -4,6 +4,7 @@
 
 class TimelineSearch
   def initialize(user_id, dates, options)
+    debugger
     @options = options
     @events = []
     @member = Member.find(user_id)
@@ -32,9 +33,9 @@ end
 class TimelineSearchFaker
   MaxResults = 10
   
-  def initialize(dates, options)
+  def initialize(user_id, dates, options)
     @options = options
-    @member = Member.by_name('TIMELINE_TEST').first || Member.find(options[:user_id])
+    @member = Member.by_name('TIMELINE_TEST').first || Member.find(user_id)
     @facebook_source = @member.backup_sources.by_site(BackupSite::Facebook).first
   end
   
@@ -57,7 +58,7 @@ class TimelineSearchFaker
   
   # Returns random activity
   def get_activity_stream_item
-    @member.activity_streams.rand.items.rand
+    @member.activity_stream.items.rand
   end
   
   # Returns random photo from random album
