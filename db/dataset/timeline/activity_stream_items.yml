@@ -1,6 +1,6 @@
 --- 
 activity_stream_item_00001: 
-  activity_stream_id: 
+  activity_stream_id: 11
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -12,7 +12,7 @@ activity_stream_item_00001:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00002: 
-  activity_stream_id: 
+  activity_stream_id: 11
   activity_type: post
   attachment_data: |
     --- 
@@ -29,7 +29,7 @@ activity_stream_item_00002:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00003: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -53,7 +53,7 @@ activity_stream_item_00003:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00004: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -70,7 +70,7 @@ activity_stream_item_00004:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00005: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -82,7 +82,7 @@ activity_stream_item_00005:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00006: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -94,7 +94,7 @@ activity_stream_item_00006:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00007: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -106,7 +106,7 @@ activity_stream_item_00007:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00008: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -131,7 +131,7 @@ activity_stream_item_00008:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00009: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -143,7 +143,7 @@ activity_stream_item_00009:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00010: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -167,7 +167,7 @@ activity_stream_item_00010:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00011: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -184,7 +184,7 @@ activity_stream_item_00011:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00012: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -208,7 +208,7 @@ activity_stream_item_00012:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00013: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -225,7 +225,7 @@ activity_stream_item_00013:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00014: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -249,7 +249,7 @@ activity_stream_item_00014:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00015: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -261,7 +261,7 @@ activity_stream_item_00015:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00016: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -278,7 +278,7 @@ activity_stream_item_00016:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00017: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -295,7 +295,7 @@ activity_stream_item_00017:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00018: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -319,7 +319,7 @@ activity_stream_item_00018:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00019: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -331,7 +331,7 @@ activity_stream_item_00019:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00020: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |+
     --- 
@@ -353,7 +353,7 @@ activity_stream_item_00020:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00021: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -378,7 +378,7 @@ activity_stream_item_00021:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00022: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -403,7 +403,7 @@ activity_stream_item_00022:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00023: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -420,7 +420,7 @@ activity_stream_item_00023:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00024: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -432,7 +432,7 @@ activity_stream_item_00024:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00025: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -444,7 +444,7 @@ activity_stream_item_00025:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00026: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -456,7 +456,7 @@ activity_stream_item_00026:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00027: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -468,7 +468,7 @@ activity_stream_item_00027:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00028: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -485,7 +485,7 @@ activity_stream_item_00028:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00029: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -509,7 +509,7 @@ activity_stream_item_00029:
   type: FacebookActivityStreamItem
   updated_at: 1246404509
 activity_stream_item_00030: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -521,7 +521,7 @@ activity_stream_item_00030:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00031: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -533,7 +533,7 @@ activity_stream_item_00031:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00032: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -545,7 +545,7 @@ activity_stream_item_00032:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00033: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -557,7 +557,7 @@ activity_stream_item_00033:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00034: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -569,7 +569,7 @@ activity_stream_item_00034:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00035: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -586,7 +586,7 @@ activity_stream_item_00035:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00036: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -610,7 +610,7 @@ activity_stream_item_00036:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00037: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -622,7 +622,7 @@ activity_stream_item_00037:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00038: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -639,7 +639,7 @@ activity_stream_item_00038:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00039: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -663,7 +663,7 @@ activity_stream_item_00039:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00040: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -675,7 +675,7 @@ activity_stream_item_00040:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00041: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -687,7 +687,7 @@ activity_stream_item_00041:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00042: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -699,7 +699,7 @@ activity_stream_item_00042:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00043: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -711,7 +711,7 @@ activity_stream_item_00043:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00044: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -723,7 +723,7 @@ activity_stream_item_00044:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00045: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -740,7 +740,7 @@ activity_stream_item_00045:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00046: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -757,7 +757,7 @@ activity_stream_item_00046:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00047: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -769,7 +769,7 @@ activity_stream_item_00047:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00048: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -781,7 +781,7 @@ activity_stream_item_00048:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00049: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -798,7 +798,7 @@ activity_stream_item_00049:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00050: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -823,7 +823,7 @@ activity_stream_item_00050:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00051: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -847,7 +847,7 @@ activity_stream_item_00051:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00052: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -864,7 +864,7 @@ activity_stream_item_00052:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00053: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -881,7 +881,7 @@ activity_stream_item_00053:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00054: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -898,7 +898,7 @@ activity_stream_item_00054:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00055: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -915,7 +915,7 @@ activity_stream_item_00055:
   type: FacebookActivityStreamItem
   updated_at: 1246404510
 activity_stream_item_00056: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -927,7 +927,7 @@ activity_stream_item_00056:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00057: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -944,7 +944,7 @@ activity_stream_item_00057:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00058: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -968,7 +968,7 @@ activity_stream_item_00058:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00059: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -980,7 +980,7 @@ activity_stream_item_00059:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00060: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -992,7 +992,7 @@ activity_stream_item_00060:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00061: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1009,7 +1009,7 @@ activity_stream_item_00061:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00062: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1021,7 +1021,7 @@ activity_stream_item_00062:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00063: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1038,7 +1038,7 @@ activity_stream_item_00063:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00064: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1050,7 +1050,7 @@ activity_stream_item_00064:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00065: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1075,7 +1075,7 @@ activity_stream_item_00065:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00066: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1100,7 +1100,7 @@ activity_stream_item_00066:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00067: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1124,7 +1124,7 @@ activity_stream_item_00067:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00068: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |+
     --- 
@@ -1146,7 +1146,7 @@ activity_stream_item_00068:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00069: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1158,7 +1158,7 @@ activity_stream_item_00069:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00070: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1170,7 +1170,7 @@ activity_stream_item_00070:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00071: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1182,7 +1182,7 @@ activity_stream_item_00071:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00072: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1206,7 +1206,7 @@ activity_stream_item_00072:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00073: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1223,7 +1223,7 @@ activity_stream_item_00073:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00074: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1240,7 +1240,7 @@ activity_stream_item_00074:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00075: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |+
     --- 
@@ -1261,7 +1261,7 @@ activity_stream_item_00075:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00076: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1286,7 +1286,7 @@ activity_stream_item_00076:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00077: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1303,7 +1303,7 @@ activity_stream_item_00077:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00078: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1320,7 +1320,7 @@ activity_stream_item_00078:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00079: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1332,7 +1332,7 @@ activity_stream_item_00079:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00080: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1349,7 +1349,7 @@ activity_stream_item_00080:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00081: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1366,7 +1366,7 @@ activity_stream_item_00081:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00082: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1378,7 +1378,7 @@ activity_stream_item_00082:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00083: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1395,7 +1395,7 @@ activity_stream_item_00083:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00084: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1412,7 +1412,7 @@ activity_stream_item_00084:
   type: FacebookActivityStreamItem
   updated_at: 1246404511
 activity_stream_item_00085: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1429,7 +1429,7 @@ activity_stream_item_00085:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00086: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1453,7 +1453,7 @@ activity_stream_item_00086:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00087: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1465,7 +1465,7 @@ activity_stream_item_00087:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00088: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1482,7 +1482,7 @@ activity_stream_item_00088:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00089: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |+
     --- 
@@ -1503,7 +1503,7 @@ activity_stream_item_00089:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00090: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1515,7 +1515,7 @@ activity_stream_item_00090:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00091: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1539,7 +1539,7 @@ activity_stream_item_00091:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00092: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1556,7 +1556,7 @@ activity_stream_item_00092:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00093: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1568,7 +1568,7 @@ activity_stream_item_00093:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00094: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1580,7 +1580,7 @@ activity_stream_item_00094:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00095: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1597,7 +1597,7 @@ activity_stream_item_00095:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00096: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1609,7 +1609,7 @@ activity_stream_item_00096:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00097: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1626,7 +1626,7 @@ activity_stream_item_00097:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00098: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1638,7 +1638,7 @@ activity_stream_item_00098:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00099: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1655,7 +1655,7 @@ activity_stream_item_00099:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00100: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1672,7 +1672,7 @@ activity_stream_item_00100:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00101: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1689,7 +1689,7 @@ activity_stream_item_00101:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00102: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1701,7 +1701,7 @@ activity_stream_item_00102:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00103: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1713,7 +1713,7 @@ activity_stream_item_00103:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00104: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1725,7 +1725,7 @@ activity_stream_item_00104:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00105: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1742,7 +1742,7 @@ activity_stream_item_00105:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00106: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1754,7 +1754,7 @@ activity_stream_item_00106:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00107: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1766,7 +1766,7 @@ activity_stream_item_00107:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00108: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1783,7 +1783,7 @@ activity_stream_item_00108:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00109: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
@@ -1795,7 +1795,7 @@ activity_stream_item_00109:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00110: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1812,7 +1812,7 @@ activity_stream_item_00110:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00111: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1829,7 +1829,7 @@ activity_stream_item_00111:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00112: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: post
   attachment_data: |
     --- 
@@ -1846,7 +1846,7 @@ activity_stream_item_00112:
   type: FacebookActivityStreamItem
   updated_at: 1246404512
 activity_stream_item_00113: 
-  activity_stream_id: 
+  activity_stream_id: 1
   activity_type: status
   attachment_data: 
   attachment_type: 
