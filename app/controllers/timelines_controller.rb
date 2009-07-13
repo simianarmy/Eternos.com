@@ -48,13 +48,16 @@ class TimelinesController < ApplicationController
     member_view = (params[:id].to_i == current_user.id)
         
     # Rails has already parsed the url into params hash for us - no point in doing it again.
-    @response = TimelineRequestResponse.new(request.url, params).execute
+    @response = TimelineRequestResponse.new(request.url, params)
+    @response.execute
     
     respond_to do |format|
       format.js {
         render :json => @response.to_json
       }
-      format.html
+      format.html {
+        @json = @response.to_json
+      }
     end
   end
   
