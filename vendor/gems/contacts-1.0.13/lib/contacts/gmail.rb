@@ -1,4 +1,4 @@
-require "json/add/rails"
+#require "json/add/rails"
 
 class Contacts
   class Gmail < Base

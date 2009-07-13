@@ -58,6 +58,11 @@ module MessageQueue
       end
     end
       
+    # Stops current reactor loop
+    def stop_loop
+      AMQP.stop { EM.stop_event_loop }
+    end
+    
     def create_connection(connect_settings)
       # Connection to RabbitMQ using AMQP driver
       AMQP.connect(connect_settings) do |conn|

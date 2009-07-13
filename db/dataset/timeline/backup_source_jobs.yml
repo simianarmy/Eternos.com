@@ -2,11 +2,293 @@
 backup_source_job_00001: 
   backup_job_id: 100
   backup_source_id: 1
-  created_at: 2009-06-30 23:26:00 Z
+  created_at: 2009-07-11 22:39:24 Z
   days: 
   error_messages: 
-  finished_at: 2009-06-30 23:28:32 Z
+  finished_at: 2009-07-11 22:39:25 Z
   id: 1
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00002: 
+  backup_job_id: 100
+  backup_source_id: 1
+  created_at: 2009-07-11 22:39:25 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-11 22:39:39 Z
+  id: 2
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00003: 
+  backup_job_id: 100
+  backup_source_id: 3
+  created_at: 2009-07-11 22:40:59 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-11 22:41:10 Z
+  id: 3
+  messages: 
+  percent_complete: 125
+  size: 
+  status: 1
+backup_source_job_00004: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-11 22:41:10 Z
+  days: 
+  error_messages: 
+  - |
+    Error saving photos: unexpected invocation: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(#<BackupSource:0x5e3a288>, #<FacebookPhotoAlbum:0x5d10718>)
+    unsatisfied expectations:
+    - expected exactly once, not yet invoked: #<BackupWorker::FacebookStandalone:0x5ee6880>.save_success_data(any_parameters)
+    satisfied expectations:
+    - allowed any number of times, already invoked once: #<AnyInstance:BackupWorker::FacebookStandalone>.load_rails_environment(any_parameters)
+    - allowed any number of times, not yet invoked: #<BackupWorker::FacebookStandalone:0x5ee6880>.save_posts(any_parameters)
+    - allowed any number of times, already invoked once: #<BackupWorker::FacebookStandalone:0x5ee6880>.save_friends(any_parameters)
+    - allowed any number of times, already invoked once: #<BackupWorker::FacebookStandalone:0x5ee6880>.save_profile(any_parameters)
+    - expected never, not yet invoked: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(any_parameters)
+    - expected never, not yet invoked: #<AnyInstance:BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string)>.save_album(any_parameters)
+
+  finished_at: 2009-07-11 22:41:11 Z
+  id: 4
+  messages: 
+  percent_complete: 0
+  size: 
+  status: 0
+backup_source_job_00005: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-11 22:41:11 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-11 22:41:11 Z
+  id: 5
+  messages: 
+  percent_complete: 25
+  size: 
+  status: 1
+backup_source_job_00006: 
+  backup_job_id: 100
+  backup_source_id: 5
+  created_at: 2009-07-11 22:46:33 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-11 22:46:42 Z
+  id: 6
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00007: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-11 22:46:43 Z
+  days: 
+  error_messages: 
+  - |
+    Error saving photos: unexpected invocation: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(#<BackupSource:0x5dd070c>, #<FacebookPhotoAlbum:0x5c7c4f0>)
+    unsatisfied expectations:
+    - expected exactly once, not yet invoked: #<BackupWorker::FacebookStandalone:0x5e1db74>.save_success_data(any_parameters)
+    satisfied expectations:
+    - allowed any number of times, already invoked once: #<AnyInstance:BackupWorker::FacebookStandalone>.load_rails_environment(any_parameters)
+    - allowed any number of times, not yet invoked: #<BackupWorker::FacebookStandalone:0x5e1db74>.save_posts(any_parameters)
+    - allowed any number of times, already invoked once: #<BackupWorker::FacebookStandalone:0x5e1db74>.save_friends(any_parameters)
+    - allowed any number of times, already invoked once: #<BackupWorker::FacebookStandalone:0x5e1db74>.save_profile(any_parameters)
+    - expected never, not yet invoked: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(any_parameters)
+    - expected never, not yet invoked: #<AnyInstance:BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string)>.save_album(any_parameters)
+
+  finished_at: 2009-07-11 22:46:43 Z
+  id: 7
+  messages: 
+  percent_complete: 0
+  size: 
+  status: 0
+backup_source_job_00008: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-11 22:46:43 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-11 22:46:44 Z
+  id: 8
+  messages: 
+  percent_complete: 25
+  size: 
+  status: 1
+backup_source_job_00009: 
+  backup_job_id: 100
+  backup_source_id: 7
+  created_at: 2009-07-11 22:50:29 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-11 22:50:37 Z
+  id: 9
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00010: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-11 22:50:37 Z
+  days: 
+  error_messages: 
+  - |
+    Error saving photos: unexpected invocation: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(#<BackupSource:0x5e1b964>, #<FacebookPhotoAlbum:0x5a78320>)
+    unsatisfied expectations:
+    - expected exactly once, not yet invoked: #<BackupWorker::FacebookStandalone:0x5e9c5b4>.save_success_data(any_parameters)
+    satisfied expectations:
+    - allowed any number of times, already invoked once: #<AnyInstance:BackupWorker::FacebookStandalone>.load_rails_environment(any_parameters)
+    - expected never, not yet invoked: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).save_album(any_parameters)
+    - expected never, not yet invoked: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(any_parameters)
+
+  finished_at: 2009-07-11 22:50:40 Z
+  id: 10
+  messages: 
+  percent_complete: 75
+  size: 
+  status: 0
+backup_source_job_00011: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-11 22:50:40 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-11 22:50:40 Z
+  id: 11
+  messages: 
+  percent_complete: 25
+  size: 
+  status: 1
+backup_source_job_00012: 
+  backup_job_id: 100
+  backup_source_id: 9
+  created_at: 2009-07-12 00:32:27 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-12 00:32:35 Z
+  id: 12
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00013: 
+  backup_job_id: 100
+  backup_source_id: 10
+  created_at: 2009-07-12 00:40:16 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-12 00:40:24 Z
+  id: 13
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00014: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-12 00:40:37 Z
+  days: 
+  error_messages: 
+  - |
+    Error saving photos: unexpected invocation: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(#<BackupSource:0x5c805f0>, #<FacebookPhotoAlbum:0x5a53de0>)
+    unsatisfied expectations:
+    - expected exactly once, not yet invoked: #<BackupWorker::FacebookStandalone:0x5d2a9d8>.save_success_data(any_parameters)
+    satisfied expectations:
+    - allowed any number of times, already invoked once: #<AnyInstance:BackupWorker::FacebookStandalone>.load_rails_environment(any_parameters)
+    - expected never, not yet invoked: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).save_album(any_parameters)
+    - expected never, not yet invoked: BackupPhotoAlbum(id: integer, backup_source_id: integer, source_album_id: string, cover_id: string, size: integer, name: string, description: text, created_at: datetime, updated_at: datetime, location: string, modified: string).import(any_parameters)
+
+  finished_at: 2009-07-12 00:40:39 Z
+  id: 14
+  messages: 
+  percent_complete: 75
+  size: 
+  status: 0
+backup_source_job_00015: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-12 00:40:39 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-12 00:40:46 Z
+  id: 15
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00016: 
+  backup_job_id: 100
+  backup_source_id: 11
+  created_at: 2009-07-12 00:42:05 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-12 00:42:13 Z
+  id: 16
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00017: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-12 00:42:13 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-12 00:42:19 Z
+  id: 17
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00018: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-12 00:42:19 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-12 00:42:25 Z
+  id: 18
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00019: 
+  backup_job_id: 100
+  backup_source_id: 12
+  created_at: 2009-07-13 01:44:16 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-13 01:47:27 Z
+  id: 19
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00020: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-13 01:47:27 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-13 01:47:34 Z
+  id: 20
+  messages: 
+  percent_complete: 100
+  size: 
+  status: 1
+backup_source_job_00021: 
+  backup_job_id: 100
+  backup_source_id: 2
+  created_at: 2009-07-13 01:47:35 Z
+  days: 
+  error_messages: 
+  finished_at: 2009-07-13 01:47:41 Z
+  id: 21
   messages: 
   percent_complete: 100
   size: 

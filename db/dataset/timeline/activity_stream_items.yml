@@ -2,1617 +2,3311 @@
 activity_stream_item_00001: 
   activity_stream_id: 1
   activity_type: status
+  attachment_data: |
+    --- !map:Mash 
+    name: eternos tester
+    truncated: false
+    created_at: Tue Jul 07 23:40:08 +0000 2009
+    favorited: false
+    text: hoo fun indeed some links please &lt;a href="http://eternos.com"&gt;Eternos&lt;/a&gt;
+    id: 2523313695
+    in_reply_to_user_id: 
+    source: web
+    in_reply_to_screen_name: 
+    user: 
+    in_reply_to_status_id: 
+    screen_name: eternostest
+
+  attachment_type: 
+  created_at: 1247010008
+  guid: "2523313695"
+  id: 1
+  message: hoo fun indeed some links please &lt;a href="http://eternos.com"&gt;Eternos&lt;/a&gt;
+  published_on: 2009-07-07 23:40:08 Z
+  type: TwitterActivityStreamItem
+  updated_at: 1247351965
+activity_stream_item_00002: 
+  activity_stream_id: 1
+  activity_type: status
+  attachment_data: |
+    --- !map:Mash 
+    name: eternos tester
+    truncated: false
+    created_at: Tue Jul 07 23:39:37 +0000 2009
+    favorited: false
+    text: again and again
+    id: 2523306624
+    in_reply_to_user_id: 
+    source: web
+    in_reply_to_screen_name: 
+    user: 
+    in_reply_to_status_id: 
+    screen_name: eternostest
+
+  attachment_type: 
+  created_at: 1247009977
+  guid: "2523306624"
+  id: 2
+  message: again and again
+  published_on: 2009-07-07 23:39:37 Z
+  type: TwitterActivityStreamItem
+  updated_at: 1247351965
+activity_stream_item_00003: 
+  activity_stream_id: 1
+  activity_type: status
+  attachment_data: |
+    --- !map:Mash 
+    name: eternos tester
+    truncated: false
+    created_at: Tue Jul 07 23:39:27 +0000 2009
+    favorited: false
+    text: I am testing the twitter timeline
+    id: 2523304410
+    in_reply_to_user_id: 
+    source: web
+    in_reply_to_screen_name: 
+    user: 
+    in_reply_to_status_id: 
+    screen_name: eternostest
+
+  attachment_type: 
+  created_at: 1247009967
+  guid: "2523304410"
+  id: 3
+  message: I am testing the twitter timeline
+  published_on: 2009-07-07 23:39:27 Z
+  type: TwitterActivityStreamItem
+  updated_at: 1247351965
+activity_stream_item_00004: 
+  activity_stream_id: 2
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.amazon.com/dp/0596517742/
+    src: http://platform.ak.facebook.com/www/app_full_proxy.php?app=2795223269&amp;v=1&amp;size=f&amp;cksum=15b039f3f5b8cc63255eca04da5e1c7f&amp;src=http%3A%2F%2Fecx.images-amazon.com%2Fimages%2FI%2F51Mb1xCr7CL._SL500_.jpg
+    type: link
+
+  attachment_type: link
+  created_at: 1213932465
+  guid: 
+  id: 4
+  message: has activity on FriendFeed.
+  published_on: 2008-06-20 03:27:45 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00005: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1228586663
+  guid: 
+  id: 5
+  message: is running 1/2 marathons until he poops his pants
+  published_on: 2008-12-06 18:04:23 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00006: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1231385454
+  guid: 
+  id: 6
+  message: ", like towelie, has no idea what's going on right now"
+  published_on: 2009-01-08 03:30:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00007: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1232739240
+  guid: 
+  id: 7
+  message: is a towel
+  published_on: 2009-01-23 19:34:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00008: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091760
+  guid: 
+  id: 8
+  message: there will be no cake
+  published_on: 2009-05-12 01:29:20 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00009: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091790
+  guid: 
+  id: 9
+  message: Portal rules
+  published_on: 2009-05-12 01:29:50 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00010: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244771634
+  guid: 
+  id: 10
+  message: writing facebook apps is hellish
+  published_on: 2009-06-12 01:53:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00011: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244842054
+  guid: 
+  id: 11
+  message: my 98's boomin with a trunk a funk
+  published_on: 2009-06-12 21:27:34 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352069
+activity_stream_item_00012: 
+  activity_stream_id: 2
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=30498230&amp;id=1005737378
+    photo: 
+      pid: "4319609146905288118"
+      aid: "4319609146876815624"
+      index: "1"
+      height: "270"
+      owner: "1005737378"
+      width: "360"
+    src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs101.snc1/4550_1163132390906_1005737378_30498230_3858517_s.jpg
+    type: photo
+    alt: Panama to Seattle, about 1/6 of the way
+
+  attachment_type: photo
+  created_at: 1244850316
+  guid: 
+  id: 12
+  message: ""
+  published_on: 2009-06-12 23:45:16 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352070
+activity_stream_item_00013: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244867460
+  guid: 
+  id: 13
+  message: facebook.com/simian
+  published_on: 2009-06-13 04:31:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352070
+activity_stream_item_00014: 
+  activity_stream_id: 2
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244867460
+  guid: 
+  id: 14
+  message: facebook.com/simian
+  published_on: 2009-06-13 04:31:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352071
+activity_stream_item_00015: 
+  activity_stream_id: 3
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.amazon.com/dp/0596517742/
+    src: http://platform.ak.facebook.com/www/app_full_proxy.php?app=2795223269&amp;v=1&amp;size=f&amp;cksum=15b039f3f5b8cc63255eca04da5e1c7f&amp;src=http%3A%2F%2Fecx.images-amazon.com%2Fimages%2FI%2F51Mb1xCr7CL._SL500_.jpg
+    type: link
+
+  attachment_type: link
+  created_at: 1213932465
+  guid: 
+  id: 15
+  message: has activity on FriendFeed.
+  published_on: 2008-06-20 03:27:45 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00016: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1228586663
+  guid: 
+  id: 16
+  message: is running 1/2 marathons until he poops his pants
+  published_on: 2008-12-06 18:04:23 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00017: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1231385454
+  guid: 
+  id: 17
+  message: ", like towelie, has no idea what's going on right now"
+  published_on: 2009-01-08 03:30:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00018: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1232739240
+  guid: 
+  id: 18
+  message: is a towel
+  published_on: 2009-01-23 19:34:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00019: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091760
+  guid: 
+  id: 19
+  message: there will be no cake
+  published_on: 2009-05-12 01:29:20 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00020: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091790
+  guid: 
+  id: 20
+  message: Portal rules
+  published_on: 2009-05-12 01:29:50 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00021: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244771634
+  guid: 
+  id: 21
+  message: writing facebook apps is hellish
+  published_on: 2009-06-12 01:53:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00022: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244842054
+  guid: 
+  id: 22
+  message: my 98's boomin with a trunk a funk
+  published_on: 2009-06-12 21:27:34 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00023: 
+  activity_stream_id: 3
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=30498230&amp;id=1005737378
+    photo: 
+      pid: "4319609146905288118"
+      aid: "4319609146876815624"
+      index: "1"
+      height: "270"
+      owner: "1005737378"
+      width: "360"
+    src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs101.snc1/4550_1163132390906_1005737378_30498230_3858517_s.jpg
+    type: photo
+    alt: Panama to Seattle, about 1/6 of the way
+
+  attachment_type: photo
+  created_at: 1244850316
+  guid: 
+  id: 23
+  message: ""
+  published_on: 2009-06-12 23:45:16 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00024: 
+  activity_stream_id: 3
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244867460
+  guid: 
+  id: 24
+  message: facebook.com/simian
+  published_on: 2009-06-13 04:31:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352402
+activity_stream_item_00025: 
+  activity_stream_id: 4
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.amazon.com/dp/0596517742/
+    src: http://platform.ak.facebook.com/www/app_full_proxy.php?app=2795223269&amp;v=1&amp;size=f&amp;cksum=15b039f3f5b8cc63255eca04da5e1c7f&amp;src=http%3A%2F%2Fecx.images-amazon.com%2Fimages%2FI%2F51Mb1xCr7CL._SL500_.jpg
+    type: link
+
+  attachment_type: link
+  created_at: 1213932465
+  guid: 
+  id: 25
+  message: has activity on FriendFeed.
+  published_on: 2008-06-20 03:27:45 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352636
+activity_stream_item_00026: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1228586663
+  guid: 
+  id: 26
+  message: is running 1/2 marathons until he poops his pants
+  published_on: 2008-12-06 18:04:23 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352636
+activity_stream_item_00027: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1231385454
+  guid: 
+  id: 27
+  message: ", like towelie, has no idea what's going on right now"
+  published_on: 2009-01-08 03:30:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00028: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1232739240
+  guid: 
+  id: 28
+  message: is a towel
+  published_on: 2009-01-23 19:34:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00029: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091760
+  guid: 
+  id: 29
+  message: there will be no cake
+  published_on: 2009-05-12 01:29:20 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00030: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091790
+  guid: 
+  id: 30
+  message: Portal rules
+  published_on: 2009-05-12 01:29:50 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00031: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244771634
+  guid: 
+  id: 31
+  message: writing facebook apps is hellish
+  published_on: 2009-06-12 01:53:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00032: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244842054
+  guid: 
+  id: 32
+  message: my 98's boomin with a trunk a funk
+  published_on: 2009-06-12 21:27:34 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00033: 
+  activity_stream_id: 4
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=30498230&amp;id=1005737378
+    photo: 
+      pid: "4319609146905288118"
+      aid: "4319609146876815624"
+      index: "1"
+      height: "270"
+      owner: "1005737378"
+      width: "360"
+    src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs101.snc1/4550_1163132390906_1005737378_30498230_3858517_s.jpg
+    type: photo
+    alt: Panama to Seattle, about 1/6 of the way
+
+  attachment_type: photo
+  created_at: 1244850316
+  guid: 
+  id: 33
+  message: ""
+  published_on: 2009-06-12 23:45:16 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00034: 
+  activity_stream_id: 4
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244867460
+  guid: 
+  id: 34
+  message: facebook.com/simian
+  published_on: 2009-06-13 04:31:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247352637
+activity_stream_item_00035: 
+  activity_stream_id: 5
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.amazon.com/dp/0596517742/
+    src: http://platform.ak.facebook.com/www/app_full_proxy.php?app=2795223269&amp;v=1&amp;size=f&amp;cksum=15b039f3f5b8cc63255eca04da5e1c7f&amp;src=http%3A%2F%2Fecx.images-amazon.com%2Fimages%2FI%2F51Mb1xCr7CL._SL500_.jpg
+    type: link
+
+  attachment_type: link
+  created_at: 1213932465
+  guid: 
+  id: 35
+  message: has activity on FriendFeed.
+  published_on: 2008-06-20 03:27:45 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358754
+activity_stream_item_00036: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1228586663
+  guid: 
+  id: 36
+  message: is running 1/2 marathons until he poops his pants
+  published_on: 2008-12-06 18:04:23 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358754
+activity_stream_item_00037: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1231385454
+  guid: 
+  id: 37
+  message: ", like towelie, has no idea what's going on right now"
+  published_on: 2009-01-08 03:30:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358754
+activity_stream_item_00038: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1232739240
+  guid: 
+  id: 38
+  message: is a towel
+  published_on: 2009-01-23 19:34:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358754
+activity_stream_item_00039: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091760
+  guid: 
+  id: 39
+  message: there will be no cake
+  published_on: 2009-05-12 01:29:20 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358755
+activity_stream_item_00040: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091790
+  guid: 
+  id: 40
+  message: Portal rules
+  published_on: 2009-05-12 01:29:50 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358755
+activity_stream_item_00041: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244771634
+  guid: 
+  id: 41
+  message: writing facebook apps is hellish
+  published_on: 2009-06-12 01:53:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358755
+activity_stream_item_00042: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244842054
+  guid: 
+  id: 42
+  message: my 98's boomin with a trunk a funk
+  published_on: 2009-06-12 21:27:34 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358755
+activity_stream_item_00043: 
+  activity_stream_id: 5
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=30498230&amp;id=1005737378
+    photo: 
+      pid: "4319609146905288118"
+      aid: "4319609146876815624"
+      index: "1"
+      height: "270"
+      owner: "1005737378"
+      width: "360"
+    src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs101.snc1/4550_1163132390906_1005737378_30498230_3858517_s.jpg
+    type: photo
+    alt: Panama to Seattle, about 1/6 of the way
+
+  attachment_type: photo
+  created_at: 1244850316
+  guid: 
+  id: 43
+  message: ""
+  published_on: 2009-06-12 23:45:16 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358755
+activity_stream_item_00044: 
+  activity_stream_id: 5
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244867460
+  guid: 
+  id: 44
+  message: facebook.com/simian
+  published_on: 2009-06-13 04:31:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247358755
+activity_stream_item_00045: 
+  activity_stream_id: 6
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.amazon.com/dp/0596517742/
+    src: http://platform.ak.facebook.com/www/app_full_proxy.php?app=2795223269&amp;v=1&amp;size=f&amp;cksum=15b039f3f5b8cc63255eca04da5e1c7f&amp;src=http%3A%2F%2Fecx.images-amazon.com%2Fimages%2FI%2F51Mb1xCr7CL._SL500_.jpg
+    type: link
+
+  attachment_type: link
+  created_at: 1213932465
+  guid: 
+  id: 45
+  message: has activity on FriendFeed.
+  published_on: 2008-06-20 03:27:45 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359223
+activity_stream_item_00046: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1228586663
+  guid: 
+  id: 46
+  message: is running 1/2 marathons until he poops his pants
+  published_on: 2008-12-06 18:04:23 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359223
+activity_stream_item_00047: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1231385454
+  guid: 
+  id: 47
+  message: ", like towelie, has no idea what's going on right now"
+  published_on: 2009-01-08 03:30:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359223
+activity_stream_item_00048: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1232739240
+  guid: 
+  id: 48
+  message: is a towel
+  published_on: 2009-01-23 19:34:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359223
+activity_stream_item_00049: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091760
+  guid: 
+  id: 49
+  message: there will be no cake
+  published_on: 2009-05-12 01:29:20 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359223
+activity_stream_item_00050: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091790
+  guid: 
+  id: 50
+  message: Portal rules
+  published_on: 2009-05-12 01:29:50 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359223
+activity_stream_item_00051: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244771634
+  guid: 
+  id: 51
+  message: writing facebook apps is hellish
+  published_on: 2009-06-12 01:53:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359224
+activity_stream_item_00052: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244842054
+  guid: 
+  id: 52
+  message: my 98's boomin with a trunk a funk
+  published_on: 2009-06-12 21:27:34 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359224
+activity_stream_item_00053: 
+  activity_stream_id: 6
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=30498230&amp;id=1005737378
+    photo: 
+      pid: "4319609146905288118"
+      aid: "4319609146876815624"
+      index: "1"
+      height: "270"
+      owner: "1005737378"
+      width: "360"
+    src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs101.snc1/4550_1163132390906_1005737378_30498230_3858517_s.jpg
+    type: photo
+    alt: Panama to Seattle, about 1/6 of the way
+
+  attachment_type: photo
+  created_at: 1244850316
+  guid: 
+  id: 53
+  message: ""
+  published_on: 2009-06-12 23:45:16 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359224
+activity_stream_item_00054: 
+  activity_stream_id: 6
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244867460
+  guid: 
+  id: 54
+  message: facebook.com/simian
+  published_on: 2009-06-13 04:31:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359224
+activity_stream_item_00055: 
+  activity_stream_id: 7
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.amazon.com/dp/0596517742/
+    src: http://platform.ak.facebook.com/www/app_full_proxy.php?app=2795223269&amp;v=1&amp;size=f&amp;cksum=15b039f3f5b8cc63255eca04da5e1c7f&amp;src=http%3A%2F%2Fecx.images-amazon.com%2Fimages%2FI%2F51Mb1xCr7CL._SL500_.jpg
+    type: link
+
+  attachment_type: link
+  created_at: 1213932465
+  guid: 
+  id: 55
+  message: has activity on FriendFeed.
+  published_on: 2008-06-20 03:27:45 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00056: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1228586663
+  guid: 
+  id: 56
+  message: is running 1/2 marathons until he poops his pants
+  published_on: 2008-12-06 18:04:23 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00057: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1231385454
+  guid: 
+  id: 57
+  message: ", like towelie, has no idea what's going on right now"
+  published_on: 2009-01-08 03:30:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00058: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1232739240
+  guid: 
+  id: 58
+  message: is a towel
+  published_on: 2009-01-23 19:34:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00059: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091760
+  guid: 
+  id: 59
+  message: there will be no cake
+  published_on: 2009-05-12 01:29:20 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00060: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1242091790
+  guid: 
+  id: 60
+  message: Portal rules
+  published_on: 2009-05-12 01:29:50 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00061: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244771634
+  guid: 
+  id: 61
+  message: writing facebook apps is hellish
+  published_on: 2009-06-12 01:53:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00062: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244842054
+  guid: 
+  id: 62
+  message: my 98's boomin with a trunk a funk
+  published_on: 2009-06-12 21:27:34 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00063: 
+  activity_stream_id: 7
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=30498230&amp;id=1005737378
+    photo: 
+      pid: "4319609146905288118"
+      aid: "4319609146876815624"
+      index: "1"
+      height: "270"
+      owner: "1005737378"
+      width: "360"
+    src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs101.snc1/4550_1163132390906_1005737378_30498230_3858517_s.jpg
+    type: photo
+    alt: Panama to Seattle, about 1/6 of the way
+
+  attachment_type: photo
+  created_at: 1244850316
+  guid: 
+  id: 63
+  message: ""
+  published_on: 2009-06-12 23:45:16 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00064: 
+  activity_stream_id: 7
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1244867460
+  guid: 
+  id: 64
+  message: facebook.com/simian
+  published_on: 2009-06-13 04:31:00 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247359333
+activity_stream_item_00065: 
+  activity_stream_id: 8
+  activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1242801109
-  id: 1
+  guid: 
+  id: 65
   message: is cranking along on about four different projects, and all are going swimmingly... sleep calls!
   published_on: 2009-05-20 06:31:49 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00002: 
-  activity_stream_id: 1
+  updated_at: 1247449640
+activity_stream_item_00066: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=82878347698&amp;h=lx-KU&amp;u=EsgI9
-    src: http://external.ak.fbcdn.net/safe_image.php?d=f3a0ae4a5b66baa90eb2958ef8485d72&amp;url=http%3A%2F%2Facidcow.com%2Fcontent%2Fimg%2Fnew03%2F25%2F22.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=efe120d59adafaf3decac07f2c0ae410&amp;url=http%3A%2F%2Facidcow.com%2Fcontent%2Fimg%2Fnew03%2F25%2F22.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1242834849
-  id: 2
+  guid: 
+  id: 66
   message: fascinated by this story...
   published_on: 2009-05-20 15:54:09 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00003: 
-  activity_stream_id: 1
+  updated_at: 1247449640
+activity_stream_item_00067: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: History of Weed
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=81970569404&amp;h=CqUBk&amp;u=znUr6
-    src: http://external.ak.fbcdn.net/safe_image.php?d=7bec94de1185d88620437aed3aa30234&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FzfiaC-2K1LM%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=2686a5b094f8b59355897de6bad9f27c&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FzfiaC-2K1LM%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=81970569404#s81970569404
+      source_url: http://www.youtube.com/v/zfiaC-2K1LM&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=zfiaC-2K1LM&amp;eurl=http://www.google.com/reader/view/&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=81970569404#s81970569404
-      source_type: html
-      source_url: http://www.youtube.com/v/zfiaC-2K1LM&amp;autoplay=1
+    alt: History of Weed
+
   attachment_type: video
   created_at: 1242932961
-  id: 3
+  guid: 
+  id: 67
   message: learning about the history of weed, thanks Showtime!
   published_on: 2009-05-21 19:09:21 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00004: 
-  activity_stream_id: 1
+  updated_at: 1247449640
+activity_stream_item_00068: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=108514165791&amp;h=4VyLp&amp;u=5M5QB
-    src: http://external.ak.fbcdn.net/safe_image.php?d=110eb0235446a38ef9ec8e8af69e5716&amp;url=http%3A%2F%2Fwww.wired.com%2Fimages_blogs%2Fthreatlevel%2F2009%2F05%2Ffcc_badge.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=d9240500226b1d1587b91b6027b7cfe9&amp;url=http%3A%2F%2Fwww.wired.com%2Fimages_blogs%2Fthreatlevel%2F2009%2F05%2Ffcc_badge.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1243017368
-  id: 4
+  guid: 
+  id: 68
   message: wonders why people put up with this police state bullshit.  OMG!
   published_on: 2009-05-22 18:36:08 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00005: 
-  activity_stream_id: 1
+  updated_at: 1247449640
+activity_stream_item_00069: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243104872
-  id: 5
+  guid: 
+  id: 69
   message: is thinking about taking a long stroll at folklife and stuffing my face for as many hours as possible in the sun today :)
   published_on: 2009-05-23 18:54:32 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00006: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00070: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243109730
-  id: 6
+  guid: 
+  id: 70
   message: just blocked ten people from his newsfeed for taking those obnoxious quizzes.
   published_on: 2009-05-23 20:15:30 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00007: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00071: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243183947
-  id: 7
+  guid: 
+  id: 71
   message: is in the midst of having a mindblowingly good weekend!
   published_on: 2009-05-24 16:52:27 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00008: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00072: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: IMG_1180
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/photo.php?pid=1810565&amp;id=504883639
     photo: 
-      aid: "2168458717790550922"
-      height: "453"
-      index: "2"
-      owner: "504883639"
       pid: "2168458717792280709"
+      aid: "2168458717790550922"
+      index: "2"
+      height: "453"
+      owner: "504883639"
       width: "604"
     src: http://photos-f.ak.fbcdn.net/hphotos-ak-snc1/hs088.snc1/4621_83405843639_504883639_1810565_5659759_s.jpg
     type: photo
+    alt: IMG_1180
+
   attachment_type: photo
   created_at: 1243211850
-  id: 8
+  guid: 
+  id: 72
   message: ""
   published_on: 2009-05-25 00:37:30 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00009: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00073: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243307660
-  id: 9
+  guid: 
+  id: 73
   message: A man with one watch knows what time it is; a man with two watches is never quite sure.  ~Lee Segall
   published_on: 2009-05-26 03:14:20 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00010: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00074: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: LEGO Mindstorms NXT, Pirates and the NXTfied Theater
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=106651591257&amp;h=kdY6S&amp;u=s5j3S
-    src: http://external.ak.fbcdn.net/safe_image.php?d=5ce8d78dab1f9c020b97a905fcea6b27&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FIkDsre1ltvk%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=e4a2b0b9f01d04041cad03744009e5f6&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FIkDsre1ltvk%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=106651591257#s106651591257
+      source_url: http://www.youtube.com/v/IkDsre1ltvk&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=IkDsre1ltvk&amp;
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=106651591257#s106651591257
-      source_type: html
-      source_url: http://www.youtube.com/v/IkDsre1ltvk&amp;autoplay=1
+    alt: LEGO Mindstorms NXT, Pirates and the NXTfied Theater
+
   attachment_type: video
   created_at: 1243316488
-  id: 10
+  guid: 
+  id: 74
   message: is watching this astounding mechanical Lego pirate theater, controlled by Mindstorm/Nextstorm robot Lego, marries the Victorian dramatic clockwork automaton with 21st century cheap computation and precision brick-making. And it's got pirates! Seriously, some people have WAAAAY too much time on their hands!
   published_on: 2009-05-26 05:41:28 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00011: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00075: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=81641852983&amp;h=n4lgk&amp;u=_GaYx
-    src: http://external.ak.fbcdn.net/safe_image.php?d=327740b8d8984ac1934ef772570c2af9&amp;url=http%3A%2F%2Fstatic.gamesbyemail.com%2FNews%2FDiceOMatic%2FCameraLights.jpg%3F633789125654312915
+    src: http://external.ak.fbcdn.net/safe_image.php?d=a705865d808e7268740ddbbcd765c8d6&amp;url=http%3A%2F%2Fstatic.gamesbyemail.com%2FNews%2FDiceOMatic%2FCameraLights.jpg%3F633789125654312915&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1243357205
-  id: 11
+  guid: 
+  id: 75
   message: it slices!  It dices!  This thing is bad ass!!
   published_on: 2009-05-26 17:00:05 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00012: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00076: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: I'm on a Couch (The Lonely Island - &quot;I'm on a Boat&quot; parody spoof)
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=179221960031&amp;h=B78ga&amp;u=vCExk
-    src: http://external.ak.fbcdn.net/safe_image.php?d=f397ac51a0c24b5d31b62e863c86c961&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FA9QpOfhAPXs%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=40b122d8dd7a50addbf04cdd51ad440d&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FA9QpOfhAPXs%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=179221960031#s179221960031
+      source_url: http://www.youtube.com/v/A9QpOfhAPXs&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=A9QpOfhAPXs&amp;eurl=http://www.cracked.com/blog/i-quit-comedy-the-best-video-of-all-time&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=179221960031#s179221960031
-      source_type: html
-      source_url: http://www.youtube.com/v/A9QpOfhAPXs&amp;autoplay=1
+    alt: I'm on a Couch (The Lonely Island - &quot;I'm on a Boat&quot; parody spoof)
+
   attachment_type: video
   created_at: 1243441474
-  id: 12
+  guid: 
+  id: 76
   message: so not funny, it's funny.  Well, not really.  More just morbidly entertaining...
   published_on: 2009-05-27 16:24:34 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00013: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00077: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=109788136258&amp;h=yWGGN&amp;u=eZd9P
-    src: http://external.ak.fbcdn.net/safe_image.php?d=0029afdfcae264a4e8960db8d81610b2&amp;url=http%3A%2F%2Fgadgets.boingboing.net%2F2009%2F05%2F27%2Fstyle%2Fatboingboing.png
+    src: http://external.ak.fbcdn.net/safe_image.php?d=0095242ec2c2bf10e68b1688ccf5a35f&amp;url=http%3A%2F%2Fgadgets.boingboing.net%2F2009%2F05%2F27%2Fstyle%2Fatboingboing.png&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1243456660
-  id: 13
+  guid: 
+  id: 77
   message: watching a dude dialup to the Internet using a 1964 300 bps modem.  &lt;geek&gt;
   published_on: 2009-05-27 20:37:40 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00014: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00078: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: Dance Off USF vs Uconn 2009 Big East Baseball Tournament as seen on PTI.
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=99311083648&amp;h=Lhn3M&amp;u=hyjHN
-    src: http://external.ak.fbcdn.net/safe_image.php?d=07d37067a68f0e24b0dae8751a746cb5&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FaazG7dMhE7I%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=f501750d502ba518131ebeb2b385ec6a&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FaazG7dMhE7I%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=99311083648#s99311083648
+      source_url: http://www.youtube.com/v/aazG7dMhE7I&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=aazG7dMhE7I&amp;eurl=http://ourkitchensink.com/2009/05/27/the-greatest-moment-in-rain-delay-history/&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=99311083648#s99311083648
-      source_type: html
-      source_url: http://www.youtube.com/v/aazG7dMhE7I&amp;autoplay=1
+    alt: Dance Off USF vs Uconn 2009 Big East Baseball Tournament as seen on PTI.
+
   attachment_type: video
   created_at: 1243544478
-  id: 14
+  guid: 
+  id: 78
   message: totally worth the watch... starts slow builds up to a hilarious result... two baseball teams tired of waiting five hours in a rain delay decide to have a dance off!  They are GOOD!
   published_on: 2009-05-28 21:01:18 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00015: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00079: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243566257
-  id: 15
+  guid: 
+  id: 79
   message: gives props to Eminem for returning to old form.  WOW.  His new album is *stunning*.
   published_on: 2009-05-29 03:04:17 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00016: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00080: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=82828673175&amp;h=yX4sK&amp;u=atDk6
-    src: http://external.ak.fbcdn.net/safe_image.php?d=59da83bb9d87b1fa04c84b2719aaeb47&amp;url=http%3A%2F%2Fflowingdata.com%2Fwp-content%2Fuploads%2F2009%2F01%2Fgoldstarman2-545x385.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=668c5c66381d93ec70db2dd972a7ef08&amp;url=http%3A%2F%2Fflowingdata.com%2Fwp-content%2Fuploads%2F2009%2F01%2Fgoldstarman2-545x385.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1243610445
-  id: 16
+  guid: 
+  id: 80
   message: decision time tonight.  at least my decision is easy!
   published_on: 2009-05-29 15:20:45 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00017: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00081: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=105618949438&amp;h=n5fEv&amp;u=9Sg5-
-    src: http://external.ak.fbcdn.net/safe_image.php?d=ee4504ba28a46a02fa8fbcc84e76ab83&amp;url=http%3A%2F%2Fwww.telegraph.co.uk%2Ftelegraph%2Fmultimedia%2Farchive%2F01111%2Fxelect60_1111910h.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=3f58aa412bc6316764a6c7eac424bb5d&amp;url=http%3A%2F%2Fwww.telegraph.co.uk%2Ftelegraph%2Fmultimedia%2Farchive%2F01111%2Fxelect60_1111910h.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1243616325
-  id: 17
+  guid: 
+  id: 81
   message: thinks birds are smart.
   published_on: 2009-05-29 16:58:45 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00018: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00082: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: Sorry i'm late
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=87034512396&amp;h=rRhGW&amp;u=3eYwl
-    src: http://external.ak.fbcdn.net/safe_image.php?d=6deece6ee0c7f742b4446a9989a6689f&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FPgpRz3RHJMw%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=4f7dd0eea4d34686376352078d4ec53c&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FPgpRz3RHJMw%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=87034512396#s87034512396
+      source_url: http://www.youtube.com/v/PgpRz3RHJMw&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=PgpRz3RHJMw&amp;eurl=http://www.boingboing.net/2009/05/29/sorry-im-late-stop-m.html&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=87034512396#s87034512396
-      source_type: html
-      source_url: http://www.youtube.com/v/PgpRz3RHJMw&amp;autoplay=1
+    alt: Sorry i'm late
+
   attachment_type: video
   created_at: 1243638613
-  id: 18
+  guid: 
+  id: 82
   message: fun!  shot entirely with a still camera (wait till end to see making of)
   published_on: 2009-05-29 23:10:13 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00019: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00083: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243732517
-  id: 19
+  guid: 
+  id: 83
   message: had an amazing day with his son, Lena, and Robin - teeball game, miniature golf, trampolines, and building a dam on the beach.  Holy &amp;!@# pure heaven in this weather!
   published_on: 2009-05-31 01:15:17 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00020: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00084: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    caption: Common Interest - Activities
-    description: Has this happened to you?
+  attachment_data: |+
+    --- 
+    name: I farted in your face and then you stole my wallet
     href: http://www.facebook.com/group.php?gid=81615419170
+    fb_object_id: "81615419170"
+    fb_object_type: group
     icon: http://static.ak.fbcdn.net/images/icons/group.gif?8:25796
     media: {}
-
-    name: I farted in your face and then you stole my wallet
+    
+    caption: Common Interest - Activities
+    description: Has this happened to you?
     properties: {}
-
+    
   attachment_type: generic
   created_at: 1243735661
-  id: 20
+  guid: 
+  id: 84
   message: ""
   published_on: 2009-05-31 02:07:41 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00021: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00085: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: IMG_1187
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/photo.php?pid=1843134&amp;id=504883639
     photo: 
-      aid: "2168458717790552260"
-      height: "453"
-      index: "3"
-      owner: "504883639"
       pid: "2168458717792313278"
+      aid: "2168458717790552260"
+      index: "3"
+      height: "453"
+      owner: "504883639"
       width: "604"
     src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs108.snc1/4621_85679763639_504883639_1843134_4182462_s.jpg
     type: photo
+    alt: IMG_1187
+
   attachment_type: photo
   created_at: 1243840538
-  id: 21
+  guid: 
+  id: 85
   message: ""
   published_on: 2009-06-01 07:15:38 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00022: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00086: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: IMG_1200
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/photo.php?pid=1843146&amp;id=504883639
     photo: 
-      aid: "2168458717790552261"
-      height: "453"
-      index: "3"
-      owner: "504883639"
       pid: "2168458717792313290"
+      aid: "2168458717790552261"
+      index: "3"
+      height: "453"
+      owner: "504883639"
       width: "604"
     src: http://photos-c.ak.fbcdn.net/hphotos-ak-snc1/hs088.snc1/4621_85680338639_504883639_1843146_7216025_s.jpg
     type: photo
+    alt: IMG_1200
+
   attachment_type: photo
   created_at: 1243840718
-  id: 22
+  guid: 
+  id: 86
   message: ""
   published_on: 2009-06-01 07:18:38 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00023: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00087: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=180076720315&amp;h=GlJnM&amp;u=rs_SR
-    src: http://external.ak.fbcdn.net/safe_image.php?d=768c1f01492f8c03cc13db96b77fdf5b&amp;url=http%3A%2F%2Fcdn-i.dmdentertainment.com%2Ffunpages%2Fcms_content%2F17435%2Ffuturehouse_thumb.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=d06b5a211c3893aeca0b1a8a670e6c22&amp;url=http%3A%2F%2Fcdn-i.dmdentertainment.com%2Ffunpages%2Fcms_content%2F17435%2Ffuturehouse_thumb.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1243881242
-  id: 23
+  guid: 
+  id: 87
   message: The Coolest House in the Neighborhood (And Maybe the Galaxy)
   published_on: 2009-06-01 18:34:02 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00024: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00088: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243887231
-  id: 24
+  guid: 
+  id: 88
   message: Dear Media, I've had enough hearing about Susan Boyle.  KKTHXBAI.
   published_on: 2009-06-01 20:13:51 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00025: 
-  activity_stream_id: 1
+  updated_at: 1247449641
+activity_stream_item_00089: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243975980
-  id: 25
+  guid: 
+  id: 89
   message: won a poker tournament last night.  What a rush!
   published_on: 2009-06-02 20:53:00 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00026: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00090: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1243990928
-  id: 26
+  guid: 
+  id: 90
   message: is melting from the heat
   published_on: 2009-06-03 01:02:08 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00027: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00091: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244084494
-  id: 27
+  guid: 
+  id: 91
   message: totally sacked out for a nap in 85 degree heat with a modicum of clothing on... for three hours... ouch....
   published_on: 2009-06-04 03:01:34 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00028: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00092: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=101500368271&amp;h=TU3MC&amp;u=DK_Hs
-    src: http://external.ak.fbcdn.net/safe_image.php?d=53bc920fcac0a5ce7300dd20597919ac&amp;url=http%3A%2F%2Fhowto.wired.com%2Fmediawiki%2Fimages%2FSt_howto_explodingdrink.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=a6483ba371ea7faa040fca781bc7463d&amp;url=http%3A%2F%2Fhowto.wired.com%2Fmediawiki%2Fimages%2FSt_howto_explodingdrink.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1244094353
-  id: 28
+  guid: 
+  id: 92
   message: is starting to think evil thoughts...
   published_on: 2009-06-04 05:45:53 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00029: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00093: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: Betty Bowers Explains Traditional Marriage to Everyone Else
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=105295259883&amp;h=4AOfZ&amp;u=LFkY6
-    src: http://external.ak.fbcdn.net/safe_image.php?d=3e14696eecb591278b8ec6dd5bfc4b84&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FOFkeKKszXTw%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=47f44c7b17752fe0548a5ba0d688b4bb&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FOFkeKKszXTw%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=105295259883#s105295259883
+      source_url: http://www.youtube.com/v/OFkeKKszXTw&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=OFkeKKszXTw
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=105295259883#s105295259883
-      source_type: html
-      source_url: http://www.youtube.com/v/OFkeKKszXTw&amp;autoplay=1
+    alt: Betty Bowers Explains Traditional Marriage to Everyone Else
+
   attachment_type: video
   created_at: 1244148255
-  id: 29
+  guid: 
+  id: 93
   message: finally understands the biblical meaning of &quot;Marriage&quot;
   published_on: 2009-06-04 20:44:15 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404509
-activity_stream_item_00030: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00094: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244220880
-  id: 30
+  guid: 
+  id: 94
   message: really, really can't stand conan o'brien.  I've tried.  Three times this week.  To laugh even a little at his tired old schtick.  Sometimes, I laugh during the commercials, but never during the program.  Bed time is at 11:30 for me now apparently :(
   published_on: 2009-06-05 16:54:40 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00031: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00095: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244342375
-  id: 31
+  guid: 
+  id: 95
   message: is having a great day with his son!
   published_on: 2009-06-07 02:39:35 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00032: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00096: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244487999
-  id: 32
+  guid: 
+  id: 96
   message: Give me my iPhone 3G 3.0 OS!  I'll pass on the hardware upgrade for this generation tho.
   published_on: 2009-06-08 19:06:39 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00033: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00097: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244516678
-  id: 33
+  guid: 
+  id: 97
   message: finally an upgrade to my ][GS, I now can get a THREE-GS!  Sweet thanks apple!
   published_on: 2009-06-09 03:04:38 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00034: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00098: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244517616
-  id: 34
+  guid: 
+  id: 98
   message: just hid three more friends for taking these totally inane quizzes with artificially random results that just do nothing but clog up my newsfeed.  Die facebook quizzes. Die.
   published_on: 2009-06-09 03:20:16 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00035: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00099: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=103480538944&amp;h=C7yFJ&amp;u=wde24
-    src: http://external.ak.fbcdn.net/safe_image.php?d=84f7a6b044a0500c6a2f460607216dc1&amp;url=http%3A%2F%2Fwww.fairmontolympicweddings.com%2Fwp-content%2Fthemes%2Ffairmont%2Fimages%2Fcontent.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=a10de2e5a4bf01d31726c7e2610d8f77&amp;url=http%3A%2F%2Fwww.fairmontolympicweddings.com%2Fwp-content%2Fthemes%2Ffairmont%2Fimages%2Fcontent.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1244590254
-  id: 35
+  guid: 
+  id: 99
   message: wants you to check out the new website I did for my girlfriend and let me know what you think.  See if you can find the dirty pics!
   published_on: 2009-06-09 23:30:54 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00036: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00100: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: nutrigrain commercial
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=108019026344&amp;h=tM7Jg&amp;u=semhb
-    src: http://external.ak.fbcdn.net/safe_image.php?d=81c90696b5b3e17b3b6740cfb2abad39&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FJC2gIPnUCgw%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=df9126c53ac6412f984931658a88de8c&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FJC2gIPnUCgw%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=108019026344#s108019026344
+      source_url: http://www.youtube.com/v/JC2gIPnUCgw&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=JC2gIPnUCgw
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=108019026344#s108019026344
-      source_type: html
-      source_url: http://www.youtube.com/v/JC2gIPnUCgw&amp;autoplay=1
+    alt: nutrigrain commercial
+
   attachment_type: video
   created_at: 1244602575
-  id: 36
+  guid: 
+  id: 100
   message: feels GREAT!!
   published_on: 2009-06-10 02:56:15 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00037: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00101: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244614395
-  id: 37
+  guid: 
+  id: 101
   message: is enjoying the nice WARM weather.  Not hot.  Not cold.  Just RIGHT.
   published_on: 2009-06-10 06:13:15 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00038: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00102: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=218902860009&amp;h=ftCC5&amp;u=hs2qW
-    src: http://external.ak.fbcdn.net/safe_image.php?d=dd66344e35e7633002d3b9f65d0f2ea4&amp;url=http%3A%2F%2Fwww.eternos.com%2Fimages%2Fbeta.gif%3F1244663389
+    src: http://external.ak.fbcdn.net/safe_image.php?d=bda5b9c79c7f2f28885c578aef99666a&amp;url=http%3A%2F%2Fwww.eternos.com%2Fimages%2Fbeta.gif%3F1244663389&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1244664310
-  id: 38
+  guid: 
+  id: 102
   message: has opened Eternos.com for Beta registration.  Please go register your email address to get notified soon as we open for beta!
   published_on: 2009-06-10 20:05:10 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00039: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00103: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: "High Quality Version: Is Anyone Minding the Store at the Federal Reserve?"
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=115462236627&amp;h=RUPFY&amp;u=EZhjM
-    src: http://external.ak.fbcdn.net/safe_image.php?d=51fcec219d9c1a1b79551b0f0091d3c6&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FcJqM2tFOxLQ%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=a94b39c20594b199be1dce1dbbf2ee52&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FcJqM2tFOxLQ%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=115462236627#s115462236627
+      source_url: http://www.youtube.com/v/cJqM2tFOxLQ&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=cJqM2tFOxLQ&amp;eurl=http://dailybail.com/home/there-are-no-words-to-describe-the-following-part-ii.html&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=115462236627#s115462236627
-      source_type: html
-      source_url: http://www.youtube.com/v/cJqM2tFOxLQ&amp;autoplay=1
+    alt: "High Quality Version: Is Anyone Minding the Store at the Federal Reserve?"
+
   attachment_type: video
   created_at: 1244677385
-  id: 39
+  guid: 
+  id: 103
   message: this is why I hate the government.  And some people want them to run health care??  $9 TRILLION dollars in off-balance sheet transactions, and no monitoring system in place for public review?  It really is no joke this country has been sold off in pieces and we all better start learning Chinese.  And I'm not exaggerating or overreacting.  It's pretty sad.
   published_on: 2009-06-10 23:43:05 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00040: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00104: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244769600
-  id: 40
+  guid: 
+  id: 104
   message: for some reason it feels like Friday to me today.
   published_on: 2009-06-12 01:20:00 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00041: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00105: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244788595
-  id: 41
+  guid: 
+  id: 105
   message: pretty much has the best girlfriend ever!
   published_on: 2009-06-12 06:36:35 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00042: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00106: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244837706
-  id: 42
+  guid: 
+  id: 106
   message: anyone want to watch my adorable Pug, Borf, for 10 days starting July 1st while I'm in Hawaii?  Pleeeeaseeee
   published_on: 2009-06-12 20:15:06 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00043: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00107: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244849489
-  id: 43
+  guid: 
+  id: 107
   message: is in love with the best of the best!
   published_on: 2009-06-12 23:31:29 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00044: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00108: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1244867327
-  id: 44
+  guid: 
+  id: 108
   message: is now known as http://www.facebook.com/nerolabs  Vanity username for the win!
   published_on: 2009-06-13 04:28:47 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00045: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00109: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=89287909614&amp;h=gCBLX&amp;u=pSsbK
-    src: http://external.ak.fbcdn.net/safe_image.php?d=7a1eba4041d0bd2f345fe3f2eb76b75b&amp;url=http%3A%2F%2Fwestseattleblog.com%2Fblog%2Fwp-content%2Fuploads%2F2009%2F06%2Fzzmonster.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=7fae08aa639d8494b14ae42f3ee74c29&amp;url=http%3A%2F%2Fwestseattleblog.com%2Fblog%2Fwp-content%2Fuploads%2F2009%2F06%2Fzzmonster.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1244915490
-  id: 45
+  guid: 
+  id: 109
   message: is looking at a NATURAL tree fall in West Seattle.  AWESOME!
   published_on: 2009-06-13 17:51:30 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00046: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00110: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=95673251446&amp;h=IoOd6&amp;u=lHqBi
-    src: http://external.ak.fbcdn.net/safe_image.php?d=2e32d0849138936ed4746c6a5a693596&amp;url=http%3A%2F%2Ffarm4.static.flickr.com%2F3080%2F3152352551_706d9ca6a1_o.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=16e0d51c53a84c99b2d8089350decb2f&amp;url=http%3A%2F%2Ffarm4.static.flickr.com%2F3080%2F3152352551_706d9ca6a1_o.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245013697
-  id: 46
+  guid: 
+  id: 110
   message: Hours of Operation
   published_on: 2009-06-14 21:08:17 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00047: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00111: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245024708
-  id: 47
+  guid: 
+  id: 111
   message: Sunday is cleaning and bills paying night and getting ready for the next week!
   published_on: 2009-06-15 00:11:48 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00048: 
-  activity_stream_id: 1
+  updated_at: 1247449642
+activity_stream_item_00112: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245034816
-  id: 48
+  guid: 
+  id: 112
   message: Gratz to the Lakers.  Kobe, on the other hand, can suck me.
   published_on: 2009-06-15 03:00:16 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00049: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00113: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=190996770074&amp;h=GHGJU&amp;u=8Lymb
-    src: http://external.ak.fbcdn.net/safe_image.php?d=733514393468276aaa9225b4a7876cbe&amp;url=http%3A%2F%2Fwww.campaignforliberty.com%2Fimg%2Fauthor%2Fpaul.gif
+    src: http://external.ak.fbcdn.net/safe_image.php?d=c635339fa7f617c17b6dc569080115b1&amp;url=http%3A%2F%2Fwww.campaignforliberty.com%2Fimg%2Fauthor%2Fpaul.gif&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245109663
-  id: 49
+  guid: 
+  id: 113
   message: "~32,000 American Scientists Agree:  Global Warming is BULLSHIT"
   published_on: 2009-06-15 23:47:43 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00050: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00114: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: 004_4
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/photo.php?pid=1917001&amp;id=504883639
     photo: 
-      aid: "2168458717790555233"
-      height: "403"
-      index: "3"
-      owner: "504883639"
       pid: "2168458717792387145"
+      aid: "2168458717790555233"
+      index: "3"
+      height: "403"
+      owner: "504883639"
       width: "604"
     src: http://photos-b.ak.fbcdn.net/photos-ak-sf2p/v645/77/120/504883639/s504883639_1917001_8036523.jpg
     type: photo
+    alt: 004_4
+
   attachment_type: photo
   created_at: 1245138308
-  id: 50
+  guid: 
+  id: 114
   message: ""
   published_on: 2009-06-16 07:45:08 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00051: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00115: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: How catnip gets cats high
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=92502495980&amp;h=IYv8n&amp;u=_jEbo
-    src: http://external.ak.fbcdn.net/safe_image.php?d=375c2465518555eaddcd7ba67aa1b455&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FJ5Xrcp6k8VE%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=f73c0c2216fc5c560994fb53943610c9&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FJ5Xrcp6k8VE%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=92502495980#s92502495980
+      source_url: http://www.youtube.com/v/J5Xrcp6k8VE&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=J5Xrcp6k8VE&amp;eurl=http://www.google.com/reader/view/&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=92502495980#s92502495980
-      source_type: html
-      source_url: http://www.youtube.com/v/J5Xrcp6k8VE&amp;autoplay=1
+    alt: How catnip gets cats high
+
   attachment_type: video
   created_at: 1245179284
-  id: 51
+  guid: 
+  id: 115
   message: wants to be a cat
   published_on: 2009-06-16 19:08:04 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00052: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00116: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=91375379508&amp;h=GoMo9&amp;u=RI7y_
-    src: http://external.ak.fbcdn.net/safe_image.php?d=cfe7d4a2e187d9c585ff74317c69606f&amp;url=http%3A%2F%2Fmsnbcmedia.msn.com%2Fj%2FMSNBC%2FComponents%2FBylines%2Fmugs%2FMSNBC%2520Interactive%2Fbill_dedman_2.thumb.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=92fae83da333a7ba2d2fb7f127d2a417&amp;url=http%3A%2F%2Fmsnbcmedia.msn.com%2Fj%2FMSNBC%2FComponents%2FBylines%2Fmugs%2FMSNBC%2520Interactive%2Fbill_dedman_2.thumb.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245185986
-  id: 52
+  guid: 
+  id: 116
   message: thinks Obama is a wolf in sheeps clothing.
   published_on: 2009-06-16 20:59:46 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00053: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00117: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=94299282445&amp;h=2C38f&amp;u=jhdhv
-    src: http://external.ak.fbcdn.net/safe_image.php?d=766a14b1043a951ca152b93b25672649&amp;url=http%3A%2F%2Fwww.infowars.net%2Fpictures%2Fjune2009%2F150609protest.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=90b8c2b48180923b4cf51402c2dd7569&amp;url=http%3A%2F%2Fwww.infowars.net%2Fpictures%2Fjune2009%2F150609protest.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245198088
-  id: 53
+  guid: 
+  id: 117
   message: "if you protest the government in any way, you are a terrorist: straight from the Department of Defense"
   published_on: 2009-06-17 00:21:28 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00054: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00118: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=119626995927&amp;h=6_FZ-&amp;u=rrCEL
-    src: http://external.ak.fbcdn.net/safe_image.php?d=ec2f5d26033af79956abd98b80d06ce1&amp;url=http%3A%2F%2Fedmondfamily.com%2Fgallery2%2Fmain.php%3Fg2_view%3Dcore.DownloadItem%26g2_itemId%3D3496%26g2_serialNumber%3D2
+    src: http://external.ak.fbcdn.net/safe_image.php?d=b8ee8cb1c8c76b92a89dd4b0de6875d6&amp;url=http%3A%2F%2Fedmondfamily.com%2Fgallery2%2Fmain.php%3Fg2_view%3Dcore.DownloadItem%26g2_itemId%3D3496%26g2_serialNumber%3D2&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245201101
-  id: 54
+  guid: 
+  id: 118
   message: updated his theme on his blog... check it out
   published_on: 2009-06-17 01:11:41 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00055: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00119: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=107975996440&amp;h=KPs3X&amp;u=hZDR4
-    src: http://external.ak.fbcdn.net/safe_image.php?d=6fa35ef97efb56ba2b91b489f3c7cd7e&amp;url=http%3A%2F%2Fwww.scientificamerican.com%2Fmedia%2Finline%2F000BA112-8AB6-1E83-85F7809EC588EEDF_1_thumb.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=756995be59d1549c05817c9ccee0e8e7&amp;url=http%3A%2F%2Fwww.scientificamerican.com%2Fmedia%2Finline%2F000BA112-8AB6-1E83-85F7809EC588EEDF_1_thumb.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245277861
-  id: 55
+  guid: 
+  id: 119
   message: "wonders what &quot;...according to scientists, is that winter temperatures across the Great Plains and Midwest are now some 7\xC2\xBA warmer than historical norms&quot;.  According to my understanding of the climate, there is NO SUCH THING as a &quot;Historical Norm&quot; when it comes to weather :)"
   published_on: 2009-06-17 22:31:01 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404510
-activity_stream_item_00056: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00120: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245372756
-  id: 56
+  guid: 
+  id: 120
   message: is looking forward to FATHERS DAY!
   published_on: 2009-06-19 00:52:36 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00057: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00121: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=99373067465&amp;h=49aMl&amp;u=u_-xX
-    src: http://external.ak.fbcdn.net/safe_image.php?d=a2c8dfedc455abc2b33ec1466a118c91&amp;url=http%3A%2F%2Fimages.ocregister.com%2Fnewsimages%2Fcommunity%2Fhuntingtonbeach%2F2009%2F04%2Fcolby_med.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=05f012078c4310aaa57bdd0cbc8ee6b8&amp;url=http%3A%2F%2Fimages.ocregister.com%2Fnewsimages%2Fcommunity%2Fhuntingtonbeach%2F2009%2F04%2Fcolby_med.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245427047
-  id: 57
+  guid: 
+  id: 121
   message: reading that Pixar sent an employee with a DVD of 'Up' to a dying girl as a last wish.  One of the most touching stories I've read in a while... get the tissue out...
   published_on: 2009-06-19 15:57:27 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00058: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00122: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: Bathtub V
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=111180392194&amp;h=LJT_t&amp;u=xnhmY
-    src: http://external.ak.fbcdn.net/safe_image.php?d=a7ae1e05c61e989fd0ca3a719e0e2fdd&amp;url=http%3A%2F%2Fts.vimeo.com.s3.amazonaws.com%2F155%2F790%2F15579090_160.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=b1f09016b22c47e4e3362277947ca1f5&amp;url=http%3A%2F%2Fts.vimeo.com.s3.amazonaws.com%2F155%2F790%2F15579090_160.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=111180392194#s111180392194
+      source_url: http://vimeo.com/moogaloop.swf?clip_id=5137183
+      source_type: html
       display_url: http://vimeo.com/5137183
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=111180392194#s111180392194
-      source_type: html
-      source_url: http://vimeo.com/moogaloop.swf?clip_id=5137183
+    alt: Bathtub V
+
   attachment_type: video
   created_at: 1245427588
-  id: 58
+  guid: 
+  id: 122
   message: pretty good tilt-shift + time-lapse video!  Love it!
   published_on: 2009-06-19 16:06:28 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00059: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00123: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245446462
-  id: 59
+  guid: 
+  id: 123
   message: just took my dog to the vet.  Stiff muscles and pinched nerve.  Some doggie aspirin and $72 makes it the cheapest vet visit ever!
   published_on: 2009-06-19 21:21:02 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00060: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00124: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245467954
-  id: 60
+  guid: 
+  id: 124
   message: does not get his son on Fathers Day, due to his ex being... well... it's not polite to say.  GRRRRR
   published_on: 2009-06-20 03:19:14 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00061: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00125: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=194616800023&amp;h=Ac9Ve&amp;u=lLmXk
-    src: http://external.ak.fbcdn.net/safe_image.php?d=d8cf7928fcfabea05bc743b53e0c5f2e&amp;url=http%3A%2F%2Fwww.austriantimes.at%2Fthumbnails%2F6vkkfvy7_tiny.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=884f002049d26adf85337b9e315cb5ab&amp;url=http%3A%2F%2Fwww.austriantimes.at%2Fthumbnails%2F6vkkfvy7_tiny.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245471195
-  id: 61
+  guid: 
+  id: 125
   message: Twitter Kills
   published_on: 2009-06-20 04:13:15 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00062: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00126: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245521545
-  id: 62
+  guid: 
+  id: 126
   message: is going on 14 days without seeing or even talking to his son.  Aggressive attorney hired, but legal stuff takes time.  This SUCKS.
   published_on: 2009-06-20 18:12:25 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00063: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00127: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=118330124011&amp;h=gyt0C&amp;u=wG45e
-    src: http://external.ak.fbcdn.net/safe_image.php?d=d6d2527b2f04329226a628ef0ac3ae33&amp;url=http%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fa4%2FAmphibole_-_Cummingtonite_w-_chlorite_in_schist_Magnesium_iron_silicate_3800_foot_level_Homestake_Mine_Lawrence_COunty_South_Dakota_2071.jpg%2F240px-Amphibole_-_Cummingtonite_w-_chlorite_in_schist_Magnesium_iron_silicate_3800_foot_level_Homestake_Mine_Lawrence_COunty_South_Dakota_2071.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=66ba91afb2c76e8b3e9c596c7dab0268&amp;url=http%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fa4%2FAmphibole_-_Cummingtonite_w-_chlorite_in_schist_Magnesium_iron_silicate_3800_foot_level_Homestake_Mine_Lawrence_COunty_South_Dakota_2071.jpg%2F240px-Amphibole_-_Cummingtonite_w-_chlorite_in_schist_Magnesium_iron_silicate_3800_foot_level_Homestake_Mine_Lawrence_COunty_South_Dakota_2071.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245607007
-  id: 63
+  guid: 
+  id: 127
   message: can this be for real?
   published_on: 2009-06-21 17:56:47 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00064: 
-  activity_stream_id: 1
+  updated_at: 1247449643
+activity_stream_item_00128: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245692274
-  id: 64
+  guid: 
+  id: 128
   message: thanks everyone for the wonderful birthday and fathers day wishes.  Keep praying that my lawyer gets my son to our family trip in Hawaii and prevents this type of abuse from happening again.
   published_on: 2009-06-22 17:37:54 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00065: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00129: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: IMG_1214
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/photo.php?pid=1952825&amp;id=504883639
     photo: 
-      aid: "2168458717790556509"
-      height: "453"
-      index: "3"
-      owner: "504883639"
       pid: "2168458717792422969"
+      aid: "2168458717790556509"
+      index: "3"
+      height: "453"
+      owner: "504883639"
       width: "604"
     src: http://photos-b.ak.fbcdn.net/photos-ak-sf2p/v652/77/120/504883639/s504883639_1952825_4167047.jpg
     type: photo
+    alt: IMG_1214
+
   attachment_type: photo
   created_at: 1245698952
-  id: 65
+  guid: 
+  id: 129
   message: ""
   published_on: 2009-06-22 19:29:12 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00066: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00130: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: Picture 007
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/photo.php?pid=1952869&amp;id=504883639
     photo: 
-      aid: "2168458717790556513"
-      height: "604"
-      index: "3"
-      owner: "504883639"
       pid: "2168458717792423013"
+      aid: "2168458717790556513"
+      index: "3"
+      height: "604"
+      owner: "504883639"
       width: "401"
     src: http://photos-f.ak.fbcdn.net/hphotos-ak-snc1/hs110.snc1/4813_93156648639_504883639_1952869_6072646_s.jpg
     type: photo
+    alt: Picture 007
+
   attachment_type: photo
   created_at: 1245699556
-  id: 66
+  guid: 
+  id: 130
   message: ""
   published_on: 2009-06-22 19:39:16 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00067: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00131: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: "Auto-Tune the News #5: lettuce regulation. American blessings."
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=100941976217&amp;h=7Jk8r&amp;u=CfJh_
-    src: http://external.ak.fbcdn.net/safe_image.php?d=b6c21d59cce0a314d15cd292f554eb08&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2F3eooXNd0heM%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=c83bc162dd40d88c02650232aafcf279&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2F3eooXNd0heM%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=100941976217#s100941976217
+      source_url: http://www.youtube.com/v/3eooXNd0heM&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=3eooXNd0heM&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=100941976217#s100941976217
-      source_type: html
-      source_url: http://www.youtube.com/v/3eooXNd0heM&amp;autoplay=1
+    alt: "Auto-Tune the News #5: lettuce regulation. American blessings."
+
   attachment_type: video
   created_at: 1245700490
-  id: 67
+  guid: 
+  id: 131
   message: pretty clever
   published_on: 2009-06-22 19:54:50 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00068: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00132: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    caption: "Source: www.guardian.co.uk"
-    description: 98% of supposedly environmentally friendly products make potentially false or misleading claims, US campaigners say
+  attachment_data: |+
+    --- 
+    name: US shoppers misled by greenwash, Congress told | Environment | guardian.co.uk
     href: http://www.facebook.com/ext/share.php?sid=100787792815&amp;h=MoEzB&amp;u=grkH8
+    fb_object_id: {}
+    
+    fb_object_type: {}
+    
     icon: http://static.ak.fbcdn.net/images/icons/post.gif?8:26575
     media: {}
-
-    name: US shoppers misled by greenwash, Congress told | Environment | guardian.co.uk
+    
+    caption: "Source: www.guardian.co.uk"
+    description: 98% of supposedly environmentally friendly products make potentially false or misleading claims, US campaigners say
     properties: {}
-
+    
   attachment_type: generic
   created_at: 1245703862
-  id: 68
+  guid: 
+  id: 132
   message: more proof that if you tell someone something is &quot;green&quot; that they automatically turn their brains off, or maybe it's because the green movement allows for zero skepticism without chastisment.  Sounds like the green movement is taking a cue from the right wing zealots that use peer pressure to sell their beliefs, which more often than not are completely erroneous.
   published_on: 2009-06-22 20:51:02 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00069: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00133: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245704433
-  id: 69
+  guid: 
+  id: 133
   message: is looking for people willing to write a Declaration to the court regarding my most awesome Dadness to Jack, as well as can state their opinion regarding Natalie's continued assault on me.  Email me at andrew@andrewedmond.com or call me.  I really need as many people as I can that the court will consider credible witnesses.
   published_on: 2009-06-22 21:00:33 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00070: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00134: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245726815
-  id: 70
+  guid: 
+  id: 134
   message: is celebrating my birthday AND Robin and I's six month anniversary tonight!!  Prayers for Jack welcomed from All!
   published_on: 2009-06-23 03:13:35 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00071: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00135: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245735650
-  id: 71
+  guid: 
+  id: 135
   message: just got the hottest, most thoughtful, amazing, kick ass, unbelievable, intense, beautiful, sexy, thoroughly overwhelming birthday present ever from Robin! What a babe!!!!!!!!!!!!!!!!!
   published_on: 2009-06-23 05:40:50 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00072: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00136: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: WoW Freakout
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=120346397177&amp;h=-nksS&amp;u=pdkIJ
-    src: http://external.ak.fbcdn.net/safe_image.php?d=05a82ea6a0ea21e3f83a967a7b7fbe20&amp;url=http%3A%2F%2F1.media.collegehumor.com%2Fcollegehumor%2Fch6%2F4%2F4%2Fcollegehumor.4a91d1f46db7c43b1aadf864ab8eed36.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=8d954d8254903b7e1348821170b5acba&amp;url=http%3A%2F%2F1.media.collegehumor.com%2Fcollegehumor%2Fch6%2F4%2F4%2Fcollegehumor.4a91d1f46db7c43b1aadf864ab8eed36.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=120346397177#s120346397177
+      source_url: http://www.collegehumor.com/moogaloop/moogaloop.swf?clip_id=1915521&amp;autostart=true
+      source_type: html
       display_url: http://www.collegehumor.com/video:1915521
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=120346397177#s120346397177
-      source_type: html
-      source_url: http://www.collegehumor.com/moogaloop/moogaloop.swf?clip_id=1915521&amp;autostart=true
+    alt: WoW Freakout
+
   attachment_type: video
   created_at: 1245781263
-  id: 72
+  guid: 
+  id: 136
   message: watching a kid FREAK out when his mom cancels his World of Warcraft account.... right as he hits level 80.
   published_on: 2009-06-23 18:21:03 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00073: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00137: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=95087931475&amp;h=PeyhX&amp;u=FtH1t
-    src: http://external.ak.fbcdn.net/safe_image.php?d=9e10da267316d8a481d60f3af60806dd&amp;url=http%3A%2F%2Fmsnbcmedia3.msn.com%2Fj%2FMSNBC%2FComponents%2FPhoto%2F_new%2F090622-volcano-hmed2p.hmedium.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=d33c44e424c9867ffbf9abd89835bb9a&amp;url=http%3A%2F%2Fmsnbcmedia3.msn.com%2Fj%2FMSNBC%2FComponents%2FPhoto%2F_new%2F090622-volcano-hmed2p.hmedium.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245788340
-  id: 73
+  guid: 
+  id: 137
   message: what an amazing pic!
   published_on: 2009-06-23 20:19:00 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00074: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00138: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=112448291083&amp;h=KG3ns&amp;u=qJ-5i
-    src: http://external.ak.fbcdn.net/safe_image.php?d=108a0a7eb474b875ddf012dabbad5a63&amp;url=http%3A%2F%2Fwww.lewrockwell.com%2Fpaul%2FGoldPeaceProsperity_T.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=ac701822824039bb6f753289ae42b930&amp;url=http%3A%2F%2Fwww.lewrockwell.com%2Fpaul%2FGoldPeaceProsperity_T.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245789767
-  id: 74
+  guid: 
+  id: 138
   message: go go Ron Paul!
   published_on: 2009-06-23 20:42:47 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00075: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00139: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    caption: "Source: www.theonion.com"
+  attachment_data: |+
+    --- 
+    name: www.theonion.com
     href: http://www.facebook.com/ext/share.php?sid=115495881353&amp;h=K1Pxq&amp;u=H8Ftj
+    fb_object_id: {}
+    
+    fb_object_type: {}
+    
     icon: http://static.ak.fbcdn.net/images/icons/post.gif?8:26575
     media: {}
-
-    name: www.theonion.com
+    
+    caption: "Source: www.theonion.com"
     properties: {}
-
+    
   attachment_type: generic
   created_at: 1245789911
-  id: 75
+  guid: 
+  id: 139
   message: the truth about family holidays, at last
   published_on: 2009-06-23 20:45:11 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00076: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00140: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: Picture 1
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/photo.php?pid=1960357&amp;id=504883639
     photo: 
-      aid: "2168458717790556751"
-      height: "348"
-      index: "1"
-      owner: "504883639"
       pid: "2168458717792430501"
+      aid: "2168458717790556751"
+      index: "1"
+      height: "348"
+      owner: "504883639"
       width: "604"
     src: http://photos-f.ak.fbcdn.net/hphotos-ak-snc1/hs110.snc1/4813_93624863639_504883639_1960357_4561644_s.jpg
     type: photo
+    alt: Picture 1
+
   attachment_type: photo
   created_at: 1245799420
-  id: 76
+  guid: 
+  id: 140
   message: Picture 1
   published_on: 2009-06-23 23:23:40 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00077: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00141: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=100881712186&amp;h=pfZPj&amp;u=prfle
-    src: http://external.ak.fbcdn.net/safe_image.php?d=cc8d1f129d03c0dc8b8737dd69695516&amp;url=http%3A%2F%2Fwww.boingboing.net%2F000418l3.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=58c5f969b2219dcccf9b2092d016ae88&amp;url=http%3A%2F%2Fwww.boingboing.net%2F000418l3.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245814400
-  id: 77
+  guid: 
+  id: 141
   message: pyramids in the USA.  Also for no discernible purpose.  Huh, who knew?
   published_on: 2009-06-24 03:33:20 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00078: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00142: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=107187719051&amp;h=-4SEX&amp;u=VyDWD
-    src: http://external.ak.fbcdn.net/safe_image.php?d=6301a7db0da80d07f03db52307b0a995&amp;url=http%3A%2F%2Fi.cdn.turner.com%2Fcnn%2F2009%2FPOLITICS%2F06%2F23%2FUS.syria.ambassador%2Ftzmos.mitchell.assad.gi.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=0537f3dd7048cd052f58cb962d057fe6&amp;url=http%3A%2F%2Fi.cdn.turner.com%2Fcnn%2F2009%2FPOLITICS%2F06%2F23%2FUS.syria.ambassador%2Ftzmos.mitchell.assad.gi.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245821960
-  id: 78
+  guid: 
+  id: 142
   message: and we think Iran is effed up?  Really?
   published_on: 2009-06-24 05:39:20 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00079: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00143: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245821994
-  id: 79
+  guid: 
+  id: 143
   message: is determined.  Focused.  Wait, what was I saying?
   published_on: 2009-06-24 05:39:54 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00080: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00144: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=208344885695&amp;h=D8cUH&amp;u=FGR4V
-    src: http://external.ak.fbcdn.net/safe_image.php?d=5129a0bfa8b6cb3e6e8f6c57a159a585&amp;url=http%3A%2F%2Fcraphound.com%2Fimages%2Fgoldi.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=fcb3a8a988ac8536644514b3cf561972&amp;url=http%3A%2F%2Fcraphound.com%2Fimages%2Fgoldi.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245823852
-  id: 80
+  guid: 
+  id: 144
   message: a statement about our post-industrial world.  Sublime.
   published_on: 2009-06-24 06:10:52 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00081: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00145: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=107888324048&amp;h=8XTCx&amp;u=Q-Xok
-    src: http://external.ak.fbcdn.net/safe_image.php?d=0931bd94ed00daf043080df069266e09&amp;url=http%3A%2F%2Finlinethumb05.webshots.com%2F26564%2F2444545680105101600S600x600Q85.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=2a1e086a9955997b1b71c4cec3e2a61c&amp;url=http%3A%2F%2Finlinethumb05.webshots.com%2F26564%2F2444545680105101600S600x600Q85.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245824383
-  id: 81
+  guid: 
+  id: 145
   message: get a haircut, please, PLEASE!
   published_on: 2009-06-24 06:19:43 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00082: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00146: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245825959
-  id: 82
+  guid: 
+  id: 146
   message: thanks everyone that has pitched in with help for re-establishing EQUAL custody with my son.  Fatherhood is NOT a privilege granted by Moms... but a RIGHT, even though sometimes we have to fight for it.  Soon... soon....
   published_on: 2009-06-24 06:45:59 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00083: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00147: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=112449587867&amp;h=aIAGQ&amp;u=axm5j
-    src: http://external.ak.fbcdn.net/safe_image.php?d=a2a57ee5850b17eb57ed843921721f5a&amp;url=http%3A%2F%2Fclubs.ccsu.edu%2Frecorder%2F%2Fmain%2Fccsulogo.gif
+    src: http://external.ak.fbcdn.net/safe_image.php?d=b750bd4b494a647bab291644d6f3bfee&amp;url=http%3A%2F%2Fclubs.ccsu.edu%2Frecorder%2F%2Fmain%2Fccsulogo.gif&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245855234
-  id: 83
+  guid: 
+  id: 147
   message: finds it funny that the Toyota Prius takes three times more energy to produce than a Hummer, totally offsetting any conceived &quot;savings&quot; to the environment...
   published_on: 2009-06-24 14:53:54 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00084: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00148: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=123982352904&amp;h=utKVR&amp;u=K5J4p
-    src: http://external.ak.fbcdn.net/safe_image.php?d=312d8435ef776ddcaf9f843b6101686c&amp;url=http%3A%2F%2Fcache.consumerist.com%2Fassets%2Fimages%2F31%2F2009%2F06%2Fpeanut1.png
+    src: http://external.ak.fbcdn.net/safe_image.php?d=974272c296c509112efc3f9cf8377427&amp;url=http%3A%2F%2Fcache.consumerist.com%2Fassets%2Fimages%2F31%2F2009%2F06%2Fpeanut1.png&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245855848
-  id: 84
+  guid: 
+  id: 148
   message: more environmental shenanigans.  I really wish the green movement had more built in skepticism, but anything goes I supposed!
   published_on: 2009-06-24 15:04:08 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404511
-activity_stream_item_00085: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00149: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=108698398616&amp;h=3N6pR&amp;u=MM6IJ
-    src: http://external.ak.fbcdn.net/safe_image.php?d=31d156256ef23e25f262bb8198a4009a&amp;url=http%3A%2F%2Fimages.google.com%2Furl%3Fsource%3Dimgres%26ct%3Dtbn%26q%3Dhttp%3A%2F%2Fblog.infotrends.com%2Fwordpress%2Fwp-content%2Fgallery%2Fgreen-logo%2Fmicrosoft-green_hp.jpg%26usg%3DAFQjCNHJSO4LP0DEMUx9eWR3VY5gMixarQ
+    src: http://external.ak.fbcdn.net/safe_image.php?d=d8d3cf855dbbdc55463f07b3b5f5b48f&amp;url=http%3A%2F%2Fimages.google.com%2Furl%3Fsource%3Dimgres%26ct%3Dtbn%26q%3Dhttp%3A%2F%2Fblog.infotrends.com%2Fwordpress%2Fwp-content%2Fgallery%2Fgreen-logo%2Fmicrosoft-green_hp.jpg%26usg%3DAFQjCNHJSO4LP0DEMUx9eWR3VY5gMixarQ&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245856135
-  id: 85
+  guid: 
+  id: 149
   message: a green movement that helps people save money, educate themselves, and is based on real, factual data... this is something I can support!
   published_on: 2009-06-24 15:08:55 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00086: 
-  activity_stream_id: 1
+  updated_at: 1247449644
+activity_stream_item_00150: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: Dailymotion - Zoom into a Tooth - a Tech &amp; Science video
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=113961277027&amp;h=yam5X&amp;u=TAurF
-    src: http://external.ak.fbcdn.net/safe_image.php?d=f7336799dd86e563d4ffc07f899b0eea&amp;url=http%3A%2F%2Fwww.dailymotion.com%2Fthumbnail%2F160x120%2Fvideo%2Fx4muob_zoom-into-a-tooth_tech
+    src: http://external.ak.fbcdn.net/safe_image.php?d=6190c165eb4071ae3bef699460ee0882&amp;url=http%3A%2F%2Fwww.dailymotion.com%2Fthumbnail%2F160x120%2Fvideo%2Fx4muob_zoom-into-a-tooth_tech&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=113961277027#s113961277027
+      source_url: http://www.dailymotion.com/swf/x4muob?autoPlay=1
+      source_type: html
       display_url: http://www.dailymotion.com/video/x4muob_zoom-into-a-tooth_tech
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=113961277027#s113961277027
-      source_type: html
-      source_url: http://www.dailymotion.com/swf/x4muob?autoPlay=1
+    alt: Dailymotion - Zoom into a Tooth - a Tech &amp; Science video
+
   attachment_type: video
   created_at: 1245856212
-  id: 86
+  guid: 
+  id: 150
   message: fascinating
   published_on: 2009-06-24 15:10:12 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00087: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00151: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245859772
-  id: 87
+  guid: 
+  id: 151
   message: Suze Orman tells me a &quot;budget&quot; is like a &quot;diet&quot; for money.  I feel enlightened.
   published_on: 2009-06-24 16:09:32 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00088: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00152: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=94755871589&amp;h=Tl2hj&amp;u=mJI1n
-    src: http://external.ak.fbcdn.net/safe_image.php?d=ec882a0a36a331289eba0238848cdb25&amp;url=http%3A%2F%2Ftrueslant.com%2Frachelking%2Ffiles%2F2009%2F06%2F300px-virgin_america_a320_cabin.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=47ed67f229dfe2caec6c5e7ee58a1ccc&amp;url=http%3A%2F%2Ftrueslant.com%2Frachelking%2Ffiles%2F2009%2F06%2F300px-virgin_america_a320_cabin.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245860623
-  id: 88
+  guid: 
+  id: 152
   message: funny as hell
   published_on: 2009-06-24 16:23:43 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00089: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00153: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    caption: "Source: www.juancole.com"
+  attachment_data: |+
+    --- 
+    name: "Informed Comment: Washington and the Iran Protests:"
     href: http://www.facebook.com/ext/share.php?sid=94997638190&amp;h=ZKuZX&amp;u=Q-QYw
+    fb_object_id: {}
+    
+    fb_object_type: {}
+    
     icon: http://static.ak.fbcdn.net/images/icons/post.gif?8:26575
     media: {}
-
-    name: "Informed Comment: Washington and the Iran Protests:"
+    
+    caption: "Source: www.juancole.com"
     properties: {}
-
+    
   attachment_type: generic
   created_at: 1245881524
-  id: 89
+  guid: 
+  id: 153
   message: "So John McCain thinks the president should have responded more harshly to the situation in Iran.  However, from this article: &quot;at the Republican National Committee convention in St. Paul in 2004,  250 protesters were arrested shortly before John McCain took the podium. Most were innocent activists and even journalists.&quot;  What a hypocrite."
   published_on: 2009-06-24 22:12:04 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00090: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00154: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245945530
-  id: 90
+  guid: 
+  id: 154
   message: they need to teach a class in facebook etiquette
   published_on: 2009-06-25 15:58:50 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00091: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00155: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
-    alt: O.M.G.I.G.P. - Internet Explorer 8
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=95526323542&amp;h=wEa1o&amp;u=oYcUG
-    src: http://external.ak.fbcdn.net/safe_image.php?d=8ded22918e0af618806810d933dfdd30&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2F8-9Mjm-Hohc%2F2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=3379b4a491cbb4732a88173f1e5ca83d&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2F8-9Mjm-Hohc%2F2.jpg&amp;w=130&amp;h=200
     type: video
     video: 
+      permalink: /posted.php?id=504883639&amp;share_id=95526323542#s95526323542
+      source_url: http://www.youtube.com/v/8-9Mjm-Hohc&amp;autoplay=1
+      source_type: html
       display_url: http://www.youtube.com/watch?v=8-9Mjm-Hohc&amp;eurl=http://gizmodo.com/5302248/dean-cain-wards-off-puke-and-porn-with-internet-explorer-8-nsfl&amp;feature=player_embedded
       owner: "504883639"
-      permalink: /posted.php?id=504883639&amp;share_id=95526323542#s95526323542
-      source_type: html
-      source_url: http://www.youtube.com/v/8-9Mjm-Hohc&amp;autoplay=1
+    alt: O.M.G.I.G.P. - Internet Explorer 8
+
   attachment_type: video
   created_at: 1245946351
-  id: 91
+  guid: 
+  id: 155
   message: wow, this is a REAL advertisement for IE8???  WOWOWOWOWO
   published_on: 2009-06-25 16:12:31 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00092: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00156: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=101192687115&amp;h=uRE9J&amp;u=kqO3K
-    src: http://external.ak.fbcdn.net/safe_image.php?d=b967b82d6ece0ca0e834f17a8d4bb10f&amp;url=http%3A%2F%2Ffarm4.static.flickr.com%2F3618%2F3658068677_52d3857f02.jpg%3Fv%3D0
+    src: http://external.ak.fbcdn.net/safe_image.php?d=7471338a4ffea137061bef8544be0028&amp;url=http%3A%2F%2Ffarm4.static.flickr.com%2F3618%2F3658068677_52d3857f02.jpg%3Fv%3D0&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245946632
-  id: 92
+  guid: 
+  id: 156
   message: wants a Cabybara.  Winner to get the first reference to this rodents name (Caplin Rous)
   published_on: 2009-06-25 16:17:12 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00093: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00157: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245948225
-  id: 93
+  guid: 
+  id: 157
   message: RIP Farrah Fawcet
   published_on: 2009-06-25 16:43:45 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00094: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00158: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245953519
-  id: 94
+  guid: 
+  id: 158
   message: Ed Macmahon... Farrah Fawcet... Patrik Swayze next?
   published_on: 2009-06-25 18:11:59 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00095: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00159: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=97219678547&amp;h=E5Abt&amp;u=Yio4N
-    src: http://external.ak.fbcdn.net/safe_image.php?d=54c5b5e9aa0b35317b15229031ff3890&amp;url=http%3A%2F%2Fwww.blogcdn.com%2Fwww.tmz.com%2Fmedia%2F2009%2F06%2F0625_michael_jackson_ex2.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=d98fc22bca4166f2d2ff9d12eccc7a97&amp;url=http%3A%2F%2Fwww.blogcdn.com%2Fwww.tmz.com%2Fmedia%2F2009%2F06%2F0625_michael_jackson_ex2.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245966308
-  id: 95
+  guid: 
+  id: 159
   message: http://www.tmz.com/2009/06/25/michael-jackson-dies-death-dead-cardiac-arrest/
   published_on: 2009-06-25 21:45:08 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00096: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00160: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245967990
-  id: 96
+  guid: 
+  id: 160
   message: TMZ typically breaks news in advance because they have people on every LA area hospital.  More reputable organizations do not engage in those type of practices.  Despite the ethics, I am 99% sure TMZ is right here, and people at CNN and FOX should at LEAST report that TMZ is reporting rather than BLATANTLY ignoring that report.
   published_on: 2009-06-25 22:13:10 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00097: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00161: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=108375399592&amp;h=6FZlx&amp;u=8k_0P
-    src: http://external.ak.fbcdn.net/safe_image.php?d=86038014357f6431645cdfeba2e89f8f&amp;url=http%3A%2F%2Flatimesblogs.latimes.com%2Flanow%2Fktla-logo.gif
+    src: http://external.ak.fbcdn.net/safe_image.php?d=04659cdefc877c7febbce3f425ff959c&amp;url=http%3A%2F%2Flatimesblogs.latimes.com%2Flanow%2Fktla-logo.gif&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1245968597
-  id: 97
+  guid: 
+  id: 161
   message: LA TIMES CONFIRMS MJ IS DEAD
   published_on: 2009-06-25 22:23:17 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00098: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00162: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1245981437
-  id: 98
+  guid: 
+  id: 162
   message: OMG.  Jeff Goldblum is NOT dead.  Knock it off.
   published_on: 2009-06-26 01:57:17 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00099: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00163: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=95716179033&amp;h=VRnq_&amp;u=m7d15
-    src: http://external.ak.fbcdn.net/safe_image.php?d=6e2065c712cf68128315f0bf16552bec&amp;url=http%3A%2F%2Fwww.webdesignerdepot.com%2Fwp-content%2Fuploads%2Fphoto_manipulation%2Fphoto_manipulation.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=340bf8dd95f6f5f814cb8ee0e2012458&amp;url=http%3A%2F%2Fwww.webdesignerdepot.com%2Fwp-content%2Fuploads%2Fphoto_manipulation%2Fphoto_manipulation.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246023511
-  id: 99
+  guid: 
+  id: 163
   message: neat stuff here *thanks sean*
   published_on: 2009-06-26 13:38:31 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00100: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00164: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=97434442218&amp;h=II1iR&amp;u=8Xt45
-    src: http://external.ak.fbcdn.net/safe_image.php?d=34579dbee0346d1b64f934f2008dfe38&amp;url=http%3A%2F%2Fi.dmdentertainment.com%2Ffunpages%2Fcms_content%2F17531%2Fjloh_thumb.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=738662a89784f4fdb4418ce8bdaae1d0&amp;url=http%3A%2F%2Fi.dmdentertainment.com%2Ffunpages%2Fcms_content%2F17531%2Fjloh_thumb.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246026362
-  id: 100
+  guid: 
+  id: 164
   message: think you gotta know me pretty well to understand this one
   published_on: 2009-06-26 14:26:02 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00101: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00165: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=92521878203&amp;h=WS4Cy&amp;u=4xyOv
-    src: http://external.ak.fbcdn.net/safe_image.php?d=92567c1d716882ee7c2c47378eb9071c&amp;url=http%3A%2F%2Fwww.dailygalaxy.com%2F.a%2F6a00d8341bf7f753ef011571591c67970b-500wi
+    src: http://external.ak.fbcdn.net/safe_image.php?d=db3c2fc87743b6d992afe575e75b2230&amp;url=http%3A%2F%2Fwww.dailygalaxy.com%2F.a%2F6a00d8341bf7f753ef011571591c67970b-500wi&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246043515
-  id: 101
+  guid: 
+  id: 165
   message: Good Stuff!
   published_on: 2009-06-26 19:11:55 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00102: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00166: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1246044169
-  id: 102
+  guid: 
+  id: 166
   message: just got out of court.  I won and Jack is going to HAWAII with us in six days!  Thanks everyone for their support!
   published_on: 2009-06-26 19:22:49 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00103: 
-  activity_stream_id: 1
+  updated_at: 1247449645
+activity_stream_item_00167: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1246062670
-  id: 103
+  guid: 
+  id: 167
   message: just finished the [Frostbitten] achievement!
   published_on: 2009-06-27 00:31:10 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00104: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00168: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1246124462
-  id: 104
+  guid: 
+  id: 168
   message: ouch  ouch   ouch  my head  ouch
   published_on: 2009-06-27 17:41:02 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00105: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00169: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=95666789393&amp;h=0zkuq&amp;u=jHsHt
-    src: http://external.ak.fbcdn.net/safe_image.php?d=01dc50d632f3bfa7b219c4cbdac6d480&amp;url=http%3A%2F%2Fwww.sfscope.com%2F2009%2F05%2Funthinkable3.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=ea8a6ede06cbc087a42220dab7647307&amp;url=http%3A%2F%2Fwww.sfscope.com%2F2009%2F05%2Funthinkable3.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246169526
-  id: 105
+  guid: 
+  id: 169
   message: oh.. the irony...
   published_on: 2009-06-28 06:12:06 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00106: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00170: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1246226191
-  id: 106
+  guid: 
+  id: 170
   message: preparing for Hawaii is stressful!  Getting to Hawaii will be peaceful!
   published_on: 2009-06-28 21:56:31 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00107: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00171: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1246252220
-  id: 107
+  guid: 
+  id: 171
   message: okay guys, I hate to say it... Carradine, Fawcet, McMahon, Jackson, Mays... we are in the midst of a major celebrity pruning...  I am voting for Swayze next... who else do you think is going to kick the bucket?  Vote now!
   published_on: 2009-06-29 05:10:20 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00108: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00172: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=96830267916&amp;h=9vJPR&amp;u=Dv7Mh
-    src: http://external.ak.fbcdn.net/safe_image.php?d=10ebf8a0f88bc53b834e1e4fa5734f96&amp;url=http%3A%2F%2Ffi.somethingawful.com%2Fcustomtitles%2Ftitle-paper_mac.gif
+    src: http://external.ak.fbcdn.net/safe_image.php?d=c989b8093c9356aa494848c030f4d4cc&amp;url=http%3A%2F%2Ffi.somethingawful.com%2Fcustomtitles%2Ftitle-paper_mac.gif&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246289099
-  id: 108
+  guid: 
+  id: 172
   message: this was an AMAZING Rolling Stone Article about Goldman Sachs, not available online until this guy put it online.  What a read.  Amazing, MUST read story!!
   published_on: 2009-06-29 15:24:59 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00109: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00173: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1246309479
-  id: 109
+  guid: 
+  id: 173
   message: just heard a good one... &quot;Billy Mays heard that celebrities die in threes... leave it up to him to throw in an extra for free!&quot;
   published_on: 2009-06-29 21:04:39 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00110: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00174: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=109998674416&amp;h=fpYxP&amp;u=UhTuB
-    src: http://external.ak.fbcdn.net/safe_image.php?d=8314f0889ca4a4267a6d9eb5dfd1b3cd&amp;url=http%3A%2F%2Fwww.quarrygirl.com%2Fwp-content%2Fuploads%2F2009%2F06%2Flotus-vegan-tests-570x214.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=6c0f9134ad5b251f4bab2595864e8836&amp;url=http%3A%2F%2Fwww.quarrygirl.com%2Fwp-content%2Fuploads%2F2009%2F06%2Flotus-vegan-tests-570x214.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246342950
-  id: 110
+  guid: 
+  id: 174
   message: skepticism is a good thing :)
   published_on: 2009-06-30 06:22:30 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00111: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00175: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=135338090048&amp;h=gTW7A&amp;u=G7y4t
-    src: http://external.ak.fbcdn.net/safe_image.php?d=ad293452f451193208df7afaf9aa3e48&amp;url=http%3A%2F%2Fwww.blogsmithcdn.com%2Favatar%2Fimages%2F8%2F2706050_64.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=3b4f49c2a5dca9c39a46d3f473150d8a&amp;url=http%3A%2F%2Fwww.blogsmithcdn.com%2Favatar%2Fimages%2F8%2F2706050_64.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246383230
-  id: 111
+  guid: 
+  id: 175
   message: I'll take two
   published_on: 2009-06-30 17:33:50 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00112: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00176: 
+  activity_stream_id: 8
   activity_type: post
-  attachment_data: 
+  attachment_data: |
+    --- 
     href: http://www.facebook.com/ext/share.php?sid=97812617481&amp;h=me28P&amp;u=cyYJ6
-    src: http://external.ak.fbcdn.net/safe_image.php?d=2bc5d56062ff26a811328d6bbaecfd8a&amp;url=http%3A%2F%2Fwww.vacationrentalagent.com%2Fimages%2Frentals%2Fp2648_i9_1138229661.jpg
+    src: http://external.ak.fbcdn.net/safe_image.php?d=ab692551e934f6ec09b7dde55a258de0&amp;url=http%3A%2F%2Fwww.vacationrentalagent.com%2Fimages%2Frentals%2Fp2648_i9_1138229661.jpg&amp;w=130&amp;h=200
     type: link
+
   attachment_type: link
   created_at: 1246383422
-  id: 112
+  guid: 
+  id: 176
   message: where we are staying in Maui, plane leaves in 48 hours!
   published_on: 2009-06-30 17:37:02 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
-activity_stream_item_00113: 
-  activity_stream_id: 1
+  updated_at: 1247449646
+activity_stream_item_00177: 
+  activity_stream_id: 8
   activity_type: status
   attachment_data: 
   attachment_type: 
   created_at: 1246401333
-  id: 113
+  guid: 
+  id: 177
   message: is leaving on a jet plane...
   published_on: 2009-06-30 22:35:33 Z
   type: FacebookActivityStreamItem
-  updated_at: 1246404512
+  updated_at: 1247449646
+activity_stream_item_00178: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1246488683
+  guid: 
+  id: 178
+  message: on the ferry to go pick up my son for our trip to hawaii. I haven't seen him in 24 days, I'm shaking with excitement!!
+  published_on: 2009-07-01 22:51:23 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00179: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1246491025
+  guid: 
+  id: 179
+  message: does anyone else have a problem in the case that you advance pay for a service (cell phone minutes, gift cards, transportaion like ferry tickets) and they 'expire' in 90 days with no possible refund?  How can something digital 'expire'?  Theivery more like it.
+  published_on: 2009-07-01 23:30:25 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00180: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/ext/share.php?sid=130220558664&amp;h=97Euj&amp;u=IYsYS
+    src: http://external.ak.fbcdn.net/safe_image.php?d=3b5de2be5d3e47de2092b8240eb8bfa3&amp;url=http%3A%2F%2Fimg.docstoc.com%2Fthumb%2F100%2F8016703.png&amp;w=130&amp;h=200
+    type: link
+
+  attachment_type: link
+  created_at: 1246505431
+  guid: 
+  id: 180
+  message: yep.  the last will of Michael Jackson, scanned in entirety
+  published_on: 2009-07-02 03:30:31 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00181: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/ext/share.php?sid=98896998621&amp;h=73l62&amp;u=U6W3T
+    src: http://external.ak.fbcdn.net/safe_image.php?d=f190d45c088f8c836091b2c5abdd7ad6&amp;url=http%3A%2F%2Fmarkmathews.files.wordpress.com%2F2009%2F06%2Fdsc_9802.jpg%3Fw%3D500%26h%3D333&amp;w=130&amp;h=200
+    type: link
+
+  attachment_type: link
+  created_at: 1246550214
+  guid: 
+  id: 181
+  message: this is what I plan to do in Hawaii..
+  published_on: 2009-07-02 15:56:54 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00182: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/ext/share.php?sid=94776700767&amp;h=W8bvv&amp;u=GNsr7
+    src: http://external.ak.fbcdn.net/safe_image.php?d=5da65e9dc881c8fc6152dc531d6b468d&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FD1R-jKKp3NA%2F2.jpg&amp;w=130&amp;h=200
+    type: video
+    video: 
+      permalink: /posted.php?id=504883639&amp;share_id=94776700767#s94776700767
+      source_url: http://www.youtube.com/v/D1R-jKKp3NA&amp;autoplay=1
+      source_type: html
+      display_url: http://www.youtube.com/watch?v=D1R-jKKp3NA
+      owner: "504883639"
+    alt: Steve Jobs Stanford Commencement Speech 2005
+
+  attachment_type: video
+  created_at: 1246563034
+  guid: 
+  id: 182
+  message: very inspiring...  (mr. jobs has been my hero since I was 11 years old)
+  published_on: 2009-07-02 19:30:34 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00183: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1246565446
+  guid: 
+  id: 183
+  message: is heading to Hawaii with the kids at 2:40 today!!  Packed and ready to go.  I really dislike flying!!!  Robin heads out a day later and is flying first class sans kiddos, lucky her!
+  published_on: 2009-07-02 20:10:46 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00184: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1246642731
+  guid: 
+  id: 184
+  message: what is better than seeing both your kids sit up bolt upright in bed and in unison say &quot;HAWAII!!  LETS GO SWIMMING!!&quot;
+  published_on: 2009-07-03 17:38:51 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00185: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |+
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2016963&amp;id=504883639
+    photo: 
+      pid: "2168458717792487107"
+      aid: "2168458717790500067"
+      index: "2"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-d.ak.fbcdn.net/hphotos-ak-snc1/hs157.snc1/5851_97226283639_504883639_2016963_17468_s.jpg
+    type: photo
+    alt: {}
+    
+  attachment_type: photo
+  created_at: 1246651209
+  guid: 
+  id: 185
+  message: ""
+  published_on: 2009-07-03 20:00:09 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00186: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2023666&amp;id=504883639
+    photo: 
+      pid: "2168458717792493810"
+      aid: "2168458717790559128"
+      index: "3"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-c.ak.fbcdn.net/hphotos-ak-snc1/hs157.snc1/5851_97659613639_504883639_2023666_3645362_s.jpg
+    type: photo
+    alt: IMG_1246
+
+  attachment_type: photo
+  created_at: 1246762402
+  guid: 
+  id: 186
+  message: ""
+  published_on: 2009-07-05 02:53:22 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00187: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2045780&amp;id=504883639
+    photo: 
+      pid: "2168458717792515924"
+      aid: "2168458717790559781"
+      index: "3"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-e.ak.fbcdn.net/hphotos-ak-snc1/hs157.snc1/5851_98712603639_504883639_2045780_6002293_s.jpg
+    type: photo
+    alt: IMG_1284
+
+  attachment_type: photo
+  created_at: 1246991032
+  guid: 
+  id: 187
+  message: ""
+  published_on: 2009-07-07 18:23:52 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00188: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2045797&amp;id=504883639
+    photo: 
+      pid: "2168458717792515941"
+      aid: "2168458717790559782"
+      index: "3"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-f.ak.fbcdn.net/photos-ak-sf2p/v5207/77/120/504883639/s504883639_2045797_3936659.jpg
+    type: photo
+    alt: IMG_1324
+
+  attachment_type: photo
+  created_at: 1246991082
+  guid: 
+  id: 188
+  message: ""
+  published_on: 2009-07-07 18:24:42 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00189: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2045818&amp;id=504883639
+    photo: 
+      pid: "2168458717792515962"
+      aid: "2168458717790559785"
+      index: "3"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-c.ak.fbcdn.net/hphotos-ak-snc1/hs157.snc1/5851_98714653639_504883639_2045818_2842033_s.jpg
+    type: photo
+    alt: IMG_2305
+
+  attachment_type: photo
+  created_at: 1246991356
+  guid: 
+  id: 189
+  message: ""
+  published_on: 2009-07-07 18:29:16 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449646
+activity_stream_item_00190: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2047298&amp;id=504883639
+    photo: 
+      pid: "2168458717792517442"
+      aid: "2168458717790559838"
+      index: "3"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-c.ak.fbcdn.net/hphotos-ak-snc1/hs137.snc1/5851_98835568639_504883639_2047298_5035742_s.jpg
+    type: photo
+    alt: IMG_1341
+
+  attachment_type: photo
+  created_at: 1247014071
+  guid: 
+  id: 190
+  message: ""
+  published_on: 2009-07-08 00:47:51 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00191: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2047415&amp;id=504883639
+    photo: 
+      pid: "2168458717792517559"
+      aid: "2168458717790559844"
+      index: "3"
+      height: "604"
+      owner: "504883639"
+      width: "453"
+    src: http://photos-h.ak.fbcdn.net/photos-ak-sf2p/v5207/77/120/504883639/s504883639_2047415_6779141.jpg
+    type: photo
+    alt: IMG_2359
+
+  attachment_type: photo
+  created_at: 1247016009
+  guid: 
+  id: 191
+  message: ""
+  published_on: 2009-07-08 01:20:09 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00192: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1247046267
+  guid: 
+  id: 192
+  message: can't even begin to describe the love and affection for my fam, my new one with Jack and Lena and Robin, and my old one with Trev, Keenan, Ryan and Mima!
+  published_on: 2009-07-08 09:44:27 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00193: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2051914&amp;id=504883639
+    photo: 
+      pid: "2168458717792522058"
+      aid: "2168458717790560009"
+      index: "3"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-c.ak.fbcdn.net/hphotos-ak-snc1/hs137.snc1/5851_99164403639_504883639_2051914_3841018_s.jpg
+    type: photo
+    alt: IMG_2429
+
+  attachment_type: photo
+  created_at: 1247089147
+  guid: 
+  id: 193
+  message: ""
+  published_on: 2009-07-08 21:39:07 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00194: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1247125765
+  guid: 
+  id: 194
+  message: just dropped off Robin and Lena at the airport... one more day in Maui then back to ... reality, oh noes!
+  published_on: 2009-07-09 07:49:25 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00195: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1247173917
+  guid: 
+  id: 195
+  message: is dreading his flight home.  When are scientists going to invent a matter transportation / teleportation device.  I'd pay double.
+  published_on: 2009-07-09 21:11:57 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00196: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2057974&amp;id=504883639
+    photo: 
+      pid: "2168458717792528118"
+      aid: "2168458717790560214"
+      index: "3"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-g.ak.fbcdn.net/hphotos-ak-snc1/hs137.snc1/5851_99591663639_504883639_2057974_4968127_s.jpg
+    type: photo
+    alt: IMG_1386
+
+  attachment_type: photo
+  created_at: 1247183849
+  guid: 
+  id: 196
+  message: ""
+  published_on: 2009-07-09 23:57:29 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00197: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2058002&amp;id=504883639
+    photo: 
+      pid: "2168458717792528146"
+      aid: "2168458717790560215"
+      index: "3"
+      height: "604"
+      owner: "504883639"
+      width: "453"
+    src: http://photos-c.ak.fbcdn.net/hphotos-ak-snc1/hs157.snc1/5851_99592463639_504883639_2058002_1414467_s.jpg
+    type: photo
+    alt: IMG_2479
+
+  attachment_type: photo
+  created_at: 1247183985
+  guid: 
+  id: 197
+  message: ""
+  published_on: 2009-07-09 23:59:45 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00198: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2058068&amp;id=504883639
+    src: http://photos-e.ak.fbcdn.net/hphotos-ak-snc1/hs157.snc1/5851_99593833639_504883639_2058068_5149723_s.jpg
+    type: link
+
+  attachment_type: link
+  created_at: 1247184663
+  guid: 
+  id: 198
+  message: Last day in Hawaii and looking very very tan :)
+  published_on: 2009-07-10 00:11:03 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00199: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1247232179
+  guid: 
+  id: 199
+  message: ouch. Back in Seattle on a redeye I didn't sleep on. Jet lag will suck for a couple days. Today especially. I'll be around but napping till hopefully I get fully adjusted tomorrow. Got to see my girls this morning and that is great!!!
+  published_on: 2009-07-10 13:22:59 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00200: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1247268133
+  guid: 
+  id: 200
+  message: rested, still a little jet lagged, trying to catch up, plan to be putting in 14 hour days till I'm back on pace.
+  published_on: 2009-07-10 23:22:13 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00201: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |+
+    --- 
+    name: Morgan Spurlock's Experiment To Try Heroin For 30 Days Enters 200th Day | The Onion - America's Fine
+    href: http://www.facebook.com/ext/share.php?sid=96378168341&amp;h=oGqAq&amp;u=lAx8b
+    fb_object_id: {}
+    
+    fb_object_type: {}
+    
+    icon: http://static.ak.fbcdn.net/images/icons/news.gif?8:25796
+    media: {}
+    
+    caption: "Source: www.theonion.com"
+    description: files/radionews/06-192 Morgan Spurlock _F.mp3
+    properties: {}
+    
+  attachment_type: generic
+  created_at: 1247271899
+  guid: 
+  id: 201
+  message: OMG ROFLMOA!
+  published_on: 2009-07-11 00:24:59 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00202: 
+  activity_stream_id: 8
+  activity_type: status
+  attachment_data: 
+  attachment_type: 
+  created_at: 1247344634
+  guid: 
+  id: 202
+  message: West Seattle Street Fair and 85 degrees.  Good times!
+  published_on: 2009-07-11 20:37:14 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00203: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2070133&amp;id=504883639
+    photo: 
+      pid: "2168458717792540277"
+      aid: "2168458717790560616"
+      index: "2"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-f.ak.fbcdn.net/hphotos-ak-snc1/hs137.snc1/5851_100385838639_504883639_2070133_4101049_s.jpg
+    type: photo
+    alt: IMG_0496
+
+  attachment_type: photo
+  created_at: 1247372553
+  guid: 
+  id: 203
+  message: ""
+  published_on: 2009-07-12 04:22:33 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647
+activity_stream_item_00204: 
+  activity_stream_id: 8
+  activity_type: post
+  attachment_data: |
+    --- 
+    href: http://www.facebook.com/photo.php?pid=2075720&amp;id=504883639
+    photo: 
+      pid: "2168458717792545864"
+      aid: "2168458717790500067"
+      index: "1"
+      height: "453"
+      owner: "504883639"
+      width: "604"
+    src: http://photos-a.ak.fbcdn.net/hphotos-ak-snc1/hs157.snc1/5851_100641573639_504883639_2075720_8038526_s.jpg
+    type: photo
+    alt: Home plate seats!!
+
+  attachment_type: photo
+  created_at: 1247433193
+  guid: 
+  id: 204
+  message: Home plate seats!!
+  published_on: 2009-07-12 21:13:13 Z
+  type: FacebookActivityStreamItem
+  updated_at: 1247449647

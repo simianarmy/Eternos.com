@@ -1,5 +1,33 @@
 --- 
 activity_stream_00001: 
-  backup_site_id: 1
   id: 1
-  user_id: 108
+  last_activity_at: 
+  user_id: 1
+activity_stream_00002: 
+  id: 2
+  last_activity_at: 
+  user_id: 2
+activity_stream_00003: 
+  id: 3
+  last_activity_at: 
+  user_id: 3
+activity_stream_00004: 
+  id: 4
+  last_activity_at: 
+  user_id: 4
+activity_stream_00005: 
+  id: 5
+  last_activity_at: 
+  user_id: 5
+activity_stream_00006: 
+  id: 6
+  last_activity_at: 
+  user_id: 6
+activity_stream_00007: 
+  id: 7
+  last_activity_at: 
+  user_id: 7
+activity_stream_00008: 
+  id: 8
+  last_activity_at: 
+  user_id: 8

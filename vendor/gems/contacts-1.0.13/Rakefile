@@ -61,8 +61,8 @@ spec = Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.autorequire = 'contacts'
 
-  s.add_dependency('json', '>= 0.4.1')
-  s.requirements << "A json parser"
+  #s.add_dependency('json', '>= 0.4.1')
+  #s.requirements << "A json parser"
 
   #### Documentation and testing.
 

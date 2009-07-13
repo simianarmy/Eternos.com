@@ -119,7 +119,7 @@ Docs: http://code.google.com/p/simile-widgets/wiki/Timeline
 
 Dumping Timeline data into fixtures:
 
-rake db:dataset:dump_fixtures DATASET=timeline INCLUDE=ActivityStreamItem,ActivityStream,BackupPhotoAlbum,BackupPhoto,BackupSite,BackupSourceJob,BackupSource,BackupState,FacebookContent
+rake RAILS_ENV=<env> db:dataset:dump_fixtures DATASET=timeline INCLUDE=ActivityStreamItem,ActivityStream,BackupPhotoAlbum,BackupPhoto,BackupSite,BackupSourceJob,BackupSource,BackupState,FacebookContent,User,Profile
   
     
   
