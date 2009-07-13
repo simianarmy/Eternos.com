@@ -1,0 +1,101 @@
+--- 
+backup_source_00001: 
+  auth_confirmed: true
+  auth_error: 
+  auth_login: jodie_nader
+  auth_password: voluptatem
+  backup_site_id: 1
+  created_at: 2009-06-30 23:26:00 Z
+  disabled: false
+  earliest_day_backed_up: 
+  id: 1
+  last_backup_at: 
+  last_login_at: 2009-06-30 23:26:00 Z
+  last_login_attempt_at: 2009-06-30 23:26:00 Z
+  latest_day_backed_up: 
+  needs_initial_scan: true
+  rss_url: 
+  skip_video: false
+  type: ""
+  updated_at: 2009-06-30 23:26:00 Z
+  user_id: 108
+backup_source_00006: 
+  auth_confirmed: false
+  auth_error: 
+  auth_login: 
+  auth_password: 
+  backup_site_id: 
+  created_at: 2009-07-05 03:06:31 Z
+  disabled: false
+  earliest_day_backed_up: 
+  id: 6
+  last_backup_at: 
+  last_login_at: 
+  last_login_attempt_at: 
+  latest_day_backed_up: 
+  needs_initial_scan: true
+  rss_url: 
+  skip_video: false
+  type: ""
+  updated_at: 2009-07-05 03:06:31 Z
+  user_id: 108
+backup_source_00008: 
+  auth_confirmed: false
+  auth_error: 
+  auth_login: 
+  auth_password: 
+  backup_site_id: 10
+  created_at: 2009-07-05 17:00:57 Z
+  disabled: false
+  earliest_day_backed_up: 
+  id: 8
+  last_backup_at: 
+  last_login_at: 
+  last_login_attempt_at: 
+  latest_day_backed_up: 
+  needs_initial_scan: true
+  rss_url: http://simian187.vox.com/library/posts/atom.xml
+  skip_video: false
+  type: FeedUrl
+  updated_at: 2009-07-05 17:00:57 Z
+  user_id: 108
+backup_source_00010: 
+  auth_confirmed: true
+  auth_error: 
+  auth_login: 
+  auth_password: 
+  backup_site_id: 6
+  created_at: 2009-07-05 18:25:34 Z
+  disabled: false
+  earliest_day_backed_up: 
+  id: 10
+  last_backup_at: 
+  last_login_at: 
+  last_login_attempt_at: 
+  latest_day_backed_up: 
+  needs_initial_scan: true
+  rss_url: 
+  skip_video: false
+  type: 
+  updated_at: 2009-07-05 18:25:59 Z
+  user_id: 108
+backup_source_00018: 
+  auth_confirmed: false
+  auth_error: 
+  auth_login: 
+  auth_password: 
+  backup_site_id: 10
+  created_at: 2009-07-05 18:58:59 Z
+  disabled: false
+  earliest_day_backed_up: 
+  id: 18
+  last_backup_at: 
+  last_login_at: 
+  last_login_attempt_at: 
+  latest_day_backed_up: 
+  needs_initial_scan: true
+  rss_url: http://feeds.feedburner.com/railscasts
+  skip_video: false
+  type: FeedUrl
+  updated_at: 2009-07-05 18:58:59 Z
+  user_id: 108
