@@ -142,7 +142,7 @@ require 'mime/types'
 require 'shared-mime-info'
 require 'facebook_user_profile'
 require 'whenever' # For Capistrano requirement
-#require 'contacts'
+require 'contacts'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
