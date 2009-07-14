@@ -18,7 +18,7 @@ class BackupSourcesController < ApplicationController
             backup_source = current_user.backup_sources.by_site(BackupSite::Twitter).find_by_auth_login(params[:backup_source][:auth_login])
             if backup_source.nil?
               backup_source = current_user.backup_sources.new(params[:backup_source].merge({:backup_site_id => backup_site.id}))
-               message = "activated" if backup_source.save
+              message = "activated" if backup_source.save
             else
                message = "Twitter account is already activated"
             end
@@ -31,8 +31,8 @@ class BackupSourcesController < ApplicationController
       end
     end
     render_message(message)
-#  rescue
-#     render_message("Twitter account is not valid")
+  rescue
+     render_message("Twitter account is not valid")
   end
 
   def add_feed_url
