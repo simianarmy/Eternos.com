@@ -9,9 +9,8 @@ class ActivityStreamItem < ActiveRecord::Base
   def self.create_from_proxy(item)
     create!(
       :guid             => item.id,
-      :created_at       => item.created,
-      :updated_at       => item.updated,
-      :published_on     => Time.at(item.created),
+      :edited_at        => Time.at(item.updated),
+      :published_at     => Time.at(item.created),
       :message          => item.message,
       :activity_type    => item.type,
       :attachment_data  => item.attachment_data,
@@ -22,7 +21,7 @@ class ActivityStreamItem < ActiveRecord::Base
   named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
   named_scope :latest, lambda { |num|
     {
-      :order => 'updated_at DESC', :limit => num || 1
+      :order => 'published_at DESC', :limit => num || 1
     }
   }
   

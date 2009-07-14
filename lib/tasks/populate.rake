@@ -50,7 +50,7 @@ namespace :db do
   end
     
   desc "Fill required database records"
-  task :populate_required => :environment do
+  task :populate_required => :bootstrap_saas do
     puts "Populating categories"
     Category.delete_all('global = 1')
     Category.create(:name=>"Birth", :global => 1)

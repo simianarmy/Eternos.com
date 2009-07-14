@@ -55,7 +55,7 @@ CREATE TABLE `activity_stream_items` (
   `id` int(11) NOT NULL auto_increment,
   `created_at` int(11) default NULL,
   `updated_at` int(11) default NULL,
-  `published_on` datetime default NULL,
+  `published_at` int(11) default NULL,
   `guid` varchar(255) default NULL,
   `message` text,
   `attachment_data` text,

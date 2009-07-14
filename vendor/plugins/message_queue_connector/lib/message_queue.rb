@@ -85,7 +85,7 @@ module MessageQueue
     end
     
     def backup_worker_subscriber_queue(site, queue=WorkerTopicQueue)
-      MQ.queue(queue).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
+      MQ.queue(queue, :durable => true).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
     end
     
     def create_topic_queue(channel, queue, options={})

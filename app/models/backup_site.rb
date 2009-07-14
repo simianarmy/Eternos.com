@@ -11,4 +11,8 @@ class BackupSite < ActiveRecord::Base
   Blog      = 'blog'
   
   validates_presence_of :name
+  
+  def self.names
+    [Facebook, Twitter, Gmail, Blog]
+  end
 end
