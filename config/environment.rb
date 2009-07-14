@@ -77,6 +77,8 @@ Rails::Initializer.run do |config|
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
   config.gem 'facebooker-eternos', :lib => 'facebooker'
+  # Required here b/c needs to be built locally with libcurl
+  config.gem 'taf2-curb', :version => '>= 0.4.3', :source => 'http://gems.github.com'
   
   #config.gem 'simianarmy-feedzirra', :lib => 'feedzirra', :source => 'http://gems.github.com'
   
