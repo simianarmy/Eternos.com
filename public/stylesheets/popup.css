@@ -697,7 +697,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .table-form3{
 	width:440px;
 	height:auto;
-	margin-top:10px;
+	margin-top:0    ;
 }
 
 .table-form4{
