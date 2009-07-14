@@ -12,21 +12,7 @@ class TimelineSearch
   
   def results
     # do search 
-    get_activity_stream_items
-    get_stories
-    get_contents
     @events
-  end
-  
-  def get_activity_stream_items
-    items = @member.activity_stream.items.collect {|i| TimelineEvent.new(i.to_timeline_event).events }
-    @events.concat(items)
-  end  
-  
-  def get_stories
-  end
-  
-  def get_contents
   end
 end
 

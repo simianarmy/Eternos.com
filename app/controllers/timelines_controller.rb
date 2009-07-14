@@ -44,9 +44,8 @@ class TimelinesController < ApplicationController
   # GET /timeline/search/member_id/start_date/end_date/*opts
   def search
     # Member or guest view
-    
     member_view = (params[:id].to_i == current_user.id)
-        
+    
     # Rails has already parsed the url into params hash for us - no point in doing it again.
     @response = TimelineRequestResponse.new(request.url, params)
     @response.execute

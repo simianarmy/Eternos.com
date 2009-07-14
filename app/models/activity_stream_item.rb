@@ -24,21 +24,7 @@ class ActivityStreamItem < ActiveRecord::Base
       :order => 'published_at DESC', :limit => num || 1
     }
   }
-  
-  def to_timeline_event
-    { :searchClass => search_class,
-      :title => "",
-      :caption => "",
-      :summary => "",
-      :time => "",
-      :previewImgUrl => "",
-      :data=> ""}
-  end
 
-private
-  def search_class
-    type.sub("ActivityStreamItem","").downcase
-  end
 end
 
 # STI class children

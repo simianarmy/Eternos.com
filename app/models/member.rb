@@ -112,8 +112,8 @@ class Member < User
   end
   
   # temporary function to get member lifespan beginning-end
-  def lifespan_beginning_and_end
-    "#{20.years.ago.to_date}/#{DateTime.now.to_date.to_s}/"
+  def lifespan
+    {:beginning => "#{8.years.ago.to_date}", :end => "#{DateTime.now.to_date.to_s}"}
   end
   
   private

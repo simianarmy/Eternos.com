@@ -25,7 +25,11 @@ module TimelinesHelper
   end
   
   # populate timeline events for a user/member
-  def populate_timeline_events(member)
-    javascript_tag "new Ajax.Request('/timeline/search/#{member.id}/#{member.lifespan_beginning_and_end}', { method:'get' });"
+  def populate_timeline_events(member, options)
+    load_timeline_events(member.id, member.lifespan[:beginning], member.lifespan[:end], options)
+  end
+  
+  def load_timeline_events(member_id, start_date, end_date, options)
+    javascript_tag "loadTimelineEvents(#{member_id}, #{start_date}, #{end_date}, '#{options}')"
   end
 end
