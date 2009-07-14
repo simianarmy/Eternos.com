@@ -77,6 +77,7 @@ Rails::Initializer.run do |config|
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
   config.gem 'facebooker-eternos', :lib => 'facebooker'
+  config.gem 'nokogiri', :version => '>= 1.2.3'
   #config.gem 'simianarmy-feedzirra', :lib => 'feedzirra', :source => 'http://gems.github.com'
   
   # Rails can't find this gem even though it is in vendor/gems
