@@ -851,4 +851,5 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
 
+  BackupSite.create(:name => "twitter")
 end
