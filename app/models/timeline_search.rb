@@ -4,7 +4,6 @@
 
 class TimelineSearch
   def initialize(user_id, dates, options)
-    debugger
     @options = options
     @events = []
     @member = Member.find(user_id)
