@@ -94,20 +94,22 @@ namespace :deploy do
   
   desc "Send email notification to dev@eternos.com"
   task :sendmail, :roles => :app do
-    stime = 1.day.ago.strftime('%Y-%m-%d 23:59:59')
+    run "mkdir -p #{current_path}/tmp/emails"
+    stime = (Date.today-1).strftime('%Y-%m-%d 23:59:59')
     etime = Time.now.strftime('%Y-%m-%d 23:59:59')
     fname = "svn_#{rand Time.now.to_i}.txt"
-    path_to_filename = "#{current_path}/tmp/emails/#{filename}"
+    path_to_filename = "#{current_path}/tmp/emails/#{fname}"
     
-    run "svn log #{repository} --revision {'#{stime}'}:{'#{etime}'} -v --username #{scm_username} --password #{scm_password} >> #{path_to_filename}"
-    run "cd #{current_path}; ruby script/sendmail.rb #{filename}"
+    run "svn log #{repository} --revision {'#{stime}'}:{'#{etime}'} -v --username #{svn_user} --password #{svn_password} > #{path_to_filename}"
+    run "cd #{current_path}; ruby script/sendmail.rb #{fname}"
+    run "rm #{path_to_filename}"
   end
 end
 
 after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
+after "deploy:symlink", "deploy:sendmail"
 after "deploy:update_code", "deploy:symlink_shared"
 after "deploy:restart", "deploy:restart_mq"
-after "deploy:sendmail"
 
 
