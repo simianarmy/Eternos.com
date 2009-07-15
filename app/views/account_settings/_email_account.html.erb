@@ -17,7 +17,8 @@
 	      <tr>
 	        <td class="coll-form7" valign="bottom">Email</td>
 		    	<td class="coll-form2" valign="bottom">:</td>
-		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.text_field :username %></td>
+                <%- value = @current_gmail.nil? ? "" : @current_gmail.auth_login -%>
+		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.text_field :username, :value => value %></td>
 	      </tr>
 	      <tr>
 	        <td class="coll-form7" valign="bottom">Password</td>

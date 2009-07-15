@@ -144,6 +144,7 @@ class AccountSettingsController < ApplicationController
   
   def email_account
     @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
+    @current_gmail = BackupSource.find_by_user_id(current_user.id, :conditions => "type = 'GmailAccount'")
     if params[:method].blank?
       respond_to do |format|
         format.js do
@@ -552,10 +553,11 @@ class AccountSettingsController < ApplicationController
         ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})
       end
       @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
-
+      @current_gmail = BackupSource.find_by_user_id(current_user.id, :conditions => "type = 'GmailAccount'")
       respond_to do |format|
         format.js do
           render :update do |page|
+            @success = true
             page.replace_html "flash-message", :text => "Your email account was successfully saved."
             page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
           end

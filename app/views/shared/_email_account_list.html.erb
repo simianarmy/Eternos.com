@@ -1,3 +1,7 @@
+<% if @success %>
+  <%= javascript_tag("$('step3-button-hide').click();") %>
+<%- end -%>
+
 <% unless @contact_emails.blank? %>
   <br />
 	<div class="title7">List of your emails</div>
@@ -27,4 +31,5 @@
   <br>
 <%= will_paginate(@contact_emails) %>
 <% end %>
+
 
