@@ -11,25 +11,25 @@ common: &default_settings
   
 development:
   <<: *default_settings
-  callback_url: http://staging.eternos.com
+  callback_url: http://connect.eternos.com
   tunnel:
-     public_host_username: 
-     public_host: 
+     public_host_username: eternosfbtunn3l
+     public_host: 72.3.253.143
      public_port: 4007
      local_port: 3000    
      
 test:
   <<: *default_settings 
-  callback_url: http://staging.eternos.com
+  callback_url: http://connect.eternos.com
   tunnel:
-    public_host_username: 
-    public_host: 
+    public_host_username: eternosfbtunn3l
+    public_host: 72.3.253.143
     public_port: 4007
     local_port: 3000
 
 staging:
   <<: *default_settings  
-  callback_url: http://staging.eternos.com
+  callback_url: http://connect.eternos.com
   tunnel:
     public_host_username:  
     public_host: 
@@ -38,7 +38,7 @@ staging:
        
 production:
   <<: *default_settings 
-  callback_url: http://eternos.com
+  callback_url: http://connect.eternos.com
   tunnel:
     public_host_username: 
     public_host: 

@@ -423,6 +423,10 @@ SET character_set_client = @saved_cs_client;
 LOCK TABLES `backup_sites` WRITE;
 /*!40000 ALTER TABLE `backup_sites` DISABLE KEYS */;
 INSERT INTO `backup_sites` VALUES (1,'facebook',NULL);
+INSERT INTO `backup_sites` VALUES (2,'twitter',NULL);
+INSERT INTO `backup_sites` VALUES (3,'gmail',NULL);
+INSERT INTO `backup_sites` VALUES (4,'blog',NULL);
+INSERT INTO `backup_sites` VALUES (5,'flickr',NULL);
 /*!40000 ALTER TABLE `backup_sites` ENABLE KEYS */;
 UNLOCK TABLES;
 

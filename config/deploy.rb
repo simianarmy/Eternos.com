@@ -30,7 +30,6 @@ require 'capistrano/ext/multistage'
 ssh_options[:paranoid] = false
 default_run_options[:pty] = true
 set :user, "mmauger"            # defaults to the currently logged in user
-set :scm_user, "devadmin"
 set :use_sudo, false
 set :deploy_via, :remote_cache
 set :keep_releases, 3
