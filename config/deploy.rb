@@ -91,11 +91,23 @@ namespace :deploy do
   task :google_analytics, :role => :web do
     run "cd #{current_path} && rake google_analytics:update RAILS_ENV=#{stage}"
   end
+  
+  desc "Send email notification to dev@eternos.com"
+  task :sendmail, :roles => :app do
+    stime = 1.day.ago.strftime('%Y-%m-%d 23:59:59')
+    etime = Time.now.strftime('%Y-%m-%d 23:59:59')
+    fname = "svn_#{rand Time.now.to_i}.txt"
+    path_to_filename = "#{current_path}/tmp/emails/#{filename}"
+    
+    run "svn log #{repository} --revision {'#{stime}'}:{'#{etime}'} -v --username #{scm_username} --password #{scm_password} >> #{path_to_filename}"
+    run "cd #{current_path}; ruby script/sendmail.rb #{filename}"
+  end
 end
 
 after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
 after "deploy:update_code", "deploy:symlink_shared"
 after "deploy:restart", "deploy:restart_mq"
+after "deploy:sendmail"
 
 
