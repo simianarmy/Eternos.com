@@ -4,7 +4,7 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - stylesheet 'member', 'screen', 'application', 'timeline'
+    - stylesheet 'member', 'screen', 'application'
     - javascript prototype, scriptaculous unless @no_prototype
     - use_lowpro unless @no_prototype
     = yield(:head)

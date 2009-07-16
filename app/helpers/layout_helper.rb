@@ -154,8 +154,9 @@ module LayoutHelper
     expression ? "display:none;" : ""
   end
 
-  def use_timeline_js
+  def use_timeline
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
+    stylesheet 'timeline'
     javascript "http://simile.mit.edu/timeline/api/timeline-api.js"
     javascript "timeline_helper"
   end
