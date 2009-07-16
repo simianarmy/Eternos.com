@@ -144,7 +144,8 @@ class AccountSettingsController < ApplicationController
   
   def email_account
     @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
-    @current_gmail = BackupSource.find_by_user_id(current_user.id, :conditions => "type = 'GmailAccount'")
+    @current_gmail = current_user.backup_sources.by_site(BackupSite::Gmail).first
+    
     if params[:method].blank?
       respond_to do |format|
         format.js do
@@ -540,7 +541,7 @@ class AccountSettingsController < ApplicationController
   def backup_contact_emails
     begin
       gmail = Contacts::Gmail.new(params[:gmail][:username], params[:gmail][:password])
-      GmailAccount.create!(
+      @current_gmail = GmailAccount.create!(
         :user_id => current_user.id,
         :auth_login => params[:gmail][:username], 
         :auth_password => params[:gmail][:password], 
@@ -553,7 +554,7 @@ class AccountSettingsController < ApplicationController
         ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})
       end
       @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
-      @current_gmail = BackupSource.find_by_user_id(current_user.id, :conditions => "type = 'GmailAccount'")
+     
       respond_to do |format|
         format.js do
           render :update do |page|
