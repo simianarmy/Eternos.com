@@ -23,13 +23,14 @@ module TimelinesHelper
       object.time_period.to_s
     end
   end
-  
-  # populate timeline events for a user/member
-  def populate_timeline_events(member, options)
-    load_timeline_events(member.id, member.lifespan[:beginning], member.lifespan[:end], options)
+
+  # Load Timeline / init
+  def load_timeline(member, options)
+    search_timeline_events(member.id, member.lifespan[:beginning], member.lifespan[:end], options)
   end
   
-  def load_timeline_events(member_id, start_date, end_date, options)
-    javascript_tag "loadTimelineEvents(#{member_id}, #{start_date}, #{end_date}, '#{options}')"
+  # Search timeline events
+  def search_timeline_events(member_id, start_date, end_date, options)
+    javascript_tag "tl_search(#{member_id}, #{start_date}, #{end_date}, '#{options}')"
   end
 end

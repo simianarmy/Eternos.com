@@ -19,7 +19,10 @@ class TimelinesController < ApplicationController
   # Collect any other data that the timeline page needs on load.
   # All other requests will be done via AJAX queries.0
   def show
-    @member = current_user
+    
+    # hard coded to get member with fake timeline data
+    @member = Member.first #current_user
+    
     respond_to do |format|
       format.html
     end
@@ -49,7 +52,7 @@ class TimelinesController < ApplicationController
     # Rails has already parsed the url into params hash for us - no point in doing it again.
     @response = TimelineRequestResponse.new(request.url, params)
     @response.execute
-    
+
     respond_to do |format|
       format.js {
         render :json => @response.to_json

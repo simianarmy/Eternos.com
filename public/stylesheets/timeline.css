@@ -1,0 +1,258 @@
+/* CSS Document */
+
+/*timeline--------------------------------------------------------------------------------------------------------------------------*/
+
+
+#content-container3{
+	width:875px;
+	height:auto;
+	padding:0 15px 5px 0;
+  margin-left:-35px;
+}
+
+.subtitle1{
+	font-family:arial;
+	font-size:18px;
+	color:#636972;
+}
+
+.subtitle2{
+	font-family:arial;
+	font-size:18px;
+	color:#02419e;
+	margin:0 5px 0 5px;
+}
+
+.subtitle6{
+	font-family:arial;
+	font-size:18px;
+	color:#636972;
+	width:110px;
+	text-align:right;
+	margin-right:5px;
+	float:left;
+}
+
+.subtitle7{
+	font-family:arial;
+	font-size:18px;
+	color:#02419e;
+	width:70px;
+	text-align:left;
+	float:left;
+}
+
+.timelinebox{
+	width:860px;
+	height:288px;
+	padding:10px 0 10px 0;
+}
+
+.dotline{
+	width:100%;
+	height:1px;
+	background:url(/images/dot.gif) repeat-x;
+	margin:10px 0 10px 0;
+}
+
+.backup-box{
+	width:194.25px;
+	height:50px;
+	padding:0 10px 0 10px;
+	margin:20px 0 10px 0;
+}
+
+.progress-bar{
+	width:160px;
+	height:9px;
+	float:left;
+	margin:15px 6px 0 0;
+}
+
+.percen-text{
+	font-family:arial;
+	font-size:11px;
+	color:#4b4b4b;
+	float:left;
+	margin-top:14px;
+}
+
+.vline1{
+	width:1px;
+	height:50px;
+	background:#4c4c4c;
+	margin:20px 0 10px 0;
+}
+
+.text-btn2{
+	font-family:arial;
+	font-size:11px;
+	text-decoration:none;
+	color:#2f343a;
+	margin:0;
+}
+
+.text-btn2:hover{
+	color:#2269d1;
+	text-decoration:underline;
+}
+
+.paginate-box{
+	width:860px;
+	height:auto;
+	padding:0 0 10px 0;
+}
+
+a.paginate-btn{
+	font-family:arial;
+	font-size:11px;
+	color:#4bc1de;
+	text-decoration:none;
+	float:right;
+	padding:0 2px 0 2px;
+}
+
+a.paginate-btn:hover{
+	text-decoration:underline;
+}
+
+.btn-left{
+	width:12px;
+	height:22px;
+	background:url(/images/arrow-left.gif) 0 0;
+	border:none;
+	display:block;
+	float:left;
+	margin:0 10px 0 0;
+}
+
+.btn-left:hover{
+	background:url(/images/arrow-left.gif) 0 22px;
+}
+
+.btn-right{
+	width:12px;
+	height:22px;
+	background:url(/images/arrow-right.gif) 0 0;
+	border:none;
+	display:block;
+	float:left;
+	margin:0 0 0 10px;
+}
+
+.btn-right:hover{
+	background:url(/images/arrow-right.gif) 0 22px;
+}
+
+.title5{
+	font-family:arial;
+	font-size:13px;
+	color:white;
+}
+
+#story-area{
+	width:568px;
+	height:auto;
+	float:left;
+	margin-right:10px;
+}
+
+#arti-area{
+	width:282px;
+	height:auto;
+	float:left;
+}
+
+.storybox-top{
+	width:558px;
+	height:20px;
+	background:url(/images/storybox-top.gif) no-repeat;
+	margin:10px 0 0 0;
+	padding:5px 0 0 10px;
+}
+
+.storybox{
+	width:554px;
+	height:auto;
+	background:#dee9f4;
+	padding:6px 7px;
+}
+
+.artibox-top{
+	width:272px;
+	height:20px;
+	background:url(/images/artibox-top.gif) no-repeat;
+	margin:10px 0 0 0;
+	padding:5px 0 0 10px;
+}
+
+.artibox{
+	width:268px;
+	height:auto;
+	background:#dee9f4;
+	padding:6px 7px;
+}
+
+.thumnails1{
+	width:71px;
+	height:71px;
+	border:3px solid #526071;
+	float:left;
+	margin-right:10px;
+}
+
+.thumnails2{
+	width:71px;
+	height:71px;
+	border:3px solid #526071;
+	float:left;
+	margin:6px;
+}
+
+.story-subox{
+	width:265px;
+	height:77px;
+	float:left;
+	background:#f6f9fc;
+	margin:6px;
+}
+
+.story-detail-box{
+	width:178px;
+	height:67px;
+	float:left;
+	padding-top:10px;
+}
+
+.story-detail-title{
+	font-family:arial;
+	font-size:14px;
+	font-weight:bold;
+	color:#494a4c;
+}
+
+.story-detail-date{
+	font-family:arial;
+	font-size:10px;
+	font-style:italic;
+	color:#2691d4;
+	margin:0 0 10px 0;
+}
+
+.story-detail-subject{
+	font-family:arial;
+	font-size:11px;
+	color:#494a4c;
+}
+
+.story-subject-btn{
+	font-family:arial;
+	font-size:11px;
+	font-weight:bold;
+	color:#2691d4;
+	text-decoration:none;
+}
+
+.story-subject-btn:hover{
+	text-decoration:underline;
+}
