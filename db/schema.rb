@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   create_table "backup_photo_albums", :force => true do |t|
     t.integer  "backup_source_id",                :null => false
     t.string   "source_album_id",                 :null => false
-    t.string   "cover_id",                        :null => false
+    t.string   "cover_id",                        :null => true
     t.integer  "size",             :default => 0, :null => false
     t.string   "name"
     t.text     "description"
@@ -851,5 +851,4 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
 
-  BackupSite.create(:name => "twitter")
 end

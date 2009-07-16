@@ -540,7 +540,11 @@ class AccountSettingsController < ApplicationController
   
   def backup_contact_emails
     begin
+      # Contacts authenticates in initialization.  If there are any problems logging in, 
+      # an exception is raised.
       gmail = Contacts::Gmail.new(params[:gmail][:username], params[:gmail][:password])
+      
+      # At this point authentication has been authorized
       @current_gmail = GmailAccount.create!(
         :user_id => current_user.id,
         :auth_login => params[:gmail][:username], 
@@ -548,7 +552,9 @@ class AccountSettingsController < ApplicationController
         :auth_confirmed => true,
         :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
         :last_login_at => Time.now)
-
+      # Initiate backup!
+      @current_gmail.backup
+      
       # Save email account contacts
       gmail.contacts.each do |n, e|
         ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})

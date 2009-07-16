@@ -7,6 +7,8 @@ class BackupSource < ActiveRecord::Base
   has_many :backup_photo_albums
   has_many :backup_source_jobs
   
+  #after_create :cb_after_create_init_backup
+  
   named_scope :by_site, lambda {|name|
     {
       :joins => :backup_site,
@@ -40,7 +42,15 @@ class BackupSource < ActiveRecord::Base
     update_attribute(:auth_confirmed, true)
   end
   
+  # add this backup source to backup queue
+  def backup
+    BackupJobPublisher.add_source(self)
+  end
+  
   def photo_album(id)
     backup_photo_albums.find_by_source_album_id(id)
   end    
+  
+  private
+  
 end
