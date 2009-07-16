@@ -81,7 +81,7 @@ module MessageQueue
     end
     
     def backup_worker_topic
-      MQ.new.topic(WorkerExchange)
+      MQ.new.topic(WorkerExchange, :durable => true)
     end
     
     def backup_worker_subscriber_queue(site, queue=WorkerTopicQueue)

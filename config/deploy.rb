@@ -39,6 +39,12 @@ namespace :deploy do
   task :start do
     # do nothing - override default
   end
+  
+  task :restart do
+    stop
+    run
+  end
+  
   desc "Restart Application"
   task :restart, :roles => :app do
     run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:cache:clear"
