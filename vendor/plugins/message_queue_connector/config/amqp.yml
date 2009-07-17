@@ -5,7 +5,7 @@
 common: &default_settings
   user: backupd
   pass: b4ckUrlIF3
-  host: localhost
+  host: 127.0.0.1
   vhost: /eternos
   logging: false
   

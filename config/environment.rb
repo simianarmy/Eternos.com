@@ -65,7 +65,6 @@ Rails::Initializer.run do |config|
   config.gem 'packr', :version => ">= 1.0.2"
   config.gem 'mime-types', :lib => "mime/types", :version => '>= 1.16'
   #config.gem 'authlogic'
-  config.gem 'amqp'
   config.gem 'chronic', :version => '>= 0.2.3'
   # Must be installed on system, not in vendor/gems!
   config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
@@ -173,3 +172,8 @@ Rubaidh::GoogleAnalytics.local_javascript = true
 
 CACHE = MemCache.new('127.0.0.1')
 
+# To use amqp from Rails
+unless defined?(DaemonKit) && DaemonKit.booted?
+  RAILS_DEFAULT_LOGGER.info "Launching thread for AMQP reactor"
+  Thread.new{ MessageQueue.start } 
+end

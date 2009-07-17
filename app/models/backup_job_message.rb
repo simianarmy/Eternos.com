@@ -19,7 +19,7 @@ class BackupJobMessage
   private
   
   def source_to_h(source)
-    {:id => source.id, :source => source.backup_site.name}
+    {:id => source.id, :source => source.backup_site.type_name}
   end
   
   def payload(member, sources)

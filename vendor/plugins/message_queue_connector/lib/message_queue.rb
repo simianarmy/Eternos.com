@@ -63,6 +63,10 @@ module MessageQueue
       AMQP.stop { EM.stop_event_loop }
     end
     
+    def stop
+      AMQP.stop { EM.stop }
+    end
+    
     def create_connection(connect_settings)
       # Connection to RabbitMQ using AMQP driver
       AMQP.connect(connect_settings) do |conn|
@@ -72,8 +76,8 @@ module MessageQueue
     end
     
     def pending_backup_jobs_queue
-      @@bu_xchange ||= MQ.fanout(Exchange)
-      MQ.queue(PendingJobsQueue).bind(@@bu_xchange)
+      # Memoize dat
+      @@pbj_q ||= MQ.queue(PendingJobsQueue).bind(MQ.fanout(Exchange))
     end
     
     def backup_worker_topic_route(site)
@@ -81,11 +85,11 @@ module MessageQueue
     end
     
     def backup_worker_topic
-      MQ.topic(WorkerExchange)
+      @@topic_ex ||= MQ.topic(WorkerExchange)
     end
     
     def backup_worker_subscriber_queue(site, queue=WorkerTopicQueue)
-      MQ.queue(queue).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
+      MQ.queue(site).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
     end
     
     def create_topic_queue(channel, queue, options={})

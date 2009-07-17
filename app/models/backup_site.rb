@@ -10,9 +10,17 @@ class BackupSite < ActiveRecord::Base
   Flickr    = 'flickr'
   Blog      = 'blog'
   
+  TypeMap  = {
+    Gmail => 'email', 
+    Blog  => 'rss'
+  }
   validates_presence_of :name
   
   def self.names
     [Facebook, Twitter, Gmail, Blog]
+  end
+  
+  def type_name
+    TypeMap.has_key?(name) ? TypeMap[name] : name
   end
 end
