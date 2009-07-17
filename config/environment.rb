@@ -75,14 +75,11 @@ Rails::Initializer.run do |config|
   config.gem 'ruby-hmac', :lib => 'hmac'
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
-  config.gem 'facebooker-eternos', :lib => 'facebooker'
+  config.gem 'simianarmy-facebooker', :lib => 'facebooker', :version => '>= 1.0.40'
   # Needs libxslt, libxml2
   config.gem 'nokogiri', :version => '>= 1.3.2'
   # Needs libcurl
   config.gem 'taf2-curb', :lib => 'curb', :version => '>= 0.4.3', :source => 'http://gems.github.com'
-  
-  
-  #config.gem 'simianarmy-feedzirra', :lib => 'feedzirra', :source => 'http://gems.github.com'
   
   # Rails can't find this gem even though it is in vendor/gems
   #config.gem 'contacts'
