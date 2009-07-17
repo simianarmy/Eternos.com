@@ -36,10 +36,13 @@ files:
 - test/test_helper.rb
 has_rdoc: true
 homepage: http://jamesgolick.com/active_presenter
+licenses: []
+
 post_install_message: 
 rdoc_options: []
 
 require_paths: 
+- bin
 - bin
 - bin
 - bin
@@ -61,7 +64,7 @@ required_rubygems_version: !ruby/object:Gem::Requirement
 requirements: []
 
 rubyforge_project: active_presenter
-rubygems_version: 1.3.1
+rubygems_version: 1.3.4
 signing_key: 
 specification_version: 2
 summary: ActivePresenter is the presenter library you already know! (...if you know ActiveRecord)

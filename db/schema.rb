@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "attachment_type"
     t.string   "activity_type"
     t.string   "type"
-    t.integer  "activity_stream_id"
+    t.integer  "activity_stream_id", :null => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -106,7 +106,7 @@ namespace :deploy do
     fname = "svn_#{rand Time.now.to_i}.txt"
     path_to_filename = "#{current_path}/tmp/emails/#{fname}"
     
-    run "svn log #{repository} --revision {'#{stime}'}:{'#{etime}'} -v --username #{svn_user} --password #{svn_password} > #{path_to_filename}"
+    run "#{source.log('{\''+stime+'\'}', '{\''+etime+'\'}')} > #{path_to_filename}"
     run "cd #{current_path}; ruby script/sendmail.rb #{fname}"
     run "rm #{path_to_filename}"
   end
@@ -114,7 +114,7 @@ end
 
 after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
-after "deploy:symlink", "deploy:sendmail"
+#after "deploy:symlink", "deploy:sendmail"
 after "deploy:update_code", "deploy:symlink_shared"
 after "deploy:restart", "deploy:restart_mq"
 
