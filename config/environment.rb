@@ -183,7 +183,7 @@ if defined?(PhusionPassenger)
       AMQP.instance_variable_set('@conn', nil)
     end
 
-    RAILS_DEFAULT_LOGGER.info "Launching thread for AMQP"
+    RAILS_DEFAULT_LOGGER.info "Launching thread for Phusion+AMQP"
     th = Thread.current
     Thread.new{
       MessageQueue.start {

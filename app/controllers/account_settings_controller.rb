@@ -601,7 +601,7 @@ class AccountSettingsController < ApplicationController
    def find_user_profile
       @user = current_user
       @address_book = @user.address_book
-      @profile  = Profile.find_or_create_by_user_id(@user.id)
+      @profile  = current_user.profile
    end
 
    def check_facebook_sync

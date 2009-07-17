@@ -7,6 +7,7 @@ set :repository,
   Proc.new { "--username #{svn_user} " +
              "--password #{svn_password} " +
              "--no-auth-cache " + 
+             "--non-interactive" + 
              "https://eternos.unfuddle.com/svn/eternos_www/trunk" }
              
 # If you aren't deploying to /u/apps/#{application} on the target
