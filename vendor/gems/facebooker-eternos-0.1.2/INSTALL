@@ -1,5 +1,0 @@
-Customized gem - build instructions
-
-rake manifest
-rake install
-rake build_gemspec
