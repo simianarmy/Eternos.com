@@ -114,7 +114,7 @@ end
 
 after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
-#after "deploy:symlink", "deploy:sendmail"
+after "deploy:symlink", "deploy:sendmail"
 after "deploy:update_code", "deploy:symlink_shared"
 after "deploy:restart", "deploy:restart_mq"
 

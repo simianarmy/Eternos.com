@@ -23,7 +23,15 @@ Search/Indexing:
     thinking_sphinx rails plugin: thinking_sphinx
   http://railscasts.com/episodes/111-advanced-search-form
   Xapian
-    
+
+Message Queue Communication:
+    Starling for simple jobs + Workling
+    RabbitMQ + AMQP gem for serious work
+    Gems:
+      warren: Rails+RabbitMQ: http://github.com/brightbox/warren/tree/master
+      sweat_shop: Async worker queue on top of rabbitmq/amqp: http://github.com/famoseagle/sweat_shop/tree/master
+      carrot: Synchronous ampq client
+      
 General:
 
 File DL & uploads:

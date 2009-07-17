@@ -11,17 +11,17 @@ class BackupJobPublisher
     q = MessageQueue.pending_backup_jobs_queue
     
     Member.needs_backup(2.days.ago).with_backup_targets.each do |member|
-      RAILS_DEFAULT_LOGGER.info "Sending backup job to queue for member #{member.name} (#{member.id})"
       member.backup_in_progress! 
-      q.publish(BackupJobMessage.new.member_payload(member))
+      q.publish BackupJobMessage.new.member_payload(member)
+      RAILS_DEFAULT_LOGGER.info "Sent backup job to queue for member #{member.name} (#{member.id})"
     end
   end
 
   
   # Adds backup job request to backup queue for a single backup source
   def self.add_source(backup_source)
-    RAILS_DEFAULT_LOGGER.info "Sending backup job to queue for backup source (#{backup_source.id})"
     backup_queue.publish BackupJobMessage.new.source_payload(backup_source)
+    RAILS_DEFAULT_LOGGER.info "Sent backup job to queue for backup source (#{backup_source.id})"
   end
   
   private
