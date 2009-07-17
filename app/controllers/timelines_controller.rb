@@ -44,7 +44,7 @@ class TimelinesController < ApplicationController
     @activity_stream = current_user.activity_stream || current_user.build_activity_stream
   end
   
-  # GET /timeline/search/member_id/start_date/end_date/*opts
+  # GET /timeline/search/format/member_id/start_date/end_date/*opts
   def search
     # Member or guest view
     member_view = (params[:id].to_i == current_user.id)

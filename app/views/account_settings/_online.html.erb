@@ -1,9 +1,9 @@
 <div id="account-setting-content" class="makeScroll">
   <div class="title3">Online Account<hr class="line1" /></div>
   <div class="network-icon-box">
-    <%= link_to '', new_facebook_backup_path, :class => "lightview fb-btn2", :title => 'Authorize Facebook Backup :: :: width: 640, height: 800', :id => "fb-button", :rel => 'iframe' %>
-    <%- className = @recent_backup_sites.include?("twitter") ? "twitter-active" : "twitter-btn" -%>
-    <%= link_to_show_hide_online('twitter-box', "", {:class => className, :id => "twitter-link"}, ["rss-box"])  %>
+    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :title => 'Authorize Facebook Backup :: :: width: 640, height: 800', :id => "fb-button", :rel => 'iframe' %>
+    <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}') });" %>
+    <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-link"}, ["rss-box"])  %>
     <%= link_to_show_hide_online('rss-box', "", {:class => "rss-btn"}, ["twitter-box"])  %>
   </div>
 
@@ -18,9 +18,9 @@
                                            :complete => "$('progress-bar').hide();"  do |f| %>
        <%= image_tag "errors/twitter-top-box.gif" %>
        <%= hidden_field_tag :site_name, "twitter" %>
-       <%- if !@activated_twitter.nil? -%>
-         <%- username = @activated_twitter.auth_login -%>
-         <%- password = @activated_twitter.auth_password -%>
+       <%- unless @twitter_account.nil? -%>
+         <%- username = @twitter_account.auth_login -%>
+         <%- password = @twitter_account.auth_password -%>
        <%- end  -%>
        <div class="network-box">
          <table class="table-form2" align="left">

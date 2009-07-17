@@ -120,7 +120,15 @@ class AccountSettingsController < ApplicationController
     if params[:method].blank?
       @online_account = BackupSource.new
       @feed_url = FeedUrl.new
-      @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
+      # What is this sillyness?
+      # @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
+      backup_sources = current_user.backup_sources
+      if backup_sources.any?
+        @facebook_account  = backup_sources.by_site(BackupSite::Facebook).first
+        @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
+        @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
+        @twitter_confirmed = @twitter_account.confirmed?
+      end
       
       respond_to do |format|
         format.js do

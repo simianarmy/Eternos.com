@@ -22,7 +22,21 @@ document.observe("dom:loaded", function() {
       }
     })
   }
-})
+});
+
+// Callback for Facebook Backup App settings.
+var on_facebook_backup_auth_close = function(check_url) {
+	new Ajax.Request(check_url, { method: 'get',
+		onSuccess:function(transport) {
+			json = transport.responseText.evalJSON();
+			
+			if (json && json.authenticated) {
+				$('fb-button').removeClassName('fb-btn2');
+				$('fb-button').addClassName('fb-active');
+			}
+		}
+	} );
+}
 
 function setDinamycHeight(id){
   height = window.innerHeight;

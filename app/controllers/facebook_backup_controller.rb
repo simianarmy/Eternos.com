@@ -12,7 +12,7 @@ class FacebookBackupController < ApplicationController
   
   def new
     # Make sure user not already authenticated
-    if @backup_source.confirmed?
+    if current_user.authenticated_for_facebook_desktop?
       redirect_to :action => :permissions
     else
       @auth_token = @session.auth_token
@@ -29,7 +29,6 @@ class FacebookBackupController < ApplicationController
       if @session.secured? && (user = @session.user)
         current_user.update_attribute(:facebook_uid, user.id)
         current_user.set_facebook_session_keys(@session.session_key, @session.secret_from_session)
-        @backup_source.confirmed!
         flash[:notice] = "Login successful!"
         redirect_to :action => :permissions
       else
@@ -51,6 +50,28 @@ class FacebookBackupController < ApplicationController
     end
     @offline_url = @session.permission_url(:offline_access) unless @session.user.has_permission?(:offline_access)
     @stream_url = @session.permission_url(:read_stream) unless @session.user.has_permission?(:read_stream)
+  end
+  
+  # For js ajax requests to check user's auth status
+  # Wonder if it will work w/out cookies
+  def check_auth
+    begin
+      @session.connect(current_user.facebook_session_key, current_user.facebook_id, nil, current_user.facebook_secret_key)
+      auth = @session.user.has_permission?(:offline_access) && @session.user.has_permission?(:read_stream)
+    rescue
+      auth = false
+    end
+    
+    # Run backup & update confirmation status on 1st check
+    if auth && !@backup_source.confirmed?
+      @backup_source.confirmed!
+      @backup_source.backup
+    end
+    respond_to do |format|
+      format.js {
+        render :json => {:authenticated => auth}.to_json
+      }
+    end
   end
   
   # Called by Facebook after 1st time app authorization.  Passes a bunch of fb_sig_* values.

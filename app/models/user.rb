@@ -87,18 +87,6 @@ class User < ActiveRecord::Base
   AdminRole         = 'Admin'
   MemberRole        = 'Member'
   GuestRole         = 'Guest'
-  
-  def backup_sites_names
-    names = Array.new
-    activated_twitter = nil
-    backup_sources.each do |backup|
-      if !backup.backup_site.nil?
-        names << backup.backup_site.name.to_s
-        activated_twitter = backup if backup.backup_site.name.to_s == "twitter"
-      end
-    end
-    return names, activated_twitter
-  end
  
   # We are going to connect this user object with a facebook id. But only ever one account.
   def link_fb_connect(fb_user_id)

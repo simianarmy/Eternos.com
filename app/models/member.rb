@@ -111,6 +111,10 @@ class Member < User
     save(false)
   end
   
+  def authenticated_for_facebook_desktop?
+    not (facebook_id.blank? || facebook_session_key.blank? || facebook_secret_key.blank?)
+  end
+  
   # temporary function to get member lifespan beginning-end
   def lifespan
     {:beginning => "#{8.years.ago.to_date}", :end => "#{DateTime.now.to_date.to_s}"}

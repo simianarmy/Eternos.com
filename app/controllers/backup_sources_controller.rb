@@ -20,6 +20,7 @@ class BackupSourcesController < ApplicationController
               backup_source = current_user.backup_sources.new(params[:backup_source].merge({:backup_site_id => backup_site.id}))
               
               if backup_source.save
+                backup_source.confirmed!
                 backup_source.backup # Initiate backup!
                 message = "activated"
               end 
