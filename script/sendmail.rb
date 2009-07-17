@@ -6,7 +6,7 @@ PATH_TO_FILE = "#{CURRENT_PATH}/tmp/emails/#{ARGV[0]}"
 
 SVN_VERSION = File.read("#{CURRENT_PATH}/REVISION")
 FROM_ADDRESS  = "svnnotify@190945-web1.eternos.com"
-TO_ADDRESS    = "dev@eternos.com"
+TO_ADDRESS    = "staff@eternos.com"
 
 f = File.new(PATH_TO_FILE)
 
@@ -26,7 +26,7 @@ humanized_num_file = num.eql?(1) ? "#{num} file was" : "#{num} files were"
 
 msg = <<END_OF_MESSAGE
 From: svnnotify@190945-web1.eternos.com
-To: dev@eternos.com
+To: staff@eternos.com
 Subject: [eternos.com] staging server updated
 Content-Type: text/html
 The staging website was updated to SVN version #{SVN_VERSION} at #{datetime_changed} and #{humanized_num_file} updated. <br />
