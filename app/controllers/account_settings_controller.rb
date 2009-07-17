@@ -127,7 +127,7 @@ class AccountSettingsController < ApplicationController
         @facebook_account  = backup_sources.by_site(BackupSite::Facebook).first
         @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
         @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
-        @twitter_confirmed = @twitter_account.confirmed?
+        @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
       end
       
       respond_to do |format|

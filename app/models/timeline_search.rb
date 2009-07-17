@@ -54,14 +54,12 @@ class TimelineSearchFaker
   end
   
   def get_email
-    debugger
     if gmail = @member.backup_sources.by_site(BackupSite::Gmail).rand
       gmail.backup_emails.rand
     end
   end
   
   def get_feed_item
-    debugger
     if feed = @member.backup_sources.by_site(BackupSite::Blog).rand
       feed.feed.entries.rand
     end
