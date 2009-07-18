@@ -1,7 +1,11 @@
 - title 'Backup data (RAW)'
 %p
+Your ID = 
+= current_user.id
 %br
 .fb_profile
+  %h2 Sample facebook data
+  %br
   %br Facebook Profile
   = debug @facebook_profile
   %hr
@@ -12,16 +16,32 @@
   = debug @facebook_groups
   %hr
   %br Photo Albums
-  - @photo_albums.flatten.each do |a|
+  - @photo_albums.flatten[0..1].each do |a|
     = debug a
     %br
-    - a.backup_photos.each do |p|
+    - a.backup_photos[0..1].each do |p|
       = debug p
       %br
       = image_tag p.source_url
       %hr
-  %hr
-  %br Activity Stream  
+%hr
+.activity_streams
+  %h2 Sample activity streams
   %br
-  - @activity_stream.items.each do |item|
+  - @activity_stream.items[0..5].each do |item|
     = debug item
+  %br
+%hr
+.rss
+  %h2 Sample RSS Feed Entries
+  %br
+  - @rss_feeds.each do |rss|
+    - rss.entries[0..5].each do |entry|
+      = debug entry
+  %hr
+%hr
+.email
+  %h2 Sample Emails
+  %br
+  - @emails[0..5].each do |email|
+    = debug email

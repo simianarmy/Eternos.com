@@ -39,6 +39,8 @@ class TimelinesController < ApplicationController
     if bs = current_user.backup_sources
       bs.each do |source|
         (@photo_albums ||= []) << source.backup_photo_albums
+        (@rss_feeds ||= []) << source.feed if source.respond_to? :feed
+        (@emails ||= []) << source.backup_emails if source.respond_to? :backup_emails
       end
     end
     @activity_stream = current_user.activity_stream || current_user.build_activity_stream
