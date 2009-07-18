@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
       ActionController::UnknownAction,
       :with => :route_not_found
     rescue_from  ActiveRecord::RecordInvalid,ActiveRecord::StaleObjectError,
-      ActiveRecord::RecordNotSaved, ActionController::RoutingError::NameError, ActiveRecord::RecordNotFound, :with => :server_error
+      ActiveRecord::RecordNotSaved, ActionController::RoutingError::NameError, ActiveRecord::RecordNotFound, 
+      :with => :server_error
     #rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
   end
   
@@ -265,12 +266,13 @@ class ApplicationController < ActionController::Base
   end
 
   def route_not_found
-    #render :text => 'What the fuck are you looking for ?', :status => :not_found
-    render :template => "/errors/404", :status => "404", :layout => 'errors'
+    redirect_to '/404.html'
+    #render :template => "errors/404", :status => 404, :layout => 'errors'
   end
 
   def server_error
-    render :template => "/errors/500", :status => "500", :layout => 'errors'
+    redirect_to '/500.html'
+    #render :template => "errors/500", :status => 500, :layout => 'errors'
   end
 
   def check_enable_maintenaince_mode
@@ -301,6 +303,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     I18n.locale = extract_locale_from_tld
   end
+  
   # Get locale from top-level domain or return nil if such locale is not available
   # You have to put something like:
   #   127.0.0.1 application.com

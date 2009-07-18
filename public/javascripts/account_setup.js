@@ -143,7 +143,7 @@ function addRowAddress(){
   var tr1 = new Element('tr');
     var td1 = new Element('td', {colspan: "3"});
       var div1 = new Element('div', {Class: "title6"});
-      var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormAddress();}', Class: "blue-btn3" });
+      var linkCancel = new Element('a', { href:"#", onClick:'deleteFormAddress()', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});

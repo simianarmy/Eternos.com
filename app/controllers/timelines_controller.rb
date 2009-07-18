@@ -3,8 +3,8 @@
 require 'timeline_search'
 
 class TimelinesController < ApplicationController
-  before_filter :login_required
-  require_role ['Guest', 'Member']
+  before_filter :login_required, :except => [:search]
+  require_role ['Guest', 'Member'], :for_all_except => :search
 
   def guest_index
     find_host
@@ -47,7 +47,7 @@ class TimelinesController < ApplicationController
   # GET /timeline/search/format/member_id/start_date/end_date/*opts
   def search
     # Member or guest view
-    member_view = (params[:id].to_i == current_user.id)
+    #member_view = (params[:id].to_i == current_user.id)
     
     # Rails has already parsed the url into params hash for us - no point in doing it again.
     @response = TimelineRequestResponse.new(request.url, params)
@@ -55,7 +55,7 @@ class TimelinesController < ApplicationController
 
     respond_to do |format|
       format.js {
-        render :json => @response.to_json
+        render :json => @response
       }
       format.html {
         @json = @response.to_json

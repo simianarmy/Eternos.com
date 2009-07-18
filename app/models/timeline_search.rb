@@ -31,6 +31,7 @@ class TimelineSearchFaker
           results << res
         end
       end
+      results.uniq!
     end
   end
   
