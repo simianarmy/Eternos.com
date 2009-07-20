@@ -28,20 +28,23 @@ Your ID =
 .activity_streams
   %h2 Sample activity streams
   %br
-  - @activity_stream.items[0..5].each do |item|
-    = debug item
+  - if @activity_stream
+    - @activity_stream.items[0..5].each do |item|
+      = debug item
   %br
 %hr
 .rss
   %h2 Sample RSS Feed Entries
   %br
-  - @rss_feeds.each do |rss|
-    - rss.entries[0..5].each do |entry|
-      = debug entry
+  - if @rss_feeds
+    - @rss_feeds.each do |rss|
+      - rss.entries[0..5].each do |entry|
+        = debug entry
   %hr
 %hr
 .email
   %h2 Sample Emails
   %br
-  - @emails[0..5].each do |email|
-    = debug email
+  - if @emails
+    - @emails[0..5].each do |email|
+      = debug email
