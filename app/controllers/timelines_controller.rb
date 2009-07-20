@@ -21,7 +21,7 @@ class TimelinesController < ApplicationController
   def show
     
     # hard coded to get member with fake timeline data
-    @member = Member.first #current_user
+    @member = current_user
     
     respond_to do |format|
       format.html
@@ -63,6 +63,9 @@ class TimelinesController < ApplicationController
         @json = @response.to_json
       }
     end
+  end
+  
+  def blank
   end
   
   private
