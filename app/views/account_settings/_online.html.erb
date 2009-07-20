@@ -1,5 +1,5 @@
 <div id="account-setting-content" class="makeScroll">
-  <div class="title3">Online Account<hr class="line1" /></div>
+  <div class="title3">Online Account<hr class="line2" /></div>
   <div class="network-icon-box">
     <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :title => 'Authorize Facebook Backup :: :: width: 640, height: 800', :id => "fb-button", :rel => 'iframe' %>
     <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}') });" %>
@@ -55,7 +55,7 @@
    <div class="network-login-box" id="form-box">
      <div id="rss-box" style="display:none;">
        <div id="error-message-rss"></div>
-        <%= image_tag "errors/rss-top.gif" %>
+        <%= image_tag "errors/rss-top.png" %>
        <div class="network-box2">
          <% form_remote_for @feed_url,
                                    :url => add_feed_url_backup_sources_path,
