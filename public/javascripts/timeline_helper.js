@@ -32,7 +32,7 @@ function onResize() {
 
 //search Timeline events
 function tl_search(member, start_date, end_date, options){
-  new Ajax.Request('/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
+  new Ajax.Request('http://staging.eternos.com/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
       method:'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
@@ -48,12 +48,18 @@ function tl_search(member, start_date, end_date, options){
 function tl_parse_events(source){
   var events = source.evalJSON();
   var event_source = new Timeline.DefaultEventSource();
+  var artifact_images = new Array;
   
   for(var i=0;i<events.results.length-1;i++) {
     var event = tl_create_event_source(events.results[i], event_source);
     event_source.add(event);
+    
+//    var artifact_image = tl_get_artifacts_image(events.results[i]);
+//    artifact_images.push(artifact_image);
   };
   tl_init(event_source);
+  tl_populate_artifact_images(artifact_images);
+  tl_populate_story_objects();
 }
 
 //create event source
@@ -99,8 +105,40 @@ function tl_create_event_source(source){
   return return_event;       
 }
 
-//create objects for Timeline detail
-function tl_create_event_detail(){
+//create objects for Artifacts
+function tl_get_artifacts_image(source){
+  var event = source.event;
+  var image = null;
+  if (source.event.facebook_activity_stream_item){
+    //img_url = source.event.facebook_activity_stream_item.src;
+    image_url = "/images/image1.jpg";
+    image = img_url;
+  } else if (source.event.twitter_activity_stream_item){
+    // TODO:
+  }
+  return image;
+}
+
+// populate each artifact image
+function tl_populate_artifact_images(images){
+  var source_images = images;
+  $$('img.thumnails2').each(function(item){
+    item.src = "http://m1.2mdn.net/viewad/1939534/SOA_125x125.gif";
+  })
+}
+
+function tl_get_story_object(){
   
 }
 
+
+function tl_populate_story_objects(){
+  $$('img.thumnails1').each(function(item){
+    item.src = "http://m1.2mdn.net/viewad/1939534/SOA_125x125.gif";
+  })  
+}
+
+function tl_blank(){
+  var event_source = new Timeline.DefaultEventSource();
+  tl_init(event_source);
+}
