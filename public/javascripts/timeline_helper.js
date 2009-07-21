@@ -1,18 +1,21 @@
 //initialize Timeline 
 var tl;
 function tl_init(event_source) {
+   var theme = Timeline.ClassicTheme.create();
    var bandInfos = [
      Timeline.createBandInfo({
          width:          "15%",
          intervalUnit:   Timeline.DateTime.YEAR,
          intervalPixels: 150,
-         overview: true
+         overview: true,
+         theme: theme
      }),
      Timeline.createBandInfo({
          width:          "85%",
          intervalUnit:   Timeline.DateTime.MONTH,
          intervalPixels: 200,
-         eventSource: event_source
+         eventSource: event_source,
+         theme: theme
      })
    ];
    bandInfos[1].syncWith = 0;
@@ -36,10 +39,14 @@ function tl_search(member, start_date, end_date, options){
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
+        tl_toggle_timeline_details();
         tl_parse_events(response);
       },
       onFailure: function(){
-        tl_init('');
+        tl_on_failure();
+      },
+      onLoading: function(){
+        tl_on_loading();
       }
   });
 }
@@ -69,11 +76,15 @@ function tl_parse_events(source){
 function tl_create_event_source(source){
   var event = source.event;
   var tl_title = tl_desc = tl_img = tl_link = null;
-  var date_event = new Date();
-  date_event.setTime(date_event.getTime() + ((Math.floor(Math.random()*41) - 20) * 24 * 60 * 60 * 1000));   
-  
+  var tl_date = new Date();
+    
   if (event.facebook_activity_stream_item){
     fb_event = event.facebook_activity_stream_item
+    
+    if (fb_event.published_at) {
+      tl_date = tl_format_date(fb_event.published_at);
+    }
+    
     switch (fb_event.attachment_type) {
       case "photo" :
         tl_title = "Uploaded photo";
@@ -81,7 +92,7 @@ function tl_create_event_source(source){
         tl_img = fb_event.src;
         break;
       case "link" :
-        tl_title = "Posted link";
+        tl_title = "Wall posting";
         tl_desc = fb_event.message;
         tl_link = fb_event.src;
         break;
@@ -91,25 +102,47 @@ function tl_create_event_source(source){
         tl_img = "";
         break;
       default: 
-        tl_title = "Updated status";
+        tl_title = "Facebook post";
         tl_desc = fb_event.message;
         tl_img = "";
         break;                  
     }
-  } else if (event.facebook_activity_stream_item){
-    tw_event = event.facebook_activity_stream_item
-    tl_title = "Post a Tweet";
+  } else if (event.twitter_activity_stream_item){
+    tw_event = event.twitter_activity_stream_item
+    
+    if (tw_event.published_at){
+      tl_date = tl_format_date(tw_event.published_at);
+    }
+    
+    tl_title = "Post a tweet";
     tl_desc = tw_event.message;
   } else if (event.backup_photo) {
+    if (event.backup_photo.created_at){
+      tl_date = tl_format_date(event.backup_photo.created_at);
+    }
+    
     tl_title = "Backup photo";
     tl_desc = event.backup_photo.caption;
     tl_img = event.backup_photo.source_url;
   } else if (event.backup_email){
+    if (event.backup_email.received_at) {
+      tl_date = tl_format_date(event.backup_email.received_at);
+    }
+    
+    tl_title = "Receiving an email";
+    tl_desc = "FROM: " + event.backup_email.sender[0] + "; SUBJECT: " + event.backup_email.subject;
   } else if (event.feed_entry) {
+    if (event.feed_entry.published_at){
+      tl_date = tl_format_date(event.feed_entry.published_at);
+    }
+    
+    tl_title = "New feed item";
+    tl_desc = "SOURCE: " + event.feed_entry.name + "; DESCRIPTION: " + event.feed_entry.summary;
+    tl_link = event.feed_entry.url;
   }
   
   var return_event = new Timeline.DefaultEventSource.Event(
-    date_event, date_event, date_event, date_event, true, 
+    tl_date, tl_date, tl_date, tl_date, true, 
     tl_title, tl_desc, tl_img);
     
   return return_event;       
@@ -133,7 +166,7 @@ function tl_get_artifacts_image(event){
   }
 }
 
-// populate each artifact image
+//populate each artifact image
 function tl_populate_artifact_images(images){
   var source_images = images.sort(function(){return 0.5 - Math.random()});
   var thumbnails = $$('img.thumnails2')
@@ -142,11 +175,12 @@ function tl_populate_artifact_images(images){
   }
 }
 
+//get objects for stories section
 function tl_get_story_object(){
-  
+  //TODO:
 }
 
-
+//populate objects for story section
 function tl_populate_story_objects(images){
   var source_images = images.sort(function(){return 0.5 - Math.random()});
   var thumbnails = $$('img.thumnails1')
@@ -155,11 +189,42 @@ function tl_populate_story_objects(images){
   }
 }
 
+//format date from rails response for timeline date format
+function tl_format_date(date){
+  var year = date.substr(0,4);
+  var month = date.substr(5,2);
+  var day = date.substr(8,2);
+  rv_date = new Date(year, month, day);
+  return rv_date;
+}
+
+//display blank timeline(without points)
 function tl_blank(){
   var event_source = new Timeline.DefaultEventSource();
   tl_init(event_source);
 }
 
-function tl_update_contents(){
+//behavior on timeline loading
+function tl_on_loading(){
+  //TODO:
+}
+
+//action if timeline failure
+function tl_on_failure(){
+  tl_blank();
+}
+
+//show/hide stories, artifacts and backup progress
+function tl_toggle_timeline_details(){
+  $('timeline-detail').toggle();
+}
+
+//handling on failure
+function tl_show_on_failure(){
+  
+}
+
+//on timeline drag event
+function tl_on_drag(){
   
 }
