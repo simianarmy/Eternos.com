@@ -1205,3 +1205,196 @@ h5{
   border: 1px solid #eee;
   color: #ddd;
 }
+
+.fb-popupbox{
+	width:716px;
+	height:40px;
+	background:url(/images/facebook-backup/fb-top.png) no-repeat;
+	margin:20px 0 0 0;
+}
+
+.fb-popupbox2{
+	width:883px;
+	height:16px;
+	background:url(/images/facebook-backup/fb-top2.png) no-repeat;
+	margin:20px 0 0 0;
+}
+
+.top-text{
+	float:right;
+	padding-right:10px;
+	font-family:arial;
+	font-size:11px;
+	color:#a9bbe0;
+	margin:20px -15px 0 0;
+}
+
+.close-btn{
+	width:38px;
+	height:36px;
+	background:url(/images/facebook-backup/close-btn.png) 0 0;
+	margin:-15px -15px 0 0;
+	float:right;
+}
+
+.close-btn:hover{
+	background:url(/images/facebook-backup/close-btn.png) 0 36px;
+}
+
+.logo-fb{
+	background:url(/images/facebook-backup/logo.gif) no-repeat;
+	width:87px;
+	height:17px;
+	margin:-5px 0 0 15px;
+	float:left;
+}
+
+.fb-popup-container1{
+	width:686px;
+	height:auto;
+	background:url(/images/facebook-backup/fb-box.png) repeat-y;
+	padding:15px 15px 0 15px;
+	margin:7px 0 0 0;
+}
+
+.fb-popup-container2{
+	width:880px;
+	height:auto;
+	background:url(/images/facebook-backup/fb-box2.png) repeat-y;
+	padding-left:3px;
+}
+
+.fb-content{
+	margin-top:-5px;
+}
+
+.checklist{
+	width:25px;
+	height:20px;
+	background:url(/images/facebook-backup/checklist.gif) no-repeat;
+	margin:0;
+	float:left;
+}
+
+.popup-title1{
+	font-family:arial;
+	font-size:16px;
+	color:#454b50;
+	margin-left:5px;
+	float:left;
+}
+
+.popup-title2{
+	font-family:arial;
+	font-size:14px;
+	color:#454b50;
+}
+
+.popup-title3{
+	font-family:arial;
+	font-size:16px;
+	color:#89c305;
+	margin-left:5px;
+	float:left;
+}
+
+.top-titlebox{
+	width:680px;
+	height:auto;
+	border-bottom:1px solid #454b50;
+	margin-bottom:10px;
+	padding-bottom:10px;
+}
+
+.popup-text-area{
+	font-family:arial;
+	font-size:11px;
+	color:#454b50;
+	text-align:justify;
+	line-height:20px;
+	width:680px;
+	height:auto;
+	padding-bottom:10px;
+	border-bottom:1px solid #454b50;
+}
+
+.popup-text1{
+	font-family:arial;
+	font-size:11px;
+	color:#454b50;
+	float:left;
+	margin:10px 5px 10px 0;
+}
+
+.popup-text2{
+	font-family:arial;
+	font-size:12px;
+	color:#454b50;
+	float:left;
+	margin:10px 5px 10px 0;
+}
+
+.popup-textbtn1{
+	font-family:arial;
+	font-size:11px;
+	color:#3b5998;
+	float:left;
+	margin:10px 5px 10px 0;
+	text-decoration:none;
+}
+
+.popup-textbtn1:hover{
+	text-decoration:underline;
+}
+
+.popup-textbtn2{
+	font-family:arial;
+	font-size:12px;
+	color:#3b5998;
+	float:left;
+	margin:10px 5px 10px 0;
+	text-decoration:none;
+}
+
+.popup-textbtn2:hover{
+	text-decoration:underline;
+}
+
+.arrow-right{
+	width:16px;
+	height:16px;
+	float:left;
+	margin:10px 0 0 0;
+}
+
+
+.popup-pic{
+	float:left;
+	margin:0 4px 0 11px;
+}
+
+.line5{width:96%;margin-right:5px;}
+
+.fb-btn1{
+	width:109px;
+	height:24px;
+	margin:10px 0 10px 0;
+}
+
+.btn-box1{
+	width:66px;
+	height:20px;
+	background:url(/images/facebook-backup/fb-btn2.gif) 0 0;
+	display:block;
+	font-family:arial;
+	font-size:12px;
+	color:white;
+	text-align:center;
+	padding:4px 0 0 0;
+	text-decoration:none;
+	margin:10px 0 0 0;
+}
+
+.btn-box1:hover{
+	background:url(/images/facebook-backup/fb-btn2.gif) 0 24px;
+}
