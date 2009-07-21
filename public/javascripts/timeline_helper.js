@@ -33,7 +33,7 @@ function onResize() {
 //search Timeline events
 function tl_search(member, start_date, end_date, options){
   new Ajax.Request('http://staging.eternos.com/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
-      method:'get',
+      method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
         tl_parse_events(response);

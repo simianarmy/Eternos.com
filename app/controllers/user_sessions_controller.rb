@@ -23,7 +23,8 @@ class UserSessionsController < ApplicationController
     @user_session    = UserSession.new(params[:user_session])
     
     if @user_session.save
-      flash_redirect("Welcome, #{@user_session.user.name}", session[:original_uri] || member_home_url)
+      flash[:notice] = "Welcome, #{@user_session.user.name}"
+      redirect_back member_home_url
     else
       if facebook_session && !params['commit']
         redirect_to new_account_path

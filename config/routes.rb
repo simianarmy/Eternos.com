@@ -2,7 +2,6 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :dev_staging_maps
-
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { :check_auth => :get }
   
   map.resources :backup_sources, :collection => {:add_feed_url => :post}
@@ -109,7 +108,7 @@ ActionController::Routing::Routes.draw do |map|
   map.member_home '/member_home', :controller => 'member_home', :protocol => 'http'
   map.begin_story '/begin_story', :controller => 'stories', :action => 'begin_story'
   map.timeline_search '/timeline/search/:format/:id/:start_date/:end_date/*filters', 
-    :controller => 'timelines', :action => "search", :conditions => { :method => :get }
+    :controller => 'timelines', :action => "search"
   map.auto_complete ':controller/:action', :requirements => { :action => /auto_complete_for_\w+/ },
     :conditions => { :method => :get }
   

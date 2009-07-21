@@ -20,8 +20,6 @@ class Member < User
     m.has_one :backup_state
     m.has_one :profile
   end
-
-  after_create :create_associations_and_activate
   
   # Scoped finders
   named_scope :with_backup_targets,
@@ -122,9 +120,4 @@ class Member < User
   
   private
     
-  def create_associations_and_activate
-    activate!
-    create_activity_stream
-    create_profile
-  end
 end

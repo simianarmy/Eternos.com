@@ -215,7 +215,9 @@ class User < ActiveRecord::Base
     self.activated_at = Time.now.utc
     self.deleted_at = self.activation_code = nil
     make_member! unless guest?
+
     if save
+      create_member_associations
       spawn do
         UserMailer.deliver_activation(self) 
       end
@@ -244,6 +246,11 @@ class User < ActiveRecord::Base
   
   def set_invitation_limit
     self.invitation_limit = 5
+  end
+  
+  def create_member_associations
+    ActivityStream.create(:user_id => self.id)
+    Profile.create(:user_id => self.id)
   end
   
 end

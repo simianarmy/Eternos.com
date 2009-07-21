@@ -89,8 +89,17 @@ describe User, "" do
       @user.address_book.last_name.should == @user.last_name
     end
     
+    it "should create member associations when activated" do
+      lambda {
+        @user.activate!
+      }.should change(ActivityStream, :count).by(1) && change(Profile, :count).by(1)
+    end
+    
     it "should call UserMailer.deliver_activation when activated" do
-      UserMailer.expects(:deliver_activation).with(@user)
+      @user.expects(:create_member_associations)
+      # Inside spawn block - won't be caught in this thread...
+      # Test with cucumber
+      #UserMailer.expects(:deliver_activation).with(@user)
       @user.activate!
     end
   end

@@ -24,7 +24,7 @@ class TimelinesController < ApplicationController
       @member = Member.new
       @member.id = dev_map.staging_user_id
     else
-      @member = current_user.id
+      @member = current_user
     end
     
     @member_name = @member.full_name
