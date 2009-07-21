@@ -31,6 +31,6 @@ module TimelinesHelper
   
   # Search timeline events
   def search_timeline_events(member_id, start_date, end_date, options)
-    javascript_tag "tl_search(#{member_id}, #{start_date}, #{end_date}, '#{options}')"
+    javascript_tag "tl_search(#{member_id}, '#{start_date}', '#{end_date}', '#{options}')"
   end
 end

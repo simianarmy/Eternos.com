@@ -19,10 +19,15 @@ class TimelinesController < ApplicationController
   # Collect any other data that the timeline page needs on load.
   # All other requests will be done via AJAX queries.0
   def show
+    # Use map table to map dev users to their staging account
+    if (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id))
+      @member = Member.new
+      @member.id = dev_map.staging_user_id
+    else
+      @member = current_user.id
+    end
     
-    # hard coded to get member with fake timeline data
-    @member = current_user
-    
+    @member_name = @member.full_name
     respond_to do |format|
       format.html
     end

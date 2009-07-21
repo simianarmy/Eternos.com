@@ -1,6 +1,8 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :dev_staging_maps
+
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { :check_auth => :get }
   
   map.resources :backup_sources, :collection => {:add_feed_url => :post}

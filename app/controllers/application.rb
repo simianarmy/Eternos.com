@@ -246,7 +246,7 @@ class ApplicationController < ActionController::Base
     unless current_user
       store_location
       flash[:notice] = "You must be logged in to access this page"
-      redirect_to new_user_session_url
+      redirect_away new_user_session_url
       return false
     end
   end
@@ -256,7 +256,7 @@ class ApplicationController < ActionController::Base
     if current_user
       store_location
       flash[:notice] = "You must be logged out to access this page"
-      redirect_to account_url
+      redirect_away account_url
       return false
     end
   end

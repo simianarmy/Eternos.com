@@ -1,0 +1,17 @@
+<% title "Dev Staging Maps" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% for dev_staging_map in @dev_staging_maps %>
+    <tr>
+      <td><%=h dev_staging_map.name %></td>
+      <td><%= link_to "Show", dev_staging_map %></td>
+      <td><%= link_to "Edit", edit_dev_staging_map_path(dev_staging_map) %></td>
+      <td><%= link_to "Destroy", dev_staging_map, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Dev Staging Map", new_dev_staging_map_path %></p>

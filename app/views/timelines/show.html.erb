@@ -1,6 +1,6 @@
 <% use_timeline %>
 	<div id="content-container3">
-    <%= render :partial => 'timeline', :locals => {:full_name => @member.full_name} %>    
+    <%= render :partial => 'timeline', :locals => {:full_name => @member_name} %>    
 		<span class="subtitle1">Backup</span>
     <span class="subtitle2">Status</span>
 		<br /><br />
@@ -135,4 +135,5 @@
 		</div>
 		<div style="clear:both"></div>
   </div>
+
 <%= load_timeline(@member, 'fake') %>

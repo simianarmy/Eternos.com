@@ -103,11 +103,11 @@ namespace :deploy do
   task :sendmail, :roles => :app do
     run "mkdir -p #{current_path}/tmp/emails"
     stime = (Date.today-1).strftime('%Y-%m-%d 23:59:59')
-    etime = Time.now.strftime('%Y-%m-%d 23:59:59')
+    #etime = Time.now.strftime('%Y-%m-%d 23:59:59')
     fname = "svn_#{rand Time.now.to_i}.txt"
     path_to_filename = "#{current_path}/tmp/emails/#{fname}"
     
-    run "#{source.log('{\''+stime+'\'}', '{\''+etime+'\'}')} > #{path_to_filename}"
+    run "#{source.log('{\''+stime+'\'}', 'HEAD')} > #{path_to_filename}"
     run "cd #{current_path}; ruby script/sendmail.rb #{fname}"
     run "rm #{path_to_filename}"
   end

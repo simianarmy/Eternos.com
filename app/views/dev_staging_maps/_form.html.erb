@@ -1,0 +1,20 @@
+<%= error_messages_for :dev_staging_map %>
+<% form_for @dev_staging_map do |f| %>
+  <p>
+    Developer Member ID: 
+    <% if ENV['RAILS_ENV'] == 'development' %>
+      <%= @dev_staging_map.dev_user_id %>
+    <% else %>
+      <%= f.text_field :dev_user_id %>
+    <% end %>
+  </p>
+  <p>
+    Staging Member ID: 
+    <% if ENV['RAILS_ENV'] == 'development' %>
+      <%= f.text_field :staging_user_id %>
+    <% else %>
+      <%= @dev_staging_map.staging_user_id %>
+    <% end %>
+  </p>
+  <p><%= f.submit "Submit", :style => "height: 30px;" %></p>
+<% end %>

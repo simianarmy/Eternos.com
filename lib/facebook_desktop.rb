@@ -15,7 +15,7 @@ module FacebookDesktopApp
   # default config file name
   class << self
     def load_config(path=config_path)
-      raise "Unable to load #{path}: #{e.to_s}" unless File.exist? path
+      raise "Unable to load #{path}" unless File.exist? path
       Facebooker.load_configuration(path)
     end
   end
