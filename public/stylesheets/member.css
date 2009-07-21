@@ -172,3 +172,206 @@ span.select {
   width: 500px;
 }
 /* end */
+
+#topbar{
+	width:800px;
+	height:35px;
+}
+
+#topbar .title1{
+	font-family:arial;
+	font-size:18px;
+	color:#595959;
+}
+
+#content-container{
+	width:785px;
+	height:auto;
+	border-top:#b4becc solid 1px;
+	padding:15px;
+}
+
+.navbtn1{
+	width:150px;
+	height:17px;
+	background:url(../images/navbtn.gif) 0 17px;
+	display:block;
+	font-family:arial;
+	font-size:12px;
+	color:#636972;
+	text-decoration:none;
+	border:none;
+	text-align:left;
+	padding-left:10px;
+	margin-bottom:5px;
+}
+
+.navbtn1:hover{
+	background:url(../images/navbtn.gif) 0 0;
+	color:#2ea4ff;
+}
+
+.col2{
+	width:2px;
+	height:auto;
+	background:url(../images/borderv.gif) repeat-y;
+}
+
+.col3{
+	width:780px;
+	height:auto;
+	text-align:justify;
+	padding:0 8px 0 15px;
+}
+
+.subtitle1{
+	font-family:arial;
+	font-size:18px;
+	color:#636972;
+}
+
+.subtitle2{
+	font-family:arial;
+	font-size:18px;
+	color:#02419e;
+	margin:0 0px 0 5px;
+}
+
+.subtitle3{
+	font-family:arial;
+	font-size:14px;
+	color:#02419e;
+	margin:10px 0 0 0;
+}
+
+.subtitle4{
+	font-family:arial;
+	font-size:14px;
+	color:#636972;
+	margin:10px 0px 0 0;
+}
+
+.textarea1{
+	width:615px;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	color:#636972;
+	text-align:justify;
+	line-height:20px;
+}
+
+.textarea2{
+	width:610px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#636972;
+	float:left;
+}
+
+.textarea3{
+	width:610px;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	color:#636972;
+	text-align:justify;
+	line-height:20px;
+	float:left;
+}
+
+.textarea4{
+	width:565px;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	color:#636972;
+	text-align:justify;
+	line-height:20px;
+	float:left;
+}
+
+.textarea5{
+	width:500px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#636972;
+	float:left;
+	margin-top:10px;
+}
+
+.textarea6{
+	width:560px;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	color:#636972;
+	line-height:20px;
+	float:left;
+}
+
+.textarea7{
+	width:150px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#636972;
+	float:left;
+	margin-top:10px;
+}
+
+.textarea8{
+	width:610px;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	color:#636972;
+	text-align:justify;
+	line-height:20px;
+	float:left;
+}
+
+.list1{
+	width:100%;
+	height:auto;
+	margin-top:10px;
+	margin-left:30px;
+}
+
+.dot{
+	width:10px;
+	height:10px;
+	float:left;
+	margin:5px 10px 0 0;
+}
+
+.dot2{
+	width:10px;
+	height:10px;
+	float:left;
+	margin:5px 10px 0 0;
+}
+
+.dot3{
+	width:10px;
+	height:10px;
+	float:left;
+	margin:10px 10px 0 0;
+}
+
+.nametext1{
+	font-family:arial;
+	font-size:13px;
+	color:#2ea4ff;
+	margin:15px 0 5px 0;
+	font-style:italic;
+}
+
+.bluetext{
+	font-family:arial;
+	font-size:11px;
+	font-weight:bold;
+	color:#02419e;
+}

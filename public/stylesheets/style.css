@@ -35,6 +35,14 @@ img {behavior:url("pngbehavior.htc");}
 	height:auto;
 }
 
+.table1{
+	border:none;
+	padding:0;
+	margin:0;
+	width:860px;
+	height:auto;
+}
+
 .col1{
 	width:160px;
 	text-align:left;
@@ -146,7 +154,7 @@ img {behavior:url("pngbehavior.htc");}
 }
 
 .textarea3{
-	width:95%;
+	width:99%;
 	height:auto;
 	font-family:arial;
 	font-size:12px;
@@ -157,7 +165,7 @@ img {behavior:url("pngbehavior.htc");}
 }
 
 .textarea4{
-	width:325px;
+	width:565px;
 	height:auto;
 	font-family:arial;
 	font-size:11px;
@@ -168,9 +176,9 @@ img {behavior:url("pngbehavior.htc");}
 }
 
 .textarea5{
-	width:305px;
+	width:405px;
 	height:auto;
-	margin-right:5px;
+	margin: 0 0 0 5px;
 	font-family:arial;
 	font-size:12px;
 	color:#636972;
@@ -179,9 +187,30 @@ img {behavior:url("pngbehavior.htc");}
 .textarea6{
 	width:612px;
 	height:auto;
-	font-family:verdana;
+	font-family:arial;
 	font-size:12px;
 	color:#636972;
+	line-height:20px;
+	float:left;
+}
+
+.textarea7{
+	width:200px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#636972;
+	float:left;
+	margin-top:10px;
+}
+
+.textarea8{
+	width:95%;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	color:#636972;
+	text-align:justify;
 	line-height:20px;
 	float:left;
 }
@@ -211,7 +240,7 @@ img {behavior:url("pngbehavior.htc");}
 	width:10px;
 	height:10px;
 	float:left;
-	margin:2px 10px 0 0;
+	margin:5px 10px 0 0;
 }
 
 .dot2{
@@ -219,6 +248,13 @@ img {behavior:url("pngbehavior.htc");}
 	height:10px;
 	float:left;
 	margin:5px 10px 0 0;
+}
+
+.dot3{
+	width:10px;
+	height:10px;
+	float:left;
+	margin:2px 10px 0 0;
 }
 
 .pic1{
