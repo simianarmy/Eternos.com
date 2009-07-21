@@ -271,6 +271,16 @@ body{
 	padding-top:10px;
 }
 
+.textarea7{
+	width:428px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#33373f;
+	text-align:justify;
+	margin-bottom:5px;
+}
+
 .bluetext{
 	font-family:arial;
 	font-size:11px;
