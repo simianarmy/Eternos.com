@@ -1,15 +1,41 @@
-- title 'Enable Facebook Backup'
+- stylesheet 'popup'
 
-Some text here please!!!
-%br
--#= debug @auth_token
--#= debug @login_url
-= link_to image_tag("http://static.ak.facebook.com/images/devsite/facebook_login.gif"), @login_url, :class => 'facebook lightview', :rel => 'iframe', :title => ':: :: width: 640, height: 800'
-%p
-%br
-#continue{:style=>"display:none;"}
-  Follow text directions!
-  = link_to "Next Step", :action => 'authenticate', :auth_token => @auth_token
+/ - title 'Enable Facebook Backup'
+.fb-popupbox
+  = link_to "close", "#", :class => "close-btn"
+  .top-text
+    Authorize Facebook Backup
+  .clear
 
+  .fb-popup-container1
+    .top-titlebox
+      .checklist
+      .popup-title1
+        Enable Backup
+      .clear
+    .popup-text-area
+      .popup-title2
+        Lorem Ipsum
+      Lorem ipsum lorem psum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.
+
+      %br
+      %br
+      
+      lorem lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.
+	
+      .fb-btn1
+        = link_to image_tag("facebook-backup/fb-btn.gif"), @login_url, :class => 'facebook lightview', :rel => 'iframe', :title => ':: :: width: 640, height: 800'
+        
+    #continue{:style=> "display:none;"}
+      .popup-text1
+        Follow the direction!
+      = link_to "Next Step", {:action => 'authenticate', :auth_token => @auth_token}, :class =>"popup-textbtn1"
+      = image_tag "facebook-backup/arrow-right.gif", :class => "arrow-right"
+		
+      .clear
+  = image_tag "facebook-backup/fb-bottom.png"
+
+  
 :javascript
   Event.observe(document, 'lightview:hidden', function(evt) { $('continue').show() })
+
