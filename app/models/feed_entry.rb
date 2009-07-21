@@ -24,6 +24,10 @@ class FeedEntry < ActiveRecord::Base
     summary || rss_content
   end
   
+  def bytes
+    (summary ? summary.length : 0) + (rss_content ? rss_content.length : 0)
+  end
+  
   private
   
   # scrape full source from url

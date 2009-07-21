@@ -80,6 +80,7 @@ Rails::Initializer.run do |config|
   config.gem 'nokogiri', :version => '>= 1.3.2'
   # Needs libcurl
   config.gem 'taf2-curb', :lib => 'curb', :version => '>= 0.4.3', :source => 'http://gems.github.com'
+  config.gem 'searchlogic'
   
   # Rails can't find this gem even though it is in vendor/gems
   #config.gem 'contacts'

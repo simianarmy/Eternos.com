@@ -19,8 +19,13 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.day do
+every 1.day, :at => "2am" do
   runner "BackupJobPublisher.run"
+  runner "BackupReporter.run"
+end
+
+every 1.hour do
+  runner "BackupPhotoDownloader.run"
 end
 
 every :saturday, :at => "4am" do

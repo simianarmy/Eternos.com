@@ -83,6 +83,8 @@ class User < ActiveRecord::Base
     { :conditions => ["CONCAT_WS(' ', first_name, last_name) = ?", n] }
   }
   
+  named_scope :active, :conditions => { :state => 'live' }
+  
   # Roles
   AdminRole         = 'Admin'
   MemberRole        = 'Member'

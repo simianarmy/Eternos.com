@@ -54,4 +54,5 @@ class BackupPhotoAlbum < ActiveRecord::Base
       backup_photos.import p
     end
   end
+  
 end

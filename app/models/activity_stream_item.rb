@@ -24,7 +24,10 @@ class ActivityStreamItem < ActiveRecord::Base
       :order => 'published_at DESC', :limit => num || 1
     }
   }
-
+  
+  def bytes
+    message.length + (attachment_data ? attachment_data.length : 0)
+  end
 end
 
 # STI class children

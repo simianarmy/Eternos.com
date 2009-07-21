@@ -11,8 +11,26 @@ class BackupPhoto < ActiveRecord::Base
   
   serialize :tags
   xss_terminate :except => [ :tags ]
+  acts_as_state_machine :initial => :pending_download
   
-  after_create :download
+  state :pending_download
+  state :downloading, :enter => :download
+  state :downloaded
+  state :error
+  
+  event :start_download do
+    transitions :from => :pending_download, :to => :downloading
+  end
+  
+  event :download_complete do
+    transitions :from => :downloading, :to => :downloaded
+  end
+  
+  event :download_error do
+    transitions :from => :downloading, :to => :error
+  end
+  
+  named_scope :needs_download, :conditions => { :state => 'pending_download' }
   
   EditableAttributes = [:caption, :source_url, :tags]
   
@@ -20,30 +38,41 @@ class BackupPhoto < ActiveRecord::Base
     EditableAttributes
   end
   
-  private
+  def bytes
+    photo ? photo.size : 0
+  end
   
   # Downloads from source & create new Content object with data
-  
+  # Returns photo object on success
   def download
-    return
     return unless source_url
-    
-    filename = File.join(Dir::tmpdir, URI::parse(source_url).path.split('/').last)
-    t = rio(filename) < rio(source_url) # Download to temp file
 
-    if t.bytes > 0
-      Photo.create(
-      :parent_id => id,
-      :owner => @member = backup_photo_album.backup_source.member,
-      :content_type => Content.detect_mimetype(filename),
-      :description => caption,
-      :filename => File.basename(filename),
-      :temp_path => File.new(filename)) do |p|    
-        p.tag_with(tags.join(','), @member) if tags
-        update_attribute(:content_id, p.id)
+    begin
+      # Sanity check
+      @member = backup_photo_album.backup_source.member
+
+      @filename = File.join(Dir::tmpdir, URI::parse(source_url).path.split('/').last)
+      logger.info "Downloading #{source_url} to #{filename}..."
+
+      t = rio(@filename) < rio(source_url) # Download to temp file
+
+      if t.bytes > 0
+        @photo = Photo.create(
+        :parent_id => id,
+        :owner => @member,
+        :content_type => Content.detect_mimetype(@filename),
+        :description => caption,
+        :filename => File.basename(@filename),
+        :temp_path => File.new(@filename)) do |p|    
+          p.tag_with(tags.join(','), @member) if tags
+          update_attribute(:content_id, p.id)
+        end
       end
+    rescue
+      update_attribute(:download_error, $!)
+    ensure
+      rio(@filename).delete if @filename && File.exist?(@filename)
     end
-    rio(filename).delete
   end
-    
+
 end

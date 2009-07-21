@@ -168,7 +168,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.text     "source_url"
     t.string   "caption"
     t.string   "tags"
-    t.boolean  "downloaded",            :default => false
+    t.string   "state"
+    t.text     "download_error"
   end
 
   add_index "backup_photos", ["backup_photo_album_id"], :name => "index_backup_photos_on_backup_photo_album_id"
@@ -424,6 +425,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.text     "categories"
     t.string   "url"
     t.datetime "published_at"
+    t.datetime "created_at"
     t.string   "guid"
   end
 
@@ -437,6 +439,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "feed_url_s"
     t.string   "etag"
     t.datetime "last_modified"
+    t.datetime "created_at"
   end
 
   add_index "feeds", ["backup_source_id"], :name => "index_feeds_on_backup_source_id"
