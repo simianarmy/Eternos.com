@@ -802,19 +802,27 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 #address_book_gender_female{margin:5px 3px 5px 28px;}
 #address_book_gender_transgender{margin:5px 3px 5px 28px;}
 
-#address_book_first_name{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_middle_name{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_last_name{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_name_suffix{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_name_title{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_height{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_weight{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_race{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_religion{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_political_views{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#profile_sexual_orientation{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_website{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
-#address_book_ssn{width:235px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_first_name{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_middle_name{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_last_name{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_name_suffix{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_name_title{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_height{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_weight{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_race{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_religion{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_political_views{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#profile_sexual_orientation{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_website{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#address_book_ssn{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+
+
+#nil_class_height{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#nil_class_weight{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#nil_class_race{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#nil_class_religion{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#nil_class_political_views{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
+#nil_class_sexual_orientation{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
 
 #backup_source_auth_login{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 #backup_source_auth_password{width:200px; height:20px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
