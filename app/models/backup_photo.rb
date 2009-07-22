@@ -14,11 +14,11 @@ class BackupPhoto < ActiveRecord::Base
   acts_as_state_machine :initial => :pending_download
   
   state :pending_download
-  state :downloading, :enter => :download
+  state :downloading
   state :downloaded
   state :error
   
-  event :start_download do
+  event :starting_download do
     transitions :from => :pending_download, :to => :downloading
   end
   
@@ -52,12 +52,12 @@ class BackupPhoto < ActiveRecord::Base
       @member = backup_photo_album.backup_source.member
 
       @filename = File.join(Dir::tmpdir, URI::parse(source_url).path.split('/').last)
-      logger.info "Downloading #{source_url} to #{filename}..."
+      logger.info "Downloading #{source_url} to #{@filename}..."
 
       t = rio(@filename) < rio(source_url) # Download to temp file
 
       if t.bytes > 0
-        @photo = Photo.create(
+        self.photo = Photo.create(
         :parent_id => id,
         :owner => @member,
         :content_type => Content.detect_mimetype(@filename),
@@ -65,7 +65,6 @@ class BackupPhoto < ActiveRecord::Base
         :filename => File.basename(@filename),
         :temp_path => File.new(@filename)) do |p|    
           p.tag_with(tags.join(','), @member) if tags
-          update_attribute(:content_id, p.id)
         end
       end
     rescue
