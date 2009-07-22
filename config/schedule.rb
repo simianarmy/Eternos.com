@@ -20,12 +20,11 @@
 # Learn more: http://github.com/javan/whenever
 
 every 1.day, :at => "2am" do
-  runner "BackupJobPublisher.run"
-  runner "BackupReporter.run"
+  rake "backup:publish_jobs"
 end
 
 every 1.hour do
-  runner "BackupPhotoDownloader.run"
+  rake "backup:download_photos"
 end
 
 every :saturday, :at => "4am" do

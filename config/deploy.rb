@@ -91,7 +91,7 @@ namespace :deploy do
   
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
-    run "cd #{release_path} && whenever -s environment=#{stage} --update-crontab #{application}"
+    run "cd #{current_path} && whenever -s environment=#{stage} --update-crontab #{application}"
   end
 
   desc "Update local Google Analytics files"

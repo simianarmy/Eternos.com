@@ -15,7 +15,7 @@ class BackupPhotoDownloader
       bp.download
 
       if bp.photo
-        RAILS_DEFAULT_LOGGER.error "Downloading complete"
+        RAILS_DEFAULT_LOGGER.debug "Downloading complete"
         bp.download_complete!
       else
         RAILS_DEFAULT_LOGGER.error "Error downloading backup photo"
