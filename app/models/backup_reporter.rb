@@ -14,7 +14,7 @@ class BackupReporter
     latest_avg  = {}
     
     stats = [:backup_items,
-      :backup_db_size,
+      :backup_size,
       :backup_s3_size].each do |s|
         total[s] = total_avg[s] = latest[s] = latest_avg[s] = 0
     end
@@ -31,14 +31,14 @@ class BackupReporter
       total[key]   = klass.count
       total[key.to_s + '_size'] += size
       total[:backup_items] += total[key]
-      total[:backup_db_size] += size
+      total[:backup_size] += size
       
       last_day = klass.created_at_greater_than_or_equal_to(1.day.ago)
       size = last_day.first.respond_to?(:bytes) ? last_day.map(&:bytes).sum : 0
       latest[key]  = last_day.count
       latest[key.to_s + '_size'] += size
       latest[:backup_items] += latest[key]
-      latest[:backup_db_size] += size
+      latest[:backup_size] += size
     end
     nusers = Member.active.count
     total.each_key do |k| 

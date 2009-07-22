@@ -9,6 +9,6 @@ class BackupReportMailer < ActionMailer::Base
     @content_type = "text/html"
     
     @stats      = stats
-    @stats_keys = stats[:total].keys.reject { |k| k.to_s =~ /_size$/ }
+    @stats_keys = stats[:total].keys.reject { |k| k.to_s =~ /_size$/ } - [:backup_items]
   end
 end

@@ -3,19 +3,26 @@
 %h3 Totals
 %p
 .totals 
-  Totals
+  = total_count_and_size(@stats[:total])
+  %br Details
   = count_and_size(@stats_keys, @stats[:total])
 %p
 .yesterday 
   Yesterday
+  = total_count_and_size(@stats[:latest])
+  %br Details
   = count_and_size(@stats_keys, @stats[:latest])
 
 %h3= "Averages (#{@stats[:num_users]} active members)"
 %p
 .avg_total 
   Avg Totals
+  = total_count_and_size(@stats[:total_avg])
+  %br Details
   = count_and_size(@stats_keys, @stats[:total_avg])
 %p
 .avg_yesterday 
   Avg Yesterday
+  = total_count_and_size(@stats[:latest_avg])
+  %br Details
   = count_and_size(@stats_keys, @stats[:latest_avg])
