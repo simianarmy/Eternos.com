@@ -20,11 +20,11 @@
 # Learn more: http://github.com/javan/whenever
 
 every 1.day, :at => "2am" do
-  rake "backup:publish_jobs"
+  rake "RAKE=1 backup:publish_jobs"
 end
 
 every 1.hour do
-  rake "backup:download_photos"
+  rake "RAKE=1 backup:download_photos"
 end
 
 every :saturday, :at => "4am" do

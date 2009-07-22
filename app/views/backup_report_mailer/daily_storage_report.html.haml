@@ -1,0 +1,21 @@
+%h2 Backup Contents Storage Stats
+%br
+%h3 Totals
+%p
+.totals 
+  Totals
+  = count_and_size(@stats_keys, @stats[:total])
+%p
+.yesterday 
+  Yesterday
+  = count_and_size(@stats_keys, @stats[:latest])
+
+%h3= "Averages (#{@stats[:num_users]} active members)"
+%p
+.avg_total 
+  Avg Totals
+  = count_and_size(@stats_keys, @stats[:total_avg])
+%p
+.avg_yesterday 
+  Avg Yesterday
+  = count_and_size(@stats_keys, @stats[:latest_avg])

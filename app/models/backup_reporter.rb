@@ -18,7 +18,7 @@ class BackupReporter
       :backup_s3_size].each do |s|
         total[s] = total_avg[s] = latest[s] = latest_avg[s] = 0
     end
-    
+
     backup_items = %w( ActivityStreamItem BackupPhotoAlbum BackupPhoto BackupEmail Feed FeedEntry )
     backup_items.each do |bi|
       key = bi.tableize.to_sym
@@ -40,18 +40,13 @@ class BackupReporter
       latest[:backup_items] += latest[key]
       latest[:backup_db_size] += size
     end
-    users = Member.active.count
+    nusers = Member.active.count
     total.each_key do |k| 
-      total_avg[k] = total[k] / users
-      latest_avg[k] = latest[k] / users
+      total_avg[k] = total[k] / nusers
+      latest_avg[k] = latest[k] / nusers
     end
-    puts "Totals"
-    puts total.inspect
-    puts "Latest"
-    puts latest.inspect
-    puts "Averages per #{users} users"
-    puts total_avg.inspect
-    puts latest_avg.inspect
+    BackupReportMailer.deliver_daily_storage_report(:total => total, :latest => latest, 
+      :total_avg => total_avg, :latest_avg => latest_avg, :num_users => nusers)
   end
 end
     
