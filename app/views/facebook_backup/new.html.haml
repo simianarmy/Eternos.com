@@ -2,7 +2,7 @@
 
 / - title 'Enable Facebook Backup'
 .fb-popupbox
-  = link_to "close", "#", :class => "close-btn"
+  = link_to_function "", "parent.Lightview.hide()", :class => "close-btn"
   .top-text
     Authorize Facebook Backup
   .clear
