@@ -1,22 +1,39 @@
 - use_orig_lightview
 - use_lowpro
-- title 'Facebook Backup Permissions'
+/ - title 'Facebook Backup Permissions'
+- stylesheet 'popup'
 
-Offline Access:
-%br
-- if @offline_url
-  = link_to 'Allow offline access', @offline_url, :class => 'popup_get'
-- else
-  %font{:style => "color:green"} Granted
-%p
-%br
-Stream Access:
-%br
-- if @stream_url
-  = link_to 'Allow stream read access', @stream_url, :class => 'popup_get'
-- else
-  %font{:style => "color:green"} Granted
-%p
-%br
-= link_to_function 'Finished', 'parent.Lightview.hide()'
+.fb-popupbox
+  = link_to "  ", "#", :class => "close-btn"
+  .top-text
+    Authorize Facebook Backup
+  .clear
+  .fb-popup-container1
+    .top-titlebox
+      .checklist
+      .popup-title1
+        Backup Permission
+      .popup-title3
+        Login Successfull
+      .clear
+    .popup-text-area
+      .popup-text2
+        - if @offline_url
+          = link_to 'Allow offline access', @offline_url, :class => 'popup-textbtn2'
+        - else
+          Offline Access : Granted
+    
+      .clear
+      .popup-text2
+        - if @stream_url
+          = link_to 'Allow stream read access', @stream_url, :class => 'popup-textbtn2'
+        - else
+          Stream Access: Granted
+      .clear
+      %br
+      %br
+      %br
+      %br
+    = link_to_function "Finished", "parent.Lightview.hide()", :class => "btn-box1"
+  = image_tag "facebook-backup/fb-bottom.png"
   
