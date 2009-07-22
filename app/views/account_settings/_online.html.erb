@@ -3,7 +3,8 @@
 	<div class="textarea7">Lorem Ipsum Lorem Ipsum</div>
 	<hr class="line2" /></div>
   <div class="network-icon-box">
-    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :title => 'Authorize Facebook Backup :: :: width: 700, height: 800', :id => "fb-button", :rel => 'iframe' %>
+    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", 
+      :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
     <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}') });" %>
     <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-link"}, ["rss-box"])  %>
     <%= link_to_show_hide_online('rss-box', "", {:class => "rss-btn"}, ["twitter-box"])  %>

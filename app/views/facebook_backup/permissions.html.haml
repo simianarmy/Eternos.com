@@ -4,7 +4,7 @@
 - stylesheet 'popup'
 
 .fb-popupbox
-  = link_to "  ", "#", :class => "close-btn"
+  = link_to_function "", "parent.Lightview.hide()", :class => "close-btn"
   .top-text
     Authorize Facebook Backup
   .clear
@@ -34,6 +34,6 @@
       %br
       %br
       %br
-    = link_to_function "Finished", "parent.Lightview.hide()", :class => "btn-box1"
+    = link_to_function "Finished", "parent.Lightview.hide();", :class => "btn-box1"
   = image_tag "facebook-backup/fb-bottom.png"
   

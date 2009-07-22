@@ -1,6 +1,6 @@
 - stylesheet 'popup'
 
-/ - title 'Enable Facebook Backup'
+// - title 'Enable Facebook Backup'
 .fb-popupbox
   = link_to_function "", "parent.Lightview.hide()", :class => "close-btn"
   .top-text
@@ -22,9 +22,11 @@
       %br
       
       lorem lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.
+      %br
+
 	
       .fb-btn1
-        = link_to image_tag("facebook-backup/fb-btn.gif"), @login_url, :class => 'facebook lightview', :rel => 'iframe', :title => ':: :: width: 640, height: 800'
+        = link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), @login_url, :class => 'facebook lightview', :rel => 'iframe', :title => ' :: :: width: 700, height: 800'
         
     #continue{:style=> "display:none;"}
       .popup-text1

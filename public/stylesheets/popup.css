@@ -537,7 +537,7 @@ a.flickr-btn:hover{
 	background:url(/images/errors/flickr-btn.gif) 0 47px;
 }
 
-.fb-active{width:77px; height:77px; background:url(/images/errors/fb-active.gif); float:left;margin:0 10px 0 20px}
+.fb-active{width:77px; height:98px; background:url(/images/errors/fb-active.gif); float:left;margin:0 10px 0 20px}
 .twitter-active{width:165px; height:94px; background:url(/images/errors/twitter-active.gif); float:left;margin:0 ;}
 .flickr-active{width:175px; height:52px; background:url(/images/errors/flickr-active.gif); float:left;margin:0 10px 0 10px}
 .rss-active{width:77px; height:77px; background:url(/images/errors/rss-active.gif); float:left;margin:0 10px 0 10px}

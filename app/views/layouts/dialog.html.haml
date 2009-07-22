@@ -4,7 +4,10 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - stylesheet 'member', 'screen', 'application', '/javascripts/lightview/css/lightview'
+    - if params[:controller] == "facebook_backup"
+      - stylesheet 'application',  '/javascripts/lightview/css/lightview'
+    - else
+      - stylesheet 'member', 'screen', 'application', '/javascripts/lightview/css/lightview'
     / Put these in partials as needed: javascript :defaults, 'CustomFormElements', 'cvi_busy_lib'
     = yield(:head)
     = yield(:javascript)
@@ -16,12 +19,11 @@
         %h2= yield(:title)
         
       / for rjs flash notices
-      #notice.flash_notice= show_flash_messages
-
+      - unless params[:controller] == "facebook_backup"
+        #notice.flash_notice= show_flash_messages
       .context
         .clearboth
         %p= yield(:header)
-          
       = yield
       / end of sub content
       .clearboth

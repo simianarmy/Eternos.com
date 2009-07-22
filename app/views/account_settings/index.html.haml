@@ -26,7 +26,8 @@
       = render :partial => "setting_nav", :locals => { :active_link => "step1" }
     
     .pop-content-right
-      = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
+      %center
+        = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
       = render :partial => 'account_settings/personal_info'
     .clear
   = image_tag "errors/popup-footer.png"
