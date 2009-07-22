@@ -15,6 +15,7 @@ class BackupState < ActiveRecord::Base
     if info[:errors].empty?
       self.last_successful_backup_at = Time.now
       self.last_messages = info[:messages] if info[:messages]
+      self.last_errors.clear
     else
       self.last_failed_backup_at = Time.now
       self.last_errors = info[:errors]

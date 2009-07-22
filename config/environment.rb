@@ -194,7 +194,9 @@ if defined?(PhusionPassenger)
     Thread.stop
   end
 elsif !defined?(DaemonKit)
-  RAILS_DEFAULT_LOGGER.info "Launching thread for AMQP"
-  Thread.new{ MessageQueue.start }
+  if (RAILS_ENV == 'development') && ENV['RAKE'].blank?
+    RAILS_DEFAULT_LOGGER.info "Launching thread for AMQP"
+    Thread.new{ MessageQueue.start }
+  end
 end
 

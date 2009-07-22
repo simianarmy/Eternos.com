@@ -30,7 +30,7 @@ class Member < User
     {
     :include => [:backup_state],
     :conditions => ['(backup_states.id IS NULL) OR (backup_states.in_progress = ? AND backup_states.last_backup_finished_at <= ?)', 
-      false, cutoff_date]
+      false, cutoff_date || Time.now]
   } }
   
   def deliver_password_reset_instructions!
