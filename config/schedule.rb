@@ -23,6 +23,10 @@ every 1.day, :at => "2am" do
   rake "RAKE=1 backup:publish_jobs"
 end
 
+every 1.day do
+  rake "backup:generate_report"
+end
+
 every 1.hour do
   rake "RAKE=1 backup:download_photos"
 end

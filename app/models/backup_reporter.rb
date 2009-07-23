@@ -3,6 +3,23 @@
 # detailed statistics on storage (along with costs for S3 storage) for our current user base, 
 # including average size of data stores.
  
+module S3PriceCalculator
+  class << self
+    def calculate_monthly_storage_cost(bytes)
+      per_gig = bytes.fdiv 1.gigabyte
+      if bytes < 50.terabytes
+        per_gig * 0.15
+      elsif bytes < 100.terabytes
+        per_gig * 0.14
+      elsif bytes < 500.terabytes
+        per_gig * 0.13
+      else
+        per_gig * 0.12
+      end
+    end
+  end
+end
+
 class BackupReporter
   # Collect metrics on members' space usage and send out in mail
   def self.run
@@ -40,11 +57,19 @@ class BackupReporter
       latest[:backup_items] += latest[key]
       latest[:backup_size] += size
     end
+    
+    # Calculate s3 costs
+    total[:backup_s3_size] = BackupPhoto.all.map(&:bytes).sum
+    total[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:backup_s3_size])
+    latest[:backup_s3_size] = BackupPhoto.created_at_greater_than_or_equal_to(1.day.ago).map(&:bytes).sum
+    latest[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:s3_cost])
+    
     nusers = Member.active.count
     total.each_key do |k| 
       total_avg[k] = total[k] / nusers
       latest_avg[k] = latest[k] / nusers
     end
+   
     BackupReportMailer.deliver_daily_storage_report(:total => total, :latest => latest, 
       :total_avg => total_avg, :latest_avg => latest_avg, :num_users => nusers)
   end
