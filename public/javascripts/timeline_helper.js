@@ -75,12 +75,16 @@ function tl_parse_events(source){
 //create event source
 function tl_create_event_source(source){
   var event = source.event;
-  var tl_title = tl_desc = tl_img = tl_link = null;
+  var tl_title = tl_desc = tl_img = tl_link = tl_icon = tl_color = tl_tcolor = null;
   var tl_date = new Date();
+  var asset_url = "http://simile.mit.edu/timeline/api/";
+  var imgs_url = asset_url + "images/";
     
   if (event.facebook_activity_stream_item){
     fb_event = event.facebook_activity_stream_item
     
+    tl_icon = imgs_url + "dark-blue-circle.png";
+    tl_color = tl_tcolor = "blue";
     if (fb_event.published_at) {
       tl_date = tl_format_date(fb_event.published_at);
     }
@@ -110,6 +114,8 @@ function tl_create_event_source(source){
   } else if (event.twitter_activity_stream_item){
     tw_event = event.twitter_activity_stream_item
     
+    tl_color = tl_tcolor = "cyan";
+    tl_icon = imgs_url + "dull-green-circle.png";
     if (tw_event.published_at){
       tl_date = tl_format_date(tw_event.published_at);
     }
@@ -121,10 +127,14 @@ function tl_create_event_source(source){
       tl_date = tl_format_date(event.backup_photo.created_at);
     }
     
+    tl_icon = imgs_url + "gray-circle.png";
+    tl_color = tl_tcolor = "gray";
     tl_title = "Backup photo";
     tl_desc = event.backup_photo.caption;
     tl_img = event.backup_photo.source_url;
   } else if (event.backup_email){
+    tl_icon = imgs_url + "red-circle.png";
+    tl_color = tl_tcolor = "red";
     if (event.backup_email.received_at) {
       tl_date = tl_format_date(event.backup_email.received_at);
     }
@@ -136,6 +146,8 @@ function tl_create_event_source(source){
       tl_date = tl_format_date(event.feed_entry.published_at);
     }
     
+    tl_icon = imgs_url + "dull-red-circle.png";
+    tl_color = tl_tcolor = "orange";
     tl_title = "New feed item";
     tl_desc = "SOURCE: " + event.feed_entry.name + "; DESCRIPTION: " + event.feed_entry.summary;
     tl_link = event.feed_entry.url;
@@ -143,7 +155,7 @@ function tl_create_event_source(source){
   
   var return_event = new Timeline.DefaultEventSource.Event(
     tl_date, tl_date, tl_date, tl_date, true, 
-    tl_title, tl_desc, tl_img);
+    tl_title, tl_desc, tl_img, tl_link, tl_icon, tl_color, tl_tcolor);
     
   return return_event;       
 }
