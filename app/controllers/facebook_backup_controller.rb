@@ -4,7 +4,7 @@ require 'facebook_desktop'
 
 class FacebookBackupController < ApplicationController
   before_filter :login_required, :except => [:authorized, :removed]
-  require_role "Member", :except => [:authorized, :removed]
+  require_role "Member", :for_all_except  => [:authorized, :removed]
   before_filter :load_facebook_desktop
   before_filter :load_session
   before_filter :load_backup_source, :except => [:authorized, :removed]

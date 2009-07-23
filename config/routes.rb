@@ -105,7 +105,7 @@ ActionController::Routing::Routes.draw do |map|
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.login '/login', :controller => 'user_sessions', :action => 'new', :secure => true
   map.logout '/logout', :controller => 'user_sessions', :action => 'destroy'
-  map.member_home '/member_home', :controller => 'member_home', :protocol => 'http'
+  map.member_home '/member_home', :controller => 'timelines', :action => 'show', :protocol => 'http'
   map.begin_story '/begin_story', :controller => 'stories', :action => 'begin_story'
   map.timeline_search '/timeline/search/:format/:id/:start_date/:end_date/*filters', 
     :controller => 'timelines', :action => "search"
