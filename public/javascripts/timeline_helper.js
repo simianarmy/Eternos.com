@@ -26,7 +26,7 @@ function tl_init(event_source) {
    tl.getBand(0).addOnScrollListener(function(band){
      var min_date = tl_format_date(band.getMinDate(), 'rails');
      var max_date = tl_format_date(band.getMaxDate(), 'rails');
-     var el_options = null;
+     var el_options = 'fake';
      tl_search(window._tl_member_id, min_date, max_date, el_options);
    });
    
