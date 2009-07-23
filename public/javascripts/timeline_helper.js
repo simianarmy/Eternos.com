@@ -21,6 +21,15 @@ function tl_init(event_source) {
    bandInfos[1].syncWith = 0;
    bandInfos[1].highlight = true; 
    tl = Timeline.create(document.getElementById("my-timeline"), bandInfos);
+   
+   //event listener for timeline band scrolling
+   tl.getBand(0).addOnScrollListener(function(band){
+     var min_date = tl_format_date(band.getMinDate(), 'rails');
+     var max_date = tl_format_date(band.getMaxDate(), 'rails');
+     var el_options = null;
+     tl_search(window._tl_member_id, min_date, max_date, el_options);
+   });
+   
 }
 
 var resizeTimerID = null;
@@ -35,7 +44,8 @@ function onResize() {
 
 //search Timeline events
 function tl_search(member, start_date, end_date, options){
-  new Ajax.Request('http://staging.eternos.com/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
+  window._tl_member_id = member;
+  new Ajax.Request('/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
@@ -202,11 +212,15 @@ function tl_populate_story_objects(images){
 }
 
 //format date from rails response for timeline date format
-function tl_format_date(date){
-  var year = date.substr(0,4);
-  var month = date.substr(5,2);
-  var day = date.substr(8,2);
-  rv_date = new Date(year, month, day);
+function tl_format_date(date, format){
+  if (format == null) {
+    var year = date.substr(0, 4);
+    var month = date.substr(5, 2);
+    var day = date.substr(8, 2);
+    rv_date = new Date(year, month, day);
+  }else{
+    rv_date = date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
+  }
   return rv_date;
 }
 
@@ -240,3 +254,5 @@ function tl_show_on_failure(){
 function tl_on_drag(){
   
 }
+
+
