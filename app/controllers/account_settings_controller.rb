@@ -117,38 +117,29 @@ class AccountSettingsController < ApplicationController
   
   def online
     @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
-    if params[:method].blank?
-      @online_account = BackupSource.new
-      @feed_url = FeedUrl.new
-      # What is this sillyness?
-      # @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
-      backup_sources = current_user.backup_sources
-      if backup_sources.any?
-        @facebook_account  = backup_sources.by_site(BackupSite::Facebook).first
-        @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
-        @twitter_accounts = backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
-        @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
-        @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
-        @rss_url = backup_sources.by_site(BackupSite::Blog).first
-        @rss_confirmed = @rss_url && @rss_url.confirmed?
-      end
-      
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            if params[:page].blank?
-              setup_layout_account_setting(page, "step2", "account_settings/online")
-            end
-            page.replace_html 'result-urls', :partial => 'shared/url_list'
+    @online_account = BackupSource.new
+    @feed_url = FeedUrl.new
+    # What is this sillyness?
+    # @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
+    backup_sources = current_user.backup_sources
+    if backup_sources.any?
+      @facebook_account  = backup_sources.by_site(BackupSite::Facebook).first
+      @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
+      @twitter_accounts = backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
+      @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
+      @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
+      @rss_url = backup_sources.by_site(BackupSite::Blog).first
+      @rss_confirmed = @rss_url && @rss_url.confirmed?
+    end
+
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          if params[:page].blank?
+            setup_layout_account_setting(page, "step2", "account_settings/online")
           end
+          page.replace_html 'result-urls', :partial => 'shared/url_list'
         end
-      end
-    else
-      if f = current_user.backup_sources.find(params[:id].to_i)
-        f.destroy
-      end
-      render :update do |page|
-        page.replace_html 'result-urls', :partial => 'shared/url_list'
       end
     end
   end
