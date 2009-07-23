@@ -1,17 +1,17 @@
-<% unless @feed_urls.empty? %>
+<% unless @twitter_accounts.blank? %>
   <br>
-  <h5>List of RSS Feeds to Backup</h5>
+  <h5>List of Twitter accounts to Backup</h5>
   <table class="table-form6" border="0" cellpadding="0" cellspacing="0">
       <tr bgcolor="#8bcdff">
-        <td class="coll-form10" bgcolor="#8bcdff" align="center">URL</td>
+        <td class="coll-form10" bgcolor="#8bcdff" align="center">Login name</td>
         <td class="coll-form10" bgcolor="#8bcdff" align="center">Action</td>
       </tr>
-    <% @feed_urls.each do |@feed| -%>
-      <tr id="url-list-<%= @feed.id %>">
-        <td class="coll-form12" valign="center"><%= in_place_editor_field(:feed, :rss_url) %></td>
+    <% @twitter_accounts.each do |twitter| -%>
+      <tr id="twitter-list-<%= twitter.id %>">
+        <td class="coll-form12" valign="center"><%= twitter.auth_login %></td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
                                                       :html => {:class => 'blue-btn4'},
-                                                      :url => {:controller => 'account_settings', :action => 'online', :id => @feed},
+                                                      :url => {:controller => 'backup_sources', :action => 'remove_twitter_account', :id => twitter},
                                                       :confirm => 'Are you sure?',
                                                       :with => "'method=delete'", 
                                                       :loading => "$('progress-bar').show();",
@@ -21,5 +21,5 @@
     <% end %>
   </table>
   <br>
-<%= will_paginate(@feed_urls) %>
+<%= will_paginate(@twitter_accounts) %>
 <% end %>

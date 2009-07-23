@@ -126,8 +126,11 @@ class AccountSettingsController < ApplicationController
       if backup_sources.any?
         @facebook_account  = backup_sources.by_site(BackupSite::Facebook).first
         @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
+        @twitter_accounts = backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
         @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
         @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
+        @rss_url = backup_sources.by_site(BackupSite::Blog).first
+        @rss_confirmed = @rss_url && @rss_url.confirmed?
       end
       
       respond_to do |format|
@@ -145,7 +148,7 @@ class AccountSettingsController < ApplicationController
         f.destroy
       end
       render :update do |page|
-        page.remove "url-list-#{params[:id]}"
+        page.replace_html 'result-urls', :partial => 'shared/url_list'
       end
     end
   end
@@ -170,7 +173,7 @@ class AccountSettingsController < ApplicationController
       @contact_email.destroy
 
       render :update do |page|
-        page.remove "contact-list-#{@contact_email.id}"
+        page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
       end
     end
   end
@@ -572,6 +575,16 @@ class AccountSettingsController < ApplicationController
   
   private
 
+  # because the views of this controller used in internal IFRAME
+  # SO, we have to override login_required method in the parent class.
+  # The login_required method in parent class doesn't suit in IFRAME.
+  def login_required
+    unless current_user
+      flash[:notice] = "You must be logged in to access this page"
+      render :partial => "login_required"
+    end
+  end
+  
    def update_personal_info
      rv = false
      if @profile and !@new_profile.empty? and @address_book and !@new_address_book.empty?

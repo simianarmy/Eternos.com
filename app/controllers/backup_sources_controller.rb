@@ -40,19 +40,28 @@ class BackupSourcesController < ApplicationController
      render_message("Twitter account is not valid")
   end
 
+  def remove_twitter_account
+    @twitter_account = BackupSource.find(params[:id])
+    @twitter_account.destroy
+    
+    find_twitter_account
+    render :update do |page|
+       page.replace_html 'result-twitter-accounts', :partial => 'shared/twitter_list', :locals => {:twitter_accounts => @twitter_accounts}
+    end
+  end
+  
   # TODO: Needs exception handling
   def add_feed_url
     if @feed_url = FeedUrl.create(:user_id => current_user.id, 
         :rss_url => params[:feed_url][:rss_url], 
         :backup_site_id => BackupSite.find_by_name(BackupSite::Blog).id)
       current_user.backup_sources << @feed_url
-      
-      @feed_url.reload.backup # Reload to get user id and initiate backup!
-      
+      # @feed_url.reload.backup Reload to get user id and initiate backup!
       # Get paginated list of feeds, ordered by most recent
       @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate(
         :page => params[:page], :per_page => 10, :order => 'created_at DESC')
     end
+    
     respond_to do |format|
       format.js
     end
@@ -80,6 +89,10 @@ class BackupSourcesController < ApplicationController
         end
       }
     end
+  end
+  
+  def find_twitter_account
+    @twitter_accounts = current_user.backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
   end
   
 end

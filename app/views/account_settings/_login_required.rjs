@@ -1,0 +1,2 @@
+page.call "window.parent.Lightview.hide"
+page.assign "window.parent.location", login_url

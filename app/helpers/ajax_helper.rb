@@ -76,6 +76,8 @@ module AjaxHelper
       action += "$('#{element}').hide();"
       if id.eql?("rss-box")
         action += "Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');"
+      elsif id.eql?("twitter-box")
+        action += "Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');$('backup_source_auth_login').value='';$('backup_source_auth_password').value='';"
       else
         action += "resetDinamycHeight('account-setting-content');"
       end
