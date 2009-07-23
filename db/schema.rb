@@ -857,4 +857,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   create_table "dev_staging_maps", :force => true do |t|
     t.integer "dev_user_id", "staging_user_id", :null => false
   end
+  
+  rename_column("contact_emails", "name", "password")
+  
 end

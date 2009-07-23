@@ -1,24 +1,24 @@
 <div id="account-setting-content" class="makeScroll">
-  <div class="title3">Backup Your Gmail Account</div>
+  <div class="title3">Backup Your Emails</div>
   <div class="textarea6">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac magna id erat interdum cursus. Curabitur nisi metus, rhoncus in mattis ac, mattis at orci. Cras placerat lectus in magna cursus dictum. Fusce lacinia feugiat ullamcorper. Aliquam et magna risus. Curabitur rhoncus nisl sit amet elit fringilla ut tincidunt justo imperdiet.
 		<br /><br />
 		<center>
        <h4 id="flash-message"></h4>
-    <% form_remote_for :gmail,
+    <% form_remote_for :email,
                                 :url => {:action => 'backup_contact_emails'},
                                 :html => {:id => "backup_email_address"},
                                 :loading => "$('progress-bar').show();",
                                 :complete => "$('progress-bar').hide();Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');" do |f| -%>
 		<table class="table1" border="0" cellspacing="0" cellpadding="0">
 			 	<tr>
-	        <td colspan="3" class="titlebox1">Your Gmail Account</td>
+	        <td colspan="3" class="titlebox1">Your Emails</td>
 	      </tr>
 	      <tr>
 	        <td class="coll-form7" valign="bottom">Email</td>
 		    	<td class="coll-form2" valign="bottom">:</td>
                 <%- value = @current_gmail.nil? ? "" : @current_gmail.auth_login -%>
-		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.text_field :username, :value => value %></td>
+		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.text_field :email, :value => value %></td>
 	      </tr>
 	      <tr>
 	        <td class="coll-form7" valign="bottom">Password</td>
@@ -26,7 +26,7 @@
 		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.password_field :password %></td>
 	      </tr>
 				<tr>
-	        <td width="100%" align="right" colspan="3"><%= submit_tag "Submit", {:id => "button_submit", :style => "display:none"} %><a href="#" class="submit-btn2" onclick="$('button_submit').click()"></a></td>
+	        <td width="100%" align="right" colspan="3"><%= submit_tag "Backup", {:id => "button_submit", :style => "display:none"} %><input type="button" value="Backup" class="submit-btn5" onclick="$('button_submit').click()"></input></td>
 	      </tr>
 		</table>
     <% end %>

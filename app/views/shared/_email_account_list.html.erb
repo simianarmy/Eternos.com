@@ -7,15 +7,15 @@
 	<div class="title7">List of your emails</div>
   <table class="table-form6" border="0" cellpadding="0" cellspacing="0">
       <tr bgcolor="#8bcdff">
-        <td class="coll-form10" bgcolor="#8bcdff" align="center">Name</td>
-        <td class="coll-form11" bgcolor="#8bcdff" align="center">Email</td>
+        <td class="coll-form10" bgcolor="#8bcdff" align="center">Email</td>
+        <td class="coll-form11" bgcolor="#8bcdff" align="center">Password</td>
         <td class="coll-form10" bgcolor="#8bcdff" align="center">Action</td>
       </tr>
     <% @contact_emails.each do |@contact| -%>
       <tr id="contact-list-<%= @contact.id %>">
-        <td class="coll-form12" valign="center"><%= in_place_editor_field(:contact, :name) %></td>
+        <td class="coll-form12" valign="center"><%= in_place_editor_field(:contact, :email) %></td>
         <td class="coll-form13" valign="center">
-            <%= in_place_editor_field(:contact, :email) %>
+            <%= in_place_editor_field(:contact, :password) %>
         </td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
                                                       :url => {:action => 'email_account', :id => @contact},

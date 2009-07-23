@@ -190,9 +190,9 @@ class AccountSettingsController < ApplicationController
     begin
       params[:addresses].each_value do |val|
         start_at = Time.local(val[:year_in],val[:month_in],val[:day_in])
-        end_at = Time.local(val[:year_out],val[:month_out],val[:day_out])
+        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day]) unless val[:end_year].nil? 
         val.merge!(:user_id => current_user.id, :moved_in_on => start_at, :moved_out_on => end_at)
-        val.delete_if{|k, v| ["year_in", "month_in", "day_in", "year_out", "month_out", "day_out"].include?(k)}
+        val.delete_if{|k, v| ["year_in", "month_in", "day_in", "end_year", "end_month", "end_day"].include?(k)}
         @address = Address.new(val)
         @address.addressable = current_user.profile
         @address.save!
@@ -236,7 +236,7 @@ class AccountSettingsController < ApplicationController
     begin
       params[:jobs].each_value do |val|
         start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day]) unless val[:end_year].nil? 
         val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
         val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
         @job = Job.new(val)
@@ -452,7 +452,7 @@ class AccountSettingsController < ApplicationController
     begin
       params[:relationships].each_value do |val|
         start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
+        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day]) unless val[:end_year].nil? 
         val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
         val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
         @relationship = Relationship.new(val)
@@ -548,27 +548,8 @@ class AccountSettingsController < ApplicationController
   
   def backup_contact_emails
     begin
-      # Contacts authenticates in initialization.  If there are any problems logging in, 
-      # an exception is raised.
-      gmail = Contacts::Gmail.new(params[:gmail][:username], params[:gmail][:password])
-      
-      # At this point authentication has been authorized
-      @current_gmail = GmailAccount.create!(
-        :user_id => current_user.id,
-        :auth_login => params[:gmail][:username], 
-        :auth_password => params[:gmail][:password], 
-        :auth_confirmed => true,
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
-        :last_login_at => Time.now)
-      # Initiate backup!
-      @current_gmail.backup
-      
-      # Save email account contacts
-      gmail.contacts.each do |n, e|
-        ContactEmail.create({:profile_id => current_user.profile.id, :name => n, :email => e})
-      end
+      @contac_email = ContactEmail.create(params[:email].merge!(:profile_id => current_user.profile.id))
       @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
-     
       respond_to do |format|
         format.js do
           render :update do |page|

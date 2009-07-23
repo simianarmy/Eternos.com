@@ -27,7 +27,11 @@
 			<tr>
         <td class="coll-form6" valign="top">End Date</td>
 	    	<td class="coll-form2" valign="top">:</td>
-	    	<td class="coll-form3" valign="top"><%= job.start_at.to_date %></td>
+	    	<td class="coll-form3" valign="top"><%= if(job.end_at) 
+                                                            job.end_at.to_date
+                                                           else
+                                                            "To Present"
+                                                           end%></td>
       </tr>
 			<tr>
         <td class="coll-form6" valign="top">Notes</td>
