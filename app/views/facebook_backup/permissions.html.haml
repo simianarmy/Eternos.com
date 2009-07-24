@@ -2,6 +2,7 @@
 - use_lowpro
 / - title 'Facebook Backup Permissions'
 - stylesheet 'popup'
+= javascript_include_tag "account_setup"
 
 .fb-popupbox
   = link_to_function "", "parent.Lightview.hide()", :class => "close-btn"
@@ -34,6 +35,6 @@
       %br
       %br
       %br
-    = link_to_function "Finished", "parent.Lightview.hide();", :class => "btn-box1"
+    = link_to_function "Finished", "parent.Lightview.hide();activedFb();", :class => "btn-box1"
   = image_tag "facebook-backup/fb-bottom.png"
   

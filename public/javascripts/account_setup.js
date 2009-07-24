@@ -38,6 +38,10 @@ var on_facebook_backup_auth_close = function(check_url) {
 	} );
 }
 
+function activedFb(){
+  parent.document.getElementById('fb-button').setAttribute('class', 'fb-active');
+}
+
 function setDinamycHeight(id){
   height = window.innerHeight;
   heightDiv = 0.75*height;
