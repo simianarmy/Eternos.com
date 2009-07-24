@@ -1,7 +1,110 @@
+//Eternos Timeline Date Format
+function ETLDate(date, format){
+  this.dateFormat = (format == null) ? 'default' : format.toString();
+  this.inputDate  = date;
+  this.procOutputDate();
+}
+ETLDate.prototype.procOutputDate = function(){
+  if (this.dateFormat == 'default') {
+    this.outputDate = new Date(this.inputDate.substr(0, 4), this.inputDate.substr(5, 2), this.inputDate.substr(8, 2));
+  }else{
+    this.outputDate = this.inputDate.getFullYear() +'-'+ this.inputDate.getMonth() +'-'+ this.inputDate.getDate();
+  }  
+}
+
+
+//Eternos Timeline Artifact
+function ETLArtifact(domID){
+  this.parent = $(domID);
+  this.title  = "Artifacts";
+  this.top    = "<div class='artibox-top'><div class='title5'>" + this.title + "</div></div><div class='artibox'>";
+  this.bottom = "</div><img src='/images/artibox-bottom.gif' />";
+  this.item   = "";
+}
+ETLArtifact.prototype.write = function() {
+  this.parent.insert(this.top + this.item + this.bottom);
+}
+ETLArtifact.prototype.addItem = function(elements){
+  this.item += elements;
+}
+ETLArtifact.prototype.setTitle = function(new_title){
+  this.title = new_title;
+}
+
+//Eternos Timeline Artifact Item, with source from 'event' in evalJSON response
+function ETLArtifactItem(event){
+  this.thumbHeight = 70;
+  this.thumbWidth = 70;
+  this.sourceEvent = event;
+  this.popImg();
+}
+ETLArtifactItem.prototype.popImg = function(){
+  if (this.sourceEvent.facebook_activity_stream_item){
+    if (this.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
+      this.imageUrl = this.sourceEvent.facebook_activity_stream_item.src;
+      this.itemType = "Facebook";
+    }
+  } else if (this.sourceEvent.backup_photo){
+    this.imageUrl = this.sourceEvent.backup_photo.source_url;
+    this.itemType = "Backup Photo";
+  } 
+}
+ETLArtifactItem.prototype.toHtml = function(){
+  rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<img src='" +this.imageUrl+ "' class='thumnails2' />";
+  return rv;
+}
+
+
+//Eternos Timeline Story
+function ETLStory(domID){
+  this.parent = $(domID);
+  this.title  = "Stories";
+  this.top    = "<div class='storybox-top'><div class='title5'>" +this.title+ "</div></div><div class='storybox'>";
+  this.bottom = "</div><img src='/images/storybox-bottom.gif' />";
+  this.item   = "";  
+}
+ETLStory.prototype.write = function() {
+  this.parent.insert(this.top + this.item + this.bottom);
+}
+ETLStory.prototype.addItem = function(elements){
+  this.item += elements;
+}
+
+//Eternos Timeline Story Item
+function ETLStoryItem(event){
+  this.thumbHeight = 70;
+  this.thumbWidth = 70;
+  this.sourceEvent = event;
+  this.popImg();
+}
+ETLStoryItem.prototype.popImg = function(){
+  if (this.sourceEvent.facebook_activity_stream_item){
+    if (this.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
+      this.imageUrl = this.sourceEvent.facebook_activity_stream_item.src;
+      this.itemType = "Facebook";
+    }
+  } else if (this.sourceEvent.backup_photo){
+    this.imageUrl = this.sourceEvent.backup_photo.source_url;
+    this.itemType = "Backup Photo";
+  } 
+}
+ETLStoryItem.prototype.toHtml = function(){
+  rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<div class='story-subox'><img src='" +this.imageUrl+ "' class='thumnails1' /><div class='story-detail-box'><div class='story-detail-title'>Story Title 1</div><div class='story-detail-date'>December 21, 2010</div><div class='story-detail-subject'>Subject :<a href='#' class='story-subject-btn'>Vacation</a>,&nbsp;<a href='#' class='story-subject-btn'>Friends</a></div></div></div>";
+  return rv;
+}
+
+
+//Eternos Timeline Search
+function ETLSearch(search){
+  
+}
+
+
 //initialize Timeline 
 var tl;
 function tl_init(event_source) {
    var theme = Timeline.ClassicTheme.create();
+   theme.event.bubble.width = 400;
    var bandInfos = [
      Timeline.createBandInfo({
          width:          "15%",
@@ -24,8 +127,8 @@ function tl_init(event_source) {
    
    //event listener for timeline band scrolling
    tl.getBand(0).addOnScrollListener(function(band){
-     var min_date = tl_format_date(band.getMinVisibleDate(), 'rails');
-     var max_date = tl_format_date(band.getMaxVisibleDate(), 'rails');
+     var min_date = new ETLDate(band.getMinVisibleDate(), 'rails').outputDate;
+     var max_date = new ETLDate(band.getMaxVisibleDate(), 'rails').outputDate;
      var el_options = 'fake';
      tl_search(window._tl_member_id, min_date, max_date, el_options);
    });
@@ -45,7 +148,7 @@ function onResize() {
 //search Timeline events
 function tl_search(member, start_date, end_date, options){
   window._tl_member_id = member;
-  new Ajax.Request('/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
+  new Ajax.Request('http://staging.eternos.com/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
@@ -65,21 +168,25 @@ function tl_search(member, start_date, end_date, options){
 function tl_parse_events(source){
   var events = source.evalJSON();
   var event_source = new Timeline.DefaultEventSource();
-  var artifact_images = new Array;
-  var story_images = new Array;
+  var artifacts = new ETLArtifact('arti-area');
+  var stories = new ETLStory('story-area');
   
   for(var i=0;i<events.results.length-1;i++) {
     if (events.results[i].event != null){
       var event = tl_create_event_source(events.results[i], event_source);
       event_source.add(event); 
+
+      var artifact = new ETLArtifactItem(events.results[i].event).toHtml();
+      artifacts.addItem(artifact);
       
-      var artifact_image = tl_get_artifacts_image(events.results[i].event);
-      artifact_images.push(artifact_image);      
+      var story = new ETLStoryItem(events.results[i].event).toHtml();
+      stories.addItem(story);
     }
   };
+  
   tl_init(event_source);
-  tl_populate_artifact_images(artifact_images);
-  tl_populate_story_objects(artifact_images);
+  artifacts.write();
+  stories.write();
 }
 
 //create event source
@@ -96,7 +203,7 @@ function tl_create_event_source(source){
     tl_icon = imgs_url + "dark-blue-circle.png";
     tl_color = tl_tcolor = "blue";
     if (fb_event.published_at) {
-      tl_date = tl_format_date(fb_event.published_at);
+      tl_date = new ETLDate(fb_event.published_at).outputDate;
     }
     
     switch (fb_event.attachment_type) {
@@ -127,14 +234,14 @@ function tl_create_event_source(source){
     tl_color = tl_tcolor = "cyan";
     tl_icon = imgs_url + "dull-green-circle.png";
     if (tw_event.published_at){
-      tl_date = tl_format_date(tw_event.published_at);
+      tl_date = new ETLDate(tw_event.published_at).outputDate;
     }
     
     tl_title = "Post a tweet";
     tl_desc = tw_event.message;
   } else if (event.backup_photo) {
     if (event.backup_photo.created_at){
-      tl_date = tl_format_date(event.backup_photo.created_at);
+      tl_date = new ETLDate(event.backup_photo.created_at).outputDate;
     }
     
     tl_icon = imgs_url + "gray-circle.png";
@@ -146,14 +253,14 @@ function tl_create_event_source(source){
     tl_icon = imgs_url + "red-circle.png";
     tl_color = tl_tcolor = "red";
     if (event.backup_email.received_at) {
-      tl_date = tl_format_date(event.backup_email.received_at);
+      tl_date = new ETLDate(event.backup_email.received_at).outputDate;
     }
     
     tl_title = "Receiving an email";
     tl_desc = "FROM: " + event.backup_email.sender[0] + "; SUBJECT: " + event.backup_email.subject;
   } else if (event.feed_entry) {
     if (event.feed_entry.published_at){
-      tl_date = tl_format_date(event.feed_entry.published_at);
+      tl_date = new ETLDate(event.feed_entry.published_at).outputDate;
     }
     
     tl_icon = imgs_url + "dull-red-circle.png";
@@ -168,60 +275,6 @@ function tl_create_event_source(source){
     tl_title, tl_desc, tl_img, tl_link, tl_icon, tl_color, tl_tcolor);
     
   return return_event;       
-}
-
-//create objects for Artifacts
-function tl_get_artifacts_image(event){
-  var image = "";
-  if (event.facebook_activity_stream_item){
-    if (event.facebook_activity_stream_item.attachment_type == "photo"){
-      img_url = event.facebook_activity_stream_item.src;
-      image = image_url;      
-    }
-  } else if (event.backup_photo){
-    image_url = event.backup_photo.source_url;
-    image = image_url;
-  }
-  
-  if (image != ""){
-    return image;
-  }
-}
-
-//populate each artifact image
-function tl_populate_artifact_images(images){
-  var source_images = images.sort(function(){return 0.5 - Math.random()});
-  var thumbnails = $$('img.thumnails2')
-  for (i=0;i<thumbnails.length;i++){
-    thumbnails[i].src = source_images[i];
-  }
-}
-
-//get objects for stories section
-function tl_get_story_object(){
-  //TODO:
-}
-
-//populate objects for story section
-function tl_populate_story_objects(images){
-  var source_images = images.sort(function(){return 0.5 - Math.random()});
-  var thumbnails = $$('img.thumnails1')
-  for (i=0;i<thumbnails.length;i++){
-    thumbnails[i].src = source_images[i];
-  }
-}
-
-//format date from rails response for timeline date format
-function tl_format_date(date, format){
-  if (format == null) {
-    var year = date.substr(0, 4);
-    var month = date.substr(5, 2);
-    var day = date.substr(8, 2);
-    rv_date = new Date(year, month, day);
-  }else{
-    rv_date = date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
-  }
-  return rv_date;
 }
 
 //display blank timeline(without points)
@@ -254,5 +307,10 @@ function tl_show_on_failure(){
 function tl_on_drag(){
   
 }
+
+
+
+
+
 
 
