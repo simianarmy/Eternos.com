@@ -748,6 +748,20 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin-top:10px;
 }
 
+.table-form7{
+	width:446px;
+	height:auto;
+	border:solid 2px #ff984e;
+	margin-top:5px;
+}
+
+.table-form8{
+	width:446px;
+	height:auto;
+	border:solid 2px #b3ecef;
+	margin-top:5px;
+}
+
 .table1{
 	width:440px;
 	height:auto;
@@ -810,6 +824,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .coll-form11{width:280px; height:30px;text-align:center;font-family:arial;font-size:11px;color:white;border-bottom:1px dotted #353a3e}
 .coll-form12{width:120px; height:30px;text-align:center;font-family:arial;font-size:11px;color:#353a3e;border-bottom:1px dotted #353a3e}
 .coll-form13{width:260px; height:30px;text-align:left;font-family:arial;font-size:11px;color:#353a3e;border-bottom:1px dotted #353a3e; padding-left:20px;}
+.coll-form14{width:120px; height:30px;text-align:center;font-family:arial;font-size:11px;color:white;border-bottom:1px dotted #353a3e}
 
 .textbox1{width:240px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 .textbox2{width:50px;height:20px;border:1px solid #898989; margin:2px 0 2px 0;}

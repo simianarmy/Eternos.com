@@ -1,0 +1,5 @@
+unless @rss_confirmed
+  page["rss-link"].removeClassName('rss-active')
+  page["rss-link"].addClassName('rss-btn')
+end
+page.replace_html 'result-urls', :partial => 'shared/url_list'

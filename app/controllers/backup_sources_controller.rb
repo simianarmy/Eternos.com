@@ -26,15 +26,14 @@ class BackupSourcesController < ApplicationController
         else
           message = "Twitter account is not valid"
         end
+        @rjs_message =  message
         find_twitter_account
-        render :update do |page|
-          page['backup_source_auth_login'].value=""
-          page['backup_source_auth_password'].value=""
-          page.replace_html 'result-twitter-accounts', :partial => 'shared/twitter_list', :locals => {:twitter_accounts => @twitter_accounts}
+        respond_to do |format|
+          format.js
         end
       end
     rescue
-       render_message(message)
+       render_message("Twitter account is not valid")
     end
   end
 
@@ -43,8 +42,9 @@ class BackupSourcesController < ApplicationController
     @twitter_account.destroy
     
     find_twitter_account
-    render :update do |page|
-       page.replace_html 'result-twitter-accounts', :partial => 'shared/twitter_list', :locals => {:twitter_accounts => @twitter_accounts}
+    find_twitter_confirmed
+    respond_to do |format|
+      format.js
     end
   end
   
@@ -70,8 +70,9 @@ class BackupSourcesController < ApplicationController
       f.destroy
     end
     @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
-    render :update do |page|
-      page.replace_html 'result-urls', :partial => 'shared/url_list'
+    find_rss_confirmed
+    respond_to do |format|
+      format.js
     end
   end
   
@@ -93,7 +94,7 @@ class BackupSourcesController < ApplicationController
            page["twitter-link"].removeClassName('twitter-btn')
            page["twitter-link"].addClassName('twitter-active')
          end
-
+         
         end
       }
     end
@@ -101,6 +102,16 @@ class BackupSourcesController < ApplicationController
   
   def find_twitter_account
     @twitter_accounts = current_user.backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
+  end
+  
+  def find_twitter_confirmed
+    @twitter_account   = current_user.backup_sources.by_site(BackupSite::Twitter).first
+    @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
+  end
+  
+  def find_rss_confirmed
+    @rss_url = current_user.backup_sources.by_site(BackupSite::Blog).first
+    @rss_confirmed = @rss_url && @rss_url.confirmed?
   end
   
 end

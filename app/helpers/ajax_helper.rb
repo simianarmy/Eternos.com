@@ -77,7 +77,7 @@ module AjaxHelper
       if id.eql?("rss-box")
         action += "Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');"
       elsif id.eql?("twitter-box")
-        action += "$('backup_source_auth_login').value='';$('backup_source_auth_password').value='';Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');"
+        action += "$('flash-message').innerHTML='';$('backup_source_auth_login').value='';$('backup_source_auth_password').value='';Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');"
       else
         action += "resetDinamycHeight('account-setting-content');"
       end

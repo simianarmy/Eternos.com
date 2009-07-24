@@ -1,10 +1,10 @@
 <% unless @feed_urls.empty? %>
   <br>
-  <h5>List of RSS Feeds to Backup</h5>
-  <table class="table-form6" border="0" cellpadding="0" cellspacing="0">
-      <tr bgcolor="#8bcdff">
-        <td class="coll-form10" bgcolor="#8bcdff" align="center">URL</td>
-        <td class="coll-form10" bgcolor="#8bcdff" align="center">Action</td>
+  <div class="title7">List of RSS Feeds to Backup</div>
+  <table class="table-form7" border="0" cellpadding="0" cellspacing="0">
+      <tr bgcolor="#ff984e">
+        <td class="coll-form10" bgcolor="#ff984e" align="center">URL</td>
+        <td class="coll-form10" bgcolor="#ff984e" align="center">Action</td>
       </tr>
     <% @feed_urls.each do |@feed| -%>
       <tr id="url-list-<%= @feed.id %>">

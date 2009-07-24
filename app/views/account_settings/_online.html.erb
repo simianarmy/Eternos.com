@@ -7,7 +7,7 @@
       :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
     <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}') });" %>
     <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-link"}, ["rss-box"])  %>
-    <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}"}, ["twitter-box"])  %>
+    <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-link"}, ["twitter-box"])  %>
   </div>
 
   <div style="clear:both"></div> 

@@ -1,0 +1,6 @@
+unless @twitter_confirmed
+  page["twitter-link"].removeClassName('twitter-active')
+  page["twitter-link"].addClassName('twitter-btn')
+end
+page["flash-message"].innerHTML=""
+page.replace_html 'result-twitter-accounts', :partial => 'shared/twitter_list', :locals => {:twitter_accounts => @twitter_accounts}
