@@ -14,25 +14,49 @@ require 'aws/s3'
 require 'yaml'
 
 module S3Buckets
-  class Media < AWS::S3::S3Object
-    Bucket = 'eternos.com-media_' + RAILS_ENV
+  class EternosBucket < AWS::S3::S3Object
+    class_inheritable_accessor :eternos_bucket_name
     
-    set_current_bucket_to Bucket
-  
     class << self
-      def to_s
-        Bucket
+      def init
+        tries = 0
+        begin
+          find
+        rescue
+          create
+          tries += 1
+          retry if tries < 3
+        end
       end
-      
+
+      def to_s
+        eternos_bucket_name
+      end
+
       def find
-        AWS::S3::Bucket.find(Bucket)
+        current_bucket = AWS::S3::Bucket.find(eternos_bucket_name)
+      end
+
+      def create
+        AWS::S3::Bucket.create(eternos_bucket_name)
       end
     end
   end
+
+  class MediaBucket < EternosBucket
+    self.eternos_bucket_name = 'eternos.com-media_' + RAILS_ENV
+    set_current_bucket_to eternos_bucket_name
+  end
+  
+  class EmailBucket < EternosBucket
+    self.eternos_bucket_name = 'eternos.com-email_' + RAILS_ENV
+    set_current_bucket_to eternos_bucket_name
+  end
+
 end
 
 class S3Uploader
-  attr_accessor :bucket
+  attr_reader :bucket
   
   S3ConfigFile = File.join(RAILS_ROOT, 'config', 'amazon_s3.yml')
   
@@ -45,12 +69,14 @@ class S3Uploader
   end
   
   def initialize(bucket=nil)
+    connect
     @bucket = case bucket
     when :media, nil
-      S3Buckets::Media
+      S3Buckets::MediaBucket
+    when :email
+      S3Buckets::EmailBucket
     end
-    connect
-    @bucket.find rescue AWS::S3::Bucket.create(@bucket.to_s)
+    @bucket.init
   end
   
   def config
@@ -80,10 +106,14 @@ class S3Uploader
   end
   
   # Stores file to S3 current bucket.  Returns stored object's key
-  def upload(file_path, file_name, content_type)
+  def upload(file_path, file_name, content_type=nil)
     @key_name = file_name
+    opts = {}
+    opts[:content_type] = content_type if content_type
+    
     RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{@bucket}"
-    @bucket.store(file_name, open(file_path), :content_type => content_type)
+    @bucket.store(file_name, open(file_path), opts)
+    # Return access key
     key
   end
   

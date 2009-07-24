@@ -116,7 +116,6 @@ class AccountSettingsController < ApplicationController
   end
   
   def online
-    @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
     @online_account = BackupSource.new
     @feed_url = FeedUrl.new
     # What is this sillyness?
@@ -128,6 +127,7 @@ class AccountSettingsController < ApplicationController
       @twitter_accounts = backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
       @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
       @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
+      @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
       @rss_url = backup_sources.by_site(BackupSite::Blog).first
       @rss_confirmed = @rss_url && @rss_url.confirmed?
     end
@@ -607,12 +607,9 @@ class AccountSettingsController < ApplicationController
    def merge_with_facebook
      saved = false
      if facebook_session && (fb_user = facebook_session.user)
-       if fb_user.populate(*Facebooker::User::FIELDS)
-          facebook_profile = {}
-          Facebooker::User::FIELDS.each {|f| facebook_profile[f] = fb_user.send(f)}
-          @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
-          saved = update_personal_info
-        end
+       facebook_profile = FacebookUserProfile.populate(fb_user)
+       @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
+        saved = update_personal_info
       end
       return saved
    end

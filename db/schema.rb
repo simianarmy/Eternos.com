@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   create_table "backup_emails", :force => true do |t|
     t.integer  "backup_source_id", :null => false
     t.string   "message_id"
+    t.string   "mailbox"
     t.string   "subject"
     t.string   "sender"
     t.datetime "received_at"

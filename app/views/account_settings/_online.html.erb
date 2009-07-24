@@ -15,7 +15,7 @@
   <div class="network-login-box" id="form-box">
     <div id="twitter-box" style="display:none;">
       <%= render :partial => "shared/rjs_message" %>
-      <% form_remote_for @online_account,  :url => backup_sources_path,
+      <% form_remote_for @online_account,  :url => add_twitter_backup_sources_path,
                                            :html => {:id=> 'form-online-account'},
                                            :loading => "$('progress-bar').show();",
                                            :complete => "$('progress-bar').hide();"  do |f| %>

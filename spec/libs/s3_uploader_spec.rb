@@ -15,29 +15,21 @@ describe S3Uploader do
   
   describe "on new" do
     it "should use default bucket class without args" do
-      @s3.bucket.name.should == S3Buckets::Media.name
+      @s3.bucket.should == S3Buckets::MediaBucket
     end
 
     it "should generate url to object" do
       @s3.url('somewhere').should match(/#{@s3.bucket.to_s}\/somewhere$/)
     end
 
-    it "should be connected" do
-      @s3.bucket.should be_connected
-    end
-
-    it "should have empty bucket" do
-      @bucket.should be_empty
-    end
-
     it "should store string to bucket using base api" do
-      @s3.store("test", "foo foo")
+      @s3.store('test', "foo foo")
       AWS::S3::Bucket.find(@bucket_name).objects.first.value.should == "foo foo"
       @bucket.size.should == 1
     end
 
     it "should overwrite existing string in bucket" do
-      @s3.store("test", "foo foo")
+      @s3.store('test', "foo foo")
       @bucket.size.should == 1
       @s3.store('test', 'faa foo')
       @bucket['test'].value.should == 'faa foo'

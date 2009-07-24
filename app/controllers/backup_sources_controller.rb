@@ -5,32 +5,31 @@ require 'twitter'
 class BackupSourcesController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  
-  def create
+
+  def add_twitter
     begin
-      if params[:site_name]
-        backup_site = BackupSite.find_by_name(params[:site_name])
-        base = Twitter::Base.new(Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password]))
-        if base.verify_credentials            
-          backup_source = current_user.backup_sources.by_site(BackupSite::Twitter).find_by_auth_login(params[:backup_source][:auth_login])
-          if backup_source.nil?
-            backup_source = current_user.backup_sources.new(params[:backup_source].merge({:backup_site_id => backup_site.id}))
-            if backup_source.save
-              backup_source.confirmed!
-              #backup_source.backup  Initiate backup!
-              message = "activated"
-            end 
-          else
-             message = "Twitter account is already activated"
-          end
+      backup_site = BackupSite.find_by_name(BackupSite::Twitter)
+      base = Twitter::Base.new(Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password]))
+      
+      if base.verify_credentials            
+        backup_source = current_user.backup_sources.by_site(BackupSite::Twitter).find_by_auth_login(params[:backup_source][:auth_login])
+        if backup_source.nil?
+          backup_source = current_user.backup_sources.new(params[:backup_source].merge({:backup_site_id => backup_site.id}))
+          if backup_source.save
+            backup_source.confirmed!
+            backup_source.backup  #Initiate backup!
+            @rjs_message = "activated"
+          end 
         else
-          message = "Twitter account is not valid"
+          @rjs_message = "Twitter account is already activated"
         end
-        @rjs_message =  message
-        find_twitter_account
-        respond_to do |format|
-          format.js
-        end
+      else
+        @rjs_message = "Twitter account is not valid"
+      end
+      
+      find_twitter_account
+      respond_to do |format|
+        format.js
       end
     rescue
        render_message("Twitter account is not valid")
@@ -38,9 +37,11 @@ class BackupSourcesController < ApplicationController
   end
 
   def remove_twitter_account
-    @twitter_account = BackupSource.find(params[:id])
-    @twitter_account.destroy
-    
+    begin
+      remove_account(BackupSite::Twitter, params[:id])
+    rescue
+      flash[:error] = "Could not find twitter account to remove"
+    end
     find_twitter_account
     find_twitter_confirmed
     respond_to do |format|
@@ -66,8 +67,10 @@ class BackupSourcesController < ApplicationController
   end
   
   def remove_url
-    if f = current_user.backup_sources.find(params[:id].to_i)
-      f.destroy
+    begin
+      remove_account(BackupSite::Blog, params[:id])
+    rescue
+      flash[:error] = "Could not find rss account to remove"
     end
     @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
     find_rss_confirmed
@@ -114,4 +117,7 @@ class BackupSourcesController < ApplicationController
     @rss_confirmed = @rss_url && @rss_url.confirmed?
   end
   
+  def remove_account(type, id)
+    current_user.backup_sources.by_site(type).find(id).destroy
+  end
 end

@@ -426,6 +426,11 @@ module ActivityStreamProxySpecHelper
   end
 end
 
+module EmailSpecHelper
+  def raw_email
+    IO.read ActionController::TestCase.fixture_path + 'raw_email.txt'
+  end
+end
 end
 
 Spork.each_run do

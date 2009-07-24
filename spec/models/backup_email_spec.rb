@@ -2,11 +2,6 @@
 
 require File.dirname(__FILE__) + '/../spec_helper'
 
-module EmailSpecHelper
-  def raw_email
-    IO.read ActionController::TestCase.fixture_path + 'raw_email.txt'
-  end
-end
 
 describe BackupEmail do
   include EmailSpecHelper
@@ -65,7 +60,7 @@ describe BackupEmail do
       it "should return body and size of email" do
         @email.save
         @email.reload.body.should_not be_nil
-        @email.size.should == @email.body.size
+        @email.size.should_not == 0
       end
     end
   end

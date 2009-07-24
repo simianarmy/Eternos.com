@@ -26,7 +26,9 @@ class BackupEmail < ActiveRecord::Base
       self.subject      = e.subject
       self.sender       = e.from
       self.received_at  = e.date
-      self.email_content = EmailContent.new(:bytes => e.body.size, :contents => raw_email)
+      content = EmailContent.new(:bytes => e.body.size)
+      content.save_contents(self.message_id, raw_email)
+      self.email_content = content
     end
   end
   

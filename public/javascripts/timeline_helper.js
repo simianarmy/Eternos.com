@@ -148,7 +148,7 @@ function onResize() {
 //search Timeline events
 function tl_search(member, start_date, end_date, options){
   window._tl_member_id = member;
-  new Ajax.Request('http://staging.eternos.com/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
+  new Ajax.Request('/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";

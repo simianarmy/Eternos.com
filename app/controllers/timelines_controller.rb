@@ -20,17 +20,8 @@ class TimelinesController < ApplicationController
   # All other requests will be done via AJAX queries.0
   def show
     # Use map table to map dev users to their staging account
-    if (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id))
-      @member = Member.new
-      @member.id = dev_map.staging_user_id
-    else
-      @member = current_user
-    end
-    
+    @member = current_user
     @member_name = @member.full_name
-    respond_to do |format|
-      format.html
-    end
   end
   
   def debug
@@ -56,10 +47,18 @@ class TimelinesController < ApplicationController
     # Member or guest view
     #member_view = (params[:id].to_i == current_user.id)
     
-    # Rails has already parsed the url into params hash for us - no point in doing it again.
-    @response = TimelineRequestResponse.new(request.url, params)
-    @response.execute
-
+    # Proxy ajax request for dev env. to staging server
+    if (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id))
+      url = request.url.dup
+      url.gsub!(/dev\./, 'staging.')
+      url.gsub!(/js\/\d+\//, "js/#{dev_map.staging_user_id}/")
+      json = Curl::Easy.perform(url).body_str
+      @response = ActiveSupport::JSON.decode(json) if json
+    else
+      # Rails has already parsed the url into params hash for us - no point in doing it again.
+      @response = TimelineRequestResponse.new(request.url, params)
+      @response.execute
+    end
     respond_to do |format|
       format.js {
         render :json => @response

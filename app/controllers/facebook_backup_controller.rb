@@ -109,7 +109,7 @@ class FacebookBackupController < ApplicationController
   
   def load_backup_source
     @backup_source = current_user.backup_sources.by_site(BackupSite::Facebook).first 
-    @backup_source ||= current_user.backup_sources.create(:auth_confirmed => true,
+    @backup_source ||= current_user.backup_sources.create(
       :backup_site => BackupSite.find_by_name(BackupSite::Facebook))
   end
 end
