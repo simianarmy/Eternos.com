@@ -54,8 +54,15 @@ module S3Buckets
   end
 end
 
-module S3Connection
+class S3Connection
   S3ConfigFile = File.join(RAILS_ROOT, 'config', 'amazon_s3.yml')
+  
+  attr_reader :bucket
+  
+  def initialize(bucket_type=nil)
+    connect
+    init_bucket(bucket_type)
+  end
   
   def config(config=S3ConfigFile)
     @S3_CONFIG ||= YAML.load_file(config)[RAILS_ENV]
@@ -71,58 +78,42 @@ module S3Connection
 
   # finds/creates & returns bucket object
   def init_bucket(bucket_type=nil)
-    bucket = case bucket_type
+    @bucket = case bucket_type
     when :media, nil
       S3Buckets::MediaBucket
     when :email
       S3Buckets::EmailBucket
     end
-    bucket.init
-    bucket
+    @bucket.init
+  end    
+
+  def object
+    @bucket.object
   end
 end
 
-class S3Downloader
-  include S3Connection
-  
-  def initialize(bucket_type=nil)
-    connect
-    @bucket = init_bucket(bucket_type)
-  end
-  
+class S3Downloader < S3Connection
   def fetch(key)
-    @bucket.find key
+    bucket.find key
   end
   
   def fetch_value(key)
-    @bucket.value key
+    bucket.value key
   end
   
   def fetch_stream(key)
-    @bucket.stream(key) do |chunk|
+    bucket.stream(key) do |chunk|
       yield chunk
     end
   end
 end
   
-class S3Uploader
-  include S3Connection
-  
-  attr_reader :bucket
-  
-  # Initialize with some kind of bucket.  Options are
-  # :media
-  
+class S3Uploader < S3Connection
   def self.path_to_key(path)
     # Strip leading /
     path.sub(/^\//, '')
   end
-  
-  def initialize(bucket_type=nil)
-    connect
-    @bucket = init_bucket(bucket_type)
-  end
-  
+
   def key
     # Strip leading / if key is public path
     raise "S3 Key not defined" unless @key_name
@@ -143,17 +134,15 @@ class S3Uploader
     opts = {}
     opts[:content_type] = content_type if content_type
     
-    RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{@bucket}"
-    @bucket.store(file_name, open(file_path), opts)
+    RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{bucket}"
+    bucket.store(file_name, open(file_path), opts)
     # Return access key
     key
   end
   
   def store(name, value)
-    @bucket.store(name, value)
+    bucket.store(name, value)
   end
-  
-  # a few supporting methods
 end
 
 # Adds Cache-Control to store call in order to save on S3 bandwidth

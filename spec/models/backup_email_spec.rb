@@ -29,10 +29,6 @@ describe BackupEmail do
       @email.mailbox.should == 'inbox'
       @email.raw_email.should == raw_email
     end
-    
-    it "should return generate S3 key from attributes" do
-      @email.s3_key.should == [@email.mailbox, @email.message_id, @email.backup_source_id].join(':')
-    end
   end
   
   describe "on create" do
@@ -69,8 +65,29 @@ describe BackupEmail do
       @email = create_backup_email(:email => raw_email)
     end
     
-    it "should fetch email from s3" do
-      
+    it "should return generate S3 key from attributes" do
+      @email.s3_key.should == [@email.mailbox, @email.message_id, @email.backup_source_id].join(':')
+    end
+    
+    it "should fetch raw email from s3" do
+      @email.raw.should == raw_email
+    end
+    
+    it "should parse body from raw email" do
+      @email.body.should == TMail::Mail.parse(raw_email).body
+    end
+  end
+  
+  describe "on destroy" do
+    before(:each) do
+      @email = create_backup_email(:email => raw_email)
+      @s3 = S3Connection.new(:email)
+    end
+    
+    it "should delete s3 first" do
+      @s3.bucket.exists?(key = @email.s3_key).should be_true
+      @email.destroy
+      @s3.bucket.exists?(key).should be_false
     end
   end
 end

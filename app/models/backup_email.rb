@@ -13,6 +13,7 @@ class BackupEmail < ActiveRecord::Base
   serialize :sender
   
   before_create :cb_before_create_save_contents
+  before_destroy :cb_before_destroy_delete_contents
   
   named_scope :latest, lambda { |num|
     {
@@ -61,5 +62,9 @@ class BackupEmail < ActiveRecord::Base
     end
   end
   
+  # Deletes email from s3 before destroy
+  def cb_before_destroy_delete_contents
+    S3Connection.new(:email).bucket.delete s3_key
+  end
   
 end
