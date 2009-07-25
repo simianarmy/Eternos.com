@@ -23,45 +23,54 @@ describe BackupEmail do
     end
     
     it "should populate attributes from raw email string" do
-      @email.expects(:email_content=)
       @email.email = raw_email
       @email.subject.should == 'raw email subject'
       @email.sender.first.should == 'mail-noreply@google.com'
+      @email.mailbox.should == 'inbox'
+      @email.raw_email.should == raw_email
+    end
+    
+    it "should return generate S3 key from attributes" do
+      @email.s3_key.should == [@email.mailbox, @email.message_id, @email.backup_source_id].join(':')
     end
   end
   
   describe "on create" do
     before(:each) do
-      @email = new_backup_email
+      @email = new_backup_email(:email => raw_email)
     end
     
-    it "should create a BackupEmail object" do
+    it "should create object if s3 upload succeeds" do
+      @emails.stubs(:cb_before_create_save_contents).returns(true)
       lambda {
         @email.save
       }.should change(BackupEmail, :count).by(1)
     end
     
+    it "should not create object if s3 upload fails" do
+      S3Uploader.stubs(:new).with(:email).returns(stub(:store => false))
+      @email.save.should be_false
+    end
+      
     describe "with raw email" do
       before(:each) do
         @email.email = raw_email
       end
       
-      it "should create an associated EmailContent object" do
-        lambda {
-          @email.save
-        }.should change(EmailContent, :count).by(1)
-      end
-
-      it "should save size of body in bytes in EmailContent association" do
+      it "should upload email to s3" do
         @email.save
-        @email.reload.email_content.bytes.should > 0
+        @email.size.should > 0
       end
+    end
+  end
+  
+  describe "after save" do
+    before(:each) do
+      @email = create_backup_email(:email => raw_email)
+    end
+    
+    it "should fetch email from s3" do
       
-      it "should return body and size of email" do
-        @email.save
-        @email.reload.body.should_not be_nil
-        @email.size.should_not == 0
-      end
     end
   end
 end

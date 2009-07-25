@@ -138,6 +138,7 @@ end
 require 'load_email_configuration'
 # Load tagging methods
 require 'tag_extensions'
+require 's3_helper'
 # For saas
 require 'association_proxy'
 require 'rvideo'

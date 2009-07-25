@@ -65,6 +65,7 @@ Fixjour  do
   define_builder(BackupEmail) do |klass, overrides|
     klass.new(:backup_source => new_backup_source,
       :message_id => Faker::Lorem.words(3).join(':'),
+      :mailbox => 'inbox',
       :subject => Faker::Lorem.sentence)
   end
   

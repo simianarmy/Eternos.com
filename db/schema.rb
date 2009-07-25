@@ -110,6 +110,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "mailbox"
     t.string   "subject"
     t.string   "sender"
+    t.string   "s3_key"
+    t.integer  "size"
     t.datetime "received_at"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -383,15 +385,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   end
 
   add_index "elements", ["story_id"], :name => "index_elements_on_story_id"
-
-  create_table "email_contents", :force => true do |t|
-    t.integer "backup_email_id",                :null => false
-    t.integer "bytes",           :default => 0, :null => false
-    t.string  "s3_key"
-    t.binary  "contents"
-  end
-
-  add_index "email_contents", ["backup_email_id"], :name => "index_email_contents_on_backup_email_id"
 
   create_table "facebook_contents", :force => true do |t|
     t.integer  "profile_id", :null => false

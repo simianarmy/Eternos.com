@@ -1,8 +1,6 @@
 # $Id$
 # Workling class for aynchronous sending uploaded files to 
 # storage cloud.  Currently Amazon S3
-
-require 's3_uploader'
   
 class UploadsWorker < Workling::Base
   
