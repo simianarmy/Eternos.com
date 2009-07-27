@@ -138,9 +138,111 @@ ETLStoryItem.prototype.toHtml = function(){
 
 
 /*Eternos Timeline Search*/
-function ETLSearch(search){
+function ETLSearch(member_id, options){
+  window._ETLMemberID = member_id;
+  var date = new Date();
   
+  this.searchUrl = "http://staging.eternos.com/timeline/search/js/";
+  this.startDate = options.start_date || new ETLDate(date);
+  this.endDate = options.end_date || new ETLDate(date);
+  this.options = options.options
+  
+  this.onFailure = function(){}
+  this.onLoading = function(){}
+  this.onSuccess = function(){}
+  
+  new Ajax.Request(this.searchUrl+this.member+'/'+this.startDate+'/'+this.endDate+'/'+this.options, {
+    method: 'get',
+    onSuccess: function(transport){
+      var response = transport.responseText || "";
+      //TODO:
+    },
+    onFailure: function(){
+      //TODO:
+    },
+    onLoading: function(){
+      //TODO:
+    }
+  });  
 }
+
+/*Eternor Timeline Event Source*/
+function ETLEventSource(events){
+  this.asset_url = "http://simile.mit.edu/timeline/api/";
+  this.imgs_url = this.asset_url + "images/";
+  this.title = this.desc = this.img = this.link = this.icon = this.color = this.tcolor = null;
+  this.sourceEvent = events
+    
+  this.parse = function(events){
+    
+  }
+  this.create = function(event){
+    if (event.facebook_activity_stream_item){
+      new ETLEventSourceFacebook(event);
+    } else if (event.twitter_activity_stream_item){
+      new ETLEventSourceTwitter(event);
+    } else if (event.backup_photo){
+      new ETLEventSourcePhoto(event);
+    } else if (event.backup_email){
+      new ETLEventSourceEmail(event);
+    } else if (event.feed_entry){
+      new ETLEventSourceFeed(event);
+    }
+  }
+}
+
+function ETLEventSourceFacebook(){}
+function ETLEventSourceTwitter(){}
+function ETLEventSourceFeed(){}
+function ETLEventSourceEmail(){}
+function ETLEventSourceBackupPhoto(){}
+
+ETLEventSourceFacebook.prototype = new ETLEventSource();
+ETLEventSourceTwitter.prototype = new ETLEventSource();
+ETLEventSourceFeed.prototype = new ETLEventSource();
+ETLEventSourceEmail.prototype = new ETLEventSource();
+ETLEventSourceBackupPhoto.prototype = new ETLEventSource();
+
+
+/*Eternos Timeline Base Class*/
+function ETLBase(tmline, domID, options){
+  this.theme = Timeline.ClassicTheme.create();
+  this.bandInfos = [
+     Timeline.createBandInfo({
+         width:          "15%",
+         intervalUnit:   Timeline.DateTime.YEAR,
+         intervalPixels: 150,
+         overview: true,
+         theme: theme
+     }),
+     Timeline.createBandInfo({
+         width:          "85%",
+         intervalUnit:   Timeline.DateTime.MONTH,
+         intervalPixels: 200,
+         eventSource: options.eventSource || new Timeline.DefaultEventSource(),
+         theme: theme
+     })
+   ];
+  
+  this.syncBands = function()  {
+   this.bandInfos[1].syncWith = 0;
+   this.bandInfos[1].highlight = true; 
+  }
+  
+  this.init = function(tmline){
+    this.timeline = Timeline.create(document.getElementById(domID), this.bandInfos);
+  }
+  this.addEventSource = function(){}
+  this.scrollBand = function(){}
+  this.searchEvents = function(){}
+  this.onResize = function(){}
+  this.showLoading = function(){}
+  this.hideLoading = function(){}
+  this.addEvents = function(){}
+  this.toggleDetails = function(){}
+  this.setTheme = function(){}
+}
+
 
 
 //initialize Timeline 
