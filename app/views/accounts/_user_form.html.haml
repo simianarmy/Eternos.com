@@ -23,11 +23,17 @@
     %span.fine-print Confirm your password by entering it again
 - if user.new_record?
   %br
-  %p.captcha_box
-    = recaptcha_tags :ssl => true, :style => "text-align: right;"
+  
+  .captcha-right
+    %p.captcha_box
+      = recaptcha_tags :ssl => true, :style => "text-align: right;"
   %br
-  %p.input.accept  
-    I accept the 
-    = link_to 'Terms and Conditions', '/about/terms'
+  %p.checkbox_term
     = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @checked}
-	
+    .term_text
+      I accept the 
+      = link_to 'Terms and Conditions', '/about/terms'
+    
+  %p
+    %br
+    = submit_tag 'continue', :value => 'Continue', :class => "submit continue2", :style => "width: 321px"

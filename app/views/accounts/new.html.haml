@@ -34,6 +34,3 @@
 
         - fields_for @user, :html => {:id => 'new_user_form'} do |f|
           = render :partial => 'user_form', :locals => {:f => f, :user => @user}
-      %p
-      %br &nbsp; 
-      = submit_tag 'continue', :value => 'Continue', :class => "submit continue", :style => "width: 300px"
