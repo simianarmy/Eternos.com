@@ -157,7 +157,7 @@ class Content < ActiveRecord::Base
   def upload
     logger.info "Sending content to uploader worker"
     
-    UploadsWorker.async_upload_to_cloud(:id => self.id)
+    UploadsWorker.async_upload_content_to_cloud(:id => self.id)
   end
   
   # Override in subclasses that can be played like audio & video

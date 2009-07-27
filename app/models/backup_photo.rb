@@ -1,7 +1,5 @@
 # $Id$
 
-require 'rio'
-
 class BackupPhoto < ActiveRecord::Base
   belongs_to :backup_photo_album
   belongs_to :photo, :foreign_key => 'content_id', :dependent => :destroy

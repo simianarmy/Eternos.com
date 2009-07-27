@@ -59,9 +59,11 @@ class BackupReporter
     end
     
     # Calculate s3 costs
-    total[:backup_s3_size] = BackupPhoto.all.map(&:bytes).sum
+    total[:backup_s3_size] = BackupPhoto.all.map(&:bytes).sum + BackupEmail.sum(:size)
     total[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:backup_s3_size])
-    latest[:backup_s3_size] = BackupPhoto.created_at_greater_than_or_equal_to(1.day.ago).map(&:bytes).sum
+    
+    latest[:backup_s3_size] = BackupPhoto.created_at_greater_than_or_equal_to(1.day.ago).map(&:bytes).sum +
+      BackupEmail.created_at_greater_than_or_equal_to(1.day.ago).sum(:size)
     latest[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:s3_cost])
     
     nusers = Member.active.count

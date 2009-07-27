@@ -11,8 +11,9 @@ class BackupEmail < ActiveRecord::Base
   
   attr_reader :raw_email
   serialize :sender
+  alias_attribute :bytes, :size
   
-  before_create :cb_before_create_save_contents
+  before_create :cb_after_create_save_contents
   before_destroy :cb_before_destroy_delete_contents
   
   named_scope :latest, lambda { |num|
@@ -21,13 +22,17 @@ class BackupEmail < ActiveRecord::Base
     }
   }
   # Parses raw email string to extract email attributes & contents
+  # Catch exceptions from mail parsing or file saving io
   def email=(raw_email)
-    if e = TMail::Mail.parse(raw_email)
+    begin
+      e = TMail::Mail.parse(raw_email)
       self.subject      = e.subject
       self.sender       = e.from
       self.received_at  = e.date
       # Save email for save_contents callback
-      @raw_email        = raw_email
+      rio(temp_filename) < raw_email
+    rescue
+      errors.add_to_base("Unexpected error in email=: " + $!)
     end
   end
 
@@ -46,8 +51,9 @@ class BackupEmail < ActiveRecord::Base
     [mailbox.gsub(/\//, '_'), message_id, backup_source_id].join(':')
   end
   
-  # uploads email to s3, on failure, cancel create
-  def cb_before_create_save_contents
+  # Send id to upload worker queue
+  def cb_after_create_save_contents
+    UploadsWorker.async_upload_content_to_cloud(:id => self.id)
     unless @raw_email
       errors.add_to_base("missing raw_email attribute")
       return false

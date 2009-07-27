@@ -108,7 +108,7 @@ namespace :deploy do
     path_to_filename = "#{current_path}/tmp/emails/#{fname}"
     
     run "#{source.log('{\''+stime+'\'}', 'HEAD')} > #{path_to_filename}"
-    run "cd #{current_path}; ruby script/sendmail.rb #{fname}"
+    run "cd #{current_path}; ruby script/mail_deploy_log.rb #{fname} #{stage}"
     run "rm #{path_to_filename}"
   end
 end
