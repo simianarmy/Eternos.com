@@ -37,3 +37,89 @@ div#counter{
   color: #02419E;
 }
 
+body{
+	margin:0;
+	padding:0;
+}
+
+#content-container2{
+	background:url(/images/body.png) repeat-y;
+	width:860px;
+	height:auto;
+	padding:0 15px 0 20px;
+}
+
+.reg-btn{
+	width:298px;
+	height:53px;
+	margin:0;
+	display:block;
+	background:url(/images/reg-btn.gif) 0 0;
+}
+
+.reg-btn:hover{
+	background:url(/images/reg-btn.gif) 0 53px;
+}
+
+.main-pic{
+	width:374px;
+	height:92px;
+	color:black;
+	font-family:arial;
+	font-size:18px;
+	padding:177px 0 0 20px;
+	margin-top:10px;
+	float:left;
+	background:red url(/images/main-pic.jpg) no-repeat;
+}
+
+.right-container{
+	width:430px;
+	height:auto;
+	float:left;
+	margin-left:20px;
+}
+
+.greeting{
+	width:430px;
+	height:auto;
+	font-family:arial;
+	font-size:17px;
+	color:#4f555c;
+	margin-top:10px;
+	padding-bottom:10px;
+	border-bottom:3px dotted #4f555c;
+	text-align:center;
+}
+
+.textarea{
+	width:425px;
+	height:auto;
+	font-family:arial;
+	font-size:12px;
+	color:#4f555c;
+	text-align:justify;
+	line-height:20px;
+	padding:12px 0 15px 5px;
+}
+
+.clear{
+	clear:both;
+}
+
+.blue{
+	color:#02419e;
+}
+
+.blue-btn{
+	font-family:arial;
+	font-size:12px;
+	color:#02419e;
+	text-decoration:none;
+	margin:0;
+}
+
+.blue-btn:hover{
+	text-decoration:underline;
+}
+
