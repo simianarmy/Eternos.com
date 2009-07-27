@@ -1,76 +1,119 @@
-//Eternos Timeline Date Format
+/*Eternos Timeline Date Format*/
 function ETLDate(date, format){
   this.dateFormat = (format == null) ? 'default' : format.toString();
   this.inputDate  = date;
-  this.procOutputDate();
-}
-ETLDate.prototype.procOutputDate = function(){
-  if (this.dateFormat == 'default') {
-    this.outputDate = new Date(this.inputDate.substr(0, 4), this.inputDate.substr(5, 2), this.inputDate.substr(8, 2));
-  }else{
-    this.outputDate = this.inputDate.getFullYear() +'-'+ this.inputDate.getMonth() +'-'+ this.inputDate.getDate();
-  }  
+  
+  //private
+  function procOutputDate(obj){
+    if (obj.dateFormat == 'default') {
+      obj.outputDate = new Date(obj.inputDate.substr(0, 4), obj.inputDate.substr(5, 2), obj.inputDate.substr(8, 2));
+    }else{
+      obj.outputDate = obj.inputDate.getFullYear() +'-'+ obj.inputDate.getMonth() +'-'+ obj.inputDate.getDate();
+    }      
+  }
+  
+  procOutputDate(this);
 }
 
+/*Eternos Timeline Array that has unique method*/
+function ETLArray() {
+  this.unique = function(){
+  	var r = new Array();
+  	o:for(var i = 0, n = this.length; i < n; i++){
+  		for(var x = 0, y = r.length; x < y; x++){
+  			if(r[x]==this[i]){ continue o;}
+  		}
+  		r[r.length] = this[i];
+  	}
+  	return r;
+  }
+}
+ETLArray.prototype = new Array();
 
-//Eternos Timeline Artifact
+/*Eternos Timeline Artifact*/
 function ETLArtifact(domID){
   this.parent = $(domID);
   this.title  = "Artifacts";
-  this.top    = "<div class='artibox-top'><div class='title5'>" + this.title + "</div></div><div class='artibox'>";
+  this.top    = "<div class='artibox-top'><div class='title5'>" +this.title+ "</div></div><div class='artibox'>";
   this.bottom = "</div><img src='/images/artibox-bottom.gif' />";
-  this.item   = "";
-}
-ETLArtifact.prototype.write = function() {
-  this.parent.insert(this.top + this.item + this.bottom);
-}
-ETLArtifact.prototype.addItem = function(elements){
-  this.item += elements;
-}
-ETLArtifact.prototype.setTitle = function(new_title){
-  this.title = new_title;
+  this.items   = new ETLArray;
+  
+  //private
+  function itemsToHtml(artifact){
+    for (i = 0; i < artifact.items.length; i++) {
+      artifact.items[i] = artifact.items[i].toHtml();
+    }
+  }
+  function resetItems(artifact){
+    artifact.parent.innerHTML = "";
+  }
+  function makeItemsUniq(artifact){
+    artifact.items.unique();
+  }
+  
+  //public
+  this.write = function(){
+    itemsToHtml(this);
+    makeItemsUniq(this);
+    var html_item = this.items.join("");
+    this.parent.insert(this.top + html_item + this.bottom);
+  }
+  this.addItem = function(item){
+    this.items.push(item);
+  }
+  this.setTitle = function(title){
+    this.title = title;
+  }
+  
+  resetItems(this);
 }
 
-//Eternos Timeline Artifact Item, with source from 'event' in evalJSON response
+/*Eternos Timeline Artifact Item, with source from 'event' in evalJSON response*/
 function ETLArtifactItem(event){
   this.thumbHeight = 70;
   this.thumbWidth = 70;
   this.sourceEvent = event;
-  this.popImg();
-}
-ETLArtifactItem.prototype.popImg = function(){
-  if (this.sourceEvent.facebook_activity_stream_item){
-    if (this.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
-      this.imageUrl = this.sourceEvent.facebook_activity_stream_item.src;
-      this.itemType = "Facebook";
-    }
-  } else if (this.sourceEvent.backup_photo){
-    this.imageUrl = this.sourceEvent.backup_photo.source_url;
-    this.itemType = "Backup Photo";
-  } 
-}
-ETLArtifactItem.prototype.toHtml = function(){
-  rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<img src='" +this.imageUrl+ "' class='thumnails2' />";
-  return rv;
+  
+  //private
+  function populateImg(obj){
+    if (obj.sourceEvent.facebook_activity_stream_item){
+      if (obj.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
+        obj.imageUrl = obj.sourceEvent.facebook_activity_stream_item.src;
+        obj.itemType = "Facebook";
+      }
+    } else if (obj.sourceEvent.backup_photo){
+      obj.imageUrl = obj.sourceEvent.backup_photo.source_url;
+      obj.itemType = "Backup Photo";
+    } 
+  }
+  
+  //public
+  this.toHtml = function(){
+    rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<a href=# onclick=\"Lightview.show( {href:'"+this.imageUrl+"', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+ encodeURIComponent('cd0107f95e066667938b7f27f3b4732cf8ace5ca')}, autosize:false, closeButton:false, width:800}, rel:'iframe'});return false;\"><img src='" +this.imageUrl+ "' class='thumnails2' /></a>";
+    return rv;    
+  }
+  
+  populateImg(this);
 }
 
 
-//Eternos Timeline Story
+/*Eternos Timeline Story*/
 function ETLStory(domID){
   this.parent = $(domID);
   this.title  = "Stories";
   this.top    = "<div class='storybox-top'><div class='title5'>" +this.title+ "</div></div><div class='storybox'>";
   this.bottom = "</div><img src='/images/storybox-bottom.gif' />";
   this.item   = "";  
-}
-ETLStory.prototype.write = function() {
-  this.parent.insert(this.top + this.item + this.bottom);
-}
-ETLStory.prototype.addItem = function(elements){
-  this.item += elements;
+  
+  this.write = function(){
+    this.parent.insert(this.top + this.item + this.bottom);
+  }
+  this.addItem = function(item){
+    this.item += item;
+  }
 }
 
-//Eternos Timeline Story Item
+/*Eternos Timeline Story Item*/
 function ETLStoryItem(event){
   this.thumbHeight = 70;
   this.thumbWidth = 70;
@@ -94,7 +137,7 @@ ETLStoryItem.prototype.toHtml = function(){
 }
 
 
-//Eternos Timeline Search
+/*Eternos Timeline Search*/
 function ETLSearch(search){
   
 }
@@ -148,7 +191,7 @@ function onResize() {
 //search Timeline events
 function tl_search(member, start_date, end_date, options){
   window._tl_member_id = member;
-  new Ajax.Request('/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
+  new Ajax.Request('http://staging.eternos.com/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
@@ -176,7 +219,7 @@ function tl_parse_events(source){
       var event = tl_create_event_source(events.results[i], event_source);
       event_source.add(event); 
 
-      var artifact = new ETLArtifactItem(events.results[i].event).toHtml();
+      var artifact = new ETLArtifactItem(events.results[i].event);
       artifacts.addItem(artifact);
       
       var story = new ETLStoryItem(events.results[i].event).toHtml();
@@ -307,10 +350,3 @@ function tl_show_on_failure(){
 function tl_on_drag(){
   
 }
-
-
-
-
-
-
-
