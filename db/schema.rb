@@ -115,8 +115,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "received_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "upload_errors"
   end
-
   add_index "backup_emails", ["backup_source_id"], :name => "index_backup_emails_on_backup_source_id"
 
   create_table "backup_job_archives", :force => true do |t|

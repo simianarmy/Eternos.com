@@ -14,6 +14,7 @@ development:
   from_email: dev@eternos.com
   base_domain: staging.eternos.com
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
+  s3_staging_dir: /tmp
   
 test:
   <<: *default_settings
@@ -21,13 +22,15 @@ test:
   app_name: Eternos Test
   from_email: test@eternos.com
   base_domain: localhost
-
+  s3_staging_dir: /tmp
+  
 production:
   <<: *default_settings
   app_name: Eternos
   from_email: support@eternos.com
   base_domain: eternos.com
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
+  s3_staging_dir: /usr/local/eternos/cloud_staging
     
 staging:
   <<: *default_settings
@@ -36,3 +39,4 @@ staging:
   from_email: staging@eternos.com
   base_domain: staging.eternos.com
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
+  s3_staging_dir: /usr/local/eternos/cloud_staging

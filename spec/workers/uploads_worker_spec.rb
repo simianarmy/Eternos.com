@@ -5,7 +5,7 @@ describe UploadsWorker do
   def call_worker(id=1)
     # It would be better to mock a ContentPayload, but this causes weird 
     # singleton can't be dumped errors..
-    UploadsWorker.async_upload_to_cloud(:id => id)
+    UploadsWorker.async_upload_content_to_cloud(:id => id)
   end
   
   describe "mocking S3" do
@@ -36,15 +36,37 @@ describe UploadsWorker do
   end
   
   describe "S3 upload" do
-    before(:each) do
-      @content = create_content(:type => :photo)
+    describe "on media upload" do
+      before(:each) do
+        @content = create_content(:type => :photo)
+      end
+
+      it "should save content S3 key" do
+        @s3 = S3Uploader.new
+        call_worker(@content.id)
+        @content.reload.s3_key.should_not be_nil
+        @content.s3_key.should == S3Uploader.path_to_key(@content.public_filename)
+      end
     end
-    
-    it "should save content S3 key" do
-      @s3 = S3Uploader.new
-      call_worker(@content.id)
-      @content.reload.s3_key.should_not be_nil
-      @content.s3_key.should == S3Uploader.path_to_key(@content.public_filename)
+
+    describe "on email upload" do
+      include EmailSpecHelper
+
+      before(:each) do
+        @email = create_backup_email(:email => raw_email)
+      end
+
+      it "should delete the email file from the staging directory" do
+        File.exist?(@email.temp_filename).should be_true
+        UploadsWorker.async_upload_email_to_cloud(:id => @email.id)
+        File.exist?(@email.temp_filename).should be_false
+      end
+      
+      it "should save S3 key and file size" do
+        UploadsWorker.async_upload_email_to_cloud(:id => @email.id)
+        @email.s3_key.should_not be_nil
+        @email.size.should > 0
+      end
     end
   end
 end

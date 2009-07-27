@@ -156,7 +156,6 @@ class Content < ActiveRecord::Base
   # because just created or modified.
   def upload
     logger.info "Sending content to uploader worker"
-    
     UploadsWorker.async_upload_content_to_cloud(:id => self.id)
   end
   
