@@ -220,6 +220,15 @@ input.continue {
 	height:53px;
 }
 
+input.continue2 {
+	background: url(/images/continue.gif) no-repeat;
+	margin:5px 0 0 50px;
+	text-align: left;
+	padding: 0 0 5px 20px;
+	width: 321px;
+	height:53px;
+}
+
 input.continue-new {
 	background: url(/images/continue.jpg) no-repeat;
 	float: right;
@@ -561,6 +570,26 @@ div#secure-transaction {
 
 div.frontpage {
 	padding: 15px 0 0 30px;
+}
+
+#recaptcha_area{
+	margin-left:50px;
+}
+
+.checkbox_term{
+	margin-left:50px;
+	text-align:left;
+}
+
+#terms_of_service{
+	margin-top:0;
+	float:left;
+}
+
+.term_text{
+	font-size:11px;
+	margin:1px 0 0 5px;
+	float:left;
 }
 
 /* @end */
