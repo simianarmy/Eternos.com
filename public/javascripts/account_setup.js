@@ -44,7 +44,7 @@ function activedFb(){
 
 function setDinamycHeight(id){
   height = window.innerHeight;
-  heightDiv = 0.75*height;
+  heightDiv = 0.83*height;
   $(id).style.height = heightDiv + "px";
 }
 
@@ -144,7 +144,7 @@ function addRowAddress(){
 
   var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-address"});
   var checkBox = new Element('input', {id:"chekbox-addresses-"+window.counter, type:"checkbox"});
-      checkBox.writeAttribute('onclick', 'toPresentText(\'addresses\',\''+window.counter+'\')');
+      checkBox.writeAttribute('onclick', 'toPresentText(\'addresses\',\''+window.counter+'\',\'Still living here?\')');
       
   var tr1 = new Element('tr');
     var td1 = new Element('td', {colspan: "3"});
@@ -334,7 +334,7 @@ function addRowJob(){
   
   var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-job"});
     var checkBox = new Element('input', {id:"chekbox-jobs-"+window.counter_job, type:"checkbox"});
-        checkBox.writeAttribute('onclick', 'toPresentText(\'jobs\',\''+window.counter_job+'\')');
+        checkBox.writeAttribute('onclick', 'toPresentText(\'jobs\',\''+window.counter_job+'\',\'Still work here?\')');
       
   var tr1 = new Element('tr', {});
     var td1 = new Element('td', {colspan: "3"});
@@ -1025,7 +1025,7 @@ function addRowRelationship(){
   
   var tableParent = new Element('table', {Class: "popup-newbox", id:"add-new-relationship"});
   var checkBox = new Element('input', {id:"chekbox-relationships-"+window.counter_relationship, type:"checkbox"});
-        checkBox.writeAttribute('onclick', 'toPresentText(\'relationships\',\''+window.counter_relationship+'\')');
+        checkBox.writeAttribute('onclick', 'toPresentText(\'relationships\',\''+window.counter_relationship+'\',\'Still married to this person?\')');
  var tr1 = new Element('tr');
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
@@ -1266,12 +1266,12 @@ function showOtherTextbox(val, id){
   }
 }
 
-function toPresentText(text, val){
+function toPresentText(text, val, description){
   if(val){
     var content = $('present-'+text+'-'+val+'');
     if(content.innerHTML==""){
       createDateElement(text, val);
-      $('text-present-'+text+'-'+val+'').innerHTML = "Still living here";
+      $('text-present-'+text+'-'+val+'').innerHTML = description;
     }else{
       $('date-present-'+text+'-'+val+'').remove();  
       $('text-present-'+text+'-'+val+'').innerHTML = "<b>To Present<b>";

@@ -75,9 +75,9 @@ module AjaxHelper
     element_to_hide.each do |element|
       action += "$('#{element}').hide();"
       if id.eql?("rss-box")
-        action += "Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');"
+        action += "Scroller.reset('account-setting-content');resetDinamycHeight('account-setting-content');"
       elsif id.eql?("twitter-box")
-        action += "$('flash-message').innerHTML='';$('backup_source_auth_login').value='';$('backup_source_auth_password').value='';Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');"
+        action += "$('backup_source_auth_password').value='';Scroller.reset('account-setting-content');resetDinamycHeight('account-setting-content');$('flash-message').innerHTML='';"
       else
         action += "resetDinamycHeight('account-setting-content');"
       end
