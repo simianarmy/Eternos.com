@@ -54,8 +54,10 @@ class BackupSourcesController < ApplicationController
     if @feed_url = FeedUrl.create(:user_id => current_user.id, 
         :rss_url => params[:feed_url][:rss_url], 
         :backup_site_id => BackupSite.find_by_name(BackupSite::Blog).id)
+      
       current_user.backup_sources << @feed_url
-      # @feed_url.reload.backup Reload to get user id and initiate backup!
+      @feed_url.reload.backup # Reload to get user id and initiate backup!
+      
       # Get paginated list of feeds, ordered by most recent
       @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate(
         :page => params[:page], :per_page => 10, :order => 'created_at DESC')
