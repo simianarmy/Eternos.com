@@ -22,17 +22,19 @@
     = f.password_field :password_confirmation, :id => 'password-confirm'
     %span.fine-print Confirm your password by entering it again
 - if user.new_record?
-  %br
-  
-  .captcha-right
-    %p.captcha_box
-      = recaptcha_tags :ssl => true, :style => "text-align: right;"
+
   %br
   %p.checkbox_term
     = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @checked}
     .term_text
       I accept the 
       = link_to 'Terms and Conditions', '/about/terms'
+  .clear
+
+  %br
+  .captcha-right
+    %p.captcha_box
+      = recaptcha_tags :ssl => true
     
   %p
     %br
