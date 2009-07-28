@@ -572,24 +572,28 @@ div.frontpage {
 	padding: 15px 0 0 30px;
 }
 
-#recaptcha_area{
+.captcha-right{
 	margin-left:50px;
 }
 
 .checkbox_term{
-	margin-left:50px;
+	margin:10px 0 10px 50px;
 	text-align:left;
 }
 
 #terms_of_service{
-	margin-top:0;
+	margin-left:60px;
 	float:left;
 }
 
 .term_text{
 	font-size:11px;
-	margin:1px 0 0 5px;
+	margin:2px 0 0 5px;
 	float:left;
+}
+
+.clear{
+	clear:both;
 }
 
 /* @end */
