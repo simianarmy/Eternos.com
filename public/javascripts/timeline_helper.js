@@ -1,3 +1,425 @@
+/*
+ * Eternos Timeline classes using prototype method:Class.create({})
+ * Not implemented yet
+ * 
+ * Classes are:
+ * 
+ * ETLDate
+ * ETLArray
+ * ETLDom
+ * ETLDomArtifact
+ * ETLDomStory
+ * ETLDomArtifactItem
+ * ETLDomStoryItem
+ * ETLEventSource
+ * ETLEventSourceFacebook
+ * ETLEventSourceTwitter
+ * ETLEventSourceBackupPhoto
+ * ETLEventSourceFeed
+ * ETLEventSourceEmail
+ * ETLEventParser
+ * ETLSearch
+ * ETLBase
+ * 
+ * 
+ * 
+
+//Eternos Timeline Date
+var ETLDate = Class.create({
+  initialize: function(date, format){
+    this.inDate = date;
+    this.inFormat = format || 'natural';
+  },
+  getOutDate: function(){
+    if(this.inFormat == 'natural'){
+      this.outDate = this.inDate.getFullYear() +'-'+ this.inDate.getMonth() +'-'+ this.inDate.getDate();
+    } else {
+      this.outDate = new Date(this.inDate.substr(0, 4), this.inDate.substr(5, 2), this.inDate.substr(8, 2));
+    }
+    return this.outDate();
+  }
+})
+
+
+//Eternos Timeline Array that has custom methods 
+function ETLArray() {
+  this.unique = function(){
+  	var r = new Array();
+  	o:for(var i = 0, n = this.length; i < n; i++){
+  		for(var x = 0, y = r.length; x < y; x++){
+  			if(r[x]==this[i]){ continue o;}
+  		}
+  		r[r.length] = this[i];
+  	}
+  	return r;
+  }
+  
+  this.randResult = function(num){}
+}
+ETLArray.prototype = new Array();
+
+
+//Eternos Timeline DOM for Artifact and Story
+var ETLDom = Class.create({
+  initialize: function(domID){
+    this.parent = $(domID);
+    this.title = "";
+    this.top = "";
+    this.bottom = "";
+    this.items = new ETLArray();
+    this.resetItems();
+  },
+  itemsToHtml: function(){
+    for(i=0;i<this.items.length;i++){
+      this.items[i] = this.items[i].toHtml();
+    }
+  },
+  resetItems: function(){
+    this.parent.innerHTML = "";
+  },
+  makeItemsUniq: function(){
+    this.items.unique();
+  },
+  itemsToHtml: function(){
+    return this.items.join("");
+  },
+  write: function(){
+    this.itemsToHtml();
+    this.makeItemsUniq();
+    this.parent.insert(this.top+this.itemsToHtml+this.bottom);
+  },
+  addItem: function(item){
+    this.items.push(item);
+  },
+  setTitle: function(title){
+    this.title = title;
+  },
+  setTop: function(top){
+    this.top = top;
+  },
+  setBottom: function(bottom){
+    this.bottom = bottom;
+  }
+})
+
+
+//Eternos Timeline Artifact, inherited from ETLDom
+var ETLDomArtifact = Class.create(ETLDom, {
+  initialize: function($super, domId){
+    $super(domId);
+    this.setTitle("Artifacts");
+    this.setTop("<div class='artibox-top'><div class='title5'>" +this.title+ "</div></div><div class='artibox'>");
+    this.setBottom("</div><img src='/images/artibox-bottom.gif' />");
+  }
+})
+
+
+//Eternos Timeline Story, inherited from ETLDom
+var ETLDomStory = Class.create(ETLDom, {
+  initialize: function($super, domId){
+    $super(domId);
+    this.setTitle("Stories");
+    this.setTop("<div class='storybox-top'><div class='title5'>" +this.title+ "</div></div><div class='storybox'>");
+    this.setBottom("</div><img src='/images/storybox-bottom.gif' />");
+  }
+})
+
+
+//Eternos Timeline Artifact Item, with source from 'event' in evalJSON response
+var ETLArtifactItem = Class.create({
+  initialize: function(event){
+    this.sourceEvent = event;
+    this.thumbHeight = 70;
+    this.thumbWidth = 70;
+    this.popImg();
+  },
+  popImg: function(){
+    if (this.sourceEvent.facebook_activity_stream_item){
+      if (this.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
+        this.imageUrl = this.sourceEvent.facebook_activity_stream_item.src;
+        this.itemType = "Facebook";
+      }
+    } else if (this.sourceEvent.backup_photo){
+      this.imageUrl = this.sourceEvent.backup_photo.source_url;
+      this.itemType = "Backup Photo";
+    }     
+  },
+  toHtml: function(){
+    rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<a href=# onclick=\"Lightview.show( {href:'"+this.imageUrl+"', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+ encodeURIComponent('cd0107f95e066667938b7f27f3b4732cf8ace5ca')}, autosize:false, closeButton:false, width:800}, rel:'iframe'});return false;\"><img src='" +this.imageUrl+ "' class='thumnails2' /></a>";
+    return rv;      
+  }
+})
+  
+
+//Eternos Timeline Story Item
+var ETLStoryItem = Class.create({
+  initialize: function(event){
+    this.sourceEvent = event;
+    this.thumbHeight = 70;
+    this.thumbWidth = 70;
+    this.popImg();
+  },
+  popImg: function(){
+    if (this.sourceEvent.facebook_activity_stream_item){
+      if (this.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
+        this.imageUrl = this.sourceEvent.facebook_activity_stream_item.src;
+        this.itemType = "Facebook";
+      }
+    } else if (this.sourceEvent.backup_photo){
+      this.imageUrl = this.sourceEvent.backup_photo.source_url;
+      this.itemType = "Backup Photo";
+    }     
+  },
+  toHtml: function(){
+    rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<a href=# onclick=\"Lightview.show( {href:'"+this.imageUrl+"', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+ encodeURIComponent('cd0107f95e066667938b7f27f3b4732cf8ace5ca')}, autosize:false, closeButton:false, width:800}, rel:'iframe'});return false;\"><img src='" +this.imageUrl+ "' class='thumnails2' /></a>";
+    return rv;      
+  }
+})
+
+
+//Eternos Timeline Event Source
+var ETLEventSource = Class.create({
+  initialize: function(event){
+    this.assetUrl = "http://simile.mit.edu/timeline/api/";
+    this.imgUrl = this.assetUrl + "images/";
+    this.title = this.desc = this.img = this.link = this.icon = this.color = this.tcolor = null;
+    this.date = new Date();
+    this.event = event;
+  },
+  toTLEventSource: function(){
+    this.outEvent = new Timeline.DefaultEventSource.Event(
+      this.date, this.date, this.date, this.date, true, 
+      this.title, this.desc, this.img, this.link, this.icon, this.color, this.tcolor);
+
+    return this.outEvent;
+  }
+})
+
+
+//Eternos Timeline Facebook Event Source
+var ETLEventSourceFacebook = Class.create(ETLEventSource, {
+  initialize: function($super, event){
+    $super(event);
+    this.icon = this.imgUrl + "dark-blue-circle.png";
+    this.color = "blue";
+    this.textColor = "blue";
+    this.fetchEvent();
+  },
+  fetchEvent: function(){
+    if (this.event.published_at) {
+      this.date = new ETLDate(this.event.published_at).outputDate;
+    }
+    
+    switch (this.event.attachment_type) {
+      case "photo" :
+        this.title = "Uploaded photo";
+        this.desc = fb_event.message;
+        this.img = fb_event.src;
+        break;
+      case "link" :
+        this.title = "Wall posting";
+        this.desc = fb_event.message;
+        this.link = fb_event.src;
+        break;
+      case null :
+        this.title = "Updated status";
+        this.desc = fb_event.message;
+        this.img = "";
+        break;
+      default: 
+        this.title = "Facebook post";
+        this.desc = fb_event.message;
+        this.img = "";
+        break;                  
+    }    
+  }
+})
+
+
+//Eternos Timeline Twitter Event Source
+var ETLEventSourceTwitter = Class.create(ETLEventSource, {
+  initialize: function($super, event){
+    $super(event);
+    this.icon = this.imgUrl + "dull-green-circle.png";
+    this.color = "cyan";
+    this.textColor = "cyan";
+    this.fetchEvent();
+  },
+  fetchEvent: function(){
+    if (this.event.published_at){
+      this.date = new ETLDate(this.event.published_at).outputDate;
+    }
+    this.title = "Post a tweet";
+    this.desc = this.event.message;    
+  }
+})
+
+
+//Eternos Timeline Backup Photo Event Source
+var ETLEventSourceBackupPhoto = Class.create(ETLEventSource, {
+  initialize: function($super, event){
+    $super(event);
+    this.icon = this.imgUrl + "gray-circle.png";
+    this.color = "gray";
+    this.textColor = "gray";
+    this.fetchEvent();
+  },
+  fetchEvent: function(){
+    if (this.event.backup_photo.created_at){
+      this.date = new ETLDate(this.event.backup_photo.created_at).outputDate;
+    }
+    this.title = "Backup photo";
+    this.desc = this.event.backup_photo.caption;
+    this.img = this.event.backup_photo.source_url;    
+  }  
+})
+
+
+//Eternos Timeline Feed Event Source
+var ETLEventSourceFeed = Class.create(ETLEventSource, {
+  initialize: function($super, event){
+    $super(event);
+    this.icon = this.imgUrl + "dull-red-circle.png";
+    this.color = "orange";
+    this.textColor = "orange";
+    this.fetchEvent();
+  },
+  fetchEvent: function(){
+    if (this.event.feed_entry.published_at){
+      this.date = new ETLDate(this.event.feed_entry.published_at).outputDate;
+    }
+    
+    this.title = "New feed item";
+    this.desc = "SOURCE: " + this.event.feed_entry.name + "; DESCRIPTION: " + this.event.feed_entry.summary;
+    this.link = this.event.feed_entry.url;    
+  }  
+})
+
+
+//Eternos Timeline Email Event Source
+var ETLEventSourceEmail = Class.create(ETLEventSource, {
+  initialize: function($super, event){
+    $super(event);
+    this.icon = this.imgUrl + "red-circle.png";
+    this.color = "red";
+    this.textColor = "red";
+    this.fetchEvent();
+  },
+  fetchEvent: function(){
+    if (this.event.backup_email.received_at) {
+      this.date = new ETLDate(this.event.backup_email.received_at).outputDate;
+    }
+    
+    this.title = "Receiving an email";
+    this.desc = "FROM: " + this.event.backup_email.sender[0] + "; SUBJECT: " + this.event.backup_email.subject;    
+  }  
+})
+
+
+//Eternos Timeline Event Parser
+var ETLEventParser = Class.create({
+  initialize: function(events){
+    this.events = events;
+  },
+  parse: function(){
+    for(var i=0;i<this.events.results.length-1;i++) {
+      if (this.events.results[i].event != null){}
+    }; 
+  }
+})
+
+
+//Eternos Timeline Search
+var ETLSearch = Class.create({
+  initialize: function(member_id, params){
+    window._ETLMemberID = member_id;
+    var date = new Date();
+    
+    this.searchUrl = "http://staging.eternos.com/timeline/search/js/";
+    this.startDate = params.start_date || new ETLDate(date);
+    this.endDate = params.end_date || new ETLDate(date);
+    this.options = params.options
+  },
+  getFullSearchUrl: function(){},
+  search: function(){},
+  onLoading: function(){},
+  onSuccess: function(){},
+  onFailure: function(){},
+  parseEvents: function(){},
+  createEvent: function(){}
+})
+
+
+//Eternos Timeline Base
+var ETLBase = Class.create({
+  initialize: function(tmline, domID, params){
+    var date = new Date();
+    this.sourceObj = tmline;
+    this.domID = domID;
+    this.options = params;
+    this.startDate = params.startDate || new ETLDate(date);
+    this.endDate = params.endDate || new ETLDate(date);
+    this.theme = Timeline.ClassicTheme.create();
+    this.bandInfos = [
+       Timeline.createBandInfo({
+           width:          "15%",
+           intervalUnit:   Timeline.DateTime.YEAR,
+           intervalPixels: 150,
+           overview: true,
+           theme: this.theme
+       }),
+       Timeline.createBandInfo({
+           width:          "85%",
+           intervalUnit:   Timeline.DateTime.MONTH,
+           intervalPixels: 200,
+           eventSource: params.eventSource || new Timeline.DefaultEventSource(),
+           theme: this.theme
+       })
+     ];    
+  },
+  syncBands: function(){
+    this.timeline.bandInfos[1].syncWith = 0;
+    this.timeline.bandInfos[1].highlight = true;     
+  },
+  init: function(){},
+  addEventSource: function(){},
+  onBandScrolling: function(){
+    this.timeline.getBand(0).addOnScrollListener(function(band){
+      var min_date = new ETLDate(band.getMinVisibleDate(), 'rails').outputDate;
+      var max_date = new ETLDate(band.getMaxVisibleDate(), 'rails').outputDate;
+      var el_options = 'fake';
+      //TODO: search
+    });      
+  },
+  searchEvents: function(){},
+  onWindowResize: function(){
+    if (resizeTimerID == null) {
+      resizeTimerID = window.setTimeout(function() {
+        resizeTimerID = null;
+        tl.layout();
+      }, 500);
+    }    
+  },
+  showLoading: function(){
+    this.timeline.showLoadingMessage();
+  },
+  hideLoading: function(){
+    this.timeline.hideLoadingMessage();
+  },
+  addEvents: function(){},
+  toggleDetails: function(){},
+  setTheme: function(){}  
+})
+
+
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+
 /*Eternos Timeline Date Format*/
 function ETLDate(date, format){
   this.dateFormat = (format == null) ? 'default' : format.toString();
