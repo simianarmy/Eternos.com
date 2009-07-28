@@ -17,7 +17,7 @@ class BackupSourcesController < ApplicationController
           backup_source = current_user.backup_sources.new(params[:backup_source].merge({:backup_site_id => backup_site.id}))
           if backup_source.save
             backup_source.confirmed!
-            #backup_source.backup  Initiate backup!
+           
             @rjs_message = "activated"
           end 
         else
@@ -56,7 +56,7 @@ class BackupSourcesController < ApplicationController
         :backup_site_id => BackupSite.find_by_name(BackupSite::Blog).id)
       
       current_user.backup_sources << @feed_url
-      @feed_url.reload.backup # Reload to get user id and initiate backup!
+      @feed_url.confirmed!
       
       # Get paginated list of feeds, ordered by most recent
       @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate(

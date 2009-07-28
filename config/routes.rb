@@ -1,6 +1,7 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
+
   map.resources :dev_staging_maps
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { :check_auth => :get }
   map.resources :backup_sites
@@ -8,21 +9,28 @@ ActionController::Routing::Routes.draw do |map|
     :add_feed_url => :post,
     :add_twitter => :post
   }
-  map.resources :account_settings, :collection => {
-    :online => :get, :save_personal_info => :post,
-    :personal_info => :get, :facebook_sync => :get, :email_account => :get,
-    :your_history => :get, :upgrades => :get, :billings => :get,
-    :always_sync_with_facebook => :get, :select_region => :get, 
-    :add_another_address => :post, :remove_address => :delete,
-    :add_another_job => :post, :remove_job => :delete,
-    :add_another_medical => :post, :remove_medical => :delete,
-    :add_another_medical_condition => :post, :remove_medical_condition => :delete,
-    :add_another_family => :post, :remove_family => :delete,
-    :add_another_relationship => :post, :remove_relationship => :delete,
-    :backup_contact_emails => :post, :add_another_school => :post, :remove_school => :delete, 
-    :set_feed_rss_url => :put, :set_contact_name => :put,:set_contact_email => :put
+  map.resources :account_settings, 
+    :member => {
+      :set_email_account_auth_login => :put,
+      :set_email_account_auth_password => :put
+    },
+    :collection => {
+      :online => :get, :save_personal_info => :post,
+      :personal_info => :get, :facebook_sync => :get, :email_account => :get,
+      :your_history => :get, :upgrades => :get, :billings => :get,
+      :always_sync_with_facebook => :get, :select_region => :get, 
+      :add_another_address => :post, :remove_address => :delete,
+      :add_another_job => :post, :remove_job => :delete,
+      :add_another_medical => :post, :remove_medical => :delete,
+      :add_another_medical_condition => :post, :remove_medical_condition => :delete,
+      :add_another_family => :post, :remove_family => :delete,
+      :add_another_relationship => :post, :remove_relationship => :delete,
+      :backup_contact_emails => :post, :add_another_school => :post, :remove_school => :delete, 
+      :set_feed_rss_url => :put
   }
-
+  #map.resources :email_accounts
+  map.resources :gmail_accounts
+  
   # Redirect requests to flashrecorder xml config file to proper location
   map.connect ':anywhere/flashrecorder.xml', :controller => 'recordings', 
     :action => 'flashrecorder', :format => 'xml'

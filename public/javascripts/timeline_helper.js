@@ -564,7 +564,7 @@ function ETLSearch(member_id, options){
   window._ETLMemberID = member_id;
   var date = new Date();
   
-  this.searchUrl = "http://staging.eternos.com/timeline/search/js/";
+  this.searchUrl = "/timeline/search/js/";
   this.startDate = options.start_date || new ETLDate(date);
   this.endDate = options.end_date || new ETLDate(date);
   this.options = options.options
@@ -715,7 +715,7 @@ function onResize() {
 //search Timeline events
 function tl_search(member, start_date, end_date, options){
   window._tl_member_id = member;
-  new Ajax.Request('http://staging.eternos.com/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
+  new Ajax.Request('/timeline/search/js/'+member+'/'+start_date+'/'+end_date+'/'+options, {
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";

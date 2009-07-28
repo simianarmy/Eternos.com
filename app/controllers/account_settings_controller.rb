@@ -17,24 +17,12 @@ class AccountSettingsController < ApplicationController
     end
   end
   
-  def set_contact_name
-    @contact = ContactEmail.find(params[:id])
-    @contact.name = params[:value]
-    if @contact.save
-      render :text => @contact.send(:name).to_s
-    else
-      render :text => params[:value]
-    end
-  end
-  
-  def set_contact_email
-    @contact = ContactEmail.find(params[:id])
-    @contact.email = params[:value]
-    if @contact.save
-      render :text => @contact.send(:email).to_s
-    else
-      render :text => params[:value]
-    end
+  # override in-place-edit plugin default in order to handle different types
+  # of email accounts (Gmail, etc)
+  def set_email_account_auth_login  
+    @item = current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id])
+    @item.update_attribute(:auth_login, params[:value])
+    render :text => CGI::escapeHTML(@item.auth_login.to_s)
   end
   
   def index
@@ -145,8 +133,8 @@ class AccountSettingsController < ApplicationController
   end
   
   def email_account
-    @gmail_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
-    @current_gmail = @gmail_accounts.first
+    find_email_accounts
+    @current_gmail = @email_accounts.first
     
     if params[:method].blank?
       respond_to do |format|
@@ -541,10 +529,27 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  #
+  # *******   DEVELOPERS: LEAVE THIS METHOD ALONE!!! *******
+  #
   def backup_contact_emails
     begin
-      @contac_email = ContactEmail.create(params[:email].merge!(:profile_id => current_user.profile.id))
-      @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
+      # Contacts authenticates in initialization.  If there are any problems logging in, 
+      # an exception is raised.
+      Contacts::Gmail.new(params[:email][:email], params[:email][:password])
+
+      # At this point authentication has been authorized - create account & add to backup sources
+      @current_gmail = GmailAccount.create!(
+        :auth_login => params[:email][:email], 
+        :auth_password => params[:email][:password], 
+        :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
+        :last_login_at => Time.now)
+      
+      current_user.backup_sources << @current_gmail
+      @current_gmail.confirmed!
+      
+      find_email_accounts
+
       respond_to do |format|
         format.js do
           render :update do |page|
@@ -660,4 +665,7 @@ class AccountSettingsController < ApplicationController
      @relationships = Relationship.find_all_by_user_id(current_user.id)
    end
 
+   def find_email_accounts
+     @email_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
+   end
 end

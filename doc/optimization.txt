@@ -3,3 +3,6 @@ http://www.ricroberts.com/articles/2009/04/09/boost-speed-and-save-bandwidth-wit
 
 Using memcached with Rails:
 http://www.ridingtheclutch.com/2009/01/08/cache-anything-easily-with-rails-and-memcached.html
+
+Use Enterprise Ruby: 
+supposedly way better memory usage, performance with Passenger, thread usage

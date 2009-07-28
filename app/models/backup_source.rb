@@ -40,6 +40,8 @@ class BackupSource < ActiveRecord::Base
   
   def confirmed!
     update_attribute(:auth_confirmed, true)
+    #  Initiate backup on auth confirmation
+    reload.backup  
   end
   
   # add this backup source to backup queue
