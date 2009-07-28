@@ -15,13 +15,13 @@
       .clear
     .popup-text-area
       .popup-title2
-        Lorem Ipsum
-      Lorem ipsum lorem psum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.
+        Grant Access to Facebook Data
+      We need you to grant us permission to access your Facebook data, which includes your status updates and pictures.
 
       %br
       %br
       
-      lorem lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.
+      Simply click on the lock button below, it takes only several seconds to setup your Facebook account for backup!
       %br
 
 	
@@ -30,7 +30,7 @@
         
     #continue{:style=> "display:none;"}
       .popup-text1
-        Follow the direction!
+        Facebook has granted us permission to backup your data!
       = link_to "Next Step", {:action => 'authenticate', :auth_token => @auth_token}, :class =>"popup-textbtn1"
       = image_tag "facebook-backup/arrow-right.gif", :class => "arrow-right"
 		
