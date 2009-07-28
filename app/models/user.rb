@@ -224,7 +224,8 @@ class User < ActiveRecord::Base
 
     if save
       create_member_associations
-      spawn do
+      # Must spawn as thread or will crash in Passenger
+      spawn(:method => :thread) do
         UserMailer.deliver_activation(self) 
       end
     end

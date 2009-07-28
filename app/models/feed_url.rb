@@ -2,8 +2,6 @@
 
 # BackupSource STI class child
 
-require 'feedzirra'
-
 class FeedUrl < BackupSource
   has_one :feed, :foreign_key => 'backup_source_id'
   

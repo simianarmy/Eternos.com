@@ -8,7 +8,7 @@ class UserMailer < ActionMailer::Base
   
   def activation(user)
     setup_email(user)
-    @subject    += 'Your account has been activated!'
+    @subject    = "Your #{AppConfig.app_name} account has been activated!"
     @user = user
     base_domain = "http://" + AppConfig.base_domain
     @body[:images_url] = base_domain + "/images"

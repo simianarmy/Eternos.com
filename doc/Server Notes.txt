@@ -4,16 +4,15 @@ OS: RHEL 5 2.6.18
 RAM: 2GB
 
 Software Requirements:
-ruby: 1.8.5
-rails 2.1.2
-rubygems: 1.3.1
+ruby: 1.8.6 (Enterprise)
+rails 2.2.2+
+rubygems: 1.3.1+
 apache: 2.2.3
 mysql: 5.0.45
 Java: JDK 6u11
 apache-ant: 1.7.1
 Red5: 0.7.0
 memcached
-
  
 Apache2 Modules:
   libapreq2 2.12 (for ModPorter)
@@ -21,13 +20,19 @@ Apache2 Modules:
   
 Ensure 'GatewayPorts yes' is enabled in the remote development server's sshd config
 
-Rails/Apache:
-passenger
+Ruby/Rails/Apache:
+Enterprise Ruby
+Passenger
 	gem install passenger
 	passenger-install-apache2-module
 	
-Ruby gems
+Ruby gems that must be build on server:
 memcache-client-1.7.4
+RubyInline
+ImageScience
+taf2-curb
+nokogiri
+json?
 
 yum Packages:
 ImageMagick
