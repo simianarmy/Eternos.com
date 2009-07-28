@@ -1434,3 +1434,15 @@ h5{
 .btn-box1:hover{
 	background:url(/images/facebook-backup/fb-btn2.gif) 0 24px;
 }
+
+#rjs-message{
+	width:449px;
+	height:auto;
+	padding:5px 0 5px 0;
+	text-align:center;
+	font-family:arial;
+	font-size:11px;
+	color:#762323;
+	background:#ffadc2;
+	border:1px solid #c50c0c;
+}
