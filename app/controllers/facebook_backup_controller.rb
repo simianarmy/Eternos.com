@@ -10,13 +10,33 @@ class FacebookBackupController < ApplicationController
   before_filter :load_backup_source, :except => [:authorized, :removed]
   layout 'dialog'
   
+  #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
+  
   def new
     # Make sure user not already authenticated
     if current_user.authenticated_for_facebook_desktop?
-      redirect_to :action => :permissions
-    else
+      begin
+        current_user.facebook_session_connect @session
+        @session.secure_with_session_secret!
+
+        if @session.secured? && !@session.expired?
+          redirect_to :action => :permissions
+          return
+        end
+      rescue
+        # No problem they just need to login again
+        RAILS_DEFAULT_LOGGER.debug "Facebook connect failed on authenticated user!"
+        @session = load_facebook_desktop
+      end
+    end
+    
+    begin
       @auth_token = @session.auth_token
       @login_url = @session.login_url
+    rescue Facebooker::Session::SessionExpired
+      load_facebook_desktop
+      load_session
+      retry
     end
   end
   
@@ -24,9 +44,9 @@ class FacebookBackupController < ApplicationController
     begin
       @session.auth_token = params[:auth_token]
       @session.secure_with_session_secret!
+      
       # Save facebook uid, session, & secret key for headless login
-
-      if @session.secured? && (user = @session.user)
+      if @session.secured? && !@session.expired? && (user = @session.user) 
         current_user.update_attribute(:facebook_uid, user.id)
         current_user.set_facebook_session_keys(@session.session_key, @session.secret_from_session)
         flash[:notice] = "Login successful!"
@@ -42,7 +62,7 @@ class FacebookBackupController < ApplicationController
   
   def permissions
     # Get facebook auth data for the app
-    @session.connect(current_user.facebook_session_key, current_user.facebook_id, nil, current_user.facebook_secret_key)
+    current_user.facebook_session_connect @session
     unless @session.secured?
       flash[:error] = "Unable to log you in to Facebook App: connect method failed.  Please Try Again"
       redirect_to :action => :new
@@ -56,7 +76,7 @@ class FacebookBackupController < ApplicationController
   # Wonder if it will work w/out cookies
   def check_auth
     begin
-      @session.connect(current_user.facebook_session_key, current_user.facebook_id, nil, current_user.facebook_secret_key)
+      current_user.facebook_session_connect @session
       auth = @session.user.has_permission?(:offline_access) && @session.user.has_permission?(:read_stream)
     rescue
       auth = false
@@ -102,6 +122,11 @@ class FacebookBackupController < ApplicationController
   end
   
   private
+  
+  def create_new_session
+    load_facebook_desktop
+    load_session
+  end
   
   def load_session
     @session = Facebooker::Session.current

@@ -125,6 +125,10 @@ class User < ActiveRecord::Base
     @activated
   end
   
+  def facebook_session_connect(session)
+    session.connect(facebook_session_key, facebook_id, nil, facebook_secret_key)
+  end
+  
   def email_registration_required?
     self.registration_required.nil? ? AppConfig.email_registration_required : self.registration_required
   end
