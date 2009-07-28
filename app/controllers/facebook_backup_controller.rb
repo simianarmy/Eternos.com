@@ -120,6 +120,17 @@ class FacebookBackupController < ApplicationController
     render :nothing => true, :status => 200
   end
   
+  def destroy
+    @backup_source.update_attribute(:auth_confirmed, false)
+    current_user.set_facebook_session_keys(nil, nil)
+
+    flash[:notice] = "Successfully removed from Facebook backup."
+    respond_to do |format|
+      format.html { redirect_to member_home_path }
+      format.js
+    end
+  end
+  
   private
   
   def create_new_session
