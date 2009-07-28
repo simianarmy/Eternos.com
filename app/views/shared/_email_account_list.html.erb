@@ -2,7 +2,7 @@
   <%= javascript_tag("$('step3-button-hide').click();") %>
 <%- end -%>
 
-<% unless @contact_emails.blank? %>
+<% if @gmail_accounts.any? %>
   <br />
 	<div class="title7">List of your emails</div>
   <table class="table-form6" border="0" cellpadding="0" cellspacing="0">
@@ -11,11 +11,11 @@
         <td class="coll-form11" bgcolor="#8bcdff" align="center">Password</td>
         <td class="coll-form10" bgcolor="#8bcdff" align="center">Action</td>
       </tr>
-    <% @contact_emails.each do |@contact| -%>
+    <% @gmail_accounts.each do |@contact| -%>
       <tr id="contact-list-<%= @contact.id %>">
-        <td class="coll-form12" valign="center"><%= in_place_editor_field(:contact, :email) %></td>
+        <td class="coll-form12" valign="center"><%= in_place_editor_field(:contact, :auth_login) %></td>
         <td class="coll-form13" valign="center">
-            <%= in_place_editor_field(:contact, :password) %>
+            <%= in_place_editor_field(:contact, :auth_password) %>
         </td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
                                                       :url => {:action => 'email_account', :id => @contact},
@@ -29,7 +29,7 @@
     <% end %>
   </table>
   <br>
-<%= will_paginate(@contact_emails) %>
+<%= will_paginate(@gmail_accounts) %>
 <% end %>
 
 

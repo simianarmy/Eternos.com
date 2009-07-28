@@ -145,8 +145,8 @@ class AccountSettingsController < ApplicationController
   end
   
   def email_account
-    @contact_emails = current_user.profile.contact_emails.paginate :page => params[:page], :per_page => 10
-    @current_gmail = current_user.backup_sources.by_site(BackupSite::Gmail).first
+    @gmail_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
+    @current_gmail = @gmail_accounts.first
     
     if params[:method].blank?
       respond_to do |format|
@@ -160,9 +160,10 @@ class AccountSettingsController < ApplicationController
         end
       end
     else
-      @contact_email = ContactEmail.find(params[:id])
-      @contact_email.destroy
-
+      begin
+        current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id]).destroy
+      end
+        
       render :update do |page|
         page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
       end

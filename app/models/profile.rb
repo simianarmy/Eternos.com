@@ -1,8 +1,6 @@
 # $Id$
 
 class Profile < ActiveRecord::Base
-  has_many :contact_emails, :dependent => :destroy
-  
   belongs_to :member, :foreign_key => 'user_id'
   
   with_options :dependent => :destroy do |m|
