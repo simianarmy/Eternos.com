@@ -30,4 +30,5 @@ config.action_mailer.delivery_method = :smtp
 
 #config.log_level = :debug
 
-Workling::Remote.dispatcher = Workling::Remote::Runners::StarlingRunner.new
+
+

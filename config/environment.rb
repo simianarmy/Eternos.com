@@ -179,4 +179,7 @@ unless defined?(DaemonKit) || ENV['RAKE']
   RAILS_DEFAULT_LOGGER.info "Launching AMQP"
   Qusion.start 
 end
-
+# Setup workling
+Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
+Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
+Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new

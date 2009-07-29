@@ -24,4 +24,4 @@ config.action_mailer.delivery_method = :smtp
 
 config.gem 'ruby-debug'
 
-Workling::Remote.dispatcher = Workling::Remote::Runners::StarlingRunner.new
+

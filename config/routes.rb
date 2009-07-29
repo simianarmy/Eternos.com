@@ -10,10 +10,6 @@ ActionController::Routing::Routes.draw do |map|
     :add_twitter => :post
   }
   map.resources :account_settings, 
-    :member => {
-      :set_email_account_auth_login => :put,
-      :set_email_account_auth_password => :put
-    },
     :collection => {
       :online => :get, :save_personal_info => :post,
       :personal_info => :get, :facebook_sync => :get, :email_account => :get,

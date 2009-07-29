@@ -17,14 +17,6 @@ class AccountSettingsController < ApplicationController
     end
   end
   
-  # override in-place-edit plugin default in order to handle different types
-  # of email accounts (Gmail, etc)
-  def set_email_account_auth_login  
-    @item = current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id])
-    @item.update_attribute(:auth_login, params[:value])
-    render :text => CGI::escapeHTML((@item.auth_login.to_s).gsub(/./,'*'))
-  end
-  
   def index
     find_user_profile
     check_facebook_sync
@@ -151,7 +143,7 @@ class AccountSettingsController < ApplicationController
       begin
         current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id]).destroy
       end
-        
+      find_email_accounts
       render :update do |page|
         page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
       end
@@ -542,10 +534,9 @@ class AccountSettingsController < ApplicationController
       @current_gmail = GmailAccount.create!(
         :auth_login => params[:email][:email], 
         :auth_password => params[:email][:password], 
+        :user_id => current_user.id,
         :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
         :last_login_at => Time.now)
-      
-      current_user.backup_sources << @current_gmail
       @current_gmail.confirmed!
       
       find_email_accounts

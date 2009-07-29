@@ -22,6 +22,13 @@ describe BackupSource do
         @bs.save
       }.should change(BackupSource, :count).by(1)
     end
+    
+    it "should allow multiple backup sites per user" do
+      lambda {
+        @bs.save
+        create_backup_source(:member => @bs.member, :backup_site => @bs.backup_site)
+      }.should change(BackupSource, :count).by(2)
+    end
   end
   
   describe "created" do
@@ -31,7 +38,6 @@ describe BackupSource do
     
     describe "with photo albums" do
       before(:each) do
-        
       end
       
       it "should have multiple photo albums" do
@@ -46,4 +52,5 @@ describe BackupSource do
       end
     end
   end
+  
 end

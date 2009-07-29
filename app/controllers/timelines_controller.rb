@@ -52,11 +52,11 @@ class TimelinesController < ApplicationController
       url = request.url.dup
       url.gsub!(/dev\./, 'staging.')
       url.gsub!(/js\/\d+\//, "js/#{dev_map.staging_user_id}/")
-      json = Curl::Easy.perform(url).body_str
-      @response = ActiveSupport::JSON.decode(json) if json
+      @json ||= Curl::Easy.perform(url).body_str
+      @response = ActiveSupport::JSON.decode(@json) if @json
     else
       # Rails has already parsed the url into params hash for us - no point in doing it again.
-      @response = TimelineRequestResponse.new(request.url, params)
+      @response ||= TimelineRequestResponse.new(request.url, params)
       @response.execute
     end
     respond_to do |format|

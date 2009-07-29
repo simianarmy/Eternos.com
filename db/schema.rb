@@ -234,9 +234,9 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "last_login_attempt_at"
     t.datetime "last_login_at"
   end
-
-  add_index "backup_sources", ["user_id", "backup_site_id"], :name => "user_backup_site"
-
+  add_index "backup_sources", ["user_id"]
+  add_index "backup_sources", ["backup_site_id"]
+  
   create_table "backup_states", :force => true do |t|
     t.datetime "last_successful_backup_at"
     t.datetime "last_failed_backup_at"

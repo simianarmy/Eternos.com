@@ -24,4 +24,4 @@ config.action_mailer.raise_delivery_errors = true
 # Use SMTP protocol to deliver emails
 config.action_mailer.delivery_method = :smtp
 
-Workling::Remote.dispatcher = Workling::Remote::Runners::StarlingRunner.new
+
