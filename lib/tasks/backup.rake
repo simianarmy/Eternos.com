@@ -14,6 +14,20 @@ namespace :backup do
     BackupJobPublisher.run
   end
   
+  desc "Run backup on a single source by id" 
+  task :run_source => :environment do
+    unless id = ENV['SOURCE']
+      puts "pass backup source id in SOURCE parameter" 
+      exit
+    end
+    if bs = BackupSource.find(id)
+      BackupJobPublisher.add_source(bs)
+      puts "backup source #{id} added to backup job queue"
+    else
+      puts "Could not find backup source with id #{id}"
+    end
+  end
+  
   desc "Generate backup job reports"
   task :generate_report => :environment do
     BackupReporter.run

@@ -149,6 +149,7 @@ require 'whenever' # For Capistrano requirement
 require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
+require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
@@ -173,33 +174,9 @@ Rubaidh::GoogleAnalytics.local_javascript = true
 
 CACHE = MemCache.new('127.0.0.1')
 
-# To use amqp from Rails
-# Phusion Passenger requires something a little more tricky.
-if defined?(PhusionPassenger)
-  PhusionPassenger.on_event(:starting_worker_process) do |forked|
-    if forked
-      if EM.reactor_running?
-        EM.stop_event_loop
-        EM.release_machine
-        EM.instance_variable_set( '@reactor_running', false )
-      end
-      Thread.current[:mq] = nil
-      AMQP.instance_variable_set('@conn', nil)
-    end
-
-    RAILS_DEFAULT_LOGGER.info "Launching thread for Phusion+AMQP"
-    th = Thread.current
-    Thread.new{
-      MessageQueue.start {
-        th.wakeup
-      }
-    }
-    Thread.stop
-  end
-elsif !defined?(DaemonKit)
-  if (RAILS_ENV == 'development') && ENV['RAKE'].blank?
-    RAILS_DEFAULT_LOGGER.info "Launching thread for AMQP"
-    Thread.new{ MessageQueue.start }
-  end
+# Start AMQP reactor thread
+unless defined?(DaemonKit) || ENV['RAKE']
+  RAILS_DEFAULT_LOGGER.info "Launching AMQP"
+  Qusion.start 
 end
 

@@ -6,8 +6,11 @@ common: &default_settings
   user: backupd
   pass: b4ckUrlIF3
   host: 127.0.0.1
+  port: 5672
   vhost: /eternos
+  timeout: 3600
   logging: false
+  ssl: false
   
 development:
   <<: *default_settings
