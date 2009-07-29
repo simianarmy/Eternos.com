@@ -13,9 +13,15 @@ class PasswordResetsController < ApplicationController
   def create
     @user = User.find_by_email(params[:email])
     if @user
-      @user.deliver_password_reset_instructions!
-      flash[:notice] = "Instructions to reset your password have been emailed to you. " +
-        "Please check your email."
+      if @user.facebook_user?
+        flash[:notice] = "You are using Facebook Connect to login.  If you need to change your password, please contact facebook."
+        @sent_email = false
+      else
+        @sent_email = true
+        @user.deliver_password_reset_instructions!
+        flash[:notice] = "Instructions to reset your password have been emailed to you. " +
+          "Please check your email."
+      end
     else
       flash[:notice] = "No user was found with that email address"
       render :action => :new
@@ -42,7 +48,7 @@ class PasswordResetsController < ApplicationController
       "If you are having issues try copying and pasting the URL " +
       "from your email into your browser or restarting the " +
       "reset password process."
-      redirect_to root_url
+      redirect_to new_password_reset_url
     end
   end
 end
