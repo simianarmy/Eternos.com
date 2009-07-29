@@ -582,14 +582,14 @@ div.frontpage {
 }
 
 #terms_of_service{
+	width:20px;
 	margin-left:60px;
 	float:left;
 }
 
 .term_text{
 	font-size:11px;
-	margin:1px 0 0 5px;
-	float:left;
+	padding-top:1px;
 }
 
 .clear{
