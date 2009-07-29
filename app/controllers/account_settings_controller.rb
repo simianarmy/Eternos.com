@@ -22,7 +22,7 @@ class AccountSettingsController < ApplicationController
   def set_email_account_auth_login  
     @item = current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id])
     @item.update_attribute(:auth_login, params[:value])
-    render :text => CGI::escapeHTML(@item.auth_login.to_s)
+    render :text => CGI::escapeHTML((@item.auth_login.to_s).gsub(/./,'*'))
   end
   
   def index

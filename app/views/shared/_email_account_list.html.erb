@@ -14,7 +14,7 @@
     <% @email_accounts.each do |@email_account| -%>
       <tr id="contact-list-<%= @email_account.id %>">
         <td class="coll-form12" valign="center"><%= in_place_editor_field(:email_account, :auth_login) %></td>
-        <td class="coll-form13" valign="center"><%= restful_in_place_editor(:span, @email_account, :auth_password, :value => '***********') %>
+        <td class="coll-form13" valign="center"><%= restful_in_place_editor(:span, @email_account, :auth_password, :value => (@email_account.password).gsub(/./,'*')) %>
         </td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
                                                       :url => {:action => 'email_account', :id => @email_account},
