@@ -54,6 +54,12 @@ function resetDinamycHeight(id){
   $(id).style.overflow = "hidden";
 }
 
+function resetDinamycHeightStepFour(id){
+  heightDiv = 590;
+  $(id).style.height = heightDiv + "px";
+  $(id).style.overflow = "hidden";
+}
+
 function getDay(selectDay){
    for(var i=1; i<=31; i++){
     var optn = document.createElement("option");
@@ -107,6 +113,7 @@ function getYear(selectYear){
 
 window.counter = 1;
 function addRowAddress(){
+  
   var inputLocType    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][location_type]", type: "text"});
   var inputStreet1    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_1]", type: "text"});
   var inputStreet2    = new Element('input', { Class: "textbox5", name: "addresses["+window.counter+"][street_2]", type: "text"});
@@ -316,6 +323,7 @@ function addRowAddress(){
   $('form_address').value = window.counter;    
   
   window.counter++
+	Scroller.reset('account-setting-content');	
 }
 
 
@@ -461,6 +469,7 @@ function addRowJob(){
   $('form_job').value = window.counter_job;
   
   window.counter_job++
+	Scroller.reset('account-setting-content');	
 }
 
 window.counter_school = 1;
@@ -638,6 +647,7 @@ function addRowSchool(){
   $('form_school').value = window.counter_school;
   
   window.counter_school++
+	Scroller.reset('account-setting-content');	
 }
 
 window.counter_medical = 1;
@@ -777,6 +787,7 @@ function addRowMedical(){
   $('form_medical').value = window.counter_medical;
   
   window.counter_medical++
+	Scroller.reset('account-setting-content');	
 }
 
 window.counter_medical_condition = 1;
@@ -871,6 +882,7 @@ function addRowMedicalCondition(){
   $('form_medical_condition').value = window.counter_medical_condition;
   
   window.counter_medical_condition++
+	Scroller.reset('account-setting-content');	
 }
 
 window.counter_family = 1;
@@ -999,6 +1011,7 @@ function addRowFamily(){
   $('form_family').value = window.counter_family;
   
   window.counter_family++
+	Scroller.reset('account-setting-content');	
 }
 
 window.counter_relationship = 1;
@@ -1145,6 +1158,7 @@ function addRowRelationship(){
   $('form_relationship').value = window.counter_relationship;
   
   window.counter_relationship++
+	Scroller.reset('account-setting-content');	
 }
 
 function createDateElement(text, val){
