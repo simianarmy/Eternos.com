@@ -88,18 +88,11 @@ class BackupSourcesController < ApplicationController
     respond_to do |format|
       format.js{
         render :update do |page|
-         if message != "activated" and message != "Twitter account is already activated"
-           page.replace "rjs-message", :partial => "shared/rjs_message", :layout => false
-           page["twitter-link"].removeClassName('twitter-active')
-           page["twitter-link"].addClassName('twitter-btn')
+           page.replace_html "rjs-message", :partial => "shared/rjs_message", :layout => false
            page.visual_effect :highlight, 'rjs-message'
-         else
-           @rjs_message =  ""
-           page.replace "rjs-message", :partial => "shared/rjs_message", :layout => false
-           page["twitter-link"].removeClassName('twitter-btn')
-           page["twitter-link"].addClassName('twitter-active')
-         end
-         
+           page.delay(4) do
+              page[:flashmessage].remove                            
+           end
         end
       }
     end
