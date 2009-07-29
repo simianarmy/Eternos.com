@@ -77,9 +77,9 @@ namespace :deploy do
 
   desc "Runs message queue daemon & clients"
   task :restart_mq do
-    #run "cd #{current_path} && rake starling:start"
-    # Restart workling - must do stop & start, restart fails
-    %w[stop start].each do |cmd|
+    run "cd #{current_path} && god -c config/workling.god"
+    # god will [re]-start workling
+    %w[stop].each do |cmd|
       run "cd #{current_path} && RAILS_ENV=#{stage} ./script/workling_client #{cmd}"
     end
   end
@@ -118,6 +118,6 @@ after "deploy:symlink", "deploy:cleanup"
 after "deploy:symlink", "deploy:sendmail"
 after "deploy:symlink", "deploy:update_crontab"
 after "deploy:update_code", "deploy:symlink_shared"
-#after "deploy:restart", "deploy:restart_mq"
+after "deploy:restart", "deploy:restart_mq"
 
 

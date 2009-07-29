@@ -2,6 +2,8 @@
 require 'rubygems'
 require 'daemons'
 
+WorklingDaemon = true
+
 workling = File.join(File.dirname(__FILE__), '..', 'vendor', 'plugins', 'workling', 'script', 'listen.rb')
 options = {
   :app_name   => "workling",
@@ -11,7 +13,7 @@ options = {
   :log_output => true,
   :multiple   => false,
   :backtrace  => true,
-  :monitor    => true
+  :monitor    => false
 }
 
 Daemons.run(workling, options)

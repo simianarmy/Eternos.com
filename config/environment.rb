@@ -175,7 +175,7 @@ Rubaidh::GoogleAnalytics.local_javascript = true
 CACHE = MemCache.new('127.0.0.1')
 
 # Start AMQP reactor thread
-unless defined?(DaemonKit) || ENV['RAKE']
+unless defined?(DaemonKit) || defined?(WorklingDaemon) || ENV['RAKE']
   RAILS_DEFAULT_LOGGER.info "Launching AMQP"
   Qusion.start 
 end

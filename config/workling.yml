@@ -8,13 +8,13 @@
 # list of server:port, server:port, server:port values to listens_on. 
 #
 production:
-  listens_on: localhost:15151
+  listens_on: localhost:5672
 
 development:
-  listens_on: localhost:22122
+  listens_on: localhost:5672
   
 test:
-  listens_on: localhost:12345
+  listens_on: localhost:5672
 
 staging:
-  listens_on: localhost:22122
+  listens_on: localhost:5672
