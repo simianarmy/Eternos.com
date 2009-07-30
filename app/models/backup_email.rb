@@ -15,6 +15,20 @@ class BackupEmail < ActiveRecord::Base
   serialize :sender
   alias_attribute :bytes, :size
   
+  acts_as_state_machine :initial => :pending_upload
+  
+  state :pending_upload
+  state :uploaded
+  state :error
+  
+  event :uploaded do
+    transitions :from => :pending_upload, :to => :uploaded
+  end
+  
+  event :upload_error do
+    transitions :from => :pending_upload, :to => :error
+  end
+  
   before_destroy :before_destroy_delete_contents
   
   named_scope :latest, lambda { |num|
@@ -26,6 +40,7 @@ class BackupEmail < ActiveRecord::Base
   # Send id to upload worker queue
   def after_commit_on_create
     MessageQueue.email_upload_queue.publish({:id => self.id}.to_json)
+    logger.debug "Sent backup email #{self.id} to upload queue"
   end
   
   # Parses raw email string to extract email attributes & contents
@@ -55,12 +70,7 @@ class BackupEmail < ActiveRecord::Base
   def gen_s3_key
     [mailbox.gsub(/\//, '_'), message_id, backup_source_id].join(':')
   end
-  
-  # checks if email saved to cloud without actually checking cloud fs
-  def uploaded?
-    s3_key && (s3_key == gen_s3_key) && (size > 0)
-  end
-  
+ 
   # Returns full path to tempfile containing raw email contents
   # Required to store on disk while waiting for asynchronous upload to cloud
   def temp_filename
@@ -69,7 +79,8 @@ class BackupEmail < ActiveRecord::Base
     
   # Called by batch uploader to reuse s3 connection
   # Takes already created S3Uploader object
-  def upload(s3)
+  # Returns true on success
+  def upload_to_s3(s3)
     # do some validity checks
     if uploaded?
       logger.warn "email #{id} already uploaded"
@@ -85,6 +96,7 @@ class BackupEmail < ActiveRecord::Base
       key = gen_s3_key
       mark = Benchmark.realtime do
         if s3.upload(email_file, key)
+          uploaded!
           update_attributes(:s3_key => key, :size => File.size(email_file))
           FileUtils.rm email_file
         end
@@ -92,7 +104,9 @@ class BackupEmail < ActiveRecord::Base
       logger.debug "Uploaded email in #{mark} seconds"
     rescue
       logger.error "error uploading email to cloud: " + $!.to_s
-      email.update_attribute(:upload_errors, $!.to_s)
+      upload_error!
+      update_attribute(:upload_errors, $!.to_s)
+      raise
     end
   end
   

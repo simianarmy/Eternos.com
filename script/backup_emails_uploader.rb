@@ -1,5 +1,7 @@
 # $Id$
 
+# backup_emails_uploader.rb [DISABLE_AMQP=1] [num_workers]
+
 # Consumes backup-email message queue jobs.
 # Forks a number of message queue subscriber workers to upload a number of 
 # email files to an Amazon S3 storage.  Each fork reuses S3 connection 
@@ -38,7 +40,7 @@ Signal.trap('TERM') {
 }
 
 # spawn workers
-workers = ARGV[1] ? (Integer(ARGV[1]) rescue 1) : 1
+workers = ARGV[0] ? (Integer(ARGV[0]) rescue 1) : 1
 puts "workers: #{workers}"
 EM.fork(workers) do
   MessageQueue.start do
@@ -59,20 +61,26 @@ EM.fork(workers) do
         run_process(queue) do |id|
           begin
             email = BackupEmail.find(id.to_i) 
-            email.upload(uploader)
-          rescue 
-            puts "error uploading email #{id}: $!"
+            email.upload_to_s3(uploader)
+          rescue Exception => e
+            puts "error uploading email #{id}: " + $!
+            puts e.backtrace
+            false
           end
         end
       end
 
+      protected
+      
       def run_process(queue, &block)
         queue.subscribe(:ack => true) { |headers, payload|
           data = ActiveSupport::JSON.decode(payload)
           puts "decoded payload: #{data.inspect}"
-          block.call(data['id'])
-          puts "done processing email"
-          headers.ack
+          # send job back to queue if it failed?
+          if block.call(data['id'])
+            puts "sending ack"
+            headers.ack
+          end
         }
       end
     end

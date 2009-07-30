@@ -48,25 +48,5 @@ describe UploadsWorker do
         @content.s3_key.should == S3Uploader.path_to_key(@content.public_filename)
       end
     end
-
-    describe "on email upload" do
-      include EmailSpecHelper
-
-      before(:each) do
-        @email = create_backup_email(:email => raw_email)
-      end
-
-      it "should delete the email file from the staging directory" do
-        File.exist?(@email.temp_filename).should be_true
-        UploadsWorker.async_upload_email_to_cloud(:id => @email.id)
-        File.exist?(@email.temp_filename).should be_false
-      end
-      
-      it "should save S3 key and file size" do
-        UploadsWorker.async_upload_email_to_cloud(:id => @email.id)
-        @email.s3_key.should_not be_nil
-        @email.size.should > 0
-      end
-    end
   end
 end

@@ -66,20 +66,33 @@ describe BackupEmail do
     before(:each) do
       @email = create_backup_email(:backup_source_id => 1)
       @email.email = raw_email
-      @email.after_commit_on_create # have to call manually??
-      @email.reload
     end
     
-    it "should return generate S3 key from attributes" do
-      @email.s3_key.should == [@email.mailbox, @email.message_id, @email.backup_source_id].join(':')
+    it "should create a file containing raw email" do
+      File.exists?(@email.temp_filename).should be_true
     end
     
-    it "should fetch raw email from s3" do
-      @email.reload.raw.should == raw_email
-    end
-    
-    it "should parse body from raw email" do
-      @email.body.should == TMail::Mail.parse(raw_email).body
+    describe "on upload" do
+      before(:each) do
+        @email.upload_to_s3(S3Uploader.new(:email))
+        @email.reload
+      end
+
+      it "should delete temp raw email file" do
+        File.exists?(@email.temp_filename).should be_false
+      end
+      
+      it "should return generate S3 key from attributes" do
+        @email.s3_key.should == [@email.mailbox, @email.message_id, @email.backup_source_id].join(':')
+      end
+
+      it "should fetch raw email from s3" do
+        @email.reload.raw.should == raw_email
+      end
+
+      it "should parse body from raw email" do
+        @email.body.should == TMail::Mail.parse(raw_email).body
+      end
     end
   end
   
@@ -87,9 +100,8 @@ describe BackupEmail do
     before(:each) do
       @email = create_backup_email(:backup_source_id => 1)
       @email.email = raw_email
-      @email.after_commit_on_create # have to call manually??
+      @email.upload_to_s3(@s3 = S3Uploader.new(:email))
       @email.reload
-      @s3 = S3Connection.new(:email)
     end
     
     it "should delete s3 first" do

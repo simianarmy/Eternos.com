@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "received_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "state"
     t.text     "upload_errors"
   end
   add_index "backup_emails", ["backup_source_id"], :name => "index_backup_emails_on_backup_source_id"
@@ -290,18 +291,9 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "commentable_type"
     t.integer  "user_id",                        :default => 0,  :null => false
   end
-
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
-  create_table "contact_emails", :force => true do |t|
-    t.integer  "profile_id"
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "content_accessors", :force => true do |t|
+   create_table "content_accessors", :force => true do |t|
     t.integer  "content_authorization_id"
     t.integer  "user_id"
     t.integer  "circle_id"
@@ -851,7 +843,5 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   create_table "dev_staging_maps", :force => true do |t|
     t.integer "dev_user_id", "staging_user_id", :null => false
   end
-  
-  rename_column("contact_emails", "name", "password")
   
 end

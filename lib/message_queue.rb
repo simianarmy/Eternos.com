@@ -52,11 +52,7 @@ module MessageQueue
 
     # Connects and runs block
     def start(connect_settings=connect_params)
-      if block_given? 
-        AMQP.start(connect_settings) { yield }
-      else
-        AMQP.start(connect_settings)
-      end
+      AMQP.start(connect_settings) { yield }
     end
       
     # Stops current reactor loop
@@ -73,6 +69,20 @@ module MessageQueue
       AMQP.connect(connect_settings) do |conn|
         @@connection = conn
         MQ.new(@@connection)
+      end
+    end
+    
+    # Runs code block inside em reactor.
+    # Helpful for one-time execution where caller doesn't know if em started 
+    # or not.
+    def execute(&block)
+      if EM.reactor_running?
+        yield
+      else
+        start do
+          block.call
+          stop
+        end
       end
     end
     

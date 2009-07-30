@@ -175,7 +175,8 @@ Rubaidh::GoogleAnalytics.local_javascript = true
 CACHE = MemCache.new('127.0.0.1')
 
 # Start AMQP reactor thread
-unless defined?(DaemonKit) || defined?(DisableAMQPStart) || ENV['RAKE']
+# Any way to tell if we are in rake or script/console?
+unless defined?(DaemonKit) || defined?(DisableAMQPStart) || ENV['DISABLE_AMQP']
   RAILS_DEFAULT_LOGGER.info "Launching AMQP"
   Qusion.start 
 end
