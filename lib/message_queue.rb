@@ -12,6 +12,7 @@ module MessageQueue
     WorkerTopicQueue  = 'backup_job'
     PendingJobsQueue  = 'pending_backups'
     FeedbackQueue     = 'ruote_backup_feedback'
+    BackupEmailUploadQueue  = 'backup_email_upload'
   end
   
   class << self
@@ -90,6 +91,10 @@ module MessageQueue
     
     def backup_worker_subscriber_queue(site, queue=WorkerTopicQueue)
       MQ.queue(site).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
+    end
+    
+    def email_upload_queue
+      MQ.queue(BackupEmailUploadQueue)
     end
     
     def create_topic_queue(channel, queue, options={})

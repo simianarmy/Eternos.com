@@ -25,7 +25,7 @@ class BackupEmail < ActiveRecord::Base
   
   # Send id to upload worker queue
   def after_commit_on_create
-    UploadsWorker.async_upload_email_to_cloud(:id => self.id)
+    MessageQueue.email_upload_queue.publish({:id => self.id}.to_json)
   end
   
   # Parses raw email string to extract email attributes & contents
@@ -67,6 +67,35 @@ class BackupEmail < ActiveRecord::Base
     File.join(AppConfig.s3_staging_dir, [self.message_id, self.backup_source_id].join(':') + '.email')
   end
     
+  # Called by batch uploader to reuse s3 connection
+  # Takes already created S3Uploader object
+  def upload(s3)
+    # do some validity checks
+    if uploaded?
+      logger.warn "email #{id} already uploaded"
+      return
+    end
+    email_file = temp_filename
+    unless File.exists?(email_file)
+      logger.warn "missing raw file (#{email_file}) for email #{id}"
+      return
+    end
+    
+    begin
+      key = gen_s3_key
+      mark = Benchmark.realtime do
+        if s3.upload(email_file, key)
+          update_attributes(:s3_key => key, :size => File.size(email_file))
+          FileUtils.rm email_file
+        end
+      end
+      logger.debug "Uploaded email in #{mark} seconds"
+    rescue
+      logger.error "error uploading email to cloud: " + $!.to_s
+      email.update_attribute(:upload_errors, $!.to_s)
+    end
+  end
+  
   private
   
   # Deletes email from s3 before destroy

@@ -77,7 +77,7 @@ namespace :deploy do
 
   desc "Runs message queue daemon & clients"
   task :restart_mq do
-    run "cd #{current_path} && god -c config/workling.god"
+    run "god load #{current_path}/config/workling.god"
     # god will [re]-start workling
     %w[stop].each do |cmd|
       run "cd #{current_path} && RAILS_ENV=#{stage} ./script/workling_client #{cmd}"
