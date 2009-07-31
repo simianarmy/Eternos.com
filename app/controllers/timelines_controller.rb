@@ -3,8 +3,8 @@
 require 'timeline_search'
 
 class TimelinesController < ApplicationController
-  before_filter :login_required, :except => [:search]
-  require_role ['Guest', 'Member'], :for_all_except => :search
+  before_filter :login_required
+  require_role ['Guest', 'Member']
 
   def guest_index
     find_host

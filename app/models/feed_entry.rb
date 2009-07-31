@@ -8,7 +8,9 @@ class FeedEntry < ActiveRecord::Base
   xss_terminate :except => [ :categories ]
   
   named_scope :latest, :order => 'published_at DESC', :limit => 1
- 
+  named_scope :in_dates, lambda { |start_date, end_date|
+    { :conditions => {:published_at => start_date..end_date} }
+  }
   after_create :fetch_contents
   
   def to_s

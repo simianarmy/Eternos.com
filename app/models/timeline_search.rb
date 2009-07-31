@@ -20,6 +20,7 @@ class TimelineSearchFaker
   
   def initialize(user_id, dates, options)
     @options = options
+    @start_date, @end_date = dates
     @member = Member.by_name('TESTDUDE').first || Member.find(user_id)
     @facebook_source = @member.backup_sources.by_site(BackupSite::Facebook).first
   end
@@ -46,23 +47,23 @@ class TimelineSearchFaker
   
   # Returns random activity
   def get_activity_stream_item
-    @member.activity_stream.items.rand rescue nil
+    @member.activity_stream.items.in_dates(@start_date, @end_date).rand rescue nil
   end
   
   # Returns random photo from random album
   def get_backup_photo
-    @facebook_source.backup_photo_albums.rand.backup_photos.rand rescue nil
+    @facebook_source.backup_photo_albums.rand.backup_photos.in_dates(@start_date, @end_date).rand rescue nil
   end
   
   def get_email
     if gmail = @member.backup_sources.by_site(BackupSite::Gmail).rand
-      gmail.backup_emails.rand
+      gmail.backup_emails.in_dates(@start_date, @end_date).rand
     end
   end
   
   def get_feed_item
     if feed = @member.backup_sources.by_site(BackupSite::Blog).rand
-      feed.feed.entries.rand
+      feed.feed.entries.in_dates(@start_date, @end_date).rand
     end
   end
 end

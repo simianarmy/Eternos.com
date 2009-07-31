@@ -24,7 +24,7 @@ class BackupJobPublisher
   # Adds backup job request to backup queue for a single backup source
   def self.add_source(backup_source)
     MessageQueue.execute do
-      backup_queue.publish BackupJobMessage.new.source_payload(backup_source)
+      MessageQueue.pending_backup_jobs_queue.publish BackupJobMessage.new.source_payload(backup_source)
     end
     RAILS_DEFAULT_LOGGER.info "Sent backup job to queue for backup source (#{backup_source.id})"
   end

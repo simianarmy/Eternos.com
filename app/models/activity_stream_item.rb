@@ -24,6 +24,9 @@ class ActivityStreamItem < ActiveRecord::Base
       :order => 'published_at DESC', :limit => num || 1
     }
   }
+  named_scope :in_dates, lambda { |start_date, end_date|
+    { :conditions => {:published_at => start_date..end_date} }
+  }
   
   def bytes
     message.length + (attachment_data ? attachment_data.length : 0)

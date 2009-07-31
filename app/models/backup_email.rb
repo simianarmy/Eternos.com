@@ -36,6 +36,9 @@ class BackupEmail < ActiveRecord::Base
       :order => 'received_at DESC', :limit => num || 1
     }
   }
+  named_scope :in_dates, lambda { |start_date, end_date|
+    { :conditions => {:received_at => start_date..end_date} }
+  }
   
   # Send id to upload worker queue
   def after_commit_on_create
