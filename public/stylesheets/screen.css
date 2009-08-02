@@ -194,11 +194,21 @@ input.login:hover {
 	background: url(/images/button-login.png) no-repeat;
 }
 
-.text-left{
+.checkbox-left{
 	text-align:left;
 	font-family:arial;
-	font-size:12px;
 	margin-left:-5px;
+	width:20px;
+	height:20px;
+	float:left;
+}
+
+.text-left{
+	font-family:arial;
+	font-size:11px;
+	float:left;
+	padding:2px 0 0 5px;
+	color:#626262;
 }
 
 input.submit {
