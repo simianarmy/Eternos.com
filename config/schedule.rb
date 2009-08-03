@@ -19,16 +19,18 @@
 
 # Learn more: http://github.com/javan/whenever
 
+rake_opts = '--trace'
+
 every 1.day, :at => "2am" do
-  rake "RAKE=1 backup:publish_jobs"
+  rake "#{rake_opts} DISABLE_AMQP=1 backup:publish_jobs"
 end
 
 every 1.day do
-  rake "backup:generate_report"
+  rake "#{rake_opts} backup:generate_report"
 end
 
 every 1.hour do
-  rake "RAKE=1 backup:download_photos"
+  rake "#{rake_opts} DISABLE_AMQP=1 backup:download_photos"
 end
 
 every :saturday, :at => "4am" do

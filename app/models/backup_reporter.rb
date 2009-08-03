@@ -6,7 +6,7 @@
 module S3PriceCalculator
   class << self
     def calculate_monthly_storage_cost(bytes)
-      per_gig = bytes.fdiv 1.gigabyte
+      per_gig = bytes.to_f / 1.gigabyte.to_f
       if bytes < 50.terabytes
         per_gig * 0.15
       elsif bytes < 100.terabytes
@@ -44,14 +44,14 @@ class BackupReporter
       total[key.to_s + '_size']   ||= 0
       latest[key.to_s + '_size']  ||= 0
       
-      size = klass.first.respond_to?(:bytes) ? klass.all.map(&:bytes).sum : 0
+      size = klass.first.respond_to?(:bytes) ? klass.all.collect(&:bytes).compact.sum : 0
       total[key]   = klass.count
       total[key.to_s + '_size'] += size
       total[:backup_items] += total[key]
       total[:backup_size] += size
       
       last_day = klass.created_at_greater_than_or_equal_to(1.day.ago)
-      size = last_day.first.respond_to?(:bytes) ? last_day.map(&:bytes).sum : 0
+      size = last_day.first.respond_to?(:bytes) ? last_day.collect(&:bytes).compact.sum : 0
       latest[key]  = last_day.count
       latest[key.to_s + '_size'] += size
       latest[:backup_items] += latest[key]
@@ -59,10 +59,10 @@ class BackupReporter
     end
     
     # Calculate s3 costs
-    total[:backup_s3_size] = BackupPhoto.all.map(&:bytes).sum + BackupEmail.sum(:size)
+    total[:backup_s3_size] = BackupPhoto.all.collect(&:bytes).compact.sum + BackupEmail.sum(:size)
     total[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:backup_s3_size])
     
-    latest[:backup_s3_size] = BackupPhoto.created_at_greater_than_or_equal_to(1.day.ago).map(&:bytes).sum +
+    latest[:backup_s3_size] = BackupPhoto.created_at_greater_than_or_equal_to(1.day.ago).collect(&:bytes).compact.sum +
       BackupEmail.created_at_greater_than_or_equal_to(1.day.ago).sum(:size)
     latest[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:s3_cost])
     
