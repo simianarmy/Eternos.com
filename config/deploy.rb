@@ -75,13 +75,10 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/assets"
   end
 
-  desc "Runs message queue daemon & clients"
-  task :restart_mq do
-    run "god load #{current_path}/config/workling.god"
-    # god will [re]-start workling
-    %w[stop].each do |cmd|
-      run "cd #{current_path} && RAILS_ENV=#{stage} ./script/workling_client #{cmd}"
-    end
+  desc "Restarts any work daemons"
+  task :restart_daemons do
+    run "god load #{current_path}/config/daemons.god"
+    run "god restart eternos"
   end
   
   task :build_native do
@@ -118,6 +115,6 @@ after "deploy:symlink", "deploy:cleanup"
 after "deploy:symlink", "deploy:sendmail"
 after "deploy:symlink", "deploy:update_crontab"
 after "deploy:update_code", "deploy:symlink_shared"
-after "deploy:restart", "deploy:restart_mq"
+after "deploy:restart", "deploy:restart_daemons"
 
 

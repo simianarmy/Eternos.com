@@ -4,7 +4,7 @@ require 'tmail'
 
 class BackupEmail < ActiveRecord::Base
   include AfterCommit::ActiveRecord
-  
+
   belongs_to :backup_source
   
   validates_presence_of :mailbox
@@ -14,7 +14,8 @@ class BackupEmail < ActiveRecord::Base
   attr_reader :raw_email
   serialize :sender
   alias_attribute :bytes, :size
-  
+
+  acts_as_archivable :on => :received_at
   acts_as_state_machine :initial => :pending_upload
   
   state :pending_upload
@@ -36,10 +37,7 @@ class BackupEmail < ActiveRecord::Base
       :order => 'received_at DESC', :limit => num || 1
     }
   }
-  named_scope :in_dates, lambda { |start_date, end_date|
-    { :conditions => {:received_at => start_date..end_date} }
-  }
-  
+
   # Send id to upload worker queue
   def after_commit_on_create
     MessageQueue.email_upload_queue.publish({:id => self.id}.to_json)

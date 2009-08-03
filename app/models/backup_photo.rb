@@ -9,6 +9,7 @@ class BackupPhoto < ActiveRecord::Base
   
   serialize :tags
   xss_terminate :except => [ :tags ]
+  acts_as_archivable :on => :created_at
   acts_as_state_machine :initial => :pending_download
   
   state :pending_download
@@ -29,11 +30,7 @@ class BackupPhoto < ActiveRecord::Base
   end
   
   named_scope :needs_download, :conditions => { :state => 'pending_download' }
-  named_scope :in_dates, lambda { |start_date, end_date|
-    {
-      :conditions => {:created_at => start_date..end_date}
-    }
-  }
+  
   EditableAttributes = [:caption, :source_url, :tags]
   
   def self.db_attributes

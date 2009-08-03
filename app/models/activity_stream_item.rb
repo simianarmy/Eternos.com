@@ -5,6 +5,8 @@
 class ActivityStreamItem < ActiveRecord::Base
   belongs_to :activity_stream
   
+  acts_as_archivable :on => :published_at
+  
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
     create!(
@@ -23,9 +25,6 @@ class ActivityStreamItem < ActiveRecord::Base
     {
       :order => 'published_at DESC', :limit => num || 1
     }
-  }
-  named_scope :in_dates, lambda { |start_date, end_date|
-    { :conditions => {:published_at => start_date..end_date} }
   }
   
   def bytes

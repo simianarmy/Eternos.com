@@ -10,4 +10,5 @@ class GmailAccount < BackupSource
   validates_uniqueness_of :auth_login, :message => "Email already saved", :scope => :user_id
   
   alias_attribute :email, :auth_login
+  
 end

@@ -70,7 +70,15 @@ class Address < ActiveRecord::Base
   named_scope :business, :conditions  => {:location_type => Business}
   named_scope :billing, :conditions   => {:location_type => Billing}
   named_scope :birth, :conditions     => {:location_type => Birth}
-  
+  # TODO: use acts_as helper
+  named_scope :in_dates, lambda { |start_date, end_date|
+    {
+      :conditions => ["(moved_in_on >= ? AND moved_out_on <= ?) OR " +
+        "(moved_out_on IS NULL AND moved_in_on <= ? AND DATE(NOW()) > ?)",
+        start_date, end_date,
+        end_date, start_date]
+      }
+    }
   # Returns true if address location is one that needs validation
   def validatible_location
     location_type != Birth

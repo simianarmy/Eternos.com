@@ -10,8 +10,6 @@ class Profile < ActiveRecord::Base
     m.has_many :medicals
     m.has_many :medical_conditions
     m.has_many :families
-    m.has_many :feed_urls
-    m.has_many :contact_emails
     m.has_one :facebook_content
   end
   
@@ -24,7 +22,17 @@ class Profile < ActiveRecord::Base
     
   include Addressable
   after_update :save_associations
-    
+  
+  # Returns associations in hash that fall within specified date range  
+  def timeline(starting, ending)
+    {:addresses         => addresses.in_dates(starting, ending),
+    :careers            => careers.in_dates(starting, ending),
+    :education          => schools.in_dates(starting, ending),
+    :medical            => medicals,
+    :medical_conditions => medical_conditions,
+    :family             => families}
+  end
+  
   def birth_address
     addresses.find_birth(:first) || addresses.build(:location_type => Address::Birth)
   end

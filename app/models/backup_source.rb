@@ -21,6 +21,11 @@ class BackupSource < ActiveRecord::Base
     { :joins => :backup_photo_albums, :conditions => {'backup_photo_albums.source_album_id' => id} }
   }
   
+  # Uses searchlogic association named_scope to find all photos
+  # def photos
+  #     backup_photo_albums.backup_photos_id_not_null.map(&:backup_photos)
+  #   end
+  
   def login_failed!(error) 
     update_attributes(:last_login_attempt_at => Time.now, :auth_error => error)
   end

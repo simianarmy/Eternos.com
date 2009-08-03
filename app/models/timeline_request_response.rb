@@ -38,6 +38,7 @@ private
   # Parses rest uri for actions & opts
   def search_events
     klass = @options[:fake] ? TimelineSearchFaker : TimelineSearch
+    #klass = TimelineSearch # Switching to real data
     search = klass.new(@params[:id], [@params[:start_date], @params[:end_date]], @options)
     @results = search.results
   end

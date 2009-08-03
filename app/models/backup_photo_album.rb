@@ -13,6 +13,15 @@ class BackupPhotoAlbum < ActiveRecord::Base
   
   EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
   
+  # Returns all backup_photos for every album between specified dates.
+  # Tried chaining scopes...foo
+  named_scope :photos_in_dates, lambda { |start_date, end_date|
+    {
+      :joins => :backup_photos,
+      :conditions => {'backup_photos.created_at' => start_date..end_date},
+      :select => 'backup_photos.*'
+    }
+  }
   def self.import(source, album)
     self.create(
       {:backup_source => source, :source_album_id => album.id}.merge(album.to_h)
