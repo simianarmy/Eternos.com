@@ -156,6 +156,7 @@ module LayoutHelper
 
   def use_timeline
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
+    javascript 'prototype'
     stylesheet 'timeline'
     javascript "http://simile.mit.edu/timeline/api/timeline-api.js"
     javascript "timeline_helper"
