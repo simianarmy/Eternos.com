@@ -23,7 +23,7 @@ module Workling
       
       # subscribe to a queue
       def subscribe(key)
-        Workling::Base.logger "Subscribing to queue: #{key}"
+        Workling::Base.logger.debug "Subscribing to queue: #{key}"
         #puts "with amqp settings: #{AMQP.settings.inspect}"
         @amq.queue(key).subscribe do |data|
           value = Marshal.load(data)
@@ -34,7 +34,7 @@ module Workling
       # request and retrieve work
       def retrieve(key); @amq.queue(key); end
       def request(key, value)
-        Workling::Base.logger "Publishing to queue #{key}: #{value.inspect}"
+        Workling::Base.logger.debug "Publishing to queue #{key}: #{value.inspect}"
         #puts "with amqp settings: #{AMQP.settings.inspect}"
         data = Marshal.dump(value)
         @amq.queue(key).publish(data)
