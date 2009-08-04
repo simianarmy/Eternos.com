@@ -8,7 +8,15 @@ class UploadsWorker < Workling::Base
   # content (media) uploader to S3
   def upload_content_to_cloud(payload)
     logger.debug "Upload worker got payload #{payload.inspect}"
-    return unless content = Content.find(payload[:id])
+    begin
+      content = Content.find(payload[:id])
+    rescue ActiveRecord::StatementInvalid => e
+      # Catch mysql has gone away errors
+      if e.to_s =~ /away/
+        ActiveRecord::Base.connection.reconnect! 
+        retry
+      end
+    end
     
     begin
       content.start_cloud_upload!

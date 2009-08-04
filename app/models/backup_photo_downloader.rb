@@ -11,20 +11,21 @@ class BackupPhotoDownloader
   def self.run(max=MaxDownloads)
     # Run in em loop since rake tasks do not start amqp
     MessageQueue.execute do
-      BackupPhoto.needs_download.shuffle[0..max.to_i].each do |bp|
-        RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
-        sleep(1) # Don't flood source with download requests
-        bp.starting_download!
-        bp.download
+      # Why is shuffle causing undefined method `shuffle' for #<Class:>??
+        BackupPhoto.needs_download.shuffle[0..max.to_i].each do |bp|
+          RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
+          sleep(1) # Don't flood source with download requests
+          bp.starting_download!
+          bp.download
 
-        if bp.photo
-          RAILS_DEFAULT_LOGGER.debug "Downloading complete"
-          bp.download_complete!
-        else
-          RAILS_DEFAULT_LOGGER.error "Error downloading backup photo"
-          bp.download_error!
+          if bp.photo
+            RAILS_DEFAULT_LOGGER.debug "Downloading complete"
+            bp.download_complete!
+          else
+            RAILS_DEFAULT_LOGGER.error "Error downloading backup photo"
+            bp.download_error!
+          end
         end
-      end
     end
   end
 end

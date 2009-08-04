@@ -22,7 +22,7 @@
 rake_opts = '--trace'
 
 every 1.day, :at => "2am" do
-  rake "#{rake_opts} DISABLE_AMQP=1 backup:publish_jobs"
+  rake "#{rake_opts} backup:publish_jobs"
 end
 
 every 1.day do
@@ -30,7 +30,7 @@ every 1.day do
 end
 
 every 1.hour do
-  rake "#{rake_opts} DISABLE_AMQP=1 backup:download_photos"
+  rake "#{rake_opts} backup:download_photos"
 end
 
 every :saturday, :at => "4am" do

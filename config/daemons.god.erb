@@ -44,7 +44,7 @@ def generic_monitoring(w, options = {})
 end
 
 God.watch do |w|
-  script = "RAILS_ENV='development' #{RAILS_ROOT}/script/workling_client"
+  script = "RAILS_ENV='<%= RAILS_ENV %>' #{RAILS_ROOT}/script/workling_client"
   w.name = "eternos-workling"
   w.group = "eternos"
   w.interval = 60.seconds
@@ -65,7 +65,7 @@ God.watch do |w|
   w.name = "eternos-email-uploader"
   w.group = "eternos"
   w.interval = 60.seconds
-  w.start = "RAILS_ENV='development' ruby #{script}"
+  w.start = "RAILS_ENV='<%= RAILS_ENV %>' ruby #{script}"
   w.stop = "ps auxw|grep backup_emails_uploader | awk '{print $2}' | xargs kill -9"
   w.start_grace = 20.seconds
   w.restart_grace = 20.seconds

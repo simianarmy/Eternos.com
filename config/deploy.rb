@@ -77,6 +77,7 @@ namespace :deploy do
 
   desc "Restarts any work daemons"
   task :restart_daemons do
+    run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
     run "god load #{current_path}/config/daemons.god"
     run "god restart eternos"
   end
