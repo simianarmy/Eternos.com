@@ -7,19 +7,23 @@
 class BackupPhotoDownloader
   MaxDownloads = 100
   
+  # Run by periodic rake task
   def self.run(max=MaxDownloads)
-    BackupPhoto.needs_download.shuffle[0..max].each do |bp|
-      RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
-      sleep(1) # Don't flood source with download requests
-      bp.starting_download!
-      bp.download
+    # Run in em loop since rake tasks do not start amqp
+    MessageQueue.execute do
+      BackupPhoto.needs_download.shuffle[0..max.to_i].each do |bp|
+        RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
+        sleep(1) # Don't flood source with download requests
+        bp.starting_download!
+        bp.download
 
-      if bp.photo
-        RAILS_DEFAULT_LOGGER.debug "Downloading complete"
-        bp.download_complete!
-      else
-        RAILS_DEFAULT_LOGGER.error "Error downloading backup photo"
-        bp.download_error!
+        if bp.photo
+          RAILS_DEFAULT_LOGGER.debug "Downloading complete"
+          bp.download_complete!
+        else
+          RAILS_DEFAULT_LOGGER.error "Error downloading backup photo"
+          bp.download_error!
+        end
       end
     end
   end

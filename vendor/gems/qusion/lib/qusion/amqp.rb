@@ -25,6 +25,7 @@ module AMQP
       end
       die_gracefully_on_signal
     else
+      @settings = Qusion::AmqpConfig.new(*args).config_opts
       puts "=> Qusion did not find a supported app server (This is normal for workling workers)"
     end
   end

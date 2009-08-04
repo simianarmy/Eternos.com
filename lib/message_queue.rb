@@ -52,7 +52,13 @@ module MessageQueue
 
     # Connects and runs block
     def start(connect_settings=connect_params)
-      AMQP.start(connect_settings) { yield }
+      if block_given?
+        AMQP.start(connect_settings) { yield }
+      else
+        Thread.new do
+          EM.run { AMQP.start(connect_settings) }
+        end
+      end
     end
       
     # Stops current reactor loop
@@ -113,3 +119,4 @@ module MessageQueue
     end
   end
 end
+
