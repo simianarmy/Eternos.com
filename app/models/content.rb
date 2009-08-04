@@ -155,8 +155,8 @@ class Content < ActiveRecord::Base
   # Adds uploader job to queue if file needs to be added to storage
   # because just created or modified.
   def upload
-    logger.info "Sending content to uploader worker"
     UploadsWorker.async_upload_content_to_cloud(:id => self.id)
+    logger.info "Sent content to uploader worker"
   end
   
   # Override in subclasses that can be played like audio & video

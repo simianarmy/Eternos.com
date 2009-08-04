@@ -132,6 +132,21 @@ Rails::Initializer.run do |config|
   config.load_paths << "#{RAILS_ROOT}/app/sweepers"
   config.load_paths << "#{RAILS_ROOT}/app/presenters"
   config.load_paths << "#{RAILS_ROOT}/app/renderers"
+  
+  config.after_initialize do
+    require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
+    unless defined?(DaemonKit) || defined?(DisableAMQPStart) || ENV['DISABLE_AMQP']
+      RAILS_DEFAULT_LOGGER.info "Launching AMQP"
+      Qusion.start 
+    end
+    # Setup workling
+    Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
+    Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
+    Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
+    # Setup memcached connection
+    CACHE = MemCache.new('127.0.0.1')
+  end
+  
 end
 
 # Load email config
@@ -149,7 +164,7 @@ require 'whenever' # For Capistrano requirement
 require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
-require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
+
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
@@ -172,15 +187,3 @@ ENV['RECAPTCHA_PRIVATE_KEY'] = '6Le7nwYAAAAAAOdPcWOZSu8K4P1CRFC1Djyn1pMw'
 Rubaidh::GoogleAnalytics.tracker_id = 'UA-9243545-1'
 Rubaidh::GoogleAnalytics.local_javascript = true
 
-CACHE = MemCache.new('127.0.0.1')
-
-# Start AMQP reactor thread
-# Any way to tell if we are in rake or script/console?
-unless defined?(DaemonKit) || defined?(DisableAMQPStart) || ENV['DISABLE_AMQP']
-  RAILS_DEFAULT_LOGGER.info "Launching AMQP"
-  Qusion.start 
-end
-# Setup workling
-Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
-Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
-Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new

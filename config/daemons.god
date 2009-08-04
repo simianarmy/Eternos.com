@@ -3,6 +3,7 @@
 # God config file for eternos support daemons
 
 RAILS_ROOT = File.dirname(File.dirname(__FILE__))
+RAILS_ENV = "staging"
 
 def generic_monitoring(w, options = {})
   w.start_if do |start|
@@ -42,7 +43,7 @@ def generic_monitoring(w, options = {})
 end
 
 God.watch do |w|
-  script = "#{RAILS_ROOT}/script/workling_client"
+  script = "RAILS_ENV=#{RAILS_ENV} #{RAILS_ROOT}/script/workling_client"
   w.name = "eternos-workling"
   w.group = "eternos"
   w.interval = 60.seconds
@@ -59,7 +60,7 @@ God.watch do |w|
 end
 
 God.watch do |w|
-  script = "#{RAILS_ROOT}/script/backup_emails_uploader.rb"
+  script = "RAILS_ENV=#{RAILS_ENV} #{RAILS_ROOT}/script/backup_emails_uploader.rb"
   w.name = "eternos-email-uploader"
   w.group = "eternos"
   w.interval = 60.seconds

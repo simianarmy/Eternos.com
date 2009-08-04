@@ -7,6 +7,7 @@ require 'benchmark'
 class UploadsWorker < Workling::Base
   # content (media) uploader to S3
   def upload_content_to_cloud(payload)
+    logger.debug "Upload worker got payload #{payload.inspect}"
     return unless content = Content.find(payload[:id])
     
     begin

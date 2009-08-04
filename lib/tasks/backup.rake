@@ -6,7 +6,8 @@
 namespace :backup do
   desc "Download new backup photos"
   task :download_photos => :environment do
-    BackupPhotoDownloader.run
+    count = ENV['COUNT'] || 100
+    BackupPhotoDownloader.run count
   end
   
   desc "Generate backup jobs"

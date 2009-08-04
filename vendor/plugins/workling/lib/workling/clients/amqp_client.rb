@@ -23,6 +23,7 @@ module Workling
       
       # subscribe to a queue
       def subscribe(key)
+        puts "Subscribing to queue: #{key}"
         @amq.queue(key).subscribe do |data|
           value = Marshal.load(data)
           yield value
