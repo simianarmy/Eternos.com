@@ -34,7 +34,9 @@ var ETLDate = Class.create({
   getOutDate: function(){
     if(this.inFormat == 'natural'){
       this.outDate = this.inDate.getFullYear() +'-'+ this.inDate.getMonth() +'-'+ this.inDate.getDate();
-    } else {
+    } else if (this.inFormat == 'gregorian'){
+			this.outDate = Timeline.DateTime.parseGregorianDateTime(this.inDate.substr(0, 4));
+		}	else{
       this.outDate = new Date(this.inDate.substr(0, 4), this.inDate.substr(5, 2), this.inDate.substr(8, 2));
     }
   }
@@ -374,13 +376,13 @@ var ETLBase = Class.create({
     this.endDate = params.endDate || new ETLDate(date);
     this.options = params;
     this.theme = Timeline.ClassicTheme.create();
-		var d = Timeline.DateTime.parseGregorianDateTime("1960");
+		
     this.bandInfos = [
 			Timeline.createBandInfo({
 			  width:          "10%", 
 			  intervalUnit:   Timeline.DateTime.DECADE, 
 			  intervalPixels: 200,
-			  date:           d,
+			  date:           date,
 			  showEventText:  false,
 			  theme:          this.theme
 			}),		
@@ -388,14 +390,14 @@ var ETLBase = Class.create({
 				width:          "60%",
 				intervalUnit:   Timeline.DateTime.DAY,
 				intervalPixels: 200,
-				date:           d,
+				date:           date,
 				theme: this.theme
 			}),
 			Timeline.createBandInfo({
 				width:          "15%",
 				intervalUnit:   Timeline.DateTime.MONTH,
 				intervalPixels: 200,
-				date:           d,
+				date:           date,
 				overview: true,
 				eventSource: params.eventSource || new Timeline.DefaultEventSource(),
 				theme: this.theme
@@ -404,16 +406,16 @@ var ETLBase = Class.create({
         width:          "15%",
         intervalUnit:   Timeline.DateTime.YEAR,
 				overview: true,
-				date:           d,
+				date:           date,
         intervalPixels: 200,
         theme: this.theme
       })
      ];
-    this.setupBands();
+    this.setupBands(this);
     this.init();
   },
   
-  setupBands: function(){
+  setupBands: function(obj){
 		this.bandInfos[1].syncWith = 0;
     this.bandInfos[2].syncWith = 1;
 		this.bandInfos[3].syncWith = 2;
@@ -423,17 +425,20 @@ var ETLBase = Class.create({
 		this.bandInfos[2].highlight = true;
 		this.bandInfos[3].highlight = true;
 		
+		var start_date = new ETLDate(obj.startDate, 'gregorian').outDate;
+		var end_date = new ETLDate(obj.endDate, 'gregorian').outDate;
+		
     this.bandInfos[0].etherPainter = new Timeline.YearCountEtherPainter({
-        startDate:  "Nov 14 1938 00:00:00 GMT",
+        startDate:  start_date,
         multiple:   5,
         theme:      this.theme
     });
     this.bandInfos[0].decorators = [
         new Timeline.SpanHighlightDecorator({
-            startDate:  "Nov 14 1938 00:00:00 GMT",
-            endDate:    "Dec 05 2008 00:00:00 GMT",
+            startDate:  start_date,
+            endDate:    end_date,
             startLabel: "birth",
-            endLabel:   "death",
+            endLabel:   "",
             color:      "#5AAAC7",
             opacity:    50,
             theme:      this.theme
@@ -441,7 +446,7 @@ var ETLBase = Class.create({
     ];
     this.bandInfos[1].decorators = [
         new Timeline.SpanHighlightDecorator({
-					  startDate:  "Nov 14 1930 00:00:00 GMT",
+					  startDate:  start_date,
             color:      "#B2CAD7",
             theme:      this.theme
         })
