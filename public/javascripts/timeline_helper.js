@@ -144,10 +144,10 @@ var ETLArtifactItem = Class.create({
     } else if (this.sourceEvent.backup_photo){
       this.imageUrl = this.sourceEvent.backup_photo.source_url;
       this.itemType = "Backup Photo";
-    }     
+    }
   },
   toHtml: function(){
-    rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<a href=# onclick=\"Lightview.show( {href:'"+this.imageUrl+"', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+ encodeURIComponent('cd0107f95e066667938b7f27f3b4732cf8ace5ca')}, autosize:false, closeButton:false, width:800}, rel:'iframe'});return false;\"><img src='" +this.imageUrl+ "' class='thumnails2' /></a>";
+    rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<img src='" +this.imageUrl+ "' class='thumnails2' />";
     return rv;      
   }
 })
@@ -321,43 +321,65 @@ var ETLEventSourceEmail = Class.create(ETLEventSource, {
 //Eternos Timeline Event Parser
 var ETLEventParser = Class.create({
   initialize: function(events){
-    this.events = events;
+    this.timelineEvents = new Array();
+    this.artifactItems = new Array();
+    this.jsonEvents = events.evalJSON();
+    this.doParsing();
+    
   },
-  parse: function(){
-    for(var i=0;i<this.events.results.length-1;i++) {
-      if (this.events.results[i].event != null){}
-    }; 
+  doParsing: function(){
+    for(var i=0;i<this.jsonEvents.results.length;i++) {
+      if (this.jsonEvents.results[i].event != null){
+        var event = this.jsonEvents.results[i].event;
+        
+        var tmlne_event = new ETLEventSource(event);
+        var artft_item = new ETLArtifactItem(event);
+        
+        if (artft_item != null){
+          this.artifactItems.push(artft_item);
+        }
+        
+        this.timelineEvents.push(this.jsonEvents.results[i].event);
+      }
+    };
   }
 })
 
 
 //Eternos Timeline Search
+//init: timeline object and {startDate: 'sring date', endDate: 'string date', options: 'string'}
 var ETLSearch = Class.create({
-  initialize: function(member_id, params){
+  initialize: function(timeline, params){
     var date = new Date();
     
+    this.timeline = timeline;
     this.searchUrl = "/timeline/search/js/";
     this.startDate = params.startDate || new ETLDate(date).outDate;
     this.endDate = params.endDate || new ETLDate(date).outDate;
     this.options = params.options;
+    this.complete = false;
     
-    this.getFullSearchUrl();
-    this.response = this.getJSON();
+    this._getFullSearchUrl();
+    this._getJSON(this.timeline, this.fullSearchUrl);
   },
-  getFullSearchUrl: function(){
+  _getFullSearchUrl: function(){
     this.fullSearchUrl = this.searchUrl + window._ETLMemberID +'/'+ this.startDate +'/'+ this.endDate +'/'+ this.options
   },
-  getJSON: function(){
-    var response = new Ajax.Request(this.fullSearchUrl, {
+  _getJSON: function(tmline, url){
+    new Ajax.Request(url, {
       method: 'get',
       onSuccess: function(transport){
-        var response = transport;
-        this.response_text = transport.responseText;
+        var response = transport.responseText || "";
+        tmline.pushEvents(response);
+        tmline.hideLoading();
       },
-      onFailure: function(){},
-      onLoading: function(){}
+      onFailure: function(){
+        tmline.showError();
+      },
+      onLoading: function(){
+        tmline.showLoading();
+      }
     });
-    return response;
   }
 })
 
@@ -379,7 +401,7 @@ var ETLBase = Class.create({
 		
     this.bandInfos = [
 			Timeline.createBandInfo({
-			  width:          "10%", 
+			  width:          "20%", 
 			  intervalUnit:   Timeline.DateTime.DECADE, 
 			  intervalPixels: 200,
 			  date:           date,
@@ -387,14 +409,14 @@ var ETLBase = Class.create({
 			  theme:          this.theme
 			}),		
 			Timeline.createBandInfo({
-				width:          "60%",
+				width:          "55%",
 				intervalUnit:   Timeline.DateTime.DAY,
 				intervalPixels: 200,
 				date:           date,
 				theme: this.theme
 			}),
 			Timeline.createBandInfo({
-				width:          "15%",
+				width:          "13%",
 				intervalUnit:   Timeline.DateTime.MONTH,
 				intervalPixels: 200,
 				date:           date,
@@ -403,7 +425,7 @@ var ETLBase = Class.create({
 				theme: this.theme
 			}),
 			Timeline.createBandInfo({
-        width:          "15%",
+        width:          "12%",
         intervalUnit:   Timeline.DateTime.YEAR,
 				overview: true,
 				date:           date,
@@ -411,11 +433,11 @@ var ETLBase = Class.create({
         theme: this.theme
       })
      ];
-    this.setupBands(this);
+    this._setupBands(this);
     this.init();
   },
   
-  setupBands: function(obj){
+  _setupBands: function(obj){
 		this.bandInfos[1].syncWith = 0;
     this.bandInfos[2].syncWith = 1;
 		this.bandInfos[3].syncWith = 2;
@@ -452,33 +474,37 @@ var ETLBase = Class.create({
         })
     ];		
   },
-  init: function(){
-    this.create();
-    this.showLoading();
-    this.searchEvents();
-    this.addEvents(this.searchResults);
-  },
-  create: function(){
-    this.timeline = Timeline.create(document.getElementById(this.domID), this.bandInfos);
-  },
-  addEventSource: function(){},
-  onBandScrolling: function(){
-    this.timeline.getBand(0).addOnScrollListener(function(band){
-      var min_date = new ETLDate(band.getMinVisibleDate(), 'rails').outputDate;
-      var max_date = new ETLDate(band.getMaxVisibleDate(), 'rails').outputDate;
-    });      
-  },
-  searchEvents: function(){
-    this.searchResults = new ETLSearch(this.memberID, this.params);
-    this.addEvents();
-  },
-  onWindowResize: function(){
+  _handleWindowResize: function(){
     if (window._ETLResizeTimerID == null) {
       window._ETLResizeTimerID = window.setTimeout(function() {
         window._ETLResizeTimerID = null;
-        tl.layout();
+        this.timeline.timeline.layout();
       }, 500);
     }    
+  },  
+  _create: function(){
+    this.timeline = Timeline.create(document.getElementById(this.domID), this.bandInfos);
+  },  
+  _onBandScrolling: function(){
+    this.timeline.getBand(0).addOnScrollListener(function(band){
+      var min_date = new ETLDate(band.getMinVisibleDate()).outputDate;
+      var max_date = new ETLDate(band.getMaxVisibleDate()).outputDate;
+      //TODO:
+    });
+  },  
+  _parseEvents: function(){
+    this.events = new ETLEventParser(this.sourceEvent);
+  },
+  _populateEvents: function(){},  
+  init: function(){
+    this._create();
+    this._handleWindowResize();
+    this._onBandScrolling();
+    this.searchEvents();
+  },
+  searchEvents: function(){
+    var prm = {startDate: '2009-04-28', endDate: '2009-04-29', options: 'fake'}
+    new ETLSearch(this, prm);
   },
   showLoading: function(){
     this.timeline.showLoadingMessage();
@@ -486,12 +512,14 @@ var ETLBase = Class.create({
   hideLoading: function(){
     this.timeline.hideLoadingMessage();
   },
-  addEvents: function(){
-    
+  pushEvents: function(events){
+    this.sourceEvent = events;
+    this._parseEvents();
+    this._populateEvents();
   },
   showError: function(){
-    alert('Error loading timeline data, reload your browser');
+    this.hideLoading();
+    //TODO:
   },
-  toggleDetails: function(){},
-  setTheme: function(){}  
+  showBubble: function(elements){}
 })
