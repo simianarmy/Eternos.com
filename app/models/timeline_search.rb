@@ -21,7 +21,7 @@ class TimelineSearch
   end
   
   def num_results
-    @options[:empty] ? 0 : (@options[:max_result] || MaxResults)
+    @options[:empty] ? 0 : (@options[:max_result] || MaxResults).to_i
   end
   
   def get_profile
@@ -70,17 +70,21 @@ class TimelineSearch
 end
 
 class TimelineSearchFaker < TimelineSearch
-  
   def initialize(user_id, dates, options={})
+    require 'random_data'
     super(user_id, dates, options)
     @member = Member.by_name('TESTDUDE').first || Member.find(user_id)
   end
   
   def results
-    num_results.times do 
+    until @events.size >= num_results
       add_events pick_random_result
     end
     add_events get_profile
+    min = Date.parse @start_date
+    max = Date.parse @end_date
+    # Assign random date within range to each result
+    @events.map {|e| e.start_date = Random.date_between(min..max) }
     @events.uniq
   end
   
@@ -91,19 +95,19 @@ class TimelineSearchFaker < TimelineSearch
   
   # Returns random activity
   def get_activity_stream_item
-    get_activity_stream_items.rand
+    ActivityStream.all.rand.items.rand
   end
   
   # Returns random photo from random album
   def get_backup_photo
-    get_backup_photos.rand
+    BackupPhotoAlbum.all.rand
   end
   
   def get_email
-    get_emails.rand
+    GmailAccount.all.rand.backup_emails.rand
   end
   
   def get_feed_item
-    get_feed_items.rand
+    FeedEntry.all.rand
   end
 end

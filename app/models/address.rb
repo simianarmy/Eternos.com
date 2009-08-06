@@ -22,6 +22,9 @@ class Address < ActiveRecord::Base
   belongs_to  :region
   belongs_to  :country
   
+  alias_attribute :start_at, :moved_in_on
+  alias_attribute :end_at, :moved_out_on
+  
   # For formatting postal addresses from over 60 countries.
   # Problem: :country must return 2-letter country code for this plugin 
   # to do country-specific formatting. 

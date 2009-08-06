@@ -88,7 +88,7 @@ class BackupReporter
     # error detection in beta software
     def backup_jobs
       data = []
-      jobs = BackupJob.all#BackupJob.by_date Date.yesterday
+      jobs = BackupJob.by_date Date.yesterday
       jobs.each do |job|
         data << {:job => job, :source_jobs => job.backup_source_jobs, :state => job.member.backup_state}
       end
