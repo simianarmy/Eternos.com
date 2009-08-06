@@ -1,6 +1,7 @@
 !!!
 %html{html_attrs('en')}
   %head
+    %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do

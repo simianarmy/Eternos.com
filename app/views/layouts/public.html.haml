@@ -1,6 +1,7 @@
 !!!
 %html{html_attrs('en'), 'xmlns:fb' => "http://www.facebook.com/2008/fbml"}
   %head
+    %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos - " + h(yield(:title) || "Home")
     / bundle do
