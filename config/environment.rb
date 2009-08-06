@@ -135,14 +135,14 @@ Rails::Initializer.run do |config|
   
   config.after_initialize do
     require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
-    unless defined?(DaemonKit) || defined?(DisableAMQPStart) || ENV['DISABLE_AMQP']
-      RAILS_DEFAULT_LOGGER.info "Launching AMQP"
-      Qusion.start 
+    Qusion.start
+    if defined?(PhusionPassenger) || defined?(::Mongrel)
+      RAILS_DEFAULT_LOGGER.info "Launching Workling"
+      # Setup workling
+      Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
+      Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
+      Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
     end
-    # Setup workling
-    Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
-    Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
-    Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
     # Setup memcached connection
     CACHE = MemCache.new('127.0.0.1')
   end

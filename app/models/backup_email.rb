@@ -40,8 +40,8 @@ class BackupEmail < ActiveRecord::Base
 
   # Send id to upload worker queue
   def after_commit_on_create
-    MessageQueue.email_upload_queue.publish({:id => self.id}.to_json)
-    logger.debug "Sent backup email #{self.id} to upload queue"
+    #MessageQueue.email_upload_queue.publish({:id => self.id}.to_json)
+    #logger.debug "Sent backup email #{self.id} to upload queue"
   end
   
   # Parses raw email string to extract email attributes & contents

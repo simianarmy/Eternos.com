@@ -3,6 +3,7 @@
 module AMQP
   def self.start_web_dispatcher(*args)
     if defined?(PhusionPassenger) 
+      puts "=> Qusion running AMQP for Passenger"
       PhusionPassenger.on_event(:starting_worker_process) do |forked| 
         if forked
           EM.kill_reactor
@@ -16,6 +17,7 @@ module AMQP
         die_gracefully_on_signal
       end
     elsif defined?(::Thin)
+      puts "=> Qusion running AMQP for Thin"
       @settings = settings.merge(*args)
       die_gracefully_on_signal
     elsif defined?(::Mongrel)

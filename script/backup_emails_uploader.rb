@@ -10,9 +10,6 @@
 # batches of 10K+ files in a reasonable amount of time, with limited resource
 # usage.
 
-# Prevent Rails env from starting AMQP thread
-DisableAMQPStart = true
-
 require 'rubygems'
 require 'active_record'
 require File.dirname(__FILE__) + '/../lib/message_queue'
@@ -39,6 +36,7 @@ Signal.trap('TERM') {
   exit(0)
 }
 
+
 # spawn workers
 workers = ARGV[0] ? (Integer(ARGV[0]) rescue 1) : 1
 puts "workers: #{workers}"
@@ -60,11 +58,11 @@ EM.fork(workers) do
 
         run_process(queue) do |id|
           begin
+            ActiveRecord::Base.verify_active_connections!
             email = BackupEmail.find(id.to_i) 
             email.upload_to_s3(uploader)
           rescue Exception => e
             puts "error uploading email #{id}: " + $!
-            puts e.backtrace
             false
           end
         end
@@ -73,15 +71,29 @@ EM.fork(workers) do
       protected
       
       def run_process(queue, &block)
-        queue.subscribe(:ack => true) { |headers, payload|
+        queue.subscribe(:ack => true) do |headers, payload|
           data = ActiveSupport::JSON.decode(payload)
           puts "decoded payload: #{data.inspect}"
           # send job back to queue if it failed?
           if block.call(data['id'])
-            puts "sending ack"
             headers.ack
           end
-        }
+        end
+      end
+      
+      def test_pop(queue, &block)
+        queue.pop do |payload|
+          if payload
+            data = ActiveSupport::JSON.decode(payload)
+            puts "decoded payload: #{data.inspect}"
+            # send job back to queue if it failed?
+            block.call(data['id'])
+            queue.pop
+          else
+            EM.add_timer(1) { queue.pop }
+          end
+          #headers.ack
+        end
       end
     end
 

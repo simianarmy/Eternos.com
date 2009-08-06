@@ -7,12 +7,13 @@ require 'mq'
 
 module MessageQueue   
   module Backup
-    Exchange          = 'backups'
-    WorkerExchange    = 'backup_workers'
-    WorkerTopicQueue  = 'backup_job'
-    PendingJobsQueue  = 'pending_backups'
-    FeedbackQueue     = 'ruote_backup_feedback'
-    BackupEmailUploadQueue  = 'backup_email_upload'
+    Exchange                = 'backups'
+    DirectExchange          = 'backup_processing'
+    WorkerTopicExchange     = 'backup_workers'
+    WorkerTopicQueue        = 'backup_job'
+    PendingJobsQueue        = 'pending_backups'
+    FeedbackQueue           = 'ruote_backup_feedback'
+    EmailUploadQueue        = 'backup_email_upload'
   end
   
   class << self
@@ -102,7 +103,7 @@ module MessageQueue
     end
     
     def backup_worker_topic
-      @@topic_ex ||= MQ.topic(WorkerExchange)
+      @@topic_ex ||= MQ.topic(WorkerTopicExchange)
     end
     
     def backup_worker_subscriber_queue(site, queue=WorkerTopicQueue)
@@ -110,7 +111,7 @@ module MessageQueue
     end
     
     def email_upload_queue
-      MQ.queue(BackupEmailUploadQueue)
+      @@eu_q ||= MQ.queue(EmailUploadQueue).bind(MQ.direct(DirectExchange, :durable => true))
     end
     
     def create_topic_queue(channel, queue, options={})
