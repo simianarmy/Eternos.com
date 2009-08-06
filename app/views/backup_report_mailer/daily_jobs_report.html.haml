@@ -1,1 +1,52 @@
-= @data.inspect
+%p
+  %h2 Backup Jobs
+
+- @data.each do |data|
+  - @job = data[:job]
+  %h3= "Job #{@job.id}"
+  %br
+  = "Run time #{@job.created_at.to_s} to #{@job.finished_at.to_s}"
+  %br
+  Percent complete: 
+  = @job.percent_complete
+  \%
+  %br
+  Status:
+  = @job.status
+  %br
+  Size:
+  = @job.size
+  %br
+  Errors:
+  = @job.error_messages.to_s
+  %p
+    %h3 Backup Source Jobs
+  - data[:source_jobs].each do |j|
+    = "Source: #{j.backup_source.backup_site.name rescue ''}"
+    %br
+    = "Run time #{j.created_at.to_s} to #{j.finished_at.to_s}"
+    %br
+    Percent complete: 
+    = j.percent_complete
+    \%
+    %br
+    Status:
+    = j.status
+    %br
+    Size:
+    = j.size
+    %br
+    Errors:
+    = j.error_messages.to_s
+    %p
+      %br
+  %hr
+
+%p
+  %h2 Backup States
+  
+- @data.each do |data|
+  - @state = data[:state]
+  %pre= @state.to_yaml
+  %hr
+  

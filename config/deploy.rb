@@ -77,7 +77,8 @@ namespace :deploy do
 
   desc "Stops work daemons"
   task :stop_daemons do
-    run "god stop eternos"
+    run "god stop eternos-email-uploader"
+    run "god stop eternos-workling"
   end
   
   desc "Restarts any work daemons"
