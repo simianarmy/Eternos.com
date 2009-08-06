@@ -7,7 +7,7 @@
 	width:875px;
 	height:auto;
 	padding:0 15px 5px 0;
-  margin-left:-35px;
+  	margin-left:-35px;
 }
 
 .subtitle1{
@@ -44,14 +44,14 @@
 
 .timelinebox{
 	width:860px;
-	height:288px;
+	height:auto;
 	padding:10px 0 10px 0;
 }
 
 .dotline{
-	width:100%;
+	width:860px;
 	height:1px;
-	background:url(/images/dot.gif) repeat-x;
+	background:url(/images/dotted.gif) repeat-x;
 	margin:10px 0 10px 0;
 }
 
