@@ -34,6 +34,10 @@ module LayoutHelper
     content_for(:title_icon) { src }
   end
   
+  def url_for_image_path(path)
+    ActionController::Base.asset_host + '/' + image_path(path)
+  end
+  
   # Where we get prototype js from
   def prototype
     'http://ajax.googleapis.com/ajax/libs/prototype/1.6/prototype.js'

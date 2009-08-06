@@ -8,6 +8,7 @@ class BackupJob < ActiveRecord::Base
   
   serialize :error_messages
   xss_terminate :except => [:error_messages]
+  acts_as_archivable :on => :created_at
   
   # Will save backup job status on completion.  Will update member's 
   # backup status if associated with one

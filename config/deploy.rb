@@ -75,6 +75,11 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/assets"
   end
 
+  desc "Stops work daemons"
+  task :stop_daemons do
+    run "god stop eternos"
+  end
+  
   desc "Restarts any work daemons"
   task :restart_daemons do
     run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
@@ -115,6 +120,7 @@ after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
 after "deploy:symlink", "deploy:sendmail"
 after "deploy:symlink", "deploy:update_crontab"
+before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:update_code", "deploy:symlink_shared"
 after "deploy:restart", "deploy:restart_daemons"
 
