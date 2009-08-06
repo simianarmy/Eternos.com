@@ -136,7 +136,7 @@ Rails::Initializer.run do |config|
   config.after_initialize do
     require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
     Qusion.start
-    if defined?(PhusionPassenger) || defined?(::Mongrel)
+    if defined?(PhusionPassenger) || defined?(::Mongrel) || defined?(QusionAllowed)
       RAILS_DEFAULT_LOGGER.info "Launching Workling"
       # Setup workling
       Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber

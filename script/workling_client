@@ -2,7 +2,7 @@
 require 'rubygems'
 require 'daemons'
 
-#DisableAMQPStart = true
+QusionAllowed = true
 
 workling = File.join(File.dirname(__FILE__), '..', 'vendor', 'plugins', 'workling', 'script', 'listen.rb')
 options = {
