@@ -37,5 +37,5 @@
   </div>
 
 <script type="text/javascript">
-  var timeline = new ETLBase('my-timeline', {memberID:2, startDate:'1978-04-28', endDate:'2009-04-29', options:'fake'});
+  var timeline = new ETLBase('my-timeline', {memberID:<%= current_user.id %>, startDate:'1978-04-28', endDate:'2009-04-29', options:'fake'});
 </script>
