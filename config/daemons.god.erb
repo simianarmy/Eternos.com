@@ -70,7 +70,18 @@ God.watch do |w|
   w.start_grace = 20.seconds
   w.restart_grace = 20.seconds
   
-  
+  generic_monitoring(w, :cpu_limit => 80.percent, :memory_limit => 100.megabytes)
+end
+
+God.watch do |w|
+  script = "memcached"
+  w.name = "memcached"
+  w.group = "eternos"
+  w.interval = 60.seconds
+  w.start = "memcached -d"
+  w.start_grace = 20.seconds
+  w.restart_grace = 20.seconds
+    
   generic_monitoring(w, :cpu_limit => 80.percent, :memory_limit => 100.megabytes)
 end
 

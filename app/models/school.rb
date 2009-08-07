@@ -11,7 +11,7 @@ class School < ActiveRecord::Base
   named_scope :in_dates, lambda { |start_date, end_date|
     {
       :conditions => ["(start_at >= ? AND end_at <= ?) OR " +
-        "(end_at IS NULL AND start_at <= ? AND DATE(NOW()) > ?)",
+        "((end_at IS NULL) AND (start_at <= ?) AND (DATE(NOW()) > ?))",
         start_date, end_date,
         end_date, start_date]
       }

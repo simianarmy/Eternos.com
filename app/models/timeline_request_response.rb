@@ -2,6 +2,8 @@
 #
 # Standalone helper class for timeline search queries
 
+require 'timeline_search'
+
 class TimelineRequestResponse
   # events: collection of TimelineEvent objects
   attr_writer :results
@@ -10,7 +12,7 @@ class TimelineRequestResponse
     @uri        = uri
     @params     = params
     @options    = parse_search_filters(params[:filters])
-    @results    = []
+    @results    = nil
     @status     = 200
     @details    = nil
     @response   = {
@@ -22,11 +24,8 @@ class TimelineRequestResponse
     }
   end
   
-  def execute
-    search_events
-  end
-  
   def to_json
+    @results ||= search_events
     @response.merge!(:resultCount => @results.size,
       :results => @results,
       :status => @status,
@@ -39,8 +38,7 @@ private
   def search_events
     klass = @options[:fake] ? TimelineSearchFaker : TimelineSearch
     #klass = TimelineSearch # Switching to real data
-    search = klass.new(@params[:id], [@params[:start_date], @params[:end_date]], @options)
-    @results = search.results
+    klass.new(@params[:id], [@params[:start_date], @params[:end_date]], @options).results
   end
   
   def parse_search_filters(args)

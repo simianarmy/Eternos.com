@@ -12,7 +12,7 @@ mysql: 5.0.45
 Java: JDK 6u11
 apache-ant: 1.7.1
 Red5: 0.7.0
-memcached
+
  
 Apache2 Modules:
   libapreq2 2.12 (for ModPorter)
@@ -41,6 +41,7 @@ readline-devel
 curl-devel
 libxslt-devel
 libxml2-devel
+memcached
 
 Install from source:
 $ sudo wget ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick.tar.gz  

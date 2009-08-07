@@ -3,7 +3,16 @@
 # Class that implements logic for searching a member's data to populate the Timeline
 
 class TimelineSearch
-  MaxResults = 50
+  cattr_reader :max_results, :type_action_map
+  @@max_results = 50
+  @@type_action_map = {
+    :email      => :get_emails,
+    :twitter    => :get_activity_stream_items,
+    :facebook   => :get_activity_stream_items,
+    :artifacts  => [:get_backup_photos],
+    :blog       => :get_feed_items,
+    :profile    => :get_profile
+  }
   
   def initialize(user_id, dates, options={})
     @member = Member.find(user_id)
@@ -12,16 +21,25 @@ class TimelineSearch
     @events = []
   end
   
+  def allowed_types
+    actions = if @options[:type]
+      @options[:type].split('|').map {|t| type_action_map[t.to_sym]}
+    else
+      type_action_map.values
+    end
+    actions.flatten.uniq
+  end
+  
   def results
     # do search 
-    [:get_profile, :get_activity_stream_items, :get_backup_photos, :get_emails, :get_feed_items].each do |meth|
+    allowed_types.each do |meth|
       self.send(meth).each {|res| add_events(res)}
     end
     @events
   end
   
   def num_results
-    @options[:empty] ? 0 : (@options[:max_result] || MaxResults).to_i
+    @options[:empty] ? 0 : (@options[:max_results] || max_results).to_i
   end
   
   def get_profile
@@ -71,43 +89,50 @@ end
 
 class TimelineSearchFaker < TimelineSearch
   def initialize(user_id, dates, options={})
+    require 'benchmark_helper'
     require 'random_data'
     super(user_id, dates, options)
     @member = Member.by_name('TESTDUDE').first || Member.find(user_id)
   end
   
   def results
-    until @events.size >= num_results
-      add_events pick_random_result
-    end
+    add_events pick_random_result until @events.size >= num_results
     add_events get_profile
-    min = Date.parse @start_date
-    max = Date.parse @end_date
-    # Assign random date within range to each result
-    @events.map {|e| e.start_date = Random.date_between(min..max) }
-    @events.uniq
+    #set_dates
+    @events
   end
   
+  def set_dates
+    min = Date.parse @start_date
+    max = Date.parse @end_date
+    dates = min..max
+    # Assign random date within range to each result
+    BenchmarkHelper.rails_log('TimelineSearchFaker set random dates') do
+      # Random.date_between takes foreeevvveeeerrr...
+      # Using my own faster way
+      @events.map! {|e| e.start_date = dates.first + rand(dates.count)}
+    end
+  end
   
   def pick_random_result
-    self.send([:get_activity_stream_item, :get_backup_photo, :get_email, :get_feed_item].rand)
+    self.send(allowed_types.rand)
   end
   
   # Returns random activity
-  def get_activity_stream_item
+  def get_activity_stream_items
     ActivityStream.all.rand.items.rand
   end
   
   # Returns random photo from random album
-  def get_backup_photo
+  def get_backup_photos
     BackupPhotoAlbum.all.rand
   end
   
-  def get_email
+  def get_emails
     GmailAccount.all.rand.backup_emails.rand
   end
   
-  def get_feed_item
+  def get_feed_items
     FeedEntry.all.rand
   end
 end
