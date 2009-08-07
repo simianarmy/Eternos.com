@@ -3,15 +3,19 @@
 # Class that implements logic for searching a member's data to populate the Timeline
 
 class TimelineSearch
-  cattr_reader :max_results, :type_action_map
+  cattr_reader :max_results, :type_action_map, :filter_action_map
   @@max_results = 50
   @@type_action_map = {
     :email      => :get_emails,
-    :twitter    => :get_activity_stream_items,
-    :facebook   => :get_activity_stream_items,
-    :artifacts  => [:get_backup_photos],
+    :twitter    => :get_twitter_items,
+    :facebook   => :get_facebook_items,
+    :photos     => [:get_backup_photos],
     :blog       => :get_feed_items,
-    :profile    => :get_profile
+    :profile    => [:get_profile, :get_durations]
+  }
+  @@filter_action_map = {
+    :artifact   =>  [:get_backup_photos, :get_stream_media], 
+    :duration   =>  [:get_durations]
   }
   
   def initialize(user_id, dates, options={})
@@ -21,18 +25,29 @@ class TimelineSearch
     @events = []
   end
   
-  def allowed_types
-    actions = if @options[:type]
-      @options[:type].split('|').map {|t| type_action_map[t.to_sym]}
+  def search_types
+    types = if @options[:type]
+      @options[:type].split('|').map! {|t| t.to_sym}
     else
-      type_action_map.values
+      type_action_map.keys
     end
-    actions.flatten.uniq
+  end
+  
+  def search_methods
+    # apply additional optional filters
+    methods = []
+    filter_action_map.each_key do |k|
+      methods += filter_action_map[k] if @options[k]
+    end
+    unless methods.any?
+      methods = search_types.map {|t| type_action_map[t]}.flatten.uniq
+    end
+    methods
   end
   
   def results
     # do search 
-    allowed_types.each do |meth|
+    search_methods.each do |meth|
       self.send(meth).each {|res| add_events(res)}
     end
     @events
@@ -43,15 +58,29 @@ class TimelineSearch
   end
   
   def get_profile
-    @member.profile.timeline(@start_date, @end_date).values
+    if p = @member.profile
+      [p.medicals, p.medical_conditions, p.families]
+    end
   end
   
-  # Returns random activity
-  def get_activity_stream_items
-    @member.activity_stream.items.between(@start_date, @end_date)
+  def get_durations
+    if p = @member.profile
+      p.timeline(@start_date, @end_date).values
+    end
   end
   
-  # Returns random photo from random album
+  def get_facebook_items
+    ActivityStreamItem.facebook.between(@start_date, @end_date)
+  end
+  
+  def get_twitter_items
+    ActivityStreamItem.twitter.between(@start_date, @end_date)
+  end
+  
+  def get_stream_media
+    ActivityStreamItem.attachments.between(@start_date, @end_date)
+  end
+  
   def get_backup_photos
     facebook_source.backup_photo_albums.photos_in_dates(@start_date, @end_date)
   end
@@ -92,40 +121,53 @@ class TimelineSearchFaker < TimelineSearch
     require 'benchmark_helper'
     require 'random_data'
     super(user_id, dates, options)
-    @member = Member.by_name('TESTDUDE').first || Member.find(user_id)
+    @methods = search_methods.reject { |t| t == :get_profile }
   end
   
   def results
-    add_events pick_random_result until @events.size >= num_results
-    add_events get_profile
-    #set_dates
+    return unless @methods.any?
+    max_tries = 1000
+    tries = 0
+    until @events.size >= num_results || tries >= max_tries
+      add_events pick_random_result 
+      tries += 1
+    end
+    if search_types.include? :profile
+      add_events get_profile
+    end
+    set_dates
     @events
   end
   
   def set_dates
     min = Date.parse @start_date
     max = Date.parse @end_date
-    dates = min..max
+    dates = (min..max).to_a
+    
     # Assign random date within range to each result
     BenchmarkHelper.rails_log('TimelineSearchFaker set random dates') do
       # Random.date_between takes foreeevvveeeerrr...
       # Using my own faster way
-      @events.map! {|e| e.start_date = dates.first + rand(dates.count)}
+      @events.each {|e| e.start_date = dates.rand.to_s}
     end
   end
   
   def pick_random_result
-    self.send(allowed_types.rand)
+    self.send(@methods.rand)
   end
   
   # Returns random activity
-  def get_activity_stream_items
-    ActivityStream.all.rand.items.rand
+  def get_facebook_items
+    ActivityStreamItem.facebook.rand
   end
   
+  def get_twitter_items
+    ActivityStreamItem.twitter.rand
+  end
+   
   # Returns random photo from random album
   def get_backup_photos
-    BackupPhotoAlbum.all.rand
+    BackupPhoto.all.rand
   end
   
   def get_emails
@@ -135,4 +177,20 @@ class TimelineSearchFaker < TimelineSearch
   def get_feed_items
     FeedEntry.all.rand
   end
+  
+  def get_stream_media
+    ActivityStreamItem.attachments.rand
+  end
+  
+  def get_profile
+    if p = Profile.all.rand
+      [p.medicals, p.medical_conditions, p.families]
+    end
+  end
+  
+  def get_durations
+    if p = Profile.all.rand
+      p.timeline(@start_date, @end_date).values
+    end
+  end 
 end

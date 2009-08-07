@@ -21,6 +21,7 @@ class ActivityStreamItem < ActiveRecord::Base
   
   named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
   named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
+  named_scope :attachments, :conditions => {:attachment_type => ['photo', 'video']}
   named_scope :latest, lambda { |num|
     {
       :order => 'published_at DESC', :limit => num || 1

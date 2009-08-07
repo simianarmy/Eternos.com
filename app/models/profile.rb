@@ -27,10 +27,7 @@ class Profile < ActiveRecord::Base
   def timeline(starting, ending)
     {:addresses         => addresses.in_dates(starting, ending),
     :careers            => careers.in_dates(starting, ending),
-    :education          => schools.in_dates(starting, ending),
-    :medical            => medicals,
-    :medical_conditions => medical_conditions,
-    :family             => families}
+    :education          => schools.in_dates(starting, ending)}
   end
   
   def birth_address

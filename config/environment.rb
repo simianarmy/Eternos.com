@@ -52,7 +52,6 @@ Rails::Initializer.run do |config|
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
-  
   config.gem "ruby-openid", :lib => "openid", :version => ">= 2.1.2"
   config.gem 'image_science'
   config.gem 'ezcrypto'
@@ -84,7 +83,6 @@ Rails::Initializer.run do |config|
   
   # Rails can't find this gem even though it is in vendor/gems
   #config.gem 'contacts'
-  
   #config.gem 'memcache-client', :version => ">= 1.7.1"
   #config.gem 'flvtool2', :version => ">= 1.0.6"
   
@@ -137,16 +135,18 @@ Rails::Initializer.run do |config|
     require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
     Qusion.start
     if defined?(PhusionPassenger) || defined?(::Mongrel) || defined?(QusionAllowed)
-      RAILS_DEFAULT_LOGGER.info "Launching Workling"
+      RAILS_DEFAULT_LOGGER.info "** Launching Workling"
       # Setup workling
       Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
       Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
       Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
     end
     # Setup memcached connection
+    RAILS_DEFAULT_LOGGER.info "** Connecting to memcached"
     CACHE = MemCache.new('127.0.0.1')
+    
+    RAILS_DEFAULT_LOGGER.info "** Finished post-initialization"
   end
-  
 end
 
 # Load email config
