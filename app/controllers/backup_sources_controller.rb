@@ -6,6 +6,15 @@ class BackupSourcesController < ApplicationController
   before_filter :login_required
   require_role "Member"
 
+  def index
+    @need_setup = current_user.need_backup_setup?
+    respond_to do |format|
+      format.js { 
+        render :json => {:need_setup => @need_setup}
+      }
+    end
+  end
+    
   def add_twitter
     begin
       backup_site = BackupSite.find_by_name(BackupSite::Twitter)

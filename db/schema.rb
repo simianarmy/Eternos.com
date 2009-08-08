@@ -201,18 +201,18 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
 
   create_table "backup_source_jobs", :force => true do |t|
     t.integer  "backup_job_id"
+    t.integer  "backup_source_id"
     t.integer  "size"
     t.integer  "days"
     t.datetime "created_at"
     t.integer  "status",           :default => 0, :null => false
     t.text     "messages"
-    t.integer  "backup_source_id"
     t.text     "error_messages"
     t.datetime "finished_at"
     t.integer  "percent_complete", :default => 0, :null => false
   end
 
-  add_index "backup_source_jobs", ["backup_job_id", "backup_source_id"], :name => "backup_job_source"
+  add_index "backup_source_jobs", ["backup_job_id", "backup_source_id"], :name => "backup_job_source", :unique => true
   add_index "backup_source_jobs", ["backup_job_id"], :name => "index_backup_source_jobs_on_backup_job_id"
 
   create_table "backup_sources", :force => true do |t|

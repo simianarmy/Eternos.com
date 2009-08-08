@@ -23,4 +23,16 @@ class BackupJob < ActiveRecord::Base
       
     member.backup_finished!(info) if member
   end
+  
+  # Return earliest estimated job completion time
+  def shortest_time_remaining
+    return 0 if finished_at
+    backup_source_jobs.map(&:time_remaining).reject! {|t| t == 0}.min rescue 0
+  end
+  
+  # Tries to estimated time left in current backup job (in seconds)
+  def time_remaining
+    return 0 if finished_at
+    backup_source_jobs.map(&:time_remaining).sum
+  end
 end

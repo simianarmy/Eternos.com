@@ -118,6 +118,12 @@ class Member < User
     {:beginning => "#{8.years.ago.to_date}", :end => "#{DateTime.now.to_date.to_s}"}
   end
   
+  # Has this member setup their account yet?
+  def need_backup_setup?
+    backup_sources.confirmed.empty?
+  end
+  
+  
   private
     
 end

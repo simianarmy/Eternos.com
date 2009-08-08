@@ -7,16 +7,6 @@ class AccountSettingsController < ApplicationController
   before_filter :set_facebook_session
   layout 'account_setup'
   
-  def set_feed_rss_url
-    @feed = FeedUrl.find(params[:id])
-    @feed.rss_url = params[:value]
-    if @feed.save
-      render :text => @feed.send(:rss_url).to_s
-    else
-      render :text => "Invalid RSS feed URL"
-    end
-  end
-  
   def index
     find_user_profile
     check_facebook_sync
@@ -27,6 +17,23 @@ class AccountSettingsController < ApplicationController
     end
   end
 
+  
+  # TODO: Move to RSS controller
+  def set_feed_rss_url
+    begin
+      @feed = current_user.backup_sources.by_site(BackupSite::Blog).find(params[:id])
+      @feed.rss_url = params[:value]
+      if @feed.save
+        render :text => @feed.send(:rss_url).to_s
+      else
+        render :text => @feed.errors.full_messages
+      end
+    rescue Exception => e
+      render :text => e.to_s
+    end
+  end
+  
+  # TODO: Move to FacebookProfiles controller
   def always_sync_with_facebook
     if params[:facebook_sync]
       save = current_user.update_attribute(:always_sync_with_facebook, true)
@@ -59,6 +66,7 @@ class AccountSettingsController < ApplicationController
     end
   end
 
+  # TODO: Move to FacebookProfiles controller
   def facebook_sync
     find_user_profile
     saved = merge_with_facebook
@@ -124,6 +132,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to EmailAccounts controller
   def email_account
     find_email_accounts
     @current_gmail = @email_accounts.first
@@ -161,6 +170,7 @@ class AccountSettingsController < ApplicationController
     end  
   end
   
+  # TODO: Move to AddressBooks controller
   def add_another_address
     begin
       params[:addresses].each_value do |val|
@@ -193,6 +203,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to Addresses controller
   def remove_address
     @address = Address.find(params[:id])
     @address.destroy
@@ -207,6 +218,7 @@ class AccountSettingsController < ApplicationController
     end
   end
 
+  # TODO: Move to Jobs controller
   def add_another_job
     begin
       params[:jobs].each_value do |val|
@@ -238,6 +250,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to Jobs controller
   def remove_job
     @job = Job.find(params[:id])
     @job.destroy
@@ -252,6 +265,7 @@ class AccountSettingsController < ApplicationController
     end 
   end
   
+  # TODO: Move to Schools/Education controller
   def add_another_school
     begin
       params[:schools].each_value do |val|
@@ -283,6 +297,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to Schools/Education controller
   def remove_school
     @school = School.find(params[:id])
     @school.destroy
@@ -297,6 +312,7 @@ class AccountSettingsController < ApplicationController
     end 
   end
   
+  # TODO: Move to appropriate controller
   def add_another_medical
     begin
       params[:medicals].each_value do |val|
@@ -324,6 +340,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to appropriate controller
   def remove_medical
     @medical = Medical.find(params[:id])
     @medical.destroy
@@ -338,6 +355,7 @@ class AccountSettingsController < ApplicationController
     end 
   end
   
+  # TODO: Move to appropriate controller
   def add_another_medical_condition
     begin
       params[:medical_conditions].each_value do |val|
@@ -365,6 +383,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to appropriate controller
   def remove_medical_condition
     @medical_condition = MedicalCondition.find(params[:id])
     @medical_condition.destroy
@@ -379,6 +398,7 @@ class AccountSettingsController < ApplicationController
     end 
   end
   
+  # TODO: Move to appropriate controller
   def add_another_family
     begin
       params[:families].each_value do |val|
@@ -409,6 +429,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to appropriate controller
   def remove_family
     @family = Family.find(params[:id])
     @family.destroy
@@ -423,6 +444,7 @@ class AccountSettingsController < ApplicationController
     end 
   end
   
+  # TODO: Move to appropriate controller
   def add_another_relationship
     begin
       params[:relationships].each_value do |val|
@@ -454,6 +476,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
+  # TODO: Move to appropriate controller
   def remove_relationship
     @relationship = Relationship.find(params[:id])
     @relationship.destroy
@@ -468,6 +491,7 @@ class AccountSettingsController < ApplicationController
     end 
   end
   
+  # TODO: Move to appropriate controller
   def upgrades
     respond_to do |format|
       format.js do
@@ -478,6 +502,7 @@ class AccountSettingsController < ApplicationController
     end
   end
 
+  # TODO: Move to appropriate controller
   def billings
     respond_to do |format|
       format.js do
@@ -488,6 +513,7 @@ class AccountSettingsController < ApplicationController
     end
   end
 
+  # TODO: Move to appropriate controller
   def save_personal_info
     find_user_profile
     initialize_from_params
@@ -503,11 +529,10 @@ class AccountSettingsController < ApplicationController
           render :nothing => true
         }
       end
-
     end 
-    
   end
   
+  # I already did this somewhere else, oh well...
   def select_region
     @regions = Region.find_all_by_country_id(params[:id])
     if @regions

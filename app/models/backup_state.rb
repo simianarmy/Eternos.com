@@ -23,4 +23,9 @@ class BackupState < ActiveRecord::Base
     save!
   end
   
+  # Tries to estimated time left in current backup job
+  def time_remaining
+    member.backup_jobs.recen.time_remaining rescue 0
+  end
+        
 end
