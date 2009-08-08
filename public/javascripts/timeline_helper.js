@@ -35,8 +35,8 @@ var ETLDate = Class.create({
     if(this.inFormat == 'natural'){
       this.outDate = this.inDate.getFullYear() +'-'+ this.inDate.getMonth() +'-'+ this.inDate.getDate();
     } else if (this.inFormat == 'gregorian'){
-			this.outDate = Timeline.DateTime.parseGregorianDateTime(this.inDate.substr(0, 4));
-		}	else{
+      this.outDate = Timeline.DateTime.parseGregorianDateTime(this.inDate.substr(0, 4));
+    } else{
       this.outDate = new Date(this.inDate.substr(0, 4), this.inDate.substr(5, 2), this.inDate.substr(8, 2));
     }
   }
@@ -46,14 +46,14 @@ var ETLDate = Class.create({
 //Eternos Timeline Array that has custom methods 
 function ETLArray() {
   this.unique = function(){
-  	var r = new Array();
-  	o:for(var i = 0, n = this.length; i < n; i++){
-  		for(var x = 0, y = r.length; x < y; x++){
-  			if(r[x]==this[i]){ continue o;}
-  		}
-  		r[r.length] = this[i];
-  	}
-  	return r;
+    var r = new Array();
+    o:for(var i = 0, n = this.length; i < n; i++){
+      for(var x = 0, y = r.length; x < y; x++){
+        if(r[x]==this[i]){ continue o;}
+      }
+      r[r.length] = this[i];
+    }
+    return r;
   }
   
   this.randResult = function(num){}
@@ -101,7 +101,9 @@ var ETLDom = Class.create({
   },
   setBottom: function(bottom){
     this.bottom = bottom;
-  }
+  },
+  showLoading: function(){},
+  hideLoading: function(){}
 })
 
 
@@ -324,8 +326,9 @@ var ETLEventParser = Class.create({
     this.timelineEvents = new Array();
     this.artifactItems = new Array();
     this.jsonEvents = events.evalJSON();
+    alert(this.jsonEvents);
     this.doParsing();
-    
+    alert(this.artifactItems);
   },
   doParsing: function(){
     for(var i=0;i<this.jsonEvents.results.length;i++) {
@@ -398,37 +401,37 @@ var ETLBase = Class.create({
     this.endDate = params.endDate || new ETLDate(date);
     this.options = params;
     this.theme = Timeline.ClassicTheme.create();
-		
+    
     this.bandInfos = [
-			Timeline.createBandInfo({
-			  width:          "20%", 
-			  intervalUnit:   Timeline.DateTime.DECADE, 
-			  intervalPixels: 200,
-			  date:           date,
-			  showEventText:  false,
-			  theme:          this.theme
-			}),		
-			Timeline.createBandInfo({
-				width:          "55%",
-				intervalUnit:   Timeline.DateTime.DAY,
-				intervalPixels: 200,
-				date:           date,
-				theme: this.theme
-			}),
-			Timeline.createBandInfo({
-				width:          "13%",
-				intervalUnit:   Timeline.DateTime.MONTH,
-				intervalPixels: 200,
-				date:           date,
-				overview: true,
-				eventSource: params.eventSource || new Timeline.DefaultEventSource(),
-				theme: this.theme
-			}),
-			Timeline.createBandInfo({
+      Timeline.createBandInfo({
+        width:          "20%", 
+        intervalUnit:   Timeline.DateTime.DECADE, 
+        intervalPixels: 200,
+        date:           date,
+        showEventText:  false,
+        theme:          this.theme
+      }),   
+      Timeline.createBandInfo({
+        width:          "55%",
+        intervalUnit:   Timeline.DateTime.DAY,
+        intervalPixels: 200,
+        date:           date,
+        theme: this.theme
+      }),
+      Timeline.createBandInfo({
+        width:          "13%",
+        intervalUnit:   Timeline.DateTime.MONTH,
+        intervalPixels: 200,
+        date:           date,
+        overview: true,
+        eventSource: params.eventSource || new Timeline.DefaultEventSource(),
+        theme: this.theme
+      }),
+      Timeline.createBandInfo({
         width:          "12%",
         intervalUnit:   Timeline.DateTime.YEAR,
-				overview: true,
-				date:           date,
+        overview: true,
+        date:           date,
         intervalPixels: 200,
         theme: this.theme
       })
@@ -438,18 +441,18 @@ var ETLBase = Class.create({
   },
   
   _setupBands: function(obj){
-		this.bandInfos[1].syncWith = 0;
+    this.bandInfos[1].syncWith = 0;
     this.bandInfos[2].syncWith = 1;
-		this.bandInfos[3].syncWith = 2;
-		
+    this.bandInfos[3].syncWith = 2;
+    
     this.bandInfos[0].highlight = false;
-		this.bandInfos[1].highlight = true;
-		this.bandInfos[2].highlight = true;
-		this.bandInfos[3].highlight = true;
-		
-		var start_date = new ETLDate(obj.startDate, 'gregorian').outDate;
-		var end_date = new ETLDate(obj.endDate, 'gregorian').outDate;
-		
+    this.bandInfos[1].highlight = true;
+    this.bandInfos[2].highlight = true;
+    this.bandInfos[3].highlight = true;
+    
+    var start_date = new ETLDate(obj.startDate, 'gregorian').outDate;
+    var end_date = new ETLDate(obj.endDate, 'gregorian').outDate;
+    
     this.bandInfos[0].etherPainter = new Timeline.YearCountEtherPainter({
         startDate:  start_date,
         multiple:   5,
@@ -468,11 +471,11 @@ var ETLBase = Class.create({
     ];
     this.bandInfos[1].decorators = [
         new Timeline.SpanHighlightDecorator({
-					  startDate:  start_date,
+            startDate:  start_date,
             color:      "#B2CAD7",
             theme:      this.theme
         })
-    ];		
+    ];    
   },
   _handleWindowResize: function(){
     if (window._ETLResizeTimerID == null) {
@@ -503,7 +506,7 @@ var ETLBase = Class.create({
     this.searchEvents();
   },
   searchEvents: function(){
-    var prm = {startDate: '2009-04-28', endDate: '2009-04-29', options: 'fake'}
+    var prm = {startDate: '2009-02-01', endDate: '2009-03-01', options: 'fake'}
     new ETLSearch(this, prm);
   },
   showLoading: function(){
@@ -523,3 +526,68 @@ var ETLBase = Class.create({
   },
   showBubble: function(elements){}
 })
+
+
+
+//required Date prototype for Month selector
+Date.prototype.getMonthName =  function(){
+  var nm = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var nu = [0,1,2,3,4,5,6,7,8,9,10,11];
+  return nm[this.getMonth()];
+}
+Date.prototype.numDays = function(){
+  return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
+}
+Date.prototype.stepMonth = function(param){
+  if (param == 'up') {
+    if (this.getMonth() == 11){
+      this.setMonth(0);
+      this.setFullYear(this.getFullYear() + 1);
+    } else {
+      this.setMonth(this.getMonth() + 1);
+    }
+  }else if (param == 'down'){
+    if (this.getMonth() == 0){
+      this.setMonth(11);
+      this.setFullYear(this.getFullYear() - 1);      
+    }else{
+      this.setMonth(this.getMonth() - 1);
+    }
+  }
+}
+
+var ETLMonthSelector = Class.create({
+  initialize: function(domID){
+    this.parent = $(domID);
+    this.activeDate = new Date();
+    this.advanceMonths = new Array();
+    this.pastMonths = new Array();
+    this.top    = "<a href=\"#\" class=\"btn-left\" onclick=\"window._ETLMonthSelector.stepMonth('down')\"></a>";
+    this.bottom = "<a href=\"#\" class=\"btn-right\" onclick=\"window._ETLMonthSelector.stepMonth('up')\"></a>";
+    this.populate();
+  },
+  _initContent: function(){
+    this.activeMonth = this.activeDate.getMonthName();
+    this.activeYear = this.activeDate.getFullYear();
+  },
+  _setContent: function(){
+    var m = "<span class=\"subtitle6\">"+this.activeMonth+"</span>";
+    var y = "<span class=\"subtitle7\">"+this.activeYear+"</span>";
+    this.content = m+y;
+  },
+  _write: function(){
+    this.parent.innerHTML = this.top + this.content + this.bottom;
+    window._ETLMonthSelector = this;
+  },
+  populate: function(){
+    this._initContent();
+    this._setContent();
+    this._write();  
+  },
+  stepMonth: function(param){
+    this.activeDate.stepMonth(param);
+    this.populate();
+    //TODO: catch the date then attach timeline search here
+  }
+})
+
