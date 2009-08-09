@@ -148,7 +148,12 @@ class TimelineSearchFaker < TimelineSearch
     BenchmarkHelper.rails_log('TimelineSearchFaker set random dates') do
       # Random.date_between takes foreeevvveeeerrr...
       # Using my own faster way
-      @events.each {|e| e.start_date = dates.rand.to_s}
+      @events.each do |e| 
+        e.start_date = dates.rand.to_s
+        if e.respond_to? :end_date
+          e.end_date = (rand(1) == 0 ) ? max : nil
+        end
+      end
     end
   end
   

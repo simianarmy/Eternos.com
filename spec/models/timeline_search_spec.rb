@@ -8,10 +8,12 @@ end
 
 describe TimelineSearchFaker do
   def new_search(opts={})
-    TimelineSearchFaker.new(1, ['2008-01-01', '2012-12-31'], opts)
+    TimelineSearchFaker.new(2, [@start_date, @end_date], opts)
   end
   
-  before(:each) do  
+  before(:each) do
+    @start_date = '2008-01-01'
+    @end_date =  '2012-12-31'
   end
   
   describe "on new" do
@@ -62,6 +64,7 @@ describe TimelineSearchFaker do
     
     it "should return media only if artifacts flag is set" do
       events = new_search(:artifact=>true).results
+      events.should_not be_empty
       events.each do |e|
         ['FacebookActivityStreamItem', 'BackupPhoto'].should include e.type
       end
@@ -69,8 +72,12 @@ describe TimelineSearchFaker do
     
     it "should return duration events only if duration flag is set" do
       events = new_search(:duration=>true).results
+      events.should_not be_empty
       events.each do |e|
         ['Address', 'Job', 'School'].should include e.type
+        if e.end_date
+          e.end_date.should == Date.parse(@end_date)
+        end
       end
     end
   end
