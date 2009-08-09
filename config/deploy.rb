@@ -41,15 +41,9 @@ namespace :deploy do
     # do nothing - override default
   end
   
-  task :restart do
-    stop
-    run
-  end
-  
-  desc "Restart Application"
-  task :restart, :roles => :app do
+  desc "Restart web server"
+  task :restart, :roles => :web do
     run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:cache:clear"
-    #run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:assets:clear"
     run "touch #{current_path}/tmp/restart.txt"
   end
   
@@ -76,13 +70,13 @@ namespace :deploy do
   end
 
   desc "Stops work daemons"
-  task :stop_daemons do
+  task :stop_daemons, :roles => :app do
     run "god stop eternos-email-uploader"
     run "god stop eternos-workling"
   end
   
   desc "Restarts any work daemons"
-  task :restart_daemons do
+  task :restart_daemons, :roles => :app do
     run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
     run "god load #{current_path}/config/daemons.god"
     run "god restart eternos"
@@ -115,6 +109,7 @@ namespace :deploy do
     run "cd #{current_path}; ruby script/mail_deploy_log.rb #{fname} #{stage}"
     run "rm #{path_to_filename}"
   end
+
 end
 
 after "deploy:symlink", "deploy:google_analytics"
@@ -123,6 +118,6 @@ after "deploy:symlink", "deploy:sendmail"
 after "deploy:symlink", "deploy:update_crontab"
 before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:update_code", "deploy:symlink_shared"
-after "deploy:restart", "deploy:restart_daemons"
+
 
 
