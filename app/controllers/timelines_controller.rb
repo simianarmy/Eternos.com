@@ -64,7 +64,7 @@ class TimelinesController < ApplicationController
     end
     respond_to do |format|
       format.js {
-        render :text => @response # already in json format
+        render :json => @response # already in json format
       }
       # html for debug view
       format.html {

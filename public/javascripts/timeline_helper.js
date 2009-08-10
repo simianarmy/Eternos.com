@@ -1,28 +1,45 @@
-/*
- * Eternos Timeline classes using prototype method:Class.create({})
- * 
- * Classes are:
- * 
- * ETLDate
- * ETLArray
- * ETLDom
- * ETLDomArtifact
- * ETLDomEvent
- * ETLDomArtifactItem
- * ETLDomEventItem
- * ETLEventSource
- * ETLEventSourceFacebook
- * ETLEventSourceTwitter
- * ETLEventSourceBackupPhoto
- * ETLEventSourceFeed
- * ETLEventSourceEmail
- * ETLEventParser
- * ETLSearch
- * ETLBase
- * 
- * 
- */ 
+//required Date prototype for Month selector
+Date.prototype.getMonthName =  function(){
+  var nm = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var nu = [0,1,2,3,4,5,6,7,8,9,10,11];
+  return nm[this.getMonth()];
+}
+Date.prototype.numDays = function(){
+  return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
+}
+Date.prototype.stepMonth = function(param){
+  if (param == 'up') {
+    if (this.getMonth() == 11){
+      this.setMonth(0);
+      this.setFullYear(this.getFullYear() + 1);
+    } else {
+      this.setMonth(this.getMonth() + 1);
+    }
+  }else if (param == 'down'){
+    if (this.getMonth() == 0){
+      this.setMonth(11);
+      this.setFullYear(this.getFullYear() - 1);      
+    }else{
+      this.setMonth(this.getMonth() - 1);
+    }
+  }
+}
 
+
+//required prototype for Array object 
+Array.prototype.unique = function(){
+  var r = new Array();
+  o:for(var i = 0, n = this.length; i < n; i++){
+    for(var x = 0, y = r.length; x < y; x++){
+      if(r[x]==this[i]){ continue o;}
+    }
+    r[r.length] = this[i];
+  }
+  return r;
+}
+Array.prototype.randResult = function(){
+  
+}
 
 //Eternos Timeline Date
 var ETLDate = Class.create({
@@ -43,119 +60,157 @@ var ETLDate = Class.create({
 })
 
 
-//Eternos Timeline Array that has custom methods 
-function ETLArray() {
-  this.unique = function(){
-    var r = new Array();
-    o:for(var i = 0, n = this.length; i < n; i++){
-      for(var x = 0, y = r.length; x < y; x++){
-        if(r[x]==this[i]){ continue o;}
-      }
-      r[r.length] = this[i];
-    }
-    return r;
-  }
-  
-  this.randResult = function(num){}
-}
-ETLArray.prototype = new Array();
-
-
-//Eternos Timeline DOM for Artifact and Story
-var ETLDom = Class.create({
+//Eternos Timeline Selector
+var ETLMonthSelector = Class.create({
   initialize: function(domID){
     this.parent = $(domID);
-    this.title = "";
-    this.top = "";
-    this.bottom = "";
-    this.items = new ETLArray();
-    this.resetItems();
+    this.activeDate = new Date();
+    this.advanceMonths = new Array();
+    this.pastMonths = new Array();
+    this.top    = "<a href=\"#\" class=\"btn-left\" onclick=\"window._ETLMonthSelector.stepMonth('down'); return false;\"></a>";
+    this.bottom = "<a href=\"#\" class=\"btn-right\" onclick=\"window._ETLMonthSelector.stepMonth('up'); return false;\"></a>";
+    this.populate();
   },
-  itemsToHtml: function(){
+  _initContent: function(){
+    this.activeMonth = this.activeDate.getMonthName();
+    this.activeYear = this.activeDate.getFullYear();
+  },
+  _setContent: function(){
+    var m = "<span class=\"subtitle6\">"+this.activeMonth+"</span>";
+    var y = "<span class=\"subtitle7\">"+this.activeYear+"</span>";
+    this.content = m+y;
+  },
+  _write: function(){
+    this.parent.innerHTML = this.top + this.content + this.bottom;
+    window._ETLMonthSelector = this;
+  },
+  populate: function(){
+    this._initContent();
+    this._setContent();
+    this._write();  
+  },
+  stepMonth: function(param){
+    this.activeDate.stepMonth(param);
+    this.populate();
+    //TODO: catch the date then attach timeline search here
+  }
+})
+
+
+var ETLArtifactSection = Class.create({
+  initialize: function(domID){
+    this.parent = $(domID);
+		this.numShowed = 12;
+		this.timeOut = 2000;
+    this.title = "Artifacts";
+    this.bottom = "</div><img src=\"/images/artibox-bottom.gif\" /></div>";
+    this.items = new Array();
+		this._getTop();
+		this.showLoading();
+  },
+	_getTop: function(){
+		this.top = "<div class=\"artibox-top\"><div class=\"title5\">"+this.title+"</div></div><div class=\"artibox\">";
+	},
+  _clearContent: function(){
+    this.content = "";
+  },
+  _itemsToS: function(){
+		this.content += "<ul id=\"etl-artifact-items\" style=\"list-style-type:none\">"
     for(i=0;i<this.items.length;i++){
-      this.items[i] = this.items[i].toHtml();
+			var ul_class = i >= this.numShowed ? "class=\"hidden-artifact-item\"" : " class=\"visible-artifact-item\"";
+			if (this.items[i] != undefined) {
+		  	if (this.items[i].type = "photo") {
+		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><img src='" + this.items[i].url + "' class='thumnails2' /></li>");
+		  	}
+		  	else if (this.items[i].type = "video") {
+		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><img src='" + this.items[i].url + "' class='thumnails2' /></li>");
+		  	}
+	    }
     }
+		this.content += "</ul>";
   },
-  resetItems: function(){
-    this.parent.innerHTML = "";
+  _write: function(){
+    this.parent.innerHTML = this.top+this.content+this.bottom;
+    window._ETLArtifactSection = this;
   },
-  makeItemsUniq: function(){
-    this.items.unique();
-  },
-  itemsToHtml: function(){
-    return this.items.join("");
-  },
-  write: function(){
-    this.itemsToHtml();
-    this.makeItemsUniq();
-    this.parent.insert(this.top+this.itemsToHtml+this.bottom);
-  },
+  randomize: function(){
+//    window.setTimeout(function(){
+//			var v = $$('li.visible-artifact-item');
+//			var h = $$('li.hidden-artifact-item');
+//			alert('hehe');
+//		}, this.timeOut)
+  },	
   addItem: function(item){
     this.items.push(item);
   },
-  setTitle: function(title){
-    this.title = title;
-  },
-  setTop: function(top){
-    this.top = top;
-  },
-  setBottom: function(bottom){
-    this.bottom = bottom;
-  },
-  showLoading: function(){},
-  hideLoading: function(){}
-})
-
-
-//Eternos Timeline Artifact, inherited from ETLDom
-var ETLDomArtifact = Class.create(ETLDom, {
-  initialize: function($super, domId){
-    $super(domId);
-    this.setTitle("Artifacts");
-    this.setTop("<div class='artibox-top'><div class='title5'>" +this.title+ "</div></div><div class='artibox'>");
-    this.setBottom("</div><img src='/images/artibox-bottom.gif' />");
-  }
-})
-
-
-//Eternos Timeline Story, inherited from ETLDom
-var ETLDomEvent = Class.create(ETLDom, {
-  initialize: function($super, domId){
-    $super(domId);
-    this.setTitle("Stories");
-    this.setTop("<div class='storybox-top'><div class='title5'>" +this.title+ "</div></div><div class='storybox'>");
-    this.setBottom("</div><img src='/images/storybox-bottom.gif' />");
-  }
-})
-
-
-//Eternos Timeline Artifact Item, with source from 'event' in evalJSON response
-var ETLArtifactItem = Class.create({
-  initialize: function(event){
-    this.sourceEvent = event;
-    this.thumbHeight = 70;
-    this.thumbWidth = 70;
-    this.popImg();
-  },
-  popImg: function(){
-    if (this.sourceEvent.facebook_activity_stream_item){
-      if (this.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
-        this.imageUrl = this.sourceEvent.facebook_activity_stream_item.src;
-        this.itemType = "Facebook";
-      }
-    } else if (this.sourceEvent.backup_photo){
-      this.imageUrl = this.sourceEvent.backup_photo.source_url;
-      this.itemType = "Backup Photo";
+  addItems: function(items){
+    for(i=0;i<items.length;i++){
+      this.addItem(items[i]);
     }
   },
-  toHtml: function(){
-    rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<img src='" +this.imageUrl+ "' class='thumnails2' />";
-    return rv;      
-  }
+  populate: function(){
+		this._clearContent();
+    this._itemsToS();
+    this._write();
+  },
+  showLoading: function(){
+    this.content = "<p>Loading Artifacts..</p><br/>";
+    this._write();
+  },
+	updateTitle: function(title){
+		this.title = title;
+		this._getTop();
+		this._write();
+	}
 })
-  
 
-//Eternos Timeline Story Item
+
+var ETLEventSection = Class.create({
+  initialize: function(domID){
+    this.parent = $(domID);
+    this.title = "Events";
+    this.loading = "<p>Loading Events..</p><br/>";
+    this.content = "";
+    this.top = "<div class=\"storybox-top\"><div class=\"title5\">"+this.title+"</div></div><div class=\"storybox\">";
+    this.bottom = "</div><img src=\"/images/storybox-bottom.gif\" /></div>";
+    this.images = new Array();
+    this.populate();
+    this.showLoading();
+  },
+  _clearContent: function(){
+    this.content = "";
+  },
+  _imagesToS: function(){
+    for(i=0;i<this.images.length;i++){
+      this.content += images[i];
+    }
+  },
+  _write: function(){
+    this.parent.innerHTML = this.top+this.content+this.bottom;
+    window._ETLArtifactSection = this;
+  },  
+  addImage: function(image){
+    this.images.push(image);
+  },
+  addImages: function(images){
+    for(i=0;i<images.length;i++){
+      this.addImage(images[i]);
+    }
+  },
+  populate: function(){
+    this._imagesToS();
+    this._write();
+  },
+  showLoading: function(){
+    this.content = this.loading;
+    this.populate();
+  },
+  randomize: function(){}
+})
+
+
+
+//Eternos Timeline Event Item
 var ETLEventItem = Class.create({
   initialize: function(event){
     this.sourceEvent = event;
@@ -326,25 +381,29 @@ var ETLEventParser = Class.create({
     this.timelineEvents = new Array();
     this.artifactItems = new Array();
     this.jsonEvents = events.evalJSON();
-    alert(this.jsonEvents);
     this.doParsing();
-    alert(this.artifactItems);
+		this.populateResults();
   },
   doParsing: function(){
     for(var i=0;i<this.jsonEvents.results.length;i++) {
-      if (this.jsonEvents.results[i].event != null){
-        var event = this.jsonEvents.results[i].event;
-        
-        var tmlne_event = new ETLEventSource(event);
-        var artft_item = new ETLArtifactItem(event);
-        
-        if (artft_item != null){
-          this.artifactItems.push(artft_item);
+      if (this.jsonEvents.results[i].type == "BackupPhoto"){
+        window._ETLArtifactSection.addItem({url: this.jsonEvents.results[i].attributes.source_url, type: 'photo'});
+      } else if (this.jsonEvents.results[i].type == "FacebookActivityStreamItem"){
+        if (this.jsonEvents.results[i].attributes.attachment_type == "photo"){
+          window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'photo'});
+        }else if (this.jsonEvents.results[i].attributes.attachment_type == "video"){
+          window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'video'});
+        }else{
+          //TODO: non artifact items
         }
-        
-        this.timelineEvents.push(this.jsonEvents.results[i].event);
       }
-    };
+    }
+  },
+  populateResults: function(){
+    window._ETLArtifactSection.populate();
+		window._ETLArtifactSection.randomize();
+    //window._ETLEventSection.populate();
+    //window._ETLTimeline.populate();
   }
 })
 
@@ -399,7 +458,7 @@ var ETLBase = Class.create({
     this.memberID = params.memberID;
     this.startDate = params.startDate || new ETLDate(date);
     this.endDate = params.endDate || new ETLDate(date);
-    this.options = params;
+    this.options = params.options;
     this.theme = Timeline.ClassicTheme.create();
     
     this.bandInfos = [
@@ -478,12 +537,11 @@ var ETLBase = Class.create({
     ];    
   },
   _handleWindowResize: function(){
-    if (window._ETLResizeTimerID == null) {
-      window._ETLResizeTimerID = window.setTimeout(function() {
-        window._ETLResizeTimerID = null;
-        this.timeline.timeline.layout();
-      }, 500);
-    }    
+//    if (window._ETLResizeTimerID == null) {
+//      window._ETLResizeTimerID = window.setTimeout(function() {
+//        window._ETLResizeTimerID = null;
+//      }, 500);
+//    }    
   },  
   _create: function(){
     this.timeline = Timeline.create(document.getElementById(this.domID), this.bandInfos);
@@ -506,7 +564,7 @@ var ETLBase = Class.create({
     this.searchEvents();
   },
   searchEvents: function(){
-    var prm = {startDate: '2009-02-01', endDate: '2009-03-01', options: 'fake'}
+    var prm = {startDate: '2009-02-01', endDate: '2009-03-01', options: this.options}
     new ETLSearch(this, prm);
   },
   showLoading: function(){
@@ -525,69 +583,5 @@ var ETLBase = Class.create({
     //TODO:
   },
   showBubble: function(elements){}
-})
-
-
-
-//required Date prototype for Month selector
-Date.prototype.getMonthName =  function(){
-  var nm = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  var nu = [0,1,2,3,4,5,6,7,8,9,10,11];
-  return nm[this.getMonth()];
-}
-Date.prototype.numDays = function(){
-  return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
-}
-Date.prototype.stepMonth = function(param){
-  if (param == 'up') {
-    if (this.getMonth() == 11){
-      this.setMonth(0);
-      this.setFullYear(this.getFullYear() + 1);
-    } else {
-      this.setMonth(this.getMonth() + 1);
-    }
-  }else if (param == 'down'){
-    if (this.getMonth() == 0){
-      this.setMonth(11);
-      this.setFullYear(this.getFullYear() - 1);      
-    }else{
-      this.setMonth(this.getMonth() - 1);
-    }
-  }
-}
-
-var ETLMonthSelector = Class.create({
-  initialize: function(domID){
-    this.parent = $(domID);
-    this.activeDate = new Date();
-    this.advanceMonths = new Array();
-    this.pastMonths = new Array();
-    this.top    = "<a href=\"#\" class=\"btn-left\" onclick=\"window._ETLMonthSelector.stepMonth('down')\"></a>";
-    this.bottom = "<a href=\"#\" class=\"btn-right\" onclick=\"window._ETLMonthSelector.stepMonth('up')\"></a>";
-    this.populate();
-  },
-  _initContent: function(){
-    this.activeMonth = this.activeDate.getMonthName();
-    this.activeYear = this.activeDate.getFullYear();
-  },
-  _setContent: function(){
-    var m = "<span class=\"subtitle6\">"+this.activeMonth+"</span>";
-    var y = "<span class=\"subtitle7\">"+this.activeYear+"</span>";
-    this.content = m+y;
-  },
-  _write: function(){
-    this.parent.innerHTML = this.top + this.content + this.bottom;
-    window._ETLMonthSelector = this;
-  },
-  populate: function(){
-    this._initContent();
-    this._setContent();
-    this._write();  
-  },
-  stepMonth: function(param){
-    this.activeDate.stepMonth(param);
-    this.populate();
-    //TODO: catch the date then attach timeline search here
-  }
 })
 
