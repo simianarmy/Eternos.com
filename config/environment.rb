@@ -80,8 +80,10 @@ Rails::Initializer.run do |config|
   # Needs libcurl
   config.gem 'taf2-curb', :lib => 'curb', :version => '>= 0.4.3', :source => 'http://gems.github.com'
   config.gem 'searchlogic'
+  config.gem 'hpricot'
+  config.gem 'jnunemaker-columbus', :lib => 'columbus'
   # Application Profiling plugin - only runs on dev env
-  config.gem 'fiveruns_tuneup'
+  #config.gem 'fiveruns_tuneup'
   
   # Rails can't find this gem even though it is in vendor/gems
   #config.gem 'contacts'

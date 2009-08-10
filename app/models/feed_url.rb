@@ -1,6 +1,7 @@
 # $Id$
 
 # BackupSource STI class child
+require 'columbus'
 
 class FeedUrl < BackupSource
   has_one :feed, :foreign_key => 'backup_source_id'
@@ -21,21 +22,30 @@ class FeedUrl < BackupSource
   def validate_feed
     unless self.rss_url.blank?
       begin
-        @feed_info = Feedzirra::Feed.fetch_and_parse(self.rss_url, :timeout => 30,
-          :on_success => lambda { self.auth_confirmed = true },
-          :on_failure => lambda { errors.add(:rss_url, "Invalid RSS feed")
-          } )
-      rescue Exception => e
-        errors.add(:rss_url, "Invalid RSS feed (could not verify contents)")
+        @feed_info = Feedzirra::Feed.fetch_and_parse(self.rss_url, :timeout => 30)
+        unless valid_feed? @feed_info
+          # Try feed auto-discovery
+          @feed_info = Feedzirra::Feed.fetch_and_parse Columbus.new(self.rss_url).primary.url
+        end
+      rescue
+      end
+      if valid_feed? @feed_info
+        self.auth_confirmed = true
+      else
+        errors.add(:rss_url, "Invalid RSS feed")
       end
     end
   end
   
   def save_feed
-    create_feed(:title => @feed_info.title.sanitize, 
-      :url => @feed_info.url,
-      :feed_url_s => @feed_info.feed_url,
-      :etag => @feed_info.etag,
-      :last_modified => @feed_info.last_modified)
+    create_feed(:title  => @feed_info.title.sanitize, 
+      :url              => @feed_info.url,
+      :feed_url_s       => @feed_info.feed_url,
+      :etag             => @feed_info.etag,
+      :last_modified    => @feed_info.last_modified)
+  end
+  
+  def valid_feed?(feed)
+    !(feed.nil? || feed.kind_of?(Fixnum) || feed.entries.blank?)
   end
 end

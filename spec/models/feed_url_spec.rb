@@ -40,6 +40,13 @@ describe FeedUrl do
       @feed.errors.should have(1).error_on(:rss_url)
     end
     
+    it "should auto-discover feed from page" do
+      @feed.rss_url = 'http://www.techcrunch.com/'
+      @feed.should be_valid
+      @feed.save
+      @feed.feed.feed_url_s.should == 'http://feedproxy.google.com/TechCrunch'
+    end
+    
     it "should create FeedUrl object" do
       lambda {
         @feed.save

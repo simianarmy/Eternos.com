@@ -71,12 +71,13 @@ namespace :deploy do
 
   desc "Stops work daemons"
   task :stop_daemons, :roles => :app do
+    run "god unmonitor eternos"
     run "god stop eternos-email-uploader"
     run "god stop eternos-workling"
   end
   
   desc "Restarts any work daemons"
-  task :restart_daemons, :roles => :app do
+  task :start_daemons, :roles => :app do
     run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
     run "god load #{current_path}/config/daemons.god"
     run "god restart eternos"
@@ -116,7 +117,7 @@ after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
 after "deploy:symlink", "deploy:sendmail"
 after "deploy:symlink", "deploy:update_crontab"
-after "deploy:symlink", "deploy:restart_daemons"
+after "deploy:symlink", "deploy:start_daemons"
 before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:update_code", "deploy:symlink_shared"
 
