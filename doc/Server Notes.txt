@@ -32,6 +32,7 @@ Ruby gems that must be built on server:
 memcache-client-1.7.4
 RubyInline
 ImageScience
+Rmagick (Build on server with ruby setup.rb)
 taf2-curb: Requires libcurl built from source!
 nokogiri
 json?

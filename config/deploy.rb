@@ -116,6 +116,7 @@ after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
 after "deploy:symlink", "deploy:sendmail"
 after "deploy:symlink", "deploy:update_crontab"
+after "deploy:symlink", "deploy:restart_daemons"
 before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:update_code", "deploy:symlink_shared"
 

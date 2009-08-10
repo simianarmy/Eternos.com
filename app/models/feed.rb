@@ -23,14 +23,15 @@ class Feed < ActiveRecord::Base
     # to only fetch those new entries
     if entries.any?
       feed = Feedzirra::Feed.update(create_feed_for_update)
-      add_entries(feed.new_entries) if feed.updated?
+      add_entries(feed.new_entries) if valid_parse_result(feed) && feed.updated?
     else
       # Fetch whole feed (may not be entire feed - depends on source)
       feed = auth_feed || Feedzirra::Feed.fetch_and_parse(feed_url_s)
-      add_entries(feed.entries) if feed
+      # Can return error status code on parse error
+      add_entries(feed.entries) if valid_parse_result(feed)
     end
     # Save latest feed attributes for updates
-    update_attributes(:etag => feed.etag, :last_modified => feed.last_modified, :feed_url_s => feed.feed_url) if feed
+    update_attributes(:etag => feed.etag, :last_modified => feed.last_modified, :feed_url_s => feed.feed_url) if valid_parse_result(feed)
   end
   
   # Add all unsaved feed entries
@@ -40,6 +41,10 @@ class Feed < ActiveRecord::Base
       entry.sanitize!
       entries.add(entry)
     end
+  end
+  
+  def valid_parse_result(feed)
+    !(feed.nil? || feed.kind_of?(Fixnum))
   end
   
   private

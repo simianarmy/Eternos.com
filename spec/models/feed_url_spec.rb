@@ -34,6 +34,12 @@ describe FeedUrl do
       @feed = new_feed_url
     end
     
+    it "should fail with validation error if url is bad" do
+      @feed.rss_url = 'http://asspony.com'
+      @feed.save.should be_false
+      @feed.errors.should have(1).error_on(:rss_url)
+    end
+    
     it "should create FeedUrl object" do
       lambda {
         @feed.save
