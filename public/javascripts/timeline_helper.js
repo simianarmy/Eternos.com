@@ -101,7 +101,7 @@ var ETLArtifactSection = Class.create({
   initialize: function(domID){
     this.parent = $(domID);
 		this.numShowed = 12;
-		this.timeOut = 2000;
+		this.timeOut = 3;
     this.title = "Artifacts";
     this.bottom = "</div><img src=\"/images/artibox-bottom.gif\" /></div>";
     this.items = new Array();
@@ -117,7 +117,7 @@ var ETLArtifactSection = Class.create({
   _itemsToS: function(){
 		this.content += "<ul id=\"etl-artifact-items\" style=\"list-style-type:none\">"
     for(i=0;i<this.items.length;i++){
-			var ul_class = i >= this.numShowed ? "class=\"hidden-artifact-item\"" : " class=\"visible-artifact-item\"";
+			var ul_class = i >= this.numShowed ? "class=\"hidden-artifact-item\" style=\"display:none\"" : " class=\"visible-artifact-item\"";
 			if (this.items[i] != undefined) {
 		  	if (this.items[i].type = "photo") {
 		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><img src='" + this.items[i].url + "' class='thumnails2' /></li>");
@@ -134,11 +134,17 @@ var ETLArtifactSection = Class.create({
     window._ETLArtifactSection = this;
   },
   randomize: function(){
-//    window.setTimeout(function(){
-//			var v = $$('li.visible-artifact-item');
-//			var h = $$('li.hidden-artifact-item');
-//			alert('hehe');
-//		}, this.timeOut)
+	  var v = $$('li.visible-artifact-item');
+		var h = $$('li.hidden-artifact-item');
+		new PeriodicalExecuter(function(pe) {
+			var i = Math.floor(Math.random()*v.length);
+			var j = Math.floor(Math.random()*h.length);
+			var tmp = v[i].childElements()[0].src;
+			
+			v[i].pulsate({ pulses: 1, duration: 1.5 });
+			v[i].childElements()[0].src = h[j].childElements()[0].src;
+			h[j].childElements()[0].src = tmp;
+		}, this.timeOut);
   },	
   addItem: function(item){
     this.items.push(item);
@@ -390,9 +396,9 @@ var ETLEventParser = Class.create({
         window._ETLArtifactSection.addItem({url: this.jsonEvents.results[i].attributes.source_url, type: 'photo'});
       } else if (this.jsonEvents.results[i].type == "FacebookActivityStreamItem"){
         if (this.jsonEvents.results[i].attributes.attachment_type == "photo"){
-          window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'photo'});
+          //window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'photo'});
         }else if (this.jsonEvents.results[i].attributes.attachment_type == "video"){
-          window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'video'});
+          //window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'video'});
         }else{
           //TODO: non artifact items
         }
