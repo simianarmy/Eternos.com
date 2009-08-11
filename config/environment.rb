@@ -31,6 +31,7 @@ PERMISSION_DENIED_REDIRECTION = '/member_home'
 STORE_LOCATION_METHOD = :store_location
 
 # Various global constant strings
+MEMCACHED_HOST          = '127.0.0.1'
 FLOWPLAYER_PRODUCT_KEY  = '$3894b992d106ccc5f56'
 YAHOO_APP_ID            = 'YxNApcLV34EgbS7EoRCAgGY4hJvSX_fQeW9uayDJ0yUbtxH8dhZXKjOSI7k8Gic7'
 FLASH_RECORDER_KEY      = 'zyrc234mq7hbs6ptw5d1v9n0j8xfkg'
@@ -138,18 +139,15 @@ Rails::Initializer.run do |config|
   config.after_initialize do
     require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
     Qusion.start
-    if defined?(PhusionPassenger) || defined?(::Mongrel) || defined?(QusionAllowed)
-      RAILS_DEFAULT_LOGGER.info "** Launching Workling"
-      # Setup workling
-      Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
-      Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
-      Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
-    end
+    puts "=> Starting Workling client"
+    # Setup workling
+    Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
+    Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
+    Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
     # Setup memcached connection
-    RAILS_DEFAULT_LOGGER.info "** Connecting to memcached"
-    CACHE = MemCache.new('127.0.0.1')
-    
-    RAILS_DEFAULT_LOGGER.info "** Finished post-initialization"
+    puts "=> Connecting to memcached on #{MEMCACHED_HOST}"
+    CACHE = MemCache.new(MEMCACHED_HOST)
+    puts "=> Finished post-initialization"
   end
 end
 
