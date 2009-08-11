@@ -120,10 +120,10 @@ var ETLArtifactSection = Class.create({
 			var ul_class = i >= this.numShowed ? "class=\"hidden-artifact-item\" style=\"display:none\"" : " class=\"visible-artifact-item\"";
 			if (this.items[i] != undefined) {
 		  	if (this.items[i].type = "photo") {
-		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><img src='" + this.items[i].url + "' class='thumnails2' /></li>");
+		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><a href=\""+this.items[i].url+"\" class=\"lightview\" rel=\"set[artifacts]\"><img src='" + this.items[i].url + "' class='thumnails2' /></a></li>");
 		  	}
 		  	else if (this.items[i].type = "video") {
-		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><img src='" + this.items[i].url + "' class='thumnails2' /></li>");
+		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><a href=\""+this.items[i].url+"\" class=\"lightview\" rel=\"set[artifacts]\"><img src='" + this.items[i].url + "' class='thumnails2' /></a></li>");
 		  	}
 	    }
     }
