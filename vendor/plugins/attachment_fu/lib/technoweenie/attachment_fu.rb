@@ -395,7 +395,7 @@ module Technoweenie # :nodoc:
             #thumbnail_class.find_or_initialize_by_thumbnail(file_name_suffix.to_s)
             thumbnail_class.find_by_thumbnail_and_parent_id(file_name_suffix.to_s, id) || 
             thumbnail_class.new(:thumbnail=>file_name_suffix.to_s, :parent_id=>id) : 
-            thumbnail_class.new(:thumbnail=>file_name_suffix.to_s)
+            thumbnail_class.new(:thumbnail=>file_name_suffix.to_s, :parent_id=>id)
         end
 
         # Stub for a #process_attachment method in a processor
@@ -408,7 +408,7 @@ module Technoweenie # :nodoc:
         def after_process_attachment
           logger.debug "AttachmentFu::after_process_attachment"
           if @saved_attachment
-            if respond_to?(:process_attachment_with_processing) && thumbnailable? && !attachment_options[:thumbnails].blank? && parent_id.nil?
+            if respond_to?(:process_attachment_with_processing) && thumbnailable? && !attachment_options[:thumbnails].blank?
               temp_file = temp_path || create_temp_file
               attachment_options[:thumbnails].each { |suffix, size| create_or_update_thumbnail(temp_file, suffix, *size) }
             end

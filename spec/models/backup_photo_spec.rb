@@ -22,19 +22,23 @@ describe BackupPhoto do
     end
     
     describe "on download" do
-      it "should download image from source to temp file" do
-        Photo.expects(:create)
+      before(:each) do
         @photo.save
+      end
+      
+      it "should call create new Photo object from source file" do
+        Photo.expects(:create!)
+        @photo.download
       end
     end
     
-    describe "downloaded from source" do
+    describe "downloading from source" do
       # Stub rio method
       def rio(file)
       end
       
       before(:each) do
-        File.cp File.dirname(__FILE__) + '/../../public/images/board.gif', 
+        File.cp File.dirname(__FILE__) + '/../../public/images/bigtest.jpg', 
           @tempfile = Test::Unit::TestCase.fixture_path + 'crap.jpg'
         puts "Tempfile => #{@tempfile}"
         @photo.stubs(:source_url).returns(@tempfile)
@@ -42,19 +46,23 @@ describe BackupPhoto do
         #         @rio.stubs(:<).returns(@rio)
         #         @rio.stubs(:bytes).returns(100)
         #         @rio.expects(:remove)
+        @photo.save
       end
     
       it "file should be added as a Photo object to member media collection" do
         lambda {
-          @photo.save
-        }.should change(Photo, :count).by(1) #&& change(PhotoThumbnail, :count).by(1)
-        
+          @photo.starting_download!
+        }.should change(Photo, :count).by(1)
       end
       
       it "should save association to Photo object" do
-        @photo.save
+        @photo.starting_download!
         @photo.reload.photo.should be_an_instance_of Photo
-        @photo.photo.parent_id.should == @photo.id
+      end
+      
+      it "should create thumbnail of photo object" do
+        @photo.starting_download!
+        @photo.photo.thumbnails.should have(1).thing
       end
     end
   end   

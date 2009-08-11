@@ -135,6 +135,11 @@ describe Content do
   end
 
   describe "create with image" do
+    def validate_files_on_disk(c)
+      File.exists?(c.full_filename).should be_true
+      File.exists?(c.full_filename(:thumb)).should be_true
+    end
+    
     before(:each) do
       @content = create_content(:type => :photo)
     end
@@ -155,11 +160,28 @@ describe Content do
     it "should have a valid taken at date" do
       @content.taken_at.should_not == ''
     end
-  
+    
+    it "should save file to disk in assets directory" do
+      assert File.exists?(@content.full_filename)
+    end
+    
     it "should be associated with a thumbnail" do
       @content.thumbnails.should have(1).thing
       @content.thumbnails.first.should be_an_instance_of PhotoThumbnail
-      assert File.exists?(@content.full_filename(:thumb))
+      validate_files_on_disk @content
+    end
+    
+    it "should create thumbnail when temp_path param used" do
+      @filename = ActionController::TestCase.fixture_path + 'porsche.jpg'
+      c = Content.factory(
+        :owner => create_member,
+        :content_type => Content.detect_mimetype(@filename),
+        :description => 'caption',
+        :filename => File.basename(@filename),
+        :temp_path => File.new(@filename))
+      c.save.should be_true
+      c.thumbnails.should have(1).thing
+      validate_files_on_disk c
     end
   end
 end

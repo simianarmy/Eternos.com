@@ -172,7 +172,7 @@ class TimelineSearchFaker < TimelineSearch
    
   # Returns random photo from random album
   def get_backup_photos
-    BackupPhoto.all.rand
+    BackupPhoto.all.rand.photo
   end
   
   def get_emails

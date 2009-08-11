@@ -13,12 +13,12 @@ class BackupPhoto < ActiveRecord::Base
   acts_as_state_machine :initial => :pending_download
   
   state :pending_download
-  state :downloading
+  state :downloading, :enter => :download
   state :downloaded
   state :error
   
   event :starting_download do
-    transitions :from => :pending_download, :to => :downloading
+    transitions :from => [:pending_download, :error], :to => :downloading
   end
   
   event :download_complete do
@@ -29,7 +29,7 @@ class BackupPhoto < ActiveRecord::Base
     transitions :from => :downloading, :to => :error
   end
   
-  named_scope :needs_download, :conditions => { :state => 'pending_download' }
+  named_scope :needs_download, :conditions => { :state => ['pending_download', 'error'] }
   
   EditableAttributes = [:caption, :source_url, :tags]
   
@@ -49,22 +49,19 @@ class BackupPhoto < ActiveRecord::Base
     begin
       # Sanity check
       @member = backup_photo_album.backup_source.member
-
       @filename = File.join(Dir::tmpdir, URI::parse(source_url).path.split('/').last)
       logger.info "Downloading #{source_url} to #{@filename}..."
 
       t = rio(@filename) < rio(source_url) # Download to temp file
-
       if t.bytes > 0
-        self.photo = Photo.create(
-        :parent_id => id,
-        :owner => @member,
-        :content_type => Content.detect_mimetype(@filename),
-        :description => caption,
-        :filename => File.basename(@filename),
-        :temp_path => File.new(@filename)) do |p|    
-          p.tag_with(tags.join(','), @member) if tags
-        end
+        c = Photo.create!(
+          :owner => @member,
+          :content_type => Content.detect_mimetype(@filename),
+          :description => caption,
+          :filename => File.basename(@filename),
+          :temp_path => File.new(@filename))
+        c.tag_with(tags.join(','), @member) if tags
+        self.photo = c
       end
     rescue
       update_attribute(:download_error, $!)

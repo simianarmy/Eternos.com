@@ -35,6 +35,7 @@ ImageScience
 Rmagick (Build on server with ruby setup.rb)
 taf2-curb: Requires libcurl built from source!
 nokogiri
+hpricot
 json?
 
 yum Packages:

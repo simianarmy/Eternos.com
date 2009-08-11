@@ -1,8 +1,6 @@
 # $Id$
 
 class Photo < Content
-  #has_many :thumbnails, :class_name => 'PhotoThumbnail', :foreign_key => 'parent_id'
-  
   self.content_types   = ['image/gif', 'image/jpeg', 'image/png', 'image/tiff', 
     'image/vnd.microsoft.icon']
   self.attachment_fu_options = {
@@ -32,5 +30,16 @@ class Photo < Content
   def thumbnailable?
     true
   end
+  
+  # INCOMPLETE: figure out how attachment_fu calls resize_image() 
+  # this just creates the thumbnail db record
+  def ensure_thumbnail
+    if thumbnails.nil? || thumbnails.empty?
+      temp_file = temp_path || create_temp_file
+      attachment_options[:thumbnails].each { |suffix, size| create_or_update_thumbnail(temp_file, suffix, *size) }
+      save_to_storage
+    end
+  end
+  
 end
 

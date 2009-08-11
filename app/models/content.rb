@@ -36,7 +36,7 @@ class Content < ActiveRecord::Base
   # TODO: Make this work w/ attachment_fu
   before_create :set_content_type_by_content
   
-  named_scope :recordings, :conditions => {:parent_id => nil, :is_recording => true}
+  named_scope :recordings, :conditions => {:is_recording => true}
   
   class UnknownContentTypeException < Exception; end
     
@@ -119,15 +119,13 @@ class Content < ActiveRecord::Base
     end
     
     # Strip out thumbnails and descriptive recordings
-    res.delete_if { |c| !c.parent_id.nil? && !c.recording? }
+    res.delete_if { |c| !c.recording? }
   end
   
   # Instance methods
   
   def validate
-    if parent_id.nil?
-      errors.add(:member, "You must be logged in") unless owner
-    end
+    errors.add(:member, "You must be logged in") unless owner
   end
   
   def to_s

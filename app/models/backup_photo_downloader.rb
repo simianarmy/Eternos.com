@@ -22,8 +22,7 @@ class BackupPhotoDownloader
         RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
         sleep(1) # Don't flood source with download requests
         bp.starting_download!
-        bp.download
-
+        
         if bp.photo
           RAILS_DEFAULT_LOGGER.debug "Downloading complete"
           bp.download_complete!

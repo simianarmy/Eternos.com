@@ -322,7 +322,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id",                  :default => 0,          :null => false
-    t.integer  "parent_id"
     t.string   "content_type"
     t.datetime "taken_at"
     t.string   "duration"
