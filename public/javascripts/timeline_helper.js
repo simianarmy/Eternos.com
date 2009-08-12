@@ -135,11 +135,11 @@ var ETLArtifactSection = Class.create({
 			if (v.length > 0) {
 				var i = Math.floor(Math.random()*v.length);
 				var j = Math.floor(Math.random()*h.length);
-				var tmp = v[i].childElements()[0].src;
+				var tmp = v[i].childElements()[0].childElements()[0].src;
 
 				v[i].pulsate({ pulses: 1, duration: 1.5 });
-				v[i].childElements()[0].src = h[j].childElements()[0].src;
-				h[j].childElements()[0].src = tmp;
+				v[i].childElements()[0].childElements()[0].src = h[j].childElements()[0].childElements()[0].src;
+				h[j].childElements()[0].childElements()[0].src = tmp;
 			}
 		}, this.timeOut);
   },	
@@ -212,30 +212,26 @@ var ETLEventSection = Class.create({
 })
 
 
+var ETLEventCollection = Class.create({
+	initialize: function(events){
+		this.source = events;
+		this.items = new Array();
+	},
+	parseItems: function(){
+		this.source.each(function(item, i){
+			var itm = new ETLEventItem(item); 
+			this.items.push(itm);
+		})
+	}
+})
+
 
 //Eternos Timeline Event Item
 var ETLEventItem = Class.create({
   initialize: function(event){
-    this.sourceEvent = event;
-    this.thumbHeight = 70;
-    this.thumbWidth = 70;
-    this.popImg();
+    this.source = event;
   },
-  popImg: function(){
-    if (this.sourceEvent.facebook_activity_stream_item){
-      if (this.sourceEvent.facebook_activity_stream_item.attachment_type == "photo"){
-        this.imageUrl = this.sourceEvent.facebook_activity_stream_item.src;
-        this.itemType = "Facebook";
-      }
-    } else if (this.sourceEvent.backup_photo){
-      this.imageUrl = this.sourceEvent.backup_photo.source_url;
-      this.itemType = "Backup Photo";
-    }     
-  },
-  toHtml: function(){
-    rv = (this.imageUrl == "" || this.imageUrl == undefined) ? "" : "<a href=# onclick=\"Lightview.show( {href:'"+this.imageUrl+"', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+ encodeURIComponent('cd0107f95e066667938b7f27f3b4732cf8ace5ca')}, autosize:false, closeButton:false, width:800}, rel:'iframe'});return false;\"><img src='" +this.imageUrl+ "' class='thumnails2' /></a>";
-    return rv;      
-  }
+	
 })
 
 
@@ -388,7 +384,7 @@ var ETLArtifact = Class.create({
 //Eternos Timeline Event Parser
 var ETLEventParser = Class.create({
   initialize: function(events){
-    this.timelineEvents = new Array();
+    this.eventItems = new Array();
     this.artifactItems = new Array();
     this.jsonEvents = events.evalJSON();
     this.doParsing();
@@ -401,6 +397,9 @@ var ETLEventParser = Class.create({
       } else {
           //TODO: non artifact items
       }
+			//TODO: parsing event item
+			var item = new ETLEventItem(this.jsonEvents.results[i]);
+			this.eventItems.push(item);
     }
   },
   populateResults: function(){
@@ -508,7 +507,6 @@ var ETLBase = Class.create({
     this._setupBands(this);
     this.init();
   },
-  
   _setupBands: function(obj){
     this.bandInfos[1].syncWith = 0;
     this.bandInfos[2].syncWith = 1;
