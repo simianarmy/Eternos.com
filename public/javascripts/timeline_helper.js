@@ -139,7 +139,7 @@ var ETLArtifactSection = Class.create({
 	  var v = $$('li.visible-artifact-item');
 		var h = $$('li.hidden-artifact-item');
 		new PeriodicalExecuter(function(pe) {
-			if (v.length > 0) {
+			if (v.length > 12) {
 				var i = Math.floor(Math.random()*v.length);
 				var j = Math.floor(Math.random()*h.length);
 				var tmp = v[i].childElements()[0].childElements()[0].src;
@@ -236,7 +236,6 @@ var ETLEventItem = Class.create({
     }else{
       this.title = "Invalid event";
     }
-    //console.log(this.title);
   },
   _setHtml: function(){
     this.html = "<li><p>"+this.title+" | "+this.start_date+"</p></li>"
@@ -285,7 +284,7 @@ var ETLEventCollection = Class.create({
 	},
 	populate: function(){
 	  var items; var event;
-	  this.html = "";
+	  this.html = "<ul>";
 		for(var i=0;i<this.rawItems.length;i++){
 		  items = this._groupItems(this.rawItems[i]);
 		  for(var j=0;j<items.length;j++){
@@ -294,7 +293,7 @@ var ETLEventCollection = Class.create({
         this.html += event.html;
 		  }
 		}
-		console.log(this.html);
+		this.html += "</ul>";
 	}
 })
 
