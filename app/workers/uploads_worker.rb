@@ -9,7 +9,8 @@ class UploadsWorker < Workling::Base
   def upload_content_to_cloud(payload)
     logger.debug "Upload worker got payload #{payload.inspect}"
     begin
-      content = Content.find(payload[:id])
+      klass = payload[:class]
+      content = klass.constantize.find(payload[:id])
     rescue ActiveRecord::StatementInvalid => e
       # Catch mysql has gone away errors
       if e.to_s =~ /away/
@@ -27,12 +28,11 @@ class UploadsWorker < Workling::Base
       end
       logger.debug "Uploaded content in #{mark} seconds"
       
-      content.update_attributes(:s3_key => s3.key)    
+      content.update_attribute(:s3_key, s3.key)    
       content.finish_cloud_upload!
     rescue 
       logger.error "Exception uploading to S3: #{$!}"
-      content.update_attributes(:processing_error_message => $!.to_s)
-      content.processing_error!
+      content.cloud_upload_error $!.to_s
     end
   end
 end

@@ -16,28 +16,29 @@ class Photo < Content
 
   # Use RMagik & EXIF to get date a photo was taken
   after_attachment_saved do |attach|
-    photo = Magick::Image.read(attach.full_filename).first
-    logger.debug "ImageMagick photo info: #{photo.inspect}"
-    # the get_exif_by_entry method returns in the format: [["Make", "Canon"]]
-    date  = photo.get_exif_by_entry('DateTime')[0][1]
-    
-    if not date.nil?
-      attach.taken_at = DateTime.strptime(date, exif_date_format)
-      attach.save!
+    if image = Magick::Image.read(attach.full_filename).first
+      logger.debug "ImageMagick photo info: #{image.inspect}"
+      # the get_exif_by_entry method returns in the format: [["Make", "Canon"]]
+      date  = image.get_exif_by_entry('DateTime')[0][1]
+
+      if not date.nil?
+        attach.taken_at = DateTime.strptime(date, exif_date_format)
+        attach.save!
+      end
     end
   end
   
   def thumbnailable?
     true
   end
-  
-  # INCOMPLETE: figure out how attachment_fu calls resize_image() 
-  # this just creates the thumbnail db record
-  def ensure_thumbnail
-    if thumbnails.nil? || thumbnails.empty?
-      temp_file = temp_path || create_temp_file
-      attachment_options[:thumbnails].each { |suffix, size| create_or_update_thumbnail(temp_file, suffix, *size) }
-      save_to_storage
+    
+  def rebuild_thumbnails
+    # Need original data in new temp file data to re-save
+    if data = file_data
+      destroy_thumbnails
+      # Force re-save of data to kickstart AttachmentFu::process_attachment
+      self.temp_data = data
+      save
     end
   end
   

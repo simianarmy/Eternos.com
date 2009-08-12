@@ -93,17 +93,31 @@ describe Content do
       it_should_behave_like "an object with av attachment"
     end
   end
+  
+  describe "after create" do
+    before(:each) do
+      @content = new_content(:type => :photo)
+    end
+    
+    with_transactional_fixtures :off do    
+      it "should upload the file to cloud storage" do
+        @content.expects(:upload)
+        @content.save
+      end
+    end
+  end
 
   describe"on update" do
     before(:each) do
       @content = create_content(:type => :photo)
-      @content.stubs(:upload).returns(true)
     end
 
+    with_transactional_fixtures :off do
      it "should not try to launch upload worker" do
        @content.expects(:upload).never
        @content.update_attributes(:title => 'foo')
      end
+   end
   end
 
   describe "create with document" do

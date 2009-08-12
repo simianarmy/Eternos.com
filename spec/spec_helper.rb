@@ -441,6 +441,20 @@ module TimelineSearchSpecHelper
     TimelineSearchFaker.new(member.id, [start_date, end_date], opts)
   end
 end
+
+def with_transactional_fixtures(on_or_off)
+  before(:all) do
+    @previous_transaction_state = ActiveSupport::TestCase.use_transactional_fixtures
+    ActiveSupport::TestCase.use_transactional_fixtures = on_or_off == :on
+  end
+
+  yield
+
+  after(:all) do
+    ActiveSupport::TestCase.use_transactional_fixtures = @previous_transaction_state
+  end
+end
+
 end
 
 Spork.each_run do

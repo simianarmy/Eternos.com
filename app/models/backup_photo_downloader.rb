@@ -21,17 +21,44 @@ class BackupPhotoDownloader
       BackupPhoto.needs_download.sort_by {rand}[0..max.to_i].each do |bp|
         RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
         sleep(1) # Don't flood source with download requests
-        bp.starting_download!
-        
-        if bp.photo
-          RAILS_DEFAULT_LOGGER.debug "Downloading complete"
-          bp.download_complete!
-        else
-          RAILS_DEFAULT_LOGGER.error "Error downloading backup photo"
+        download_photo bp
+      end
+    end
+  end
+  
+  # For development or in case we need to rebuild
+  def self.fix_photos
+    MessageQueue.execute do
+      # Get all backup photos with content objects
+      BackupPhoto.state_equals('downloaded').each do |bp|
+        # If photo downloaded but not uploaded to s3, start over
+        if photo = bp.photo
+          if photo.s3_key
+            photo.rebuild_thumbnails unless photo.thumbnail
+          else
+            photo.destroy
+            bp.download_error!
+            download_photo bp
+          end
+        else # If no photo object, something went wrong
           bp.download_error!
+          download_photo bp
         end
       end
     end
   end
+  
+  def self.download_photo(bp)
+    bp.starting_download!
+    
+    if bp.photo
+      RAILS_DEFAULT_LOGGER.debug "Downloading complete"
+      bp.download_complete!
+    else
+      RAILS_DEFAULT_LOGGER.error "Error downloading backup photo"
+      bp.download_error!
+    end
+  end
+    
 end
       

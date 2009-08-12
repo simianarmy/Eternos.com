@@ -564,6 +564,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.integer  "height"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "state"
+    t.string   "s3_key"
   end
 
   create_table "profiles", :force => true do |t|

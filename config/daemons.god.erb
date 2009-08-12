@@ -44,12 +44,12 @@ def generic_monitoring(w, options = {})
 end
 
 God.watch do |w|
-  script = "RAILS_ENV='<%= RAILS_ENV %>' <%= RAILS_ROOT %>/script/workling_client"
+  script = "<%= RAILS_ROOT %>/script/workling_client"
   w.name = "eternos-workling"
   w.group = "eternos"
   w.interval = 60.seconds
-  w.start = "#{script} start"
-  w.restart = "#{script} restart"
+  w.start = "RAILS_ENV=<%= RAILS_ENV %> #{script} start"
+  w.restart = "RAILS_ENV=<%= RAILS_ENV %> #{script} restart"
   w.stop = "#{script} stop"
   w.start_grace = 20.seconds
   w.restart_grace = 20.seconds

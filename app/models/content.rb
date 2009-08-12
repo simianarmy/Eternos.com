@@ -1,18 +1,20 @@
 # $Id$
 
 class Content < ActiveRecord::Base
-  include AfterCommit::ActiveRecord
-  
   has_many :decorations, :dependent => :destroy
   has_many :elements, :through => :decorations
   belongs_to :owner, :class_name => 'Member', :foreign_key => 'user_id'
   
+  class UnknownContentTypeException < Exception; end
+  
   class << self
-    attr_accessor :content_types, :attachment_fu_options
+    attr_accessor :content_types, :attachment_fu_options, :types
     def attachment_opts
       self.attachment_fu_options.reverse_merge(Content.attachment_fu_options)
     end
   end
+  
+  self.types         = ['Video', 'Photo', 'Music', 'Document', 'WebVideo']
   self.attachment_fu_options = {
     :storage => :file_system, 
     :path_prefix => "public/assets",
@@ -21,10 +23,10 @@ class Content < ActiveRecord::Base
     :processor => :none}
   
   has_attachment attachment_opts
+  acts_as_saved_to_cloud
   acts_as_commentable
   acts_as_restricted :owner_method => :owner
   acts_as_archivable :order => 'DESC'
-  acts_as_state_machine :initial => :pending
   acts_as_time_locked
   acts_as_taggable_custom :owner_method => :owner
   acts_as_av_attachable
@@ -35,40 +37,11 @@ class Content < ActiveRecord::Base
   before_create :set_title
   # TODO: Make this work w/ attachment_fu
   before_create :set_content_type_by_content
+  before_destroy :delete_from_cloud
   
   named_scope :recordings, :conditions => {:is_recording => true}
   
-  class UnknownContentTypeException < Exception; end
-    
-  @@Types         = ['Video', 'Photo', 'Music', 'Document', 'WebVideo'].freeze
-  
-  state :pending
-  state :staging, :enter => :upload
-  state :processing
-  state :complete
-  state :error
-  
-  event :start_cloud_upload do
-    transitions :from => :staging, :to => :processing
-  end
-  
-  event :finish_cloud_upload do
-    transitions :from => :processing, :to => :complete
-  end
-  
-  event :processing_error do
-    transitions :from => :processing, :to => :error
-  end
-  
-  event :attachment_changed do
-    transitions :from => [:pending, :complete, :error], :to => :staging
-  end
-  
   # Class methods
-  
-  def self.types
-    @@Types
-  end
   
   # Class factory
   # Creates & returns subclass based on passed type
@@ -153,8 +126,7 @@ class Content < ActiveRecord::Base
   # Adds uploader job to queue if file needs to be added to storage
   # because just created or modified.
   def upload
-    UploadsWorker.async_upload_content_to_cloud(:id => self.id)
-    logger.info "Sent content to uploader worker"
+    UploadsWorker.async_upload_content_to_cloud(:id => self.id, :class => "Content")
   end
   
   # Override in subclasses that can be played like audio & video
@@ -235,10 +207,22 @@ class Content < ActiveRecord::Base
     end
   end
   
+  def file_data
+    begin
+      @data = if s3_key
+        S3Downloader.new(:media).fetch_value(s3_key)
+      elsif File.exist? full_filename
+        IO.read full_filename
+      end
+    end
+    @data
+  end
+  
   protected
   
-  def after_commit_on_create
-    attachment_changed!
+  # Deletes from s3 before destroy
+  def delete_from_cloud
+    S3Connection.new(:media).bucket.delete(s3_key) if s3_key
   end
   
   # before_create callback
@@ -267,5 +251,6 @@ class Content < ActiveRecord::Base
     end
     true
   end
+  
   
 end

@@ -10,6 +10,11 @@ namespace :backup do
     BackupPhotoDownloader.run count.to_i
   end
   
+  desc "Ensure backup photos properly saved" 
+  task :fix_photos => :environment do
+    BackupPhotoDownloader.fix_photos
+  end
+  
   desc "Generate backup jobs"
   task :publish_jobs => :environment do
     BackupJobPublisher.run

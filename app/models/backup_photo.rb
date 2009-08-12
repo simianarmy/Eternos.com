@@ -15,10 +15,10 @@ class BackupPhoto < ActiveRecord::Base
   state :pending_download
   state :downloading, :enter => :download
   state :downloaded
-  state :error
+  state :failed_download
   
   event :starting_download do
-    transitions :from => [:pending_download, :error], :to => :downloading
+    transitions :from => [:pending_download, :failed_download], :to => :downloading
   end
   
   event :download_complete do
@@ -26,10 +26,10 @@ class BackupPhoto < ActiveRecord::Base
   end
   
   event :download_error do
-    transitions :from => :downloading, :to => :error
+    transitions :from => [:downloading, :downloaded], :to => :failed_download
   end
   
-  named_scope :needs_download, :conditions => { :state => ['pending_download', 'error'] }
+  named_scope :needs_download, :conditions => { :state => ['pending_download', 'failed_download'] }
   
   EditableAttributes = [:caption, :source_url, :tags]
   
