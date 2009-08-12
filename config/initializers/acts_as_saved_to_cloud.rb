@@ -48,7 +48,7 @@ module ActsAsSavedToCloud
     end
     
     def cloud_upload_error(err)
-      update_attribute(:upload_error => err)
+      update_attribute(:upload_error, err)
       processing_error!
     end
     
