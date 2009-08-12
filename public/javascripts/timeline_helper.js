@@ -117,14 +117,9 @@ var ETLArtifactSection = Class.create({
   _itemsToS: function(){
 		this.content += "<ul id=\"etl-artifact-items\" style=\"list-style-type:none\">"
     for(i=0;i<this.items.length;i++){
-			var ul_class = i >= this.numShowed ? "class=\"hidden-artifact-item\" style=\"display:none\"" : " class=\"visible-artifact-item\"";
-			if (this.items[i] != undefined) {
-		  	if (this.items[i].type = "photo") {
-		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><a href=\""+this.items[i].url+"\" class=\"lightview\" rel=\"set[artifacts]\"><img src='" + this.items[i].url + "' class='thumnails2' /></a></li>");
-		  	}
-		  	else if (this.items[i].type = "video") {
-		  	  this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><a href=\""+this.items[i].url+"\" class=\"lightview\" rel=\"set[artifacts]\"><img src='" + this.items[i].url + "' class='thumnails2' /></a></li>");
-		  	}
+			var ul_class = (i >= this.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : " class=\"visible-artifact-item\"";
+			if (this.items[i] !== undefined && this.items[i].attributes.thumbnail_url !== undefined) {
+		  	this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><a href=\""+this.items[i].attributes.url+"\" class=\"lightview\" rel=\"set[artifacts]\"><img src='" + this.items[i].attributes.thumbnail_url + "' class='thumnails2' /></a></li>");
 	    }
     }
 		this.content += "</ul>";
@@ -137,13 +132,15 @@ var ETLArtifactSection = Class.create({
 	  var v = $$('li.visible-artifact-item');
 		var h = $$('li.hidden-artifact-item');
 		new PeriodicalExecuter(function(pe) {
-			var i = Math.floor(Math.random()*v.length);
-			var j = Math.floor(Math.random()*h.length);
-			var tmp = v[i].childElements()[0].src;
-			
-			v[i].pulsate({ pulses: 1, duration: 1.5 });
-			v[i].childElements()[0].src = h[j].childElements()[0].src;
-			h[j].childElements()[0].src = tmp;
+			if (v.length > 0) {
+				var i = Math.floor(Math.random()*v.length);
+				var j = Math.floor(Math.random()*h.length);
+				var tmp = v[i].childElements()[0].src;
+
+				v[i].pulsate({ pulses: 1, duration: 1.5 });
+				v[i].childElements()[0].src = h[j].childElements()[0].src;
+				h[j].childElements()[0].src = tmp;
+			}
 		}, this.timeOut);
   },	
   addItem: function(item){
@@ -358,8 +355,7 @@ var ETLEventSourceFeed = Class.create(ETLEventSource, {
     this.desc = "SOURCE: " + this.event.feed_entry.name + "; DESCRIPTION: " + this.event.feed_entry.summary;
     this.link = this.event.feed_entry.url;    
   }  
-})
-
+});
 
 //Eternos Timeline Email Event Source
 var ETLEventSourceEmail = Class.create(ETLEventSource, {
@@ -378,8 +374,16 @@ var ETLEventSourceEmail = Class.create(ETLEventSource, {
     this.title = "Receiving an email";
     this.desc = "FROM: " + this.event.backup_email.sender[0] + "; SUBJECT: " + this.event.backup_email.subject;    
   }  
-})
+});
 
+//Eternos Timeline Artifact 
+var ETLArtifact = Class.create({
+	initialize: function(object) {
+		this.type = object.type;
+		this.attributes = object.attributes;
+	},
+	
+});
 
 //Eternos Timeline Event Parser
 var ETLEventParser = Class.create({
@@ -390,18 +394,12 @@ var ETLEventParser = Class.create({
     this.doParsing();
 		this.populateResults();
   },
-  doParsing: function(){
+  doParsing: function() {
     for(var i=0;i<this.jsonEvents.results.length;i++) {
-      if (this.jsonEvents.results[i].type == "BackupPhoto"){
-        window._ETLArtifactSection.addItem({url: this.jsonEvents.results[i].attributes.source_url, type: 'photo'});
-      } else if (this.jsonEvents.results[i].type == "FacebookActivityStreamItem"){
-        if (this.jsonEvents.results[i].attributes.attachment_type == "photo"){
-          //window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'photo'});
-        }else if (this.jsonEvents.results[i].attributes.attachment_type == "video"){
-          //window._ETLArtifactSection.addItem({url: "==fix the source json first ==", type: 'video'});
-        }else{
+			if (this.eventIsArtifact(this.jsonEvents.results[i])) {
+        window._ETLArtifactSection.addItem(this.jsonEvents.results[i]);
+      } else {
           //TODO: non artifact items
-        }
       }
     }
   },
@@ -410,8 +408,14 @@ var ETLEventParser = Class.create({
 		window._ETLArtifactSection.randomize();
     //window._ETLEventSection.populate();
     //window._ETLTimeline.populate();
-  }
-})
+  },
+	eventIsArtifact: function(e) {
+		return (e.type === 'BackupPhoto' || e.type === 'Photo' || e.type === 'Video' ||
+		e.type === 'WebVideo') || 
+		((e.type === 'FacebookActivityStreamItem' || e.type === 'TwitterActivityStreamItem') && 
+		(e.attributes.attachment_type === 'photo' || e.attributes.attachment_type === 'video'));
+	}
+});
 
 
 //Eternos Timeline Search
@@ -449,7 +453,7 @@ var ETLSearch = Class.create({
       }
     });
   }
-})
+});
 
 
 //Eternos Timeline Base

@@ -171,8 +171,18 @@ class Content < ActiveRecord::Base
     not thumbnails.empty?
   end
   
-  # Returns thumbnail if one exists, or generic icon for the type
-  def thumbnail(options={})
+  def thumbnail
+    thumbnails.first
+  end
+  
+  def thumbnail_url
+    if t = thumbnail
+      t.public_filename
+    end
+  end
+  
+  # Returns path to thumbnail if one exists, or generic icon for the type
+  def thumbnail_path(options={})
     thumb = options[:thumb] || :thumb
     if has_thumbnail?
       public_filename(thumb)

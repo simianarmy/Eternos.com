@@ -21,7 +21,9 @@ class ActivityStreamItem < ActiveRecord::Base
   
   named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
   named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
-  named_scope :attachments, :conditions => {:attachment_type => ['photo', 'video']}
+  named_scope :with_attachment, :conditions => ['attachment_data IS NOT ?', nil]
+  named_scope :with_photo, :conditions => {:attachment_type => 'photo'}
+  named_scope :with_video, :conditions => {:attachment_type => 'video'}
   named_scope :latest, lambda { |num|
     {
       :order => 'published_at DESC', :limit => num || 1
@@ -31,9 +33,45 @@ class ActivityStreamItem < ActiveRecord::Base
   def bytes
     message.length + (attachment_data ? attachment_data.length : 0)
   end
+  
+  private
+  
+  def parsed_attachment_data
+    @data ||= YAML::parse attachment_data
+  end
 end
 
 # STI class children
 
-class FacebookActivityStreamItem < ActivityStreamItem; end
-class TwitterActivityStreamItem < ActivityStreamItem; end
+class FacebookActivityStreamItem < ActivityStreamItem
+  def url
+    return unless d = parsed_attachment_data
+    
+    case attachment_type
+    when 'photo'
+      d['src'].value.gsub(/_s\./, '_n.')
+    when 'video'
+      d['video']['source_url'].value
+    end
+  end
+  
+  def thumbnail_url
+    return unless d = parsed_attachment_data
+    
+    case attachment_type
+    when 'photo'
+      d['src'].value
+    when 'video'
+      d['video']['source_url'].value
+    end
+  end
+end
+
+class TwitterActivityStreamItem < ActivityStreamItem
+  def url
+  end
+  
+  def thumbnail_url
+    # Get associated content thumbnail...if possible
+  end
+end

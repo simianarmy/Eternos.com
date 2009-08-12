@@ -26,17 +26,26 @@ describe ActivityStreamItem do
       @item.attachment_data.should be_nil
     end
     
-    it "should store serialized attachment data" do
-      @item = FacebookActivityStreamItem.create_from_proxy create_stream_proxy_item_with_attachment('photo')
-      @item.activity_type.should == 'post'
-      @item.attachment_type.should == 'photo'
-      @item.attachment_data.should be_a Hash
-      @item.attachment_data['photo'].should_not be_empty
+    describe "with attachment data" do
+      before(:each) do
+        @item = FacebookActivityStreamItem.create_from_proxy create_stream_proxy_item_with_attachment('photo')
+      end
+
+      it "should store serialized attachment data" do
+        @item.activity_type.should == 'post'
+        @item.attachment_type.should == 'photo'
+        @item.attachment_data.should be_a Hash
+        @item.attachment_data['photo'].should_not be_empty
+      end
+
+      it "should return the attachment data source url" do
+        @item.url.should_not be_blank
+      end
     end
-    
+      
     it "should find with named scope" do
       @item.save
-      ActivityStreamItem.facebook.latest.first.should == @item
+      ActivityStreamItem.facebook.find(@item.id).should == @item
     end
   end
   
@@ -58,7 +67,7 @@ describe ActivityStreamItem do
     
     it "should find with named scope" do
       @item.save
-      ActivityStreamItem.twitter.latest.first.should == @item
+      ActivityStreamItem.twitter.find(@item.id).should == @item
     end
   end
 end

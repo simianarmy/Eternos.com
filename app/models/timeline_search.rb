@@ -82,7 +82,7 @@ class TimelineSearch
   end
   
   def get_backup_photos
-    facebook_source.backup_photo_albums.photos_in_dates(@start_date, @end_date)
+    facebook_source.backup_photo_albums.photos_in_dates(@start_date, @end_date).all.map(&:backup_photos).flatten.map(&:photo)
   end
   
   def get_emails
@@ -184,7 +184,7 @@ class TimelineSearchFaker < TimelineSearch
   end
   
   def get_stream_media
-    ActivityStreamItem.attachments.rand
+    ActivityStreamItem.with_attachment.rand
   end
   
   def get_profile

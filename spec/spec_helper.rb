@@ -431,6 +431,16 @@ module EmailSpecHelper
     IO.read ActionController::TestCase.fixture_path + 'raw_email.txt'
   end
 end
+
+module TimelineSearchSpecHelper
+  def new_search(member, start_date, end_date, opts={})
+    TimelineSearch.new(member.id, [start_date, end_date], opts)
+  end
+  
+  def new_fake_search(member, start_date, end_date, opts={})
+    TimelineSearchFaker.new(member.id, [start_date, end_date], opts)
+  end
+end
 end
 
 Spork.each_run do
