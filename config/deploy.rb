@@ -50,13 +50,21 @@ namespace :deploy do
   desc "Symlink shared configs and folders on each release."
   task :symlink_shared do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
     # Setup permissions so that designer can read/write in view directories
     run "chgrp -R www #{release_path}"
     run "chmod -R 770 #{release_path}"
     run "chmod 775 #{release_path} #{release_path}/app"
     run "chgrp -R www-dev #{release_path}/public #{release_path}/app/views"
     run "chmod -R 775 #{release_path}/public #{release_path}/app/views"
+  end
+  
+  # This doesn't work correctly in symlink_shared..creates link in public/assets/ !?
+  # Same command works if you run it from the cl on the server...
+  # This works though, after :symlink
+  desc "Symlink assets"
+  task :symlink_assets do
+    run "ln -nfs #{shared_path}/assets #{current_path}/public/assets"
+    exit
   end
   
   desc "migrate database"
@@ -113,10 +121,11 @@ namespace :deploy do
 
 end
 
-after "deploy:symlink", "deploy:google_analytics"
+#after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
 after "deploy:symlink", "deploy:sendmail"
-after "deploy:symlink", "deploy:update_crontab"
+#after "deploy:symlink", "deploy:update_crontab"
+after "deploy:symlink", "deploy:symlink_assets"
 after "deploy:symlink", "deploy:start_daemons"
 before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:update_code", "deploy:symlink_shared"
