@@ -40,6 +40,10 @@ module S3Buckets
       def object
         @@current_bucket
       end
+      
+      def url(key)
+        'http://s3.amazonaws.com/' + eternos_bucket_name + '/' + key
+      end
     end
   end
 

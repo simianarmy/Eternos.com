@@ -10,6 +10,14 @@ class PhotoThumbnail < ActiveRecord::Base
   
   before_destroy :delete_from_cloud
   
+  def cdn_url
+    S3Buckets::MediaBucket.url(s3_key) if s3_key
+  end
+  
+  def url
+    cdn_url || public_filename
+  end
+  
   # Adds uploader job to queue if file needs to be added to storage
   # because just created or modified.
   def upload

@@ -327,7 +327,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "duration"
     t.integer  "version"
     t.string   "processing_error_message"
-    t.string   "cdn_url"
     t.text     "description"
     t.string   "fps"
     t.string   "state"

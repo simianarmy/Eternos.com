@@ -116,7 +116,7 @@ end
 #after "deploy:symlink", "deploy:google_analytics"
 after "deploy:symlink", "deploy:cleanup"
 after "deploy:symlink", "deploy:sendmail"
-#after "deploy:symlink", "deploy:update_crontab"
+after "deploy:symlink", "deploy:update_crontab"
 after "deploy:symlink", "deploy:symlink_shared"
 after "deploy:symlink", "deploy:start_daemons"
 before "deploy:update_code", "deploy:stop_daemons"

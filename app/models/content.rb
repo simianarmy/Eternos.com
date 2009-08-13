@@ -147,10 +147,12 @@ class Content < ActiveRecord::Base
     thumbnails.first
   end
   
+  def cdn_url
+    S3Buckets::MediaBucket.url(s3_key) if s3_key
+  end
+  
   def thumbnail_url
-    if t = thumbnail
-      t.public_filename
-    end
+    thumbnail.url rescue thumbnail_path(:thumb)
   end
   
   # Returns path to thumbnail if one exists, or generic icon for the type
@@ -162,7 +164,7 @@ class Content < ActiveRecord::Base
       content_icon
     end
   end
-  
+
   # Returns absolute URL to content
   def absolute_url(request)
     cdn_url || (request.protocol + request.host_with_port + public_filename)

@@ -35,7 +35,11 @@ class Photo < Content
   def rebuild_thumbnails
     # Need original data in new temp file data to re-save
     if data = file_data
-      destroy_thumbnails
+      begin
+        destroy_thumbnails
+      rescue 
+        logger.warn "Exception trying to delete thumbnails for photo #{id}: $!"
+      end
       # Force re-save of data to kickstart AttachmentFu::process_attachment
       self.temp_data = data
       save

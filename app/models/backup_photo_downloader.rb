@@ -14,36 +14,43 @@ class BackupPhotoDownloader
     # Perhaps if em started in thread with MessageQueue.start, 
     # jobs will be published immediately instead of all at once after 
     # block ends...
-    MessageQueue.execute do
-      # Why is shuffle causing undefined method `shuffle' for named_scope
-      # but not from command line...obviously env paths..
-      # using shuffle method code as work-around
-      BackupPhoto.needs_download.sort_by {rand}[0..max.to_i].each do |bp|
-        RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
-        sleep(1) # Don't flood source with download requests
-        download_photo bp
+    MessageQueue.start do
+      Thread.new do
+        # Why is shuffle causing undefined method `shuffle' for named_scope
+        # but not from command line...obviously env paths..
+        # using shuffle method code as work-around
+        BackupPhoto.needs_download.sort_by {rand}[0..max.to_i].each do |bp|
+          RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
+          download_photo bp
+          sleep(1) # Don't flood source with download requests, and allow em to publish
+        end
+        MessageQueue.stop
       end
     end
   end
-  
+    
   # For development or in case we need to rebuild
   def self.fix_photos
-    MessageQueue.execute do
+    MessageQueue.start do
       # Get all backup photos with content objects
-      BackupPhoto.state_equals('downloaded').each do |bp|
-        # If photo downloaded but not uploaded to s3, start over
-        if photo = bp.photo
-          if photo.s3_key
-            photo.rebuild_thumbnails unless photo.thumbnail
-          else
-            photo.destroy
+      Thread.new do
+        BackupPhoto.state_equals('downloaded').each do |bp|
+          # If photo downloaded but not uploaded to s3, start over
+          if photo = bp.photo
+            if photo.s3_key
+              photo.rebuild_thumbnails unless photo.thumbnail && photo.thumbnail.s3_key
+            else
+              photo.destroy
+              bp.download_error!
+              download_photo bp
+            end
+          else # If no photo object, something went wrong
             bp.download_error!
             download_photo bp
           end
-        else # If no photo object, something went wrong
-          bp.download_error!
-          download_photo bp
+          sleep(1) # so em can publish upload job
         end
+        MessageQueue.stop
       end
     end
   end
