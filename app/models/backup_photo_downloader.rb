@@ -10,10 +10,8 @@ class BackupPhotoDownloader
   # Run by periodic rake task
   def self.run(max=MaxDownloads)
     # Run in em loop since rake tasks do not start amqp
-    # TODO:
-    # Perhaps if em started in thread with MessageQueue.start, 
-    # jobs will be published immediately instead of all at once after 
-    # block ends...
+    # Run thread within EM loop, and sleep to pass control back 
+    # to em to publish immediately
     MessageQueue.start do
       Thread.new do
         # Why is shuffle causing undefined method `shuffle' for named_scope
@@ -32,8 +30,8 @@ class BackupPhotoDownloader
   # For development or in case we need to rebuild
   def self.fix_photos
     MessageQueue.start do
-      # Get all backup photos with content objects
       Thread.new do
+        # Get all backup photos with content objects
         BackupPhoto.state_equals('downloaded').each do |bp|
           # If photo downloaded but not uploaded to s3, start over
           if photo = bp.photo
@@ -57,7 +55,6 @@ class BackupPhotoDownloader
   
   def self.download_photo(bp)
     bp.starting_download!
-    
     if bp.photo
       RAILS_DEFAULT_LOGGER.debug "Downloading complete"
       bp.download_complete!

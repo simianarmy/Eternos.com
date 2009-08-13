@@ -497,7 +497,7 @@ var ETLBase = Class.create({
     this.searchEvents();
   },
   searchEvents: function(){
-    var prm = {startDate: '2009-02-01', endDate: '2009-03-01', options: this.options}
+    var prm = {startDate: this.startDate, endDate: this.endDate, options: this.options}
     new ETLSearch(this, prm);
   },
   showLoading: function(){

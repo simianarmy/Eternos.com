@@ -23,6 +23,7 @@ class TimelinesController < ApplicationController
     # Use map table to map dev users to their staging account
     @member = current_user
     @member_name = @member.full_name
+    @tl_start_date, @tl_end_date = cache("tl_date_range:#{id}") { @member.timeline_span }
   end
   
   def debug
@@ -60,11 +61,7 @@ class TimelinesController < ApplicationController
     else
       md5 = Digest::MD5.hexdigest(request.request_uri)
       BenchmarkHelper.rails_log("Timeline search #{request.url}") do
-        @response = if ENV['RAILS_ENV'] == 'development'
-          TimelineRequestResponse.new(request.url, params).to_json
-        else
-          cache(md5) { TimelineRequestResponse.new(request.url, params).to_json }
-        end
+        @response = cache(md5) { TimelineRequestResponse.new(request.url, params).to_json }
       end
     end
     respond_to do |format|

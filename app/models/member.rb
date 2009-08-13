@@ -9,7 +9,7 @@ class Member < User
     m.has_many :stories, :order => 'updated_at DESC'
     m.has_many :messages, :order => :start_at
     m.has_many :documentaries, :order => :start_at
-    m.has_many :contents, :order => 'contents.updated_at DESC'
+    m.has_many :contents
     m.has_many :circles
     m.has_many :recordings
     m.has_many :backup_jobs
@@ -113,16 +113,26 @@ class Member < User
     not (facebook_id.blank? || facebook_session_key.blank? || facebook_secret_key.blank?)
   end
   
-  # temporary function to get member lifespan beginning-end
-  def lifespan
-    {:beginning => "#{8.years.ago.to_date}", :end => "#{DateTime.now.to_date.to_s}"}
-  end
-  
   # Has this member setup their account yet?
   def need_backup_setup?
     backup_sources.confirmed.empty?
   end
-  
+    
+  def timeline_span   
+    # Look for earliest timeline event
+    p = profile
+    start = [
+      10.years.ago.to_date,
+      address_book.birthdate, 
+      (t = address_book.addresses.oldest) ? t.moved_in_on : nil,
+      (t = p.families.oldest) ? t.birthdate : nil,
+      (t = p.careers.oldest) ? t.start_at : nil,
+      (t = p.schools.oldest) ? t.start_at : nil,
+      (t = contents.ascend_by_taken_at.first) ? t.taken_at : nil,
+      (t = contents.oldest) ? t.created_at : nil
+      ].compact.min
+    [start.to_date, Date.today]
+  end
   
   private
     

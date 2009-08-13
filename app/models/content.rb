@@ -40,7 +40,7 @@ class Content < ActiveRecord::Base
   before_destroy :delete_from_cloud
   
   named_scope :recordings, :conditions => {:is_recording => true}
-  
+
   # Class methods
   
   # Class factory

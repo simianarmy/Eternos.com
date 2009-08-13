@@ -321,9 +321,9 @@ class ApplicationController < ActionController::Base
   def cache(key)
     unless output = CACHE.get(key)
       output = yield
-      CACHE.set(key, output, 1.hour)
+      CACHE.set(key, output, 1.hour) unless RAILS_ENV == 'development'
     end
-    return output
+    output
   end
   
 end

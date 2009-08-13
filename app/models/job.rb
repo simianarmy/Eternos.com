@@ -2,6 +2,8 @@
 
 class Job < ActiveRecord::Base
   belongs_to :profile
+
+  acts_as_archivable :on => :start_at
   
   validate do |job|
     job.errors.add("", "Please enter a company name") if job.company.blank?

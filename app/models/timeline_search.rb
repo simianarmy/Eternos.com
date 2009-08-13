@@ -184,7 +184,7 @@ class TimelineSearchFaker < TimelineSearch
   end
   
   def get_stream_media
-    ActivityStreamItem.with_attachment.rand
+    ActivityStreamItem.with_attachment.with_photo.rand
   end
   
   def get_profile
