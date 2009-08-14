@@ -34,6 +34,20 @@ namespace :backup do
     end
   end
   
+  desc "Run backup for a source type"
+  task :run_site => :environment do
+    unless site = ENV['SITE']
+      puts "pass site name in SITE parameter"
+      puts "options: #{BackupSite.names.join('|')}"
+      exit
+    end
+    if site = BackupSite.find_by_name(site)
+      BackupJobPublisher.add_by_site(site)
+    else
+      puts "Could not find backup site with name #{site}"
+    end
+  end
+  
   desc "Generate backup job reports"
   task :generate_report => :environment do
     BackupReporter.run
