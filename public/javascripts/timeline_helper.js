@@ -337,8 +337,8 @@ var ETLEventCollection = Class.create({
 		//console.log("Active year/month = " + year + '/' + month);
 		// Sort items by descending array
 		this.dates.sort(orderDatesDescending);
-		//console.log("sorted dates");
-		//console.log(this.dates);
+		console.log("sorted dates " + this.dates);
+
 		// Only use events that fall in the active date month
 		active = this.dates.select(function(d) {
 			return (d !== undefined && parseInt(d.substr(0, 4)) === year && parseInt(d.substr(5, 2), 10) === month);

@@ -1,3 +1,4 @@
+- use_busy
 - stylesheet 'popup'
 
 // - title 'Enable Facebook Backup'
@@ -7,13 +8,13 @@
     Authorize Facebook Backup
   .clear
 
-  .fb-popup-container1
+  #container.fb-popup-container1
     .top-titlebox
       .checklist
       .popup-title1
         Enable Backup
       .clear
-    .popup-text-area
+    #message.popup-text-area
       .popup-title2
         Grant Access to Facebook Data
       We need you to grant us permission to access your Facebook data, which includes your status updates and pictures.
@@ -39,5 +40,10 @@
 
   
 :javascript
-  Event.observe(document, 'lightview:hidden', function(evt) { $('continue').show() })
+  Event.observe(document, 'lightview:hidden', function(evt) { 
+    $('message').update('<h2>Going To Next Step...Please Wait</h2>');
+    load_busy($('message'));
+    location.href = '#{url_for(:action => 'authenticate', :auth_token => @auth_token)}'; 
+  });
+  //$('continue').show() })
 
