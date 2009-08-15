@@ -177,7 +177,7 @@ var ETLArtifactSection = Class.create({
 	  var v = $$('li.visible-artifact-item');
 		var h = $$('li.hidden-artifact-item');
 		new PeriodicalExecuter(function(pe) {
-			if (v.length > 12) {
+			if (v.length>0) {
 				var i = Math.floor(Math.random()*v.length);
 				var j = Math.floor(Math.random()*h.length);
 				var tmp = v[i].childElements()[0].childElements()[0].src;
