@@ -1,3 +1,8 @@
+function Lg(){}
+Lg.l = function(l){console.log(l)}
+Lg.d = function(d){console.dir(d)}
+Lg.db = function(d){console.debug(d)}
+
 //required Date' prototypes
 Date.prototype.getMonthName =  function(){
   var nm = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -463,50 +468,42 @@ var ETLBase = Class.create({
     this.eventSources = new Timeline.DefaultEventSource();
     if (this.rawEvents != undefined){
       var date = new Date();
-      var event = new Timeline.DefaultEventSource.Event(
-        date, date, date, date, true, 
-        "hello", "hello", "", "", "", "", "");
-        for(var i=0;i<10;i++){
-          this.eventSources.add(event);
-          console.log("jellll");
-        }
+      var event = new Timeline.DefaultEventSource.Event(date, date, date, date, true, "dummy event", "dummy description", "", "", "", "", "");
+      this.eventSources.add(event);
     }
-    console.dir(this.rawEvents);
-    console.log("hello");
   },
   _setupBands: function(obj){
     var date = new Date();
-    
     this.bandInfos = [
       Timeline.createBandInfo({
-        width:          "20%", 
-        intervalUnit:   Timeline.DateTime.DECADE, 
+        width: "20%", 
+        intervalUnit: Timeline.DateTime.DECADE, 
         intervalPixels: 200,
-        date:           date,
-        showEventText:  false,
-        theme:          this.theme
+        date: date,
+        showEventText: false,
+        theme: this.theme
       }),   
       Timeline.createBandInfo({
-        width:          "55%",
-        intervalUnit:   Timeline.DateTime.DAY,
+        width: "55%",
+        intervalUnit: Timeline.DateTime.DAY,
         intervalPixels: 200,
-        date:           date,
+        date: date,
         eventSource: this.eventSources,
         theme: this.theme
       }),
       Timeline.createBandInfo({
-        width:          "13%",
-        intervalUnit:   Timeline.DateTime.MONTH,
+        width: "13%",
+        intervalUnit: Timeline.DateTime.MONTH,
         intervalPixels: 200,
-        date:           date,
+        date: date,
         overview: true,
         theme: this.theme
       }),
       Timeline.createBandInfo({
-        width:          "12%",
-        intervalUnit:   Timeline.DateTime.YEAR,
+        width: "12%",
+        intervalUnit: Timeline.DateTime.YEAR,
         overview: true,
-        date:           date,
+        date: date,
         intervalPixels: 200,
         theme: this.theme
       })
@@ -562,10 +559,8 @@ var ETLBase = Class.create({
       //TODO:
     });
   },  
-  _create: function(reassign){
-    //reassign: true/false
-    this.timeline = Timeline.create(document.getElementById(this.domID), this.bandInfos);
-    this.assignObject();
+  _create: function(){
+    this.timeline = Timeline.create($(this.domID), this.bandInfos);
   },
   init: function(search){
     //search parameter:
@@ -575,6 +570,7 @@ var ETLBase = Class.create({
     this._handleWindowResize();
     this._handleBandScrolling();
     if(search){
+      this.assignObject();
       this.searchEvents();
     }
   },
@@ -604,6 +600,7 @@ var ETLBase = Class.create({
   },
   populate: function(){
     this._setupEvents();
+		this._setupBands(this);
     this.init(false);
   }
 })
