@@ -396,17 +396,17 @@ var ETLEventParser = Class.create({
 		
 		window._ETLEventSection.addContent(this.eventItems.html);
     window._ETLEventSection.populate();
-    window._ETLTimeline.populate();
+    
+    //window._ETLTimeline.populate();
   }
 });
 
 //Eternos Timeline Search
 //init: timeline object and {startDate: 'sring date', endDate: 'string date', options: 'string'}
 var ETLSearch = Class.create({
-  initialize: function(timeline, params){
+  initialize: function(params){
     var date = new Date();
     
-    this.timeline = timeline;
     this.searchUrl = "/timeline/search/js/";
     this.startDate = params.startDate || new ETLDate(date).outDate;
     this.endDate = params.endDate || new ETLDate(date).outDate;
@@ -414,7 +414,7 @@ var ETLSearch = Class.create({
     this.complete = false;
     
     this._getFullSearchUrl();
-    this._getJSON(this.timeline, this.fullSearchUrl);
+    this._getJSON(window._ETLTimeline, this.fullSearchUrl);
   },
   _getFullSearchUrl: function(){
     this.fullSearchUrl = this.searchUrl + window._ETLMemberID +'/'+ this.startDate +'/'+ this.endDate +'/'+ this.options
@@ -461,13 +461,18 @@ var ETLBase = Class.create({
   },  
   _setupEvents: function(){
     this.eventSources = new Timeline.DefaultEventSource();
-    if (this.rawEvents){
+    if (this.rawEvents != undefined){
       var date = new Date();
       var event = new Timeline.DefaultEventSource.Event(
-      date, date, date, date, true, 
-      "hello", "hello", "", "", "", "", "");
-      this.eventSources.add(event);
+        date, date, date, date, true, 
+        "hello", "hello", "", "", "", "", "");
+        for(var i=0;i<10;i++){
+          this.eventSources.add(event);
+          console.log("jellll");
+        }
     }
+    console.dir(this.rawEvents);
+    console.log("hello");
   },
   _setupBands: function(obj){
     var date = new Date();
@@ -550,16 +555,17 @@ var ETLBase = Class.create({
       }, 0.5)
     }
   },
-  _onBandScrolling: function(){
+  _handleBandScrolling: function(){
     this.timeline.getBand(0).addOnScrollListener(function(band){
       var min_date = new ETLDate(band.getMinVisibleDate()).outputDate;
       var max_date = new ETLDate(band.getMaxVisibleDate()).outputDate;
       //TODO:
     });
   },  
-  _create: function(){
-    window._ETLTimeline = this;
+  _create: function(reassign){
+    //reassign: true/false
     this.timeline = Timeline.create(document.getElementById(this.domID), this.bandInfos);
+    this.assignObject();
   },
   init: function(search){
     //search parameter:
@@ -567,10 +573,13 @@ var ETLBase = Class.create({
     //false = don't include timeline search
     this._create();
     this._handleWindowResize();
-    this._onBandScrolling();
+    this._handleBandScrolling();
     if(search){
       this.searchEvents();
     }
+  },
+  assignObject: function(){
+    window._ETLTimeline = this;
   },
   showLoading: function(){
     this.timeline.showLoadingMessage();
@@ -584,13 +593,14 @@ var ETLBase = Class.create({
   },
   showBubble: function(elements){},
   searchEvents: function(){
-    //var prm = {startDate: this.startDate, endDate: this.endDate, options: this.options}
-    var prm = {startDate: '2009-07-01', endDate: '2009-09-15', options: this.options}
-    new ETLSearch(this, prm);
+    //var params = {startDate: this.startDate, endDate: this.endDate, options: this.options}
+    var params = {startDate: '2009-07-01', endDate: '2009-09-15', options: this.options}
+    new ETLSearch(params);
   },
   parseSearchResults: function(results){
     this.searchResults = results;
     this.rawEvents = new ETLEventParser(this.searchResults);
+    this.populate();
   },
   populate: function(){
     this._setupEvents();
