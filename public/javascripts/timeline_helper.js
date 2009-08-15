@@ -467,9 +467,19 @@ var ETLBase = Class.create({
   _setupEvents: function(){
     this.eventSources = new Timeline.DefaultEventSource();
     if (this.rawEvents != undefined){
-      var date = new Date();
-      var event = new Timeline.DefaultEventSource.Event(date, date, date, date, true, "dummy event", "dummy description", "", "", "", "", "");
-      this.eventSources.add(event);
+			var item;
+			for(var i=0;i<this.rawEvents.eventItems.items.length;i++){
+				item = this.rawEvents.eventItems.items[i];
+				Lg.l(item);
+
+				var start_date = new ETLDate(item.start_date, 'str').outDate;
+				var end_date = new ETLDate(item.end_date, 'str').outDate;
+				var title = item.title;
+
+				var description = "";
+				var event = new Timeline.DefaultEventSource.Event(start_date, end_date, start_date, end_date, true, title, description, "", "", "", "", "");
+        this.eventSources.add(event);
+			}
     }
   },
   _setupBands: function(obj){
@@ -497,6 +507,7 @@ var ETLBase = Class.create({
         intervalPixels: 200,
         date: date,
         overview: true,
+				eventSource: this.eventSources,
         theme: this.theme
       }),
       Timeline.createBandInfo({
