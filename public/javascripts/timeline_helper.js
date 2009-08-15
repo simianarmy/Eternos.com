@@ -261,6 +261,25 @@ var ETLEventItemDetail = Class.create({
   }
 })
 
+
+//Eternos Timeline Event Source (Timeline.DefaultEventSource.Event)
+var ETLTimelineEvent = Class.create({
+  initialize: function(event){
+    this.assetUrl = "http://simile.mit.edu/timeline/api/";
+    this.imgUrl = this.assetUrl + "images/";
+    this.title = this.desc = this.img = this.link = this.icon = this.color = this.tcolor = "HALLO";
+    this.date = new Date();
+    this.event = event;
+  },
+  toTLEventSource: function(){
+    this.outEvent = new Timeline.DefaultEventSource.Event(
+      this.date, this.date, this.date, this.date, true, 
+      this.title, this.desc, this.img, this.link, this.icon, this.color, this.tcolor);
+
+    return this.outEvent;
+  }
+})
+
 //Eternos Timeline Event Collection
 var ETLEventCollection = Class.create({
 	initialize: function(){
@@ -288,23 +307,23 @@ var ETLEventCollection = Class.create({
 		var date;
 		var year = window._ETLMonthSelector.activeDate.getFullYear();
 		var month = window._ETLMonthSelector.activeDate.getMonth();
-		console.log("Active year/month = " + year + '/' + month);
+		//console.log("Active year/month = " + year + '/' + month);
 		// Sort items by descending array
 		this.dates.sort(orderDatesDescending);
-		console.log("sorted dates");
-		console.log(this.dates);
+		//console.log("sorted dates");
+		//console.log(this.dates);
 		// Only use events that fall in the active date month
 		active = this.dates.select(function(d) {
 			return (d !== undefined && parseInt(d.substr(0, 4)) === year && parseInt(d.substr(5, 2), 10) === month);
 		});
-		console.dir(active);
+		//console.dir(active);
 		active.each(function(d) {
-			console.log("date = " + d);
+			//console.log("date = " + d);
 			val = this.rawItems[d];
-			console.dir(val);
+			//console.dir(val);
 			items_html = ''
 			items = this._groupItems(val);
-			console.dir(items);
+			//console.dir(items);
 
 			for(var j=0;j<items.length;j++){
 				event = new ETLEventItem(items[j]);
@@ -362,6 +381,7 @@ var ETLEventParser = Class.create({
     for(var i=0;i<this.jsonEvents.results.length;i++) {
 			if (this._eventIsArtifact(this.jsonEvents.results[i])) {
         window._ETLArtifactSection.addItem(this.jsonEvents.results[i]);
+        this.artifactItems.push(this.jsonEvents.results[i]);
       } else {
           //TODO: non artifact items
       }
@@ -376,7 +396,7 @@ var ETLEventParser = Class.create({
 		
 		window._ETLEventSection.addContent(this.eventItems.html);
     window._ETLEventSection.populate();
-    //window._ETLTimeline.populate();
+    window._ETLTimeline.populate();
   }
 });
 
@@ -404,7 +424,7 @@ var ETLSearch = Class.create({
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
-        tmline.pushEvents(response);
+        tmline.parseSearchResults(response);
         tmline.hideLoading();
       },
       onFailure: function(){
@@ -430,7 +450,27 @@ var ETLBase = Class.create({
     this.startDate = params.startDate || new ETLDate(date);
     this.endDate = params.endDate || new ETLDate(date);
     this.options = params.options;
+    
+    this._setupTheme();
+    this._setupEvents();
+    this._setupBands(this);
+    this.init(true);
+  },
+  _setupTheme: function(){
     this.theme = Timeline.ClassicTheme.create();
+  },  
+  _setupEvents: function(){
+    this.eventSources = new Timeline.DefaultEventSource();
+    if (this.rawEvents){
+      var date = new Date();
+      var event = new Timeline.DefaultEventSource.Event(
+      date, date, date, date, true, 
+      "hello", "hello", "", "", "", "", "");
+      this.eventSources.add(event);
+    }
+  },
+  _setupBands: function(obj){
+    var date = new Date();
     
     this.bandInfos = [
       Timeline.createBandInfo({
@@ -446,6 +486,7 @@ var ETLBase = Class.create({
         intervalUnit:   Timeline.DateTime.DAY,
         intervalPixels: 200,
         date:           date,
+        eventSource: this.eventSources,
         theme: this.theme
       }),
       Timeline.createBandInfo({
@@ -454,7 +495,6 @@ var ETLBase = Class.create({
         intervalPixels: 200,
         date:           date,
         overview: true,
-        eventSource: params.eventSource || new Timeline.DefaultEventSource(),
         theme: this.theme
       }),
       Timeline.createBandInfo({
@@ -465,11 +505,8 @@ var ETLBase = Class.create({
         intervalPixels: 200,
         theme: this.theme
       })
-     ];
-    this._setupBands(this);
-    this.init();
-  },
-  _setupBands: function(obj){
+     ];    
+    
     this.bandInfos[1].syncWith = 0;
     this.bandInfos[2].syncWith = 1;
     this.bandInfos[3].syncWith = 2;
@@ -507,15 +544,12 @@ var ETLBase = Class.create({
     ];    
   },
   _handleWindowResize: function(){
-//    if (window._ETLResizeTimerID == null) {
-//      window._ETLResizeTimerID = window.setTimeout(function() {
-//        window._ETLResizeTimerID = null;
-//      }, 500);
-//    }    
-  },  
-  _create: function(){
-    this.timeline = Timeline.create(document.getElementById(this.domID), this.bandInfos);
-  },  
+    if (window._ETLResizeTimerID == null) {
+      window._ETLResizeTimerID = new PeriodicalExecuter(function(pe){
+        window._ETLResizeTimerID = null;
+      }, 0.5)
+    }
+  },
   _onBandScrolling: function(){
     this.timeline.getBand(0).addOnScrollListener(function(band){
       var min_date = new ETLDate(band.getMinVisibleDate()).outputDate;
@@ -523,21 +557,20 @@ var ETLBase = Class.create({
       //TODO:
     });
   },  
-  _parseEvents: function(){
-    this.events = new ETLEventParser(this.sourceEvent);
+  _create: function(){
+    window._ETLTimeline = this;
+    this.timeline = Timeline.create(document.getElementById(this.domID), this.bandInfos);
   },
-  _populateEvents: function() {
-	},  
-  init: function(){
+  init: function(search){
+    //search parameter:
+    //true  = include default search for first timeline init
+    //false = don't include timeline search
     this._create();
     this._handleWindowResize();
     this._onBandScrolling();
-    this.searchEvents();
-  },
-  searchEvents: function(){
-//    var prm = {startDate: this.startDate, endDate: this.endDate, options: this.options}
-    var prm = {startDate: '2009-07-01', endDate: '2009-09-15', options: this.options}
-    new ETLSearch(this, prm);
+    if(search){
+      this.searchEvents();
+    }
   },
   showLoading: function(){
     this.timeline.showLoadingMessage();
@@ -545,20 +578,27 @@ var ETLBase = Class.create({
   hideLoading: function(){
     this.timeline.hideLoadingMessage();
   },
-  pushEvents: function(events){
-    this.sourceEvent = events;
-    this._parseEvents();
-    this._populateEvents();
-  },
   showError: function(){
     this.hideLoading();
     //TODO:
   },
-  showBubble: function(elements){}
+  showBubble: function(elements){},
+  searchEvents: function(){
+    //var prm = {startDate: this.startDate, endDate: this.endDate, options: this.options}
+    var prm = {startDate: '2009-07-01', endDate: '2009-09-15', options: this.options}
+    new ETLSearch(this, prm);
+  },
+  parseSearchResults: function(results){
+    this.searchResults = results;
+    this.rawEvents = new ETLEventParser(this.searchResults);
+  },
+  populate: function(){
+    this._setupEvents();
+    this.init(false);
+  }
 })
 
 // HTML Templates for all dynamic DOM content
-
 var eventListTemplates = {
 	eventGroup: function() { 
 		return new Template('<div class="event_list_group"><div class="event_list_date">#{date}</div>' +
