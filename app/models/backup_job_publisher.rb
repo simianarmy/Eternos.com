@@ -34,7 +34,7 @@ class BackupJobPublisher
         q = MessageQueue.pending_backup_jobs_queue
         
         Member.with_backup_targets.uniq.each do |u|
-          u.backup_sources.find_all_by_backup_site_id(site.id).each do |source|
+          u.backup_sources.by_site(site.name).each do |source|
             publish_source q, source
           end
         end

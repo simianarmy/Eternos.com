@@ -41,18 +41,27 @@ describe BackupSourceJob do
     end
   end
   
-  describe "on time_remaining" do
+  describe "" do
     before(:each) do
       @job = create_backup_source_job(:backup_source => @backup_source, :backup_job => @backup_job)
     end
-    
-    it "should return zero if it has finished" do
-      @job.finished_at = Time.now
-      @job.time_remaining.should == 0
+
+    describe "on finished!" do
+      it "should update associated source's last backup time" do
+        @job.finished!
+        @job.finished_at.should == @job.backup_source.last_backup_at
+      end
     end
-    
-    it "should return non-zero value if it has not finished" do
-      @job.time_remaining.should > 0
-    end    
+
+    describe "on time_remaining" do
+      it "should return zero if it has finished" do
+        @job.finished_at = Time.now
+        @job.time_remaining.should == 0
+      end
+
+      it "should return non-zero value if it has not finished" do
+        @job.time_remaining.should > 0
+      end    
+    end
   end
 end

@@ -19,6 +19,12 @@ class BackupSourceJob < ActiveRecord::Base
     update_attribute(:percent_complete, 0)
   end
   
+  def finished!
+    t = Time.now
+    update_attribute(:finished_at, t)
+    backup_source.update_attribute(:last_backup_at, t)
+  end
+  
   def time_remaining
     return 0 if finished_at
     

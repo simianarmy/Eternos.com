@@ -24,9 +24,11 @@ production:
   database: eternos
   username: et3rN0s
   password: m4st3rBl4st3r
-
+  pool: 15
+  
 staging:
   adapter: mysql
   database: eternos_staging
   username: eternos_staging
   password: m4sterBl4st3r
+  pool: 15
