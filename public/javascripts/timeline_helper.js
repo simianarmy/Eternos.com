@@ -4,13 +4,23 @@ Lg.d = function(d){console.dir(d)}
 Lg.db = function(d){console.debug(d)}
 
 //required Date' prototypes
+Date.prototype.numDays = function(){
+  return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
+}
+Date.prototype.getFullMonth =  function(){
+	var m = this.getMonth()+1+"";
+	return (m.length<2) ? "0"+m : m;
+}
+Date.prototype.startingMonth = function(){
+	return this.getFullYear()+"-"+this.getFullMonth()+"-01";
+}
+Date.prototype.endingMonth = function(){
+	return this.getFullYear()+"-"+this.getFullMonth()+"-"+this.numDays();
+}
 Date.prototype.getMonthName =  function(){
   var nm = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   var nu = [0,1,2,3,4,5,6,7,8,9,10,11];
   return nm[this.getMonth()];
-}
-Date.prototype.numDays = function(){
-  return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
 }
 Date.prototype.stepMonth = function(param){
   if (param == 'up') {
@@ -89,8 +99,9 @@ var ETLMonthSelector = Class.create({
     this.activeDate = new Date();
     this.advanceMonths = new Array();
     this.pastMonths = new Array();
-    this.top    = "<a href=\"#\" class=\"btn-left\" onclick=\"window._ETLMonthSelector.stepMonth('down'); return false;\"></a>";
-    this.bottom = "<a href=\"#\" class=\"btn-right\" onclick=\"window._ETLMonthSelector.stepMonth('up'); return false;\"></a>";
+		this.enableClick();
+    this.top    = "<a href=\"#\" class=\"btn-left\" onclick=\""+this.stepDownAttr+" return false;\"></a>";
+    this.bottom = "<a href=\"#\" class=\"btn-right\" onclick=\""+this.stepUpAttr+" return false;\"></a>";
     this.populate();
   },
   _initContent: function(){
@@ -106,6 +117,13 @@ var ETLMonthSelector = Class.create({
     this.parent.innerHTML = this.top + this.content + this.bottom;
     window._ETLMonthSelector = this;
   },
+	disableClick: function(){
+		this.stepUpAttr = this.stepDownAttr = "";
+	},
+	enableClick: function(){
+		this.stepDownAttr = "window._ETLMonthSelector.stepMonth('down');";
+		this.stepUpAttr = "window._ETLMonthSelector.stepMonth('up');";		
+	},
   populate: function(){
     this._initContent();
     this._setContent();
@@ -113,8 +131,13 @@ var ETLMonthSelector = Class.create({
   },
   stepMonth: function(param){
     this.activeDate.stepMonth(param);
-    this.populate();
-    //TODO: catch the date then attach timeline search here
+		this.disableClick();
+		this.populate();
+		var params = {
+			startDate: this.activeDate.startingMonth(),
+			endDate: this.activeDate.endingMonth(),
+			options: window._ETLTimeline.options}
+		window._ETLTimeline.searchEvents(params);
   }
 })
 
@@ -265,7 +288,6 @@ var ETLEventItemDetail = Class.create({
     this.source = event;
   }
 })
-
 
 //Eternos Timeline Event Source (Timeline.DefaultEventSource.Event)
 var ETLTimelineEvent = Class.create({
@@ -470,12 +492,10 @@ var ETLBase = Class.create({
 			var item;
 			for(var i=0;i<this.rawEvents.eventItems.items.length;i++){
 				item = this.rawEvents.eventItems.items[i];
-				Lg.l(item);
 
 				var start_date = new ETLDate(item.start_date, 'str').outDate;
 				var end_date = new ETLDate(item.end_date, 'str').outDate;
 				var title = item.title;
-
 				var description = "";
 				var event = new Timeline.DefaultEventSource.Event(start_date, end_date, start_date, end_date, true, title, description, "", "", "", "", "");
         this.eventSources.add(event);
@@ -599,10 +619,10 @@ var ETLBase = Class.create({
     //TODO:
   },
   showBubble: function(elements){},
-  searchEvents: function(){
+  searchEvents: function(params){
     //var params = {startDate: this.startDate, endDate: this.endDate, options: this.options}
-    var params = {startDate: '2009-07-01', endDate: '2009-09-15', options: this.options}
-    new ETLSearch(params);
+		var p = (params == undefined) ? {startDate: '2009-07-01', endDate: '2009-09-15', options: this.options} : params
+    new ETLSearch(p);
   },
   parseSearchResults: function(results){
     this.searchResults = results;
