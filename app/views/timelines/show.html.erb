@@ -16,7 +16,7 @@
   </div>
 
 <script type="text/javascript">
-  new ETLBase('my-timeline', {memberID: <%= current_user.id %>, startDate:'<%= @tl_start_date %>', endDate: '<%= @tl_end_date %>', options:'fake/max_results=450'});
+  new ETLBase('my-timeline', {memberID: <%= current_user.id %>, startDate:'<%= @tl_start_date %>', endDate: '<%= @tl_end_date %>', options:'fake/max_results=100'});
   new ETLMonthSelector('month-selector');
   new ETLEventSection('story-area');
   new ETLArtifactSection('arti-area');

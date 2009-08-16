@@ -44,6 +44,22 @@ Date.prototype.monthRange = function(num, dir){
 	
 	return rv;
 }
+// Date parsing regex & sort function
+var MysqlDateRE = /^(\d{4})\-(\d{2})\-(\d{2})/;
+
+var mysqlTimeToDate = function(datetime) {
+    //function parses mysql datetime string and returns javascript Date object
+    //input has to be in this format: 2007-06-05 15:26:02
+    var regex = /^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9]) (?:([0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/;
+    var parts = datetime.replace(regex,"$1 $2 $3 $4 $5 $6").split(' ');
+    return new Date(parts[0],parts[1]-1,parts[2],parts[3],parts[4],parts[5]);
+}
+var mysqlDateToDate = function(date) {
+    //function parses mysql datetime string and returns javascript Date object
+    //input has to be in this format: 2007-06-05
+    var parts = date.replace(MysqlDateRE,"$1 $2 $3").split(' ');
+    return new Date(parts[0],parts[1]-1,parts[2]);
+}
 
 //required Array' prototypes 
 Array.prototype.unique = function(){
@@ -63,12 +79,10 @@ Array.prototype.include = function(val) {
   return this.index(val) !== null;
 }
 
-// Date parsing regex & sort function
-var dateRE = /^(\d{4})\-(\d{2})\-(\d{2})/;
 
 var orderDatesDescending = function(x, y) {
-	x = x.replace(dateRE,"$1$2$3");
-	y = y.replace(dateRE,"$1$2$3");
+	x = x.replace(MysqlDateRE,"$1$2$3");
+	y = y.replace(MysqlDateRE,"$1$2$3");
 	if (x > y) return -1
 	if (x < y) return 1;
 	return 0; 
@@ -76,9 +90,23 @@ var orderDatesDescending = function(x, y) {
 
 //required constants 
 var ETLEventNames = function(){}
-ETLEventNames.itemTypes = ["FacebookActivityStreamItem", "TwitterActivityStreamItem", "FeedEntry", "BackupEmail", "Photo", "Job", "Address"];
-ETLEventNames.singularTypes = ["Facebook Post", "Tweet", "Blog Post", "Email", "Photo", "A Job Update", "An Address Update"];
-ETLEventNames.pluralTypes = ["Facebook Posts", "Tweets", "Blog Posts", "Emails", "Photos", "Job Updates", "Address Updates"];
+ETLEventNames.itemTypes = [
+	{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts"}, 
+	{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets"}, 
+	{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts"}, 
+	{type: "BackupEmail", display_text: "Email", display_text_plural: "Emails"}, 
+	{type: "Photo", display_text: "Photo", display_text_plural: "Photos"},
+	{type: "Video", display_text: "Video", display_text_plural: "Videos"},
+	{type: "Music", display_text: "Music", display_text_plural: "Music"},
+	{type: "Audio", display_text: "Audio", display_text_plural: "Audio"},
+	{type: "Document", display_text: "Document", display_text_plural: "Documents"},
+	{type: "School", display_text: "School", display_text_plural: "Schools"},
+	{type: "Family", display_text: "Family Member", display_text_plural: "Family Members"},
+	{type: "Medical", display_text: "Medical Data", display_text_plural: "Medical Data"},
+	{type: "MedicalCondition", display_text: "Medical Condition", display_text_plural: "Medical Conditions"},
+	{type: "Job", display_text: "Job", display_text_plural: "Jobs"}, 
+	{type: "Address", display_text: "Address", display_text_plural: "Addresses"}
+];
 
 //Utilities
 ETLUtil = function(){}
@@ -230,13 +258,13 @@ var ETLArtifactSection = Class.create({
 //Eternos Timeline Event Section
 var ETLEventSection = Class.create({
   initialize: function(domID){
-    this.parent = $(domID);
-    this.title = "Events";
-    this.loading = "<p>Loading Events..</p><br/>";
-    this.content = "";
-    this.top = "<div class=\"storybox-top\"><div class=\"title5\">"+this.title+"</div></div><div class=\"storybox\">";
-    this.bottom = "</div><img src=\"/images/storybox-bottom.gif\" /></div>";
-    this.images = new Array();
+    this.parent		= $(domID);
+    this.title 		= "Events";
+    this.loading 	= "<p>Loading Events..</p><br/>";
+		this.template = eventListTemplates.events();
+    this.content 	= "";
+    this.images 	= new Array();
+
     this.populate();
     this.showLoading();
   },
@@ -244,7 +272,7 @@ var ETLEventSection = Class.create({
     this.content = "";
   },
   _write: function(){
-    this.parent.innerHTML = this.top+this.content+this.bottom;
+    this.parent.innerHTML = this.template.evaluate({title: this.title, events: this.content});
     window._ETLEventSection = this;
   },
   addContent: function(content){
@@ -268,17 +296,15 @@ var ETLEventSource = Class.create({
     this.attributes = s.attributes;
   },
 	isArtifact: function() {
-		return (this.type === 'BackupPhoto' || this.type === 'Photo' || this.type === 'Video' ||
-		this.type === 'WebVideo') || 
-		((this.type === 'FacebookActivityStreamItem' || this.type === 'TwitterActivityStreamItem') && 
-		(this.attributes.attachment_type === 'photo'));
+		return (this.type === 'Photo' || this.type === 'Video' || this.type === 'WebVideo');
 	}
 });
 
 //Eternos Timeline Event Item
-var ETLEventItem = Class.create({
+var ETLEventItems = Class.create({
   initialize: function(items){
-		this.source 			= s = new ETLEventSource(items[0]);
+		this.items				= items;
+		this.first 				= s = new ETLEventSource(items[0]);
     this.type 				= s.type;
     this.start_date 	= s.start_date;
     this.end_date 		= s.end_date;
@@ -286,30 +312,46 @@ var ETLEventItem = Class.create({
     this.num 					= items.length;
     this.items 				= items;
 		this.html 				= '';
-		this.template 		= eventListTemplates.eventItem();
-		
+		this.template			= eventListTemplates.eventItem();
+		this.hiddenItemTemplate = eventListTemplates.hiddenItem();
     this._setTitle();
     this._setHtml();
   },
   _setTitle: function(){
-    if(this.items.length>1){
-      this.title = this.num +" "+ ETLEventNames.pluralTypes[ETLEventNames.itemTypes.indexOf(this.items[0].type)];
-    }else if(this.items.length==1){
-      this.title = ETLEventNames.singularTypes[ETLEventNames.itemTypes.indexOf(this.items[0].type)];
-    }else{
-      this.title = "Invalid event";
-    }
+		var type = this.first.type;
+		var event = ETLEventNames.itemTypes.detect(function(e) { return e.type === type });
+		if (event) {
+			if (this.num > 1) {
+				this.title = this.num +" "+ event.display_text_plural;
+			} else if (this.num == 1) {
+				this.title = event.display_text;
+			}
+		} else {
+			this.title = "Unknown event";
+		}
   },
   _setHtml: function(){
-		this.html = this.template.evaluate({title: this.title, link_url: this._getLinkUrl(), link_rel: this._getLinkRel()});
+		// Need to format the link so all content will be displayed
+		var other_items = '';
+		if (this.num > 1) {
+			for (var i=1; i<this.num; i++) {
+				other_items += this.hiddenItemTemplate.evaluate({ 
+					link_url: this._getLinkUrl(this.items[i]), 
+					link_rel: this._getLinkRel()});
+			}
+		}
+		this.html = this.template.evaluate({title: this.title, 
+			link_url: this._getLinkUrl(this.first), 
+			link_rel: this._getLinkRel(),
+			other_items: other_items});
   },
-	_getLinkUrl: function() {
-		return this.attributes.url;
+	_getLinkUrl: function(item) {
+		return item.attributes.url;
 	},
 	// Determine 'rel' attribute for Lightview link html
 	_getLinkRel: function() {
-		if (this.source.isArtifact()) {
-			return 'image';
+		if (this.first.isArtifact()) {
+			return (this.num > 1) ? 'gallery[' + this.first.attributes.id + ']' : 'image';
 		} else {
 			return 'ajax';
 		}
@@ -368,30 +410,25 @@ var ETLEventCollection = Class.create({
 		var date;
 		var year = window._ETLMonthSelector.activeDate.getFullYear();
 		var month = window._ETLMonthSelector.activeDate.getMonth();
-		//console.log("Active year/month = " + year + '/' + month);
+
 		// Sort items by descending array
 		this.dates.sort(orderDatesDescending);
-		//console.log("sorted dates " + this.dates);
 
 		// Only use events that fall in the active date month
-		active = this.dates.select(function(d) {
+		var active = this.dates.select(function(d) {
 			return (d !== undefined && parseInt(d.substr(0, 4)) === year && parseInt(d.substr(5, 2), 10) === month);
 		});
-		//console.dir(active);
 		active.each(function(d) {
-			//console.log("date = " + d);
-			val = this.rawItems[d];
-			//console.dir(val);
+			var val = this.rawItems[d];
 			items_html = ''
 			items = this._groupItems(val);
-			//console.dir(items);
 
 			for(var j=0;j<items.length;j++){
-				event = new ETLEventItem(items[j]);
+				event = new ETLEventItems(items[j]);
 				this.items.push(event);
 				items_html += event.html;
 			}
-			this.html += this.groupTemplate.evaluate({date: d, body: items_html});
+			this.html += this.groupTemplate.evaluate({date: this._eventDate(d), body: items_html});
 		}, this);
 	},
 	_groupItems: function(items){
@@ -408,8 +445,9 @@ var ETLEventCollection = Class.create({
     }
 	  return results;
 	},
-	_eventDateHtml: function(date) {
-		return ''
+	_eventDate: function(date) {
+		var d = mysqlDateToDate(date);
+		return d.toLocaleDateString();
 	}
 	
 })
@@ -673,12 +711,19 @@ var ETLBase = Class.create({
 
 // HTML Templates for all dynamic DOM content
 var eventListTemplates = {
+	events: function() {
+		return new Template("<div class=\"storybox-top\"><div class=\"title5\">#{title}</div></div>" + 
+			"<div class=\"storybox\">#{events}</div><img src=\"/images/storybox-bottom.gif\" /></div>");
+	},
 	eventGroup: function() { 
 		return new Template('<div class="event_list_group"><div class="event_list_date">#{date}</div>' +
 			'<div class="event_list_group_items"><ul>#{body}</ul></div></div>'); 
 	},
 	eventItem: function() {
-		return new Template('<li><div class="event_list_group_item"><a href="#{link_url}" class="lightview" rel="#{link_rel}">#{title}</a></div></li>');
+		return new Template('<li><div class="event_list_group_item"><a href="#{link_url}" class="lightview" rel="#{link_rel}">#{title}</a>#{other_items}</div></li>');
+	},
+	hiddenItem: function() {
+		return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 	}
 };
 
