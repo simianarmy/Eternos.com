@@ -1,20 +1,3 @@
-//message box for timeline
-Timeline._Impl.prototype.addCustomMethods = function() {
-	var containerDiv = this._containerDiv;
-	var doc = containerDiv.ownerDocument;
-
-	var message = SimileAjax.Graphics.createMessageBubble(doc);
-	message.containerDiv.className = "timeline-message-container";
-	containerDiv.appendChild(message.containerDiv);
-
-	message.contentDiv.className = "timeline-message";
-	message.contentDiv.innerHTML = "Please backup your accounts first";
-
-	this.showMessageBox = function() { message.containerDiv.style.display = "block"; };
-	this.hideMessageBox = function() { message.containerDiv.style.display = "none"; };
-};
-
-
 //required Date' prototypes
 Date.prototype.numDays = function(){
   return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
@@ -547,7 +530,10 @@ var ETLBase = Class.create({
 				var end_date = new ETLDate(item.end_date, 'str').outDate;
 				var title = item.title;
 				var description = "";
-				var event = new Timeline.DefaultEventSource.Event(start_date, end_date, start_date, end_date, true, title, description, "", "", "", "", "");
+				var event = new Timeline.DefaultEventSource.Event({
+					start: start_date,
+					text: title,
+					description: description});
         this.eventSources.add(event);
 			}
     }
@@ -636,14 +622,11 @@ var ETLBase = Class.create({
     this.timeline.getBand(1).addOnScrollListener(function(band){
       var min_date = new ETLDate(band.getMinVisibleDate()).outputDate;
       var max_date = new ETLDate(band.getMaxVisibleDate()).outputDate;
-
-      //TODO:
-			//ETLUtil.pause(1000);
-			//console.dir(band._onScrollListeners);
     });
   }, 
   _create: function(){
     this.timeline = Timeline.create($(this.domID), this.bandInfos);
+		this.timeline.addCustomMethods();
   },
   init: function(first_init){
     //first_init parameter:
@@ -664,6 +647,7 @@ var ETLBase = Class.create({
   },
   hideLoading: function(){
     this.timeline.hideLoadingMessage();
+		this.timeline.showBackupMessage();
   },
   showError: function(){
     this.hideLoading();

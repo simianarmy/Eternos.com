@@ -522,6 +522,7 @@ Timeline._Impl.prototype._initialize = function() {
     /*
      *  creating loading UI
      */
+    
     var message = SimileAjax.Graphics.createMessageBubble(doc);
     message.containerDiv.className = "timeline-message-container";
     containerDiv.appendChild(message.containerDiv);
@@ -532,6 +533,34 @@ Timeline._Impl.prototype._initialize = function() {
     this.showLoadingMessage = function() { message.containerDiv.style.display = "block"; };
     this.hideLoadingMessage = function() { message.containerDiv.style.display = "none"; };
 };
+
+
+
+
+/* ============ BEGIN 
+ * modified by: dimas 17 Aug 09
+ * this 9 lines below are custom methods
+ */
+Timeline._Impl.prototype.addCustomMethods = function() {
+	var containerDiv = this._containerDiv;
+	var doc = containerDiv.ownerDocument;
+
+	var message = SimileAjax.Graphics.createMessageBubble(doc);
+	message.containerDiv.className = "timeline-message-container";
+	containerDiv.appendChild(message.containerDiv);
+
+	message.contentDiv.className = "timeline-message";
+	message.contentDiv.innerHTML = "Please backup your accounts first";
+
+	this.showBackupMessage = function() { message.containerDiv.style.display = "block"; };
+	this.hideBackupMessage = function() { message.containerDiv.style.display = "none"; };
+};
+/*
+ * ============== END */
+
+
+
+
 
 Timeline._Impl.prototype._distributeWidths = function() {
     var length = this.getPixelLength();

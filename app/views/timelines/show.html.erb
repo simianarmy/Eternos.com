@@ -1,6 +1,6 @@
-<% use_timeline %>
-<% use_prototip %>
 <% use_lightview %>
+<% use_timeline %>
+<%# use_prototip %>
 
   <div id="content-container3">
     <div id="timeline-top">
@@ -16,7 +16,7 @@
   </div>
 
 <script type="text/javascript">
-  new ETLBase('my-timeline', {memberID: <%= current_user.id %>, startDate:'<%= @tl_start_date %>', endDate: '<%= @tl_end_date %>', options:'fake/max_results=50/artifact'});
+  new ETLBase('my-timeline', {memberID: <%= current_user.id %>, startDate:'<%= @tl_start_date %>', endDate: '<%= @tl_end_date %>', options:'fake/max_results=450'});
   new ETLMonthSelector('month-selector');
   new ETLEventSection('story-area');
   new ETLArtifactSection('arti-area');
