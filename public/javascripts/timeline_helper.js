@@ -1,3 +1,6 @@
+// $Id$
+
+// console logging helpers
 function Lg(){}
 Lg.l = function(l){console.log(l)}
 Lg.d = function(d){console.dir(d)}
@@ -58,6 +61,7 @@ Array.prototype.include = function(val) {
   return this.index(val) !== null;
 }
 
+// Date parsing regex & sort function
 var dateRE = /^(\d{4})\-(\d{2})\-(\d{2})/;
 
 var orderDatesDescending = function(x, y) {
@@ -69,10 +73,10 @@ var orderDatesDescending = function(x, y) {
 };
 
 //required constants 
-ETLEventNames = function(){}
+var ETLEventNames = function(){}
 ETLEventNames.itemTypes = ["FacebookActivityStreamItem", "TwitterActivityStreamItem", "FeedEntry", "BackupEmail", "Photo", "Job", "Address"];
-ETLEventNames.singularTypes = ["A Facebook Activity", "A Twitter Activity", "A Blog Post", "A New Email", "A Photo Backup", "A Job Update", "An Address Update"];
-ETLEventNames.pluralTypes = ["Facebook Activities", "Twitter Activities", "Blog Posts", "New Emails", "Photo Backups", "Job Updates", "Address Updates"];
+ETLEventNames.singularTypes = ["Facebook Post", "Tweet", "Blog Post", "Email", "Photo", "A Job Update", "An Address Update"];
+ETLEventNames.pluralTypes = ["Facebook Posts", "Tweets", "Blog Posts", "Emails", "Photos", "Job Updates", "Address Updates"];
 
 //Eternos Timeline Date
 var ETLDate = Class.create({
@@ -162,7 +166,10 @@ var ETLArtifactSection = Class.create({
     for(var i=0;i<this.items.length;i++){
 			var ul_class = (i >= this.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : "class=\"visible-artifact-item\"";
 			if (this.items[i] !== undefined && this.items[i].attributes.thumbnail_url !== undefined) {
-				this.content += this.boxTemplate.evaluate({num: i, style: ul_class, url: this.items[i].attributes.url, thumbnail_url: this.items[i].attributes.thumbnail_url});
+				this.content += this.boxTemplate.evaluate({num: i, 
+					style: ul_class, 
+					url: this.items[i].attributes.url, 
+					thumbnail_url: this.items[i].attributes.thumbnail_url});
 	    }
     }
   },
