@@ -247,19 +247,27 @@ var ETLEventSource = Class.create({
     this.end_date = s.end_date;
     this.type = s.type;
     this.attributes = s.attributes;
-  }
-})
+  },
+	isArtifact: function() {
+		return (this.type === 'BackupPhoto' || this.type === 'Photo' || this.type === 'Video' ||
+		this.type === 'WebVideo') || 
+		((this.type === 'FacebookActivityStreamItem' || this.type === 'TwitterActivityStreamItem') && 
+		(this.attributes.attachment_type === 'photo'));
+	}
+});
 
 //Eternos Timeline Event Item
 var ETLEventItem = Class.create({
   initialize: function(items){
-    this.type = items[0].type;
-    this.start_date = items[0].start_date;
-    this.end_date = items[0].end_date;
-    this.num = items.length;
-    this.items = items;
-		this.html = '';
-		this.template = eventListTemplates.eventItem();
+		this.source 			= s = new ETLEventSource(items[0]);
+    this.type 				= s.type;
+    this.start_date 	= s.start_date;
+    this.end_date 		= s.end_date;
+		this.attributes 	= s.attributes;
+    this.num 					= items.length;
+    this.items 				= items;
+		this.html 				= '';
+		this.template 		= eventListTemplates.eventItem();
 		
     this._setTitle();
     this._setHtml();
@@ -274,8 +282,19 @@ var ETLEventItem = Class.create({
     }
   },
   _setHtml: function(){
-		this.html = this.template.evaluate({title: this.title});
-  }
+		this.html = this.template.evaluate({title: this.title, link_url: this._getLinkUrl(), link_rel: this._getLinkRel()});
+  },
+	_getLinkUrl: function() {
+		return this.attributes.url;
+	},
+	// Determine 'rel' attribute for Lightview link html
+	_getLinkRel: function() {
+		if (this.source.isArtifact()) {
+			return 'image';
+		} else {
+			return 'ajax';
+		}
+	}
 })
 
 //Eternos Timeline Event Item Detail
@@ -394,15 +413,13 @@ var ETLEventParser = Class.create({
     this.doParsing();
 		this.populateResults();
   },
-  _eventIsArtifact: function(e) {
-		return (e.type === 'BackupPhoto' || e.type === 'Photo' || e.type === 'Video' ||
-		e.type === 'WebVideo') || 
-		((e.type === 'FacebookActivityStreamItem' || e.type === 'TwitterActivityStreamItem') && 
-		(e.attributes.attachment_type === 'photo'));
-	},
+  
   doParsing: function() {
     for(var i=0;i<this.jsonEvents.results.length;i++) {
-			if (this._eventIsArtifact(this.jsonEvents.results[i])) {
+			// TODO: Use source for all collection classes too
+			source = new ETLEventSource(this.jsonEvents.results[i]);
+			
+			if (source.isArtifact(this.jsonEvents.results[i])) {
         window._ETLArtifactSection.addItem(this.jsonEvents.results[i]);
         this.artifactItems.push(this.jsonEvents.results[i]);
       } else {
@@ -639,7 +656,7 @@ var eventListTemplates = {
 			'<div class="event_list_group_items"><ul>#{body}</ul></div></div>'); 
 	},
 	eventItem: function() {
-		return new Template('<li><div class="event_list_group_item"><a href="">#{title}</a></div></li>');
+		return new Template('<li><div class="event_list_group_item"><a href="#{link_url}" class="lightview" rel="#{link_rel}">#{title}</a></div></li>');
 	}
 };
 
