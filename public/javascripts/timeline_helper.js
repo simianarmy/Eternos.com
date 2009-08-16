@@ -1,10 +1,19 @@
-// $Id$
+//message box for timeline
+Timeline._Impl.prototype.addCustomMethods = function() {
+	var containerDiv = this._containerDiv;
+	var doc = containerDiv.ownerDocument;
 
-// console logging helpers
-function Lg(){}
-Lg.l = function(l){console.log(l)}
-Lg.d = function(d){console.dir(d)}
-Lg.db = function(d){console.debug(d)}
+	var message = SimileAjax.Graphics.createMessageBubble(doc);
+	message.containerDiv.className = "timeline-message-container";
+	containerDiv.appendChild(message.containerDiv);
+
+	message.contentDiv.className = "timeline-message";
+	message.contentDiv.innerHTML = "Please backup your accounts first";
+
+	this.showMessageBox = function() { message.containerDiv.style.display = "block"; };
+	this.hideMessageBox = function() { message.containerDiv.style.display = "none"; };
+};
+
 
 //required Date' prototypes
 Date.prototype.numDays = function(){
@@ -42,6 +51,16 @@ Date.prototype.stepMonth = function(param){
     }
   }
 }
+Date.prototype.monthRange = function(num, dir){
+	var set_up = function(d){d.setMonth(d.getMonth()+num)}
+	var set_down = function(d){d.setMonth(d.getMonth()-num)}
+	
+	dir == 'next' ? set_up(this) : set_down(this);
+	var rv = this.getFullYear()+"-"+this.getFullMonth()+"-"+this.getDate();
+	dir == 'next' ? set_down(this) : set_up(this);
+	
+	return rv;
+}
 
 //required Array' prototypes 
 Array.prototype.unique = function(){
@@ -77,6 +96,16 @@ var ETLEventNames = function(){}
 ETLEventNames.itemTypes = ["FacebookActivityStreamItem", "TwitterActivityStreamItem", "FeedEntry", "BackupEmail", "Photo", "Job", "Address"];
 ETLEventNames.singularTypes = ["Facebook Post", "Tweet", "Blog Post", "Email", "Photo", "A Job Update", "An Address Update"];
 ETLEventNames.pluralTypes = ["Facebook Posts", "Tweets", "Blog Posts", "Emails", "Photos", "Job Updates", "Address Updates"];
+
+//Utilities
+ETLUtil = function(){}
+ETLUtil.pause = function(ms){
+	var d = new Date();
+	var c = null;
+
+	do { c = new Date(); }
+	while(c-d < ms);	
+}
 
 //Eternos Timeline Date
 var ETLDate = Class.create({
@@ -359,7 +388,7 @@ var ETLEventCollection = Class.create({
 		//console.log("Active year/month = " + year + '/' + month);
 		// Sort items by descending array
 		this.dates.sort(orderDatesDescending);
-		console.log("sorted dates " + this.dates);
+		//console.log("sorted dates " + this.dates);
 
 		// Only use events that fall in the active date month
 		active = this.dates.select(function(d) {
@@ -497,6 +526,7 @@ var ETLBase = Class.create({
     this.startDate = params.startDate || new ETLDate(date);
     this.endDate = params.endDate || new ETLDate(date);
     this.options = params.options;
+		this.currentDate = date;
     
     this._setupTheme();
     this._setupEvents();
@@ -606,20 +636,22 @@ var ETLBase = Class.create({
     this.timeline.getBand(1).addOnScrollListener(function(band){
       var min_date = new ETLDate(band.getMinVisibleDate()).outputDate;
       var max_date = new ETLDate(band.getMaxVisibleDate()).outputDate;
+
       //TODO:
+			//ETLUtil.pause(1000);
+			//console.dir(band._onScrollListeners);
     });
-  },  
+  }, 
   _create: function(){
     this.timeline = Timeline.create($(this.domID), this.bandInfos);
   },
-  init: function(search){
-    //search parameter:
-    //true  = include default search for first timeline init
-    //false = don't include timeline search
+  init: function(first_init){
+    //first_init parameter:
+    //true, include default search for first timeline init, and false vice versa
     this._create();
     this._handleWindowResize();
     this._handleBandScrolling();
-    if(search){
+    if(first_init){
       this.assignObject();
       this.searchEvents();
     }
@@ -640,7 +672,7 @@ var ETLBase = Class.create({
   showBubble: function(elements){},
   searchEvents: function(params){
     //var params = {startDate: this.startDate, endDate: this.endDate, options: this.options}
-		var p = (params == undefined) ? {startDate: '2009-07-01', endDate: '2009-09-15', options: this.options} : params
+		var p = (params == undefined) ?  {startDate: this.currentDate.monthRange(1,'prev'), endDate: this.currentDate.monthRange(1,'next'), options: this.options} : params;
     new ETLSearch(p);
   },
   parseSearchResults: function(results){
@@ -678,4 +710,3 @@ var artifactTemplates = {
 			"</li>");
 	}
 };
-
