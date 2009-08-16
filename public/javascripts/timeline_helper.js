@@ -148,29 +148,26 @@ var ETLArtifactSection = Class.create({
 		this.numShowed = 12;
 		this.timeOut = 3;
     this.title = "Artifacts";
-    this.bottom = "</div><img src=\"/images/artibox-bottom.gif\" /></div>";
+		this.content = '';
+		this.template = artifactTemplates.artifacts();
+		this.boxTemplate = artifactTemplates.artifactBox();
     this.items = new Array();
-		this._getTop();
+
 		this.showLoading();
   },
-	_getTop: function(){
-		this.top = "<div class=\"artibox-top\"><div class=\"title5\">"+this.title+"</div></div><div class=\"artibox\">";
-	},
   _clearContent: function(){
     this.content = "";
   },
   _itemsToS: function(){
-		this.content += "<ul id=\"etl-artifact-items\" style=\"list-style-type:none\">"
     for(var i=0;i<this.items.length;i++){
-			var ul_class = (i >= this.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : " class=\"visible-artifact-item\"";
+			var ul_class = (i >= this.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : "class=\"visible-artifact-item\"";
 			if (this.items[i] !== undefined && this.items[i].attributes.thumbnail_url !== undefined) {
-		  	this.content += ("<li id=\"etl-artifact-item-"+i+"\""+ul_class+"><a href=\""+this.items[i].attributes.url+"\" class=\"lightview\" rel=\"set[artifacts]\"><img src='" + this.items[i].attributes.thumbnail_url + "' class='thumnails2' /></a></li>");
+				this.content += this.boxTemplate.evaluate({num: i, style: ul_class, url: this.items[i].attributes.url, thumbnail_url: this.items[i].attributes.thumbnail_url});
 	    }
     }
-		this.content += "</ul>";
   },
-  _write: function(){
-    this.parent.innerHTML = this.top+this.content+this.bottom;
+  _write: function() {
+    this.parent.innerHTML = this.template.evaluate({title: this.title, artifacts: this.content});
     window._ETLArtifactSection = this;
   },
   randomize: function(){
@@ -207,7 +204,6 @@ var ETLArtifactSection = Class.create({
   },
 	updateTitle: function(title){
 		this.title = title;
-		this._getTop();
 		this._write();
 	}
 })
@@ -644,6 +640,19 @@ var eventListTemplates = {
 	},
 	eventItem: function() {
 		return new Template('<li><div class="event_list_group_item"><a href="">#{title}</a></div></li>');
+	}
+};
+
+var artifactTemplates = {
+	artifacts: function() {
+		return new Template("<div class=\"artibox-top\"><div class=\"title5\">#{title}</div></div>" + 
+			"<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" +
+			"<img src=\"/images/artibox-bottom.gif\" /></div>");
+	},
+	artifactBox: function() {
+		return new Template("<li id=\"etl-artifact-item-#{num}\" #{style}><a href=\"#{url}\" " +
+		"class=\"lightview\" rel=\"set[artifacts]\" title=\":: :: slideshow: true, autosize: true, fullscreen: true\"><img src='#{thumbnail_url}' class='thumnails2'/></a>" +
+			"</li>");
 	}
 };
 
