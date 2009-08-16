@@ -529,7 +529,7 @@ var ETLBase = Class.create({
       Timeline.createBandInfo({
         width: "55%",
         intervalUnit: Timeline.DateTime.DAY,
-        intervalPixels: 200,
+        intervalPixels: 100,
         date: date,
         eventSource: this.eventSources,
         theme: this.theme
@@ -537,10 +537,9 @@ var ETLBase = Class.create({
       Timeline.createBandInfo({
         width: "13%",
         intervalUnit: Timeline.DateTime.MONTH,
-        intervalPixels: 200,
+        intervalPixels: 500,
         date: date,
         overview: true,
-				eventSource: this.eventSources,
         theme: this.theme
       }),
       Timeline.createBandInfo({
@@ -548,12 +547,12 @@ var ETLBase = Class.create({
         intervalUnit: Timeline.DateTime.YEAR,
         overview: true,
         date: date,
-        intervalPixels: 200,
+        intervalPixels: 500,
         theme: this.theme
       })
      ];    
     
-    this.bandInfos[1].syncWith = 0;
+    this.bandInfos[0].syncWith = 1;
     this.bandInfos[2].syncWith = 1;
     this.bandInfos[3].syncWith = 2;
     
@@ -597,7 +596,7 @@ var ETLBase = Class.create({
     }
   },
   _handleBandScrolling: function(){
-    this.timeline.getBand(0).addOnScrollListener(function(band){
+    this.timeline.getBand(1).addOnScrollListener(function(band){
       var min_date = new ETLDate(band.getMinVisibleDate()).outputDate;
       var max_date = new ETLDate(band.getMaxVisibleDate()).outputDate;
       //TODO:
