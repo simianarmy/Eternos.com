@@ -1,11 +1,11 @@
-- use_orig_lightview
+- use_lightview
 - use_lowpro
 / - title 'Facebook Backup Permissions'
 - stylesheet 'popup'
-= javascript_include_tag "account_setup"
+- javascript "account_setup"
 
 .fb-popupbox
-  = link_to_function "", "parent.Lightview.hide()", :class => "close-btn"
+  = link_to_function "", 'warn_on_close_without_permissions()', :class => "close-btn"
   .top-text
     Authorize Facebook Backup
   .clear
@@ -18,23 +18,63 @@
         Login Successfull
       .clear
     .popup-text-area
+      #description
+        - if @offline_url || @stream_url
+          %h3 
+            Eternos Backup requires some extra permissions from your Facebook account.
+            %br
+            Please click the links below and follow the instructions in the popup windows.
       .popup-text2
-        - if @offline_url
-          = link_to 'Allow offline access', @offline_url, :class => 'popup-textbtn2'
-        - else
-          Offline Access : Granted
-    
+        #offline-link{:style=> style_hidden_if(!@offline_url)}= link_to 'CLICK HERE to let Eternos Backup save your posts', @offline_url, :class => 'lightview popup-textbtn2', :title => ":: :: fullscreen: true"
+        #offline-granted{:style=> style_hidden_if(@offline_url)}
+          .checklist
+          Offline Access: 
+          %font{:style => "color:green"} Granted
       .clear
       .popup-text2
-        - if @stream_url
-          = link_to 'Allow stream read access', @stream_url, :class => 'popup-textbtn2'
-        - else
-          Stream Access: Granted
+        #stream-link{:style=> style_hidden_if(!@stream_url)}= link_to 'CLICK HERE to grant wall posts read access', @stream_url, :class => 'lightview popup-textbtn2', :title => ":: :: fullscreen: true"
+        #stream-granted{:style=> style_hidden_if(@stream_url)}
+          .checklist
+          Stream Access: 
+          %font{:style => "color:green"} Granted
       .clear
       %br
       %br
       %br
       %br
-    = link_to_function "Finished", "parent.Lightview.hide();activedFb();", :class => "btn-box1"
+    - unless @offline_url || @stream_url
+      = link_to_function "Finished", "parent.Lightview.hide();", :class => "btn-box1"    
   = image_tag "facebook-backup/fb-bottom.png"
+
+:javascript
+  var granted_all = #{(@offline_url || @stream_url) ? 'false' : 'true'};
   
+  var warn_on_close_without_permissions = function() {
+    var ok = true;
+    if (!granted_all) {
+      ok = confirm("You have not granted Eternos all the permissions needed to backup your Facebook account!\n\nAre you sure you want to continue?");
+    }
+    if (ok) { parent.Lightview.hide(); }
+  };
+  
+  Event.observe(document, 'lightview:hidden', function(evt) { 
+    new Ajax.Request('#{permissions_facebook_backup_path}', {
+      method: 'get', 
+      onSuccess: function(transport) {
+        perms = transport.responseText.evalJSON();
+        // If all permissions granted, close popup.
+        if (perms.offline && perms.stream) {
+          activatedFb(); parent.Lightview.hide(); 
+        } else {
+          if (perms.offline) {
+            $('offline-link').hide();
+            $('offline-granted').show();
+          }
+          if (perms.stream) {
+            $('stream-link').hide();
+            $('stream-granted').show();
+          }
+        }
+      }
+    })
+  });

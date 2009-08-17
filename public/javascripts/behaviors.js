@@ -510,20 +510,22 @@ var Slideshow = Behavior.create({
 var Flowplayer = Behavior.create({
 	initialize: function() {
 		opts = this.element.readAttribute('rel').evalJSON();
-		// Create Flowplayer & use 1st frame of video as splash image --> 
-		flowplayer(this.element.id, FlowplayerSwfUrl, {
-			key: FLOWPLAYER_PRODUCT_KEY,
-			clip: { 
-				url: this.element.readAttribute('url'),
-				autoPlay: opts.autoPlay || false,  
-		    autoBuffering: true,
-				initialScale: opts.scale || 'scale'
-			},
-			logo: {
-				//url: '/images/eternos.gif',
-				fullscreenOnly: false
-			}
-		});
+		if (window.flowplayer) {
+			// Create Flowplayer & use 1st frame of video as splash image --> 
+			flowplayer(this.element.id, FlowplayerSwfUrl, {
+				key: FLOWPLAYER_PRODUCT_KEY,
+				clip: { 
+					url: this.element.readAttribute('url'),
+					autoPlay: opts.autoPlay || false,  
+					autoBuffering: true,
+					initialScale: opts.scale || 'scale'
+				},
+				logo: {
+					//url: '/images/eternos.gif',
+					fullscreenOnly: false
+				}
+			});
+		}
 	}
 });
 

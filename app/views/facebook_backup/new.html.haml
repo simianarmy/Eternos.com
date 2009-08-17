@@ -41,7 +41,7 @@
   
 :javascript
   Event.observe(document, 'lightview:hidden', function(evt) { 
-    $('message').update('<h2>Going To Next Step...Please Wait</h2>');
+    $('message').update('<h2>Checking Permissions...Please Wait</h2>');
     load_busy($('message'));
     location.href = '#{url_for(:action => 'authenticate', :auth_token => @auth_token)}'; 
   });

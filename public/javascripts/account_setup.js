@@ -33,12 +33,15 @@ var on_facebook_backup_auth_close = function(check_url) {
 			if (json && json.authenticated) {
 				$('fb-button').removeClassName('fb-btn2');
 				$('fb-button').addClassName('fb-active');
+			} else {
+				$('fb-button').addClassName('fb-btn2');
+				$('fb-button').removeClassName('fb-active');
 			}
 		}
 	} );
 }
 
-function activedFb(){
+function activatedFb(){
   parent.document.getElementById('fb-button').setAttribute('class', 'fb-active');
 }
 

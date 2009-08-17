@@ -31,6 +31,15 @@ module FacebookDesktopApp
     def connect(session, uid, timeout, secret)
       secure_with!(session, uid, timeout, secret)
     end
+    
+    # Checks if associated user can query 'friends' list.  If not, then session 
+    # is incorrect (or secret key, or user doesn't exist anymore, etc.)
+    def verify
+      user.friends
+      true
+    rescue
+      false
+    end
   end
 end
     

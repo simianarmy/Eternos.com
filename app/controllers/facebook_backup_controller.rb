@@ -16,17 +16,16 @@ class FacebookBackupController < ApplicationController
     # Make sure user not already authenticated
     if current_user.authenticated_for_facebook_desktop?
       begin
-        current_user.facebook_session_connect @session
-        @session.secure_with_session_secret!
-
-        if @session.secured? && !@session.expired?
+        # Login with user's saved fb session and try a facebooker operation to 
+        # test for session validity
+        current_user.facebook_session_connect @session        
+        if @session.verify && @session.secured? && !@session.expired?
           redirect_to :action => :permissions
           return
         end
       rescue
         # No problem they just need to login again
         RAILS_DEFAULT_LOGGER.debug "Facebook connect failed on authenticated user!"
-        @session = load_facebook_desktop
       end
     end
     
@@ -70,16 +69,28 @@ class FacebookBackupController < ApplicationController
     end
     @offline_url = @session.permission_url(:offline_access) unless @session.user.has_permission?(:offline_access)
     @stream_url = @session.permission_url(:read_stream) unless @session.user.has_permission?(:read_stream)
+    
+    respond_to do |format|
+      format.html {
+        # Turn off confirmed flag if insufficient permissions
+        if @backup_source.confirmed? && (@offline_url || @stream_url)
+          @backup_source.update_attribute(:auth_confirmed, false)
+        end
+      }
+      format.js {
+        render :json => {:offline => @offline_url.nil?, :stream => @stream_url.nil?}
+      }
+    end
   end
   
   # For js ajax requests to check user's auth status
   # Wonder if it will work w/out cookies
   def check_auth
-    begin
+    auth = begin
       current_user.facebook_session_connect @session
-      auth = @session.user.has_permission?(:offline_access) && @session.user.has_permission?(:read_stream)
+      @session.user.has_permission?(:offline_access) && @session.user.has_permission?(:read_stream)
     rescue
-      auth = false
+      false
     end
     
     # Run backup & update confirmation status on 1st check
@@ -92,7 +103,7 @@ class FacebookBackupController < ApplicationController
       }
     end
   end
-  
+    
   # Called by Facebook after 1st time app authorization.  Passes a bunch of fb_sig_* values.
   # May be definitive way to ensure proper authentication, replacing the authenticate action.
   # Problem is, no Rails session info passed so can't lookup user to save facebook info!
@@ -140,11 +151,20 @@ class FacebookBackupController < ApplicationController
   
   def load_session
     @session = Facebooker::Session.current
+    RAILS_DEFAULT_LOGGER.debug "Facebook session: #{@session.inspect}"
   end
   
   def load_backup_source
     @backup_source = current_user.backup_sources.by_site(BackupSite::Facebook).first 
     @backup_source ||= current_user.backup_sources.create(
       :backup_site => BackupSite.find_by_name(BackupSite::Facebook))
+  end
+  
+  # Helper for ajax permission check methods
+  def check_permission(perm)
+    current_user.facebook_session_connect @session
+    @session.user.has_permission?(perm)
+  rescue
+    false
   end
 end

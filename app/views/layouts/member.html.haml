@@ -12,7 +12,7 @@
     = yield(:javascript)
     
     / end bundle
-    - onLoad = (current_user.login_count == 1 && params[:controller] == "member_home") ? "Lightview.show({href:'/account_settings', options:{ajax:{evalScripts:true, method:'get', parameters:'&authenticity_token='+encodeURIComponent('e9f487d61964e2f303a5643129da8a538412c3c9')}, autosize:false, closeButton:false, height:lightview_height, width:800},rel:'iframe'});return false;" : ""
+    - onLoad = (current_user.login_count == 1 && params[:controller] == "member_home") ? "Lightview.show({href:'/account_settings', options:{ajax:{evalScripts:true, method:'get'}, autosize:false, closeButton:false, height:lightview_height, width:800},rel:'iframe'});return false;" : ""
   %body{:onload => onLoad}
     #wrapper
       #header
