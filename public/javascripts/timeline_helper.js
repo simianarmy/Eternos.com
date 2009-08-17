@@ -1,4 +1,4 @@
-//required Date' prototypes
+// required Date' prototypes
 Date.prototype.numDays = function(){
   return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
 }
@@ -44,24 +44,8 @@ Date.prototype.monthRange = function(num, dir){
 	
 	return rv;
 }
-// Date parsing regex & sort function
-var MysqlDateRE = /^(\d{4})\-(\d{2})\-(\d{2})/;
 
-var mysqlTimeToDate = function(datetime) {
-    //function parses mysql datetime string and returns javascript Date object
-    //input has to be in this format: 2007-06-05 15:26:02
-    var regex = /^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9]) (?:([0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/;
-    var parts = datetime.replace(regex,"$1 $2 $3 $4 $5 $6").split(' ');
-    return new Date(parts[0],parts[1]-1,parts[2],parts[3],parts[4],parts[5]);
-}
-var mysqlDateToDate = function(date) {
-    //function parses mysql datetime string and returns javascript Date object
-    //input has to be in this format: 2007-06-05
-    var parts = date.replace(MysqlDateRE,"$1 $2 $3").split(' ');
-    return new Date(parts[0],parts[1]-1,parts[2]);
-}
-
-//required Array' prototypes 
+// required Array' prototypes 
 Array.prototype.unique = function(){
   var r = new Array();
   o:for(var i = 0, n = this.length; i < n; i++){
@@ -79,7 +63,21 @@ Array.prototype.include = function(val) {
   return this.index(val) !== null;
 }
 
-
+//Date parsing regex & sort function
+var MysqlDateRE = /^(\d{4})\-(\d{2})\-(\d{2})/;
+var mysqlTimeToDate = function(datetime) {
+    //function parses mysql datetime string and returns javascript Date object
+    //input has to be in this format: 2007-06-05 15:26:02
+    var regex = /^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9]) (?:([0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/;
+    var parts = datetime.replace(regex,"$1 $2 $3 $4 $5 $6").split(' ');
+    return new Date(parts[0],parts[1]-1,parts[2],parts[3],parts[4],parts[5]);
+}
+var mysqlDateToDate = function(date) {
+    //function parses mysql datetime string and returns javascript Date object
+    //input has to be in this format: 2007-06-05
+    var parts = date.replace(MysqlDateRE,"$1 $2 $3").split(' ');
+    return new Date(parts[0],parts[1]-1,parts[2]);
+}
 var orderDatesDescending = function(x, y) {
 	x = x.replace(MysqlDateRE,"$1$2$3");
 	y = y.replace(MysqlDateRE,"$1$2$3");
@@ -88,26 +86,26 @@ var orderDatesDescending = function(x, y) {
 	return 0; 
 };
 
-//Utilities
+// Utilities, constants and vars needed
 ETLUtil = function(){}
 ETLUtil.itemTypes = [
-	{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts"}, 
-	{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets"}, 
-	{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts"}, 
-	{type: "BackupEmail", display_text: "Email", display_text_plural: "Emails"}, 
-	{type: "Photo", display_text: "Photo", display_text_plural: "Photos"},
-	{type: "Video", display_text: "Video", display_text_plural: "Videos"},
-	{type: "Music", display_text: "Music", display_text_plural: "Music"},
-	{type: "Audio", display_text: "Audio", display_text_plural: "Audio"},
-	{type: "Document", display_text: "Document", display_text_plural: "Documents"},
-	{type: "School", display_text: "School", display_text_plural: "Schools"},
-	{type: "Family", display_text: "Family Member", display_text_plural: "Family Members"},
-	{type: "Medical", display_text: "Medical Data", display_text_plural: "Medical Data"},
-	{type: "MedicalCondition", display_text: "Medical Condition", display_text_plural: "Medical Conditions"},
-	{type: "Job", display_text: "Job", display_text_plural: "Jobs"}, 
-	{type: "Address", display_text: "Address", display_text_plural: "Addresses"}
+	{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts", icon: "dark-blue"}, 
+	{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets", icon: "dull-green"}, 
+	{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "dull-red"}, 
+	{type: "BackupEmail", display_text: "Email", display_text_plural: "Emails", icon: "red"}, 
+	{type: "Photo", display_text: "Photo", display_text_plural: "Photos", icon: "blue"},
+	{type: "Video", display_text: "Video", display_text_plural: "Videos", icon: "green"},
+	{type: "Music", display_text: "Music", display_text_plural: "Music", icon: "green"},
+	{type: "Audio", display_text: "Audio", display_text_plural: "Audio", icon: "green"},
+	{type: "Document", display_text: "Document", display_text_plural: "Documents", icon: "grey"},
+	{type: "School", display_text: "School", display_text_plural: "Schools", icon: "dull-blue"},
+	{type: "Family", display_text: "Family Member", display_text_plural: "Family Members", icon: "dull-blue"},
+	{type: "Medical", display_text: "Medical Data", display_text_plural: "Medical Data", icon: "dull-blue"},
+	{type: "MedicalCondition", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "dull-blue"},
+	{type: "Job", display_text: "Job", display_text_plural: "Jobs", icon: "dull-blue"}, 
+	{type: "Address", display_text: "Address", display_text_plural: "Addresses", icon: "dull-blue"}
 ];
-ETLUtil.pause = function(ms){
+ETLUtil.pauseExec = function(ms){
 	var d = new Date();
 	var c = null;
 
@@ -115,6 +113,9 @@ ETLUtil.pause = function(ms){
 	while(c-d < ms);	
 }
 ETLUtil.emptyResponse = "{\"results\": [], \"previousDataUri\": null, \"responseDetails\": null, \"request\": \"\", \"resultCount\": 0, \"status\": 200, \"futureDataUri\": null}"
+ETLUtil.assetUrl = "http://simile.mit.edu/timeline/api/";
+ETLUtil.imgUrl = ETLUtil.assetUrl+"images/";
+ETLUtil.iconPostfix = "-circle.png";
 
 //Eternos Timeline Date
 var ETLDate = Class.create({
@@ -365,18 +366,29 @@ var ETLEventItemDetail = Class.create({
 //Eternos Timeline Event Source (Timeline.DefaultEventSource.Event)
 var ETLTimelineEvent = Class.create({
   initialize: function(event){
-    this.assetUrl = "http://simile.mit.edu/timeline/api/";
-    this.imgUrl = this.assetUrl + "images/";
-    this.title = this.desc = this.img = this.link = this.icon = this.color = this.tcolor = "HALLO";
-    this.date = new Date();
-    this.event = event;
+    var date = new ETLDate(event.start_date, 'rev').outDate;
+    this.start_date = this.start_end = this.earliest = this.latest = date;
+    this.title = event.title;
+    this.type = event.type;
+    this._toTLEventSource();
   },
-  toTLEventSource: function(){
-    this.outEvent = new Timeline.DefaultEventSource.Event(
-      this.date, this.date, this.date, this.date, true, 
-      this.title, this.desc, this.img, this.link, this.icon, this.color, this.tcolor);
-
-    return this.outEvent;
+  _setIcon: function(){
+    var type = this.type;
+    var event = ETLUtil.itemTypes.detect(function(e) { return e.type === type });
+    this.icon = ETLUtil.imgUrl+event.icon+ETLUtil.iconPostfix;
+  },
+  _toTLEventSource: function(){
+    this._setIcon();
+    this.event = new Timeline.DefaultEventSource.Event({
+      start: this.start_date,
+      end: this.end_date,
+      latestStart: this.latest,
+      earliestEnd: this.earliest,
+      instant: true,
+      text: this.title,
+      description: this.type,
+      icon: this.icon
+    });
   }
 })
 
@@ -504,8 +516,7 @@ var ETLEventParser = Class.create({
   }
 });
 
-//Eternos Timeline Search
-//init: timeline object and {startDate: 'sring date', endDate: 'string date', options: 'string'}
+//Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: 'string'}
 var ETLSearch = Class.create({
   initialize: function(params){
     var date = new Date();
@@ -569,9 +580,12 @@ var ETLBase = Class.create({
     if (this.rawEvents != undefined){
 			var item;
 			for(var i=0;i<this.rawEvents.eventItems.items.length;i++){
+				
+        //item = new ETLTimelineEvent(this.rawEvents.eventItems.items[i]);
+        //this.eventSources.add(item.event);
+        
 				item = this.rawEvents.eventItems.items[i];
-
-				var start_date = new ETLDate(item.start_date, 'str').outDate;
+        var start_date = new ETLDate(item.start_date, 'str').outDate;
 				var end_date = new ETLDate(item.end_date, 'str').outDate;
 				var title = item.title;
 				var description = "";
@@ -580,6 +594,7 @@ var ETLBase = Class.create({
 					text: title,
 					description: description});
         this.eventSources.add(event);
+          
 			}
     }
   },
