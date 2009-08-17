@@ -55,7 +55,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
 
     this._dragging = false;
     this._changing = false;
-    this._originalScrollSpeed = 5; // pixels
+    this._originalScrollSpeed = 100; // pixels
     this._scrollSpeed = this._originalScrollSpeed;
     this._onScrollListeners = [];
     

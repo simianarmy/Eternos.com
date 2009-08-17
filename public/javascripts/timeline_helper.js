@@ -88,9 +88,9 @@ var orderDatesDescending = function(x, y) {
 	return 0; 
 };
 
-//required constants 
-var ETLEventNames = function(){}
-ETLEventNames.itemTypes = [
+//Utilities
+ETLUtil = function(){}
+ETLUtil.itemTypes = [
 	{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts"}, 
 	{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets"}, 
 	{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts"}, 
@@ -107,9 +107,6 @@ ETLEventNames.itemTypes = [
 	{type: "Job", display_text: "Job", display_text_plural: "Jobs"}, 
 	{type: "Address", display_text: "Address", display_text_plural: "Addresses"}
 ];
-
-//Utilities
-ETLUtil = function(){}
 ETLUtil.pause = function(ms){
 	var d = new Date();
 	var c = null;
@@ -117,6 +114,7 @@ ETLUtil.pause = function(ms){
 	do { c = new Date(); }
 	while(c-d < ms);	
 }
+ETLUtil.emptyResponse = "{\"results\": [], \"previousDataUri\": null, \"responseDetails\": null, \"request\": \"\", \"resultCount\": 0, \"status\": 200, \"futureDataUri\": null}"
 
 //Eternos Timeline Date
 var ETLDate = Class.create({
@@ -192,7 +190,6 @@ var ETLArtifactSection = Class.create({
 		this.numShowed = 12;
 		this.timeOut = 3;
     this.title = "Artifacts";
-		this.content = '';
 		this.template = artifactTemplates.artifacts();
 		this.boxTemplate = artifactTemplates.artifactBox();
     this.items = new Array();
@@ -319,7 +316,7 @@ var ETLEventItems = Class.create({
   },
   _setTitle: function(){
 		var type = this.first.type;
-		var event = ETLEventNames.itemTypes.detect(function(e) { return e.type === type });
+		var event = ETLUtil.itemTypes.detect(function(e) { return e.type === type });
 		if (event) {
 			if (this.num > 1) {
 				this.title = this.num +" "+ event.display_text_plural;
@@ -457,8 +454,7 @@ var ETLArtifact = Class.create({
 	initialize: function(object) {
 		this.type = object.type;
 		this.attributes = object.attributes;
-	},
-	
+	}
 });
 
 //Eternos Timeline Event Parser
@@ -467,10 +463,20 @@ var ETLEventParser = Class.create({
     this.eventItems = new ETLEventCollection();
     this.artifactItems = new Array();
     this.jsonEvents = events.evalJSON();
-    this.doParsing();
-		this.populateResults();
+    this._populate();
   },
-  
+  _populate: function(){
+    this.doParsing();
+		this.populateResults();    
+  },
+  _mergeEvents: function(events){
+    var merged = this.jsonEvents.results.concat(events.results);
+    this.jsonEvents.results = merged;
+  },
+  pushEvents: function(events){
+    this._mergeEvents(events.evalJSON());
+    this._populate();
+  },
   doParsing: function() {
     for(var i=0;i<this.jsonEvents.results.length;i++) {
 			// TODO: Use source for all collection classes too
@@ -521,7 +527,7 @@ var ETLSearch = Class.create({
       method: 'get',
       onSuccess: function(transport){
         var response = transport.responseText || "";
-        tmline.parseSearchResults(response);
+        tmline.pushRawEvents(response);
         tmline.hideLoading();
       },
       onFailure: function(){
@@ -547,7 +553,8 @@ var ETLBase = Class.create({
     this.startDate = params.startDate || new ETLDate(date);
     this.endDate = params.endDate || new ETLDate(date);
     this.options = params.options;
-
+    this.rawEvents = new ETLEventParser(ETLUtil.emptyResponse);
+    
     this._setReqDates();
     this._setupTheme();
     this._setupEvents();
@@ -667,11 +674,11 @@ var ETLBase = Class.create({
       if(band.getMaxVisibleDate() > tlMaxDate){ 
         start_date = tlMaxDate.monthRange(0, '');
         end_date = tlMaxDate.monthRange(2, 'next');
-        tlMaxDate.setMonth(tlMaxDate.getMonth()+2); 
+        tlMaxDate.setMonth(tlMaxDate.getMonth()+2);
         window._ETLTimeline.searchEvents({startDate: start_date, endDate: end_date, options: window._ETLTimeline.options});
       } else if(band.getMinVisibleDate() < tlMinDate){
-        start_date = tlMaxDate.monthRange(2, 'prev');
-        end_date = tlMaxDate.monthRange(0, '');       
+        start_date = tlMinDate.monthRange(2, 'prev');
+        end_date = tlMinDate.monthRange(0, '');       
         tlMinDate.setMonth(tlMinDate.getMonth()-2); 
         window._ETLTimeline.searchEvents({startDate: start_date, endDate: end_date, options: window._ETLTimeline.options});
       }
@@ -721,9 +728,9 @@ var ETLBase = Class.create({
 		var p = (params == undefined) ?  {startDate: this.currentDate.monthRange(1,'prev'), endDate: this.currentDate.monthRange(1,'next'), options: this.options} : params;
     new ETLSearch(p);
   },
-  parseSearchResults: function(results){
-    this.searchResults = results;
-    this.rawEvents = new ETLEventParser(this.searchResults);
+  pushRawEvents: function(events){
+    this.unprocessedEvents = events;
+    this.rawEvents.pushEvents(this.unprocessedEvents);
     this.populate();
   },
   populate: function(){
