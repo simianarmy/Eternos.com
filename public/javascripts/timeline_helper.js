@@ -1,3 +1,7 @@
+// $Id$
+//
+// Timeline javascript module
+
 // required Date' prototypes
 Date.prototype.numDays = function(){
   return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
@@ -86,8 +90,17 @@ var orderDatesDescending = function(x, y) {
 	return 0; 
 };
 
+// ETimeline 'class'
+
+var ETimeline = function(opts) {
+	var me = new Object();
+	var options = Object.extend(opts, {});
+	var api	 = '0.1';
+	
+	// Private instances & functions
+	
 // Utilities, constants and vars needed
-ETLUtil = function(){}
+var ETLUtil = function(){}
 ETLUtil.itemTypes = [
 	{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts", icon: "dark-blue"}, 
 	{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets", icon: "dull-green"}, 
@@ -310,8 +323,9 @@ var ETLEventItems = Class.create({
     this.num 					= items.length;
     this.items 				= items;
 		this.html 				= '';
-		this.template			= eventListTemplates.eventItem();
+		this.artifactTemplate		= eventListTemplates.eventArtifactItem();
 		this.hiddenItemTemplate = eventListTemplates.hiddenItem();
+		this.itemWithTooltipTemplate = eventListTemplates.eventItemWithTooltip(); 
     this._setTitle();
     this._setHtml();
   },
@@ -330,6 +344,28 @@ var ETLEventItems = Class.create({
   },
   _setHtml: function(){
 		// Need to format the link so all content will be displayed
+		if (this.first.isArtifact()) {
+			this.html = this._getArtifactItemHtml();
+		} else {
+			this.html = this._getInlineItemHtml();
+		}
+  },
+	_getLinkUrl: function(item) {
+		if (item.isArtifact()) {
+			return item.attributes.url;
+		} else {
+		}
+	},
+	// Determine 'rel' attribute for Lightview link html
+	_getLinkRel: function() {
+		if (this.first.isArtifact()) {
+			// Lightview auto-detects content so just need to know if gallery or not
+			return (this.num > 1) ? 'gallery[' + this.first.attributes.id + ']' : '';
+		} else {
+			return 'ajax';
+		}
+	},
+	_getArtifactItemHtml: function() {
 		var other_items = '';
 		if (this.num > 1) {
 			for (var i=1; i<this.num; i++) {
@@ -338,21 +374,13 @@ var ETLEventItems = Class.create({
 					link_rel: this._getLinkRel()});
 			}
 		}
-		this.html = this.template.evaluate({title: this.title, 
+		return this.artifactTemplate.evaluate({title: this.title, 
 			link_url: this._getLinkUrl(this.first), 
 			link_rel: this._getLinkRel(),
 			other_items: other_items});
-  },
-	_getLinkUrl: function(item) {
-		return item.attributes.url;
 	},
-	// Determine 'rel' attribute for Lightview link html
-	_getLinkRel: function() {
-		if (this.first.isArtifact()) {
-			return (this.num > 1) ? 'gallery[' + this.first.attributes.id + ']' : 'image';
-		} else {
-			return 'ajax';
-		}
+	_getInlineItemHtml: function() {
+	 	return this.itemWithTooltipTemplate.evaluate({title: this.title, tooltip: this.attributes.description})
 	}
 })
 
@@ -765,11 +793,17 @@ var eventListTemplates = {
 		return new Template('<div class="event_list_group"><div class="event_list_date">#{date}</div>' +
 			'<div class="event_list_group_items"><ul>#{body}</ul></div></div>'); 
 	},
-	eventItem: function() {
+	eventArtifactItem: function() {
 		return new Template('<li><div class="event_list_group_item"><a href="#{link_url}" class="lightview" rel="#{link_rel}">#{title}</a>#{other_items}</div></li>');
 	},
 	hiddenItem: function() {
 		return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
+	},
+	eventItemWithTooltip: function() {
+		return new Template('<a class="tooltip-target" rel="{fixed: true, ' +
+			'width: \'auto\', hideOthers: true, viewport: true, hook: {target: \'topRight\', ' +
+			'tip: \'bottomLeft\'}, stem: \'bottomLeft\'}">#{title}</a>' +
+			'<span class="tooltip">#{tooltip_content}</div>');
 	}
 };
 
@@ -785,3 +819,20 @@ var artifactTemplates = {
 			"</li>");
 	}
 };
+
+var draw = function() {
+	new ETLMonthSelector(options.month_selector_id);
+  new ETLArtifactSection(options.artifact_section_id);
+  new ETLEventSection(options.events_section_id);
+  new ETLBase(options.timeline_section_id, options.timeline_opts);
+}
+
+// Set public methods now
+me.draw = draw;
+me.api	= api;
+
+// Return 'class' object with only public methods exposed.
+return me;
+};
+
+
