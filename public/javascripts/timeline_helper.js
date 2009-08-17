@@ -547,8 +547,8 @@ var ETLBase = Class.create({
     this.startDate = params.startDate || new ETLDate(date);
     this.endDate = params.endDate || new ETLDate(date);
     this.options = params.options;
-		this.currentDate = date;
-    
+
+    this._setReqDates();
     this._setupTheme();
     this._setupEvents();
     this._setupBands(this);
@@ -657,11 +657,35 @@ var ETLBase = Class.create({
     }
   },
   _handleBandScrolling: function(){
+    var tlMinDate = this.tlMinDate;
+    var tlMaxDate = this.tlMaxDate;
     this.timeline.getBand(1).addOnScrollListener(function(band){
-      var min_date = new ETLDate(band.getMinVisibleDate()).outputDate;
-      var max_date = new ETLDate(band.getMaxVisibleDate()).outputDate;
+      //console.log("MAX timeline...band: "+tlMaxDate.monthRange(0,'')+"..."+band.getMaxVisibleDate().monthRange(0,''));
+      //console.log("MIN timeline...band: "+tlMinDate.monthRange(0,'')+"..."+band.getMinVisibleDate().monthRange(0,''));
+      window._ETLTimeline.timeline.hideBackupMessage();
+      var start_date; var end_date;
+      if(band.getMaxVisibleDate() > tlMaxDate){ 
+        start_date = tlMaxDate.monthRange(0, '');
+        end_date = tlMaxDate.monthRange(2, 'next');
+        tlMaxDate.setMonth(tlMaxDate.getMonth()+2); 
+        window._ETLTimeline.searchEvents({startDate: start_date, endDate: end_date, options: window._ETLTimeline.options});
+      } else if(band.getMinVisibleDate() < tlMinDate){
+        start_date = tlMaxDate.monthRange(2, 'prev');
+        end_date = tlMaxDate.monthRange(0, '');       
+        tlMinDate.setMonth(tlMinDate.getMonth()-2); 
+        window._ETLTimeline.searchEvents({startDate: start_date, endDate: end_date, options: window._ETLTimeline.options});
+      }
+      //console.log(start_date+"---"+end_date);
     });
-  }, 
+    //console.log("Updated date: "+this.tlMaxDate);
+  },
+  _setReqDates: function(){
+    this.currentDate = new Date();
+    this.tlMinDate = new Date();
+    this.tlMaxDate = new Date();
+    this.tlMinDate.setMonth(this.tlMinDate.getMonth()-1);
+    this.tlMaxDate.setMonth(this.tlMaxDate.getMonth()+1);
+  },
   _create: function(){
     this.timeline = Timeline.create($(this.domID), this.bandInfos);
 		this.timeline.addCustomMethods();
