@@ -201,7 +201,7 @@ var ETLMonthSelector = Class.create({
 var ETLArtifactSection = Class.create({
   initialize: function(domID){
     this.parent = $(domID);
-		this.numShowed = 12;
+		this.numShowed = 18;
 		this.timeOut = 3;
     this.title = "Artifacts";
 		this.template = artifactTemplates.artifacts();
