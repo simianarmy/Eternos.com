@@ -120,6 +120,8 @@ class TimelineSearchFaker < TimelineSearch
   def initialize(user_id, dates, options={})
     require 'benchmark_helper'
     require 'random_data'
+    require 'faker'
+    
     super(user_id, dates, options)
     @methods = search_methods.reject { |t| t == :get_profile }
   end
@@ -176,7 +178,10 @@ class TimelineSearchFaker < TimelineSearch
   end
   
   def get_emails
-    GmailAccount.all.rand.backup_emails.rand
+    if e = GmailAccount.all.rand.backup_emails.rand
+      e.subject = ::Faker::Lorem.sentence
+      e
+    end
   end
   
   def get_feed_items

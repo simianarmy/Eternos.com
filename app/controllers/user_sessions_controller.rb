@@ -16,6 +16,7 @@ class UserSessionsController < ApplicationController
 
   # Here to catch weird redirect to index bug
   def index
+    @user_session    = UserSession.new
     render :action => :new
   end
   

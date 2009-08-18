@@ -10,11 +10,11 @@ class TimelineEvent
     @type = object.class.to_s
 
     # Add media content url & thumbnail url for html display
-    if object.kind_of?(Content) || activity_stream_attachment?(object)
+      
+    if object.kind_of?(Content) || activity_stream_media_attachment?(object)
       @attributes.merge! :url => object.url, :thumbnail_url => object.thumbnail_url
+      @type = object.attachment_type.capitalize if activity_stream_media_attachment?(object)
     end
-    # Convert event's type to activity stream attachment's data type
-    @type = object.attachment_type.capitalize if activity_stream_attachment?(object) && object.attachment_type
     
     # Determine event start & end dates
     if object.respond_to? :published_at
@@ -27,7 +27,7 @@ class TimelineEvent
     end  
   end
   
-  def activity_stream_attachment?(object)
-    (object.kind_of?(ActivityStreamItem) && object.attachment_data)
+  def activity_stream_media_attachment?(object)
+    object.kind_of?(ActivityStreamItem) && object.media_attachment?
   end
 end

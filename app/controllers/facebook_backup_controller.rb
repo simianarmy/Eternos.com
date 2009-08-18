@@ -67,8 +67,8 @@ class FacebookBackupController < ApplicationController
       redirect_to :action => :new
       return
     end
-    @offline_url = @session.permission_url(:offline_access) unless @session.user.has_permission?(:offline_access)
-    @stream_url = @session.permission_url(:read_stream) unless @session.user.has_permission?(:read_stream)
+    @offline_url = @session.permission_url(:offline_access) unless check_permission(:offline_access)
+    @stream_url = @session.permission_url(:read_stream) unless check_permission(:read_stream)
     
     respond_to do |format|
       format.html {
@@ -88,7 +88,7 @@ class FacebookBackupController < ApplicationController
   def check_auth
     auth = begin
       current_user.facebook_session_connect @session
-      @session.user.has_permission?(:offline_access) && @session.user.has_permission?(:read_stream)
+      check_permission(:offline_access) && check_permission(:read_stream)
     rescue
       false
     end
@@ -162,7 +162,6 @@ class FacebookBackupController < ApplicationController
   
   # Helper for ajax permission check methods
   def check_permission(perm)
-    current_user.facebook_session_connect @session
     @session.user.has_permission?(perm)
   rescue
     false

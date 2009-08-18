@@ -319,11 +319,15 @@ class ApplicationController < ActionController::Base
   
   # memcache handler: pass cache key and block
   def cache(key)
-    unless output = CACHE.get(key)
-      output = yield
-      CACHE.set(key, output, 1.hour) #unless RAILS_ENV == 'development'
+    begin
+      unless output = CACHE.get(key)
+        output = yield
+        CACHE.set(key, output, 1.hour) unless RAILS_ENV == 'development'
+      end
+      output
+    rescue
+      yield
     end
-    output
   end
   
 end

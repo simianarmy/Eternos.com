@@ -49,7 +49,10 @@ namespace :deploy do
   
   desc "Symlink shared configs and folders on each release."
   task :symlink_shared do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    %w[ amazon_s3.yml amqp.yml application.yml daemons.god database.yml email.yml facebooker.yml 
+      facebooker_desktop.yml key.yml newrelic.yml paypal.yml workling.yml ].each do |config|
+      run "ln -nfs #{shared_path}/config/#{config} #{release_path}/config/#{config}"
+    end
     run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
     # Setup permissions so that designer can read/write in view directories
     run "chgrp -R www #{release_path}"

@@ -328,7 +328,7 @@ var LightviewClose = Behavior.create({
 
 // Helpers for Prototip library
 
-var Prototip = Behavior.create({
+var PrototipBehavior = Behavior.create({
 	initialize: function() {
 		// Parse json string of options from rel attribute
 		opts = {}
@@ -509,7 +509,10 @@ var Slideshow = Behavior.create({
 
 var Flowplayer = Behavior.create({
 	initialize: function() {
-		opts = this.element.readAttribute('rel').evalJSON();
+		var opts = {};
+		if ((rel = this.element.readAttribute('rel')) !== null) {
+			opts = Object.extend(opts, rel.evalJSON());
+		}
 		if (window.flowplayer) {
 			// Create Flowplayer & use 1st frame of video as splash image --> 
 			flowplayer(this.element.id, FlowplayerSwfUrl, {
@@ -539,7 +542,7 @@ Event.addBehavior({
 	'.delete_link': Delete,
 	'.remote_delete': Remote.Delete,
 	'#item_list': Remote.Delete,
-	'.tooltip-target' : Prototip,
+	'.tooltip-target' : PrototipBehavior,
 	'.withHint': DefaultValueAsHint,
 	'.accordion': Accordion,
 	'#slideshow': Slideshow({with_track: false}),

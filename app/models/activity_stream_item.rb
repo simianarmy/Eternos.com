@@ -34,6 +34,10 @@ class ActivityStreamItem < ActiveRecord::Base
     message.length + (attachment_data ? attachment_data.length : 0)
   end
   
+  def media_attachment?
+    false
+  end
+  
   private
   
   def parsed_attachment_data
@@ -52,6 +56,8 @@ class FacebookActivityStreamItem < ActivityStreamItem
       d['src'].value.gsub(/_s\./, '_n.')
     when 'video'
       d['video']['source_url'].value
+    when 'link'
+      d['src'].value
     end
   end
   
@@ -65,6 +71,11 @@ class FacebookActivityStreamItem < ActivityStreamItem
       d['video']['source_url'].value
     end
   end
+  
+  def media_attachment?
+    attachment_data && ["photo", "video"].include?(attachment_type.downcase)
+  end
+  
 end
 
 class TwitterActivityStreamItem < ActivityStreamItem
@@ -74,4 +85,5 @@ class TwitterActivityStreamItem < ActivityStreamItem
   def thumbnail_url
     # Get associated content thumbnail...if possible
   end
+  
 end

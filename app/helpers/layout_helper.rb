@@ -90,7 +90,7 @@ module LayoutHelper
   
   def use_prototip
     use_lowpro
-    javascript 'prototip'
+    javascript 'prototip2.1.0.1/js/prototip'
     stylesheet 'prototip'
   end
   
@@ -160,10 +160,10 @@ module LayoutHelper
 
   def use_timeline
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
-    javascript 'prototype'
+    javascript prototype
     stylesheet 'timeline'
     javascript "timeline/timeline_js/timeline-api.js"
-    javascript "timeline_helper"
+    javascript "timeline/events", "timeline/templates", "timeline_helper"
   end
   
   
