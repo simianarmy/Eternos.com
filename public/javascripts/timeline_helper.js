@@ -759,7 +759,7 @@ var ETLBase = Class.create({
   },
   hideLoading: function(){
     this.timeline.hideLoadingMessage();
-		this.timeline.showBackupMessage();
+		//this.timeline.showBackupMessage();
   },
   showError: function(){
     this.hideLoading();
