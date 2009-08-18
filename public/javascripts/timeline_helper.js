@@ -129,6 +129,7 @@ ETLUtil.emptyResponse = "{\"results\": [], \"previousDataUri\": null, \"response
 ETLUtil.assetUrl = "http://simile.mit.edu/timeline/api/";
 ETLUtil.imgUrl = ETLUtil.assetUrl+"images/";
 ETLUtil.iconPostfix = "-circle.png";
+ETLUtil.blankArtifatcImg = "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>"
 
 //Eternos Timeline Date
 var ETLDate = Class.create({
@@ -206,6 +207,7 @@ var ETLArtifactSection = Class.create({
     this.title = "Artifacts";
 		this.template = artifactTemplates.artifacts();
 		this.boxTemplate = artifactTemplates.artifactBox();
+		this.blankImg = 
     this.items = new Array();
 
 		this.showLoading();
@@ -225,7 +227,12 @@ var ETLArtifactSection = Class.create({
     }
   },
   _write: function() {
-    this.parent.innerHTML = this.template.evaluate({title: this.title, artifacts: this.content});
+    if(this.items.length < 1){
+      this.content = ETLUtil.blankArtifatcImg;
+      this.parent.innerHTML = this.template.evaluate({title: this.title, artifacts: this.content});
+    }else{
+      this.parent.innerHTML = this.template.evaluate({title: this.title, artifacts: this.content});
+    }
     window._ETLArtifactSection = this;
   },
   randomize: function(){
