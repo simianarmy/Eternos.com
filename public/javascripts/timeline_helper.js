@@ -110,7 +110,8 @@ ETLUtil.itemTypes = [
 	{type: "Video", display_text: "Video", display_text_plural: "Videos", icon: "green"},
 	{type: "Music", display_text: "Music", display_text_plural: "Music", icon: "green"},
 	{type: "Audio", display_text: "Audio", display_text_plural: "Audio", icon: "green"},
-	{type: "Document", display_text: "Document", display_text_plural: "Documents", icon: "grey"},
+	{type: "Document", display_text: "Document", display_text_plural: "Documents", icon: "dull-green"},
+  {type: "Link", display_text: "Link", display_text_plural: "Links", icon: "dull-green"},
 	{type: "School", display_text: "School", display_text_plural: "Schools", icon: "dull-blue"},
 	{type: "Family", display_text: "Family Member", display_text_plural: "Family Members", icon: "dull-blue"},
 	{type: "Medical", display_text: "Medical Data", display_text_plural: "Medical Data", icon: "dull-blue"},
@@ -346,6 +347,7 @@ var ETLEventItems = Class.create({
 				this.title = event.display_text;
 			}
 		} else {
+      //console.log(this.items);
 			this.title = "Unknown event";
 		}
   },
@@ -615,21 +617,8 @@ var ETLBase = Class.create({
     if (this.rawEvents != undefined){
 			var item;
 			for(var i=0;i<this.rawEvents.eventItems.items.length;i++){
-				
-        //item = new ETLTimelineEvent(this.rawEvents.eventItems.items[i]);
-        //this.eventSources.add(item.event);
-        
-				item = this.rawEvents.eventItems.items[i];
-        var start_date = new ETLDate(item.start_date, 'str').outDate;
-				var end_date = new ETLDate(item.end_date, 'str').outDate;
-				var title = item.title;
-				var description = "";
-				var event = new Timeline.DefaultEventSource.Event({
-					start: start_date,
-					text: title,
-					description: description});
-        this.eventSources.add(event);
-          
+        item = new ETLTimelineEvent(this.rawEvents.eventItems.items[i]);
+        this.eventSources.add(item.event);
 			}
     }
   },
