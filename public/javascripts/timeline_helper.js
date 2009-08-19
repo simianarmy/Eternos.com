@@ -73,7 +73,7 @@ Array.prototype.include = function (val) {
 }
 
 //Date parsing regex & sort function
-var MysqlDateRE = /^(\d{4})\-(\d{2})\-(\d{2})/;
+var MysqlDateRE = /^(\d{4})\-(\d{2})\-(\d{2})T?.*/;
 var mysqlTimeToDate = function (datetime) {
   //function parses mysql datetime string and returns javascript Date object
   //input has to be in this format: 2007-06-05 15:26:02
@@ -359,7 +359,9 @@ var ETimeline = function (opts) {
     _getLinkUrl: function (item) {
       if (item.isArtifact()) {
         return item.attributes.url;
-      } else {}
+      } else {
+				return item.dateDetailsPath();
+			}
     },
     // Determine 'rel' attribute for Lightview link html
     _getLinkRel: function () {
@@ -367,7 +369,7 @@ var ETimeline = function (opts) {
         // Lightview auto-detects content so just need to know if gallery or not
         return (this.num > 1) ? 'gallery[' + this.first.attributes.id + ']' : '';
       } else {
-        return 'ajax';
+        return 'iframe';
       }
     },
     _getArtifactItemHtml: function () {
@@ -391,6 +393,8 @@ var ETimeline = function (opts) {
     _getInlineItemHtml: function () {
       return this.itemWithTooltipTemplate.evaluate({
         title: this.title,
+				link_url: this._getLinkUrl(this.first),
+        link_rel: this._getLinkRel(),
         tooltip_content: this._getTooltipContents()
       })
     },
@@ -453,15 +457,18 @@ var ETimeline = function (opts) {
       this.html = ''
       this.groupTemplate = that.templates.eventListTemplates.eventGroup();
     },
+		// Add event source to collection keyed by event date
     addSource: function (s) {
       var source = ETEvent.createSource(s);
+			var day = source.eventDateString();
+			
       this.sources.push(source);
-
-      if (!this.dates.include(source.start_date)) {
-        this.rawItems[source.start_date] = new Array(source);
-        this.dates.push(source.start_date);
+      
+			if (!this.dates.include(day)) {
+        this.rawItems[day] = new Array(source);
+        this.dates.push(day);
       } else {
-        this.rawItems[source.start_date].push(source);
+        this.rawItems[day].push(source);
       }
     },
     populate: function () {
@@ -571,7 +578,7 @@ var ETimeline = function (opts) {
     }
   });
 
-  //Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: 'string'}
+  //Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: Object}
   var ETLSearch = Class.create({
     initialize: function (params) {
       var date = new Date();
@@ -579,7 +586,7 @@ var ETimeline = function (opts) {
       this.searchUrl = "/timeline/search/js/";
       this.startDate = params.startDate || new ETLDate(date).outDate;
       this.endDate = params.endDate || new ETLDate(date).outDate;
-      this.options = params.options;
+      this.options = Object.toQueryString(params.options);
       this.complete = false;
 
       this._getFullSearchUrl();
@@ -606,7 +613,14 @@ var ETimeline = function (opts) {
     }
   });
 
-  //Eternos Timeline Base
+  // Eternos Timeline Base
+	// params:
+	//	memberID
+	//	startDate
+	//	endDate
+	//	options:
+	//		fake: true|false
+	//		max_results
   var ETLBase = Class.create({
     initialize: function (domID, params) {
       that.memberID = params.memberID;
@@ -822,7 +836,7 @@ var ETimeline = function (opts) {
     that.monthSelector = new ETLMonthSelector(options.month_selector_id);
     that.artifactSection = new ETLArtifactSection(options.artifact_section_id);
     window._eventSection = that.eventSection = new ETLEventSection(options.events_section_id);
-    that.base = new ETLBase(options.timeline_section_id, options.timeline_opts);
+    that.base = new ETLBase(options.timeline_section_id, options.timeline);
   }
 
   // Set public methods now

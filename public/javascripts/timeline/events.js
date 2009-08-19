@@ -11,6 +11,7 @@ var ETLEventSource = Class.create({
 		this.icon 								= s.icon;
 		this.start_date 					= s.start_date;
 		this.end_date 						= s.end_date;
+		this.event_date_s					= '';
 		this.attributes 					= s.attributes;
 	},
 	isArtifact: function() {
@@ -18,6 +19,24 @@ var ETLEventSource = Class.create({
 	},
 	getPreviewHtml: function() {
 		return 'Click link to view';
+	},
+	// Returns event's date occurrence, as date string
+	// Needed b/c dates can be date or datetimes
+	eventDateString: function() {
+		var parts;
+		if (this.event_date_s === '') {
+			parts = this.start_date.replace(MysqlDateRE, "$1 $2 $3").split(' ');
+			this.event_date_s = parts.join('-');
+		}
+		return this.event_date_s;
+	},
+	// Returns event's rails action path for viewing
+	detailsPath: function() {
+		return this.attributes.controller_path + '/' + this.attributes.id;
+	},
+	// Returne rails action path for viewing event source collection by date
+	dateDetailsPath: function() {
+		return this.attributes.controller_path + '/by_date/' + this.eventDateString();
 	}
 });
 // Photo event

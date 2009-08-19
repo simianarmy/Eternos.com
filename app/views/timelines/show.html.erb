@@ -20,11 +20,14 @@
     artifact_section_id: 'arti-area',
     events_section_id: 'story-area',
     timeline_section_id: 'my-timeline',
-    timeline_opts: {
+    timeline: {
       memberID: #{current_user.id}, 
       startDate:'#{@tl_start_date}', 
       endDate: '#{@tl_end_date}', 
-      options:'fake/max_results=100'
+      options: {
+        max_results: 100
+        #{if @fake; ', fake: true' end}
+      }
     }
   });
   et.draw();
