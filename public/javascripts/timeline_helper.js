@@ -481,12 +481,12 @@ var ETimeline = function (opts) {
         var val = this.rawItems[d];
         items_html = ''
         items = this._groupItems(val);
-
-        for (var j = 0; j < items.length; j++) {
-          event = new ETLEventItems(items[j]);
+				
+       	items.each(function(group, index) {
+          event = new ETLEventItems(group);
           this.items.push(event);
           items_html += event.populate();
-        }
+        }, this);
         this.html += this.groupTemplate.evaluate({
           date: this._eventDate(d),
           body: items_html
@@ -494,16 +494,18 @@ var ETimeline = function (opts) {
       },
       this);
     },
+		// Group event items by type in arrays
     _groupItems: function (items) {
-      var types = new Array();
+      var types = [];
       var results = new Array();
 
       for (var i = 0; i < items.length; i++) {
-        if (types.include(items[i].type)) {
-          results[types.length - 1].push(items[i]);
+				idx = types.indexOf(items[i].type);
+				if (idx !== -1) {
+          results[idx].push(items[i]);
         } else {
-          types.push(items[i].type);
-          results[types.length - 1] = new Array(items[i]);
+					types.push(items[i].type);
+          results[types.length-1] = new Array(items[i]);
         }
       }
       return results;
