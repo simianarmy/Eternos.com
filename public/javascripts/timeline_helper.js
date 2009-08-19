@@ -655,28 +655,28 @@ var ETimeline = function (opts) {
       var date = new Date();
       
       this.bandInfos = [ Timeline.createBandInfo({
-        width: "20%",
+        width: "8%",
         intervalUnit: Timeline.DateTime.DECADE,
         intervalPixels: this.firstBandPixels,
         date: date,
         showEventText: false,
         theme: this.theme
       }), Timeline.createBandInfo({
-        width: "55%",
+        width: "76%",
         intervalUnit: Timeline.DateTime.DAY,
         intervalPixels: 100,
         date: date,
         eventSource: this.eventSources,
         theme: this.theme
       }), Timeline.createBandInfo({
-        width: "13%",
+        width: "8%",
         intervalUnit: Timeline.DateTime.MONTH,
         intervalPixels: 500,
         date: date,
         overview: true,
         theme: this.theme
       }), Timeline.createBandInfo({
-        width: "12%",
+        width: "8%",
         intervalUnit: Timeline.DateTime.YEAR,
         overview: true,
         date: date,
