@@ -122,7 +122,8 @@ var ETimeline = function (opts) {
     assetUrl: "http://simile.mit.edu/timeline/api/",
     imgUrl: "images/",
     iconPostfix: "-circle.png",
-    blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>"
+    blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>",
+    tlEffectiveWidth: 750
   };
 
   //Eternos Timeline Date
@@ -619,12 +620,17 @@ var ETimeline = function (opts) {
       this.endDate = params.endDate || new ETLDate(date);
       this.options = params.options;
       this.rawEvents = new ETLEventParser(ETLUtil.emptyResponse);
-
+      
+      this._getMemberAge();
       this._setReqDates();
       this._setupTheme();
       this._setupEvents();
       this._setupBands(this);
       this.init(true);
+    },
+    _getMemberAge: function(){
+       this.memberAge = (new Date(parseInt(this.endDate), 01, 01)).getFullYear() - (new Date(parseInt(this.startDate), 01, 01)).getFullYear();
+       this.firstBandPixels = ETLUtil.tlEffectiveWidth/(this.memberAge/10);
     },
     _setupTheme: function () {
       this.theme = Timeline.ClassicTheme.create();
@@ -647,11 +653,11 @@ var ETimeline = function (opts) {
     },
     _setupBands: function (obj) {
       var date = new Date();
-      this.bandInfos = [
-      Timeline.createBandInfo({
+      
+      this.bandInfos = [ Timeline.createBandInfo({
         width: "20%",
         intervalUnit: Timeline.DateTime.DECADE,
-        intervalPixels: 200,
+        intervalPixels: this.firstBandPixels,
         date: date,
         showEventText: false,
         theme: this.theme
@@ -678,7 +684,7 @@ var ETimeline = function (opts) {
         theme: this.theme
       })];
 
-      this.bandInfos[0].syncWith = 1;
+      //this.bandInfos[0].syncWith = 1;
       this.bandInfos[2].syncWith = 1;
       this.bandInfos[3].syncWith = 2;
 
@@ -785,7 +791,6 @@ var ETimeline = function (opts) {
     },
     hideLoading: function () {
       this.timeline.hideLoadingMessage();
-      //this.timeline.showBackupMessage();
     },
     showError: function () {
       this.hideLoading();
