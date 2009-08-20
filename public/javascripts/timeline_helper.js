@@ -108,6 +108,7 @@ var ETimeline = function (opts) {
   // Private instances & functions
 	that.templates = ETemplates;
   that.options = options;
+	that.monthSelector = null;
 
   var ETLUtil = {
     pauseExec: function (ms) {
@@ -152,34 +153,28 @@ var ETimeline = function (opts) {
       this.activeDate = new Date();
       this.advanceMonths = new Array();
       this.pastMonths = new Array();
-      this.enableClick();
-      this.top = "<a href=\"#\" class=\"btn-left\" onclick=\"" + this.stepDownAttr + " return false;\"></a>";
-      this.bottom = "<a href=\"#\" class=\"btn-right\" onclick=\"" + this.stepUpAttr + " return false;\"></a>";
+			this.template = that.templates.monthSelectorTemplate();
+      
       this.populate();
     },
     _initContent: function () {
       this.activeMonth = this.activeDate.getMonthName();
       this.activeYear = this.activeDate.getFullYear();
     },
-    _setContent: function () {
-      var m = "<span class=\"subtitle6\">" + this.activeMonth + "</span>";
-      var y = "<span class=\"subtitle7\">" + this.activeYear + "</span>";
-      this.content = m + y;
-    },
     _write: function () {
-      this.parent.innerHTML = this.top + this.content + this.bottom;
+      this.parent.innerHTML = this.template.evaluate({month: this.activeMonth, year: this.activeYear});
     },
     disableClick: function () {
-      this.stepUpAttr = this.stepDownAttr = "";
+			
     },
     enableClick: function () {
-      this.stepDownAttr = "that.stepMonth('down');";
-      this.stepUpAttr = "that.stepMonth('up');";
+      Event.observe($('month_selector_down'), 'click', function(element) { that.monthSelector.stepMonth('down'); });
+			Event.observe($('month_selector_up'), 'click', function(element) { that.monthSelector.stepMonth('up') });
     },
     populate: function () {
       this._initContent();
-      this._setContent();
       this._write();
+			this.enableClick();
     },
     stepMonth: function (param) {
       this.activeDate.stepMonth(param);
@@ -866,7 +861,7 @@ var ETimeline = function (opts) {
   // Set public methods now
   me.draw = draw;
   me.api = api;
-
+	
   // Return 'class' object with only public methods exposed.
   return me;
 };

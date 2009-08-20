@@ -30,5 +30,8 @@ var ETemplates = {
 			artifactBox: function () {
 				return new Template("<li id=\"etl-artifact-item-#{num}\" #{style}><a href=\"#{url}\" " + "class=\"lightview\" rel=\"set[artifacts]\" title=\":: :: slideshow: true, autosize: true, fullscreen: true\"><img src='#{thumbnail_url}' class='thumnails2'/></a>" + "</li>");
 			}
+		},
+		monthSelectorTemplate: function() {
+			return new Template("<a href=\"#\" id=\"month_selector_down\" class=\"btn-left\"></a><span class=\"subtitle6\">#{month}</span><span class=\"subtitle7\">#{year}</span><a href=\"#\" id=\"month_selector_up\" class=\"btn-right\"></a>");
 		}
 };
