@@ -319,6 +319,10 @@ var ETimeline = function (opts) {
       this.content = this.loading;
       this.populate();
     },
+    updateTitle: function(title){
+      this.title = title;
+      this._write();
+    }
   });
 
   //Eternos Timeline Event Item
@@ -651,6 +655,7 @@ var ETimeline = function (opts) {
 			this.currentDate = null;
       this.tlMinDate 	= null;
       this.tlMaxDate = null;
+      this.centerDate = null;
 
 			SimileAjax.History.enabled = false;
       this._getMemberAge();
@@ -768,6 +773,12 @@ var ETimeline = function (opts) {
         //console.log("MIN timeline...band: "+tlMinDate.monthRange(0,'')+"..."+band.getMinVisibleDate().monthRange(0,''));
         that.timeline.timeline.hideBackupMessage();
 
+        if (that.timeline._monthIsChanged(band.getCenterVisibleDate())){
+          d = band.getCenterVisibleDate();
+          that.timeline.centerDate = d
+          that.timeline._updateTitles(d);
+        }
+
         var start_date;
         var end_date;
         if (band.getMaxVisibleDate() > tlMaxDate) {
@@ -798,8 +809,20 @@ var ETimeline = function (opts) {
       this.currentDate = new Date();
       this.tlMinDate = new Date();
       this.tlMaxDate = new Date();
+      this.centerDate = new Date();
       this.tlMinDate.setMonth(this.tlMinDate.getMonth() - 1);
       this.tlMaxDate.setMonth(this.tlMaxDate.getMonth() + 1);
+      this._updateTitles(this.currentDate);
+    },
+    _monthIsChanged: function(date){
+      return (this.centerDate.getMonth() != date.getMonth());
+    },
+    _getTitleFromDate: function(date, type){
+      return (type + " from " + date.getMonthName() + " " + date.getFullYear())
+    },
+    _updateTitles: function(d){
+      that.artifactSection.updateTitle(this._getTitleFromDate(d, "Artifact"));
+      that.eventSection.updateTitle(this._getTitleFromDate(d, "Event"));      
     },
     _create: function () {
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
