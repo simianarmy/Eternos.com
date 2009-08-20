@@ -31,12 +31,12 @@ var ETLEventSource = Class.create({
 		return this.event_date_s;
 	},
 	// Returns event's rails action path for viewing
-	detailsPath: function() {
-		return this.attributes.controller_path + '/' + this.attributes.id;
+	detailsPath: function(user_id) {
+		return ['timeline_events/show', user_id, this.attributes.id, this.type].join('/');
 	},
 	// Returne rails action path for viewing event source collection by date
-	dateDetailsPath: function() {
-		return this.attributes.controller_path + '/by_date/' + this.eventDateString();
+	dateDetailsPath: function(user_id) {
+		return ['timeline_events/details', user_id, this.type, this.eventDateString()].join('/');
 	}
 });
 // Photo event

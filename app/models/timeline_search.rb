@@ -70,15 +70,15 @@ class TimelineSearch
   end
   
   def get_facebook_items
-    ActivityStreamItem.facebook.between(@start_date, @end_date)
+    @member.activity_stream.items.facebook.between_dates(@start_date, @end_date)
   end
   
   def get_twitter_items
-    ActivityStreamItem.twitter.between(@start_date, @end_date)
+    @member.activity_stream.items.twitter.between_dates(@start_date, @end_date)
   end
   
   def get_stream_media
-    ActivityStreamItem.attachments.between(@start_date, @end_date)
+    @member.activity_stream.items.with_attachment.between_dates(@start_date, @end_date)
   end
   
   def get_backup_photos
@@ -88,7 +88,7 @@ class TimelineSearch
   def get_emails
     returning Array.new do |emails|
       @member.backup_sources.by_site(BackupSite::Gmail).each do |gmail|
-        emails << gmail.backup_emails.between(@start_date, @end_date)
+        emails << gmail.backup_emails.between_dates(@start_date, @end_date)
       end
       emails.flatten
     end
@@ -97,9 +97,25 @@ class TimelineSearch
   def get_feed_items
     returning Array.new do |items|
       @member.backup_sources.by_site(BackupSite::Blog).each do |feed|
-        items << feed.feed.entries.between(@start_date, @end_date)
+        items << feed.feed.entries.between_dates(@start_date, @end_date)
       end
       items.flatten
+    end
+  end
+  
+  # Helper for searching by type (constant or string)
+  def by_type(type)
+    case type.to_s
+    when "FacebookActivityStreamItem"
+      get_facebook_items
+    when "TwitterActivityStreamItem"
+      get_twitter_items
+    when "BackupEmail"
+      get_emails
+    when "Photo"
+      get_backup_photos
+    when "FeedEntry"
+      get_feed_items
     end
   end
   

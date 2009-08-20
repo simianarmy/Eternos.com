@@ -1,5 +1,6 @@
 // $Id$
 //
+
 // Timeline javascript module
 // required Date' prototypes
 Date.prototype.numDays = function () {
@@ -340,6 +341,7 @@ var ETimeline = function (opts) {
       this.hiddenItemTemplate = that.templates.eventListTemplates.hiddenItem();
       this.itemWithTooltipTemplate = that.templates.eventListTemplates.eventItemWithTooltip();
 			this.tooltipItemTemplate = that.templates.eventListTemplates.eventItemTooltipItem();
+			this.inlineEventsTemplate = that.templates.eventListTemplates.inlineEvents();
     },
     _setTitle: function () {
       if (this.num > 1) {
@@ -360,7 +362,10 @@ var ETimeline = function (opts) {
       if (item.isArtifact()) {
         return item.attributes.url;
       } else {
-				return item.dateDetailsPath();
+				// For Lightview inline popups
+				// References div with id = '#id'
+				//return '#' + item.attributes.id;
+				return item.dateDetailsPath(that.memberID);
 			}
     },
     // Determine 'rel' attribute for Lightview link html
@@ -396,6 +401,7 @@ var ETimeline = function (opts) {
 				link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         tooltip_content: this._getTooltipContents()
+				//inline_content: this._getInlineContents()
       })
     },
     _getTooltipContents: function () {
@@ -405,6 +411,10 @@ var ETimeline = function (opts) {
       }, this);
       return html;
     },
+		_getInlineContents: function() {
+			return this.inlineEventsTemplate.evaluate({id: this.first.attributes.id, 
+				content: 'TODO'});
+		},
     populate: function () {
       this._setTitle();
       this._setHtml();
@@ -440,7 +450,8 @@ var ETimeline = function (opts) {
         latestStart: this.latest,
         earliestEnd: this.earliest,
         instant: true,
-        text: this.title,
+        //text: this.title,
+				text: '',
         description: this.type,
         icon: this.icon
       });
@@ -584,7 +595,9 @@ var ETimeline = function (opts) {
       var date = new Date();
 
       this.searchUrl = "/timeline/search/js/";
-      this.startDate = params.startDate || new ETLDate(date).outDate;
+      //this.startDate = '2008-01-01'; 
+      //this.endDate = '2010-01-01'; 
+			this.startDate = params.startDate || new ETLDate(date).outDate;
       this.endDate = params.endDate || new ETLDate(date).outDate;
       this.options = Object.toQueryString(params.options);
       this.complete = false;
@@ -634,12 +647,23 @@ var ETimeline = function (opts) {
       this.endDate = params.endDate || new ETLDate(date);
       this.options = params.options;
       this.rawEvents = new ETLEventParser(ETLUtil.emptyResponse);
-      
+			// Timeline instance vars
+      this.timeline	 = null;
+			this.memberAge	= 0;
+			this.firstBandPixels = 0;
+			this.theme	= null;
+			this.bandInfos = [];
+			this.currentDate = null;
+      this.tlMinDate 	= null;
+      this.tlMaxDate = null;
+
+			SimileAjax.History.enabled = false;
       this._getMemberAge();
       this._setReqDates();
       this._setupTheme();
       this._setupEvents();
       this._setupBands(this);
+
       this.init(true);
     },
     _getMemberAge: function(){

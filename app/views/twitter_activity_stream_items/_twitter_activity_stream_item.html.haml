@@ -1,0 +1,20 @@
+#item[twitter_activity_stream_item]
+  - item = twitter_activity_stream_item
+  %p 
+  %b== Twitter #{item.activity_type.capitalize}
+  %br
+  - if item.message
+    %br== Message: #{item.message}
+  - if item.attachment_data
+    - if item.thumbnail_url
+      = link_to image_tag(item.thumbnail_url), item.url
+    - elsif item.url
+      = link_to item.url, item.url
+    
+  %br== Posted: #{item.published_at}
+  - if item.published_at != item.edited_at
+    %br== Edited: #{item.edited_at}
+  
+%p
+%br  
+/= debug(twitter_activity_stream_item)

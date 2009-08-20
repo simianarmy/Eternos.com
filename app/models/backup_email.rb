@@ -37,7 +37,10 @@ class BackupEmail < ActiveRecord::Base
       :order => 'received_at DESC', :limit => num || 1
     }
   }
-
+  named_scope :between_dates, lambda {|s, e| 
+    { :conditions => ['DATE(received_at) BETWEEN ? AND ?', s, e] }
+  }
+  
   # Send id to upload worker queue
   def after_commit_on_create
     #MessageQueue.email_upload_queue.publish({:id => self.id}.to_json)

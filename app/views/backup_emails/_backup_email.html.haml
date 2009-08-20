@@ -1,0 +1,12 @@
+#backup_email[backup_email]
+  Email
+  %p
+  %br
+  %b= "Subject: #{backup_email.subject}"
+  %br= "Sender: #{feed_entry.sender}"
+  %br= "Received: #{feed_entry.received_at}"
+  %br Click to view full message here? Ajax call to load area below.
+  
+%p
+%br
+= debug(backup_email)

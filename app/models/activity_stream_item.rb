@@ -5,7 +5,7 @@
 class ActivityStreamItem < ActiveRecord::Base
   belongs_to :activity_stream
   
-  acts_as_archivable :on => :published_at
+  acts_as_archivable :on => :published_at, :order => 'DESC'
   
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
@@ -29,6 +29,9 @@ class ActivityStreamItem < ActiveRecord::Base
       :order => 'published_at DESC', :limit => num || 1
     }
   }
+  named_scope :between_dates, lambda {|s, e| 
+    { :conditions => ['DATE(published_at) BETWEEN ? AND ?', s, e] }
+  }
   
   def bytes
     message.length + (attachment_data ? attachment_data.length : 0)
@@ -37,8 +40,6 @@ class ActivityStreamItem < ActiveRecord::Base
   def media_attachment?
     false
   end
-  
-  private
   
   def parsed_attachment_data
     @data ||= YAML::parse attachment_data
@@ -58,6 +59,8 @@ class FacebookActivityStreamItem < ActivityStreamItem
       d['video']['source_url'].value
     when 'link'
       d['src'].value
+    when 'generic'
+      d['href'].value
     end
   end
   

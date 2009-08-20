@@ -13,10 +13,13 @@ var ETemplates = {
 				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 			},
 			eventItemWithTooltip: function () {
-				return new Template('<li class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}">#{title}</a>#{hidden_items}' + '<span>#{tooltip_content}</span></div></li>');
+				return new Template('<li class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + '<span>#{tooltip_content}</span>#{inline_content}</li>');
 			},
 			eventItemTooltipItem: function () {
 				return new Template('<div class="event_preview_item_container">#{content}</div>');
+			},
+			inlineEvents: function() {
+				return new Template('<div id="#{id}">#{content}</div>');
 			}
 		},
 		// Artifacts section templates

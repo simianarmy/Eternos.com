@@ -36,6 +36,7 @@ private
 
   # Parses rest uri for actions & opts
   def search_events
+    RAILS_DEFAULT_LOGGER.debug @options.inspect
     klass = @options[:fake] ? TimelineSearchFaker : TimelineSearch
     #klass = TimelineSearch # Switching to real data
     klass.new(@params[:id], [@params[:start_date], @params[:end_date]], @options).results
@@ -43,8 +44,10 @@ private
   
   def parse_search_filters(args)
     (args || []).inject({}) do |res, el| 
-      k,v = el.to_s.split('=')
-      res[k.to_sym] = v.nil? ? "1" : v
+      el.split('&').each do |kv|
+        k,v = kv.to_s.split('=')
+        res[k.to_sym] = v.nil? ? "1" : v
+      end
       res
     end
   end

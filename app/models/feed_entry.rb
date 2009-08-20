@@ -10,7 +10,9 @@ class FeedEntry < ActiveRecord::Base
 
   # TODO: Just use self.newest (see acts_as_archivable)
   named_scope :latest, :order => 'published_at DESC', :limit => 1
-
+  named_scope :between_dates, lambda {|s, e| 
+    { :conditions => ['DATE(published_at) BETWEEN ? AND ?', s, e] }
+  }
   after_create :fetch_contents
   
   def to_s

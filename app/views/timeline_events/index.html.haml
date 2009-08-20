@@ -1,0 +1,6 @@
+%h1 Details for Timeline Events
+
+#event_details_container
+- @events.each do |event|
+  = render :partial => event
+

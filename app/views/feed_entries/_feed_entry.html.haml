@@ -1,0 +1,14 @@
+#feed_entry[feed_entry]
+  RSS Feed Entry
+  %p
+  %br
+  %b= link_to feed_entry.name, feed_entry.url
+  %br= "Author: #{feed_entry.author}"
+  %br= "Published: #{feed_entry.published_at}"
+  %br= "Categories: #{feed_entry.categories.to_s}"
+  %br= "Summary: #{feed_entry.summary}"
+  %pre= feed_entry.rss_content
+  
+%p
+%br
+/= debug(feed_entry)

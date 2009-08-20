@@ -2,9 +2,9 @@
 #
 # Table-less class for Timeline events
 class TimelineEvent
-  attr_accessor :start_date, :end_date 
+  attr_accessor :start_date, :end_date
   attr_reader :type, :attributes
-
+  
   def initialize(object)
     @attributes = object.attributes.dup
     @type = object.class.to_s

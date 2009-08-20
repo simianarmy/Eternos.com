@@ -138,7 +138,6 @@ Rails::Initializer.run do |config|
   config.load_paths << "#{RAILS_ROOT}/app/renderers"
   
   config.after_initialize do
-    puts "=> Rails:Initializer finished at #{Time.now}"
     require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
     Qusion.start
     puts "=> Starting Workling client"
