@@ -1,0 +1,10 @@
+#job[job]
+  %b Career
+  %p
+  %br
+  %br== Company: #{job.company}
+  %br== Title: #{job.title}
+  %br== #{job.description}
+  %br== From #{job.start_at} to #{job.end_at ? job.end_at : 'present'}
+  %br== #{job.notes}
+  
