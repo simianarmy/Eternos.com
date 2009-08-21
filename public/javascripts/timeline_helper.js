@@ -202,6 +202,7 @@ var ETimeline = function (opts) {
       this.timeOut = 3;
       this.title = "Artifacts";
       this.template = that.templates.artifactTemplates.artifacts();
+      this.loadingTemplate = that.templates.loadingTemplate();
       this.boxTemplate = that.templates.artifactTemplates.artifactBox();
       this.blankImg = this.items = new Array();
 
@@ -273,7 +274,8 @@ var ETimeline = function (opts) {
       this._write();
     },
     showLoading: function () {
-      this.content = "<p>Loading Artifacts..</p><br/>";
+      this._clearContent();
+      this.content = this.loadingTemplate.evaluate({type: " Artifacts"});
       this._write();
     },
     updateTitle: function (title) {
@@ -287,7 +289,7 @@ var ETimeline = function (opts) {
     initialize: function (domID) {
       this.parent = $(domID);
       this.title = "Events";
-      this.loading = "<p>Loading Events..</p><br/>";
+      this.loading = that.templates.loadingTemplate().evaluate({type: " Events"});
       this.template = that.templates.eventListTemplates.events();
       this.content = "";
       this.images = new Array();
@@ -720,34 +722,34 @@ var ETimeline = function (opts) {
       }
     },
     _setupBands: function (obj) {
-      var date = new Date();
+      //var date = new Date();
       
       this.bandInfos = [ Timeline.createBandInfo({
         width: "8%",
         intervalUnit: Timeline.DateTime.DECADE,
         intervalPixels: this.firstBandPixels,
-        date: date,
+        date: this.centerDate,
         showEventText: false,
         theme: this.theme
       }), Timeline.createBandInfo({
         width: "76%",
         intervalUnit: Timeline.DateTime.DAY,
         intervalPixels: 100,
-        date: date,
+        date: this.centerDate,
         eventSource: this.eventSources,
         theme: this.theme
       }), Timeline.createBandInfo({
         width: "8%",
         intervalUnit: Timeline.DateTime.MONTH,
         intervalPixels: 500,
-        date: date,
+        date: this.centerDate,
         overview: true,
         theme: this.theme
       }), Timeline.createBandInfo({
         width: "8%",
         intervalUnit: Timeline.DateTime.YEAR,
         overview: true,
-        date: date,
+        date: this.centerDate,
         intervalPixels: 500,
         theme: this.theme
       })];
