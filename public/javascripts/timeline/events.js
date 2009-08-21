@@ -100,6 +100,14 @@ var ETLJobEventSource = Class.create(ETLEventSource, {
 		return this.attributes.company;
 	}
 });
+// Address event
+var ETLAddressEventSource = Class.create(ETLEventSource, {
+	getPreviewHtml: function() {
+		return [this.attributes.street_1, this.attributes.city,
+			this.attributes.country_id, 
+			this.attributes.postal_code].join('<br/>');
+	}
+});
 
 // ETEvent Namespace
 var ETEvent = {
