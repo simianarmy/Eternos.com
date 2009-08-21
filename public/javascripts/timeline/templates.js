@@ -32,6 +32,6 @@ var ETemplates = {
 			}
 		},
 		monthSelectorTemplate: function() {
-			return new Template("<a href=\"#\" id=\"month_selector_down\" class=\"btn-left\"></a><span class=\"subtitle6\">#{month}</span><span class=\"subtitle7\">#{year}</span><a href=\"#\" id=\"month_selector_up\" class=\"btn-right\"></a>");
+			return new Template("<a href=\"\" id=\"month_selector_down\" class=\"btn-left\"></a><span class=\"subtitle6\">#{month}</span><span class=\"subtitle7\">#{year}</span><a href=\"\" id=\"month_selector_up\" class=\"btn-right\"></a>");
 		}
 };

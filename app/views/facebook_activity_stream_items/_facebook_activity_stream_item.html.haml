@@ -9,7 +9,7 @@
     - if item.thumbnail_url
       = link_to image_tag(item.thumbnail_url), item.url
     - elsif item.url
-      = link_to item.url, item.url
+      = link_to item.url, item.url, :target => '_new'
     - else
       = debug(item.parsed_attachment_data.to_s)
   %br== Posted: #{item.published_at}

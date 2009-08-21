@@ -10,9 +10,11 @@ Date.prototype.getFullMonth = function () {
   var m = this.getMonth() + 1 + "";
   return (m.length < 2) ? "0" + m : m;
 }
+// Returns YYYY-MM-DD string
 Date.prototype.startingMonth = function () {
   return this.getFullYear() + "-" + this.getFullMonth() + "-01";
 }
+// Returns YYYY-MM-DD string
 Date.prototype.endingMonth = function () {
   return this.getFullYear() + "-" + this.getFullMonth() + "-" + this.numDays();
 }
@@ -37,6 +39,7 @@ Date.prototype.stepMonth = function (param) {
       this.setMonth(this.getMonth() - 1);
     }
   }
+	return this;
 }
 Date.prototype.monthRange = function (num, dir) {
   var set_up = function (d) {
@@ -137,11 +140,11 @@ var ETimeline = function (opts) {
     },
     getOutDate: function () {
       if (this.inFormat == 'natural') {
-        this.outDate = this.inDate.getFullYear() + '-' + this.inDate.getMonth() + '-' + this.inDate.getDate();
+        this.outDate = this.inDate.getFullYear() + '-' + this.inDate.getMonth()+1 + '-' + this.inDate.getDate();
       } else if (this.inFormat == 'gregorian') {
         this.outDate = Timeline.DateTime.parseGregorianDateTime(this.inDate.substr(0, 4));
       } else {
-        this.outDate = new Date(this.inDate.substr(0, 4), this.inDate.substr(5, 2), this.inDate.substr(8, 2));
+        this.outDate = mysqlDateToDate(this.inDate);
       }
     }
   });
@@ -168,8 +171,8 @@ var ETimeline = function (opts) {
 			
     },
     enableClick: function () {
-      Event.observe($('month_selector_down'), 'click', function(element) { that.monthSelector.stepMonth('down'); });
-			Event.observe($('month_selector_up'), 'click', function(element) { that.monthSelector.stepMonth('up') });
+      Event.observe($('month_selector_down'), 'click', function(event) { that.monthSelector.stepMonth('down'); event.stop(); });
+			Event.observe($('month_selector_up'), 'click', function(event) { that.monthSelector.stepMonth('up'); event.stop(); });
     },
     populate: function () {
       this._initContent();
@@ -185,6 +188,8 @@ var ETimeline = function (opts) {
         endDate: this.activeDate.endingMonth(),
         options: that.timeline.options
       }
+			// Better place for this?
+			that.timeline.eventsLoading(this.activeDate);
       that.timeline.searchEvents(params);
     }
   });
@@ -205,18 +210,26 @@ var ETimeline = function (opts) {
     _clearContent: function () {
       this.content = "";
     },
-    _itemsToS: function () {
-      for (var i = 0; i < this.items.length; i++) {
-        var ul_class = (i >= this.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : "class=\"visible-artifact-item\"";
-        if (this.items[i] !== undefined && this.items[i].attributes.thumbnail_url !== undefined) {
-          this.content += this.boxTemplate.evaluate({
-            num: i,
-            style: ul_class,
-            url: this.items[i].attributes.url,
-            thumbnail_url: this.items[i].attributes.thumbnail_url
-          });
-        }
-      }
+    _itemsToS: function (activeDate) {
+			var targetDate = activeDate.startingMonth();
+			var ul_class;
+			var realthis = this;
+			
+			console.log("Displaying artifacts for: " + activeDate);
+			
+			// Skip any items that don't have thumbnail or don't fall on target month
+			this.items.findAll(function(i) {
+				return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) &&
+					(mysqlDateToDate(i.start_date).startingMonth() === targetDate);
+			}).each(function(item, i) {
+				ul_class = (i >= that.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : "class=\"visible-artifact-item\"";
+        realthis.content += realthis.boxTemplate.evaluate({
+           num: i,
+           style: ul_class,
+           url: item.attributes.url,
+           thumbnail_url: item.attributes.thumbnail_url
+       	});
+      });
     },
     _write: function () {
       if (this.items.length < 1) {
@@ -254,9 +267,9 @@ var ETimeline = function (opts) {
         this.addItem(items[i]);
       }
     },
-    populate: function () {
+    populate: function (activeDate) {
       this._clearContent();
-      this._itemsToS();
+      this._itemsToS(activeDate);
       this._write();
     },
     showLoading: function () {
@@ -308,16 +321,13 @@ var ETimeline = function (opts) {
         });
       });
     },
-    addContent: function (content) {
-      this.content = content;
-    },
-    populate: function () {
+    populate: function (content) {
+			this.content = content || this.content;
       this._write();
       this._createTooltips();
     },
     showLoading: function () {
-      this.content = this.loading;
-      this.populate();
+      this.populate(this.loading);
     },
     updateTitle: function(title){
       this.title = title;
@@ -325,7 +335,7 @@ var ETimeline = function (opts) {
     }
   });
 
-  //Eternos Timeline Event Item
+  //Eternos Timeline Event Item(s)
   var ETLEventItems = Class.create({
     initialize: function (items) {
       this.items = items;
@@ -421,20 +431,18 @@ var ETimeline = function (opts) {
     }
   });
 
-  //Eternos Timeline Event Item Detail
-  var ETLEventItemDetail = Class.create({
-    initialize: function (event) {
-      this.source = event;
-    }
-  });
 
   //Eternos Timeline Event Source (Timeline.DefaultEventSource.Event)
+	// FIXME: Duplicates ETLEventSource class functionality
+	
   var ETLTimelineEvent = Class.create({
     initialize: function (event) {
       var date = new ETLDate(event.start_date, 'rev').outDate;
       this.start_date = this.start_end = this.earliest = this.latest = date;
       this.title = event.title;
       this.type = event.type;
+			this.event = null;
+			
       this._toTLEventSource();
     },
     _setIcon: function () {
@@ -481,13 +489,19 @@ var ETimeline = function (opts) {
         this.rawItems[day].push(source);
       }
     },
-    populate: function () {
+    populate: function (targetDate) {
+			var td = targetDate || that.monthSelector.activeDate;
       var items, items_html;
       var event;
       var date;
-      var year = that.monthSelector.activeDate.getFullYear();
-      var month = that.monthSelector.activeDate.getMonth();
+      var year = td.getFullYear();
+      var month = td.getMonth() + 1;
+			
+			console.log("Populating with events from " + month + "/" + year);
 
+			// Clear any old html
+			this.html = '';
+			
       // Sort items by descending array
       this.dates.sort(orderDatesDescending);
 
@@ -511,6 +525,8 @@ var ETimeline = function (opts) {
         });
       },
       this);
+			
+			return this.html;
     },
 		// Group event items by type in arrays
     _groupItems: function (items) {
@@ -546,7 +562,7 @@ var ETimeline = function (opts) {
   var ETLEventParser = Class.create({
     initialize: function (events) {
       this.eventItems = new ETLEventCollection();
-      this.artifactItems = new Array();
+      //this.artifactItems = new Array();
       this.jsonEvents = events.evalJSON();
       this._populate();
     },
@@ -555,8 +571,10 @@ var ETimeline = function (opts) {
       this.populateResults();
     },
     _mergeEvents: function (events) {
-      var merged = this.jsonEvents.results.concat(events.results);
-      this.jsonEvents.results = merged;
+			console.log("Merging events");
+      //var merged = this.jsonEvents.results.concat(events.results);
+      //this.jsonEvents.results = merged;
+			this.jsonEvents = events;
     },
     pushEvents: function (events) {
       this._mergeEvents(events.evalJSON());
@@ -566,23 +584,23 @@ var ETimeline = function (opts) {
 			var type;
       for (var i = 0; i < this.jsonEvents.results.length; i++) {
 				type = this.jsonEvents.results[i].type;
-        if (ETEvent.isArtifact(type) && (type === "Photo")) {
+        
+				if (type === "Photo") {
           that.artifactSection.addItem(this.jsonEvents.results[i]);
-          this.artifactItems.push(this.jsonEvents.results[i]);
-        } else {
-          //TODO: non artifact items
-        }
+          //this.artifactItems.push(this.jsonEvents.results[i]);
+        } 
         //TODO: parsing event item
         this.eventItems.addSource(this.jsonEvents.results[i]);
       }
       this.eventItems.populate();
     },
-    populateResults: function () {
-      that.artifactSection.populate();
+    populateResults: function (date) {
+			var targetDate = date || that.monthSelector.activeDate;
+			
+      that.artifactSection.populate(targetDate);
       that.artifactSection.randomize();
 
-      that.eventSection.addContent(this.eventItems.html);
-      that.eventSection.populate();
+      that.eventSection.populate(this.eventItems.populate(targetDate));
 
       //that.timeline.populate();
     }
@@ -590,7 +608,7 @@ var ETimeline = function (opts) {
 
   //Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: Object}
   var ETLSearch = Class.create({
-    initialize: function (params) {
+    initialize: function (timeline, params) {
       var date = new Date();
 
       this.searchUrl = "/timeline/search/js/";
@@ -600,31 +618,33 @@ var ETimeline = function (opts) {
       this.endDate = params.endDate || new ETLDate(date).outDate;
       this.options = Object.toQueryString(params.options);
       this.complete = false;
-
+			this.timeline = timeline;
+			
       this._getFullSearchUrl();
-      this._getJSON(that.timeline, this.fullSearchUrl);
+      this._getJSON(this.fullSearchUrl);
     },
     _getFullSearchUrl: function () {
       this.fullSearchUrl = this.searchUrl + that.memberID + '/' + this.startDate + '/' + this.endDate + '/' + this.options
     },
-    _getJSON: function (tmline, url) {
+    _getJSON: function (url) {
+			var timeline = this.timeline;
+			
       new Ajax.Request(url, {
         method: 'get',
         onSuccess: function (transport) {
           var response = transport.responseText || "";
-          tmline.pushRawEvents(response);
-          tmline.hideLoading();
+					timeline.onSearchSuccess(response);
         },
         onFailure: function () {
-          tmline.showError();
+          timeline.onSearchError();
         },
         onLoading: function () {
-          tmline.showLoading();
+          timeline.onSearching();
         }
       });
     }
   });
-
+	
   // Eternos Timeline Base
 	// params:
 	//	memberID
@@ -634,11 +654,52 @@ var ETimeline = function (opts) {
 	//		fake: true|false
 	//		max_results
   var ETLBase = Class.create({
+		// Basic min-max date cache object for search results cacheing
     initialize: function (domID, params) {
       that.memberID = params.memberID;
       that.resizeTimerID = null;
-      var date = new Date();
 
+			this.searchCache = {
+				searched: [],
+				
+				hashDate: function(d) {
+					return d.getFullYear() + d.getFullMonth();
+				},
+				addDates: function(sd, ed) {
+					var stepDate, endDate;
+					if (ed < sd || ed === undefined) { return; }
+		
+					stepDate = new ETLDate(sd, 's').outDate;
+					endDate = new ETLDate(ed, 's').outDate;
+					do {
+						console.log("Adding " + this.hashDate(stepDate) + " to search date cache");
+						this.searched[this.hashDate(stepDate)] = true;
+						stepDate.stepMonth('up');
+					} while (stepDate <= endDate);
+				},
+				hasDates: function(sd, ed) {
+					var stepDate, endDate;
+					if (ed < sd || ed === undefined) { return false; }
+					
+					stepDate = new ETLDate(sd, 's').outDate;
+					endDate = new ETLDate(ed, 's').outDate;
+					console.log("Checking search cache for dates " + stepDate + " => " + endDate);
+					
+					var found = false;
+					do {
+						if (this.searched[this.hashDate(stepDate)]) {
+							found = true;
+							break;
+						}
+						stepDate.stepMonth('up');
+					} while (stepDate <= endDate);
+					
+					return found;
+				}
+			};
+
+      var date = new Date();
+			
       this.domID = domID;
       this.params = params;
       this.memberID = params.memberID;
@@ -812,7 +873,7 @@ var ETimeline = function (opts) {
       this.centerDate = new Date();
       this.tlMinDate.setMonth(this.tlMinDate.getMonth() - 1);
       this.tlMaxDate.setMonth(this.tlMaxDate.getMonth() + 1);
-      this._updateTitles(this.currentDate);
+			this.eventsLoading(this.currentDate);
     },
     _monthIsChanged: function(date){
       return (this.centerDate.getMonth() != date.getMonth());
@@ -821,9 +882,12 @@ var ETimeline = function (opts) {
       return (type + " from " + date.getMonthName() + " " + date.getFullYear())
     },
     _updateTitles: function(d){
-      that.artifactSection.updateTitle(this._getTitleFromDate(d, "Artifact"));
-      that.eventSection.updateTitle(this._getTitleFromDate(d, "Event"));      
+      that.artifactSection.updateTitle(this._getTitleFromDate(d, "Artifacts"));
+      that.eventSection.updateTitle(this._getTitleFromDate(d, "Events"));      
     },
+		_loadCached: function() {
+			this.rawEvents.populateResults();
+		},
     _create: function () {
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
       this.timeline.addCustomMethods();
@@ -842,7 +906,7 @@ var ETimeline = function (opts) {
     assignObject: function () {
       that.timeline = this;
     },
-    showLoading: function () {
+    onSearching: function () {
       this.timeline.showLoadingMessage();
     },
     hideLoading: function () {
@@ -852,15 +916,37 @@ var ETimeline = function (opts) {
       this.hideLoading();
       //TODO:
     },
+		onSearchSuccess: function(results) {
+			this.hideLoading();
+			this.pushRawEvents(results);
+		},
+		// Update events titles & show loading html
+		eventsLoading: function(d) {
+			// Is this the correct way to create a date object from string?
+			console.log("loading events & artifacts for: " + d)
+			this._updateTitles(d);
+			that.artifactSection.showLoading();
+			that.eventSection.showLoading();
+		},
     showBubble: function (elements) {},
     searchEvents: function (params) {
       //var params = {startDate: this.startDate, endDate: this.endDate, options: this.options}
-      var p = (params == undefined) ? {
-        startDate: this.currentDate.monthRange(1, 'prev'),
-        endDate: this.currentDate.monthRange(1, 'next'),
+      var p = Object.extend({
+				// Make sure entire months are searched since we cache results by month
+        startDate: this.currentDate.stepMonth('down').startingMonth(),
+        endDate: this.currentDate.stepMonth('up').endingMonth(),
         options: this.options
-      } : params;
-      new ETLSearch(p);
+      }, params);
+			
+			// Don't repeat searches for same dates
+			if (this.searchCache.hasDates(p.startDate, p.endDate)) {
+				this._loadCached();
+			} else {
+				// Add dates to cache so we don't repeat ajax call
+				this.searchCache.addDates(p.startDate, p.endDate);
+				// Start Ajax search process - callbacks will handle response
+      	new ETLSearch(this, p);
+			}
     },
     pushRawEvents: function (events) {
       this.unprocessedEvents = events;

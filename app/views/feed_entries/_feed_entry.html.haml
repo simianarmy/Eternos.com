@@ -2,7 +2,7 @@
   RSS Feed Entry
   %p
   %br
-  %b= link_to feed_entry.name, feed_entry.url
+  %b= link_to feed_entry.name, feed_entry.url, :target => '_new'
   %br= "Author: #{feed_entry.author}"
   %br= "Published: #{feed_entry.published_at}"
   %br= "Categories: #{feed_entry.categories.to_s}"

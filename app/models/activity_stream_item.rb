@@ -42,7 +42,9 @@ class ActivityStreamItem < ActiveRecord::Base
   end
   
   def parsed_attachment_data
-    @data ||= YAML::parse attachment_data
+    if attachment_data
+      @data ||= YAML::parse attachment_data
+    end
   end
 end
 
@@ -58,9 +60,9 @@ class FacebookActivityStreamItem < ActivityStreamItem
     when 'video'
       d['video']['source_url'].value
     when 'link'
-      d['src'].value
+      parse_link d['src'].value
     when 'generic'
-      d['href'].value
+      parse_link d['href'].value
     end
   end
   
@@ -79,6 +81,13 @@ class FacebookActivityStreamItem < ActivityStreamItem
     attachment_data && ["photo", "video"].include?(attachment_type.downcase)
   end
   
+  def parse_link(link)
+    if link.match(/.+url=([^&]+).*$/)
+      CGI::unescape $1
+    else
+      link
+    end
+  end
 end
 
 class TwitterActivityStreamItem < ActivityStreamItem

@@ -10,8 +10,11 @@ class TimelineEvent
     @type = object.class.to_s
 
     # Add media content url & thumbnail url for html display
-      
-    if object.kind_of?(Content) || activity_stream_media_attachment?(object)
+    case object
+    when Content
+      @attributes.merge! :url => object.url, :thumbnail_url => object.thumbnail_url
+    when ActivityStreamItem
+      # Assign url & thumbnail even if none available
       @attributes.merge! :url => object.url, :thumbnail_url => object.thumbnail_url
       @type = object.attachment_type.capitalize if activity_stream_media_attachment?(object)
     end
