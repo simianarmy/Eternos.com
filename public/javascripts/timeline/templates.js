@@ -20,6 +20,24 @@ var ETemplates = {
 			},
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');
+			},
+			createEventItemTooltips: function() {
+				$$('a.event_list_inline_item').each(function (element) {
+	        s = element.next('span');
+	        s.hide();
+
+	        new Tip(element, s, {
+	          fixed: true,
+	          width: 'auto',
+	          hideOthers: true,
+	          viewport: true,
+	          hook: {
+	            target: 'topRight',
+	            tip: 'bottomLeft'
+	          },
+	          stem: 'bottomLeft'
+	        });
+	      });
 			}
 		},
 		// Artifacts section templates

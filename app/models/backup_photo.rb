@@ -31,6 +31,12 @@ class BackupPhoto < ActiveRecord::Base
   
   named_scope :needs_download, :conditions => { :state => ['pending_download', 'failed_download'] }
   
+  named_scope :between_dates, lambda { |start_date, end_date|
+    {
+      :conditions => {:created_at => start_date..end_date}
+    }
+  }
+    
   EditableAttributes = [:caption, :source_url, :tags]
   
   def self.db_attributes

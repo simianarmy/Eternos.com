@@ -39,7 +39,6 @@ MOD_PORTER_SECRET       = 'sh4mAlam4d1nGd0ng'
 RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID' # TODO: check if used
 
 Rails::Initializer.run do |config|
-  puts "=> Rails:Initializer starting at #{Time.now}"
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -148,7 +147,6 @@ Rails::Initializer.run do |config|
     # Setup memcached connection
     puts "=> Connecting to memcached on #{MEMCACHED_HOST}"
     CACHE = MemCache.new(MEMCACHED_HOST)
-    puts "=> Rails:Initializer.after_initialize finished at #{Time.now}"
   end
 end
 

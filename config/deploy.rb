@@ -113,7 +113,6 @@ namespace :deploy do
     run "cd #{current_path}; ruby script/mail_deploy_log.rb #{fname} #{stage}"
     run "rm #{path_to_filename}"
   end
-
 end
 
 #after "deploy:symlink", "deploy:google_analytics"

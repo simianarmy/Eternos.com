@@ -20,14 +20,12 @@ class TimelineEvent
     end
     
     # Determine event start & end dates
-    if object.respond_to? :published_at
-      @start_date = object.published_at
-    elsif object.respond_to? :start_at
-      @start_date = object.start_at
-      @end_date = object.end_at if object.respond_to? :end_at
+    @start_date = if object.respond_to? :archivable_attribute
+      object.send(object.archivable_attribute)
     else
-      @start_date = object.created_at
-    end  
+      object.created_at
+    end
+    @end_date = object.end_at if object.respond_to? :end_at
   end
   
   def activity_stream_media_attachment?(object)

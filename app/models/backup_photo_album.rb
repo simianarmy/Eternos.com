@@ -11,17 +11,16 @@ class BackupPhotoAlbum < ActiveRecord::Base
   validates_presence_of :backup_source
   validates_uniqueness_of :source_album_id, :scope => :backup_source_id
   
-  EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
-  
-  # Returns all backup_photos for every album between specified dates.
-  # Tried chaining scopes...foo
-  named_scope :photos_in_dates, lambda { |start_date, end_date|
+  # Returns photo ids of photos in album within arg dates
+  named_scope :photos_between_dates, lambda { |s, e| 
     {
       :joins => :backup_photos,
-      :conditions => {'backup_photos.created_at' => start_date..end_date},
-      :select => 'backup_photos.*'
+      :conditions => {'backup_photos.created_at' => s..e},
+      :select => 'backup_photos.id'
     }
   }
+  EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
+  
   def self.import(source, album)
     self.create(
       {:backup_source => source, :source_album_id => album.id}.merge(album.to_h)

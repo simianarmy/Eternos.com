@@ -232,7 +232,7 @@ var ETimeline = function (opts) {
       });
     },
     _write: function () {
-      if (this.items.length < 1) {
+      if (this.content === '' || this.items.length < 1) {
         this.content = ETLUtil.blankArtifactImg;
       }
       this.parent.innerHTML = this.template.evaluate({
@@ -303,28 +303,12 @@ var ETimeline = function (opts) {
         title: this.title,
         events: this.content
       });
-    },
-    _createTooltips: function () {
-      $$('a.event_list_inline_item').each(function (element) {
-        s = element.next('span');
-        s.hide();
-        new Tip(element, s, {
-          fixed: true,
-          width: 'auto',
-          hideOthers: true,
-          viewport: true,
-          hook: {
-            target: 'topRight',
-            tip: 'bottomLeft'
-          },
-          stem: 'bottomLeft'
-        });
-      });
+			that.templates.eventListTemplates.createEventItemTooltips();
     },
     populate: function (content) {
-			this.content = content || this.content;
+			var html = content || '';
+			this.content = html;
       this._write();
-      this._createTooltips();
     },
     showLoading: function () {
       this.populate(this.loading);
@@ -550,19 +534,10 @@ var ETimeline = function (opts) {
     }
   });
 
-  //Eternos Timeline Artifact 
-  var ETLArtifact = Class.create({
-    initialize: function (object) {
-      this.type = object.type;
-      this.attributes = object.attributes;
-    }
-  });
-
   //Eternos Timeline Event Parser
   var ETLEventParser = Class.create({
     initialize: function (events) {
       this.eventItems = new ETLEventCollection();
-      //this.artifactItems = new Array();
       this.jsonEvents = events.evalJSON();
       this._populate();
     },
@@ -581,18 +556,12 @@ var ETimeline = function (opts) {
       this._populate();
     },
     doParsing: function () {
-			var type;
       for (var i = 0; i < this.jsonEvents.results.length; i++) {
-				type = this.jsonEvents.results[i].type;
-        
-				if (type === "Photo") {
+				if (ETEvent.isArtifact(this.jsonEvents.results[i].type)) {
           that.artifactSection.addItem(this.jsonEvents.results[i]);
-          //this.artifactItems.push(this.jsonEvents.results[i]);
         } 
-        //TODO: parsing event item
         this.eventItems.addSource(this.jsonEvents.results[i]);
       }
-      this.eventItems.populate();
     },
     populateResults: function (date) {
 			var targetDate = date || that.monthSelector.activeDate;

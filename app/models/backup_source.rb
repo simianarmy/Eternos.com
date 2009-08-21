@@ -56,7 +56,15 @@ class BackupSource < ActiveRecord::Base
   
   def photo_album(id)
     backup_photo_albums.find_by_source_album_id(id)
-  end    
+  end
+  
+  def photos
+    backup_photo_albums.map(&:backup_photos).flatten
+  end
+  
+  def photos_between_dates(s, e)
+    BackupPhoto.find backup_photo_albums.photos_between_dates(s, e).map(&:id)
+  end
   
   private
   

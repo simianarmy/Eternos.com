@@ -142,13 +142,18 @@ var ETEvent = {
 			return new ETLVideoEventSource(data);
 		} else if (type === "Job") {
 			return new ETLJobEventSource(data);
+		} else if (type === "Address") {	
+			return new ETLAddressEventSource(data);
 		} else {
 			alert("Unknown type from source: " + data.type);
 			return null;
 		}
 	},
-	isArtifact: function(type) {
+	isMedia: function(type) {
 		return (type === 'Photo' || type === 'Video' || type === 'WebVideo');
+	},
+	isArtifact: function(type) {
+		return (type === 'Photo');
 	},
 	getSourceIcon: function(type) {
 		return this.itemTypes.find(function(t) { return type === t.type}).icon;
