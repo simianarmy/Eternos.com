@@ -1,6 +1,7 @@
 <% use_lightview %>
-<% use_timeline %>
 <% use_prototip %>
+<% use_busy %>
+<% use_timeline %>
 
   <div id="content-container3">
     <div id="timeline-top">
@@ -16,7 +17,7 @@
   </div>
 
 <%= javascript_tag "
-  var et = new ETimeline({month_selector_id: 'month-selector',
+  new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',
     events_section_id: 'story-area',
     timeline_section_id: 'my-timeline',
@@ -29,6 +30,5 @@
         #{if @fake; ', fake: true' end}
       }
     }
-  });
-  et.draw();
+  }).draw();
 " %>

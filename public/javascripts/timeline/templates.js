@@ -53,6 +53,6 @@ var ETemplates = {
 			return new Template("<a href=\"\" id=\"month_selector_down\" class=\"btn-left\"></a><span class=\"subtitle6\">#{month}</span><span class=\"subtitle7\">#{year}</span><a href=\"\" id=\"month_selector_up\" class=\"btn-right\"></a>");
 		},
 		loadingTemplate: function() {
-		  return new Template("<div><span><img src=\"/images/spinner.gif\"/></span> &nbsp;Loading #{type}..</div>");
+		  return new Template("<div><span>Loading #{type}...</span></div>");
 		}
 };
