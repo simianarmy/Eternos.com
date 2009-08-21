@@ -3,7 +3,10 @@
 # This module should be included in all views globally,
 # to do so you may need to add this line to your ApplicationController
 #   helper :layout
-module LayoutHelper  
+module LayoutHelper
+  @@js = []
+  mattr_accessor :js
+
   def title(page_title, show_title = true)
     @content_for_title = page_title.to_s
     @show_title = show_title
@@ -22,7 +25,9 @@ module LayoutHelper
   end
   
   def javascript(*args)
-    args = args.map { |arg| arg == :defaults ? arg : arg.to_s }
+    js << args = args.reject {|arg| js.include?(arg)}.map { |arg| arg == :defaults ? arg : arg.to_s }
+    js.flatten!
+    js.uniq!
     content_for(:javascript) { javascript_include_tag(*args) }
   end
   

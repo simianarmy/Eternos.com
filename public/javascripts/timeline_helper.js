@@ -71,9 +71,6 @@ Array.prototype.unique = function () {
 Array.prototype.randResult = function () {
 
 }
-Array.prototype.include = function (val) {
-  return this.index(val) !== null;
-}
 
 //Date parsing regex & sort function
 var MysqlDateRE = /^(\d{4})\-(\d{2})\-(\d{2})T?.*/;
@@ -158,9 +155,13 @@ var ETimeline = function (opts) {
 
       this.populate();
     },
-    _initContent: function () {
-      this.activeMonth = this.activeDate.getMonthName();
-      this.activeYear = this.activeDate.getFullYear();
+    _initContent: function (date) {
+			var d = date || this.activeDate;
+			if (this.activeDate != d) {
+				this.activeDate = d;
+			}
+      this.activeMonth = d.getMonthName();
+      this.activeYear = d.getFullYear();
     },
     _write: function () {
       this.parent.innerHTML = this.template.evaluate({
@@ -169,8 +170,7 @@ var ETimeline = function (opts) {
       });
     },
     disableClick: function () {
-
-},
+		},
     enableClick: function () {
       Event.observe($('month_selector_down'), 'click', function (event) {
         that.monthSelector.stepMonth('down');
@@ -181,8 +181,8 @@ var ETimeline = function (opts) {
         event.stop();
       });
     },
-    populate: function () {
-      this._initContent();
+    populate: function (date) {
+      this._initContent(date);
       this._write();
       this.enableClick();
     },
@@ -196,6 +196,7 @@ var ETimeline = function (opts) {
         options: that.timeline.options
       }
       // Better place for this?
+			that.timeline.scrollTo(this.activeDate);
       that.timeline.eventsLoading(this.activeDate);
       that.timeline.searchEvents(params);
     }
@@ -825,11 +826,10 @@ var ETimeline = function (opts) {
         that.timeline.timeline.hideBackupMessage();
 
         if (that.timeline._monthIsChanged(band.getCenterVisibleDate())) {
-          d = band.getCenterVisibleDate();
-          that.timeline.centerDate = d
-          that.timeline._updateTitles(d);
+          that.timeline.currentDate = that.timeline.centerDate = band.getCenterVisibleDate();
+					console.log("Timeline scrolled to new month: " + that.timeline.centerDate);
+					that.timeline.updateEvents();
         }
-
         var start_date;
         var end_date;
         if (band.getMaxVisibleDate() > tlMaxDate) {
@@ -846,6 +846,7 @@ var ETimeline = function (opts) {
           start_date = tlMinDate.monthRange(2, 'prev');
           end_date = tlMinDate.monthRange(0, '');
           tlMinDate.setMonth(tlMinDate.getMonth() - 2);
+
           that.timeline.searchEvents({
             startDate: start_date,
             endDate: end_date,
@@ -874,9 +875,10 @@ var ETimeline = function (opts) {
     _updateTitles: function (d) {
       that.artifactSection.updateTitle(this._getTitleFromDate(d, "Artifacts"));
       that.eventSection.updateTitle(this._getTitleFromDate(d, "Events"));
+			that.monthSelector.populate(d);
     },
     _loadCached: function () {
-      this.rawEvents.populateResults();
+      this.rawEvents.populateResults(this.centerDate);
     },
     _create: function () {
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
@@ -912,12 +914,15 @@ var ETimeline = function (opts) {
     },
     // Update events titles & show loading html
     eventsLoading: function (d) {
-      // Is this the correct way to create a date object from string?
       console.log("loading events & artifacts for: " + d)
       this._updateTitles(d);
       that.artifactSection.showLoading();
       that.eventSection.showLoading();
     },
+		updateEvents: function() {
+			this.eventsLoading(this.centerDate);
+			this.searchEvents();
+		},
     showBubble: function (elements) {},
     searchEvents: function (params) {
       //var params = {startDate: this.startDate, endDate: this.endDate, options: this.options}
@@ -948,7 +953,10 @@ var ETimeline = function (opts) {
       this._setupEvents();
       this._setupBands(this);
       this.init(false);
-    }
+    },
+		scrollTo: function(date) {
+			this.timeline.getBand(1).setCenterVisibleDate(date);
+		}
   });
 
   var draw = function () {
