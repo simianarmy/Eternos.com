@@ -98,6 +98,9 @@ var orderDatesDescending = function (x, y) {
   if (x < y) return 1;
   return 0;
 };
+String.prototype.toDate = function() {
+	return mysqlDateToDate(this);
+}
 
 // ETimeline 'class'
 var ETimeline = function (opts) {
@@ -112,24 +115,27 @@ var ETimeline = function (opts) {
   that.options = options;
   that.monthSelector = null;
 
-  var ETLUtil = {
-    pauseExec: function (ms) {
-      var d = new Date();
-      var c = null;
+  var ETLUtil = function() {
+		return {
+			pauseExec: function (ms) {
+				var d = new Date();
+				var c = null;
 
-      do {
-        c = new Date();
-      }
-      while (c - d < ms);
-    },
-    emptyResponse: "{\"results\": [], \"previousDataUri\": null, \"responseDetails\": null, \"request\": \"\", \"resultCount\": 0, \"status\": 200, \"futureDataUri\": null}",
-    assetUrl: "http://simile.mit.edu/timeline/api/",
-    imgUrl: "images/",
-    iconPostfix: "-circle.png",
-    blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>",
-    tlEffectiveWidth: 750
+				do {
+					c = new Date();
+				}
+				while (c - d < ms);
+			},
+			emptyResponse: "{\"results\": [], \"previousDataUri\": null, \"responseDetails\": null, \"request\": \"\", \"resultCount\": 0, \"status\": 200, \"futureDataUri\": null}",
+			assetUrl: "http://simile.mit.edu/timeline/api/",
+			imgUrl: "images/",
+			iconPostfix: "-circle.png",
+			blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>",
+			tlEffectiveWidth: 750
+		}
   };
-
+	that.utils = ETLUtil();
+	
   //Eternos Timeline Date
   var ETLDate = Class.create({
     initialize: function (date, format) {
@@ -142,8 +148,8 @@ var ETimeline = function (opts) {
         this.outDate = this.inDate.getFullYear() + '-' + this.inDate.getMonth() + 1 + '-' + this.inDate.getDate();
       } else if (this.inFormat == 'gregorian') {
         this.outDate = Timeline.DateTime.parseGregorianDateTime(this.inDate.substr(0, 4));
-      } else {
-        this.outDate = mysqlDateToDate(this.inDate);
+      } else if (typeof this.inDate === 'string') {
+        this.outDate = this.inDate.toDate();
       }
     }
   });
@@ -250,7 +256,7 @@ var ETimeline = function (opts) {
     _write: function (content) {
 			var c = content || '';
       if (c === '' || this.items.length < 1) {
-        c = ETLUtil.blankArtifactImg;
+        c = that.utils.blankArtifactImg;
       }
       this.parent.innerHTML = this.template.evaluate({
         title: this.title,
@@ -452,7 +458,7 @@ var ETimeline = function (opts) {
     },
     _setIcon: function () {
       var icon_s = ETEvent.getSourceIcon(this.type)
-      this.icon = ETLUtil.assetUrl + ETLUtil.imgUrl + icon_s + ETLUtil.iconPostfix;
+      this.icon = that.utils.assetUrl + that.utils.imgUrl + icon_s + that.utils.iconPostfix;
     },
     _toTLEventSource: function () {
       this._setIcon();
@@ -462,10 +468,11 @@ var ETimeline = function (opts) {
         latestStart: this.latest,
         earliestEnd: this.earliest,
         instant: true,
-        //text: this.title,
+        caption: 'Click for details',
         text: '',
         description: this.type,
-        icon: this.icon
+        icon: this.icon,
+				classname: 'tl_event'
       });
     }
   });
@@ -573,10 +580,20 @@ var ETimeline = function (opts) {
       //this.jsonEvents.results = merged;
       this.jsonEvents = events;
     },
+		// Takes JSON object containing timeline search results
+		// Parses & adds results to internal collections
     pushEvents: function (events) {
       this._mergeEvents(events.evalJSON());
       this._populate();
     },
+		// Returns latest parsed results objects array.
+		getEvents: function() {
+			if (this.jsonEvents.results.length > 0) {
+				return this.jsonEvents.results;
+			} else {
+				return [];
+			}
+		},
     doParsing: function () {
       for (var i = 0; i < this.jsonEvents.results.length; i++) {
         if (ETEvent.isArtifact(this.jsonEvents.results[i].type)) {
@@ -706,14 +723,15 @@ var ETimeline = function (opts) {
       this.startDate = params.startDate || new ETLDate(date);
       this.endDate = params.endDate || new ETLDate(date);
       this.options = params.options;
-      this.rawEvents = new ETLEventParser(ETLUtil.emptyResponse);
-
+      this.rawEvents = new ETLEventParser(that.utils.emptyResponse);
+			
       // Timeline instance vars
       this.timeline = null;
       this.memberAge = 0;
       this.firstBandPixels = 0;
       this.theme = null;
- 
+			this.eventSource = new Timeline.DefaultEventSource();
+			
       this.currentDate = null;
       this.tlMinDate = null;
       this.tlMaxDate = null;
@@ -724,27 +742,10 @@ var ETimeline = function (opts) {
     },
     _getMemberAge: function () {
       this.memberAge = (new Date(parseInt(this.endDate), 01, 01)).getFullYear() - (new Date(parseInt(this.startDate), 01, 01)).getFullYear();
-      this.firstBandPixels = ETLUtil.tlEffectiveWidth / (this.memberAge / 10);
+      this.firstBandPixels = that.utils.tlEffectiveWidth / (this.memberAge / 10);
     },
     _setupTheme: function () {
       this.theme = Timeline.ClassicTheme.create();
-    },
-    _setupEvents: function () {
-      if (this.rawEvents != undefined) {
-        var item;
-        for (var i = 0; i < this.rawEvents.eventItems.items.length; i++) {
-
-          //item = new ETLTimelineEvent(this.rawEvents.eventItems.items[i]);
-          //this.eventSources.add(item.event);
-          item = this.rawEvents.eventItems.items[i];
-          for (var i = 0; i < this.rawEvents.eventItems.items.length; i++) {
-            item = new ETLTimelineEvent(this.rawEvents.eventItems.items[i]);
-						console.log("Adding event source")
-						console.dir(item.event);
-            this.eventSources.add(item.event);
-          }
-        }
-      }
     },
     _setupBands: function () {
       //var date = new Date();
@@ -760,7 +761,7 @@ var ETimeline = function (opts) {
         intervalUnit: Timeline.DateTime.DAY,
         intervalPixels: 100,
         date: this.centerDate,
-        eventSource: this.eventSources,
+        eventSource: this.eventSource,
         theme: this.theme
       }), Timeline.createBandInfo({
         width: "8%",
@@ -895,19 +896,30 @@ var ETimeline = function (opts) {
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
       this.timeline.addCustomMethods();
     },
+		// Add search results to timeline event source
+		_addEvents: function (events) {
+			events.each(function(event) {
+				this.eventSource.add((new ETLTimelineEvent(event)).event);
+      }.bind(this));
+			// Force timeline to redraw so that events show up
+			this.eventSource._listeners.each(function(l) {
+				l.onAddMany();
+			});
+			// Apply tooltip to all points
+			$$('.tl_event').each(function(e) {
+				new Tip(e, 'HO HO HO');
+			});
+    },
     init: function () {
       SimileAjax.History.enabled = false;
       this._getMemberAge();
       this._setReqDates();
       this._setupTheme();
-			this.eventSources = new Timeline.DefaultEventSource();
       this._setupBands();
-
       this._create();
       this._handleWindowResize();
       this._handleBandScrolling();
  
-			this._setupBands();
       this.assignObject();
       this.searchEvents();
     },
@@ -926,7 +938,8 @@ var ETimeline = function (opts) {
     },
     onSearchSuccess: function (results) {
       this.hideLoading();
-      this.pushRawEvents(results);
+			// Add to timeline, events & artifacts
+      this.parseSearchResults(results);
     },
     // Update events titles & show loading html
     eventsLoading: function (d) {
@@ -960,13 +973,24 @@ var ETimeline = function (opts) {
         new ETLSearch(this, p);
       }
     },
-    pushRawEvents: function (events) {
-      this.unprocessedEvents = events;
-      this.rawEvents.pushEvents(this.unprocessedEvents);
-      this.populate();
-    },
-    populate: function () {
-      this._setupEvents();
+    parseSearchResults: function (results) {
+			var latestDate = null;
+			var parsedEvents;
+			
+			// Parse json results & save
+      this.rawEvents.pushEvents(results);
+			// Add to timeline event sources
+			parsedEvents = this.rawEvents.getEvents();
+			if (parsedEvents.length > 0) {
+				this._addEvents(parsedEvents);
+				// Center timeline on latest new event
+				parsedEvents.each(function(e) {
+					if (latestDate == null || e.start_date > latestDate) {
+						latestDate = e.start_date;
+					}
+				});
+				this.scrollTo(latestDate.toDate());
+			}
     },
 		scrollTo: function(date) {
 			this.timeline.getBand(1).setCenterVisibleDate(date);

@@ -31,8 +31,8 @@ Event.observe(window, 'dom:loaded', function() {
       startDate:'#{@tl_start_date}', 
       endDate: '#{@tl_end_date}', 
       options: {
-        max_results: 100,
-        fake: #{@fake ? 'true' : 'false'}
+        max_results: 100
+        #{if @fake; ', fake: true' end}
       }
     }
   }).draw();
