@@ -1,11 +1,15 @@
-<% use_lightview %>
-<% use_prototip %>
-<% use_busy %>
 <% use_timeline %>
 
   <div id="content-container3">
     <div id="timeline-top">
-      <%= render :partial => 'timeline', :locals => {:full_name => @member_name} %>    
+      <span class="subtitle1"><%= @member_name %>:</span>
+      <span class="subtitle2">Your TimeLine(tm)</span>
+      <div class="timelinebox">
+        <div id="my-timeline" style="height:375px;border: 1px solid #aaa;"></div>
+        <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
+      </div>
+      <span><font style="font-size: x-small">To navigate the Timeline: use the mouse scroll wheel, the arrow keys or grab and drag the Timeline.</font>
+  		<div class="dotline"></div>
     </div>
     <div id="timeline-detail">
       <div id="month-selector"></div>
@@ -17,6 +21,7 @@
   </div>
 
 <%= javascript_tag "
+Event.observe(window, 'dom:loaded', function() {
   new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',
     events_section_id: 'story-area',
@@ -26,9 +31,10 @@
       startDate:'#{@tl_start_date}', 
       endDate: '#{@tl_end_date}', 
       options: {
-        max_results: 100
-        #{if @fake; ', fake: true' end}
+        max_results: 100,
+        fake: #{@fake ? 'true' : 'false'}
       }
     }
   }).draw();
+});
 " %>

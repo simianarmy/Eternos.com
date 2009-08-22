@@ -156,7 +156,8 @@ Photo Gallery:
 	CoolIris.com Flash/Browser plugin
 	* Mac MobileMe Gallery UI Using css + jQuery:
 	  http://net.tutsplus.com/tutorials/javascript-ajax/recreating-the-mobileme-web-gallery-interface/
-
+  Coverflow display using Flash app: http://www.simile-widgets.org/runway/ 
+  
 Top Photo-Sharing Sites to allow importing from:
 	Flickr
 	Facebook

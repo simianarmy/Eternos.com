@@ -165,12 +165,23 @@ module LayoutHelper
 
   def use_timeline
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
-    javascript prototype
     stylesheet 'timeline'
-    javascript "timeline/timeline_js/timeline-api.js"
-    javascript "timeline/events", "timeline/templates", "timeline_helper"
+    use_prototip
+    use_lightview
+    use_busy
+    javascript prototype
+    javascript "timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js", 
+      "timeline/events", "timeline/templates", "timeline_helper"
   end
   
+  def load_timeline_js
+    # this is supposed to work ... but getting errors in 
+    #javascript_tag("
+    #  Timeline_ajax_url='http://#{request.host}/javascripts/timeline/timeline_ajax/simile-ajax-api.js';
+    #  Timeline_urlPrefix='http://#{request.host}/javascripts/timeline/timeline_js/';
+    #  Timeline_parameters='bundle=true';") +
+    #javascript_include_tag("timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js", "timeline/events", "timeline/templates", "timeline_helper")
+  end
   
   private
   

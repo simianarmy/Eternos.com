@@ -78,7 +78,7 @@ God.watch do |w|
   w.name = "memcached"
   w.group = "eternos"
   w.interval = 60.seconds
-  w.start = "memcached -d"
+  w.start = "#{script}"
   w.start_grace = 20.seconds
   w.restart_grace = 20.seconds
     
