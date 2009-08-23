@@ -72,8 +72,13 @@ Array.prototype.unique = function () {
   }
   return r;
 }
-Array.prototype.randResult = function () {
+// Groups array elements around some value
+// returns array of arrays where each element is an array of grouped elements
+// ie. [1, 2, 3, 4, 5].groupBy(function(i) { return i < 2; }); 
+// => [[1], [2,3,4,5]]
 
+Array.prototype.groupBy = function(group) {
+	
 }
 
 //Date parsing regex & sort function
@@ -266,8 +271,10 @@ var ETimeline = function (opts) {
     randomize: function () {
       var v = $$('li.visible-artifact-item');
       var h = $$('li.hidden-artifact-item');
+			if (v.length === 0) { return; }
+			
       new PeriodicalExecuter(function (pe) {
-        if (h.length > 0 && v.length > 0) {
+        if (v.length > 0 && h.length > 0) {
           var i = Math.floor(Math.random() * v.length);
           var j = Math.floor(Math.random() * h.length);
           var tmp = v[i].childElements()[0].childElements()[0].src;
@@ -290,6 +297,7 @@ var ETimeline = function (opts) {
     },
     populate: function (activeDate) {      
       this._write(this._itemsToS(activeDate));
+			this.randomize();
     },
     showLoading: function () {
       this._write(this.loadingTemplate.evaluate({
@@ -348,6 +356,7 @@ var ETimeline = function (opts) {
     initialize: function (items) {
       this.items = items;
       this.first = s = ETEvent.createSource(items[0]);
+			this.id = s.attributes.id;
       this.type = s.type;
       this.start_date = s.start_date;
       this.end_date = s.end_date;
@@ -409,7 +418,8 @@ var ETimeline = function (opts) {
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         hidden_items: other_items,
-        tooltip_content: this._getTooltipContents()
+				tt_id: this.id,
+        tt_content: this._getTooltipContents()
       });
     },
     _getInlineItemHtml: function () {
@@ -417,7 +427,9 @@ var ETimeline = function (opts) {
         title: this.title,
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
-        tooltip_content: this._getTooltipContents()
+				tt_id: this.id,
+				tt_title: this.title,
+        tt_content: this._getTooltipContents()
         //inline_content: this._getInlineContents()
       })
     },
@@ -448,44 +460,44 @@ var ETimeline = function (opts) {
   // FIXME: Duplicates ETLEventSource class functionality
   var ETLTimelineEvent = Class.create({
     initialize: function (event) {
+			var icon_s;
       var date = new ETLDate(event.start_date, 'rev').outDate;
-      this.start_date = this.start_end = this.earliest = this.latest = date;
+      this.start_date = this.earliest = date;
+			this.end_date = this.latest = event.end_date;
       this.title = event.title;
       this.type = event.type;
-      this.event = null;
-
-      this._toTLEventSource();
-    },
-    _setIcon: function () {
-      var icon_s = ETEvent.getSourceIcon(this.type)
+			this.id = event.attributes.id;
+			
+      icon_s = ETEvent.getSourceIcon(this.type)
       this.icon = that.utils.assetUrl + that.utils.imgUrl + icon_s + that.utils.iconPostfix;
-    },
-    _toTLEventSource: function () {
-      this._setIcon();
+ 
       this.event = new Timeline.DefaultEventSource.Event({
         start: this.start_date,
         end: this.end_date,
         latestStart: this.latest,
         earliestEnd: this.earliest,
+				durationEvent: (this.start_date != this.end_date),
         instant: true,
-        caption: 'Click for details',
-        text: '',
-        description: this.type,
         icon: this.icon,
-				classname: 'tl_event'
+				classname: 'tl_event',
+				// Trick to associate an event's timeline DIV with its associated tooltip content
+				// tooltip container id stored in title attribute
+				caption: this.id
+				// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources				
       });
+			console.log("Added timeline event with tooltip id " + this.id);
     }
   });
 
   //Eternos Timeline Event Collection
   var ETLEventCollection = Class.create({
     initialize: function () {
-      this.sources = new Array(); // Event sources
-      this.dates = new Array(); // Date collection (by day)
-      this.rawItems = new Array();
-      this.items = new Array();
-      this.html = ''
-      this.groupTemplate = that.templates.eventListTemplates.eventGroup();
+      this.sources 				= [];
+			this.latestSources	= [];
+      this.dates 					= [];
+      this.rawItems 			= [];
+      this.items 					= [];
+      this.groupTemplate 	= that.templates.eventListTemplates.eventGroup();
     },
     // Add event source to collection keyed by event date
     addSource: function (s) {
@@ -493,56 +505,73 @@ var ETimeline = function (opts) {
       var day = source.eventDateString();
 
       this.sources.push(source);
-
-      if (!this.dates.include(day)) {
-        this.rawItems[day] = new Array(source);
-        this.dates.push(day);
-      } else {
-        this.rawItems[day].push(source);
-      }
+			this.latestSources.push(source);
+			
+			this._groupSourceByDate(this.rawItems, this.dates, source);
     },
     populate: function (targetDate) {
       var td = targetDate || that.monthSelector.activeDate;
-      var items, items_html;
+      var current_items;
+			var items_html;
+			var html = '';
       var event;
-      var date;
-      var year = td.getFullYear();
-      var month = td.getMonth() + 1;
-
-      console.log("Populating with events from " + month + "/" + year);
-
-      // Clear any old html
-      this.html = '';
-
-      // Sort items by descending array
-      this.dates.sort(orderDatesDescending);
+      var activeDates;
+      console.log("Populating with events from " + td.getFullMonth());
 
       // Only use events that fall in the active date month
-      var active = this.dates.select(function (d) {
-        return (d !== undefined && parseInt(d.substr(0, 4)) === year && parseInt(d.substr(5, 2), 10) === month);
+      activeDates = this.dates.select(function (d) {
+				return td.equalsYearMonth(d.toDate());
       });
-      active.each(function (d) {
-        var val = this.rawItems[d];
-        items_html = ''
-        items = this._groupItems(val);
+      activeDates.sort(orderDatesDescending).each(function (d) {
+        items_html = '';
+        current_items = this._groupItemsByType(this.rawItems[d]);
 
-        items.each(function (group, index) {
+        current_items.each(function (group, index) {
           event = new ETLEventItems(group);
           this.items.push(event);
           items_html += event.populate();
-        },
-        this);
-        this.html += this.groupTemplate.evaluate({
+        }.bind(this));
+
+        html += this.groupTemplate.evaluate({
           date: this._eventDate(d),
           body: items_html
         });
-      },
-      this);
+      }.bind(this));
 
-      return this.html;
+      return html;
     },
+		clearLatest: function () {
+			this.latestSources = [];
+		},
+		// return grouped event sources 
+		getLatestEventGroups: function() {
+			var grouped = new Array();
+			var dates 	= [];
+			var results	= [];
+			
+			this.latestSources.each(function(s) {
+				grouped = this._groupSourceByDate(grouped, dates, s);
+			}.bind(this));
+			dates.each(function(d) {
+				this._groupItemsByType(grouped[d]).each(function(items) {
+					results.push(new ETLEventItems(items));
+				});
+			}.bind(this));
+			return results;
+		},
+		_groupSourceByDate: function (res, dates, source) {
+			var day = source.eventDateString();
+			
+			if (!dates.include(day)) {
+				res[day] = new Array(source);
+				dates.push(day);
+			} else {
+				res[day].push(source);
+			}
+			return res;
+		},
     // Group event items by type in arrays
-    _groupItems: function (items) {
+    _groupItemsByType: function (items) {
       var types = [];
       var results = new Array();
 
@@ -587,14 +616,11 @@ var ETimeline = function (opts) {
       this._populate();
     },
 		// Returns latest parsed results objects array.
-		getEvents: function() {
-			if (this.jsonEvents.results.length > 0) {
-				return this.jsonEvents.results;
-			} else {
-				return [];
-			}
+		getEventGroups: function() {
+			return this.eventItems.getLatestEventGroups();
 		},
     doParsing: function () {
+			this.eventItems.clearLatest();
       for (var i = 0; i < this.jsonEvents.results.length; i++) {
         if (ETEvent.isArtifact(this.jsonEvents.results[i].type)) {
           that.artifactSection.addItem(this.jsonEvents.results[i]);
@@ -606,11 +632,7 @@ var ETimeline = function (opts) {
       var targetDate = date || that.monthSelector.activeDate;
 
       that.artifactSection.populate(targetDate);
-      that.artifactSection.randomize();
-
       that.eventSection.populate(this.eventItems.populate(targetDate));
-
-      //that.timeline.populate();
     }
   });
 
@@ -817,8 +839,8 @@ var ETimeline = function (opts) {
 			var t = this;
       Event.observe(window, 'resize', function() {
 				if (t.resizeTimerID == null) {
-					resizeTimerID = window.setTimeout(function() {
-						resizeTimerID = null;
+					t.resizeTimerID = window.setTimeout(function() {
+						t.resizeTimerID = null;
 						t.timeline.layout();
 					}, 500);
       	}
@@ -891,6 +913,7 @@ var ETimeline = function (opts) {
     },
     _loadCached: function () {
       this.rawEvents.populateResults(this.centerDate);
+			this._redraw();
     },
     _create: function () {
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
@@ -898,18 +921,19 @@ var ETimeline = function (opts) {
     },
 		// Add search results to timeline event source
 		_addEvents: function (events) {
+			var tooltip_el;
+			
 			events.each(function(event) {
 				this.eventSource.add((new ETLTimelineEvent(event)).event);
       }.bind(this));
 			// Force timeline to redraw so that events show up
-			this.eventSource._listeners.each(function(l) {
-				l.onAddMany();
-			});
-			// Apply tooltip to all points
-			$$('.tl_event').each(function(e) {
-				new Tip(e, 'HO HO HO');
-			});
+			this.eventSource._listeners.invoke('onAddMany');
+			this._redraw();
     },
+		_redraw: function() {
+			console.log("[re]creating timeline tooltips")
+			that.templates.eventListTemplates.createTimelineTooltips();
+		},
     init: function () {
       SimileAjax.History.enabled = false;
       this._getMemberAge();
@@ -975,18 +999,18 @@ var ETimeline = function (opts) {
     },
     parseSearchResults: function (results) {
 			var latestDate = null;
-			var parsedEvents;
+			var groupedEvents;
 			
 			// Parse json results & save
       this.rawEvents.pushEvents(results);
 			// Add to timeline event sources
-			parsedEvents = this.rawEvents.getEvents();
-			if (parsedEvents.length > 0) {
-				this._addEvents(parsedEvents);
+			groupedEvents = this.rawEvents.getEventGroups();
+			if (groupedEvents.length > 0) {
+				this._addEvents(groupedEvents);
 				// Center timeline on latest new event
-				parsedEvents.each(function(e) {
-					if (latestDate == null || e.start_date > latestDate) {
-						latestDate = e.start_date;
+				groupedEvents.pluck('start_date').each(function(d) {
+					if (latestDate == null || d > latestDate) {
+						latestDate = d;
 					}
 				});
 				this.scrollTo(latestDate.toDate());

@@ -124,7 +124,10 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
                   tapeRepeat: event.tapeRepeat,
                      caption: event.caption,
                      eventID: event.eventID,
-                    trackNum: event.trackNum
+                    trackNum: event.trackNum,
+										// $Author$
+										// Added tooltip id attribute for Prototip use
+										tooltip_id: ("tooltip_id" in event) ? event.tooltip_id : undefined
             });
             evt._obj = event;
             evt.getProperty = function(name) {

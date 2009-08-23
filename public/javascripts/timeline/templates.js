@@ -1,5 +1,17 @@
 // $Id$
 
+var DefaultTooltipOptions = {
+	fixed: true,
+  width: 'auto',
+  hideOthers: true,
+  viewport: true,
+  hook: {
+    target: 'topRight',
+    tip: 'bottomLeft'
+  },
+  stem: 'bottomLeft'
+};
+
 var ETemplates = {
 		// Events section templates
 		eventListTemplates: {
@@ -10,10 +22,11 @@ var ETemplates = {
 				return new Template('<div class="event_list_group"><div class="event_list_date">#{date}</div>' + '<div class="event_list_group_items"><ul>#{body}</ul></div></div>');
 			},
 			hiddenItem: function () {
-				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
+				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a><br/>');
 			},
 			eventItemWithTooltip: function () {
-				return new Template('<li class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + '<span>#{tooltip_content}</span>#{inline_content}</li>');
+				return new Template('<li class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
+					'<div id="#{tt_id}"><span class="tooltip_title"><b>#{tt_title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
 			},
 			eventItemTooltipItem: function () {
 				return new Template('<div class="event_preview_item_container">#{content}</div>');
@@ -22,22 +35,24 @@ var ETemplates = {
 				return new Template('<div id="#{id}">#{content}</div>');
 			},
 			createEventItemTooltips: function() {
+				// Create tooltip for each event list link
 				$$('a.event_list_inline_item').each(function (element) {
-	        s = element.next('span');
+	        s = element.next('div');
 	        s.hide();
 
-	        new Tip(element, s, {
-	          fixed: true,
-	          width: 'auto',
-	          hideOthers: true,
-	          viewport: true,
-	          hook: {
-	            target: 'topRight',
-	            tip: 'bottomLeft'
-	          },
-	          stem: 'bottomLeft'
-	        });
+	        new Tip(element, s, DefaultTooltipOptions);
 	      });
+			},
+			createTimelineTooltips: function() {
+				var tooltip_id;
+				// Create tooltip for each timeline point
+				$$('.tl_event[title]').each(function(e) {
+					tooltip_id = e.readAttribute('title');
+					if ($(tooltip_id)) {
+						console.log("Adding tooltip to event id " + tooltip_id);
+						new Tip(e, $(tooltip_id), DefaultTooltipOptions);
+					}
+				});
 			}
 		},
 		// Artifacts section templates
