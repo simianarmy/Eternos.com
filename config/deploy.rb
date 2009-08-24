@@ -113,13 +113,7 @@ namespace :deploy do
     run "cd #{current_path}; ruby script/mail_deploy_log.rb #{fname} #{stage}"
     run "rm #{path_to_filename}"
   end
-  
-  desc "Create asset packages for production" 
-   task :after_update_code, :roles => [:web] do
-     run <<-EOF
-       cd #{release_path} && rake asset:packager:build_all
-     EOF
-   end
+
 end
 
 #after "deploy:symlink", "deploy:google_analytics"

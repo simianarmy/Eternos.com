@@ -83,7 +83,7 @@ Rails::Initializer.run do |config|
   config.gem 'searchlogic'
   config.gem 'hpricot'
   config.gem 'jnunemaker-columbus', :lib => 'columbus'
-  config.gem "markevans-block_helpers", :lib => "block_helpers", :source => "http://gems.github.com"
+  
   # Application Profiling plugin - only runs on dev env
   #config.gem 'fiveruns_tuneup'
   
