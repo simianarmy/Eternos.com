@@ -321,6 +321,7 @@ class ApplicationController < ActionController::Base
   def cache(key, clear=false)
     begin
       if clear
+        RAILS_DEFAULT_LOGGER.info "Deleting cache key: #{key}"
         CACHE.delete(key)
       end
       

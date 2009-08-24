@@ -7,15 +7,15 @@
     / bundle do
     - stylesheet 'member', 'screen', 'application'
     - includes do
-      - javascript prototype, scriptaculous unless @no_prototype
+      - use_lightview
       - use_lowpro unless @no_prototype
     
     = yield(:head)
     = yield(:javascript)
     
     / end bundle
-    - onLoad = (current_user.login_count == 1 && params[:controller] == "member_home") ? "Lightview.show({href:'/account_settings', options:{ajax:{evalScripts:true, method:'get'}, autosize:false, closeButton:false, height:lightview_height, width:800},rel:'iframe'});return false;" : ""
-  %body{:onload => onLoad}
+    
+  %body
     #wrapper
       #header
         #logo.alignleft
@@ -63,7 +63,19 @@
       #bd
       = render :partial => 'shared/site_footer'
     
-    / For lightview options
-    = javascript_tag "var lightview_height = 0.9*window.innerHeight"
+    :javascript
+      var lightview_height = 0.9*window.innerHeight;
+      document.observe('lightview:loaded', function() {
+        if (#{needs_account_setup(@member) ? 'true' : 'false'}) {
+          Lightview.show({href:'/account_settings', options:{
+            ajax:{evalScripts:true, method:'get'}, 
+            autosize:false, closeButton:false, height:lightview_height, width:800
+          }, rel:'iframe'});
+          Event.observe(window, 'lightview:hidden', function(e) {
+            window.location.reload();
+          });
+        }
+      });
       
     = render :partial => 'shared/get_satisfaction'
+    

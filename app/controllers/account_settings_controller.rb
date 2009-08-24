@@ -11,9 +11,12 @@ class AccountSettingsController < ApplicationController
     find_user_profile
     check_facebook_sync
     
+    clear_timeline_cache
+    session[:setup_account] = true
+    
     respond_to do |format|
       format.js 
-      format.html 
+      format.html
     end
   end
 
@@ -683,5 +686,11 @@ class AccountSettingsController < ApplicationController
 
    def find_email_accounts
      @email_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
+   end
+   
+   # If account settings change causes timeline data to update, we need the timeline
+   # to refresh
+   def clear_timeline_cache
+     session[:refresh_timeline] = true
    end
 end
