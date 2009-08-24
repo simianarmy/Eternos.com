@@ -6,7 +6,20 @@
 module LayoutHelper
   @@js = []
   mattr_accessor :js
-
+  
+  class JavascriptIncludeHelper < BlockHelpers::Base
+    def initialize
+      @js = []
+    end
+    
+    def js(*args)
+      js = args.flatten.uniq
+      js -= @js
+      @js += js
+      helper.javascript *js if js.any?
+    end
+  end
+  
   def title(page_title, show_title = true)
     @content_for_title = page_title.to_s
     @show_title = show_title
@@ -24,10 +37,16 @@ module LayoutHelper
     content_for(:head) { stylesheet_link_tag(*args.map(&:to_s)) }
   end
   
+  # Wrap use_*, javascript, and stylesheet helper methods in a block inside this method
+  # so that javascript cache array is cleared on every page load (required in production)
+  def includes
+    js.clear
+    yield
+  end
+  
   def javascript(*args)
-    js << args = args.reject {|arg| js.include?(arg)}.map { |arg| arg == :defaults ? arg : arg.to_s }
+    js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     js.flatten!
-    js.uniq!
     content_for(:javascript) { javascript_include_tag(*args) }
   end
   
@@ -166,6 +185,7 @@ module LayoutHelper
   def use_timeline
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
     stylesheet 'timeline'
+    
     use_prototip
     use_lightview
     use_busy

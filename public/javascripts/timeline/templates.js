@@ -22,7 +22,7 @@ var ETemplates = {
 				return new Template('<div class="event_list_group"><div class="event_list_date">#{date}</div>' + '<div class="event_list_group_items"><ul>#{body}</ul></div></div>');
 			},
 			hiddenItem: function () {
-				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a><br/>');
+				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 			},
 			eventItemWithTooltip: function () {
 				return new Template('<li class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 

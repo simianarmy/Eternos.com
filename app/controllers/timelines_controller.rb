@@ -23,7 +23,7 @@ class TimelinesController < ApplicationController
     # Use map table to map dev users to their staging account
     @member = current_user
     @member_name = @member.full_name
-    @tl_start_date, @tl_end_date = cache("tl_date_range:#{id}") { @member.timeline_span }
+    @tl_start_date, @tl_end_date = cache("tl_date_range:#{@member.id}") { @member.timeline_span }
     @fake = 'fake' if params[:fake]
   end
   
