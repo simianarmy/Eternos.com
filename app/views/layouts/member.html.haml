@@ -7,8 +7,8 @@
     / bundle do
     - stylesheet 'member', 'screen', 'application'
     - includes do
-      javascript prototype, scriptaculous unless @no_prototype
-      use_lowpro unless @no_prototype
+      - javascript prototype, scriptaculous unless @no_prototype
+      - use_lowpro unless @no_prototype
     
     = yield(:head)
     = yield(:javascript)

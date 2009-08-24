@@ -30,5 +30,9 @@ config.action_mailer.delivery_method = :smtp
 
 #config.log_level = :debug
 
+# Setup memcached connection
+puts "=> Connecting to memcached on #{MEMCACHED_HOST}"
+CACHE = MemCache.new MEMCACHED_OPTIONS
+CACHE.servers = MEMCACHED_HOST
 
 

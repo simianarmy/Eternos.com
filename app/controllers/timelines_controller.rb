@@ -62,9 +62,12 @@ class TimelinesController < ApplicationController
       @response = ActiveSupport::JSON.decode(@json) if @json
     else
       md5 = Digest::MD5.hexdigest(request.request_uri)
+      refresh = session[:refresh_timeline] #|| current_user.refresh_timeline?
+      
       BenchmarkHelper.rails_log("Timeline search #{request.url}") do
-        @response = cache(md5) { TimelineRequestResponse.new(request.url, params).to_json }
+        @response = cache(md5, refresh) { TimelineRequestResponse.new(request.url, params).to_json }
       end
+      session[:refresh_timeline] = nil
     end
     respond_to do |format|
       format.js {

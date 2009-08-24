@@ -21,26 +21,28 @@ describe TimelinesController do
       end
       
       before(:each) do
+        # mock search activity
+        TimelineRequestResponse.stubs(:new).returns(@search_results = stub(:search_reponse))
+        @search_results.stubs(:to_json).returns({:request => '/search', :results => [], :resultCount => 5}.to_json)
       end
       
       it "should return JSON response object with request uri" do
         do_search
         res = parse_response(response)
-        res[:request].should match(%r(http://#{@request.host}/timeline/search/#{@member.id}))
+        res[:request].should == '/search'
       end
       
       describe "fake requests" do
         it "should return empty results when empty param present" do
           do_search :filters => [:fake, :empty, 'user_id=1']
           res = parse_response(response)
-          res[:resultCount].should == 0
+          res.resultCount.should == 5
         end
         
         it "should return results without when no empty param" do
           do_search :filters => [:fake, 'user_id=1']
           res = parse_response(response)
-          res[:resultCount].should > 0
-          res[:results].should_not be_empty
+          res.resultCount.should == 5
         end
       end
     end

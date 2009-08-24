@@ -31,7 +31,16 @@ PERMISSION_DENIED_REDIRECTION = '/member_home'
 STORE_LOCATION_METHOD = :store_location
 
 # Various global constant strings
-MEMCACHED_HOST          = '127.0.0.1'
+MEMCACHED_OPTIONS       = {
+  :c_threshold => 10_000,
+  :compression => true,
+  :debug => false,
+  :namespace => 'ETERNOS',
+  :readonly => false,
+  :urlencode => false
+}
+MEMCACHED_HOST          = 'localhost'
+
 FLOWPLAYER_PRODUCT_KEY  = '$3894b992d106ccc5f56'
 YAHOO_APP_ID            = 'YxNApcLV34EgbS7EoRCAgGY4hJvSX_fQeW9uayDJ0yUbtxH8dhZXKjOSI7k8Gic7'
 FLASH_RECORDER_KEY      = 'zyrc234mq7hbs6ptw5d1v9n0j8xfkg'
@@ -145,9 +154,6 @@ Rails::Initializer.run do |config|
     Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
     Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
     Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
-    # Setup memcached connection
-    puts "=> Connecting to memcached on #{MEMCACHED_HOST}"
-    CACHE = MemCache.new(MEMCACHED_HOST)
   end
 end
 

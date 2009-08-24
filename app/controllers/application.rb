@@ -318,8 +318,12 @@ class ApplicationController < ActionController::Base
   def available_locales; AVAILABLE_LOCALES; end
   
   # memcache handler: pass cache key and block
-  def cache(key)
+  def cache(key, clear=false)
     begin
+      if clear
+        CACHE.delete(key)
+      end
+      
       unless output = CACHE.get(key)
         output = yield
         CACHE.set(key, output, 1.hour) unless RAILS_ENV == 'development'
