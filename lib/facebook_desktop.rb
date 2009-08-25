@@ -14,7 +14,8 @@ module FacebookDesktopApp
   # Wrapper around Facebooker's load_configuration method - adds exception handling, 
   # default config file name
   class << self
-    def load_config(path=config_path)
+    def load_config(path=nil)
+      path = config_path if path.nil? || path.blank?
       raise "Unable to load #{path}" unless File.exist? path
       Facebooker.load_configuration(path)
     end
@@ -23,9 +24,9 @@ module FacebookDesktopApp
   class Session < Facebooker::Session::Desktop
     attr_reader :config
     
-    def self.create
-      FacebookDesktopApp.load_config
-      super
+    def self.create(config=nil)
+      conf = FacebookDesktopApp.load_config(config)
+      super(conf['api_key'], conf['secret_key'])
     end
     
     def connect(session, uid, timeout, secret)

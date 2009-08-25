@@ -37,9 +37,10 @@ class ActivityStreamItem < ActiveRecord::Base
     message.length + (attachment_data ? attachment_data.length : 0)
   end
   
-  def media_attachment?
-    false
-  end
+  # Override these in child classes
+  def url; end
+  def thumbnail_url; end
+  def media_attachment?; false end
   
   def parsed_attachment_data
     if attachment_data
@@ -59,10 +60,10 @@ class FacebookActivityStreamItem < ActivityStreamItem
       d['src'].value.gsub(/_s\./, '_n.')
     when 'video'
       d['video']['source_url'].value
-    when 'link'
-      parse_link d['src'].value
     when 'generic'
       parse_link d['href'].value
+    when 'link'
+      d['href'].value
     end
   end
   
@@ -91,11 +92,5 @@ class FacebookActivityStreamItem < ActivityStreamItem
 end
 
 class TwitterActivityStreamItem < ActivityStreamItem
-  def url
-  end
-  
-  def thumbnail_url
-    # Get associated content thumbnail...if possible
-  end
-  
+
 end

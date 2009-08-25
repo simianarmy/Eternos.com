@@ -8,6 +8,7 @@ describe FacebookDesktopApp do
   it "should load config using default config path" do
     config = FacebookDesktopApp.load_config
     config.should_not be_empty
+    config['api_key'].should_not be_blank
   end
   
   it "should raise error when config path not found" do
@@ -17,11 +18,16 @@ describe FacebookDesktopApp do
   end
   
   describe FacebookDesktopApp::Session do
-    before(:each) do
-      @session = FacebookDesktopApp::Session.create
+    it "should load passed config file on create" do
+       @session = FacebookDesktopApp::Session.create(File.join(RAILS_ROOT, 'config', 'facebooker_desktop.yml'))
+       Facebooker::Session.api_key.should_not be_blank
     end
-    
+     
     describe "on create" do  
+      before(:each) do
+        @session = FacebookDesktopApp::Session.create
+      end
+        
       it "should create session with config values on create" do  
         @session.should be_a FacebookDesktopApp::Session
       end

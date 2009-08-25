@@ -415,13 +415,29 @@ module ActivityStreamProxySpecHelper
     item
   end
   
+  # Only facebook supported right now
   def create_stream_proxy_item_with_attachment(type)
     item = ActivityStreamProxy.new
     item.updated = item.created = Time.now.to_i
     item.message = 'blah blah'
     item.attachment_type = type
     item.type = 'post'
-    item.attachment = {type => {'src' => 'http://', 'href' => 'http://', 'stuff' => 'here'}, 'type' => type}
+    item
+  end
+  
+  def create_facebook_stream_proxy_item_with_attachment(type)
+    item = create_stream_proxy_item_with_attachment(type)
+    # From live data
+    case type
+    when 'photo'
+      item.attachment = "--- \nhref: http://www.facebook.com/photo.php?pid=30278880&amp;id=1241462621\nphoto: \n  pid: \"5332041356431721696\"\n  aid: \"5332041356403459399\"\n  index: \"1\"\n  height: \"434\"\n  owner: \"1241462621\"\n  width: \"604\"\ntype: photo\nsrc: http://photos-a.ak.fbcdn.net/hphotos-ak-snc1/hs126.snc1/5409_1109259931986_1241462621_30278880_7526228_s.jpg\nalt: {}\n\n"
+    when 'video'
+      item.attachment = "--- \nhref: http://www.facebook.com/ext/share.php?sid=118488009263&amp;h=Uk_ht&amp;u=e8Tgi\ntype: video\nsrc: http://external.ak.fbcdn.net/safe_image.php?d=98ddec74796e916446bbe3468c840250&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FxgHmSdpjEIk%2F2.jpg&amp;w=130&amp;h=130\nalt: Thousand-Hand Guan Yin\nvideo: \n  permalink: /posted.php?id=504883639&amp;share_id=118488009263#s118488009263\n  source_url: http://www.youtube.com/v/xgHmSdpjEIk&amp;autoplay=1\n  display_url: http://www.youtube.com/watch?v=xgHmSdpjEIk&amp;eurl=http://www.facebook.com/home.php?ref=home&amp;feature=player_embedded#t=124\n  owner: \"504883639\"\n  source_type: html\n"
+    when 'generic'
+      item.attachment = "--- \nname: \"Is the SexTracker Creator a Monster? \\xC2\\xAB The Gonzo Fat Savage Lifestyle\"\nhref: http://www.facebook.com/ext/share.php?sid=128131996883&amp;h=iNgGX&amp;u=kmFJK\nfb_object_type: {}\n\nfb_object_id: {}\n\nicon: http://static.ak.fbcdn.net/rsrc.php/zADLZ/hash/ezwlslya.gif\nmedia: {}\n\ncaption: \"Source: fatsavage.wordpress.com\"\ndescription: \"It\\xE2\\x80\\x99s kind of hard to figure out if Andrew Edmond is a creep, cop, criminal or con-man. I mean I\\xE2\\x80\\x99ve never met the man and he never sent me a copy of his resume so I have to develop his profile from online information. ...\"\nproperties: {}\n\n"
+    when 'link'
+      item.attachment = "--- \nhref: http://www.facebook.com/ext/share.php?sid=123275557061&amp;h=AS8HB&amp;u=zFAlt\ntype: link\nsrc: http://external.ak.fbcdn.net/safe_image.php?d=bfbd14a77a70e85673eb9cd537214304&amp;url=http%3A%2F%2Ffarm4.static.flickr.com%2F3456%2F3829703647_8276334e5d_o.jpg&amp;w=130&amp;h=130\n"
+    end
     item
   end
 end

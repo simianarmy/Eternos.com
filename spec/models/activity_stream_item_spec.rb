@@ -27,19 +27,52 @@ describe ActivityStreamItem do
     end
     
     describe "with attachment data" do
-      before(:each) do
-        @item = FacebookActivityStreamItem.create_from_proxy create_stream_proxy_item_with_attachment('photo')
-      end
+      describe "of type: photo" do
+        before(:each) do
+          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('photo')
+        end
+        
+        it "should parse photo attachment data" do
+          @item.activity_type.should == 'post'
+          @item.attachment_type.should == 'photo'
+        end
 
-      it "should store serialized attachment data" do
-        @item.activity_type.should == 'post'
-        @item.attachment_type.should == 'photo'
-        @item.attachment_data.should be_a Hash
-        @item.attachment_data['photo'].should_not be_empty
+        it "should return the attachment data source url" do
+          @item.url.should match(/^http/)
+          @item.thumbnail_url.should match(/^http/)
+        end
       end
+      
+      describe "of type: generic" do
+        before(:each) do
+          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('generic')
+        end
+        
+        it "should store parse generic attachment data" do
+          @item.activity_type.should == 'post'
+          @item.attachment_type.should == 'generic'
+        end
 
-      it "should return the attachment data source url" do
-        @item.url.should_not be_blank
+        it "should return the attachment data source url" do
+          @item.url.should match(/^http/)
+          @item.thumbnail_url.should be_blank
+        end
+      end
+      
+      describe "of type: link" do
+        before(:each) do
+          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('link')
+        end
+        
+        it "should store parse generic attachment data" do
+          @item.activity_type.should == 'post'
+          @item.attachment_type.should == 'link'
+        end
+
+        it "should return the attachment data source url" do
+          @item.url.should match(/^http/)
+          @item.thumbnail_url.should be_blank
+        end
       end
     end
       
