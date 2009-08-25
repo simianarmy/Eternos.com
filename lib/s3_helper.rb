@@ -16,6 +16,7 @@ require 'yaml'
 module S3Buckets
   class EternosBucket < AWS::S3::S3Object
     class_inheritable_accessor :eternos_bucket_name
+    class_inheritable_accessor :access_level
     
     class << self
       def init
@@ -49,11 +50,15 @@ module S3Buckets
 
   class MediaBucket < EternosBucket
     self.eternos_bucket_name = 'eternos.com-media_' + RAILS_ENV
+    self.access_level = :public_read
+    
     set_current_bucket_to eternos_bucket_name
   end
   
   class EmailBucket < EternosBucket
     self.eternos_bucket_name = 'eternos.com-email_' + RAILS_ENV
+    self.access_level = :private
+    
     set_current_bucket_to eternos_bucket_name
   end
 end
@@ -61,7 +66,7 @@ end
 class S3Connection
   S3ConfigFile = File.join(RAILS_ROOT, 'config', 'amazon_s3.yml')
   
-  attr_reader :bucket
+  attr_reader :bucket, :errors
   
   def initialize(bucket_type=nil)
     connect
@@ -133,13 +138,18 @@ class S3Uploader < S3Connection
   end
   
   # Stores file to S3 current bucket.  Returns stored object's key
-  def upload(file_path, file_name, content_type=nil)
+  def upload(file_path, file_name, opts={})
     @key_name = file_name
-    opts = {}
-    opts[:content_type] = content_type if content_type
+    opts.reverse_merge! :access => bucket.access_level
     
-    RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{bucket}"
-    bucket.store(file_name, open(file_path), opts)
+    RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{bucket} with headers: #{opts.inspect}"
+    begin
+      bucket.store(file_name, open(file_path), nil, opts)
+    rescue AWS::S3::ResponseError => error
+      @errors = error.response.code.to_s + " " + error.message
+      RAILS_DEFAULT_LOGGER.warn "Error uploading to S3: #{@errors}"
+      return false
+    end
     # Return access key
     key
   end

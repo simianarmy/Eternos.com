@@ -24,7 +24,7 @@ class UploadsWorker < Workling::Base
   
       s3 = S3Uploader.new(:media)
       mark = Benchmark.realtime do
-        s3.upload(content.full_filename, content.public_filename, content.content_type)
+        s3.upload(content.full_filename, content.public_filename, :content_type => content.content_type)
       end
       logger.debug "Uploaded content in #{mark} seconds"
       
