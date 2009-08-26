@@ -25,8 +25,8 @@ var ETemplates = {
 				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 			},
 			eventItemWithTooltip: function () {
-				return new Template('<li class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
-					'<div id="#{tt_id}"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
+				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
+					'<div class="tooltip_container"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
 			},
 			eventItemTooltipItem: function () {
 				return new Template('<div class="event_preview_item_container">#{content}</div>');
@@ -38,22 +38,25 @@ var ETemplates = {
 				// Create tooltip for each event list link
 				var title;
 				$$('a.event_list_inline_item').each(function (element) {
-	        s = element.next('div');
+	        s = element.next('div.tooltip_container');
 	        s.hide();
 				
 	        new Tip(element, s, DefaultTooltipOptions);
 	      });
 			},
 			createTimelineTooltips: function() {
-				var tooltip_id;
+				var item_id;
 				// Create tooltip for each timeline point
 				$$('.tl_event[title]').each(function(e) {
-					tooltip_id = e.readAttribute('title');
-					if ($(tooltip_id)) {
-						console.log("Adding tooltip to event id " + tooltip_id);
-						// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
-						// (in event list) will cause the 1st tooltip to cancel the other one out
-						new Tip(e, $(tooltip_id).innerHTML, DefaultTooltipOptions);
+					item_id = e.readAttribute('title');
+					if (li = $("evli:" + item_id)) {
+						// This is pretty weak...
+						if (tt = li.childElements()[0].down('div.tooltip_container')) {
+							console.log("Adding tooltip to event id " + item_id);
+							// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
+							// (in event list) will cause the 1st tooltip to cancel the other one out
+							new Tip(e, $(tt).innerHTML, DefaultTooltipOptions);
+						}
 					}
 					/*
 					Event.observe(e, 'click', function(ev) {
@@ -80,5 +83,8 @@ var ETemplates = {
 		},
 		loadingTemplate: function() {
 		  return new Template("<div><span>Loading #{type}...</span></div>");
+		},
+		event_list_item: function(id) {
+			return $("evli:" + id);
 		}
 };

@@ -39,6 +39,7 @@ var ETLEventSource = Class.create({
 		return ['timeline_events/details', user_id, this.type, this.eventDateString()].join('/');
 	}
 });
+
 // Photo event
 var ETLPhotoEventSource = Class.create(ETLEventSource, {
 	isArtifact: function() {

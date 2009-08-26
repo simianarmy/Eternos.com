@@ -414,20 +414,20 @@ var ETimeline = function (opts) {
         }
       }
       return this.itemWithTooltipTemplate.evaluate({
+				list_item_id: this.id,
         title: this.title,
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         hidden_items: other_items,
-				tt_id: this.id,
         tt_content: this._getTooltipContents()
       });
     },
     _getInlineItemHtml: function () {
       return this.itemWithTooltipTemplate.evaluate({
+				list_item_id: this.id,
         title: this.title,
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
-				tt_id: this.id,
         tt_content: this._getTooltipContents()
         //inline_content: this._getInlineContents()
       })
@@ -480,7 +480,9 @@ var ETimeline = function (opts) {
 				classname: 'tl_event',
 				// Trick to associate an event's timeline DIV with its associated tooltip content
 				// tooltip container id stored in title attribute
-				caption: this.id
+				caption: this.id,
+				// Supposed to be link for bubble title text, but using it for click handler target
+				eventID: this.id
 				// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources				
       });
 			console.log("Added timeline event with tooltip id " + this.id);
@@ -916,12 +918,29 @@ var ETimeline = function (opts) {
 			this.redraw();
     },
     _create: function () {
+			var li;
+			var a;
+			
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
       this.timeline.addCustomMethods();
+
+			// Setup click handler for timeline events
 			Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
-				
-			   //alert (evt.getLink());
-			 }
+				console.log("Clicked on event");
+				console.dir(evt);
+				// Should fire click() on matching event list target link
+				if ((li = ETemplates.event_list_item(evt.getEventID())) !== undefined) {
+					if ((a = li.down().down('a.event_list_inline_item')) !== undefined) {
+						Lightview.show({
+						 	href: a.href,
+						  rel: a.rel,
+							options: {
+								fullscreen: true
+							}
+						});
+					}
+			 	}
+			}
     },
 		// Add search results to timeline event source
 		_addEvents: function (events) {
