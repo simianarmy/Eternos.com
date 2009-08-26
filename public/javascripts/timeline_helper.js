@@ -253,7 +253,8 @@ var ETimeline = function (opts) {
           num: i,
           style: ul_class,
           url: item.attributes.url,
-          thumbnail_url: item.attributes.thumbnail_url
+          thumbnail_url: item.attributes.thumbnail_url,
+					caption: item.attributes.description
         });
       });
 			return s;
@@ -363,7 +364,6 @@ var ETimeline = function (opts) {
       this.attributes = s.attributes;
       this.num = items.length;
       this.items = items;
-      this.html = '';
       this.hiddenItemTemplate = that.templates.eventListTemplates.hiddenItem();
       this.itemWithTooltipTemplate = that.templates.eventListTemplates.eventItemWithTooltip();
       this.tooltipItemTemplate = that.templates.eventListTemplates.eventItemTooltipItem();
@@ -379,9 +379,9 @@ var ETimeline = function (opts) {
     _setHtml: function () {
       // Need to format the link so all content will be displayed
       if (this.first.isArtifact()) {
-        this.html = this._getArtifactItemHtml();
+        return this._getArtifactItemHtml();
       } else {
-        this.html = this._getInlineItemHtml();
+        return this._getInlineItemHtml();
       }
     },
     _getLinkUrl: function (item) {
@@ -428,7 +428,6 @@ var ETimeline = function (opts) {
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
 				tt_id: this.id,
-				tt_title: this.title,
         tt_content: this._getTooltipContents()
         //inline_content: this._getInlineContents()
       })
@@ -451,8 +450,7 @@ var ETimeline = function (opts) {
     },
     populate: function () {
       this._setTitle();
-      this._setHtml();
-      return this.html;
+      return this._setHtml();
     }
   });
 
@@ -859,10 +857,6 @@ var ETimeline = function (opts) {
 				currCenterDate = that.timeline.centerDate;
 				that.timeline._setCenterDate(band.getCenterVisibleDate());
 				
-        if (!currCenterDate.equalsYearMonth(band.getCenterVisibleDate())) {
-					console.log("Timeline scrolled to new month: " + that.timeline.centerDate);
-					that.timeline.updateEvents();
-        }
         var start_date;
         var end_date;
         if (band.getMaxVisibleDate() > tlMaxDate) {
@@ -885,7 +879,13 @@ var ETimeline = function (opts) {
             endDate: end_date,
             options: that.timeline.options
           });
-        }
+        } else if (!currCenterDate.equalsYearMonth(band.getCenterVisibleDate())) {
+					console.log("Timeline scrolled to new month: " + that.timeline.centerDate);
+					that.timeline.updateEvents();
+        } else {
+					// Recreate tooltips on every scroll, timleline loses them somehow if you scroll too far
+					that.timeline.redraw();
+				}
         //console.log(start_date+"---"+end_date);
       });
       //console.log("Updated date: "+this.tlMaxDate);
@@ -913,11 +913,15 @@ var ETimeline = function (opts) {
     },
     _loadCached: function () {
       this.rawEvents.populateResults(this.centerDate);
-			this._redraw();
+			this.redraw();
     },
     _create: function () {
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
       this.timeline.addCustomMethods();
+			Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
+				
+			   //alert (evt.getLink());
+			 }
     },
 		// Add search results to timeline event source
 		_addEvents: function (events) {
@@ -928,9 +932,10 @@ var ETimeline = function (opts) {
       }.bind(this));
 			// Force timeline to redraw so that events show up
 			this.eventSource._listeners.invoke('onAddMany');
-			this._redraw();
+			this.redraw();
     },
-		_redraw: function() {
+		// Required due to bug in timeline that kills tooltips after they go out of bounds
+		redraw: function() {
 			console.log("[re]creating timeline tooltips")
 			that.templates.eventListTemplates.createTimelineTooltips();
 		},

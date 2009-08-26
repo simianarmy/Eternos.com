@@ -3,8 +3,6 @@
 require 'tmail'
 
 class BackupEmail < ActiveRecord::Base
-  include AfterCommit::ActiveRecord
-
   belongs_to :backup_source
   
   validates_presence_of :mailbox
@@ -40,12 +38,6 @@ class BackupEmail < ActiveRecord::Base
   named_scope :between_dates, lambda {|s, e| 
     { :conditions => ['DATE(received_at) BETWEEN ? AND ?', s, e] }
   }
-  
-  # Send id to upload worker queue
-  def after_commit_on_create
-    #MessageQueue.email_upload_queue.publish({:id => self.id}.to_json)
-    #logger.debug "Sent backup email #{self.id} to upload queue"
-  end
   
   # Parses raw email string to extract email attributes & contents
   # Catch exceptions from mail parsing or file saving io

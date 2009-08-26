@@ -45,7 +45,14 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 		return true;
 	},
 	getPreviewHtml: function() {
-		return '<img src="' + this.attributes.thumbnail_url + '">';
+		var str = '';
+		if (this.attributes.caption !== undefined) {
+			str = this.attributes.caption;
+		} else if (this.attributes.description !== undefined) {
+			str = this.attributes.description;
+		}
+		str += '<br/><img src="' + this.attributes.thumbnail_url + '">';
+		return str;
 	}
 });
 // Facebook event

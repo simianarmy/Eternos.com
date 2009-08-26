@@ -26,7 +26,7 @@ var ETemplates = {
 			},
 			eventItemWithTooltip: function () {
 				return new Template('<li class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
-					'<div id="#{tt_id}"><span class="tooltip_title"><b>#{tt_title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
+					'<div id="#{tt_id}"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
 			},
 			eventItemTooltipItem: function () {
 				return new Template('<div class="event_preview_item_container">#{content}</div>');
@@ -36,10 +36,11 @@ var ETemplates = {
 			},
 			createEventItemTooltips: function() {
 				// Create tooltip for each event list link
+				var title;
 				$$('a.event_list_inline_item').each(function (element) {
 	        s = element.next('div');
 	        s.hide();
-
+				
 	        new Tip(element, s, DefaultTooltipOptions);
 	      });
 			},
@@ -50,8 +51,18 @@ var ETemplates = {
 					tooltip_id = e.readAttribute('title');
 					if ($(tooltip_id)) {
 						console.log("Adding tooltip to event id " + tooltip_id);
-						new Tip(e, $(tooltip_id), DefaultTooltipOptions);
+						// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
+						// (in event list) will cause the 1st tooltip to cancel the other one out
+						new Tip(e, $(tooltip_id).innerHTML, DefaultTooltipOptions);
 					}
+					/*
+					Event.observe(e, 'click', function(ev) {
+						ev.stop();
+						if (details_link = $('event_details_link:' + tooltip_id)) {
+							eval(details_link.href);
+						}
+					});
+					*/
 				});
 			}
 		},
@@ -61,7 +72,7 @@ var ETemplates = {
 				return new Template("<div class=\"artibox-top\"><div class=\"title5\">#{title}</div></div>" + "<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" + "<img src=\"/images/artibox-bottom.gif\" /></div>");
 			},
 			artifactBox: function () {
-				return new Template("<li id=\"etl-artifact-item-#{num}\" #{style}><a href=\"#{url}\" " + "class=\"lightview\" rel=\"set[artifacts]\" title=\":: :: slideshow: true, autosize: true, fullscreen: true\"><img src='#{thumbnail_url}' class='thumnails2'/></a>" + "</li>");
+				return new Template("<li id=\"etl-artifact-item-#{num}\" #{style}><a href=\"#{url}\" " + "class=\"lightview\" rel=\"set[artifacts]\" title=\"#{caption} :: :: slideshow: true, autosize: true, fullscreen: true\"><img src='#{thumbnail_url}' class='thumnails2'/></a>" + "</li>");
 			}
 		},
 		monthSelectorTemplate: function() {
