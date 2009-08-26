@@ -72,13 +72,20 @@ Array.prototype.unique = function () {
   }
   return r;
 }
-// Groups array elements around some value
-// returns array of arrays where each element is an array of grouped elements
-// ie. [1, 2, 3, 4, 5].groupBy(function(i) { return i < 2; }); 
-// => [[1], [2,3,4,5]]
-
-Array.prototype.groupBy = function(group) {
+// Fisher-Yates randomization
+Array.prototype.randomize = function() {
+	var i = this.length;
+	var j, tempi, tempj;
 	
+	if ( i === 0 ) return false;
+	while ( --i ) {
+	     j = Math.floor( Math.random() * ( i + 1 ) );
+	     tempi = this[i];
+	     tempj = this[j];
+	     this[i] = tempj;
+	     this[j] = tempi;
+	 }
+	return this;
 }
 
 //Date parsing regex & sort function
@@ -225,6 +232,9 @@ var ETimeline = function (opts) {
   //Eternos Timeline Artifact Section
   var ETLArtifactSection = Class.create({
     initialize: function (domID) {
+			// Set this to true|false
+			this.doRandomize = false;
+			
       this.parent = $(domID);
       this.numShowed = 18;
       this.timeOut = 3;
@@ -232,28 +242,36 @@ var ETimeline = function (opts) {
       this.template = that.templates.artifactTemplates.artifacts();
       this.loadingTemplate = that.templates.loadingTemplate();
       this.boxTemplate = that.templates.artifactTemplates.artifactBox();
-      this.blankImg = this.items = new Array();
-
+      this.blankImg = this.items = this.currentItems = new Array();
+			
       this.showLoading();
     },
+		// Returns collection of artifacts for the given date
+		// Skip any items that don't have thumbnail or don't fall on target month
+		_itemsInDate: function(date) {
+			var targetDate = date.startingMonth();
+			
+			this.currentItems = this.items.findAll(function (i) {
+        return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) && (mysqlDateToDate(i.start_date).startingMonth() === targetDate);
+      });
+			return this.currentItems;
+		},
     _itemsToS: function (activeDate) {
-      var targetDate = activeDate.startingMonth();
       var ul_class;
 			var realthis = this;
       var s = '';
 
       console.log("Displaying artifacts for: " + activeDate);
 
-      // Skip any items that don't have thumbnail or don't fall on target month
-      this.items.findAll(function (i) {
-        return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) && (mysqlDateToDate(i.start_date).startingMonth() === targetDate);
-      }).each(function (item, i) {
+			$A(this._itemsInDate(activeDate).randomize()).each(function (item, i) {
         ul_class = (i >= realthis.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : "class=\"visible-artifact-item\"";
         s += realthis.boxTemplate.evaluate({
+					id: item.attributes.id,
           num: i,
           style: ul_class,
           url: item.attributes.url,
           thumbnail_url: item.attributes.thumbnail_url,
+					title: item.attributes.title,
 					caption: item.attributes.description
         });
       });
@@ -268,27 +286,42 @@ var ETimeline = function (opts) {
         title: this.title,
         artifacts: c
       });
+			//that.templates.artifactTemplates.setClickHandlers(this.currentItems);
     },
     randomize: function () {
+			var i, j, tmp, tmp_title;
       var v = $$('li.visible-artifact-item');
       var h = $$('li.hidden-artifact-item');
-			if (v.length === 0) { return; }
+			if (v.length === 0 || h.length === 0) { return; }
 			
-      new PeriodicalExecuter(function (pe) {
-        if (v.length > 0 && h.length > 0) {
-          var i = Math.floor(Math.random() * v.length);
-          var j = Math.floor(Math.random() * h.length);
-          var tmp = v[i].childElements()[0].childElements()[0].src;
-
-          v[i].pulsate({
-            pulses: 1,
-            duration: 1.5
-          });
-          v[i].childElements()[0].childElements()[0].src = h[j].childElements()[0].childElements()[0].src;
-          h[j].childElements()[0].childElements()[0].src = tmp;
-        }
-      },
-      this.timeOut);
+			if (this.doRandomize) {
+				new PeriodicalExecuter(function (pe) {
+					if (v.length > 0 && h.length > 0) {
+						i = Math.floor(Math.random() * v.length);
+						j = Math.floor(Math.random() * h.length);
+						tmp = v[i]; // <a><img>...</a>
+						tmp_title = v[i].down().title;
+						
+						v[i].pulsate({
+							pulses: 1,
+							duration: 1.5
+						});
+						// TODO: Fix me
+						// This is fed up - title attibutes get lost, and we start seeing 
+						// a lot of duplicates in artifacts
+						console.log("Swapping artifact with html: " + h[j].innerHTML);
+						v[i].update(h[j].innerHTML);
+						if (h[j].down().title !== '') { // correct some weirdness
+							console.log("setting title attribute: " + h[j].down().title);
+							v[i].down().writeAttribute({title: h[j].down().title});
+						}
+						console.log("Swapping artifact with html: " + tmp.innerHTML);
+						h[j].update(tmp.innerHTML);
+						//console.log("setting title attribute: " + tmp_title);
+						//h[j].down().writeAttribute({title: tmp_title});
+					}
+				}.bind(this), this.timeOut);
+			}
     },
     addItem: function (item) {
       this.items.push(item);

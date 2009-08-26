@@ -58,14 +58,6 @@ var ETemplates = {
 							new Tip(e, $(tt).innerHTML, DefaultTooltipOptions);
 						}
 					}
-					/*
-					Event.observe(e, 'click', function(ev) {
-						ev.stop();
-						if (details_link = $('event_details_link:' + tooltip_id)) {
-							eval(details_link.href);
-						}
-					});
-					*/
 				});
 			}
 		},
@@ -75,8 +67,8 @@ var ETemplates = {
 				return new Template("<div class=\"artibox-top\"><div class=\"title5\">#{title}</div></div>" + "<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" + "<img src=\"/images/artibox-bottom.gif\" /></div>");
 			},
 			artifactBox: function () {
-				return new Template("<li id=\"etl-artifact-item-#{num}\" #{style}><a href=\"#{url}\" " + "class=\"lightview\" rel=\"set[artifacts]\" title=\"#{caption} :: :: slideshow: true, autosize: true, fullscreen: true\"><img src='#{thumbnail_url}' class='thumnails2'/></a>" + "</li>");
-			}
+				return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="thumnails2"/></a></li>');
+			},
 		},
 		monthSelectorTemplate: function() {
 			return new Template("<a href=\"\" id=\"month_selector_down\" class=\"btn-left\"></a><span class=\"subtitle6\">#{month}</span><span class=\"subtitle7\">#{year}</span><a href=\"\" id=\"month_selector_up\" class=\"btn-right\"></a>");
