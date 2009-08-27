@@ -52,7 +52,7 @@ end
 # STI class children
 
 class FacebookActivityStreamItem < ActivityStreamItem
-  after_create :process_attachment, :if => 
+  after_create :process_attachment
   
   def url
     return unless d = parsed_attachment_data
