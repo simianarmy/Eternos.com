@@ -90,7 +90,7 @@ Spork.prefork do
 
 def set_mailer_in_test
   ActionMailer::Base.delivery_method = :test
-  ActionMailer::Base.perform_deliveries = false
+  ActionMailer::Base.perform_deliveries = true
   ActionMailer::Base.deliveries = []
 end  
 
@@ -188,6 +188,7 @@ def date_select_attributes(t, attr)
 end
 
 module UserSpecHelper
+  
    # Work around Fixjour shit not adding passwords
   def valid_user_attributes_with_password
     returning valid_user_attributes do |a|
@@ -196,6 +197,7 @@ module UserSpecHelper
   end
 
   def make_member(attributes={})
+    set_mailer_in_test
     user = create_user(attributes)
     user.activate!
     User.find(user)

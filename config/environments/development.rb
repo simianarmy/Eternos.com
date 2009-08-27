@@ -22,6 +22,8 @@ config.action_mailer.raise_delivery_errors = true
 # Use SMTP protocol to deliver emails
 config.action_mailer.delivery_method = :smtp
 
+config.action_controller.asset_host = "http://dev.eternos.com"
+
 # For debugging with Passenger
 if File.exists?(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
   require 'ruby-debug'

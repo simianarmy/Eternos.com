@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "last_backup_job_id"
+    t.boolean  "items_saved"
   end
 
   add_index "backup_states", ["user_id"], :name => "index_backup_states_on_user_id"

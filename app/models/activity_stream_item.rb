@@ -101,11 +101,10 @@ class FacebookActivityStreamItem < ActivityStreamItem
       # Parse generic attachment attributes into string for the message attribute
     when 'generic'
       message = ''
-      if d['description'] && d['description'].value
-        message += "Name: #{d['name'].value}\n" if d['name']
-        message += "Caption: #{d['caption'].value}\n" if d['caption']
-        message += "Description: #{d['description'].value}\n" if d['description']
-      end
+      message += "Name: #{d['name'].value}\n" if d['name']
+      message += "Caption: #{d['caption'].value}\n" if d['caption']
+      message += "Description: #{d['description'].value}\n" if d['description']
+
       self.update_attribute(:message, message) unless message.blank?
     end
     true

@@ -20,8 +20,9 @@ describe Member do
 end
 
 describe "on create" do
+  include UserSpecHelper
   before(:each) do
-    @member = create_member
+    @member = make_member
   end
 
   it "should have a profile object" do
@@ -63,20 +64,30 @@ describe Member, "once activated" do
     end
   
     describe "on backup_finished!" do
-      it "should save backup state" do
-        @member.create_backup_state
+      before(:each) do
         @info = {:job_id => 1}
-        @member.backup_state.expects(:finished!).with(@info)
+        @member.stubs(:backup_state).returns(@bs = mock_model(BackupState))
+      end
+      
+      it "should save backup state" do
+        @bs.stubs(:first_time_data_available?).returns(false)
+        @bs.expects(:finished!).with(@info)
         @member.backup_finished!(@info)
       end
       
       it "should save backup state even in none exists" do
-        @info = {:job_id => 1}
-        BackupState.expects(:new).returns(@bs)
         @bs.expects(:finished!).with(@info)
+        @bs.stubs(:first_time_data_available?).returns(false)
         @member.backup_finished!(@info)
-       end
-     end
+      end
+    
+      it "should email member the 1st time backup items saved" do
+        @bs.expects(:finished!).with(@info)
+        @bs.stubs(:first_time_data_available?).returns(true)
+        @member.backup_finished!(@info)
+        ActionMailer::Base.deliveries.size.should == 2 # one for email creation too
+      end
+    end
      
     it "should need backup by default" do
       Member.needs_backup(1.day.ago).should == [@member]

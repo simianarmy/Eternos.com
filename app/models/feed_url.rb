@@ -17,6 +17,10 @@ class FeedUrl < BackupSource
     !auth_login.blank? || !auth_password.blank?
   end
   
+  def num_items
+    feed ? feed.entries.size : 0
+  end
+  
   private
   
   def validate_feed

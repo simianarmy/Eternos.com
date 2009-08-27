@@ -15,10 +15,16 @@ class BackupState < ActiveRecord::Base
     if info[:errors].empty?
       self.last_successful_backup_at = Time.now
       self.last_messages = info[:messages] if info[:messages]
-      self.last_errors.clear
+      self.last_errors.clear if self.last_errors
     else
       self.last_failed_backup_at = Time.now
       self.last_errors = info[:errors]
+    end
+    # Do one time calculation of backup data items available & save
+    unless self.items_saved
+      @first_time_backup_data_available = self.items_saved = has_data?
+    else
+      @first_time_backup_data_available = false
     end
     save!
   end
@@ -27,5 +33,20 @@ class BackupState < ActiveRecord::Base
   def time_remaining
     member.backup_jobs.recent.time_remaining rescue 0
   end
-        
+  
+  def first_time_data_available?
+    !!@first_time_backup_data_available
+  end
+  
+  protected
+  
+  # true if last backup job has any saved backup records, or activity stream not empty
+  def has_data?
+    member.activity_stream.items.any? ||
+      BackupJob.find(self.last_backup_job_id).backup_source_jobs.map(&:backup_source).any? do |bs|
+        bs.num_items > 0
+      end
+  rescue 
+    false
+  end
 end

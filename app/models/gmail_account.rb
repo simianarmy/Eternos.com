@@ -11,4 +11,7 @@ class GmailAccount < BackupSource
   
   alias_attribute :email, :auth_login
   
+  def num_items
+    backup_emails.size
+  end
 end

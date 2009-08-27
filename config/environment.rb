@@ -117,7 +117,7 @@ Rails::Initializer.run do |config|
   # in the database in UTC, and return them converted to the specified local zone.
   # Run "rake -D time" for a list of tasks for finding time zone names. Uncomment to use default local time.
   config.time_zone = ENV['TZ'] = 'UTC'
-
+  
   # Your secret key for verifying cookie session data integrity.
   # If you change this key, all old sessions will become invalid!
   # Make sure the secret is at least 30 characters and all random, 
@@ -173,12 +173,14 @@ require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
 
-
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
   "<span class='field_error'>#{html_tag}</span>"
 end
+
+# Set ActionMailer host for url_for
+ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
 
 # Need this to prevent the following in Renderer classes:
 # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
@@ -195,3 +197,7 @@ ENV['RECAPTCHA_PRIVATE_KEY'] = '6Le7nwYAAAAAAOdPcWOZSu8K4P1CRFC1Djyn1pMw'
 Rubaidh::GoogleAnalytics.tracker_id = 'UA-9243545-1'
 Rubaidh::GoogleAnalytics.local_javascript = true
 
+# Spawn should fork by default in all environments
+Spawn::method :fork
+Spawn::method :yield, 'test' # Don't fork in tests
+#Spawn::method :thread, 'production'

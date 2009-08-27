@@ -119,6 +119,10 @@ Fixjour  do
       :backup_job => new_backup_job)
   end
   
+  define_builder(BackupState) do |klass, overrides|
+    klass.new(:member => new_member)
+  end
+  
   define_builder(Category) do |klass, overrides|
      klass.new(:name => 'global', :global => 1)
    end

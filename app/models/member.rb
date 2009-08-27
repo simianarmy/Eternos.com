@@ -44,10 +44,16 @@ class Member < User
     (backup_state || build_backup_state).update_attribute(:in_progress, true)
   end
   
-  # Updates backup tables with backup process info
-  
+  # Updates backup job tables with backup processes info
   def backup_finished!(info)
-    (backup_state || build_backup_state).finished! info
+    bs = backup_state || build_backup_state
+    bs.finished! info
+    
+    # Email member 1st time there is data for timeline
+    if bs.first_time_data_available?
+      # Send email in background
+      spawn { BackupNotifier.deliver_timeline_ready(self) }
+    end
   end
   
   # Returns all used categories

@@ -26,8 +26,5 @@ class BackupReportMailer < ActionMailer::Base
     @from         = "backup-reporter@eternos.com"
     @sent_on      = Time.now
     @content_type = "text/html"
-    # For layout template & views
-    @image_url    = ActionController::Base.asset_host
-    @image_url    = 'http://' + AppConfig.base_domain + '/images' if @image_url.empty?
   end
 end
