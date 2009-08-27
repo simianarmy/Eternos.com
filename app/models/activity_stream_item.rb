@@ -42,7 +42,6 @@ class ActivityStreamItem < ActiveRecord::Base
   def url; end
   def thumbnail_url; end
   def media_attachment?; false end
-  
   def parsed_attachment_data
     if attachment_data
       @data ||= YAML::parse attachment_data
@@ -53,6 +52,8 @@ end
 # STI class children
 
 class FacebookActivityStreamItem < ActivityStreamItem
+  after_create :process_attachment, :if => 
+  
   def url
     return unless d = parsed_attachment_data
     
@@ -78,7 +79,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
       d['video']['source_url'].value
     end
   end
-  
+    
   def media_attachment?
     attachment_data && ["photo", "video"].include?(attachment_type.downcase)
   end
@@ -89,6 +90,25 @@ class FacebookActivityStreamItem < ActivityStreamItem
     else
       link
     end
+  end
+  
+  private
+  
+  def process_attachment
+    return unless d = parsed_attachment_data
+    
+    case attachment_type
+      # Parse generic attachment attributes into string for the message attribute
+    when 'generic'
+      message = ''
+      if d['description'] && d['description'].value
+        message += "Name: #{d['name'].value}\n" if d['name']
+        message += "Caption: #{d['caption'].value}\n" if d['caption']
+        message += "Description: #{d['description'].value}\n" if d['description']
+      end
+      self.update_attribute(:message, message) unless message.blank?
+    end
+    true
   end
 end
 

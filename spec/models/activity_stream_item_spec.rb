@@ -57,6 +57,25 @@ describe ActivityStreamItem do
           @item.url.should match(/^http/)
           @item.thumbnail_url.should be_blank
         end
+        
+        it "should set the message attribute from the attachment after create" do
+          @item.message.should match(/Description: /)
+        end
+      end
+      
+      describe "of type: friendfeed" do
+        before(:each) do
+          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('friendfeed')
+        end
+        
+        it "should store parse generic attachment data" do
+          @item.activity_type.should == 'post'
+          @item.attachment_type.should == 'generic'
+        end
+
+        it "should set the message attribute from the attachment after create" do
+          @item.message.should match(/Description: /)
+        end
       end
       
       describe "of type: link" do

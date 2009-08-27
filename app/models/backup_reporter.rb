@@ -24,7 +24,7 @@ class BackupReporter
   # Collect metrics on members' space usage and send out in mail
   class << self 
     def run
-      #storage_usage
+      storage_usage
       backup_jobs
     end
 

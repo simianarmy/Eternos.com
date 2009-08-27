@@ -14,7 +14,7 @@ class BackupReportMailer < ActionMailer::Base
   
   def daily_jobs_report(data)
     setup
-    @recipients  = "marc@eternos.com"
+    @recipients  = "reports@eternos.com"
     @subject     = "Daily backup jobs data: #{Date.yesterday} - #{Date.today}"
    
     @data         = data
