@@ -5,8 +5,10 @@
     / bundle do
     - stylesheet 'popup', '/javascripts/lightview/css/lightview'
     -# Include javascript libs manually to prevent cacheing that breaks scripts
-    = javascript_include_tag 'prototype', 'scriptaculous', 'lightview/js/lightview'
-    - javascript 'account_setup', 'scroller', 'slider'
+    - includes do
+      - use_lightview
+      - javascript 'account_setup', 'scroller', 'slider'
+      
     = yield(:head)
     = yield(:javascript)
     / end bundle

@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.validate_login_field = false
     c.login_field = :login
-    c.logged_in_timeout = 30.minutes
+    c.logged_in_timeout = SESSION_DURATION_SECONDS
     c.validates_length_of_password_field_options :minimum => 6, :if => :require_password?
     c.validates_length_of_email_field_options :minimum => 0 # to fix missing I18n error key problem
   end

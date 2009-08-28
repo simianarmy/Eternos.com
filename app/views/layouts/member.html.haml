@@ -9,7 +9,7 @@
     - includes do
       - use_lightview
       - use_lowpro unless @no_prototype
-    
+      - javascript 'login'
     = yield(:head)
     = yield(:javascript)
     
@@ -62,20 +62,15 @@
       / end of content area  
       #bd
       = render :partial => 'shared/site_footer'
-    
+        
+    = render :partial => 'shared/get_satisfaction'
     :javascript
+      // This needs to be global to all js
       var lightview_height = 0.9*window.innerHeight;
-      document.observe('lightview:loaded', function() {
+      document.observe('dom:loaded', function() { 
+        handle_timeout_popups(#{session_timeout_seconds});
         if (#{needs_account_setup(current_user) ? 'true' : 'false'}) {
-          Lightview.show({href:'/account_settings', options:{
-            ajax:{evalScripts:true, method:'get'}, 
-            autosize:false, closeButton:false, height:lightview_height, width:800
-          }, rel:'iframe'});
-          Event.observe(window, 'lightview:hidden', function(e) {
-            window.location.reload();
-          });
+          handle_account_setup();
         }
       });
       
-    = render :partial => 'shared/get_satisfaction'
-    

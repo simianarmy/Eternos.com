@@ -39,6 +39,7 @@ module LayoutHelper
   
   # Wrap use_*, javascript, and stylesheet helper methods in a block inside this method
   # so that javascript cache array is cleared on every page load (required in production)
+  # TODO: Fix since included views get called before layout view!
   def includes
     js.clear
     yield
@@ -47,6 +48,7 @@ module LayoutHelper
   def javascript(*args)
     js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     js.flatten!
+    #RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
     content_for(:javascript) { javascript_include_tag(*args) }
   end
   

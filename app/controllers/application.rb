@@ -192,9 +192,12 @@ class ApplicationController < ActionController::Base
   def redirect_back(*params)
     uri = session[:original_uri]
     session[:original_uri] = nil
-    if uri
+    
+    unless uri.nil? || uri.match(/logout/)
+      RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{uri}"
       redirect_to uri
     else
+      RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{params.to_s}" 
       redirect_to(*params)
     end
   end

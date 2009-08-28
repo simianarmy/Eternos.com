@@ -46,6 +46,7 @@ YAHOO_APP_ID            = 'YxNApcLV34EgbS7EoRCAgGY4hJvSX_fQeW9uayDJ0yUbtxH8dhZXK
 FLASH_RECORDER_KEY      = 'zyrc234mq7hbs6ptw5d1v9n0j8xfkg'
 MOD_PORTER_SECRET       = 'sh4mAlam4d1nGd0ng'
 RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID' # TODO: check if used
+SESSION_DURATION_SECONDS  = 1800 # 30 minutes before session times out
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.

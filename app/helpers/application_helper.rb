@@ -106,6 +106,10 @@ module ApplicationHelper
     I18n.l(date, :format => :long)
   end
   
+  def session_timeout_seconds
+    SESSION_DURATION_SECONDS
+  end
+  
   private
   
   def parse_options(args)
