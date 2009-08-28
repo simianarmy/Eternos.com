@@ -58,7 +58,10 @@ Date.prototype.monthRange = function (num, dir) {
 Date.prototype.equalsYearMonth = function(other) {
 	return (this.getYear() === other.getYear()) && (this.getFullMonth() === other.getFullMonth());
 }
-
+// clone the current date object and return a different object with identical value
+Date.prototype.clone = function () {
+  return new Date(this.getTime());
+}
 // required Array' prototypes 
 Array.prototype.unique = function () {
   var r = new Array();
@@ -214,6 +217,11 @@ var ETimeline = function (opts) {
 			this._populate();
 		},
     stepMonth: function (param) {
+			if (this.activeDate.clone().stepMonth(param).getTime() > new Date().getTime()) {
+				// Don't allow stepping into the future
+				alert('You cannot view future events, sorry!')
+				return;
+			}
 			console.log("Month selector stepping " + param + " from " + this.activeDate)
       this.activeDate.stepMonth(param);
 			console.log("to " + this.activeDate);
@@ -747,10 +755,10 @@ var ETimeline = function (opts) {
 
         stepDate = new ETLDate(sd, 's').outDate;
         endDate = new ETLDate(ed, 's').outDate;
-        console.log("Checking search cache for dates " + this.hashDate(stepDate) + " => " + this.hashDate(stepDate));
 
         var found = false;
         do {
+					console.log("Checking search cache for date " + this.hashDate(stepDate));
           if (searched[this.hashDate(stepDate)]) {
             found = true;
             break;
@@ -808,7 +816,11 @@ var ETimeline = function (opts) {
       this.firstBandPixels = that.utils.tlEffectiveWidth / (this.memberAge / 10);
     },
     _setupTheme: function () {
+			//this.defaultTheme = Timeline.ClassicTheme.create();
       this.theme = Timeline.ClassicTheme.create();
+			// Have to set start date?
+			this.theme.timeline_start = new Date(Date.UTC(1500, 0, 1));
+			this.theme.timeline_stop  = new Date(); // Force stop scrolling past today
     },
     _setupBands: function () {
       //var date = new Date();
