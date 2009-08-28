@@ -17,6 +17,9 @@ Date.prototype.startingMonth = function () {
 Date.prototype.endingMonth = function () {
   return this.getFullYear() + "-" + this.getFullMonth() + "-" + this.numDays();
 }
+Date.prototype.toEndOfMonth = function() {
+	return this.setDate(this.numDays());
+}
 Date.prototype.getMonthName = function () {
   var nm = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var nu = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -812,15 +815,18 @@ var ETimeline = function (opts) {
       this.init(true);
     },
     _getMemberAge: function () {
-      this.memberAge = (new Date(parseInt(this.endDate), 01, 01)).getFullYear() - (new Date(parseInt(this.startDate), 01, 01)).getFullYear();
+      this.memberAge = this.endDate.toDate().getFullYear() - this.startDate.toDate().getFullYear();
       this.firstBandPixels = that.utils.tlEffectiveWidth / (this.memberAge / 10);
+			console.log("Member age: " + this.memberAge);
+			console.log("age pixels: " + this.firstBandPixels);
     },
     _setupTheme: function () {
 			//this.defaultTheme = Timeline.ClassicTheme.create();
       this.theme = Timeline.ClassicTheme.create();
 			// Have to set start date?
-			this.theme.timeline_start = new Date(Date.UTC(1500, 0, 1));
-			this.theme.timeline_stop  = new Date(); // Force stop scrolling past today
+			//this.theme.autoWidth = true;
+			this.theme.timeline_start = new Date(Date.UTC(1800, 0, 1));
+			this.theme.timeline_stop  = new Date().toEndOfMonth(); // Force stop scrolling past today
     },
     _setupBands: function () {
       //var date = new Date();
@@ -841,16 +847,16 @@ var ETimeline = function (opts) {
       }), Timeline.createBandInfo({
         width: "8%",
         intervalUnit: Timeline.DateTime.MONTH,
-        intervalPixels: 500,
+        intervalPixels: 250,
         date: this.centerDate,
         overview: true,
         theme: this.theme
       }), Timeline.createBandInfo({
         width: "8%",
         intervalUnit: Timeline.DateTime.YEAR,
+				intervalPixels: 100,
         overview: true,
         date: this.centerDate,
-        intervalPixels: 500,
         theme: this.theme
       })];
 
@@ -866,6 +872,7 @@ var ETimeline = function (opts) {
       var start_date = new ETLDate(this.startDate, 'gregorian').outDate;
       var end_date = new ETLDate(this.endDate, 'gregorian').outDate;
 
+			console.log("band start, end dates: " + start_date + " - " + end_date);
       this.bandInfos[0].etherPainter = new Timeline.YearCountEtherPainter({
         startDate: start_date,
         multiple: 5,
@@ -902,8 +909,6 @@ var ETimeline = function (opts) {
     _handleBandScrolling: function () {
       var tlMinDate;
       var tlMaxDate;
-			var start_date;
-      var end_date;
 			var band;
 			var currCenterDate;
 			var etl = this;
@@ -915,9 +920,18 @@ var ETimeline = function (opts) {
 				
 				band = etl.timeline.getBand(1);
 				tlMinDate = band.getMinVisibleDate();
-				tlMaxDate = band.getMaxVisibleDate()
+				tlMaxDate = band.getMaxVisibleDate();
 				console.log("Timeline scrolled to: " + tlMinDate.toDateString() + " .. " + tlMaxDate.toDateString());
         
+				// Prevent scrolling into the future - even with a stop_date set for the theme, 
+				// this is allowed to some extent so catch here.
+				// TODO: Figure out which function(s) to call
+				/*
+				if (tlMinDate > new Date()) { 
+					etl.updateEvents({startDate: etl.centerDate});
+					return;
+				}
+				*/
 				etl.timeline.hideBackupMessage();
 				currCenterDate = etl.centerDate;
 				etl._setCenterDate(band.getCenterVisibleDate());
