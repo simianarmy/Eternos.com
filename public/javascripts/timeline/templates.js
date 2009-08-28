@@ -52,7 +52,7 @@ var ETemplates = {
 					if (li = $("evli:" + item_id)) {
 						// This is pretty weak...
 						if (tt = li.childElements()[0].down('div.tooltip_container')) {
-							console.log("Adding tooltip to event id " + item_id);
+							//console.log("Adding tooltip to event id " + item_id);
 							// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
 							// (in event list) will cause the 1st tooltip to cancel the other one out
 							new Tip(e, $(tt).innerHTML, DefaultTooltipOptions);

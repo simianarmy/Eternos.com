@@ -12,7 +12,8 @@ var handle_timeout_popups = function(timeout) {
   document.observe('lightview:opened', function(e) {
     clickTime = new Date().getTime();
     if ((clickTime - lastRequestTime) > (timeout * 1000)) {
-      e.stop(); // This doesn't work on lightview pops
+			e.stop();
+      Lightview.hide();
 		  window.location = '/logout'; // Destroy session
 		} 
 	  lastRequestTime = new Date().getTime();
