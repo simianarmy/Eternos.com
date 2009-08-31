@@ -125,17 +125,17 @@ var ETEvent = {
 		{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets", icon: "twitter.gif"}, 
 		{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "rss.png"}, 
 		{type: "BackupEmail", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
-		{type: "Photo", display_text: "Photo", display_text_plural: "Photos", icon: "blue"},
-		{type: "Video", display_text: "Video", display_text_plural: "Videos", icon: "green"},
-		{type: "Music", display_text: "Music", display_text_plural: "Music", icon: "green"},
-		{type: "Audio", display_text: "Audio", display_text_plural: "Audio", icon: "green"},
-		{type: "Document", display_text: "Document", display_text_plural: "Documents", icon: "grey"},
-		{type: "School", display_text: "School", display_text_plural: "Schools", icon: "dull-blue"},
-		{type: "Family", display_text: "Family Member", display_text_plural: "Family Members", icon: "dull-blue"},
-		{type: "Medical", display_text: "Medical Data", display_text_plural: "Medical Data", icon: "dull-blue"},
-		{type: "MedicalCondition", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "dull-blue"},
-		{type: "Job", display_text: "Job", display_text_plural: "Jobs", icon: "dull-blue"}, 
-		{type: "Address", display_text: "Address", display_text_plural: "Addresses", icon: "dull-blue"}
+		{type: "Photo", display_text: "Photo", display_text_plural: "Photos", icon: "photo.png"},
+		{type: "Video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
+		{type: "Music", display_text: "Music", display_text_plural: "Music", icon: "music.png"},
+		{type: "Audio", display_text: "Audio", display_text_plural: "Audio", icon: "audio.png"},
+		{type: "Document", display_text: "Document", display_text_plural: "Documents", icon: "doc.png"},
+		{type: "School", display_text: "School", display_text_plural: "Schools", icon: "school.png"},
+		{type: "Family", display_text: "Family Member", display_text_plural: "Family Members", icon: "family-member.png"},
+		{type: "Medical", display_text: "Medical Data", display_text_plural: "Medical Data", icon: "medic-data.png"},
+		{type: "MedicalCondition", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
+		{type: "Job", display_text: "Job", display_text_plural: "Jobs", icon: "job"}, 
+		{type: "Address", display_text: "Address", display_text_plural: "Addresses", icon: "address.png"}
 	],
 	
 	// Class factory function - returns ETLEventSource child class object based on passed type string
