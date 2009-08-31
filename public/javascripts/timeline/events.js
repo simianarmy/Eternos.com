@@ -121,10 +121,10 @@ var ETLAddressEventSource = Class.create(ETLEventSource, {
 var ETEvent = {
 	// Utilities, constants and vars needed
 	itemTypes: [
-		{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts", icon: "dark-blue"}, 
-		{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets", icon: "dull-green"}, 
-		{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "dull-red"}, 
-		{type: "BackupEmail", display_text: "Email", display_text_plural: "Emails", icon: "red"}, 
+		{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts", icon: "facebook.gif"}, 
+		{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets", icon: "twitter.gif"}, 
+		{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "rss.png"}, 
+		{type: "BackupEmail", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
 		{type: "Photo", display_text: "Photo", display_text_plural: "Photos", icon: "blue"},
 		{type: "Video", display_text: "Video", display_text_plural: "Videos", icon: "green"},
 		{type: "Music", display_text: "Music", display_text_plural: "Music", icon: "green"},

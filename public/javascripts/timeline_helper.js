@@ -145,9 +145,9 @@ var ETimeline = function (opts) {
 				while (c - d < ms);
 			},
 			emptyResponse: "{\"results\": [], \"previousDataUri\": null, \"responseDetails\": null, \"request\": \"\", \"resultCount\": 0, \"status\": 200, \"futureDataUri\": null}",
-			assetUrl: "http://simile.mit.edu/timeline/api/",
-			imgUrl: "images/",
-			iconPostfix: "-circle.png",
+			assetUrl: "/javascripts/timeline/",
+			imgUrl: "icons/",
+			iconPostfix: "",
 			blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>",
 			tlEffectiveWidth: 750
 		}
@@ -515,8 +515,9 @@ var ETimeline = function (opts) {
       this.title = event.title;
       this.type = event.type;
 			this.id = event.attributes.id;
+			this.num = event.num;
 			
-      icon_s = ETEvent.getSourceIcon(this.type)
+      icon_s = ETEvent.getSourceIcon(this.type);
       this.icon = that.utils.assetUrl + that.utils.imgUrl + icon_s + that.utils.iconPostfix;
  
       this.event = new Timeline.DefaultEventSource.Event({
@@ -532,9 +533,16 @@ var ETimeline = function (opts) {
 				// tooltip container id stored in title attribute
 				caption: this.id,
 				// Supposed to be link for bubble title text, but using it for click handler target
-				eventID: this.id
+				eventID: this.id,
 				// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources				
+				// this is bad idea, to put number of events in 'trackNum' attribute, is that another ways??
+				// then it will be associated to hack icon size in:
+				// Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js
+				// SimileAjax.Graphics.createTranslucentImage /public/javascripts/timeline/timeline_ajax/graphics.js
+				trackNum: this.num
       });
+      
+      //--console.log(this.event.getTrackNum());
 			//console.log("Added timeline event with tooltip id " + this.id);
     }
   });
@@ -634,6 +642,8 @@ var ETimeline = function (opts) {
           results[types.length - 1] = new Array(items[i]);
         }
       }
+      
+      //--results.each(function(item){console.log(item.length)});
       return results;
     },
     _eventDate: function (date) {
@@ -1018,6 +1028,7 @@ var ETimeline = function (opts) {
 			var tooltip_el;
 			
 			events.each(function(event) {
+			  //--console.log(event.num);
 				this.eventSource.add((new ETLTimelineEvent(event)).event);
       }.bind(this));
 			// Force timeline to redraw so that events show up

@@ -54,6 +54,34 @@
  *      or passed the filter.
  */
 
+getIconSize = function(n){
+  //var i = [1,2,3,4,5,10,15,20,25,30]
+  //var j = [10,12,14,16,18,25,28,31,34,40]
+  var r;
+  if (n <2 ){
+    r=10;
+  } else if (n<3){
+    r=12;
+  } else if (n<4){
+    r=14;
+  } else if (n<5){
+    r=16;
+  } else if (n<6){
+    r=18;
+  } else if (n<11){
+    r=25;
+  } else if (n<16){
+    r=28;
+  } else if (n<21){
+    r=31;
+  } else if (n<25){
+    r=34;
+  } else {
+    r=40;
+  }
+  return r;
+}
+
 Timeline.OriginalEventPainter = function(params) {
     this._params = params;
     this._onSelectListeners = [];
@@ -465,7 +493,20 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
                      metrics.trackHeight / 2;
         top = Math.round(middle - metrics.iconHeight / 2);
     }
-    var img = SimileAjax.Graphics.createTranslucentImage(icon);
+    
+
+
+// icon resize here
+// modified by dimas.priyanto@gmail.com 31/08/09
+
+    var size = evt.getTrackNum();
+    image_size = getIconSize(size);
+    console.log("original");
+    console.log(image_size);
+    
+//--------------++    
+    
+    var img = SimileAjax.Graphics.createTranslucentImage(icon, image_size);
     var iconDiv = this._timeline.getDocument().createElement("div");
     iconDiv.className = this._getElClassName('timeline-event-icon', evt, 'icon');
     iconDiv.id = this._encodeEventElID('icon', evt);

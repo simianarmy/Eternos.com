@@ -1712,8 +1712,12 @@ if(C.nodeType==1){SimileAjax.DOM._processDOMConstructedFromString(E,C,D);
 SimileAjax.Graphics=new Object();
 SimileAjax.Graphics.pngIsTranslucent=(!SimileAjax.Platform.browser.isIE)||(SimileAjax.Platform.browser.majorVersion>6);
 if(!SimileAjax.Graphics.pngIsTranslucent){SimileAjax.includeCssFile(document,SimileAjax.urlPrefix+"styles/graphics-ie6.css");
-}SimileAjax.Graphics._createTranslucentImage1=function(A,C){var B=document.createElement("img");
+}
+SimileAjax.Graphics._createTranslucentImage1=function(A,size,C){var B=document.createElement("img");
 B.setAttribute("src",A);
+B.style.height = size+"px";
+B.style.width = size+"px";
+console.log("should be here");
 if(C!=null){B.style.verticalAlign=C;
 }return B;
 };

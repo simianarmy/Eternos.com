@@ -516,6 +516,9 @@ Timeline.DetailedEventPainter.prototype._paintEventIcon = function(evt, iconTrac
     var middle = metrics.trackOffset + iconTrack * metrics.trackIncrement + metrics.trackHeight / 2;
     var top = Math.round(middle - metrics.iconHeight / 2);
 
+    var size = evt.getTrackNum();
+    console.log("detailed");
+
     var img = SimileAjax.Graphics.createTranslucentImage(icon);
     var iconDiv = this._timeline.getDocument().createElement("div");
     iconDiv.style.position = "absolute";
