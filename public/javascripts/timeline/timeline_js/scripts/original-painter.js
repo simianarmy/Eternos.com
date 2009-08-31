@@ -498,13 +498,9 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
 
 // icon resize here
 // modified by dimas.priyanto@gmail.com 31/08/09
-
     var size = evt.getTrackNum();
-    image_size = getIconSize(size);
-    console.log("original");
-    console.log(image_size);
-    
-//--------------++    
+    image_size = getIconSize(size);   
+//--------------
     
     var img = SimileAjax.Graphics.createTranslucentImage(icon, image_size);
     var iconDiv = this._timeline.getDocument().createElement("div");

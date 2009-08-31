@@ -1,6 +1,8 @@
 // $Id$
 
 var DefaultTooltipOptions = {
+  border: 6,
+  borderColor: '#74C5FF',
 	fixed: true,
   width: 'auto',
   hideOthers: true,
@@ -24,10 +26,14 @@ var ETemplates = {
 			hiddenItem: function () {
 				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 			},
-			eventItemWithTooltip: function () {
+			eventItemWithTooltipOLD: function () {
 				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
 					'<div class="tooltip_container"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
 			},
+			eventItemWithTooltip: function () {
+				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
+					'<div class="tooltip_container"><p/>#{tt_content}</div>#{inline_content}</li>');
+			},      
 			eventItemTooltipItem: function () {
 				return new Template('<div class="event_preview_item_container">#{content}</div>');
 			},
@@ -36,11 +42,11 @@ var ETemplates = {
 			},
 			createEventItemTooltips: function() {
 				// Create tooltip for each event list link
-				var title;
+				// var title;      
 				$$('a.event_list_inline_item').each(function (element) {
 	        s = element.next('div.tooltip_container');
 	        s.hide();
-				
+          DefaultTooltipOptions.title = element.innerHTML;
 	        new Tip(element, s, DefaultTooltipOptions);
 	      });
 			},

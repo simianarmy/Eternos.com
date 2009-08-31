@@ -1209,7 +1209,6 @@ var A=this._timeline.getDocument().createElement("div");
 A.style.position="absolute";
 A.style.left=C+"px";
 A.style.top=I+"px";
-console.log("bundle-detailed");
 A.appendChild(D);
 A.style.cursor="pointer";
 if(J._title!=null){A.title=J._title;

@@ -1717,7 +1717,6 @@ SimileAjax.Graphics._createTranslucentImage1=function(A,size,C){var B=document.c
 B.setAttribute("src",A);
 B.style.height = size+"px";
 B.style.width = size+"px";
-console.log("should be here");
 if(C!=null){B.style.verticalAlign=C;
 }return B;
 };
