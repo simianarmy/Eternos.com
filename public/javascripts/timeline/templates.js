@@ -1,6 +1,7 @@
 // $Id$
 
 var DefaultTooltipOptions = {
+  width: '400px',
   border: 6,
   borderColor: '#74C5FF',
 	fixed: true,
@@ -65,6 +66,9 @@ var ETemplates = {
 						}
 					}
 				});
+			},
+			tooltipTitle: function(){
+			  return new Template("<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/facebook.gif'> &nbsp;&nbsp;This is title");
 			}
 		},
 		// Artifacts section templates

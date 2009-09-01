@@ -149,7 +149,11 @@ var ETimeline = function (opts) {
 			imgUrl: "icons/",
 			iconPostfix: "",
 			blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>",
-			tlEffectiveWidth: 750
+			tlEffectiveWidth: 750,
+			tooltipTitle: function(type, title){
+			  var icon = ETEvent.getSourceIcon(type);
+			  return "<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/"+icon+"'> &nbsp;&nbsp;"+title;
+			}
 		}
   };
 	that.utils = ETLUtil();
@@ -418,6 +422,7 @@ var ETimeline = function (opts) {
       this.itemWithTooltipTemplate = that.templates.eventListTemplates.eventItemWithTooltip();
       this.tooltipItemTemplate = that.templates.eventListTemplates.eventItemTooltipItem();
       this.inlineEventsTemplate = that.templates.eventListTemplates.inlineEvents();
+      this.tooltipTitleTemplate = that.templates.eventListTemplates.tooltipTitle()
     },
     _setTitle: function () {
       if (this.num > 1) {
@@ -465,7 +470,8 @@ var ETimeline = function (opts) {
       }
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
-        title: this.title,
+        b_title: this.title,
+        title: that.utils.tooltipTitle(this.type, this.title),
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         hidden_items: other_items,
@@ -475,7 +481,7 @@ var ETimeline = function (opts) {
     _getInlineItemHtml: function () {
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
-        title: this.title,
+        title: that.utils.tooltipTitle(this.type, this.title),
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         tt_content: this._getTooltipContents()
@@ -1011,7 +1017,7 @@ var ETimeline = function (opts) {
 				console.dir(evt);
 				// Should fire click() on matching event list target link
 				if ((li = ETemplates.event_list_item(evt.getEventID())) !== undefined) {
-					if ((a = li.down().down('a.event_list_inline_item')) !== undefined) {
+					if ( (li !== null) && (a = li.down().down('a.event_list_inline_item')) !== undefined) {
 						Lightview.show({
 						 	href: a.href,
 						  rel: a.rel,
