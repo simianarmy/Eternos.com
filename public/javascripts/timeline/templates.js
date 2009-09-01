@@ -41,6 +41,9 @@ var ETemplates = {
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');
 			},
+			tooltipTitle: function(){
+			  return new Template("<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/#{icon}'> &nbsp;&nbsp;#{title}");
+			},
 			createEventItemTooltips: function() {
 				// Create tooltip for each event list link
 				// var title;      
@@ -53,23 +56,26 @@ var ETemplates = {
 			},
 			createTimelineTooltips: function() {
 				var item_id;
+				var element;
+				var title;
 				// Create tooltip for each timeline point
 				$$('.tl_event[title]').each(function(e) {
 					item_id = e.readAttribute('title');
 					if (li = $("evli:" + item_id)) {
 						// This is pretty weak...
-						if (tt = li.childElements()[0].down('div.tooltip_container')) {
-							//console.log("Adding tooltip to event id " + item_id);
-							// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
-							// (in event list) will cause the 1st tooltip to cancel the other one out
-							new Tip(e, $(tt).innerHTML, DefaultTooltipOptions);
+						if (li.childElements().length > 0) {
+							element = li.childElements()[0];
+							if (tt = element.down('div.tooltip_container')) {
+								DefaultTooltipOptions.title = element.down('a.event_list_inline_item').innerHTML;
+								//console.log("Adding tooltip to event id " + item_id);
+								// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
+								// (in event list) will cause the 1st tooltip to cancel the other one out
+								new Tip(e, tt.innerHTML, DefaultTooltipOptions);
+							}
 						}
 					}
 				});
 			},
-			tooltipTitle: function(){
-			  return new Template("<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/facebook.gif'> &nbsp;&nbsp;This is title");
-			}
 		},
 		// Artifacts section templates
 		artifactTemplates: {

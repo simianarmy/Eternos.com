@@ -149,11 +149,7 @@ var ETimeline = function (opts) {
 			imgUrl: "icons/",
 			iconPostfix: "",
 			blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>",
-			tlEffectiveWidth: 750,
-			tooltipTitle: function(type, title){
-			  var icon = ETEvent.getSourceIcon(type);
-			  return "<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/"+icon+"'> &nbsp;&nbsp;"+title;
-			}
+			tlEffectiveWidth: 750
 		}
   };
 	that.utils = ETLUtil();
@@ -471,7 +467,8 @@ var ETimeline = function (opts) {
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
         b_title: this.title,
-        title: that.utils.tooltipTitle(this.type, this.title),
+				title: this.tooltipTitleTemplate.evaluate({
+					icon: this.first.icon, title: this.title}),
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         hidden_items: other_items,
@@ -479,9 +476,12 @@ var ETimeline = function (opts) {
       });
     },
     _getInlineItemHtml: function () {
+			console.log("tooltip title template = " + this.tooltipTitleTemplate.evaluate({
+				icon: this.first.icon, title: this.title}));
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
-        title: that.utils.tooltipTitle(this.type, this.title),
+        title: this.tooltipTitleTemplate.evaluate({
+					icon: this.first.icon, title: this.title}),
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         tt_content: this._getTooltipContents()
