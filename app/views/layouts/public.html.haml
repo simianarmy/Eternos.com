@@ -20,8 +20,11 @@
             %h1= link_to((image_tag 'logo.png', :id => 'eternos_logo'),  root_path)
           = render :partial => 'shared/login_box' unless @hide_login_box
         #bd
+          #notice.flash_notice
+          = show_flash_messages
+
           = yield
-        = render :partial => 'shared/site_footer'
+        = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless params['controller'] == 'home'
     = fb_connect_javascript_tag
     = init_fb_connect "XFBML"

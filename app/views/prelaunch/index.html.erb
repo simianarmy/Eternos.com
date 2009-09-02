@@ -1,0 +1,35 @@
+<% stylesheet 'prelaunch' %>
+
+	<%= image_tag "body-top2.gif" %>
+	<div id="content-container2">
+		<center>
+				<div class="right1">	
+    			<div class="notification-box5">Please enter your email address to signup for our</div>
+					<%= image_tag "beta.gif", :class => "beta" %>
+					<div class="notification-box5">program!</div>
+				</div>
+				<div style="clear:both"></div>
+				<div class="notification-box6">Preserve your Digital Memories - For Eternity!</div>
+				<div id="email_container">
+					<%= image_tag "mail_icon.png", :id => "email_icon" %>
+					<div id="emailbox">
+						<%= error_messages_for :notify_email %>
+						<br/>
+						<% form_for(:notify_email, @notify_email, :url => { :action => :create }) do |f| %>
+						  <%= f.hidden_field :keywords %>
+						  <%= f.hidden_field :referrer %>
+						  <%= f.text_field :email, {:class => 'textbox', :value => 'enter your email address', :onfocus => "if(this.value=='enter your email address'){this.value = ''}", :onblur => "if(this.value==''){this.value = 'enter your email address'}"} %>
+							<%= f.submit "Notify me once Eternos is live", :class => "email_btn" %>
+						<% end %>
+					</div>
+				</div>
+				<div style="clear:both"></div>
+				<br /><br />
+				<h4>Your email won't be used for any purpose other than letting you know when Eternos is available to try out for free!</h4>
+				<br />
+				<h5>Eternos will launch in Beta Q3, 2009.  We will send you an invitation soon!</h5>
+		</center>
+		<br /><br />
+  </div>
+  <%#= image_tag "body-bottom.png" %>
+

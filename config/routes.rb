@@ -1,6 +1,16 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
+  # Singleton resources
+  map.resource :profile
+  map.resource :facebook_profile
+  map.resource :fb, :controller => 'fb'
+  map.resource :timeline
+  map.resource :wysiwyg_preview
+  map.resource :backup_state
+  map.resource :facebook_backup, :controller => 'facebook_backup', :member => { 
+    :check_auth => :get, :permissions => :get }
+    
   map.resources :timeline_events, :collection => {
     :events => :get
   }
@@ -34,16 +44,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':anywhere/flashrecorder.xml', :controller => 'recordings', 
     :action => 'flashrecorder', :format => 'xml'
   
-  # Singleton resources    
-  map.resource :profile
-  map.resource :facebook_profile
-  map.resource :fb, :controller => 'fb'
-  map.resource :timeline
-  map.resource :wysiwyg_preview
-  map.resource :backup_state
-  map.resource :facebook_backup, :controller => 'facebook_backup', :member => { 
-    :check_auth => :get, :permissions => :get }
-  
   map.resources :user_sessions, :comments, :content_authorizations, :documents, 
     :audio, :videos, :web_videos, :photos, :invitations, :address_books, 
     :guests, :recordings, :guest_invitations, :password_resets
@@ -76,6 +76,10 @@ ActionController::Routing::Routes.draw do |map|
   end
     
   map.resources :addresses, :collection => { :country_regions => :post }
+
+  map.resources :prelaunch, :controller => "prelaunch"
+  map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
+  map.connect 'fb/*keywords', :controller => 'prelaunch', :action => 'index'
   
   # The priority is based upon order of creation: first created -> highest priority.
 
