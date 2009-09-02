@@ -4,4 +4,11 @@ Welcome to the first private review of our revolutionary Eternal Backup™ servi
 If you have any problems, suggestions, or concerns with our service, please use the handy "FEEDBACK" button that is along the right side of your screen. We appreciate any and all bug reports, comments, and suggestions you might have!
 <p/>
 <br/>
-<%= link_to 'Click Here To Create Your FREE Account', @signup_url %>
+<br/>
+Invitation Code: <%= @invitation.token %>
+<p/>
+<br/>
+<%= link_to 'Click Here To Create Your Account', @signup_url %>
+<br/>
+Or copy and paste this link into your browser: <br/>
+<%= @signup_url %>

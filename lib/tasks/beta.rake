@@ -5,11 +5,12 @@ namespace :beta do
   task :send_invitation_codes => :environment do
     NotifyEmail.sent_at_nil.each do |email|
       @invitation = Invitation.new(:recipient_email => email.email)
-      @invitation.sender = Member.first
+      @invitation.sender = Member.find(64) # Me
       if @invitation.save
-        UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free'))
+        UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free', 
+          :host => 'eternos.com'))
         puts "Invite sent to #{email.email}"
-        #email.update_attribute(:sent_at, Time.now)
+        email.update_attribute(:sent_at, Time.now)
       end
     end
   end
