@@ -1,6 +1,6 @@
 # $Id$
 common: &default_settings
-  invitation_required: false
+  invitation_required: true
   email_registration_required: false
   support_email: support@eternos.com
   # Set this to true if you want to require CC info when creating a trial account for a paid plan

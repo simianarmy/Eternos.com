@@ -114,7 +114,7 @@ ActionController::Routing::Routes.draw do |map|
   
   # Named routes
   map.about '/about', :controller => 'about'
-  map.signup '/invitation/:invitation_token', :controller => 'users', :action => 'new'
+  map.signup '/invitation/:invitation_token/:plan', :controller => 'accounts', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.login '/login', :controller => 'user_sessions', :action => 'new', :secure => true
   map.logout '/logout', :controller => 'user_sessions', :action => 'destroy'

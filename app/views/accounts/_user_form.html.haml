@@ -1,6 +1,8 @@
 = custom_error_messages_for :user, :full_messages => true
 
-= f.hidden_field :invitation_token
+%p.input#invitation-token
+  Invitation Code: 
+  = f.text_field :invitation_token
 %p.input#fb-name
 %p.input#first-name-input
   First Name:

@@ -4,7 +4,7 @@ class AccountsController < ApplicationController
   permit "admin for :account", :only => [:edit, :update, :plan, :billing, :cancel, :dashboard]
   
   before_filter :load_facebook_connect
-  before_filter :set_facebook_session 
+  before_filter :set_facebook_session
   before_filter :build_user, :only => [:new, :create]
   before_filter :build_plan, :only => [:new, :create]
   before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
@@ -20,6 +20,9 @@ class AccountsController < ApplicationController
   
   def new
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
+    if params[:invitation_token]
+      @user.invitation_token = params[:invitation_token]
+    end
   end
 
   # 1 or 2-step process
@@ -234,4 +237,5 @@ class AccountsController < ApplicationController
     def check_logged_in      
       redirect_to member_home_url if current_user
     end
+
 end

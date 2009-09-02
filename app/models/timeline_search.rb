@@ -82,7 +82,9 @@ class TimelineSearch
   end
   
   def get_backup_photos
-    facebook_source.photos_between_dates(@start_date, @end_date).map(&:photo)
+    if fb = facebook_source
+      fb.photos_between_dates(@start_date, @end_date).map(&:photo)
+    end
   end
   
   def get_emails
