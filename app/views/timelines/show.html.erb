@@ -1,30 +1,28 @@
 <% includes do
   use_timeline 
 end %>
-
-  <div id="content-container3">
-    <div id="timeline-top">
-      <span class="subtitle1"><%= @member_name %>:</span>
-      <span class="subtitle2">Your TimeLine(tm)</span>
-      <br/>
-      <span style="font-size: x-small">
-      If you have any problems, suggestions, or concerns with our service, please use the handy "FEEDBACK" button that is along the right side of your screen.  We appreciate any and all bug reports, comments, and suggestions you might have!
-      </span>
-      <div class="timelinebox">
-        <div id="my-timeline" style="height:375px;border: 1px solid #aaa;"></div>
-        <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
-      </div>
-      <span><font style="font-size: x-small">To navigate the Timeline: use the mouse scroll wheel, the arrow keys or grab and drag the Timeline.</font>
-  		<div class="dotline"></div>
+<% header '<span class="subtitle1">' + @member_name + ':</span><span class="subtitle2">Your TimeLine(tm)</span>' 
+%>
+<div id="content-container3">
+  <div id="timeline-top">
+    <span style="font-size: x-small">
+    If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We appreciate any and all bug reports, comments, and suggestions you might have!
+    </span>
+    <div class="timelinebox">
+      <div id="my-timeline" style="height:375px;border: 1px solid #aaa;"></div>
+      <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
     </div>
-    <div id="timeline-detail">
-      <div id="month-selector"></div>
-  		<div style="clear:both"></div>
-      <div id="story-area"></div>
-      <div id="arti-area"></div>			            
-  		<div style="clear:both"></div>
-    </div>
+    <span><font style="font-size: x-small">To navigate the Timeline: use the mouse scroll wheel, the arrow keys or grab and drag the Timeline.</font>
+		<div class="dotline"></div>
   </div>
+  <div id="timeline-detail">
+    <div id="month-selector"></div>
+		<div style="clear:both"></div>
+    <div id="story-area"></div>
+    <div id="arti-area"></div>			            
+		<div style="clear:both"></div>
+  </div>
+</div>
 
 <%= javascript_tag "
 Event.observe(window, 'dom:loaded', function() {

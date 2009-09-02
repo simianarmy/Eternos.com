@@ -45,14 +45,11 @@
         = show_flash_messages
         /= render :partial => 'users/user_bar'
         .context
-          %p
-            = yield(:header)
+          %p= yield(:header)
 
         #sub_content
-          .content_title.alignleft
-            / %h2 Copy here necessary?
+          /.content_title.alignleft
           .clearboth
-          %p
           %br
           = yield
          

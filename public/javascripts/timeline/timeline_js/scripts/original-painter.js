@@ -58,24 +58,12 @@ getIconSize = function(n){
   //var i = [1,2,3,4,5,10,15,20,25,30]
   //var j = [10,12,14,16,18,25,28,31,34,40]
   var r;
-  if (n <2 ){
-    r=10;
-  } else if (n<3){
-    r=12;
-  } else if (n<4){
-    r=14;
-  } else if (n<5){
+  if (n <= 1) {
     r=16;
-  } else if (n<6){
-    r=18;
-  } else if (n<11){
-    r=25;
-  } else if (n<16){
-    r=28;
-  } else if (n<21){
-    r=31;
-  } else if (n<25){
-    r=34;
+  } else if (n <= 5) {
+    r=20;
+  } else if (n <= 10) {
+    r=30;
   } else {
     r=40;
   }

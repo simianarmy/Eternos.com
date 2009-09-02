@@ -1017,7 +1017,7 @@ var ETimeline = function (opts) {
 				console.dir(evt);
 				// Should fire click() on matching event list target link
 				if ((li = ETemplates.event_list_item(evt.getEventID())) !== undefined) {
-					if ( (li !== null) && (a = li.down().down('a.event_list_inline_item')) !== undefined) {
+					if ((li !== null) && (a = li.down().down('a.event_list_inline_item')) !== undefined) {
 						Lightview.show({
 						 	href: a.href,
 						  rel: a.rel,
@@ -1116,6 +1116,7 @@ var ETimeline = function (opts) {
     },
     parseSearchResults: function (results) {
 			var groupedEvents;
+			var newDate;
 			
 			// Parse json results & save
       this.rawEvents.pushEvents(results);
@@ -1126,11 +1127,18 @@ var ETimeline = function (opts) {
 			if (groupedEvents.length > 0) {
 				this._addEvents(groupedEvents);
 				// Center timeline on latest new event
-				this.scrollTo(groupedEvents.pluck('start_date').max().toDate());
+				newDate = groupedEvents.pluck('start_date').max().toDate();
+				if (newDate !== this.currentDate) {
+					this.scrollTo(newDate);
+				}
 			}
     },
 		scrollTo: function(date) {
+			console.log("Scrolling to date " + date);
 			this.timeline.getBand(1).setCenterVisibleDate(date);
+			this._updateTitles(date);
+			this.rawEvents.populateResults(date);
+			this.redraw();
 		}
   });
 

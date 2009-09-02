@@ -256,3 +256,71 @@ a.paginate-btn:hover{
 .story-subject-btn:hover{
 	text-decoration:underline;
 }
+
+/* timeline events */
+
+.clear{
+	clear:both;
+}
+
+.icon{
+	width:19px;
+	height:19px;
+	float:left;
+	border:none;
+	margin-right:10px;
+}
+
+.event_list_item_container-FIXME{
+	margin:-20px 0 0 5px;
+	line-height:20px;
+}
+
+.event_list_group-FIXME{
+	width:548px;
+	height:auto;
+	font-family:arial;
+	font-size:11px;
+	color:#3a4c62;
+	text-align:left;
+	border:none;
+	margin-top:5px;
+	border-bottom:1px dotted #3a4c62;
+}
+
+.event_list_date-FIXME{
+	width:100px;
+	height:auto;
+	padding:5px 10px 0 0;
+	float:left;
+}
+.event_list_group_items-FIXME{
+	float:left;
+}
+
+.event_list_item_container-FIXME a{
+	font-family:arial;
+	font-size:11px;
+	color:#205db9;
+	margin:10px 0 5px 0;
+	text-decoration:none;
+	float:left;
+}
+
+.event_list_item_container-FIXME a:hover{
+	text-decoration:underline;
+}
+
+ul{
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	padding:0;
+}
+
+li{
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	padding:0;
+}
