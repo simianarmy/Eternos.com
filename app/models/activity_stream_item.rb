@@ -46,6 +46,7 @@ class ActivityStreamItem < ActiveRecord::Base
     if attachment_data
       @data ||= YAML::parse attachment_data
     end
+  rescue nil
   end
 end
 

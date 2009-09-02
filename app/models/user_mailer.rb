@@ -1,14 +1,16 @@
 # $Id$
 class UserMailer < ActionMailer::Base
-  layout 'email'
-  
   def signup_notification(user)
+    layout 'email'
+    
     setup_email(user)
     @subject    += 'Please activate your new account'
     @body[:url]  = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
   end
   
   def activation(user)
+    layout 'email'
+    
     setup_email(user)
     @subject    = "Your #{AppConfig.app_name} account has been activated!"
     @user = user
@@ -22,7 +24,7 @@ class UserMailer < ActionMailer::Base
     subject 'Your Eternos.com Invitation Code'
     recipients  invitation.recipient_email
     from  "#{AppConfig.from_email}"
-    @content_type = "text/html"
+    reply_to "#{AppConfig.support_email}"
     body  :invitation => invitation, :signup_url => signup_url
 
     invitation.update_attribute(:sent_at, Time.now)
