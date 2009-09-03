@@ -21,7 +21,7 @@ class AccountsController < ApplicationController
   def new
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
     if params[:invitation_token]
-      @user.invitation_token = params[:invitation_token]
+      @invitation_token = params[:invitation_token]
     end
   end
 
@@ -75,6 +75,8 @@ class AccountsController < ApplicationController
       end
     else
       @checked = false
+      @invitation_token = params[:user][:invitation_token]
+      
       render :action => 'new'#:layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
     end
   end

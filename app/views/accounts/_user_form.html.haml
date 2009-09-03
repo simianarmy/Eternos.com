@@ -2,7 +2,7 @@
 
 %p.input#invitation-token
   Invitation Code: 
-  = f.text_field :invitation_token
+  = text_field_tag 'user[invitation_token]', @invitation_token
 %p.input#fb-name
 %p.input#first-name-input
   First Name:

@@ -15,7 +15,9 @@ class User < ActiveRecord::Base
     c.login_field = :login
     c.logged_in_timeout = SESSION_DURATION_SECONDS
     c.validates_length_of_password_field_options :minimum => 6, :if => :require_password?
-    c.validates_length_of_email_field_options :minimum => 0 # to fix missing I18n error key problem
+    c.validates_length_of_password_field_options = c.validates_length_of_password_field_options.merge(
+      :message => 'Password is too short')
+    #c.validates_length_of_email_field_options :minimum => 0 # to fix missing I18n error key problem
   end
   # Authorization
   acts_as_authorized_user
@@ -27,8 +29,8 @@ class User < ActiveRecord::Base
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :first_name, :last_name, :email, :facebook_id,
-    :password, :password_confirmation, :identity_url, 
-    :invitation_token, :terms_of_service
+    :password, :password_confirmation, :identity_url, :invitation_token, 
+    :terms_of_service
   
   # Validate first,last name
   validates_presence_of :first_name
@@ -40,7 +42,7 @@ class User < ActiveRecord::Base
   
   with_options :if => :invitation_required? do |u|
     u.validates_presence_of     :invitation_id
-    u.validates_uniqueness_of   :invitation_id
+    u.validates_uniqueness_of   :invitation_id, :if => :invitation_id
   end
   before_create :set_invitation_limit, :make_activation_code
   #after_create :register_user_to_fb
