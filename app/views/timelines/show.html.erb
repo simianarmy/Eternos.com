@@ -42,3 +42,9 @@ document.observe('dom:loaded', function() {
   }).draw();
 });
 ") unless @hide_timeline %>
+
+<%= javascript_tag("
+document.observe('lightview:hidden', function(e) {
+  window.location.reload();
+});
+") if @hide_timeline %>
