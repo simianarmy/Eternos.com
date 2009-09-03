@@ -1,14 +1,7 @@
+page.flash_and_fade :rss_notice
 if @feed_url.valid?
   page[:feed_url_rss_url].value = ""
   page.replace_html "result-urls", :partial => 'shared/url_list', :locals => {:feed_urls => @feed_urls}
   page["rss-link"].removeClassName('rss-btn')
   page["rss-link"].addClassName('rss-active')
-else
-  page.replace_html "error-message-rss", :inline => "<%= custom_error_messages_for :feed_url %>"
-  page[:errorExplanation].visual_effect :highlight,
-                                        :startcolor => "#ea8c8c",
-                                        :endcolor => "#cfe9fa"
-  page.delay(4) do
-    page[:errorExplanation].remove                            
-  end
 end
