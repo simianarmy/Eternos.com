@@ -80,3 +80,5 @@ Postfix for mail
 Xen for virtualization
 
 Backup Monitoring: http://www.rightmirror.com/
+
+Cap recipes http://capitate.rubyforge.org/index.html

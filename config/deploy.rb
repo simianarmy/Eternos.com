@@ -36,6 +36,9 @@ set :deploy_via, :remote_cache
 set :keep_releases, 3
 set :dos2unix, "/usr/bin/dos2unix"
 
+set :shared_configs, %w[ amazon_s3.yml amqp.yml application.yml daemons.god database.yml email.yml facebooker.yml 
+  facebooker_desktop.yml key.yml newrelic.yml paypal.yml workling.yml ]
+
 namespace :deploy do
   task :start do
     # do nothing - override default
@@ -49,8 +52,7 @@ namespace :deploy do
   
   desc "Symlink shared configs and folders on each release."
   task :symlink_shared do
-    %w[ amazon_s3.yml amqp.yml application.yml daemons.god database.yml email.yml facebooker.yml 
-      facebooker_desktop.yml key.yml newrelic.yml paypal.yml workling.yml ].each do |config|
+    fetch(:shared_configs).each do |config|
       run "ln -nfs #{shared_path}/config/#{config} #{release_path}/config/#{config}"
     end
     run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
@@ -70,20 +72,6 @@ namespace :deploy do
   desc "Custom actions for setup"
   task :after_setup do
     run "mkdir -p #{shared_path}/assets"
-  end
-
-  desc "Stops work daemons"
-  task :stop_daemons, :roles => :app do
-    run "god unmonitor eternos"
-    run "god stop eternos-email-uploader"
-    run "god stop eternos-workling"
-  end
-  
-  desc "Restarts any work daemons"
-  task :start_daemons, :roles => :app do
-    run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
-    run "god load #{current_path}/config/daemons.god"
-    run "god restart eternos"
   end
   
   task :build_native do
@@ -114,6 +102,12 @@ namespace :deploy do
     run "rm #{path_to_filename}"
   end
 
+  desc "Updates shared config files"
+  task :update_configs, :roles => :app do
+    fetch(:shared_configs).each do |c|
+      top.upload "config/#{c}", "#{shared_path}/config/#{c}"
+    end
+  end
 end
 
 #after "deploy:symlink", "deploy:google_analytics"
