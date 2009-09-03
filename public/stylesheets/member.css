@@ -23,7 +23,7 @@ body {
 #wrapper { width: 890px; margin: 0 auto; }
 #topdiv { background: url(/images/topdiv.gif) no-repeat; height: 10px; width: 890px; }
 #bottomdiv { background: url(/images/bottomdiv.gif) no-repeat; height: 10px; width: 890px; }
-#content { width: 861px; margin: 0 auto; padding-left: 29px; background: url(/images/contentbg.gif) repeat-y;}
+#content { width: 861px; margin: 0 auto; padding: 0 14px 0 15px; background: url(/images/contentbg.gif) repeat-y;}
 #header { height: 78px; }
 #logo { margin: 6px 24px; width: 172px;}
 #login { background:  url(/images/loginbg.gif) bottom no-repeat; width: 391px; height: 55px; padding: 0 10px;}
@@ -53,7 +53,7 @@ body {
 #navlist .login { background: url(/images/login.gif) left no-repeat;  padding: 3px 15px 3px 20px; }
 
 .context { margin-top: 20px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; }
-#sub_content { width: 840px; float: right; border-top: 1px solid #02419e; margin-top: 20px; padding-top: 10px; } 
+#sub_content { width: 861px; float: right; border-top: 1px solid #02419e; margin: 20px 0 0 0; } 
 #sub_content h2 {font-size: 30px; font-weight: normal; color: #12419e; margin: 0; padding: 0;}
 #search_content {
 	padding-top: 15px;
