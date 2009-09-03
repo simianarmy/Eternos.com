@@ -67,10 +67,10 @@ body{
 	color:black;
 	font-family:arial;
 	font-size:18px;
-	padding:177px 0 0 20px;
+	padding:215px 0 0 20px;
 	margin-top:10px;
 	float:left;
-	background:red url(/images/main-pic.jpg) no-repeat;
+	background:url(/images/main-pic.jpg) no-repeat;
 }
 
 .right-container{
