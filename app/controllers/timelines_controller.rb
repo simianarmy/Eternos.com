@@ -25,6 +25,12 @@ class TimelinesController < ApplicationController
     @member_name = @member.full_name
     @tl_start_date, @tl_end_date = cache("tl_date_range:#{@member.id}") { @member.timeline_span }
     @fake = 'fake' if params[:fake]
+    
+    @hide_timeline = if @member.need_backup_setup?
+      flash[:error] = "<h4>You do not have any accounts to backup yet!</h4>To setup your online accounts, click the 'account settings' link above and go to Step 2."
+    elsif !@member.has_backup_data?
+      flash[:notice] = "We are backing up your data and will email you when it is ready to view!"
+    end
   end
   
   def debug

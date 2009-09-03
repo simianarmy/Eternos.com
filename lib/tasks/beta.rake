@@ -8,7 +8,7 @@ namespace :beta do
       @invitation.sender = Member.find(64) # Me
       if @invitation.save
         UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free', 
-          :host => 'eternos.com'))
+          :host => 'beta.eternos.com'))
         puts "Invite sent to #{email.email}"
         email.update_attribute(:sent_at, Time.now)
       end

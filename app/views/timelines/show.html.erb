@@ -5,9 +5,9 @@ end %>
 %>
 <div id="content-container3">
   <div id="timeline-top">
-    <span style="font-size: x-small">
-    If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We appreciate any and all bug reports, comments, and suggestions you might have!
-    </span>
+      <span style="font-size: x-small">
+        If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We appreciate any and all bug reports, comments, and suggestions you might have!
+      </span>
     <div class="timelinebox">
       <div id="my-timeline" style="height:375px;border: 1px solid #aaa;"></div>
       <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
@@ -24,8 +24,8 @@ end %>
   </div>
 </div>
 
-<%= javascript_tag "
-Event.observe(window, 'dom:loaded', function() {
+<%= javascript_tag("
+document.observe('dom:loaded', function() {
   new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',
     events_section_id: 'story-area',
@@ -41,4 +41,4 @@ Event.observe(window, 'dom:loaded', function() {
     }
   }).draw();
 });
-" %>
+") unless @hide_timeline %>

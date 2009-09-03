@@ -27,9 +27,9 @@ humanized_num_file = num.eql?(1) ? "#{num} file was" : "#{num} files were"
 msg = <<END_OF_MESSAGE
 From: #{FROM_ADDRESS}
 To: #{TO_ADDRESS}
-Subject: [eternos.com] staging server updated
+Subject: [eternos.com] #{ARGV[1]} server updated
 Content-Type: text/html
-The staging website was updated to SVN version #{SVN_VERSION} at #{datetime_changed} and #{humanized_num_file} updated. <br />
+The #{ARGV[1]} website was updated to SVN version #{SVN_VERSION} at #{datetime_changed} and #{humanized_num_file} updated. <br />
 Below is the log details. <br /><br />
 #{File.read(PATH_TO_FILE).gsub("\n", "<br />")}
 END_OF_MESSAGE

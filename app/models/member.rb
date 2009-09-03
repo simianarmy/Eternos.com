@@ -124,6 +124,10 @@ class Member < User
     backup_sources.confirmed.empty?
   end
     
+  def has_backup_data?
+    backup_state.items_saved rescue false
+  end
+  
   def timeline_span   
     # Look for earliest timeline event
     p = profile
