@@ -23,22 +23,22 @@
 }
 
 .subtitle6{
-	font-family:arial;
-	font-size:18px;
-	color:#636972;
-	width:110px;
-	text-align:right;
-	margin-right:5px;
-	float:left;
+  font-family:arial;
+  font-size:18px;
+  color:#636972;
+  text-align:right;
+  padding:0 10px;
+  float:left;
 }
 
 .subtitle7{
-	font-family:arial;
-	font-size:18px;
-	color:#02419e;
-	width:70px;
-	text-align:left;
-	float:left;
+  font-family:arial;
+  font-size:18px;
+  color:#02419e;
+  width:auto;
+  padding:0 10px;
+  text-align:left;
+  float:left;
 }
 
 .timelinebox{
@@ -130,13 +130,13 @@ a.paginate-btn:hover{
 }
 
 .btn-right{
-	width:12px;
-	height:22px;
-	background:url(/images/arrow-right.gif) 0 0;
-	border:none;
-	display:block;
-	float:left;
-	margin:0 0 0 10px;
+  width:12px;
+  height:22px;
+  background:url(/images/arrow-right.gif) 0 0;
+  border:none;
+  display:block;
+  float:left;
+  margin:0 10px 0 10px;
 }
 
 .btn-right:hover{

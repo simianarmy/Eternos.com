@@ -96,3 +96,4 @@ var ETemplates = {
 			return $("evli:" + id);
 		}
 };
+
