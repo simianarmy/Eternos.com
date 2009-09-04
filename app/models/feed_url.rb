@@ -26,10 +26,12 @@ class FeedUrl < BackupSource
   def validate_feed
     unless self.rss_url.blank?
       begin
-        @feed_info = Feedzirra::Feed.fetch_and_parse(self.rss_url, :timeout => 30)
+        # feed:// should be converted to http://
+        url = self.rss_url.gsub('feed://', 'http://')
+        @feed_info = Feedzirra::Feed.fetch_and_parse(url, :timeout => 30)
         unless valid_feed? @feed_info
           # Try feed auto-discovery
-          @feed_info = Feedzirra::Feed.fetch_and_parse Columbus.new(self.rss_url).primary.url
+          @feed_info = Feedzirra::Feed.fetch_and_parse Columbus.new(url).primary.url
         end
       rescue
       end

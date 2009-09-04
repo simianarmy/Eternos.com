@@ -27,6 +27,11 @@ describe FeedUrl do
         @feed.should be_valid
       }.should change(@feed, :confirmed?).from(false).to(true)
     end
+    
+    it "should handle feed:// urls" do
+      @feed.rss_url = 'feed://behindyou.tumblr.com/rss'
+      @feed.should be_valid
+    end
   end
   
   describe "on create" do
@@ -65,5 +70,10 @@ describe FeedUrl do
       @feed.feed.should be_a Feed
       @feed.rss_url.should == @feed.feed.feed_url_s
     end
+  end
+  
+  describe "on confirmed!" do
+    it "should set auth_confirmed attribute to true"
+    it "should publish backup job"
   end
 end

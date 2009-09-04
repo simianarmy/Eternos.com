@@ -44,9 +44,8 @@ class ActivityStreamItem < ActiveRecord::Base
   def media_attachment?; false end
   def parsed_attachment_data
     if attachment_data
-      @data ||= YAML::parse attachment_data
+      @data ||= YAML::parse attachment_data rescue nil
     end
-  rescue nil
   end
 end
 

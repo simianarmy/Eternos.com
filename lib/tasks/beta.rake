@@ -1,16 +1,28 @@
 # $Id$
 
+def invite(sender, recipient)
+  @invitation = Invitation.new(:recipient_email => recipient)
+  @invitation.sender = sender
+  if @invitation.save
+    #UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free', :host => 'beta.eternos.com'))
+    puts "Invite sent to #{recipient}"
+  end
+end
+
 namespace :beta do
   desc "Send out invitation codes to interested users"
   task :send_invitation_codes => :environment do
+    sender = Member.first
     NotifyEmail.sent_at_nil.each do |email|
-      @invitation = Invitation.new(:recipient_email => email.email)
-      @invitation.sender = Member.find(64) # Me
-      if @invitation.save
-        UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free', :host => 'beta.eternos.com'))
-        puts "Invite sent to #{email.email}"
-        email.update_attribute(:sent_at, Time.now)
-      end
+      invite(sender, email.email)
+    end
+  end
+  
+  task :send_invitation => :environment do
+    unless email = ENV['EMAIL']
+      puts "Specify recipient email in EMAIL= arg"
+      exit
+      invite(Member.first, email)
     end
   end
 end
