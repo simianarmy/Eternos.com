@@ -226,7 +226,6 @@ class ApplicationController < ActionController::Base
   private
   
   def clear_js_include_cache
-    RAILS_DEFAULT_LOGGER.debug "Clearing js includes"
     LayoutHelper.clear_js_cache
   end
   
