@@ -31,7 +31,8 @@ module LayoutHelper
   end
   
   def javascript(*args)
-    js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
+    #js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
+    args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     js.flatten!
     #RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
     #content_for(:javascript) { javascript_include_tag(*args) }
