@@ -3,7 +3,7 @@
 // Timeline javascript module
 // required Date' prototypes
 Date.prototype.numDays = function () {
-  return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
+	return this.getDaysInMonth(this.getFullYear(), this.getMonth());
 }
 Date.prototype.getFullMonth = function () {
   var m = this.getMonth() + 1 + "";
@@ -17,32 +17,13 @@ Date.prototype.startingMonth = function () {
 Date.prototype.endingMonth = function () {
   return this.getFullYear() + "-" + this.getFullMonth() + "-" + this.numDays();
 }
-Date.prototype.toEndOfMonth = function() {
-	return this.setDate(this.numDays());
-}
+
 Date.prototype.getMonthName = function () {
   var nm = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var nu = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   return nm[this.getMonth()];
 }
-Date.prototype.stepMonth = function (param) {
-  if (param == 'up') {
-    if (this.getMonth() == 11) {
-      this.setMonth(0);
-      this.setFullYear(this.getFullYear() + 1);
-    } else {
-      this.setMonth(this.getMonth() + 1);
-    }
-  } else if (param == 'down') {
-    if (this.getMonth() == 0) {
-      this.setMonth(11);
-      this.setFullYear(this.getFullYear() - 1);
-    } else {
-      this.setMonth(this.getMonth() - 1);
-    }
-  }
-  return this;
-}
+
 Date.prototype.monthRange = function (num, dir) {
   var set_up = function (d) {
     d.setMonth(d.getMonth() + num)
@@ -61,10 +42,7 @@ Date.prototype.monthRange = function (num, dir) {
 Date.prototype.equalsYearMonth = function(other) {
 	return (this.getYear() === other.getYear()) && (this.getFullMonth() === other.getFullMonth());
 }
-// clone the current date object and return a different object with identical value
-Date.prototype.clone = function () {
-  return new Date(this.getTime());
-}
+
 // required Array' prototypes 
 Array.prototype.unique = function () {
   var r = new Array();
@@ -179,7 +157,7 @@ var ETimeline = function (opts) {
       this.activeDate = new Date();
       this.advanceMonths = new Array();
       this.pastMonths = new Array();
-      this.template = that.templates.monthSelectorTemplate();
+      this.template = that.templates.dateSelectorTemplate();
 
       this._populate();
     },
@@ -201,14 +179,29 @@ var ETimeline = function (opts) {
     disableClick: function () {
 		},
     enableClick: function () {
+			var now = Date.today();
+			var newdate;
+			
       $('month_selector_down').observe('click', function (event) {
 	      event.stop();
-        this.stepMonth('down');
+        this.stepDate(this.activeDate.clone().addMonths(-1));
       }.bind(this));
-      $('month_selector_up').observe('click', function (event) {
+			$('year_selector_down').observe('click', function (event) {
 				event.stop();
-        this.stepMonth('up');
-      }.bind(this));
+				this.stepDate(this.activeDate.clone().addYears(-1));
+			}.bind(this));
+			$('month_selector_up').observe('click', function (event) {
+				event.stop();
+				if ((newdate = this.activeDate.clone().addMonths(1)).clone().moveToFirstDayOfMonth().compareTo(now) !== 1) {
+        	this.stepDate(newdate);
+      	}
+			}.bind(this)); 
+			$('year_selector_up').observe('click', function (event) {
+				event.stop();
+				if ((newdate = this.activeDate.clone().addYears(1)).clone().moveToFirstDayOfMonth().compareTo(now) !== 1) {
+					this.stepDate(newdate);
+				}
+			}.bind(this));
     },
 		setDate: function(date) {
 			this.activeDate = date;
@@ -219,18 +212,18 @@ var ETimeline = function (opts) {
 			}
 			this._populate();
 		},
-    stepMonth: function (param) {
-			if (this.activeDate.clone().stepMonth(param).getTime() > new Date().getTime()) {
+    stepDate: function (newDate) {
+			if (newDate.clone().moveToFirstDayOfMonth() > Date.today().moveToFirstDayOfMonth()) {
 				// Don't allow stepping into the future
 				alert('You cannot view future events, sorry!')
 				return;
 			}
-			console.log("Month selector stepping " + param + " from " + this.activeDate)
-      this.activeDate.stepMonth(param);
-			console.log("to " + this.activeDate);
+			console.log("Date selector stepping from " + this.activeDate + " to " + newDate);
+			this.setDate(newDate);
       this.disableClick();
       this._populate();
-      var params = {
+      
+			var params = {
         startDate: this.activeDate,
         endDate: this.activeDate,
         options: that.timeline.options
@@ -476,8 +469,6 @@ var ETimeline = function (opts) {
       });
     },
     _getInlineItemHtml: function () {
-			console.log("tooltip title template = " + this.tooltipTitleTemplate.evaluate({
-				icon: this.first.icon, title: this.title}));
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
         title: this.tooltipTitleTemplate.evaluate({
@@ -763,7 +754,7 @@ var ETimeline = function (opts) {
         do {
           console.log("Adding " + this.hashDate(stepDate) + " to search date cache");
           searched[this.hashDate(stepDate)] = true;
-          stepDate.stepMonth('up');
+          stepDate.addMonths(1);
         } while (stepDate <= endDate);
       },
       hasDates: function (sd, ed) {
@@ -782,7 +773,7 @@ var ETimeline = function (opts) {
             found = true;
             break;
           }
-          stepDate.stepMonth('up');
+          stepDate.addMonths(1);
         } while (stepDate <= endDate);
 
         return found;
@@ -842,7 +833,7 @@ var ETimeline = function (opts) {
 			// Have to set start date?
 			//this.theme.autoWidth = true;
 			this.theme.timeline_start = new Date(Date.UTC(1800, 0, 1));
-			this.theme.timeline_stop  = new Date().toEndOfMonth(); // Force stop scrolling past today
+			this.theme.timeline_stop  = new Date().moveToLastDayOfMonth(); // Force stop scrolling past today
     },
     _setupBands: function () {
       //var date = new Date();
@@ -955,14 +946,14 @@ var ETimeline = function (opts) {
 				if (etl.disableSearch) { return; }
         
         if (tlMaxDate > etl.tlMaxDate) {
-          etl.tlMaxDate.stepMonth('up', 1);
+          etl.tlMaxDate.addMonths(1);
 					
 					etl.updateEvents({
             startDate: tlMinDate,
             endDate: tlMaxDate,
           });
         } else if (tlMinDate < etl.tlMinDate) {
-          etl.tlMinDate.stepMonth('down', 1);
+          etl.tlMinDate.addMonths(-1);
 
           etl.updateEvents({
             startDate: tlMinDate,
@@ -1098,8 +1089,8 @@ var ETimeline = function (opts) {
         options: this.options
       }, params);
 			// Make sure entire months are searched since we cache results by month
-			p.startDate = p.startDate.stepMonth('down').startingMonth();
-			p.endDate = p.endDate.stepMonth('up').endingMonth();
+			p.startDate = p.startDate.addMonths(-1).startingMonth();
+			p.endDate = p.endDate.addMonths(1).endingMonth();
 			
       // Don't repeat searches for same dates
       if (this.searchCache.hasDates(p.startDate, p.endDate)) {

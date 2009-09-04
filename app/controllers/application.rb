@@ -37,7 +37,8 @@ class ApplicationController < ActionController::Base
   before_filter :set_time_zone
   before_filter :set_locale
   before_filter :check_enable_maintenaince_mode
-
+  before_filter :clear_js_include_cache
+  
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery :secret => 'ass234234lkj3-_1234lkj'
@@ -223,6 +224,11 @@ class ApplicationController < ActionController::Base
   end
   
   private
+  
+  def clear_js_include_cache
+    RAILS_DEFAULT_LOGGER.debug "Clearing js includes"
+    LayoutHelper.clear_js_cache
+  end
   
   # Facebook Apps methods
   

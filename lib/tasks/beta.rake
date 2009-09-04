@@ -4,7 +4,7 @@ def invite(sender, recipient)
   @invitation = Invitation.new(:recipient_email => recipient)
   @invitation.sender = sender
   if @invitation.save
-    #UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free', :host => 'beta.eternos.com'))
+    UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free', :host => AppConfig.base_domain))
     puts "Invite sent to #{recipient}"
   end
 end
@@ -22,7 +22,7 @@ namespace :beta do
     unless email = ENV['EMAIL']
       puts "Specify recipient email in EMAIL= arg"
       exit
-      invite(Member.first, email)
     end
+    invite(Member.first, email)
   end
 end

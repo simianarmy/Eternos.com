@@ -7,16 +7,9 @@ module LayoutHelper
   @@js = []
   mattr_accessor :js
   
-  class JavascriptIncludeHelper < BlockHelpers::Base
-    def initialize
-      @js = []
-    end
-    
-    def js(*args)
-      js = args.flatten.uniq
-      js -= @js
-      @js += js
-      helper.javascript *js if js.any?
+  class << self
+    def clear_js_cache
+      js = []
     end
   end
   
@@ -37,19 +30,12 @@ module LayoutHelper
     content_for(:head) { stylesheet_link_tag(*args.map(&:to_s)) }
   end
   
-  # Wrap use_*, javascript, and stylesheet helper methods in a block inside this method
-  # so that javascript cache array is cleared on every page load (required in production)
-  # TODO: Fix since included views get called before layout view!
-  def includes
-    js.clear
-    yield
-  end
-  
   def javascript(*args)
     js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     js.flatten!
     #RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
-    content_for(:javascript) { javascript_include_tag(*args) }
+    #content_for(:javascript) { javascript_include_tag(*args) }
+    content_for(:javascript) { javascript_include_merged(*args) }
   end
   
   def header(text)
@@ -187,11 +173,11 @@ module LayoutHelper
   def use_timeline
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
     stylesheet 'timeline'
-    
+
     use_prototip
     use_lightview
     use_busy
-    javascript prototype
+    javascript prototype, 'date'
     javascript "timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js", 
       "timeline/events", "timeline/templates", "timeline_helper"
   end
