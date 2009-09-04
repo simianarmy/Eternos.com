@@ -68,7 +68,7 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLEventSource, {
 			} else if (this.attributes.url != null) {
 				html += this.attributes.url;
 			} else {
-				console.log("Unknown data facebook attachment type: " + this.attributes.attachment_type)
+				//console.log("Unknown data facebook attachment type: " + this.attributes.attachment_type)
 			}
 			return html;
 		}
