@@ -5,10 +5,9 @@
     / bundle do
     - stylesheet 'popup', '/javascripts/lightview/css/lightview'
     -# Include javascript libs manually to prevent cacheing that breaks scripts
-    - includes do
-      - use_lightview
-      - stylesheet 'application'
-      - javascript 'account_setup', 'scroller', 'slider'
+    - use_lightview
+    - stylesheet 'application'
+    - javascript 'account_setup', 'scroller', 'slider'
       
     = yield(:head)
     = yield(:javascript)
