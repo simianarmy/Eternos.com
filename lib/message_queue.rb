@@ -21,7 +21,7 @@ module MessageQueue
     
     ConfigPath = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'config')
     DefaultConfig = 'amqp.yml'
-    DefaultEnv = 'production'
+    DefaultEnv = RAILS_ENV
     
     # Return mq server connection settings in a hash
     def connect_params(config_file=DefaultConfig, env=DefaultEnv)

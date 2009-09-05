@@ -19,7 +19,9 @@ config.action_controller.perform_caching             = false
 # Care if the mailer can't send
 config.action_mailer.raise_delivery_errors = true
 
-config.action_controller.asset_host   = "http://dev.eternos.com"
+config.action_controller.asset_host = Proc.new { |source, request|
+  "#{request.protocol}dev.eternos.com"
+}
 
 # Use SMTP protocol to deliver emails
 config.action_mailer.delivery_method = :smtp

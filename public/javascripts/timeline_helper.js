@@ -538,16 +538,14 @@ var ETimeline = function (opts) {
 				classname: 'tl_event',
 				caption: 'Click to view details',
 				eventID: this.id,
-				// Include event count here for icon size trick
-				description: this.num
-				// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources				
-				// this is bad idea, to put number of events in 'trackNum' attribute, is that another ways??
-				// then it will be associated to hack icon size in:
-				// Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js
-				// SimileAjax.Graphics.createTranslucentImage /public/javascripts/timeline/timeline_ajax/graphics.js
-				//trackNum: this.num
+				// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources
       });
-      
+			// Set icon size for event using frequency = size trick
+			// Used here:
+			 // Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js
+			// SimileAjax.Graphics.createTranslucentImage /public/javascripts/timeline/timeline_ajax/graphics.js
+			this.event.iconSize = that.templates.getIconSize(this.num);
+
       //--console.log(this.event.getTrackNum());
 			//console.log("Added timeline event with tooltip id " + this.id);
     }

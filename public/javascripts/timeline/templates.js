@@ -106,5 +106,20 @@ var ETemplates = {
 		},
 		event_list_item: function(id) {
 			return $("evli:" + id);
+		},
+		// For Eternos custom event sizing based on frequency
+		// n = frequency of event
+		getIconSize: function(n) {
+		  var r;
+		  if (n <= 1) {
+		    r=16;
+		  } else if (n <= 5) {
+		    r=20;
+		  } else if (n <= 10) {
+		    r=25;
+		  } else {
+		    r=30;
+		  }
+		  return r;
 		}
 };

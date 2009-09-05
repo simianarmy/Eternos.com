@@ -53,11 +53,13 @@ module LayoutHelper
   
   # Where we get prototype js from
   def prototype
-    'http://ajax.googleapis.com/ajax/libs/prototype/1.6/prototype.js'
+    #'http://ajax.googleapis.com/ajax/libs/prototype/1.6/prototype.js'
+    'prototype'
   end
   
   def scriptaculous
-    'http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
+    #'http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
+    'scriptaculous'
   end
   
   # asset inclusion helpers
