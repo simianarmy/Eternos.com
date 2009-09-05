@@ -417,6 +417,8 @@ var ETimeline = function (opts) {
       this.attributes = s.attributes;
       this.num = items.length;
       this.items = items;
+			this.title = '';
+			
       this.hiddenItemTemplate = that.templates.eventListTemplates.hiddenItem();
       this.itemWithTooltipTemplate = that.templates.eventListTemplates.eventItemWithTooltip();
       this.tooltipItemTemplate = that.templates.eventListTemplates.eventItemTooltipItem();
@@ -429,6 +431,7 @@ var ETimeline = function (opts) {
       } else if (this.num == 1) {
         this.title = this.first.display_text;
       }
+			return this.title;
     },
     _setHtml: function () {
       // Need to format the link so all content will be displayed
@@ -440,22 +443,24 @@ var ETimeline = function (opts) {
     },
     _getLinkUrl: function (item) {
       if (item.isArtifact()) {
-        return item.attributes.url;
+        this.detailsUrl = item.attributes.url;
       } else {
         // For Lightview inline popups
         // References div with id = '#id'
         //return '#' + item.attributes.id;
-        return item.dateDetailsPath(that.memberID);
+        this.detailsUrl = item.dateDetailsPath(that.memberID);
       }
+			return this.detailsUrl;
     },
     // Determine 'rel' attribute for Lightview link html
     _getLinkRel: function () {
       if (this.first.isArtifact()) {
         // Lightview auto-detects content so just need to know if gallery or not
-        return (this.num > 1) ? 'gallery[' + this.first.attributes.id + ']' : '';
+        this.detailsLinkRel = (this.num > 1) ? 'gallery[' + this.first.attributes.id + ']' : '';
       } else {
-        return 'iframe';
+        this.detailsLinkRel = 'iframe';
       }
+			return this.detailsLinkRel;
     },
     _getArtifactItemHtml: function () {
       var other_items = '';
@@ -469,9 +474,9 @@ var ETimeline = function (opts) {
       }
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
-        b_title: this.title,
+        b_title: this.getTitle(),
 				title: this.tooltipTitleTemplate.evaluate({
-					icon: this.first.icon, title: this.title}),
+					icon: this.first.icon, title: this.getTitle()}),
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         hidden_items: other_items,
@@ -481,23 +486,26 @@ var ETimeline = function (opts) {
     _getInlineItemHtml: function () {
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
-        title: this.tooltipTitleTemplate.evaluate({
-					icon: this.first.icon, title: this.title}),
+        title: this._getTooltipTitle(),
         link_url: this._getLinkUrl(this.first),
         link_rel: this._getLinkRel(),
         tt_content: this._getTooltipContents()
         //inline_content: this._getInlineContents()
       })
     },
+		_getTooltipTitle: function() {
+			return this.tooltipTitleTemplate.evaluate({
+				icon: this.first.icon, title: this.getTitle()});
+		},
     _getTooltipContents: function () {
-      var html = '';
+      this.tooltipHtml = '';
       this.items.each(function (item) {
-        html += this.tooltipItemTemplate.evaluate({
+        this.tooltipHtml += this.tooltipItemTemplate.evaluate({
           content: item.getPreviewHtml()
         });
       },
       this);
-      return html;
+      return this.tooltipHtml;
     },
     _getInlineContents: function () {
       return this.inlineEventsTemplate.evaluate({
@@ -505,8 +513,13 @@ var ETimeline = function (opts) {
         content: 'TODO'
       });
     },
+		getTitle: function() {
+			if (this.title === '') {
+				this._setTitle();
+			}
+			return this.title;
+		},
     populate: function () {
-      this._setTitle();
       return this._setHtml();
     }
   });
@@ -545,7 +558,9 @@ var ETimeline = function (opts) {
 			 // Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js
 			// SimileAjax.Graphics.createTranslucentImage /public/javascripts/timeline/timeline_ajax/graphics.js
 			this.event.iconSize = that.templates.getIconSize(this.num);
-
+			// Save collection object for generating timeline event tooltips & clicks
+			this.event.collection = event;
+			
       //--console.log(this.event.getTrackNum());
 			//console.log("Added timeline event with tooltip id " + this.id);
     }

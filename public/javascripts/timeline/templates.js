@@ -72,7 +72,10 @@ var ETemplates = {
 				$$('.tl_event[title]').each(function(e) {
 					console.log("Decoding timeline element " + e.id);
 					ev = Timeline.EventUtils.decodeEventElID(e.id).evt;
-					eventId = ev.getEventID();
+					//eventId = ev.getEventID();
+					DefaultTooltipOptions.title = ev.collection._getTooltipTitle();
+					new Tip(e, ev.collection._getTooltipContents(), Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
+					/*
 					if (li = $("evli:" + eventId)) {
 						// This is pretty weak...
 						if (li.childElements().length > 0) {
@@ -86,6 +89,7 @@ var ETemplates = {
 							}
 						}
 					}
+					*/
 				});
 			},
 		},
