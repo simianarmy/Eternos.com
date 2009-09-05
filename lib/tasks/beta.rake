@@ -25,4 +25,17 @@ namespace :beta do
     end
     invite(Member.first, email)
   end
+  
+  task :generate_code => :environment do
+    require 'faker'
+    [ENV['NUM'].to_i, 1].max.times do
+      @invitation = Invitation.new(:recipient_email => Faker::Internet.email)
+      @invitation.sender = Member.first
+      if @invitation.save
+        puts @invitation.token
+      else
+        puts @invitation.errors.full_messages
+      end
+    end
+  end
 end

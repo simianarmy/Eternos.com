@@ -23,13 +23,20 @@ class TimelinesController < ApplicationController
     # Use map table to map dev users to their staging account
     @member = current_user
     @member_name = @member.full_name
-    @tl_start_date, @tl_end_date = cache("tl_date_range:#{@member.id}") { @member.timeline_span }
+    @tl_start_date, @tl_end_date = cache("tl_date_range:#{@member.id}", session[:refresh_timeline]) { 
+      @member.timeline_span 
+    }
     @fake = 'fake' if params[:fake]
     
     @hide_timeline = if @member.need_backup_setup?
       flash[:error] = "<h4>You do not have any accounts to backup yet!</h4>To setup your online accounts, click the 'account settings' link above and go to Step 2."
     elsif !@member.has_backup_data?
       flash[:notice] = "We are backing up your data and will email you when it is ready to view!"
+    end
+    
+    if @member.backup_in_progress? && ((estimated_time = @member.backup_state.time_remaining) > 0)
+      estimated = help.distance_of_time_in_words(Time.now, Time.now + estimated_time)
+      flash[:notice] = "Backup in progress...will complete in #{estimated}."
     end
   end
   
@@ -57,7 +64,7 @@ class TimelinesController < ApplicationController
     #member_view = (params[:id].to_i == current_user.id)
     
     # Proxy ajax request for dev env. to staging server
-    if (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id)) &&
+    if false && (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id)) &&
       (dev_map.staging_user_id > 0)
       uri = URI.parse request.url
       uri.host = 'staging.eternos.com'

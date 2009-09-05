@@ -7,12 +7,21 @@ var DefaultTooltipOptions = {
 	fixed: true,
   width: 'auto',
   hideOthers: true,
-  viewport: true,
-  hook: {
+  viewport: true
+};
+var eventTooltipOptions = {
+	hook: {
     target: 'topRight',
     tip: 'bottomLeft'
   },
   stem: 'bottomLeft'
+};
+var timelineTooltipOptions = {
+	hook: {
+    target: 'bottomRight',
+    tip: 'topLeft'
+  },
+  stem: 'topLeft'
 };
 
 var ETemplates = {
@@ -36,7 +45,7 @@ var ETemplates = {
 					'<div class="tooltip_container"><p/>#{tt_content}</div>#{inline_content}</li>');
 			},      
 			eventItemTooltipItem: function () {
-				return new Template('<div class="event_preview_item_container">#{content}</div>');
+				return new Template('<div class="event_preview_item_container">#{content}</div><br/>');
 			},
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');
@@ -51,17 +60,20 @@ var ETemplates = {
 	        s = element.next('div.tooltip_container');
 	        s.hide();
           DefaultTooltipOptions.title = element.innerHTML;
-	        new Tip(element, s, DefaultTooltipOptions);
+	        new Tip(element, s, Object.extend(DefaultTooltipOptions, eventTooltipOptions));
 	      });
 			},
 			createTimelineTooltips: function() {
-				var item_id;
 				var element;
 				var title;
+				var ev, eventId;
+				
 				// Create tooltip for each timeline point
 				$$('.tl_event[title]').each(function(e) {
-					item_id = e.readAttribute('title');
-					if (li = $("evli:" + item_id)) {
+					console.log("Decoding timeline element " + e.id);
+					ev = Timeline.EventUtils.decodeEventElID(e.id).evt;
+					eventId = ev.getEventID();
+					if (li = $("evli:" + eventId)) {
 						// This is pretty weak...
 						if (li.childElements().length > 0) {
 							element = li.childElements()[0];
@@ -70,7 +82,7 @@ var ETemplates = {
 								//console.log("Adding tooltip to event id " + item_id);
 								// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
 								// (in event list) will cause the 1st tooltip to cancel the other one out
-								new Tip(e, tt.innerHTML, DefaultTooltipOptions);
+								new Tip(e, tt.innerHTML, Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
 							}
 						}
 					}

@@ -220,6 +220,7 @@ class ApplicationController < ActionController::Base
   class Helper
     include Singleton
     include ActionView::Helpers::NumberHelper
+    include ActionView::Helpers::DateHelper
     include DecorationsHelper
   end
   

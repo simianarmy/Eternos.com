@@ -49,7 +49,7 @@ class TimelineSearch
     # do search 
     search_methods.each do |meth|
       if res = self.send(meth)
-        RAILS_DEFAULT_LOGGER.debug "#{meth} returned #{res}"
+        RAILS_DEFAULT_LOGGER.debug "#{meth} returned #{res.size} items"
         res.each {|res| add_events(res)}
       end
     end

@@ -42,6 +42,11 @@ Date.prototype.monthRange = function (num, dir) {
 Date.prototype.equalsYearMonth = function(other) {
 	return (this.getYear() === other.getYear()) && (this.getFullMonth() === other.getFullMonth());
 }
+// isMonthAfter
+// Returns true iff  date's month is > passed dated
+Date.prototype.isMonthAfter = function(d) {
+	return this.clone().moveToFirstDayOfMonth().clearTime() > d.clone().moveToFirstDayOfMonth().clearTime();
+}
 
 // required Array' prototypes 
 Array.prototype.unique = function () {
@@ -101,7 +106,7 @@ String.prototype.toDate = function() {
 // Put this in a early-loading script
 // code yanked from the Yahoo media player. Thanks, Yahoo.
 if (! ("console" in window) || !("firebug" in console)) {
- 	window.console = {log: function() {}};
+ 	window.console = {log: function() {}, dir: function() {}};
 }
 // ETimeline 'class'
 var ETimeline = function (opts) {
@@ -218,7 +223,7 @@ var ETimeline = function (opts) {
 			this._populate();
 		},
     stepDate: function (newDate) {
-			if (newDate.clone().moveToFirstDayOfMonth() > Date.today().moveToFirstDayOfMonth()) {
+			if (newDate.isMonthAfter(Date.today())) {
 				// Don't allow stepping into the future
 				alert('You cannot view future events, sorry!')
 				return;
@@ -531,17 +536,16 @@ var ETimeline = function (opts) {
         instant: true,
         icon: this.icon,
 				classname: 'tl_event',
-				// Trick to associate an event's timeline DIV with its associated tooltip content
-				// tooltip container id stored in title attribute
-				caption: this.id,
-				// Supposed to be link for bubble title text, but using it for click handler target
+				caption: 'Click to view details',
 				eventID: this.id,
+				// Include event count here for icon size trick
+				description: this.num
 				// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources				
 				// this is bad idea, to put number of events in 'trackNum' attribute, is that another ways??
 				// then it will be associated to hack icon size in:
 				// Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js
 				// SimileAjax.Graphics.createTranslucentImage /public/javascripts/timeline/timeline_ajax/graphics.js
-				trackNum: this.num
+				//trackNum: this.num
       });
       
       //--console.log(this.event.getTrackNum());
@@ -1009,8 +1013,6 @@ var ETimeline = function (opts) {
 
 			// Setup click handler for timeline events
 			Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
-				console.log("Clicked on event");
-				console.dir(evt);
 				// Should fire click() on matching event list target link
 				if ((li = ETemplates.event_list_item(evt.getEventID())) !== undefined) {
 					if ((li !== null) && (a = li.down().down('a.event_list_inline_item')) !== undefined) {

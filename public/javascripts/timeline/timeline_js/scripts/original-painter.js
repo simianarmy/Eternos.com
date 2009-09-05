@@ -54,6 +54,8 @@
  *      or passed the filter.
  */
 
+// For Eternos custom event sizing based on frequency
+// n = event.description value
 getIconSize = function(n){
   //var i = [1,2,3,4,5,10,15,20,25,30]
   //var j = [10,12,14,16,18,25,28,31,34,40]
@@ -486,7 +488,7 @@ Timeline.OriginalEventPainter.prototype._paintEventIcon = function(evt, iconTrac
 
 // icon resize here
 // modified by dimas.priyanto@gmail.com 31/08/09
-    var size = evt.getTrackNum();
+    var size = evt.getDescription();
     image_size = getIconSize(size);   
 //--------------
     

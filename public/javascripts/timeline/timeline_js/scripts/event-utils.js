@@ -52,7 +52,7 @@ Timeline.EventUtils.decodeEventElID = function(elementID) {
     
     var timeline = Timeline.getTimelineFromID(parts[2]);
     var band = timeline.getBand(parts[3]);
-    var evt = band.getEventSource.getEvent(parts[4]);
+    var evt = band.getEventSource().getEvent(parts[4]);
     
     return {band: band, evt: evt};
 };

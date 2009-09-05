@@ -44,6 +44,10 @@ class Member < User
     (backup_state || build_backup_state).update_attribute(:in_progress, true)
   end
   
+  def backup_in_progress?
+    backup_state.in_progress rescue false
+  end
+  
   # Updates backup job tables with backup processes info
   def backup_finished!(info)
     bs = backup_state || build_backup_state
