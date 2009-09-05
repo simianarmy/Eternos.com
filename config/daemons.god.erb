@@ -46,7 +46,7 @@ end
 God.watch do |w|
   script = "<%= RAILS_ROOT %>/script/workling_client"
   w.name = "eternos-workling"
-  w.group = "eternos"
+  w.group = "eternos_<%= RAILS_ENV %>"
   w.interval = 60.seconds
   w.start = "RAILS_ENV='<%= RAILS_ENV %>' #{script} start"
   w.restart = "RAILS_ENV='<%= RAILS_ENV %>' #{script} restart"
@@ -63,7 +63,7 @@ end
 God.watch do |w|
   script = "<%= RAILS_ROOT %>/script/backup_emails_uploader.rb"
   w.name = "eternos-email-uploader"
-  w.group = "eternos"
+  w.group = "eternos_<%= RAILS_ENV %>"
   w.interval = 60.seconds
   w.start = "RAILS_ENV='<%= RAILS_ENV %>' ruby #{script}"
   w.stop = "ps auxw|grep backup_emails_uploader | awk '{print $2}' | xargs kill -9"
@@ -76,7 +76,7 @@ end
 God.watch do |w|
   script = "memcached"
   w.name = "memcached"
-  w.group = "eternos"
+  w.group = "eternos_<%= RAILS_ENV %>"
   w.interval = 60.seconds
   w.start = "#{script}"
   w.start_grace = 20.seconds
