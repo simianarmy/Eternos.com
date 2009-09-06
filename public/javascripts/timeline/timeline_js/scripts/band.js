@@ -53,7 +53,7 @@ Timeline._Band = function(timeline, bandInfo, index) {
     this._zoomIndex = ("zoomIndex" in bandInfo) ? bandInfo.zoomIndex : 0;
     this._zoomSteps = ("zoomSteps" in bandInfo) ? bandInfo.zoomSteps : null;
 
-    this._dragging = false;
+    this.setDragging(false);
     this._changing = false;
     this._originalScrollSpeed = 100; // pixels
     this._scrollSpeed = this._originalScrollSpeed;
@@ -428,6 +428,14 @@ Timeline._Band.prototype.showBubbleForEvent = function(eventID) {
     }
 };
 
+// Marc M. added these helpers to set timeline-wide flags on dragging
+Timeline._Band.prototype.setDragging = function(dragging) {
+	this._dragging = this._timeline._dragging = dragging;
+}
+Timeline._Band.prototype.isDragging = function() {
+	return this._dragging;
+}
+
 Timeline._Band.prototype.zoom = function(zoomIn, x, y, target) {
   if (!this._zoomSteps) {
     // zoom disabled
@@ -450,13 +458,13 @@ Timeline._Band.prototype.zoom = function(zoomIn, x, y, target) {
 Timeline._Band.prototype._onMouseDown = function(innerFrame, evt, target) {
     this.closeBubble();
     
-    this._dragging = true;
+    this.setDragging(true);
     this._dragX = evt.clientX;
     this._dragY = evt.clientY;
 };
 
 Timeline._Band.prototype._onMouseMove = function(innerFrame, evt, target) {
-    if (this._dragging) {
+    if (this.isDragging()) {
         var diffX = evt.clientX - this._dragX;
         var diffY = evt.clientY - this._dragY;
         
@@ -469,7 +477,7 @@ Timeline._Band.prototype._onMouseMove = function(innerFrame, evt, target) {
 };
 
 Timeline._Band.prototype._onMouseUp = function(innerFrame, evt, target) {
-    this._dragging = false;
+    this.setDragging(false);
     this._keyboardInput.focus();
 };
 
@@ -478,7 +486,7 @@ Timeline._Band.prototype._onMouseOut = function(innerFrame, evt, target) {
     coords.x += this._viewOffset;
     if (coords.x < 0 || coords.x > innerFrame.offsetWidth ||
         coords.y < 0 || coords.y > innerFrame.offsetHeight) {
-        this._dragging = false;
+        this.setDragging(false);
     }
 };
 
@@ -539,7 +547,7 @@ Timeline._Band.prototype._onDblClick = function(innerFrame, evt, target) {
 };
 
 Timeline._Band.prototype._onKeyDown = function(keyboardInput, evt, target) {
-    if (!this._dragging) {
+    if (!this.isDragging()) {
         switch (evt.keyCode) {
         case 27: // ESC
             break;
@@ -565,7 +573,7 @@ Timeline._Band.prototype._onKeyDown = function(keyboardInput, evt, target) {
 };
 
 Timeline._Band.prototype._onKeyUp = function(keyboardInput, evt, target) {
-    if (!this._dragging) {
+    if (!this.isDragging()) {
         this._scrollSpeed = this._originalScrollSpeed;
         
         switch (evt.keyCode) {
