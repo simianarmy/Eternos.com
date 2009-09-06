@@ -106,7 +106,7 @@ String.prototype.toDate = function() {
 // Put this in a early-loading script
 // code yanked from the Yahoo media player. Thanks, Yahoo.
 if (! ("console" in window) || !("firebug" in console)) {
- 	window.console = {log: function() {}, dir: function() {}};
+ 	//window.console = {log: function() {}, dir: function() {}};
 }
 // ETimeline 'class'
 var ETimeline = function (opts) {
@@ -936,61 +936,19 @@ var ETimeline = function (opts) {
 			});
     },
     _handleBandScrolling: function () {
-      var tlMinDate;
-      var tlMaxDate;
-			var band;
-			var currCenterDate;
-			var etl = this;
-			
-      //this.timeline.getBand(1).addOnScrollListener(function (band) {
 			Timeline._Band.prototype._onMouseUp = function(B,A,C) {
 				this._dragging=false;
 				this._keyboardInput.focus();
+				console.log("onMouseUp");
 				
-				band = etl.timeline.getBand(1);
-				tlMinDate = band.getMinVisibleDate();
-				tlMaxDate = band.getMaxVisibleDate();
-				console.log("Timeline scrolled to: " + tlMinDate.toDateString() + " .. " + tlMaxDate.toDateString());
-        
-				// Prevent scrolling into the future - even with a stop_date set for the theme, 
-				// this is allowed to some extent so catch here.
-				// TODO: Figure out which function(s) to call
-				/*
-				if (tlMinDate > new Date()) { 
-					etl.updateEvents({startDate: etl.centerDate});
-					return;
-				}
-				*/
-				etl.timeline.hideBackupMessage();
-				currCenterDate = etl.centerDate;
-				etl._setCenterDate(band.getCenterVisibleDate());
-			
-				if (etl.disableSearch) { return; }
-        
-        if (tlMaxDate > etl.tlMaxDate) {
-          etl.tlMaxDate.addMonths(1);
-					
-					etl.updateEvents({
-            startDate: tlMinDate,
-            endDate: tlMaxDate,
-          });
-        } else if (tlMinDate < etl.tlMinDate) {
-          etl.tlMinDate.addMonths(-1);
-
-          etl.updateEvents({
-            startDate: tlMinDate,
-            endDate: tlMaxDate,
-          });
-        } else if (!currCenterDate.equalsYearMonth(band.getCenterVisibleDate())) {
-					console.log("Timeline scrolled to new month: " + etl.centerDate);
-					etl.updateEvents({startDate: etl.centerDate});
-        } else {
-					// Recreate tooltips on every scroll, timleline loses them somehow if you scroll too far
-					etl.redraw();
-				}
-        //console.log(start_date+"---"+end_date);
+				etl._onScroll(etl.timeline.getBand(1));
       };
-      //console.log("Updated date: "+etl.tlMaxDate);
+      this.timeline.getBand(1).addOnScrollListener(function (band) {
+				if (!band._dragging) {
+					console.log("onScroll");
+					etl._updateTitles(band.getCenterVisibleDate());
+				}
+			});
     },
     _setReqDates: function () {
       this.currentDate = new Date();
@@ -1007,6 +965,44 @@ var ETimeline = function (opts) {
     _getTitleFromDate: function (date, type) {
       return (type + " from " + date.getMonthName() + " " + date.getFullYear())
     },
+		_onScroll: function(band) {
+			var tlMinDate;
+      var tlMaxDate;
+			var currCenterDate;
+			
+			// See: timeline_js/scripts/timeline.js:560 
+			this.timeline.hideBackupMessage();
+			
+			currCenterDate = this.centerDate;
+			this._setCenterDate(band.getCenterVisibleDate());
+		
+			if (this.disableSearch) { return; }
+			
+			tlMinDate = band.getMinVisibleDate();
+			tlMaxDate = band.getMaxVisibleDate();
+			
+      if (tlMaxDate > this.tlMaxDate) {
+        this.tlMaxDate.addMonths(1);
+				
+				this.updateEvents({
+          startDate: tlMinDate,
+          endDate: tlMaxDate,
+        });
+      } else if (tlMinDate < this.tlMinDate) {
+        this.tlMinDate.addMonths(-1);
+
+        this.updateEvents({
+          startDate: tlMinDate,
+          endDate: tlMaxDate,
+        });
+      } else if (!currCenterDate.equalsYearMonth(band.getCenterVisibleDate())) {
+				console.log("onmouseup to new month: " + this.centerDate);
+				this.updateEvents({startDate: this.centerDate});
+      } else {
+				// Recreate tooltips on every scroll, timleline loses them somehow if you scroll too far
+				this.redraw();
+			}
+		},
     _updateTitles: function (d) {
       that.artifactSection.updateTitle(this._getTitleFromDate(d, "Artifacts"));
       that.eventSection.updateTitle(this._getTitleFromDate(d, "Events"));
@@ -1066,7 +1062,7 @@ var ETimeline = function (opts) {
       this._create();
       this._handleWindowResize();
       this._handleBandScrolling();
- 
+ 		
       this.assignObject();
       this.searchEvents();
     },

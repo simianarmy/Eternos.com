@@ -5,7 +5,6 @@ var DefaultTooltipOptions = {
   border: 6,
   borderColor: '#74C5FF',
 	fixed: true,
-  width: 'auto',
   hideOthers: true,
   viewport: true
 };
@@ -64,32 +63,18 @@ var ETemplates = {
 	      });
 			},
 			createTimelineTooltips: function() {
-				var element;
-				var title;
-				var ev, eventId;
+				var ev;
 				
 				// Create tooltip for each timeline point
-				$$('.tl_event[title]').each(function(e) {
-					console.log("Decoding timeline element " + e.id);
-					ev = Timeline.EventUtils.decodeEventElID(e.id).evt;
-					//eventId = ev.getEventID();
-					DefaultTooltipOptions.title = ev.collection._getTooltipTitle();
-					new Tip(e, ev.collection._getTooltipContents(), Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
-					/*
-					if (li = $("evli:" + eventId)) {
-						// This is pretty weak...
-						if (li.childElements().length > 0) {
-							element = li.childElements()[0];
-							if (tt = element.down('div.tooltip_container')) {
-								DefaultTooltipOptions.title = element.down('a.event_list_inline_item').innerHTML;
-								//console.log("Adding tooltip to event id " + item_id);
-								// MUST use innerHTML instead of element, b/c of duplicate tooltips effect  
-								// (in event list) will cause the 1st tooltip to cancel the other one out
-								new Tip(e, tt.innerHTML, Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
-							}
+				$$('.tl_event').each(function(e) {
+					if (e.id.match('icon-tl') != null) {
+						ev = Timeline.EventUtils.decodeEventElID(e.id).evt;
+						DefaultTooltipOptions.title = ev.collection._getTooltipTitle();
+						if (ev.collection.first.isArtifact()) {
+							DefaultTooltipOptions.width = 'auto';
 						}
+						new Tip(e, ev.collection._getTooltipContents(), Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
 					}
-					*/
 				});
 			},
 		},
