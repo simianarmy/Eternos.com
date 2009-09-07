@@ -5,7 +5,7 @@
 
 require 'mq'
 
-module MessageQueue   
+module MessageQueue
   module Backup
     Exchange                = 'backups'
     DirectExchange          = 'backup_processing'
@@ -21,10 +21,11 @@ module MessageQueue
     
     ConfigPath = File.join(File.expand_path(File.dirname(__FILE__)), '..', 'config')
     DefaultConfig = 'amqp.yml'
-    DefaultEnv = RAILS_ENV
+    DefaultEnv = defined?(RAILS_ENV) ? RAILS_ENV : 'dunno'
     
     # Return mq server connection settings in a hash
     def connect_params(config_file=DefaultConfig, env=DefaultEnv)
+      puts "env = #{env}"
       f = File.join(ConfigPath, config_file)
       begin
         @conf ||= YAML.load_file(f)

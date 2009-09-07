@@ -18,6 +18,7 @@ development:
   
 test:
   <<: *default_settings
+  invitation_required: false
   FlashRecordingPath: /Users/marcmauger/Documents/costasoft/projects/eternos.com/spec/fixtures
   app_name: Eternos Test
   from_email: test@eternos.com

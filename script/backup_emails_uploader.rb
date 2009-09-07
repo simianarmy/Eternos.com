@@ -11,7 +11,8 @@
 # usage.
 
 require 'rubygems'
-require 'active_record'
+require 'activesupport' # for symbolize_keys! in message_queue.rb before rails env loaded
+
 require File.dirname(__FILE__) + '/../lib/message_queue'
 #require File.dirname(__FILE__) + '/../app/models/backup_email'
 
@@ -36,19 +37,20 @@ Signal.trap('TERM') {
   exit(0)
 }
 
-
 # spawn workers
-workers = ARGV[0] ? (Integer(ARGV[0]) rescue 1) : 1
+env = ARGV[0]
+workers = ARGV[1] ? (Integer(ARGV[1]) rescue 1) : 1
 puts "workers: #{workers}"
-EM.fork(workers) do
-  MessageQueue.start do
+
+#EM.fork(workers) do
+  MessageQueue.start(MessageQueue.connect_params('amqp.yml', env)) do
     class Processor
 
       attr_reader :options
 
       def initialize(options)
         @options = options
-        puts "Loading Rails..."
+        puts "Loading Rails ..."
         require File.dirname(__FILE__) + '/../config/environment'
       end
 
@@ -97,12 +99,12 @@ EM.fork(workers) do
       end
     end
 
-    Processor.new(ENV).process_emails
+    Processor.new(env).process_emails
   end # end AMQP.start
-end # end EM.fork
+#end # end EM.fork
 
 # wait on forks
-while !EM.forks.empty?
-  sleep(5)
-end
-puts "Forks empty. Exiting"
+#while !EM.forks.empty?
+#  sleep(5)
+#end
+#puts "Forks empty. Exiting"

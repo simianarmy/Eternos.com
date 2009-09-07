@@ -36,7 +36,7 @@ set :deploy_via, :remote_cache
 set :keep_releases, 3
 set :dos2unix, "/usr/bin/dos2unix"
 
-set :shared_configs, %w[ amazon_s3.yml amqp.yml application.yml daemons.god database.yml email.yml facebooker.yml 
+set :shared_configs, %w[ amazon_s3.yml amqp.yml application.yml database.yml email.yml facebooker.yml 
   facebooker_desktop.yml key.yml newrelic.yml paypal.yml workling.yml ]
 
 namespace :deploy do

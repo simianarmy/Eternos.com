@@ -14,21 +14,9 @@ class BackupEmail < ActiveRecord::Base
   alias_attribute :bytes, :size
 
   acts_as_archivable :on => :received_at
-  acts_as_state_machine :initial => :pending_upload
+  acts_as_saved_to_cloud
   
-  state :pending_upload
-  state :uploaded
-  state :error
-  
-  event :uploaded do
-    transitions :from => :pending_upload, :to => :uploaded
-  end
-  
-  event :upload_error do
-    transitions :from => :pending_upload, :to => :error
-  end
-  
-  before_destroy :before_destroy_delete_contents
+  before_destroy :delete_s3_contents
   
   named_scope :latest, lambda { |num|
     {
@@ -73,9 +61,16 @@ class BackupEmail < ActiveRecord::Base
     File.join(AppConfig.s3_staging_dir, [self.message_id, self.backup_source_id].join(':') + '.email')
   end
     
-  # Called by batch uploader to reuse s3 connection
-  # Takes already created S3Uploader object
-  # Returns true on success
+  # Called on after_commit to send uploading job to asynchronous queue
+  def upload
+    EmailsWorker.async_process_backup_email(:id => self.id)
+  end
+  
+  def uploaded?
+    !s3_key.nil?
+  end
+  
+  # Called by asynchronous worker to do actual job of saving to S3
   def upload_to_s3(s3)
     # do some validity checks
     if uploaded?
@@ -84,32 +79,21 @@ class BackupEmail < ActiveRecord::Base
     end
     email_file = temp_filename
     unless File.exists?(email_file)
-      logger.warn "missing raw file (#{email_file}) for email #{id}"
+      cloud_upload_error "missing raw file (#{email_file}) for email #{id}"
       return
     end
-    
-    begin
-      key = gen_s3_key
-      mark = Benchmark.realtime do
-        if s3.upload(email_file, key)
-          uploaded!
-          update_attributes(:s3_key => key, :size => File.size(email_file))
-          FileUtils.rm email_file
-        end
-      end
-      logger.debug "Uploaded email in #{mark} seconds"
-    rescue
-      logger.error "error uploading email to cloud: " + $!.to_s
-      upload_error!
-      update_attribute(:upload_errors, $!.to_s)
-      raise
-    end
+
+    key = gen_s3_key
+    if s3.upload(email_file, key)
+      update_attributes(:s3_key => key, :size => File.size(email_file))
+      FileUtils.rm email_file
+    end    
   end
   
   private
   
   # Deletes email from s3 before destroy
-  def before_destroy_delete_contents
+  def delete_s3_contents
     S3Connection.new(:email).bucket.delete s3_key
   end
   
