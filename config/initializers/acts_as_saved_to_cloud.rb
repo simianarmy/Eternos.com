@@ -31,7 +31,9 @@ module ActsAsSavedToCloud
         transitions :from => [:pending, :complete, :upload_error], :to => :staging
       end
       
-      raise "#{self.table_name} table must have a 'state' column" unless self.respond_to? :state
+      %w( state ).each do |col|
+        raise "#{self.table_name} table must have a '#{col}' column" unless self.respond_to? col
+      end
       
       extend ClassMethods
       include AfterCommit::ActiveRecord
@@ -48,7 +50,7 @@ module ActsAsSavedToCloud
     end
     
     def cloud_upload_error(err)
-      update_attribute(:upload_error, err)
+      logger.debug "#{self.class}: error uploading to cloud: #{err}"
       processing_error!
     end
     

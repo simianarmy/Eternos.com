@@ -25,11 +25,11 @@ config.action_controller.asset_host = Proc.new { |source, request|
   "#{request.protocol}dev.eternos.com"
 }
 
-
 # Tell Action Mailer not to deliver emails to the real world.
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+
 
 config.gem 'ruby-debug'
 config.gem "rspec", :lib => false, :version => ">=1.2.2"

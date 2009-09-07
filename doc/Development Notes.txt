@@ -136,6 +136,8 @@ Flash Players:
 	Custom (Eric Fiscus)
 	
 Cameraphone/webcam Integration:
+  Exiff extraction: http://exifr.rubyforge.org/
+  
 	http://ajaxian.com/archives/input-camera
 	Red5 Recorder App: http://swik.net/Peter-Thomas/Incremental+Operations/How+to+record+RTMP+flash+video+streams+using+Red5/b4fey
 		http://softmarket.ro/freelance-jobs/auction_details/471872/flash-webcam-capture-application.html

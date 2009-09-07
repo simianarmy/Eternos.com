@@ -10,9 +10,9 @@ test:
   salt: salt
   
 staging:
-  key: key
-  salt: salt
+  key: supercrazyhellfury
+  salt: 111222333
   
 production:
-  key: key
-  salt: salt
+  key: cr4zysh0oOmbLUsTT23rfcccrkkker
+  salt: asshair000forme23

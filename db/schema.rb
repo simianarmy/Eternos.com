@@ -96,6 +96,10 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "updated_at"
   end
 
+  create_table "app_settings", :force => true do |t|
+    t.binary  "master_c"
+  end
+  
   create_table "av_attachments", :force => true do |t|
     t.integer  "av_attachable_id"
     t.string   "av_attachable_type"
@@ -109,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "message_id"
     t.string   "mailbox"
     t.string   "subject"
+    t.binary   "subject_encrypted"
     t.string   "sender"
     t.string   "s3_key"
     t.integer  "size"
@@ -116,7 +121,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "state"
-    t.text     "upload_errors"
   end
   add_index "backup_emails", ["backup_source_id"], :name => "index_backup_emails_on_backup_source_id"
 

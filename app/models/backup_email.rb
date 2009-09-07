@@ -1,6 +1,8 @@
 # $Id$
 
 require 'tmail'
+require 'ezcrypto'
+require 'singleton'
 
 class BackupEmail < ActiveRecord::Base
   belongs_to :backup_source
@@ -12,7 +14,8 @@ class BackupEmail < ActiveRecord::Base
   attr_reader :raw_email
   serialize :sender
   alias_attribute :bytes, :size
-
+  encrypt_attributes :suffix => '_encrypted'
+  
   acts_as_archivable :on => :received_at
   acts_as_saved_to_cloud
   
@@ -35,8 +38,9 @@ class BackupEmail < ActiveRecord::Base
       self.subject      = e.subject
       self.sender       = e.from
       self.received_at  = e.date
-      # Save email for save_contents callback
-      rio(temp_filename) < raw_email
+      # Encrypt and save email to disk file for async S3 upload job
+      # Email content should only be unencrypted while in RAM (except for subject)
+      rio(temp_filename) < encrypt(raw_email)
     rescue
       errors.add_to_base("Unexpected error in email=: " + $!)
     end
@@ -44,7 +48,7 @@ class BackupEmail < ActiveRecord::Base
 
   # Fetch from S3
   def raw
-    @raw_email ||= S3Downloader.new(:email).fetch_value(s3_key)
+    @raw_email ||= decrypt(S3Downloader.new(:email).fetch_value(s3_key))
   end
   
   def body
@@ -90,11 +94,37 @@ class BackupEmail < ActiveRecord::Base
     end    
   end
   
+  # Encrypts email passed to it in plain-text and returns it in encrypted Base64 encoded form. 
+  def encrypt(data)
+    crypto_key.encrypt64(data)
+  end
+  
+  # Decrypts email passed to it as base64 formatted string
+  def decrypt(data)
+    crypto_key.decrypt64(data)
+  end
+  
   private
+  
+  class EmailEncryptionKey
+    require 'app_setting'
+    include Singleton
+    @key = nil
+    attr_reader :key
+    
+    def initialize
+      @key = EzCrypto::Key.new AppSetting.first.master
+    end
+  end
   
   # Deletes email from s3 before destroy
   def delete_s3_contents
     S3Connection.new(:email).bucket.delete s3_key
   end
   
+  # Helper to generate symmetric key for encryption
+  def crypto_key
+    # Returns singleton object
+    EmailEncryptionKey.instance.key
+  end
 end

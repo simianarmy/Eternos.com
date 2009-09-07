@@ -12,6 +12,10 @@ describe BackupEmail do
     end
   end
   
+  before(:each) do
+    AppSetting.stubs(:first).returns(stub(:master => 'hYgQySo78PN9+LjeBp+dCg=='))
+  end
+  
   describe "on new" do
     before(:each) do
       @email = new_backup_email(:subject => 'subject', :sender => 'sender@email.com')
@@ -37,9 +41,16 @@ describe BackupEmail do
         @email.mailbox.should == 'inbox'
       end
 
-      it "should write raw email to disk" do
+      it "should be able to decrypt & encrypt email" do
+        raw_email.should == @email.decrypt(@email.encrypt(raw_email))
+      end
+      
+      it "should write email to disk file" do
         File.exist?(@email.temp_filename).should be_true
-        IO.read(@email.temp_filename).should == raw_email
+      end
+
+      it "should encrypt email before writing to disk" do
+        @email.decrypt(IO.read(@email.temp_filename)).should == raw_email
       end
     end
   end
@@ -86,11 +97,11 @@ describe BackupEmail do
         @email.s3_key.should == [@email.mailbox, @email.message_id, @email.backup_source_id].join(':')
       end
 
-      it "should fetch raw email from s3" do
+      it "should fetch (encrypted) email from s3 & save decrypted value" do
         @email.reload.raw.should == raw_email
       end
 
-      it "should parse body from raw email" do
+      it "should decrypt & parse body from encrypted email" do
         @email.body.should == TMail::Mail.parse(raw_email).body
       end
     end

@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spork'
 
+
 ENV["RUNNING_SPEC_SERVER"] = '1'
 ENV["RAILS_ENV"] ||= 'test'
 #require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
