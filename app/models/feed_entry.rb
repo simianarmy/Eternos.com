@@ -36,8 +36,7 @@ class FeedEntry < ActiveRecord::Base
   
   # scrape full source from url
   def fetch_contents
-    # Not now
-    if false && url
+    if url
       c = Curl::Easy.perform(url)
       update_attribute(:url_content, c.body_str)
     end
