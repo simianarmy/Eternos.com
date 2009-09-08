@@ -29,7 +29,6 @@
   font-family:arial;
   font-size:18px;
   color:#636972;
-  text-align:right;
   padding:0 10px;
   float:left;
 }
@@ -38,9 +37,10 @@
   font-family:arial;
   font-size:18px;
   color:#02419e;
-  width:auto;
+  width:40px;
+  height:auto;
   padding:0 10px;
-  text-align:left;
+  text-align:center;
   float:left;
 }
 
