@@ -404,13 +404,20 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
 
   add_index "families", ["profile_id"], :name => "index_families_on_profile_id"
 
+  create_table "feed_contents", :force => true do |t|
+    t.integer "feed_entry_id",  :null => false
+    t.text    "content"
+    t.datetime "created_at"
+  end
+  
+  add_index "feed_contents", ["feed_entry_id"]
+  
   create_table "feed_entries", :force => true do |t|
     t.integer  "feed_id",      :null => false
     t.string   "author"
     t.string   "name"
     t.text     "summary"
     t.text     "rss_content"
-    t.text     "url_content"
     t.text     "categories"
     t.string   "url"
     t.datetime "published_at"
@@ -422,7 +429,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "feed_entries", ["guid"], :name => "index_feed_entries_on_guid"
 
   create_table "feeds", :force => true do |t|
-    t.integer  "backup_source_id", :null => false
+    t.integer  "backup_source_id"
     t.string   "title"
     t.string   "url"
     t.string   "feed_url_s"
@@ -432,7 +439,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   end
 
   add_index "feeds", ["backup_source_id"], :name => "index_feeds_on_backup_source_id"
-
+    
   create_table "guest_invitations", :force => true do |t|
     t.integer  "sender_id",                        :null => false
     t.integer  "circle_id"

@@ -2,6 +2,7 @@
 
 class FeedEntry < ActiveRecord::Base
   belongs_to :feed
+  has_one :feed_content
   validates_uniqueness_of :guid, :scope => :feed_id
   
   serialize :categories
@@ -29,7 +30,8 @@ class FeedEntry < ActiveRecord::Base
   end
   
   def bytes
-    (summary ? summary.length : 0) + (rss_content ? rss_content.length : 0)
+    (summary ? summary.length : 0) + (rss_content ? rss_content.length : 0) + 
+    (feed_content ? feed_content.content.size : 0)
   end
   
   private
@@ -38,7 +40,7 @@ class FeedEntry < ActiveRecord::Base
   def fetch_contents
     if url
       c = Curl::Easy.perform(url)
-      update_attribute(:url_content, c.body_str)
+      create_feed_content(:content => c.body_str) unless c.body_str.blank?
     end
     true
   end
