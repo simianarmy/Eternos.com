@@ -74,7 +74,7 @@ var ETemplates = {
 					}
 					new Tip(e, ev.collection._getTooltipContents(), Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
 				});
-			},
+			}
 		},
 		// Artifacts section templates
 		artifactTemplates: {
@@ -83,7 +83,7 @@ var ETemplates = {
 			},
 			artifactBox: function () {
 				return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="thumnails2"/></a></li>');
-			},
+			}
 		},
 		dateSelectorTemplate: function() {
 			return new Template("<a id=\"month_selector_down\" href=\"\" class=\"btn-left\"></a><span class=\"subtitle6\">#{month}</span><a id=\"month_selector_up\" href=\"\" class=\"btn-right\"></a><a id=\"year_selector_down\" href=\"\" class=\"btn-left\"></a><span class=\"subtitle7\">#{year}</span><a id=\"year_selector_up\" href=\"\" class=\"btn-right\"></a><div style=\"clear: both\"></div>");

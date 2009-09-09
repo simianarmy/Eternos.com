@@ -550,7 +550,7 @@ var ETimeline = function (opts) {
         icon: this.icon,
 				classname: 'tl_event',
 				caption: 'Click to view details',
-				eventID: this.id,
+				eventID: this.id
 				// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources
       });
 			// Set icon size for event using frequency = size trick
@@ -986,14 +986,14 @@ var ETimeline = function (opts) {
 				
 				this.updateEvents({
           startDate: tlMinDate,
-          endDate: tlMaxDate,
+          endDate: tlMaxDate
         });
       } else if (tlMinDate < this.tlMinDate) {
         this.tlMinDate.addMonths(-1);
 
         this.updateEvents({
           startDate: tlMinDate,
-          endDate: tlMaxDate,
+          endDate: tlMaxDate
         });
       } else if (!currCenterDate.equalsYearMonth(band.getCenterVisibleDate())) {
 				console.log("onmouseup to new month: " + this.centerDate);
