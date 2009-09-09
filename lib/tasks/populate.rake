@@ -71,6 +71,8 @@ namespace :db do
   desc "Fill subscription related tables"
   task :bootstrap_saas => :environment do
     #Rake::Task["db:schema:load"].invoke
+    puts "Populating Saas tables"
+    SubscriptionPlan.delete_all
     plans = [
       { 'name' => 'Free', 'amount' => 0, 'user_limit' => 2 },
       { 'name' => 'Basic', 'amount' => 10, 'user_limit' => 5 },

@@ -25,7 +25,6 @@ module MessageQueue
     
     # Return mq server connection settings in a hash
     def connect_params(config_file=DefaultConfig, env=DefaultEnv)
-      puts "env = #{env}"
       f = File.join(ConfigPath, config_file)
       begin
         @conf ||= YAML.load_file(f)
@@ -54,6 +53,7 @@ module MessageQueue
 
     # Connects and runs block
     def start(connect_settings=connect_params)
+      puts "** AMQP connecting to #{connect_settings[:vhost]}"
       if block_given?
         AMQP.start(connect_settings) { yield }
       else

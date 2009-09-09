@@ -406,8 +406,11 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
 
   create_table "feed_contents", :force => true do |t|
     t.integer "feed_entry_id",  :null => false
-    t.text    "content"
+    t.text    "html_content"
+    t.string  "screencap_file_name"
+    t.string  "screencap_content_type"
     t.datetime "created_at"
+    t.datetime "screencap_updated_at"
   end
   
   add_index "feed_contents", ["feed_entry_id"]
@@ -664,6 +667,10 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "roles_users", ["role_id"], :name => "role_id"
   add_index "roles_users", ["user_id"], :name => "user_id"
 
+  create_table "schema_migrations", :id => false do |t|
+    t.string 'version', :null => false
+  end
+  
   create_table "schools", :force => true do |t|
     t.integer "profile_id",                          :null => false
     t.integer "country_id",           :default => 0, :null => false

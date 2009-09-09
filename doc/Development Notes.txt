@@ -86,7 +86,11 @@ Encrypting Files + Serving with ngynx:
 SSL:
 	http://www.ricroberts.com/articles/2008/09/25/setting-up-ssl-for-rails-and-testing-it-locally
 	Creating self-signed SSL certs for testing: http://httpd.apache.org/docs/2.0/ssl/ssl_faq.html#selfcert
-			
+
+S3:
+  Securing S3
+  http://thewebfellas.com/blog/2009/8/29/protecting-your-paperclip-downloads
+  
 UI:
 
 CSS: 

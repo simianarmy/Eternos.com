@@ -174,6 +174,12 @@ Fixjour  do
       :title => Faker::Name.first_name)
   end
   
+  define_builder(FeedContent) do |klass, overrides|
+    klass.new(
+      :feed_entry => new_feed_entry
+      )
+  end
+  
   define_builder(FeedEntry) do |klass, overrides|
     klass.new(
       :feed => new_feed,

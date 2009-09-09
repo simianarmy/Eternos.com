@@ -3,6 +3,7 @@
 class FeedEntry < ActiveRecord::Base
   belongs_to :feed
   has_one :feed_content
+  
   validates_uniqueness_of :guid, :scope => :feed_id
   
   serialize :categories
@@ -14,7 +15,7 @@ class FeedEntry < ActiveRecord::Base
   named_scope :between_dates, lambda {|s, e| 
     { :conditions => ['DATE(published_at) BETWEEN ? AND ?', s, e] }
   }
-  after_create :fetch_contents
+  after_create :save_contents
   
   def to_s
     puts "Author: #{author}"
@@ -34,14 +35,18 @@ class FeedEntry < ActiveRecord::Base
     (feed_content ? feed_content.content.size : 0)
   end
   
-  private
+  def screencap_url
+    feed_content.screencap.url rescue nil
+  end
   
-  # scrape full source from url
-  def fetch_contents
-    if url
-      c = Curl::Easy.perform(url)
-      create_feed_content(:content => c.body_str) unless c.body_str.blank?
-    end
+  def screencap_thumb_url
+    feed_content.screencap.url(:thumb) rescue nil
+  end
+  
+  protected
+  
+  def save_contents
+    create_feed_content if self.url
     true
   end
 end

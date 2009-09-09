@@ -22,9 +22,8 @@ describe FeedEntry do
       @entry = create_feed_entry(:url => 'http://simian187.vox.com/library/post/os-x-time-machine-problems.html')
     end
     
-    it "should save feed url source" do
-      @entry.feed_content.content.should_not be_blank
-      puts @entry.feed_content.content
+    it "should create feed_content association" do
+      @entry.feed_content.should_not be_nil
     end
   end
 end

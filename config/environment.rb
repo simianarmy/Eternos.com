@@ -64,7 +64,6 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "ruby-openid", :lib => "openid", :version => ">= 2.1.2"
-  config.gem 'image_science'
   config.gem 'ezcrypto'
   config.gem 'starling', :lib => "starling", :version => ">= 0.9.8"
   config.gem 'aws-s3', :lib => "aws/s3", :version => ">= 0.5.1"
@@ -89,11 +88,12 @@ Rails::Initializer.run do |config|
   # Needs libxslt, libxml2
   config.gem 'nokogiri', :version => '>= 1.3.2'
   # Needs libcurl
-  config.gem 'taf2-curb', :lib => 'curb', :version => '>= 0.4.3', :source => 'http://gems.github.com'
+  config.gem 'taf2-curb', :lib => 'curb', :source => 'http://gems.github.com'
   config.gem 'searchlogic'
   config.gem 'hpricot'
   config.gem 'jnunemaker-columbus', :lib => 'columbus'
   config.gem "markevans-block_helpers", :lib => "block_helpers", :source => "http://gems.github.com"
+  config.gem 'right_aws'
   # Application Profiling plugin - only runs on dev env
   #config.gem 'fiveruns_tuneup'
   
@@ -173,6 +173,7 @@ require 'whenever' # For Capistrano requirement
 require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
+require 'right_aws'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 

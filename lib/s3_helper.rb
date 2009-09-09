@@ -61,6 +61,13 @@ module S3Buckets
     
     set_current_bucket_to eternos_bucket_name
   end
+  
+  class ScreencapBucket < EternosBucket
+    self.eternos_bucket_name = 'eternos.com-screencap_' + RAILS_ENV
+    self.access_level = :public_read
+    
+    set_current_bucket_to eternos_bucket_name
+  end
 end
 
 class S3Connection
