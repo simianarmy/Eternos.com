@@ -14,10 +14,10 @@
     = f.password_field :password, {:id => "password-created2"}
   = submit_tag 'submit', :value => 'login', :class => "login verification", :disable_with => "Signing in&hellip;"
 %br
-%p.checkbox-left
+%p
   = check_box_tag 'user_session[remember_me]'
-.text-left
-  Remember me
+  .text-left
+    Remember me
 .clear
 %br
 %p= link_to 'forgot login?', new_password_reset_path
