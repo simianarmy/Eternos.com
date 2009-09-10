@@ -3,8 +3,6 @@ require 'rubygems'
 require 'daemons'
 
 QusionAllowed = true
-#RAILS_ROOT = File.join(File.dirname(__FILE__), '..') unless defined? RAILS_ROOT
-#puts "Rails root = #{RAILS_ROOT}"
 
 workling = File.join(File.dirname(__FILE__), '..', 'vendor', 'plugins', 'workling', 'script', 'listen.rb')
 options = {
