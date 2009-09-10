@@ -83,7 +83,11 @@ var ETLTwitterActivityStreamEventSource = Class.create(ETLEventSource, {
 // RSS event
 var ETLFeedEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function() {
-		return this.attributes.name;
+		var preview = this.attributes.name;
+		if (this.attributes.screencap_thumb_url != null) {
+			preview += "<br/><img src='" + this.attributes.screencap_thumb_url + "'>";
+		}
+		return preview;
 	}
 });
 // Email event

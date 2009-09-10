@@ -34,6 +34,12 @@ class Content < ActiveRecord::Base
   validates_presence_of :title, :message => "Please Enter a Title"
   searches_on 'contents.filename'
   
+  include TimelineEvents
+  serialize_with_options do
+    methods :start_date, :url, :thumbnail_url
+    only :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
+  end
+  
   before_create :set_title
   # TODO: Make this work w/ attachment_fu
   before_create :set_content_type_by_content

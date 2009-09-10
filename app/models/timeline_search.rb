@@ -133,8 +133,8 @@ class TimelineSearch
   end
   
   def add_events(*evts)
-    evts.flatten.each do |res|
-      @events << TimelineEvent.new(res) if res
+    evts.compact.flatten.each do |res|
+      @events << TimelineEvent.new(res)
     end
   end
 end

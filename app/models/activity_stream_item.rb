@@ -8,6 +8,12 @@ class ActivityStreamItem < ActiveRecord::Base
   
   acts_as_archivable :on => :published_at, :order => 'DESC'
   
+  include TimelineEvents
+  serialize_with_options do
+    methods :start_date, :url, :thumbnail_url
+    except :guid, :attachment_data
+  end
+  
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
     create!(

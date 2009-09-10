@@ -6,7 +6,12 @@ class FeedEntry < ActiveRecord::Base
   
   validates_uniqueness_of :guid, :scope => :feed_id
   
+  include TimelineEvents
   serialize :categories
+  serialize_with_options do
+    methods :screencap_url, :screencap_thumb_url, :start_date
+  end
+  
   xss_terminate :except => [ :categories ]
   acts_as_archivable :on => :published_at
 

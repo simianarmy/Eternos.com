@@ -12,9 +12,16 @@ class BackupEmail < ActiveRecord::Base
   validates_uniqueness_of :message_id, :scope => [:backup_source_id, :mailbox]
   
   attr_reader :raw_email
-  serialize :sender
   alias_attribute :bytes, :size
+
   encrypt_attributes :suffix => '_encrypted'
+  
+  include TimelineEvents
+  serialize :sender
+  serialize_with_options do
+    only :subject, :sender
+    methods :start_date
+  end
   
   acts_as_archivable :on => :received_at
   acts_as_saved_to_cloud

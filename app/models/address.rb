@@ -27,6 +27,10 @@ class Address < ActiveRecord::Base
   
   acts_as_archivable :on => :moved_in_on
   
+  serialize_with_options do
+    methods :postal_address
+  end
+  
   # For formatting postal addresses from over 60 countries.
   # Problem: :country must return 2-letter country code for this plugin 
   # to do country-specific formatting. 
