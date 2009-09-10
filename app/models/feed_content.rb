@@ -22,9 +22,11 @@ class FeedContent < ActiveRecord::Base
 
     # Take screecapture of site & saves image file
     def save_screencap
+      logger.debug "RAILS_ROOT = #{RAILS_ROOT}"
+      logger.debug "RAILS_ENV = #{RAILS_ENV}"
       if (s = ScreenCapture.capture(feed_entry.url)) && File.exist?(s)
         self.screencap = File.new(s)
-        File.delete(s)
+        self.save # save to start s3 upload
       end
     end
   

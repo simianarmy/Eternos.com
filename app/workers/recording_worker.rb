@@ -18,7 +18,7 @@ class RecordingWorker < Workling::Base
       file_info = RVideo::Inspector.new(:file => @recording.full_filename)
       
       @recording.save_content(file_info) or
-        raise ContentCreationException.new 'Unexpected error creating content from recording'
+        raise ContentCreationException.new('Unexpected error creating content from recording')
       
       @recording.finish_processing!
     rescue Exception => e

@@ -2,7 +2,7 @@
 
 class FeedEntry < ActiveRecord::Base
   belongs_to :feed
-  has_one :feed_content
+  has_one :feed_content, :dependent => :destroy
   
   validates_uniqueness_of :guid, :scope => :feed_id
   

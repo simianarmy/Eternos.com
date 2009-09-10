@@ -2,7 +2,7 @@
 
 class Feed < ActiveRecord::Base
   belongs_to :feed_url, :foreign_key => 'backup_source_id'
-  has_many :entries, :class_name => 'FeedEntry' do
+  has_many :entries, :class_name => 'FeedEntry', :dependent => :destroy do
     def add(entry)
       create!(
         :author       => entry.author,

@@ -40,6 +40,7 @@ class BackupEmail < ActiveRecord::Base
       self.received_at  = e.date
       # Encrypt and save email to disk file for async S3 upload job
       # Email content should only be unencrypted while in RAM (except for subject)
+      logger.debug "Saving encrypted email to #{temp_filename}"
       rio(temp_filename) < encrypt(raw_email)
     rescue
       errors.add_to_base("Unexpected error in email=: " + $!)
@@ -71,7 +72,7 @@ class BackupEmail < ActiveRecord::Base
   end
   
   def uploaded?
-    !s3_key.nil?
+    !!self.s3_key
   end
   
   # Called by asynchronous worker to do actual job of saving to S3

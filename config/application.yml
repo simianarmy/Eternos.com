@@ -10,6 +10,7 @@ common: &default_settings
   
 development:
   <<: *default_settings
+  invitation_required: false 
   app_name: Eternos Dev
   from_email: dev@eternos.com
   base_domain: dev.eternos.com

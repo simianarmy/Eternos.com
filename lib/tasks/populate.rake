@@ -66,8 +66,16 @@ namespace :db do
     Circle.create(:name => "Parent", :user_id => 0)
     Circle.create(:name => "Friend", :user_id => 0)
     Circle.create(:name => "Sibling", :user_id => 0)
+    
+    puts "Populating backup sites"
+    BackupSite.delete_all
+    BackupSite.create(:name => 'facebook')
+    BackupSite.create(:name => 'twitter')
+    BackupSite.create(:name => 'gmail')
+    BackupSite.create(:name => 'flickr')
+    BackupSite.create(:name => 'blog')
   end
-  
+
   desc "Fill subscription related tables"
   task :bootstrap_saas => :environment do
     #Rake::Task["db:schema:load"].invoke

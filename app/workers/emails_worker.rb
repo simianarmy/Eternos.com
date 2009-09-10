@@ -3,19 +3,14 @@
 require 'benchmark'
 
 class EmailsWorker < Workling::Base
+  include WorklingHelper
+  
   # content (media) uploader to S3
   def process_backup_email(payload)
     logger.debug "EmailsWorker got payload #{payload.inspect}"
-    begin
-      email = BackupEmail.find(payload[:id])
-    rescue ActiveRecord::StatementInvalid => e
-      # Catch mysql has gone away errors
-      if e.to_s =~ /away/
-        ActiveRecord::Base.connection.reconnect! 
-        retry
-      end
-    end
-    
+    return unless email = safe_find {
+      BackupEmail.find(payload[:id])
+    }
     begin
       uploader = S3Uploader.new(:email)
       email.start_cloud_upload!

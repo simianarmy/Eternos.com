@@ -54,7 +54,7 @@ class Recording < ActiveRecord::Base
     source_info do |info, klass|
       info[:inspector] = inspector
       klass.create_from_recording(info) or 
-        raise ContentCreationException.new 'Unable to create #{content.class} object'
+        raise ContentCreationException.new('Unable to create #{content.class} object')
     end
   end
     
@@ -88,7 +88,7 @@ class Recording < ActiveRecord::Base
       save_transcoder_commands(transcoder)
     rescue RVideo::TranscoderError => e
       save_transcoder_commands(transcoder)
-      raise AudioConversionException.new "Unable to convert recording to audio: #{e.message}"
+      raise AudioConversionException.new("Unable to convert recording to audio: #{e.message}")
     end
     
     temp.path

@@ -2,7 +2,8 @@
 %html{html_attrs('en')}
   %head
     %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
-    %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
+    %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
+    %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
     - stylesheet 'member', 'screen', 'application'

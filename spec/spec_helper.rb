@@ -72,11 +72,11 @@ Spork.prefork do
     config.include(Fixjour) # This will add the builder methods to your ExampleGroups and not pollute Object
   end
 
-
+  # spec'ing workling from http://blog.zerosum.org/2008/10/4/testing-workling-with-rspec
   module Workling
     class Base
       class RailsBase
-        def self.register; end
+        def self.register;  end
       end
     end
   end
@@ -451,6 +451,14 @@ end
 module EmailSpecHelper
   def raw_email
     IO.read ActionController::TestCase.fixture_path + 'raw_email.txt'
+  end
+  
+  def backup_email(opts={})
+    opts.reverse_merge!(:backup_source => create_backup_source)
+    email = new_backup_email(opts)
+    email.email = raw_email
+    email.save
+    email
   end
 end
 

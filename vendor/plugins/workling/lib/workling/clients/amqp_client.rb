@@ -13,7 +13,7 @@ module Workling
         begin
           @amq = MQ.new
         rescue
-          raise WorklingError.new("couldn't start amq client. if you're running this in a server environment, then make sure the server is evented (ie use thin or evented mongrel, not normal mongrel.)")
+          raise WorklingError.new("couldn't start amq client: #{$!}. if you're running this in a server environment, then make sure the server is evented (ie use thin or evented mongrel, not normal mongrel.)")
         end
       end
       

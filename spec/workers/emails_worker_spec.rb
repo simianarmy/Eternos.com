@@ -2,22 +2,31 @@
 
 require File.dirname(__FILE__) + '/../spec_helper'
 
+module BackupEmailSpecHelper
+  
+end
+
 describe EmailsWorker do
+  include EmailSpecHelper
+  
+  before(:each) do
+    # This should be in helper module
+    AppSetting.stubs(:first).returns(stub(:master => 'hYgQySo78PN9+LjeBp+dCg=='))
+  end
+  
   describe "on process_backup_email" do
     def call_worker(id=1)
-      # It would be better to mock a ContentPayload, but this causes weird 
-      # singleton can't be dumped errors..
-      EmailsWorker.async_process_backup_email(:id => id)
+      EmailsWorker.new.process_backup_email(:id => id)
     end
     
     before(:each) do
-      @email = create_backup_email(:backup_source_id => 1)
+      @email = backup_email
     end
     
     it "should upload backup email to s3" do
       @email.should_not be_uploaded
       call_worker(@email.id)
-      @email.should be_uploaded
+      @email.reload.should be_uploaded
     end
   end
 end

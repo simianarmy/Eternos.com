@@ -28,7 +28,7 @@ module AMQP
       die_gracefully_on_signal
     else
       @settings = Qusion::AmqpConfig.new(*args).config_opts
-      puts "=> Qusion configured AMQP settings"
+      puts "=> Qusion configured AMQP settings (vhost = #{@settings[:vhost]})"
     end
   end
   
