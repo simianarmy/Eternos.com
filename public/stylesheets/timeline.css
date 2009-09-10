@@ -265,14 +265,6 @@ a.paginate-btn:hover{
 	clear:both;
 }
 
-.icon{
-	width:19px;
-	height:19px;
-	float:left;
-	border:none;
-	margin-right:10px;
-}
-
 .event_list_item_container-FIXME{
 	margin:-20px 0 0 5px;
 	line-height:20px;
@@ -313,16 +305,93 @@ a.paginate-btn:hover{
 	text-decoration:underline;
 }
 
-ul{
-	list-style-image:none;
-	list-style-position:outside;
-	list-style-type:none;
-	padding:0;
+/* Events list--------------------------------------------------------------------------------------------------------------------------*/
+
+body{
+margin:0px;
+padding:0px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
 }
 
-li{
-	list-style-image:none;
-	list-style-position:outside;
-	list-style-type:none;
-	padding:0;
+#events_header{
+background:transparent url(/images/storybox-top.gif) no-repeat;
+height:41px;
+}
+
+#events_list{
+background-color:#dee9f4;
+width:558px;
+border:5px solid #dee9f4;
+}
+
+.events_list_title{
+padding-left:12px;
+padding-top:13px;
+font-weight:bold;
+font-size:16px;
+color:#FFFFFF;
+}
+
+.event_list_group_odd{
+background-color:#DEE9F4;
+width:558px;
+}
+
+.event_list_group_even{
+background-color:#FFFFFF;
+width:558px;
+}
+
+.event_list_date{
+width:130px;
+height:auto;
+margin:10px 0 0 13px;
+float:left;
+font-weight:bold;
+font-size:11px;
+}
+
+ul.event_list_group{
+float:left;
+height:auto;
+margin-left:209px;
+margin-top:0;
+padding-left:0;
+width:200px;
+margin-bottom:3px;
+}
+
+.event_list_group_odd li{
+float:right;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:5px 0;
+padding:2px 0 2px 25px;
+/*font-size:11px;*/
+color:#2ea4ff;
+/*font-weight:bold;*/
+}
+
+.event_list_group_even li{
+float:right;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:5px 0;
+padding:2px 0 2px 23px;
+
+}
+
+.event_list_group_even li.twitter {
+	background:transparent url(/images/twitter-icon.png) no-repeat scroll left 1px;
+}
+
+.event_list_group_even li.facebook {
+	background:transparent url(/images/facebook-icon.png) no-repeat scroll left 1px;
+}
+
+.event_list_group_even li.rss{
+background:transparent url(/images/feed-icon.png) no-repeat scroll left 1px;
 }

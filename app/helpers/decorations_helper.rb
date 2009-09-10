@@ -5,10 +5,10 @@ module DecorationsHelper
     options.merge! model_to_hash(parent)
     options[:only_path] = true # Prevents flash crossdomain security errors when localhost
     if dec = options.delete(:decoration)
-      url_for({:controller=>:decorations, :action => :show, :id => dec.id}.merge options)
+      url_for({:controller=>:decorations, :action => :show, :id => dec.id}.merge(options))
     else
       options[:action] ||= :index
-      url_for({:controller => :decorations}.merge options)
+      url_for({:controller => :decorations}.merge(options))
     end
   end
   

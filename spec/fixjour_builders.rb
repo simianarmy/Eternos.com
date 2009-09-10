@@ -185,6 +185,7 @@ Fixjour  do
       :feed => new_feed,
       :name => Faker::Name.first_name,
       :summary => Faker::Lorem.sentence,
+      :published_at => Time.now,
       :guid => Faker::Lorem.words(3).join(':'))
   end
   

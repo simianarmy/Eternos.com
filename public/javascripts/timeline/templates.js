@@ -27,10 +27,12 @@ var ETemplates = {
 		// Events section templates
 		eventListTemplates: {
 			events: function () {
-				return new Template("<div class=\"storybox-top\"><div class=\"title5\">#{title}</div></div>" + "<div class=\"storybox\">#{events}</div><img src=\"/images/storybox-bottom.gif\" /></div>");
+				return new Template('<div id="events_header"><p class="events_list_title">#{title}</p></div>' + 
+					'<div id="events_list">#{events}</div>');
 			},
 			eventGroup: function () {
-				return new Template('<div class="event_list_group"><div class="event_list_date">#{date}</div>' + '<div class="event_list_group_items"><ul>#{body}</ul></div></div>');
+				return new Template('<div class="event_list_group_#{odd_or_even}"><div class="event_list_date">#{date}</div>' + 
+					'<ul class="event_list_group">#{body}</ul><div style="clear:both"></div></div>');
 			},
 			hiddenItem: function () {
 				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');

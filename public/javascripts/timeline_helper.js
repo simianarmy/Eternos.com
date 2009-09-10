@@ -255,11 +255,12 @@ var ETimeline = function (opts) {
 			// Set this to true|false
 			this.doRandomize = false;
 			
-      this.parent = $(domID);
-      this.numShowed = 18;
-      this.timeOut = 3;
-      this.title = "Artifacts";
-      this.template = that.templates.artifactTemplates.artifacts();
+      this.parent 		= $(domID);
+      this.numShowed 	= 18;
+      this.timeOut 		= 3;
+      this.title 			= "Artifacts";
+			this.items 			= [];
+      this.template 	= that.templates.artifactTemplates.artifacts();
       this.loadingTemplate = that.templates.loadingTemplate();
       this.boxTemplate = that.templates.artifactTemplates.artifactBox();
       this.blankImg = this.items = this.currentItems = new Array();
@@ -306,7 +307,6 @@ var ETimeline = function (opts) {
         title: this.title,
         artifacts: c
       });
-			//that.templates.artifactTemplates.setClickHandlers(this.currentItems);
     },
     randomize: function () {
 			var i, j, tmp, tmp_title;
@@ -327,7 +327,7 @@ var ETimeline = function (opts) {
 							duration: 1.5
 						});
 						// TODO: Fix me
-						// This is fed up - title attibutes get lost, and we start seeing 
+						// This is f'd up - title attibutes get lost, and we start seeing 
 						// a lot of duplicates in artifacts
 						console.log("Swapping artifact with html: " + h[j].innerHTML);
 						v[i].update(h[j].innerHTML);
@@ -409,12 +409,12 @@ var ETimeline = function (opts) {
   var ETLEventItems = Class.create({
     initialize: function (items) {
       this.items = items;
-      this.first = s = ETEvent.createSource(items[0]);
-			this.id = s.attributes.id;
-      this.type = s.type;
-      this.start_date = s.start_date;
-      this.end_date = s.end_date;
-      this.attributes = s.attributes;
+      this.first = items[0];
+			this.id = this.first.attributes.id;
+      this.type = this.first.type;
+      this.start_date = this.first.start_date;
+      this.end_date = this.first.end_date;
+      this.attributes = this.first.attributes;
       this.num = items.length;
       this.items = items;
 			this.title = '';
@@ -577,8 +577,7 @@ var ETimeline = function (opts) {
       this.groupTemplate 	= that.templates.eventListTemplates.eventGroup();
     },
     // Add event source to collection keyed by event date
-    addSource: function (s) {
-      var source = ETEvent.createSource(s);
+    addSource: function (source) {
       var day = source.eventDateString();
 
       this.sources.push(source);
@@ -588,30 +587,32 @@ var ETimeline = function (opts) {
     },
     populate: function (targetDate) {
       var td = targetDate || that.monthSelector.activeDate;
-      var current_items;
-			var items_html;
+      var currentItems;
+			var itemsHtml;
 			var html = '';
       var event;
       var activeDates;
+			
       console.log("Populating with events from " + td.getFullMonth());
 
       // Only use events that fall in the active date month
       activeDates = this.dates.select(function (d) {
 				return td.equalsYearMonth(d.toDate());
       });
-      activeDates.sort(orderDatesDescending).each(function (d) {
-        items_html = '';
-        current_items = this._groupItemsByType(this.rawItems[d]);
+      activeDates.sort(orderDatesDescending).each(function (d, rowIndex) {
+        itemsHtml = '';
+        currentItems = this._groupItemsByType(this.rawItems[d]);
 
-        current_items.each(function (group, index) {
+        currentItems.each(function (group, index) {
           event = new ETLEventItems(group);
           this.items.push(event);
-          items_html += event.populate();
+          itemsHtml += event.populate();
         }.bind(this));
 
         html += this.groupTemplate.evaluate({
           date: this._eventDate(d),
-          body: items_html
+					odd_or_even: ((rowIndex % 2) === 0 ? 'even' : 'odd'),
+          body: itemsHtml
         });
       }.bind(this));
 
@@ -698,13 +699,16 @@ var ETimeline = function (opts) {
 			return this.eventItems.getLatestEventGroups();
 		},
     doParsing: function () {
+			var event;
+			
 			this.eventItems.clearLatest();
-      for (var i = 0; i < this.jsonEvents.results.length; i++) {
-        if (ETEvent.isArtifact(this.jsonEvents.results[i].type)) {
-          that.artifactSection.addItem(this.jsonEvents.results[i]);
+      this.jsonEvents.results.each(function(res) {
+				event = ETEvent.createSource(res);
+        if (event.isArtifact()) {
+          that.artifactSection.addItem(event);
         }
-        this.eventItems.addSource(this.jsonEvents.results[i]);
-      }
+        this.eventItems.addSource(event);
+      }.bind(this));
     },
     populateResults: function (date) {
       var targetDate = date || that.base.centerDate;

@@ -5,17 +5,22 @@
 //Eternos Timeline Event Source base class
 var ETLEventSource = Class.create({
 	initialize: function(s) {
+		console.log("construcing ETLEventSource for " + s.type);
 		this.type 								= s.type;
+		this.attachment_type			= s.attachment_type;
 		this.display_text 				= s.display_text
 		this.display_text_plural 	= s.display_text_plural;
 		this.icon 								= s.icon;
 		this.start_date 					= s.start_date;
 		this.end_date 						= s.end_date;
 		this.event_date_s					= '';
-		this.attributes 					= s.attributes;
+		this.attributes 					= s.attributes[s.type]
 	},
 	isArtifact: function() {
-		return (this.type === 'Photo' || this.type === 'Video' || this.type === 'WebVideo');
+		return ETEvent.isArtifact(this.type) || ETEvent.isArtifact(this.attachment_type);
+	},
+	isMedia: function() {
+		return ETEvent.isMedia(this.type) || ETEvent.isMedia(this.attachment_type);
 	},
 	getPreviewHtml: function() {
 		return 'Click link to view';
@@ -125,21 +130,21 @@ var ETLAddressEventSource = Class.create(ETLEventSource, {
 var ETEvent = {
 	// Utilities, constants and vars needed
 	itemTypes: [
-		{type: "FacebookActivityStreamItem", display_text: "Facebook Post", display_text_plural: "Facebook Posts", icon: "facebook.gif"}, 
-		{type: "TwitterActivityStreamItem", display_text: "Tweet", display_text_plural: "Tweets", icon: "twitter.gif"}, 
-		{type: "FeedEntry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "rss.png"}, 
-		{type: "BackupEmail", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
-		{type: "Photo", display_text: "Photo", display_text_plural: "Photos", icon: "photo.png"},
-		{type: "Video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
-		{type: "Music", display_text: "Music", display_text_plural: "Music", icon: "music.png"},
-		{type: "Audio", display_text: "Audio", display_text_plural: "Audio", icon: "audio.png"},
-		{type: "Document", display_text: "Document", display_text_plural: "Documents", icon: "doc.png"},
-		{type: "School", display_text: "School", display_text_plural: "Schools", icon: "school.png"},
-		{type: "Family", display_text: "Family Member", display_text_plural: "Family Members", icon: "family-member.png"},
-		{type: "Medical", display_text: "Medical Data", display_text_plural: "Medical Data", icon: "medic-data.png"},
-		{type: "MedicalCondition", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
-		{type: "Job", display_text: "Job", display_text_plural: "Jobs", icon: "job"}, 
-		{type: "Address", display_text: "Address", display_text_plural: "Addresses", icon: "address.png"}
+		{type: "facebook_activity_stream_item", display_text: "Facebook Post", display_text_plural: "Facebook Posts", icon: "facebook.gif"}, 
+		{type: "twitter_activity_stream_item", display_text: "Tweet", display_text_plural: "Tweets", icon: "twitter.gif"}, 
+		{type: "feed_entry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "rss.png"}, 
+		{type: "backup_email", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
+		{type: "photo", display_text: "Photo", display_text_plural: "Photos", icon: "photo.png"},
+		{type: "video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
+		{type: "music", display_text: "Music", display_text_plural: "Music", icon: "music.png"},
+		{type: "audio", display_text: "Audio", display_text_plural: "Audio", icon: "audio.png"},
+		{type: "document", display_text: "Document", display_text_plural: "Documents", icon: "doc.png"},
+		{type: "school", display_text: "School", display_text_plural: "Schools", icon: "school.png"},
+		{type: "family", display_text: "Family Member", display_text_plural: "Family Members", icon: "family-member.png"},
+		{type: "medical", display_text: "Medical Data", display_text_plural: "Medical Data", icon: "medic-data.png"},
+		{type: "medical_conditions", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
+		{type: "job", display_text: "Job", display_text_plural: "Jobs", icon: "job"}, 
+		{type: "address", display_text: "Address", display_text_plural: "Addresses", icon: "address.png"}
 	],
 	
 	// Class factory function - returns ETLEventSource child class object based on passed type string
@@ -148,21 +153,21 @@ var ETEvent = {
 		var s = this.itemTypes.find(function(t) { return type === t.type});
 		var data = Object.extend(data, s);
 		
-		if (type === "FacebookActivityStreamItem") {
+		if (type === "facebook_activity_stream_item") {
 			return new ETLFacebookActivityStreamEventSource(data);
-		} else if (type === "TwitterActivityStreamItem") {
+		} else if (type === "twitter_activity_stream_item") {
 			return new ETLTwitterActivityStreamEventSource(data);
-		} else if (type === "FeedEntry") {
+		} else if (type === "feed_entry") {
 			return new ETLFeedEventSource(data);
-		} else if (type === "BackupEmail") {
+		} else if (type === "backup_email") {
 			return new ETLEmailEventSource(data);
-		} else if (type === "Photo") {
+		} else if (type === "photo") {
 			return new ETLPhotoEventSource(data);
-		} else if (type === "Video") {
+		} else if (type === "video") {
 			return new ETLVideoEventSource(data);
-		} else if (type === "Job") {
+		} else if (type === "job") {
 			return new ETLJobEventSource(data);
-		} else if (type === "Address") {	
+		} else if (type === "address") {	
 			return new ETLAddressEventSource(data);
 		} else {
 			alert("Unknown type from source: " + data.type);
@@ -170,10 +175,10 @@ var ETEvent = {
 		}
 	},
 	isMedia: function(type) {
-		return (type === 'Photo' || type === 'Video' || type === 'WebVideo');
+		return (type === 'photo' || type === 'video' || type === 'web_video');
 	},
 	isArtifact: function(type) {
-		return (type === 'Photo');
+		return (type === 'photo');
 	},
 	getSourceIcon: function(type) {
 		return this.itemTypes.find(function(t) { return type === t.type}).icon;

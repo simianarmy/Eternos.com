@@ -8,11 +8,9 @@ class ActivityStreamItem < ActiveRecord::Base
   
   acts_as_archivable :on => :published_at, :order => 'DESC'
   
+  serialize :attachment_data
+  
   include TimelineEvents
-  serialize_with_options do
-    methods :start_date, :url, :thumbnail_url
-    except :guid, :attachment_data
-  end
   
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
@@ -49,9 +47,7 @@ class ActivityStreamItem < ActiveRecord::Base
   def thumbnail_url; end
   def media_attachment?; false end
   def parsed_attachment_data
-    if attachment_data
-      @data ||= YAML::parse attachment_data rescue nil
-    end
+    self.attachment_data
   end
 end
 
@@ -60,18 +56,23 @@ end
 class FacebookActivityStreamItem < ActivityStreamItem
   after_create :process_attachment
   
+  serialize_with_options do
+    methods :start_date, :url, :thumbnail_url
+    except :guid, :attachment_data
+  end
+  
   def url
     return unless d = parsed_attachment_data
     
     case attachment_type
     when 'photo'
-      d['src'].value.gsub(/_s\./, '_n.')
+      d['src'].gsub(/_s\./, '_n.')
     when 'video'
-      d['video']['source_url'].value
+      d['video']['source_url']
     when 'generic'
-      parse_link d['href'].value
+      parse_link d['href']
     when 'link'
-      d['href'].value
+      d['href']
     end
   end
   
@@ -80,9 +81,9 @@ class FacebookActivityStreamItem < ActivityStreamItem
     
     case attachment_type
     when 'photo'
-      d['src'].value
+      d['src']
     when 'video'
-      d['video']['source_url'].value
+      d['video']['source_url']
     end
   end
     
@@ -98,18 +99,16 @@ class FacebookActivityStreamItem < ActivityStreamItem
     end
   end
   
-  private
-  
   def process_attachment
     return unless d = parsed_attachment_data
     
-    case attachment_type
+    case self.attachment_type
       # Parse generic attachment attributes into string for the message attribute
     when 'generic'
       message = ''
-      message += "Name: #{d['name'].value}\n" if d['name']
-      message += "Caption: #{d['caption'].value}\n" if d['caption']
-      message += "Description: #{d['description'].value}\n" if d['description']
+      message += "Name: #{d['name']}\n" if d['name']
+      message += "Caption: #{d['caption']}\n" if d['caption']
+      message += "Description: #{d['description']}\n" if d['description']
 
       self.update_attribute(:message, message) unless message.blank?
     end
@@ -118,5 +117,8 @@ class FacebookActivityStreamItem < ActivityStreamItem
 end
 
 class TwitterActivityStreamItem < ActivityStreamItem
-
+  serialize_with_options do
+    methods :start_date
+    except :guid, :attachment_data
+  end
 end

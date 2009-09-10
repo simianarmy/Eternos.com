@@ -26,6 +26,10 @@ describe ActivityStreamItem do
       @item.attachment_data.should be_nil
     end
     
+    it "should support to_json" do
+      ActiveSupport::JSON.decode(@item.to_json)[@item.to_str].should be_a Hash
+    end
+    
     describe "with attachment data" do
       describe "of type: photo" do
         before(:each) do

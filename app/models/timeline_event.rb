@@ -3,22 +3,20 @@
 # Table-less class for Timeline events
 class TimelineEvent
   attr_accessor :start_date, :end_date
-  attr_reader :type, :attributes
+  attr_reader :type, :attachment_type, :attributes
   
   def initialize(obj)
-    @attributes = obj #.attributes.dup
-    @type = object_type(obj)
+    @attributes = obj
+    @type = obj.to_str
+    @attachment_type = find_attachment_type(obj)
     @start_date = obj.start_date
     @end_date = obj.try(:end_date)
   end
   
   private
   
-  def object_type(obj)
-    activity_stream_media_attachment?(obj) ? obj.attachment_type.capitalize : obj.class.to_s
+  def find_attachment_type(obj)
+    obj.try(:media_attachment?) ? obj.attachment_type.downcase : nil
   end
   
-  def activity_stream_media_attachment?(obj)
-    obj.kind_of?(ActivityStreamItem) && obj.media_attachment?
-  end
 end
