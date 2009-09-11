@@ -91,7 +91,7 @@ class BackupEmail < ActiveRecord::Base
       return
     end
     email_file = temp_filename
-    raise "missing raw file (#{email_file}) for email #{id}" unless File.exists?(email_file)
+    raise "missing raw file (#{email_file}) for email #{id}" unless File.exist?(email_file)
 
     key = gen_s3_key
     if s3.upload(email_file, key)
