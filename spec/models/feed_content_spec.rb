@@ -29,13 +29,10 @@ describe FeedContent do
         it "should return blank string if no screencap image" do
           @content.screencap_url.should be_blank
         end
-      end
-      
-      describe "on save_screencap" do
-        it "should take screen capture of url and upload it to s3" do
+            
+        it "should return url to s3 image after screencapture" do
           @content.save_screencap
-          @content.screencap.should_not be_blank
-          @content.screencap.url.should match(/s3/)
+          @content.screencap_url.should match(/s3/)
         end
       end
     end

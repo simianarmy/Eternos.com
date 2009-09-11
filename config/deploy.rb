@@ -111,7 +111,7 @@ namespace :deploy do
   
   desc "Installs CutyCapt"
   task :install_cutycapt, :roles => :app do
-    sudo "yum -y install qt4-devel.i386  qt4-sqlite.i386 xorg-x11-server-Xvfb.i386 gperf flex"
+    sudo "yum -y install qt4-devel.i386  qt4-sqlite.i386 xorg-x11-server-Xvfb.i386 gperf flex gtk-doc glib2-devel"
     run <<-CUTYCAPT
       cd /usr/local/src; \
       svn checkout http://svn.webkit.org/repository/webkit/trunk WebKit; \

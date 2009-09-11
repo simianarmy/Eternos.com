@@ -50,6 +50,7 @@ class BackupEmail < ActiveRecord::Base
       logger.debug "Saving encrypted email to #{temp_filename}"
       rio(temp_filename) < encrypt(raw_email)
     rescue
+      logger.debug "Unexpected error in #{self.class}.email=: " + $!
       errors.add_to_base("Unexpected error in email=: " + $!)
     end
   end
@@ -90,10 +91,7 @@ class BackupEmail < ActiveRecord::Base
       return
     end
     email_file = temp_filename
-    unless File.exists?(email_file)
-      cloud_upload_error "missing raw file (#{email_file}) for email #{id}"
-      return
-    end
+    raise "missing raw file (#{email_file}) for email #{id}" unless File.exists?(email_file)
 
     key = gen_s3_key
     if s3.upload(email_file, key)
@@ -127,7 +125,7 @@ class BackupEmail < ActiveRecord::Base
   
   # Deletes email from s3 before destroy
   def delete_s3_contents
-    S3Connection.new(:email).bucket.delete s3_key
+    S3Connection.new(:email).bucket.delete self.s3_key if self.uploaded?
   end
   
   # Helper to generate symmetric key for encryption
