@@ -36,8 +36,8 @@ set :deploy_via, :remote_cache
 set :keep_releases, 3
 set :dos2unix, "/usr/bin/dos2unix"
 
-set :shared_configs, %w[ amazon_s3.yml amqp.yml application.yml database.yml email.yml facebooker.yml 
-  facebooker_desktop.yml key.yml newrelic.yml paypal.yml workling.yml ]
+set :shared_configs, %w[ amazon_s3.yml amqp.yml database.yml email.yml facebooker.yml 
+  facebooker_desktop.yml key.yml ]
 
 namespace :deploy do
   task :start do
@@ -105,7 +105,7 @@ namespace :deploy do
   desc "Updates shared config files"
   task :update_configs, :roles => :app do
     fetch(:shared_configs).each do |c|
-      top.upload "config/#{c}", "#{shared_path}/config/#{c}"
+      top.upload "config/#{c}.deploy", "#{shared_path}/config/#{c}"
     end
   end
   

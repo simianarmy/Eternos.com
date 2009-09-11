@@ -19,7 +19,7 @@ class BackupEmail < ActiveRecord::Base
   include TimelineEvents
   serialize :sender
   serialize_with_options do
-    only :subject, :sender
+    only :id, :subject, :sender
     methods :start_date
   end
   
