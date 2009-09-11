@@ -5,7 +5,10 @@
     = image_tag 'rss.png'
   .clearboth
   .message_content
-    %p= feed_entry.summary
+    %p= feed_entry.preview
+    .clearboth
+    - unless feed_entry.screencap_url.blank?
+      = link_to image_tag(feed_entry.screencap_thumb_url), feed_entry.screencap_url, :target => '_new'
     .clearboth
     .posted
       = link_to 'Read post and comment', feed_entry.url

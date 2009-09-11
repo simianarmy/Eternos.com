@@ -15,6 +15,10 @@ describe FeedEntry do
     it "should return a value for preview" do
       @entry.preview.should_not be_nil
     end
+    
+    it "should not raise error on screencap_url" do
+      @entry.screencap_url.should be_nil
+    end
   end
   
   describe "on create" do
@@ -24,6 +28,11 @@ describe FeedEntry do
     
     it "should create feed_content association" do
       @entry.feed_content.should_not be_nil
+    end
+    
+    it "should return empty string for url if no screencap" do
+      @entry.screencap_url.should be_blank
+      @entry.screencap_thumb_url.should be_blank
     end
   end
 end

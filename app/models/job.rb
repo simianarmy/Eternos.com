@@ -5,6 +5,11 @@ class Job < ActiveRecord::Base
 
   acts_as_archivable :on => :start_at
   
+  include TimelineEvents
+  serialize_with_options do
+    methods :start_date
+  end
+  
   validate do |job|
     job.errors.add("", "Please enter a company name") if job.company.blank?
     job.errors.add("", "Please enter a title") if job.title.blank?

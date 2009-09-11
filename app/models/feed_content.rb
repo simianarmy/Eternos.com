@@ -29,10 +29,22 @@ class FeedContent < ActiveRecord::Base
     end
   end
 
+  def screencap_url
+    return_unless_missing(screencap.url)
+  end
+  
+  def screencap_thumb_url
+    return_unless_missing(screencap.url(:thumb))
+  end
+  
   protected
 
   def after_commit_on_create
     logger.debug "Sending job to rss worker: #{self.id}"
     RssWorker.async_fetch_blog_contents(:id => self.id) if self.feed_entry.url
+  end
+  
+  def return_unless_missing(url)
+    url.match(/missing/) ? '' : url
   end
 end

@@ -114,10 +114,11 @@ namespace :deploy do
     sudo "yum -y install qt4-devel.i386  qt4-sqlite.i386 xorg-x11-server-Xvfb.i386 gperf flex"
     run <<-CUTYCAPT
       cd /usr/local/src; \
-      svn checkout http://svn.webkit.org/repository/webkit/trunk WebKit
+      svn checkout http://svn.webkit.org/repository/webkit/trunk WebKit; \
       svn co https://cutycapt.svn.sourceforge.net/svnroot/cutycapt cutycapt; \
-      cd cutycapt/CutyCapt; \
-      
+      cd cutycapt/CutyCapt; 
+CUTYCAPT
+  end
 end
 
 #after "deploy:symlink", "deploy:google_analytics"

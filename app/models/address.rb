@@ -27,8 +27,9 @@ class Address < ActiveRecord::Base
   
   acts_as_archivable :on => :moved_in_on
   
+  include TimelineEvents
   serialize_with_options do
-    methods :postal_address
+    methods :postal_address, :start_date
   end
   
   # For formatting postal addresses from over 60 countries.
@@ -36,7 +37,7 @@ class Address < ActiveRecord::Base
   # to do country-specific formatting. 
   # TODO: monkey-patch plugin
   biggs :postal_address,
-    :recipient => Proc.new {|address| address.addressable.full_name || ""},
+    :recipient => Proc.new {|address| address.addressable.try(:full_name) || ""},
     :zip => :postal_code,
     :street => [:street_1, :street_2],
     :state => Proc.new {|address| address.region.name },

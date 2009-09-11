@@ -84,9 +84,9 @@ var ETLTwitterActivityStreamEventSource = Class.create(ETLEventSource, {
 // RSS event
 var ETLFeedEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function() {
-		var preview = this.attributes.name;
-		if (this.attributes.screencap_thumb_url != null) {
-			preview += "<br/><img src='" + this.attributes.screencap_thumb_url + "'>";
+		var thumb, preview = this.attributes.name;
+		if (((thumb = this.attributes.screencap_thumb_url) != null) && !thumb.match('missing')) {
+			preview += '<br/><img src="' + thumb + '" width="100" height="100">';
 		}
 		return preview;
 	}

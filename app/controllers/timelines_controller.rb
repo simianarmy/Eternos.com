@@ -70,8 +70,10 @@ class TimelinesController < ApplicationController
       uri.host = 'staging.eternos.com'
       uri.path.gsub!(/js\/\d+\//, "js/#{dev_map.staging_user_id}/")
       uri.port = 80
-      RAILS_DEFAULT_LOGGER.debug "Proxy calling #{uri.to_s}"
-      @json ||= Curl::Easy.perform(uri.to_s).body_str
+      unless @json
+        RAILS_DEFAULT_LOGGER.debug "Proxy calling #{uri.to_s}"
+        @json = Curl::Easy.perform(uri.to_s).body_str
+      end
       @response = ActiveSupport::JSON.decode(@json) if @json
     else
       md5 = Digest::MD5.hexdigest(request.request_uri)

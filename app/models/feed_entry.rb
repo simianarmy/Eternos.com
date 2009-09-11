@@ -41,11 +41,11 @@ class FeedEntry < ActiveRecord::Base
   end
   
   def screencap_url
-    feed_content.screencap.url rescue nil
+    feed_content.try(:screencap_url)
   end
   
   def screencap_thumb_url
-    feed_content.screencap.url(:thumb) rescue nil
+    feed_content.try(:screencap_thumb_url)
   end
   
   protected

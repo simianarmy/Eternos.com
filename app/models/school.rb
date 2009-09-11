@@ -9,6 +9,11 @@ class School < ActiveRecord::Base
     school.errors.add("", "Please enter a school name") if school.name.blank?
   end
   
+  include TimelineEvents
+  serialize_with_options do
+    methods :start_date
+  end
+  
   # TODO: use acts_as helper
   named_scope :in_dates, lambda { |start_date, end_date|
     {
