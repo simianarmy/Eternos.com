@@ -3,9 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe UploadsWorker do
   def call_worker(id=1)
-    # It would be better to mock a ContentPayload, but this causes weird 
-    # singleton can't be dumped errors..
-    UploadsWorker.async_upload_content_to_cloud(:id => id)
+    UploadsWorker.new.upload_content_to_cloud(:id => id, :class => 'Content')
   end
   
   describe "mocking S3" do
@@ -16,21 +14,19 @@ describe UploadsWorker do
       @content.expects(:content_type).at_least_once.returns('foo/foo')
       @content.expects(:start_cloud_upload!)
       Content.expects(:find).with(@content.id).returns(@content)
-      S3Uploader.expects(:new).returns(@uploader = mock('S3Uploader'))
+      S3Uploader.expects(:create).returns(@uploader = mock('S3Uploader'))
     end
   
     it "should upload a file to the cloud service and update container state" do 
-      @uploader.expects(:upload).with(@content.full_filename, @content.public_filename, @content.content_type)
+      @uploader.expects(:upload).with(@content.full_filename, @content.public_filename, :content_type => @content.content_type)
       @uploader.expects(:key).returns('foo')
-      @content.expects(:update_attributes).with(:s3_key => 'foo')
+      @content.expects(:update_attribute).with(:s3_key, 'foo')
       @content.expects(:finish_cloud_upload!)
       call_worker
     end
   
     it "should put container object in error state if upload fails" do
-      @uploader.expects(:upload).raises(RuntimeError.new)
-      @content.expects(:processing_error!).once
-      @content.expects(:update_attributes).once
+      @content.expects(:cloud_upload_error)
       call_worker
     end
   end
@@ -42,7 +38,7 @@ describe UploadsWorker do
       end
 
       it "should save content S3 key" do
-        @s3 = S3Uploader.new
+        @s3 = S3Uploader.instance
         call_worker(@content.id)
         @content.reload.s3_key.should_not be_nil
         @content.s3_key.should == S3Uploader.path_to_key(@content.public_filename)

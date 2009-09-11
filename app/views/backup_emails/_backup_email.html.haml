@@ -1,12 +1,13 @@
-#backup_email[backup_email]
-  Email
-  %p
-  %br
-  %b= "Subject: #{backup_email.subject}"
-  %br= "Sender: #{backup_email.sender}"
-  %br= "Received: #{backup_email.received_at}"
-  %br Click to view full message here? Ajax call to load area below.
-  
-%p
-%br
-= debug(backup_email)
+.content
+  .title_post_email= backup_email.subject
+  .cearboth
+  %p.title_posted
+    From:
+    %span{:style => "font-weight:bold"}= backup_email.sender
+    &nbsp; Date:
+    = backup_email.received_at
+  .image_post
+    = image_tag 'email_accept.png', :style => "margin-top: -32px;"
+  .clearboth
+  .message_content
+    = link_to 'Click here to view contents', '#'

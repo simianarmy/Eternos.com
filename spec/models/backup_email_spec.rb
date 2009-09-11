@@ -85,7 +85,7 @@ describe BackupEmail do
     
     describe "on upload" do
       before(:each) do
-        @email.upload_to_s3(S3Uploader.new(:email))
+        @email.upload_to_s3(S3Uploader.create(:email))
         @email.reload
       end
 
@@ -111,7 +111,7 @@ describe BackupEmail do
     before(:each) do
       @email = create_backup_email(:backup_source_id => 1)
       @email.email = raw_email
-      @email.upload_to_s3(@s3 = S3Uploader.new(:email))
+      @email.upload_to_s3(@s3 = S3Uploader.create(:email))
       @email.reload
     end
     

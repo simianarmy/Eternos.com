@@ -12,8 +12,16 @@
 require 'rubygems'
 require 'aws/s3'
 require 'yaml'
+require 'singleton'
 
 module S3Buckets
+  # Eternos S3 Buckets
+  # 
+  # Supported buckets by symbol
+  # :email
+  # :media
+  # :screencap
+  
   class EternosBucket < AWS::S3::S3Object
     class_inheritable_accessor :eternos_bucket_name
     class_inheritable_accessor :access_level
@@ -70,18 +78,23 @@ module S3Buckets
   end
 end
 
+# Base class for S3 helper classes, should not have to create directly
 class S3Connection
   S3ConfigFile = File.join(RAILS_ROOT, 'config', 'amazon_s3.yml')
+  DefaultBucket = :media
   
-  attr_reader :bucket, :errors
+  attr_reader :bucket_type, :errors
   
-  def initialize(bucket_type=nil)
-    connect
-    init_bucket(bucket_type)
+  def set_bucket(sym)
+    @bucket_type = sym
   end
   
-  def config(config=S3ConfigFile)
-    @S3_CONFIG ||= YAML.load_file(config)[RAILS_ENV]
+  def bucket(tp=bucket_type)
+    @_buckets[tp] ||= init_bucket(tp)
+  end
+  
+  def object(tp=bucket_type)
+    @_buckets[tp].object
   end
   
   def connect(conf=config)
@@ -92,23 +105,38 @@ class S3Connection
     ) unless AWS::S3::Base.connected?
   end
 
+  def initialize(tp=DefaultBucket)
+     @_buckets = {}
+     @bucket_type = tp
+     connect
+  end
+  
+  protected
+   
+  def config(config=S3ConfigFile)
+    @S3_CONFIG ||= YAML.load_file(config)[RAILS_ENV]
+  end
+  
   # finds/creates & returns bucket object
   def init_bucket(bucket_type=nil)
-    @bucket = case bucket_type
+    @_buckets[bucket_type] = case bucket_type
     when :media, nil
       S3Buckets::MediaBucket
     when :email
       S3Buckets::EmailBucket
+    when :screencap
+      S3Buckets::ScreencapBucket
     end
-    @bucket.init
-  end    
-
-  def object
-    @bucket.object
-  end
+    @_buckets[bucket_type].init
+    @_buckets[bucket_type]
+  end  
 end
 
+# S3 Download class - singleton to avoid multiple expensive establish_connection calls
+
 class S3Downloader < S3Connection
+  #include Singleton
+  
   def fetch(key)
     bucket.find key
   end
@@ -125,6 +153,17 @@ class S3Downloader < S3Connection
 end
   
 class S3Uploader < S3Connection
+  include Singleton
+  
+  attr_accessor :s3_key
+  
+  # Helper to access singleton & set bucket at the same time
+  def self.create(bucket)
+    returning self.instance do |me|
+      me.set_bucket bucket
+    end
+  end
+  
   def self.path_to_key(path)
     # Strip leading /
     path.sub(/^\//, '')
@@ -132,11 +171,11 @@ class S3Uploader < S3Connection
 
   def key
     # Strip leading / if key is public path
-    raise "S3 Key not defined" unless @key_name
-    self.class.path_to_key @key_name
+    raise "S3 Key not defined" unless s3_key
+    self.class.path_to_key s3_key
   end
   
-  def url(key=@key_name)
+  def url(key=s3_key)
     s3_protocol = config[:use_ssl] ? 'https://' : 'http://'
     s3_hostname = config[:server] || AWS::S3::DEFAULT_HOST
     s3_port     = config[:use_ssl] ? 443 : 80
@@ -146,19 +185,18 @@ class S3Uploader < S3Connection
   
   # Stores file to S3 current bucket.  Returns stored object's key
   def upload(file_path, file_name, opts={})
-    @key_name = file_name
     opts.reverse_merge! :access => bucket.access_level
     
     RAILS_DEFAULT_LOGGER.info "S3Uploader: uploading #{file_path} => #{file_name} to bucket: #{bucket} with headers: #{opts.inspect}"
     begin
       bucket.store(file_name, open(file_path), nil, opts)
+      self.s3_key = file_name
+      key
     rescue AWS::S3::ResponseError => error
       @errors = error.response.code.to_s + " " + error.message
       RAILS_DEFAULT_LOGGER.warn "Error uploading to S3: #{@errors}"
-      return false
+      false
     end
-    # Return access key
-    key
   end
   
   def store(name, value)

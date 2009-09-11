@@ -425,6 +425,11 @@ var ETimeline = function (opts) {
       this.inlineEventsTemplate = that.templates.eventListTemplates.inlineEvents();
       this.tooltipTitleTemplate = that.templates.eventListTemplates.tooltipTitle()
     },
+		_getItemIDs: function() {
+			return this.items.collect(function(i) {
+				return i.attributes.id;
+			});
+		},
     _setTitle: function () {
       if (this.num > 1) {
         this.title = this.num + " " + this.first.display_text_plural;
@@ -444,11 +449,9 @@ var ETimeline = function (opts) {
     _getLinkUrl: function (item) {
       if (item.isArtifact()) {
         this.detailsUrl = item.attributes.url;
-      } else {
-        // For Lightview inline popups
-        // References div with id = '#id'
-        //return '#' + item.attributes.id;
-        this.detailsUrl = item.dateDetailsPath(that.memberID);
+      } else { 
+        this.detailsUrl = 'tl_details/' + 
+					[that.memberID, this.type, encodeURIComponent(this._getItemIDs())].join('/');
       }
 			return this.detailsUrl;
     },

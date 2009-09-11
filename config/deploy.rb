@@ -108,6 +108,16 @@ namespace :deploy do
       top.upload "config/#{c}", "#{shared_path}/config/#{c}"
     end
   end
+  
+  desc "Installs CutyCapt"
+  task :install_cutycapt, :roles => :app do
+    sudo "yum -y install qt4-devel.i386  qt4-sqlite.i386 xorg-x11-server-Xvfb.i386 gperf flex"
+    run <<-CUTYCAPT
+      cd /usr/local/src; \
+      svn checkout http://svn.webkit.org/repository/webkit/trunk WebKit
+      svn co https://cutycapt.svn.sourceforge.net/svnroot/cutycapt cutycapt; \
+      cd cutycapt/CutyCapt; \
+      
 end
 
 #after "deploy:symlink", "deploy:google_analytics"

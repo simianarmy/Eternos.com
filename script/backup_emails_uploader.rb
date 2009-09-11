@@ -55,7 +55,7 @@ puts "workers: #{workers}"
       end
 
       def process_emails
-        uploader = S3Uploader.new(:email)
+        uploader = S3Uploader.create(:email)
         queue = MessageQueue.email_upload_queue
 
         run_process(queue) do |id|

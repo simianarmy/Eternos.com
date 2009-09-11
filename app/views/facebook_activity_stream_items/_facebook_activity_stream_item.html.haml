@@ -1,21 +1,20 @@
-#item[facebook_activity_stream_item]
-  - item = facebook_activity_stream_item
-  %p 
-  %b== Facebook #{item.activity_type.capitalize}
-  %br
-  - if item.message
-    %br== Message: #{item.message}
-  - if item.attachment_data
+- item = facebook_activity_stream_item
+.content
+  .title_post Facebook Post
+  .image_post
+    = image_tag 'fb.png'
+  .clearboth
+  %p.message Message:
+  .message_content
     - if item.thumbnail_url
-      = link_to image_tag(item.thumbnail_url), item.url
+      = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
     - elsif item.url
-      = link_to item.url, item.url, :target => '_new'
-    - else
-      = debug(item.parsed_attachment_data.to_s)
-  %br== Posted: #{item.published_at}
-  - if item.published_at != item.edited_at
-    %br== Edited: #{item.edited_at}
-  
-%p
-%br  
-/= debug(facebook_activity_stream_item)
+      = link_to item.url, item.url
+
+    %p= item.message
+    .clearboth
+    %p.posted
+      == Posted: #{item.published_at}
+      - if item.published_at != item.edited_at
+        %br== Edited: #{item.edited_at}
+      

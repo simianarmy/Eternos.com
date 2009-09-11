@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :timeline_events, :collection => {
     :events => :get
   }
-  map.connect 'timeline_events/details/:id/:type/:date', :controller => 'timeline_events', :action => 'index'
+  map.connect 'tl_details/:id/:type/:events', :controller => 'timeline_events', :action => 'index'
   
   map.resources :dev_staging_maps
   map.resources :backup_sites

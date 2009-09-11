@@ -12,7 +12,7 @@ class EmailsWorker < Workling::Base
       BackupEmail.find(payload[:id])
     }
     begin
-      uploader = S3Uploader.new(:email)
+      uploader = S3Uploader.create(:email) # Needs to be singleton for performance
       email.start_cloud_upload!
       
       mark = Benchmark.realtime do
