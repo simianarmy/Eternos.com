@@ -28,37 +28,34 @@ Passenger
 	gem install passenger
 	passenger-install-apache2-module (enterprise ruby version)
 	
-Ruby gems that must be built on server:
-memcache-client-1.7.4
-RubyInline
-ImageScience
-Rmagick (Build on server with ruby setup.rb)
-taf2-curb: Requires libcurl built from source!
-nokogiri
-hpricot
-json?
-
 yum Packages:
-ImageMagick
-ImageMagick-devel
-readline-devel
-curl-devel
-libxslt-devel
-libxml2-devel
-memcached
+  ImageMagick
+  ImageMagick-devel
+  readline-devel
+  curl-devel
+  libxslt-devel
+  libxml2-devel
+  memcached
 
-Install from source:
-$ sudo wget ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick.tar.gz  
-$ sudo tar -zxvf ImageMagick.tar.gz  
-$ cd ImageMagick*  
-$ ./configure --prefix=/usr --enable-shared=yes  
-$ make
-$ sudo make install  
+ImageMagick:
+  http://www.imarichardson.com/2007/07/06/install-imagemagick-rmagick-on-rhel5/
+  Install BEFORE Rmagick gem
+
+Ruby gems that must be built on server:
+  memcache-client-1.7.4
+  RubyInline
+  ImageScience
+  Rmagick (Build on server with ruby setup.rb)
+  taf2-curb: Requires libcurl built from source!
+  nokogiri
+  hpricot
+  json?
+
 
 Populating application database:
-rake RAILS_ENV=production db:dataset:load_fixtures
-rake RAILS_ENV=production db:populate_required
-rake RAILS_ENV=production db:bootstrap_saas
+  rake RAILS_ENV=production db:dataset:load_fixtures
+  rake RAILS_ENV=production db:populate_required
+  rake RAILS_ENV=production db:bootstrap_saas
 
 Video/Audio Encoder/Decoder Software: (See ffmpeg configure.txt & rvideo_install.txt)
 
@@ -72,6 +69,11 @@ Red5 Open Source Flash Server Software:
   Recordings saved in  /opt/red5/webapps/messageRecorder/streams/ directory 
     - Clear this periodically so that recordings don't fill up disk!
 
+CutyCapt Screencapture program:
+  See deploy.rb install_cutycapt recipe
+  Instructions for Xvfb installation here:
+  http://corpocrat.com/2008/08/18/xvfb-problems/
+  
 Performance Setup Example:
   http://codemonkey.ravelry.com/2009/03/10/quick-update-ravelry-runs-on/
   Includes: ROR 2.2, Phusion Passenger, nginx, haproxy, Sphinx (search)

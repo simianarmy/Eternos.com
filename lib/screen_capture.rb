@@ -16,7 +16,7 @@ module ScreenCapture
       
       tmp = Tempfile.new('screencap')
       @out = "#{tmp.path}.#{ext}"
-      system "#{capturer} #{CutyCaptOpts} --url='#{url}' --out=#{@out}"
+      system "DISPLAY=localhost:1.0 #{capturer} #{CutyCaptOpts} --url='#{url}' --out=#{@out}"
       tmp.delete
       @out
     end

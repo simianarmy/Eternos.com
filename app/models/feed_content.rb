@@ -11,6 +11,7 @@ class FeedContent < ActiveRecord::Base
   :styles => { :thumb => "300x300" },
   :storage => :s3,
   :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
+  :s3_headers => {'Expires' => 1.year.from_now.httpdate},
   :url => ":class/:id/:basename_:style.:extension",
   :path => ":class/:id/:basename_:style.:extension",
   :bucket => S3Buckets::ScreencapBucket.eternos_bucket_name
@@ -45,6 +46,6 @@ class FeedContent < ActiveRecord::Base
   end
   
   def return_unless_missing(url)
-    url.match(/missing/) ? '' : url
+    url.match(/missing/) ? nil : url
   end
 end

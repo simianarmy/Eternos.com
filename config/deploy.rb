@@ -43,7 +43,21 @@ namespace :deploy do
   task :start do
     # do nothing - override default
   end
-  
+
+  desc "Stops work daemons"
+  task :stop_daemons, :roles => :app do
+    run "god unmonitor eternos_#{stage}"
+    #run "god stop eternos-email-uploader"
+    run "god stop eternos-workling_#{stage}"
+  end
+
+  desc "Restarts any work daemons"
+  task :start_daemons, :roles => :app do
+    run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
+    run "god load #{current_path}/config/daemons.god"
+    run "god restart eternos_#{stage}"
+  end
+
   desc "Restart web server"
   task :restart, :roles => :web do
     run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:cache:clear"
@@ -111,13 +125,19 @@ namespace :deploy do
   
   desc "Installs CutyCapt"
   task :install_cutycapt, :roles => :app do
-    sudo "yum -y install qt4-devel.i386  qt4-sqlite.i386 xorg-x11-server-Xvfb.i386 gperf flex gtk-doc glib2-devel"
+    sudo "yum -y install Xorg xorg-x11-server-Xvfb xorg-x11-fonts* gperf flex gtk-doc glib2-devel gstreamer-devel gstreamer-plugins-base-devel dbus-devel"
+    sudo "rpm -Uvh ftp://ftp.pramberger.at/systems/linux/contrib/rhel5/i386/qt45-4.5.2-1.el5.pp.i386.rpm; true"
+    sudo "rpm -Uvh ftp://ftp.pramberger.at/systems/linux/contrib/rhel5/i386/qt45-config-4.5.2-1.el5.pp.i386.rpm; true"
+    sudo "rpm -Uvh ftp://ftp.pbone.net/mirror/ftp.pramberger.at/systems/linux/contrib/rhel5/i386/qt45-sqlite-4.5.2-1.el5.pp.i386.rpm; true"
+    sudo "rpm -Uvh ftp://ftp.pramberger.at/systems/linux/contrib/rhel5/i386/qt45-devel-4.5.2-1.el5.pp.i386.rpm; true"
     run <<-CUTYCAPT
       cd /usr/local/src; \
-      svn checkout http://svn.webkit.org/repository/webkit/trunk WebKit; \
       svn co https://cutycapt.svn.sourceforge.net/svnroot/cutycapt cutycapt; \
-      cd cutycapt/CutyCapt; 
+      cd cutycapt/CutyCapt; \
+      /usr/lib/qt45/bin/qmake; \
+      make
 CUTYCAPT
+    sudo "cp /usr/local/src/cutycapt/CutyCapt/CutyCapt /usr/local/bin"
   end
 end
 

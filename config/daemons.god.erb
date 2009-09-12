@@ -45,7 +45,7 @@ end
 
 God.watch do |w|
   script = "<%= RAILS_ROOT %>/script/workling_client"
-  w.name = "eternos-workling"
+  w.name = "eternos-workling_<%= RAILS_ENV %>"
   w.group = "eternos_<%= RAILS_ENV %>"
   w.interval = 60.seconds
   w.start = "RAILS_ENV='<%= RAILS_ENV %>' #{script} start"
