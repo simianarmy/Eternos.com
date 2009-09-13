@@ -16,6 +16,7 @@ development:
   base_domain: dev.eternos.com
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   s3_staging_dir: /tmp
+  google_api_key: ABQIAAAAZPXQb6LGyRfyadFTEMyJIRSBkZHnxytVLIqnmhvWs6MeAadaiRQtxqlrdL3Mp_y0DANZxt-5Npq0dA
   
 test:
   <<: *default_settings

@@ -973,8 +973,7 @@ var ETimeline = function (opts) {
       var tlMaxDate;
 			var currCenterDate;
 			
-			// See: timeline_js/scripts/timeline.js:560 
-			this.timeline.hideBackupMessage();
+			//this.timeline.hideBackupMessage();
 			
 			band = this.timeline.getBand(1);
 			currCenterDate = this.centerDate;
@@ -1032,7 +1031,30 @@ var ETimeline = function (opts) {
 			var a;
 			
       this.timeline = Timeline.create($(this.domID), this.bandInfos);
-      this.timeline.addCustomMethods();
+
+			//this.timeline.addCustomMethods();
+			/* ============ BEGIN 
+			 * modified by: dimas 17 Aug 09
+			 * this 9 lines below are custom methods
+			 */
+			Timeline._Impl.prototype.addCustomMethods = function() {
+				var containerDiv = this._containerDiv;
+				var doc = containerDiv.ownerDocument;
+
+				var message = SimileAjax.Graphics.createMessageBubble(doc);
+				message.containerDiv.className = "timeline-message-container";
+				containerDiv.appendChild(message.containerDiv);
+
+				message.contentDiv.className = "timeline-message";
+				message.contentDiv.innerHTML = "Please backup your accounts first";
+
+				this.showBackupMessage = function() { message.containerDiv.style.display = "block"; };
+				this.hideBackupMessage = function() { message.containerDiv.style.display = "none"; };
+			};
+			/*
+			 * ============== END */
+
+      
 
 			// Setup click handler for timeline events
 			Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {

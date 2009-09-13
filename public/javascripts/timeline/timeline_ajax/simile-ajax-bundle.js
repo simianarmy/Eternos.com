@@ -1715,8 +1715,10 @@ if(!SimileAjax.Graphics.pngIsTranslucent){SimileAjax.includeCssFile(document,Sim
 }
 SimileAjax.Graphics._createTranslucentImage1=function(A,size,C){var B=document.createElement("img");
 B.setAttribute("src",A);
+if (size) {
 B.style.height = size+"px";
 B.style.width = size+"px";
+}
 if(C!=null){B.style.verticalAlign=C;
 }return B;
 };

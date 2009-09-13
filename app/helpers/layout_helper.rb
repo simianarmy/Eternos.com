@@ -31,10 +31,10 @@ module LayoutHelper
   end
   
   def javascript(*args)
-    #js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
-    args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
+    js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
+    #args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     js.flatten!
-    #RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
+    RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
     content_for(:javascript) { javascript_include_tag(*args) }
     #content_for(:javascript) { javascript_include_merged(*args) }
   end
@@ -54,18 +54,18 @@ module LayoutHelper
   # Where we get prototype js from
   def prototype
     #'http://ajax.googleapis.com/ajax/libs/prototype/1.6/prototype.js'
-    'prototype'
+    #'prototype'
   end
   
   def scriptaculous
     #'http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
-    'scriptaculous'
+    #'scriptaculous'
   end
   
   # asset inclusion helpers
   def use_orig_lightview
     stylesheet '/javascripts/lightview2.5/css/lightview.css'
-    javascript prototype, scriptaculous, 'lightview2.5/js/lightview'
+    javascript 'lightview2.5/js/lightview'
   end
   
   def use_lightview
@@ -74,7 +74,7 @@ module LayoutHelper
   end
   
   def use_lightview_only_js
-    javascript prototype, scriptaculous, "lightview/js/lightview" 
+    javascript "lightview/js/lightview" 
   end
   
   def use_jquery
@@ -100,7 +100,7 @@ module LayoutHelper
   end
   
   def use_lowpro
-    javascript prototype, scriptaculous, 'lowpro', 'defaultvalueactsashint', 'behaviors'
+    javascript 'lowpro', 'defaultvalueactsashint', 'behaviors'
   end
   
   def use_prototip
@@ -173,16 +173,21 @@ module LayoutHelper
     expression ? "display:none;" : ""
   end
 
+  def load_prototype
+    javascript "http://www.google.com/jsapi?key=#{AppConfig.google_api_key}"
+    content_for(:javascript) { javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");' }
+  end
+  
   def use_timeline
-    #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
     stylesheet 'timeline'
-
+    load_prototype
+    
     use_prototip
     use_lightview
     use_busy
-    javascript prototype, 'date'
-    javascript "timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js", 
-      "timeline/events", "timeline/templates", "timeline_helper"
+    #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
+    javascript "timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js"
+    javascript "timeline/events", "timeline/templates", "timeline_helper", "date"
   end
   
   def load_timeline_js

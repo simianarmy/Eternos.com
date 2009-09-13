@@ -17,7 +17,7 @@ namespace :backup do
   
   desc "Make sure all blog entries have screencaps"
   task :ensure_feed_screencaps => :environment do
-    FeedEntry.each do |fe|
+    FeedEntry.all.each do |fe|
       (fe.feed_content || fe.create_feed_content).save_screencap unless fe.screencap_url
     end
   end
