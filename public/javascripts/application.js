@@ -9,6 +9,16 @@ if (!("console" in window)) {
  	window.console = {log: function() {}, dir: function() {}};
 }
 
+function win_dimension() {
+	if (window.innerHeight !==undefined) {
+		A = [window.innerWidth,window.innerHeight]; // most browsers
+	} else { // IE varieties
+		var D = (document.body.clientWidth)? document.body: document.documentElement;
+		A = [D.clientWidth,D.clientHeight];
+	}
+	return A;
+}
+
 function mark_for_destroy(element) {
 	$(element).next('.should_destroy').value = 1;
 	$(element).up('.pn').hide();

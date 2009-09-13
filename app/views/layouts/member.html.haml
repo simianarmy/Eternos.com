@@ -65,7 +65,8 @@
     = render :partial => 'shared/get_satisfaction'
     :javascript
       // This needs to be global to all js
-      var lightview_height = 0.9*window.innerHeight;
+      var lightview_height = 0.9 * win_dimension()[1];
+      //alert('lightview_height = ' + lightview_height);
       document.observe('dom:loaded', function() { 
         handle_timeout_popups(#{session_timeout_seconds});
         if (#{needs_account_setup(current_user) ? 'true' : 'false'}) {
