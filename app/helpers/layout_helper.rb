@@ -53,12 +53,12 @@ module LayoutHelper
   
   # Where we get prototype js from
   def prototype
-    #'http://ajax.googleapis.com/ajax/libs/prototype/1.6/prototype.js'
+    request.protocol + 'ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js'
     #'prototype'
   end
   
   def scriptaculous
-    #'http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
+    request.protocol + 'ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
     #'scriptaculous'
   end
   
@@ -116,9 +116,9 @@ module LayoutHelper
   end
   
   def use_tabs
-    javascript "http://api.maps.yahoo.com/v3.0/fl/javascript/apiloader.js?appid=#{YAHOO_APP_ID}", 
-      'tabs', prototype
     stylesheet 'tabs'
+    javascript request.protocol + "api.maps.yahoo.com/v3.0/fl/javascript/apiloader.js?appid=#{YAHOO_APP_ID}", 
+      'tabs'
   end
   
   def use_busy
@@ -168,12 +168,9 @@ module LayoutHelper
     stylesheet "content_upload"
     javascript "mootools-1.2-core-nc", "Swiff.Uploader", "Fx.ProgressBar", "FancyUpload2", "upload_form"
   end
-  
-  def style_hidden_if(expression)
-    expression ? "display:none;" : ""
-  end
 
   def load_prototype
+    @no_prototype = true # Disable layout include
     javascript "http://www.google.com/jsapi?key=#{AppConfig.google_api_key}"
     content_for(:javascript) { javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");' }
   end
@@ -199,6 +196,10 @@ module LayoutHelper
     #javascript_include_tag("timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js", "timeline/events", "timeline/templates", "timeline_helper")
   end
   
+  def style_hidden_if(expression)
+     expression ? "display:none;" : ""
+   end
+   
   private
   
 end

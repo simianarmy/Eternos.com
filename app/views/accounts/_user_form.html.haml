@@ -36,7 +36,7 @@
   %br
   .captcha-right
     %p.captcha_box
-      = recaptcha_tags :ssl => true
+      = recaptcha_tags :ssl => request.ssl?
     
   %p
     %br
