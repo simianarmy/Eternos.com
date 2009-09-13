@@ -3,6 +3,12 @@
 
 //var FLOWPLAYER_PRODUCT_KEY = '$3894b992d106ccc5f56';
 
+// Put this in a early-loading script
+// code yanked from the Yahoo media player. Thanks, Yahoo.
+if (!("console" in window)) {
+ 	window.console = {log: function() {}, dir: function() {}};
+}
+
 function mark_for_destroy(element) {
 	$(element).next('.should_destroy').value = 1;
 	$(element).up('.pn').hide();

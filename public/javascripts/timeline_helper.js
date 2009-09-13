@@ -103,11 +103,6 @@ String.prototype.toDate = function() {
 	return mysqlDateToDate(this);
 }
 
-// Put this in a early-loading script
-// code yanked from the Yahoo media player. Thanks, Yahoo.
-if (!("console" in window)) {
- 	window.console = {log: function() {}, dir: function() {}};
-}
 // ETimeline 'class'
 var ETimeline = function (opts) {
   // Private instance of this object for private methods to use

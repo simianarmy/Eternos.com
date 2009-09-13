@@ -7,11 +7,12 @@
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
     - stylesheet 'member', 'screen', 'application'
-    = javascript_include_tag(prototype) unless @no_prototype
+    - load_prototype unless @no_prototype
     - use_lightview
     - use_lowpro
     - javascript 'login'
     = yield(:head)
+    = yield(:js_libs)
     = yield(:javascript)
     
     / end bundle

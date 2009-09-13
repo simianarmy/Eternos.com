@@ -23,7 +23,7 @@ config.action_view.debug_rjs                         = false
 config.action_controller.asset_host = Proc.new { |source, request|
   "#{request.protocol}staging.eternos.com"
 }
-
+config.log_level = :debug
 
 #Disable delivery errors, bad email addresses will be ignored
 config.action_mailer.raise_delivery_errors = true

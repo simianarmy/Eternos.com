@@ -7,6 +7,7 @@ common: &default_settings
   require_payment_info_for_trials: true
   # Credit card gateway: One of brain_tree, authorize_net_cim, payment_express, or trust_commerce
   gateway: brain_tree
+  google_api_key: ABQIAAAAZPXQb6LGyRfyadFTEMyJIRSBkZHnxytVLIqnmhvWs6MeAadaiRQtxqlrdL3Mp_y0DANZxt-5Npq0dA
   
 development:
   <<: *default_settings
@@ -16,7 +17,6 @@ development:
   base_domain: dev.eternos.com
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   s3_staging_dir: /tmp
-  google_api_key: ABQIAAAAZPXQb6LGyRfyadFTEMyJIRSBkZHnxytVLIqnmhvWs6MeAadaiRQtxqlrdL3Mp_y0DANZxt-5Npq0dA
   
 test:
   <<: *default_settings
@@ -43,3 +43,12 @@ staging:
   base_domain: staging.eternos.com
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
   s3_staging_dir: /usr/local/eternos/cloud_staging
+
+local_production:
+  <<: *default_settings
+  invitation_required: false 
+  app_name: Eternos
+  from_email: dev@eternos.com
+  base_domain: dev.eternos.com
+  FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
+  s3_staging_dir: /tmp

@@ -7,14 +7,21 @@
 # You can also use a cluster of Starlings. Simply give a comma separated
 # list of server:port, server:port, server:port values to listens_on. 
 #
-production:
+common: &default_settings
   listens_on: localhost:5672
+    
+production:
+  <<: *default_settings
 
 development:
-  listens_on: localhost:5672
+  <<: *default_settings
   
 test:
-  listens_on: localhost:5672
+  <<: *default_settings
 
 staging:
-  listens_on: localhost:5672
+  <<: *default_settings
+  
+local_production:
+  <<: *default_settings
+

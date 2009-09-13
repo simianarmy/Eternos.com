@@ -7,10 +7,11 @@
     %title= "Eternos - " + h(yield(:title) || "Home")
     / bundle do
     - stylesheet 'reset-fonts-grids', 'screen', 'application', 'public', 'style'
-    = javascript_include_tag(prototype)
+    - load_prototype
     - javascript 'timer'
       
     = yield(:head)
+    = yield(:js_libs)
     = yield(:javascript)
     / end bundle
   %body

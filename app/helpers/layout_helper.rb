@@ -9,7 +9,8 @@ module LayoutHelper
   
   class << self
     def clear_js_cache
-      js = []
+      RAILS_DEFAULT_LOGGER.debug "Clearing js includes"
+      LayoutHelper.js = []
     end
   end
   
@@ -34,7 +35,7 @@ module LayoutHelper
     js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     #args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     js.flatten!
-    RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
+    #RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
     content_for(:javascript) { javascript_include_tag(*args) }
     #content_for(:javascript) { javascript_include_merged(*args) }
   end
@@ -171,13 +172,16 @@ module LayoutHelper
 
   def load_prototype
     @no_prototype = true # Disable layout include
-    javascript "http://www.google.com/jsapi?key=#{AppConfig.google_api_key}"
-    content_for(:javascript) { javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");' }
+    content_for(:js_libs) {
+      javascript_include_tag "http://www.google.com/jsapi?key=#{AppConfig.google_api_key}"
+    }
+    content_for(:js_libs) {
+      javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
+    }
   end
   
   def use_timeline
     stylesheet 'timeline'
-    load_prototype
     
     use_prototip
     use_lightview
