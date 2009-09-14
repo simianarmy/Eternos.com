@@ -15,7 +15,6 @@ var ETLEventSource = Class.create({
 		this.end_date 						= s.end_date;
 		this.event_date_s					= '';
 		this.attributes 					= s.attributes;
-		console.dir(this.attributes);
 	},
 	isArtifact: function() {
 		return ETEvent.isArtifact(this.type) || ETEvent.isArtifact(this.attachment_type);

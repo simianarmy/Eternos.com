@@ -704,6 +704,8 @@ var ETimeline = function (opts) {
       this.jsonEvents.results.each(function(res) {
 				event = ETEvent.createSource(res);
         if (event.isArtifact()) {
+					// Skip artifacts with missing source
+					if (event.attributes.url == null) { return; }
           that.artifactSection.addItem(event);
         }
         this.eventItems.addSource(event);

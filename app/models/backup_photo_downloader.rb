@@ -20,7 +20,7 @@ class BackupPhotoDownloader
         BackupPhoto.needs_download.sort_by {rand}[0..max.to_i].each do |bp|
           RAILS_DEFAULT_LOGGER.debug "Downloading backup photo #{bp.id}..."
           download_photo bp
-          sleep(1) # Don't flood source with download requests, and allow em to publish
+          sleep(0.3) # Don't flood source with download requests, and allow em to publish
         end
         MessageQueue.stop
       end
@@ -46,7 +46,7 @@ class BackupPhotoDownloader
             bp.download_error!
             download_photo bp
           end
-          sleep(1) # so em can publish upload job
+          sleep(0.3) # so em can publish upload job
         end
         MessageQueue.stop
       end
