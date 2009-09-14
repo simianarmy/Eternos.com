@@ -22,6 +22,10 @@ document.observe("dom:loaded", function() {
       }
     })
   }
+	//Scroller.reset('account-setting-content');
+  //setDinamycHeight('account-setting-content');
+	setDinamycHeight('scrollbar_content');
+  var scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
 });
 
 // Callback for Facebook Backup App settings.
@@ -46,7 +50,7 @@ function activatedFb(){
 }
 
 function setDinamycHeight(id){
-  height = window.innerHeight;
+  height = win_dimension()[1];
   heightDiv = 0.83*height;
   $(id).style.height = heightDiv + "px";
 }

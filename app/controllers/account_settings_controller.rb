@@ -15,8 +15,8 @@ class AccountSettingsController < ApplicationController
     session[:setup_account] = true
     
     respond_to do |format|
-      format.js 
       format.html
+      format.js
     end
   end
 

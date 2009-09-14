@@ -1,13 +1,15 @@
 !!!
 %html{html_attrs('en'), 'xmlns:fb' => "http://www.facebook.com/2008/fbml"}
   %head
-    %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
+    %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
+    %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}
+    
     / bundle do
-    - stylesheet 'popup', 'application'
+    - stylesheet 'popup', 'application', 'scrollbar'
     -# Include javascript libs manually to prevent cacheing that breaks scripts
     - load_prototype
     - use_lightview
-    - javascript 'account_setup', 'scroller', 'slider'
+    - javascript 'application', 'account_setup'
       
     = yield(:head)
     = yield(:js_libs)

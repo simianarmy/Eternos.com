@@ -1104,6 +1104,7 @@ var ETimeline = function (opts) {
       this.timeline.showLoadingMessage();
     },
     hideLoading: function () {
+			//alert('hiding loader');
       this.timeline.hideLoadingMessage();
     },
     onSearchError: function () {

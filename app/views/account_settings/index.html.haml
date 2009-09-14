@@ -1,9 +1,8 @@
 - use_calendar
-= javascript_include_tag "timezone_detector"
+- javascript "timezone_detector", 'slider', 'livepipe-ui/livepipe', 'livepipe-ui/scrollbar'
 - title 'account settings'
-
+  
 .popup-container
-  .popuptop
   .popup-content
     .top-box
       = link_to_function "", "window.parent.Lightview.hide();", {:class => "stop-btn"}
@@ -25,10 +24,13 @@
     .popup-content-left
       = render :partial => "setting_nav", :locals => { :active_link => "step1" }
     
-    .pop-content-right
-      %center
-        = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
-      = render :partial => 'account_settings/personal_info'
-    .clear
-  = image_tag "errors/popup-footer.png"
-  / = javascript_tag "$('step1').click();"
+    #scrollbar_container
+      #scrollbar_track.popuptop
+        #scrollbar_handle
+      #scrollbar_content.pop-content-right
+        %center
+          = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
+        = render :partial => 'account_settings/personal_info'
+      .clear
+    = image_tag "errors/popup-footer.png"
+

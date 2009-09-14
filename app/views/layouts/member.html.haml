@@ -38,6 +38,7 @@
           %ul#navlist
             %li.home= link_to 'homepage', member_home_path
             %li.support
+              /= link_to 'account_settings', account_settings_path, :id => 'account-setting', :class => 'lightview', :rel => 'iframe', :title => "Account Settings :: :: width: 800, autosize: false, closeButton: false"
               = link_to_lightview 'account settings', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
             %li.logout= link_to 'log out', logout_path
         .clearboth
