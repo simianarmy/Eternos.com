@@ -3,6 +3,7 @@
 - title 'account settings'
   
 .popup-container
+  .popuptop
   .popup-content
     .top-box
       = link_to_function "", "window.parent.Lightview.hide();", {:class => "stop-btn"}
@@ -25,7 +26,7 @@
       = render :partial => "setting_nav", :locals => { :active_link => "step1" }
     
     #scrollbar_container
-      #scrollbar_track.popuptop
+      #scrollbar_track
         #scrollbar_handle
       #scrollbar_content.pop-content-right
         %center
