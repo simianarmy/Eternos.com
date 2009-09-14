@@ -330,7 +330,8 @@ function addRowAddress(){
   $('form_address').value = window.counter;    
   
   window.counter++
-	Scroller.reset('account-setting-content');	
+	//Scroller.reset('account-setting-content');	
+	scrollbar.recalculateLayout();  
 }
 
 
@@ -476,7 +477,8 @@ function addRowJob(){
   $('form_job').value = window.counter_job;
   
   window.counter_job++
-	Scroller.reset('account-setting-content');	
+	//Scroller.reset('account-setting-content');	
+	scrollbar.recalculateLayout();  
 }
 
 window.counter_school = 1;
@@ -654,7 +656,8 @@ function addRowSchool(){
   $('form_school').value = window.counter_school;
   
   window.counter_school++
-	Scroller.reset('account-setting-content');	
+	//Scroller.reset('account-setting-content');	
+	scrollbar.recalculateLayout();  
 }
 
 window.counter_medical = 1;
@@ -794,7 +797,8 @@ function addRowMedical(){
   $('form_medical').value = window.counter_medical;
   
   window.counter_medical++
-	Scroller.reset('account-setting-content');	
+	//Scroller.reset('account-setting-content');	
+	scrollbar.recalculateLayout();  
 }
 
 window.counter_medical_condition = 1;
@@ -889,7 +893,8 @@ function addRowMedicalCondition(){
   $('form_medical_condition').value = window.counter_medical_condition;
   
   window.counter_medical_condition++
-	Scroller.reset('account-setting-content');	
+	//Scroller.reset('account-setting-content');	
+	scrollbar.recalculateLayout();  
 }
 
 window.counter_family = 1;
@@ -1018,7 +1023,8 @@ function addRowFamily(){
   $('form_family').value = window.counter_family;
   
   window.counter_family++
-	Scroller.reset('account-setting-content');	
+	//Scroller.reset('account-setting-content');	
+	scrollbar.recalculateLayout();  
 }
 
 window.counter_relationship = 1;
@@ -1165,7 +1171,8 @@ function addRowRelationship(){
   $('form_relationship').value = window.counter_relationship;
   
   window.counter_relationship++
-	Scroller.reset('account-setting-content');	
+	//Scroller.reset('account-setting-content');	
+	scrollbar.recalculateLayout();  
 }
 
 function createDateElement(text, val){
