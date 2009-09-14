@@ -26,8 +26,15 @@ describe ActivityStreamItem do
       @item.attachment_data.should be_nil
     end
     
-    it "should support to_json" do
-      ActiveSupport::JSON.decode(@item.to_json)[@item.to_str].should be_a Hash
+    describe "JSON" do
+      before(:each) do
+        @json = @item.to_json
+      end
+      
+      it "should support to_json" do
+        ActiveSupport::JSON.decode(@json).should be_a Hash
+      end
+      
     end
     
     describe "with attachment data" do
@@ -36,17 +43,33 @@ describe ActivityStreamItem do
           @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('photo')
         end
         
+        it "should be a facebook photo" do
+          @item.should be_facebook_photo
+        end
+        
         it "should parse photo attachment data" do
           @item.activity_type.should == 'post'
           @item.attachment_type.should == 'photo'
         end
-
-        it "should return the attachment data source url" do
-          @item.url.should match(/^http/)
-          @item.thumbnail_url.should match(/^http/)
+        
+        describe "url" do
+          it "should search for a BackupPhoto object" do
+            BackupPhoto.expects(:find_by_source_photo_id).with(@item.attachment_data['photo']['pid'])
+            @item.url
+          end
+          
+          it "should not return url if BackupPhoto url not valid" do
+            BackupPhoto.stubs(:find_by_source_photo_id).returns(nil)
+            @item.url.should be_nil
+          end
+          
+          it "should return the source url if BackupPhoto url is valid" do
+            BackupPhoto.stubs(:find_by_source_photo_id).returns(stub(:photo => stub(:url => 'http://s3.img')))
+            @item.url.should match(/^http/)
+          end
         end
       end
-      
+
       describe "of type: generic" do
         before(:each) do
           @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('generic')

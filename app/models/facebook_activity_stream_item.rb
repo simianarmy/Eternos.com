@@ -15,7 +15,13 @@ class FacebookActivityStreamItem < ActivityStreamItem
     
     case attachment_type
     when 'photo'
-      d['src'].gsub(/_s\./, '_n.')
+      # Either facebook photo or uses src attribute
+      if facebook_photo?
+        # Don't return anything if associated photo object not found
+        facebook_photo.try(:url)
+      else
+        d['src'].gsub(/_s\./, '_n.')
+      end
     when 'video'
       d['video']['source_url']
     when 'generic'
@@ -30,7 +36,13 @@ class FacebookActivityStreamItem < ActivityStreamItem
     
     case attachment_type
     when 'photo'
-      d['src']
+      # Either facebook photo or uses src attribute
+      if facebook_photo?
+        # Don't return anything if associated photo object not found
+        facebook_photo.try(:thumbnail_url)
+      else
+        d['src']
+      end
     when 'video'
       d['video']['source_url']
     end
@@ -45,6 +57,16 @@ class FacebookActivityStreamItem < ActivityStreamItem
       CGI::unescape $1
     else
       link
+    end
+  end
+  
+  def facebook_photo?
+    (d = parsed_attachment_data['photo']) && !d['pid'].empty?
+  end
+  
+  def facebook_photo
+    if pid = parsed_attachment_data['photo']['pid']
+      @fb_photo ||= BackupPhoto.find_by_source_photo_id(pid).photo rescue nil
     end
   end
   
@@ -63,4 +85,5 @@ class FacebookActivityStreamItem < ActivityStreamItem
     end
     true
   end
+    
 end

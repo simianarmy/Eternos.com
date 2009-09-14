@@ -204,3 +204,6 @@ Rubaidh::GoogleAnalytics.local_javascript = true
 Spawn::method :fork
 Spawn::method :yield, 'test' # Don't fork in tests
 #Spawn::method :thread, 'production'
+
+ActiveRecord::Base.include_root_in_json = false
+

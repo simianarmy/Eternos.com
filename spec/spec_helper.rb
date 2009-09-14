@@ -433,7 +433,7 @@ module ActivityStreamProxySpecHelper
     # From live data
     case type
     when 'photo'
-      item.attachment = "--- \nhref: http://www.facebook.com/photo.php?pid=30278880&amp;id=1241462621\nphoto: \n  pid: \"5332041356431721696\"\n  aid: \"5332041356403459399\"\n  index: \"1\"\n  height: \"434\"\n  owner: \"1241462621\"\n  width: \"604\"\ntype: photo\nsrc: http://photos-a.ak.fbcdn.net/hphotos-ak-snc1/hs126.snc1/5409_1109259931986_1241462621_30278880_7526228_s.jpg\nalt: {}\n\n"
+      item.attachment = {"photo"=>{"pid"=>"2824048474384621129", "aid"=>"2824048478676582397", "height"=>"419", "index"=>"1", "owner"=>"657525024", "width"=>"580"}, "href"=>"http://www.facebook.com/photo.php?pid=3006025&amp;id=657525024", "src"=>"http://photos-b.ak.fbcdn.net/hphotos-ak-snc1/hs269.snc1/9630_149298465024_657525024_3006025_5207094_s.jpg", "type"=>"photo", "alt"=>{}}
     when 'video'
       item.attachment = "--- \nhref: http://www.facebook.com/ext/share.php?sid=118488009263&amp;h=Uk_ht&amp;u=e8Tgi\ntype: video\nsrc: http://external.ak.fbcdn.net/safe_image.php?d=98ddec74796e916446bbe3468c840250&amp;url=http%3A%2F%2Fi.ytimg.com%2Fvi%2FxgHmSdpjEIk%2F2.jpg&amp;w=130&amp;h=130\nalt: Thousand-Hand Guan Yin\nvideo: \n  permalink: /posted.php?id=504883639&amp;share_id=118488009263#s118488009263\n  source_url: http://www.youtube.com/v/xgHmSdpjEIk&amp;autoplay=1\n  display_url: http://www.youtube.com/watch?v=xgHmSdpjEIk&amp;eurl=http://www.facebook.com/home.php?ref=home&amp;feature=player_embedded#t=124\n  owner: \"504883639\"\n  source_type: html\n"
     when 'generic'

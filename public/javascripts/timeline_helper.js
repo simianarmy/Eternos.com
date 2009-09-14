@@ -648,15 +648,16 @@ var ETimeline = function (opts) {
 		},
     // Group event items by type in arrays
     _groupItemsByType: function (items) {
-      var types = [];
+      var type, types = [];
       var results = new Array();
 
       for (var i = 0; i < items.length; i++) {
-        idx = types.indexOf(items[i].type);
+				type = items[i].getDisplayType();
+        idx = types.indexOf(type);
         if (idx !== -1) {
           results[idx].push(items[i]);
         } else {
-          types.push(items[i].type);
+          types.push(type);
           results[types.length - 1] = new Array(items[i]);
         }
       }

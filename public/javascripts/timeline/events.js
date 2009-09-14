@@ -5,7 +5,7 @@
 //Eternos Timeline Event Source base class
 var ETLEventSource = Class.create({
 	initialize: function(s) {
-		console.log("construcing ETLEventSource for " + s.type);
+		console.log("constructing ETLEventSource for " + s.type);
 		this.type 								= s.type;
 		this.attachment_type			= s.attachment_type;
 		this.display_text 				= s.display_text
@@ -14,7 +14,8 @@ var ETLEventSource = Class.create({
 		this.start_date 					= s.start_date;
 		this.end_date 						= s.end_date;
 		this.event_date_s					= '';
-		this.attributes 					= s.attributes[s.type]
+		this.attributes 					= s.attributes;
+		console.dir(this.attributes);
 	},
 	isArtifact: function() {
 		return ETEvent.isArtifact(this.type) || ETEvent.isArtifact(this.attachment_type);
@@ -24,6 +25,9 @@ var ETLEventSource = Class.create({
 	},
 	getPreviewHtml: function() {
 		return 'Click link to view';
+	},
+	getDisplayType: function() {
+		return (this.attachment_type != null) ? this.attachment_type : this.type;
 	},
 	// Returns event's date occurrence, as date string
 	// Needed b/c dates can be date or datetimes
@@ -130,7 +134,7 @@ var ETEvent = {
 		{type: "twitter_activity_stream_item", display_text: "Tweet", display_text_plural: "Tweets", icon: "twitter.gif"}, 
 		{type: "feed_entry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "rss.png"}, 
 		{type: "backup_email", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
-		{type: "photo", display_text: "Photo", display_text_plural: "Photos", icon: "photo.png"},
+		{type: "photo", display_text: "Image", display_text_plural: "Images", icon: "photo.png"},
 		{type: "video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
 		{type: "music", display_text: "Music", display_text_plural: "Music", icon: "music.png"},
 		{type: "audio", display_text: "Audio", display_text_plural: "Audio", icon: "audio.png"},
@@ -145,7 +149,7 @@ var ETEvent = {
 	
 	// Class factory function - returns ETLEventSource child class object based on passed type string
 	createSource: function(data) {
-		var type = data.type;
+		var type = (data.attachment_type == null) ? data.type : data.attachment_type;
 		var s = this.itemTypes.find(function(t) { return type === t.type});
 		var data = Object.extend(data, s);
 		
