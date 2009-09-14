@@ -418,7 +418,8 @@ var ETimeline = function (opts) {
       this.itemWithTooltipTemplate = that.templates.eventListTemplates.eventItemWithTooltip();
       this.tooltipItemTemplate = that.templates.eventListTemplates.eventItemTooltipItem();
       this.inlineEventsTemplate = that.templates.eventListTemplates.inlineEvents();
-      this.tooltipTitleTemplate = that.templates.eventListTemplates.tooltipTitle()
+      this.tooltipTitleTemplate = that.templates.eventListTemplates.tooltipTitle();
+			this.eventDetailsLinkTemplate = that.templates.eventListTemplates.detailsLink();
     },
 		_getItemIDs: function() {
 			return this.items.collect(function(i) {
@@ -445,8 +446,11 @@ var ETimeline = function (opts) {
       if (item.isArtifact()) {
         this.detailsUrl = item.attributes.url;
       } else { 
-        this.detailsUrl = 'tl_details/' + 
-					[that.memberID, this.type, encodeURIComponent(this._getItemIDs())].join('/');
+        this.detailsUrl = this.eventDetailsLinkTemplate.evaluate({
+					memberId: that.memberID,
+					eventType: this.type,
+					eventIds: encodeURIComponent(this._getItemIDs())
+				});
       }
 			return this.detailsUrl;
     },
@@ -499,6 +503,10 @@ var ETimeline = function (opts) {
       this.tooltipHtml = '';
       this.items.each(function (item) {
         this.tooltipHtml += this.tooltipItemTemplate.evaluate({
+					event_details_link: this.eventDetailsLinkTemplate.evaluate({
+						memberId: that.memberID,
+						eventType: item.type,
+						eventIds: item.getID()}),
           content: item.getPreviewHtml()
         });
       },

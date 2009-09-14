@@ -28,6 +28,9 @@ var ETLEventSource = Class.create({
 	getDisplayType: function() {
 		return (this.attachment_type != null) ? this.attachment_type : this.type;
 	},
+	getID: function() {
+		return this.attributes.id;
+	},
 	// Returns event's date occurrence, as date string
 	// Needed b/c dates can be date or datetimes
 	eventDateString: function() {
@@ -39,8 +42,8 @@ var ETLEventSource = Class.create({
 		return this.event_date_s;
 	},
 	// Returne rails action path for viewing event source collection by date
-	dateDetailsPath: function(user_id) {
-		return ['timeline_events/details', user_id, this.type, this.eventDateString()].join('/');
+	eventDetailsPath: function(memberId) {
+		return ['tl_details', memberId, this.type].join('/');
 	}
 });
 
@@ -63,10 +66,9 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 // Facebook event
 var ETLFacebookActivityStreamEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function() {
-		if (this.attributes.attachment_data == null) {
-			return this.attributes.message;
-		} else {
-			var html = this.attributes.message + '<br/>'
+		var html = this.attributes.message;
+		if (this.attributes.attachment_data != null) {
+			html += '<br/>'
 			if (this.attributes.thumbnail_url != null) {
 				html += this.attributes.thumbnail_url;
 			} else if (this.attributes.url != null) {
@@ -74,8 +76,8 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLEventSource, {
 			} else {
 				//console.log("Unknown data facebook attachment type: " + this.attributes.attachment_type)
 			}
-			return html;
 		}
+		return html;
 	}
 });
 // Twitter event

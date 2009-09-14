@@ -13,7 +13,9 @@ var eventTooltipOptions = {
     target: 'topRight',
     tip: 'bottomLeft'
   },
-  stem: 'bottomLeft'
+  stem: 'bottomLeft',
+  fixed: true,
+	hideOn: { element: 'tip', event: 'mouseout' }
 };
 var timelineTooltipOptions = {
 	hook: {
@@ -46,13 +48,16 @@ var ETemplates = {
 					'<div class="tooltip_container"><p/>#{tt_content}</div>#{inline_content}</li>');
 			},      
 			eventItemTooltipItem: function () {
-				return new Template('<div class="event_preview_item_container">#{content}</div><br/>');
+				return new Template('<div class="event_preview_item_container"><a href="#{event_details_link}" class="lightview" title=":: :: fullscreen: true" rel="iframe">#{content}</a></div><br/>');
 			},
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');
 			},
 			tooltipTitle: function(){
 			  return new Template("<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/#{icon}'> &nbsp;&nbsp;#{title}");
+			},
+			detailsLink: function() {
+				return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');
 			},
 			createEventItemTooltips: function() {
 				// Create tooltip for each event list link
