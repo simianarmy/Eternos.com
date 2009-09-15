@@ -73,13 +73,13 @@ var ETemplates = {
 				var ev;
 				
 				// Create tooltip for each timeline point
-				$$('.timeline-event-icon').each(function(e) {
-					ev = Timeline.EventUtils.decodeEventElID(e.id).evt;
+				$$('.timeline-event-icon').each(function(element) {
+					ev = Timeline.EventUtils.decodeEventElID(element.id).evt;
 					DefaultTooltipOptions.title = ev.collection._getTooltipTitle();
 					if (ev.collection.first.isArtifact()) {
 						DefaultTooltipOptions.width = 'auto';
 					}
-					new Tip(e, ev.collection._getTooltipContents(), Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
+					new Tip(element, ev.collection._getTooltipContents(), Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
 				});
 			}
 		},

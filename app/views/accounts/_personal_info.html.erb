@@ -4,7 +4,11 @@
     <tr>
       <td colspan="3">
 	    <div class="title2">Personal Info</div><br />
-			<div class="textarea7">Please tell us about yourself!  This data is held with the strictest of privacy controls.  </div>
+			<div class="textarea7">
+			  Please tell us about yourself!  This data is held with the strictest of privacy controls.  
+			  <br/>
+			  Field marked with a * are required.
+			</div>
   	  </td>
     </tr>
     <tr>
@@ -14,7 +18,7 @@
     </tr>
     <%- fields_for @address_book do |ab| %>
       <tr>
-        <td class="coll-form1" valign="center">First Name</td>
+        <td class="coll-form1" valign="center">First Name*</td>
 	    <td class="coll-form2" valign="center">:</td>
 	    <td class="coll-form3" valign="center"><%= text_field_submit_onchange(ab, :first_name, "submit_form_personal") %></td>
       </tr>
@@ -24,7 +28,7 @@
 	    <td class="coll-form3" valign="center"><%= text_field_submit_onchange(ab, :middle_name, "submit_form_personal") %></td>
       </tr>
       <tr>
-        <td class="coll-form1" valign="center">Last Name</td>
+        <td class="coll-form1" valign="center">Last Name*</td>
 	    <td class="coll-form2" valign="center">:</td>
 	    <td class="coll-form3" valign="center"><%= text_field_submit_onchange(ab, :last_name, "submit_form_personal") %></td>
       </tr>
@@ -40,7 +44,7 @@
       </tr>
 
       <tr>
-	    <td class="coll-form1" valign="center">Gender</td>
+	    <td class="coll-form1" valign="center">Gender*</td>
 		<td class="coll-form2" valign="center">:</td>
 		<td class="coll-form3" valign="center">
 		   <%= radio_submit_onclick(ab, :gender, "male", "submit_form_personal", @address_book.gender, "left") %>
@@ -51,6 +55,17 @@
           <div class="top-text2">&nbsp;Transgender</div>
 		</td>
 	  </tr>
+	  
+	  <tr>
+      <td class="coll-form1" valign="center">Birthdate*</td>
+    <td class="coll-form2" valign="center">:</td>
+    <td class="coll-form3" valign="center"> 
+			<div class="birthdate-box">
+				<%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year}, {:class => 'bday-box', :onchange => "$('submit_form_personal').click();"}) %>
+			</div>
+		</td>
+    </tr>
+    
       <tr>
         <td class="coll-form1" valign="center">Timezone</td>
 		<td class="coll-form2" valign="center">:</td>
@@ -75,7 +90,7 @@
       </tr>
 
       <tr>
-        <td class="coll-form1" valign="center">Race</td>
+        <td class="coll-form1" valign="center">Ethnicity</td>
 	    <td class="coll-form2" valign="center">:</td>
 	    <td class="coll-form3" valign="center"> <%=text_field_submit_onchange(profile, :race, "submit_form_personal") %> </td>
       </tr>
@@ -87,7 +102,7 @@
       </tr>
 
       <tr>
-        <td class="coll-form1" valign="center">Political View</td>
+        <td class="coll-form1" valign="center">Political Views</td>
 	    <td class="coll-form2" valign="center">:</td>
 	    <td class="coll-form3" valign="center">  <%= text_field_submit_onchange(profile, :political_views, "submit_form_personal") %> </td>
       </tr>
@@ -101,6 +116,7 @@
     <%- end -%>
   
     <%- fields_for @address_book do |ab| %>
+<!--
       <tr>
         <td class="coll-form1" valign="center">Website</td>
 	    <td class="coll-form2" valign="center">:</td>
@@ -112,17 +128,7 @@
 	    <td class="coll-form2" valign="center">:</td>
 	    <td class="coll-form3" valign="center">  <%= text_field_submit_onchange(ab, :ssn, "submit_form_personal") %> </td>
       </tr>
-
-      <tr>
-        <td class="coll-form1" valign="center">Birthdate</td>
-	    <td class="coll-form2" valign="center">:</td>
-	    <td class="coll-form3" valign="center"> 
-				<div class="birthdate-box">
-					<%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year}, {:class => 'bday-box', :onchange => "$('submit_form_personal').click();"}) %>
-				</div>
-			</td>
-      </tr>
-
+-->
     <%- end -%>
   </tbody>
 </table>

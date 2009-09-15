@@ -1067,6 +1067,7 @@ var ETimeline = function (opts) {
 				// Should fire click() on matching event list target link
 				if ((li = ETemplates.event_list_item(evt.getEventID())) !== undefined) {
 					if ((li !== null) && (a = li.down().down('a.event_list_inline_item')) !== undefined) {
+						Tips.hideAll();
 						Lightview.show({
 						 	href: a.href,
 						  rel: a.rel,
@@ -1186,6 +1187,10 @@ var ETimeline = function (opts) {
 					this.scrollTo(newDate);
 				}
 			}
+			// Hides any tooltip on click (required to hide on tooltip element link click)
+			$$('a').each(function (e) {
+				e.observe('click', function(e) { Tips.hideAll(); });
+			});
     },
 		scrollTo: function(date) {
 			console.log("Scrolling to date " + date);
