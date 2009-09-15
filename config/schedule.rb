@@ -19,6 +19,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
+set :cron_log "#{RAILS_ROOT}/log/cron.log"
+
 rake_opts = '--trace'
 
 every 1.day, :at => "2am" do

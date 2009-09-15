@@ -1,3 +1,5 @@
+require 'rails_sanitize'
+
 module XssTerminate
   def self.included(base)
     base.extend(ClassMethods)

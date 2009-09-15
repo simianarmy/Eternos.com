@@ -64,6 +64,10 @@ class BackupEmail < ActiveRecord::Base
     @body ||= TMail::Mail.parse(raw).body if raw
   end
   
+  def recipient
+    backup_source.email
+  end
+    
   def gen_s3_key
     [mailbox.gsub(/\//, '_'), message_id, backup_source_id].join(':')
   end

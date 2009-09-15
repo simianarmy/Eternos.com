@@ -51,7 +51,7 @@ namespace :backup do
     if site = BackupSite.find_by_name(site)
       BackupJobPublisher.add_by_site(site)
     else
-      puts "Could not find backup site with name #{site}"
+      puts "Could not find backup site (options: #{BackupSite.names.join('|')})"
     end
   end
   
