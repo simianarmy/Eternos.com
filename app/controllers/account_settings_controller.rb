@@ -25,7 +25,6 @@ class AccountSettingsController < ApplicationController
   def completed_steps
     respond_to do |format|
       format.js {
-        logger.debug "Returning member setup step = #{current_user.setup_step}"
         render :inline => current_user.setup_step
       }
     end  
@@ -533,15 +532,15 @@ class AccountSettingsController < ApplicationController
     initialize_from_params
     
     respond_to do |format|
-      if update_personal_info
-        current_user.completed_setup_step(1)
+      if update_personal_info        
+        current_user.completed_setup_step(1) if has_required_personal_info_fields?
         format.js {
           flash[:notice] = "Personal Info Saved";
           render :nothing => true
         }
       else
         format.js {
-          flash[:error] = "Something wrong !"
+          flash[:error] = "Unable to save your changes!"
           render :nothing => true
         }
       end
@@ -606,7 +605,7 @@ class AccountSettingsController < ApplicationController
   private
 
   # because the views of this controller used in internal IFRAME
-  # SO, we have to override login_required method in the parent class.
+  # SO, we have to override login_required method in the parent class
   # The login_required method in parent class doesn't suit in IFRAME.
   def login_required
     unless current_user
@@ -616,13 +615,13 @@ class AccountSettingsController < ApplicationController
   end
   
    def update_personal_info
-     rv = false
-     if @profile and !@new_profile.empty? and @address_book and !@new_address_book.empty?
-       if @profile.update_attributes(@new_profile) && @address_book.update_attributes(@new_address_book)
-         rv = true
-       end
-     end
-     return rv
+     current_user.profile.update_attributes(@new_profile) &&
+     current_user.address_book.update_attributes(@new_address_book)
+   end
+   
+   def has_required_personal_info_fields?
+     (ab = current_user.address_book) &&
+     !ab.first_name.blank? && !ab.last_name.blank? && !ab.gender.blank? && ab.birthdate
    end
    
    def initialize_from_params
