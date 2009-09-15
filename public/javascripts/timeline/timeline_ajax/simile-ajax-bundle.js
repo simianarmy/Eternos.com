@@ -1723,8 +1723,10 @@ if(C!=null){B.style.verticalAlign=C;
 }return B;
 };
 SimileAjax.Graphics._createTranslucentImage2=function(A,size,C){var B=document.createElement("img");
+if (size) {
 B.style.width=size+"px";
 B.style.height=size+"px";
+}
 B.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+A+"', sizingMethod='image')";
 B.style.verticalAlign=(C!=null)?C:"middle";
 return B;

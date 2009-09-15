@@ -64,7 +64,7 @@ class TimelinesController < ApplicationController
     #member_view = (params[:id].to_i == current_user.id)
     
     # Proxy ajax request for dev env. to staging server
-    if false && (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id)) &&
+    if (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id)) &&
       (dev_map.staging_user_id > 0)
       uri = URI.parse request.url
       uri.host = 'staging.eternos.com'
