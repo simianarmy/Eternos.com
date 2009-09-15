@@ -275,13 +275,11 @@ class ApplicationController < ActionController::Base
   end
 
   def route_not_found
-    redirect_to '/404.html'
-    #render :template => "errors/404", :status => 404, :layout => 'errors'
+    render :template => "errors/404", :status => 404, :layout => nil
   end
 
   def server_error
-    redirect_to '/500.html'
-    #render :template => "errors/500", :status => 500, :layout => 'errors'
+    render :template => "errors/500", :status => 500, :layout => nil
   end
 
   def check_enable_maintenaince_mode

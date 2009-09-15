@@ -173,7 +173,7 @@ module LayoutHelper
   def load_prototype
     @no_prototype = true # Disable layout include
     content_for(:js_libs) {
-      javascript_include_tag "http://www.google.com/jsapi?key=#{AppConfig.google_api_key}"
+      javascript_include_tag request.protocol + "www.google.com/jsapi?key=#{AppConfig.google_api_key}"
     }
     content_for(:js_libs) {
       javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'

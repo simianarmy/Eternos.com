@@ -23,6 +23,8 @@ class HomeController < ApplicationController
   def redirect_if_logged_in
     # Redirect to dashboard for logged in sessions unless user is coming 
     # from site link
-    redirect_to member_home_path if current_user && (!request.referer || !request.referer.match(AppConfig.base_domain))
+    if current_user && (!request.referer || !request.referer.match(AppConfig.base_domain))
+      redirect_to member_home_path
+    end
   end
 end

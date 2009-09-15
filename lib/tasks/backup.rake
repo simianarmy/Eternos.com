@@ -24,7 +24,9 @@ namespace :backup do
   
   desc "Generate backup jobs"
   task :publish_jobs => :environment do
-    BackupJobPublisher.run
+    cutoff = ENV['FORCE'] ? Time.now : nil
+    BackupJobPublisher.run cutoff
+    system "/usr/local/bin/god restart memcached"
   end
   
   desc "Run backup on a single source by id" 
