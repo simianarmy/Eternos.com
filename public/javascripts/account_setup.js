@@ -1,3 +1,6 @@
+// global var oh no!
+var scrollbar;
+
 document.observe("dom:loaded", function() {
   // the element in which we will observe all clicks and capture
   // ones originating from pagination links
@@ -24,9 +27,8 @@ document.observe("dom:loaded", function() {
   }
 	//Scroller.reset('account-setting-content');
   //setDinamycHeight('account-setting-content');
-  var scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
+  scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
 	setDinamycHeight('scrollbar_content');
-	
 });
 
 // Callback for Facebook Backup App settings.
@@ -44,6 +46,21 @@ var on_facebook_backup_auth_close = function(check_url) {
 			}
 		}
 	} );
+}
+
+function updateStep(check_url, completed_steps) {
+	new Ajax.Request(check_url, {
+		method: 'get',
+		onSuccess:function(transport) {
+			current_step = parseInt(transport.responseText);
+			//alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
+			if (current_step > completed_steps) {
+				//alert('displaying ' + 'step'+(current_step+1)+'-enabled');
+				$('step'+(current_step+1)+'-enabled').show();
+				$('step'+(current_step+1)+'-disabled').hide();
+			}
+		}
+	});
 }
 
 function activatedFb(){

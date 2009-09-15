@@ -21,6 +21,15 @@ class AccountSettingsController < ApplicationController
     end
   end
 
+  # For the ajax api
+  def completed_steps
+    respond_to do |format|
+      format.js {
+        logger.debug "Returning member setup step = #{current_user.setup_step}"
+        render :inline => current_user.setup_step
+      }
+    end  
+  end
   
   # TODO: Move to RSS controller
   def set_feed_rss_url

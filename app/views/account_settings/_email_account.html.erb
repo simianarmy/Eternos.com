@@ -6,10 +6,10 @@
 		<center>
        <h4 id="flash-message"></h4>
     <% form_remote_for :email,
-                                :url => {:action => 'backup_contact_emails'},
-                                :html => {:id => "backup_email_address"},
-                                :loading => "$('progress-bar').show();",
-                                :complete => "$('progress-bar').hide();Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');" do |f| -%>
+        :url => {:action => 'backup_contact_emails'},
+        :html => {:id => "backup_email_address"},
+        :loading => "$('progress-bar').show();",
+        :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps}); setDinamycHeight('account-setting-content');" do |f| -%>
 		<table class="table1" border="0" cellspacing="0" cellpadding="0">
 			 	<tr>
 	        <td colspan="3" class="titlebox1">Your Emails</td>

@@ -23,7 +23,9 @@ ActionController::Routing::Routes.draw do |map|
     :add_twitter => :post
   }
   map.connect 'backup_emails/body/:id', :controller => 'backup_emails', :action => 'body'
-  map.resources :account_settings, 
+  map.resources :account_settings, :member => {
+    :completed_steps => :get
+    },
     :collection => {
       :online => :get, :save_personal_info => :post,
       :personal_info => :get, :facebook_sync => :get, :email_account => :get,

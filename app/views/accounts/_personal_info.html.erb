@@ -1,4 +1,4 @@
-<% form_remote_tag :url => save_personal_info_account_settings_path do %>
+<% form_remote_tag :url => save_personal_info_account_settings_path, :complete => "updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps})" do %>
   <table class="table-form1" width="460" >
   <tbody>
     <tr>
