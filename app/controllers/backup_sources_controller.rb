@@ -26,6 +26,7 @@ class BackupSourcesController < ApplicationController
           backup_source = current_user.backup_sources.new(params[:backup_source].merge({:backup_site_id => backup_site.id}))
           if backup_source.save
             backup_source.confirmed!
+            current_user.completed_setup_step(2)
             @activated = true
             flash[:notice] = "Activated!"
           end 
@@ -67,7 +68,8 @@ class BackupSourcesController < ApplicationController
         :backup_site_id => BackupSite.find_by_name(BackupSite::Blog).id)
       if @feed_url.save
         @feed_url.confirmed!
-
+        current_user.completed_setup_step(2)
+        
         # Get paginated list of feeds, ordered by most recent
         @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate(
         :page => params[:page], :per_page => 10, :order => 'created_at DESC')

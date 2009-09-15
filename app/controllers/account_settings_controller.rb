@@ -5,6 +5,7 @@ class AccountSettingsController < ApplicationController
   require_role "Member"
   before_filter :load_facebook_connect
   before_filter :set_facebook_session
+  before_filter :load_completed_steps
   layout 'account_setup'
   
   def index
@@ -27,6 +28,7 @@ class AccountSettingsController < ApplicationController
       @feed = current_user.backup_sources.by_site(BackupSite::Blog).find(params[:id])
       @feed.rss_url = params[:value]
       if @feed.save
+        current_user.completed_setup_step(2)
         render :text => @feed.send(:rss_url).to_s
       else
         render :text => @feed.errors.full_messages
@@ -122,7 +124,7 @@ class AccountSettingsController < ApplicationController
       @rss_url = backup_sources.by_site(BackupSite::Blog).first
       @rss_confirmed = @rss_url && @rss_url.confirmed?
     end
-
+    
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -520,8 +522,10 @@ class AccountSettingsController < ApplicationController
   def save_personal_info
     find_user_profile
     initialize_from_params
+    
     respond_to do |format|
       if update_personal_info
+        current_user.completed_setup_step(1)
         format.js {
           flash[:notice] = "Personal Info Saved";
           render :nothing => true
@@ -566,7 +570,8 @@ class AccountSettingsController < ApplicationController
         :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
         :last_login_at => Time.now)
       @current_gmail.confirmed!
-      
+      current_user.completed_setup_step(3)
+            
       find_email_accounts
 
       respond_to do |format|
@@ -686,6 +691,10 @@ class AccountSettingsController < ApplicationController
 
    def find_email_accounts
      @email_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
+   end
+   
+   def load_completed_steps
+     @completed_steps = current_user.setup_step
    end
    
    # If account settings change causes timeline data to update, we need the timeline

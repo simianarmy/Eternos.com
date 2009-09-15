@@ -148,6 +148,10 @@ class Member < User
     [start.to_date, Date.today]
   end
   
+  def completed_setup_step(step)
+    self.increment!(:setup_step) if self.setup_step < step
+  end
+    
   private
     
 end

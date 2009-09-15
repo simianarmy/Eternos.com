@@ -854,6 +854,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "facebook_secret_key"
     t.string   "facebook_session_key"
     t.boolean  "always_sync_with_facebook"
+    t.integer "setup_step", :null => false, :default => 0
   end
 
   add_index "users", ["email"], :name => "users_email_index"

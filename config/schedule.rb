@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :cron_log "#{RAILS_ROOT}/log/cron.log"
+set :cron_log, "#{RAILS_ROOT}/log/cron.log"
 
 rake_opts = '--trace'
 
