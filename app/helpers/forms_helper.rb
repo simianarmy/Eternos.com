@@ -14,6 +14,18 @@ module FormsHelper
     form_for(record_or_name_or_array, *args, &block)
   end
   
+  # Creates standard form errors box using localization
+  def custom_error_messages_for(*args)
+    options = args.last.kind_of?(Hash) ? args.pop : {}
+    options.reverse_merge!(
+      :full_messages => true,
+      :header_message => t('activerecord.errors.template.header.oops'),
+      :message => t('activerecord.errors.template.body', 
+        :email_link => link_to_support_email))
+    args << options
+    error_messages_for(*args)
+  end
+  
   # Template helper for generic forms
   def form_field_with_label(form, field, options={})
     render :partial => 'forms/field',
@@ -46,6 +58,57 @@ module FormsHelper
   
   def fields_for_school(school, owner, *args, &block)
     fields_for_association('school', school, owner, *args, &block)
+  end
+  
+  def check_box_submit_on_click(method, button_target, value, default, option={})
+    action = { :onclick => "$('#{button_target}').click();" }
+    option.update(action)
+    check_box_tag(method, value, default, option)
+   end
+  
+  def time_zone_submit_onselect(object, method,  button_target, priority = nil, option={}, html_option = {})
+    action = {:onchange => "$('#{button_target}').click();"}
+    html_option.update(action)
+    object.time_zone_select(method, priority, option, html_option)
+  end
+  
+  def text_field_submit_onchange(object, method, button_target)
+    object.text_field(method, :onchange => "$('#{button_target}').click();")
+  end
+
+  def radio_submit_onclick(object, method, value, button_target, default, className)
+    if !default.blank? and default == value
+      checked = true
+    else
+      checked = false
+    end
+    object.radio_button(method, value, :onClick => "$('#{button_target}').click();", :checked => checked, :class => className)
+  end
+
+  def date_select_onchange(object, method, button_target)
+    object.calendar_date_select(method, :embedded => true, 
+      :onchange => "$('#{button_target}').click();", :year_range => 100.years.ago..10.years.ago)
+  end
+
+  def hidden_submit(id)
+    submit_tag "submit", :style=>"display:none;", :id => id
+  end
+  
+  # Render a submit button and cancel link
+  def submit_or_cancel(cancel_url = session[:return_to] ? session[:return_to] : url_for(:action => 'index'), label = 'Save Changes')
+    content_tag(:div, submit_tag(label) + ' or ' +
+      link_to('Cancel', cancel_url), :id => 'submit_or_cancel', :class => 'submit')
+  end
+  
+  # Custom form builder helpers
+  def error_handling_form_for(record_or_name_or_array, *args, &proc)
+    options = parse_options(args)
+    form_for(record_or_name_or_array, *args, &proc)
+  end
+  
+  def remote_error_handling_form_for(record_or_name_or_array, *args, &proc)
+    options = parse_options(args)
+    remote_form_for(record_or_name_or_array, *args, &proc)
   end
   
   private

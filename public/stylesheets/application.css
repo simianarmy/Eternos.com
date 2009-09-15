@@ -138,6 +138,14 @@ input {
 	border:1px solid #898989;
 	color:#898989;
 }
+
+input[type=radio] {
+  width: 20px;
+}
+
+input[type=checkbox] {
+	width: 20px;
+}
 /**/
 /*input[type=text] {*/
 /*	font-size: 11px;*/

@@ -44,15 +44,24 @@
       </tr>
 
       <tr>
-	    <td class="coll-form1" valign="center">Gender*</td>
+	    <td class="coll-form1" valign="top">Gender*</td>
 		<td class="coll-form2" valign="center">:</td>
-		<td class="coll-form3" valign="center">
-		   <%= radio_submit_onclick(ab, :gender, "male", "submit_form_personal", @address_book.gender, "left") %>
-          <div class="top-text2">&nbsp;Male</div>
-		  <%= radio_submit_onclick(ab, :gender, "female", "submit_form_personal", @address_book.gender, "left2") %>
-          <div class="top-text2">&nbsp;Female</div>
-          <%= radio_submit_onclick(ab, :gender, "transgender", "submit_form_personal", @address_book.gender, "left2") %>
-          <div class="top-text2">&nbsp;Transgender</div>
+		<td valign="center">		    
+		  <%= radio_submit_onclick(ab, :gender, "Male", "submit_form_personal", @address_book.gender, "left") %> Male
+		</td>
+		</tr>
+		<tr>
+		  <td class="coll-form1" valign="top"></td>
+		  <td class="coll-form2" valign="center">:</td>
+  		<td class="coll-form3" valign="center">
+		  <%= radio_submit_onclick(ab, :gender, "female", "submit_form_personal", @address_book.gender, "left2") %> Female
+		  </td>
+		</tr>
+		<tr>
+		  <td class="coll-form1" valign="top"></td>
+		  <td class="coll-form2" valign="center">:</td>
+  		<td class="coll-form3" valign="center">
+      <%= radio_submit_onclick(ab, :gender, "transgender", "submit_form_personal", @address_book.gender, "left2") %> Transgender
 		</td>
 	  </tr>
 	  

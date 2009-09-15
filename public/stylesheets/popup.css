@@ -430,9 +430,9 @@ body{
 
 .right{	float:right;}
 
-.left{float:left;margin:5px 0 5px 5px;}
+.left{float:left; /*margin:5px 0 5px 5px;*/}
 
-.left2{float:left;margin:5px 0 5px 20px;}
+.left2{float:left; /*margin:5px 0 5px 20px;*/}
 
 .top-text1{
 	margin-top:5px;
