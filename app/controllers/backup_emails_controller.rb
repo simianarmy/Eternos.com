@@ -8,8 +8,11 @@ class BackupEmailsController < ApplicationController
     begin
       email = BackupEmail.find(params[:id])
       # Ensure proper ownership
-      flash[:error] = 'Unauthorized Access' unless email.backup_source.member == current_user
-      @body = email.body
+      if email.backup_source.member == current_user
+        @body = email.body
+      else
+        flash[:error] = 'Unauthorized Access' 
+      end
     rescue
       flash[:error] = "Unexpected error: " + $!
     end
