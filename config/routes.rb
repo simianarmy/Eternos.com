@@ -22,6 +22,7 @@ ActionController::Routing::Routes.draw do |map|
     :add_feed_url => :post,
     :add_twitter => :post
   }
+  map.connect 'backup_emails/body/:id', :controller => 'backup_emails', :action => 'body'
   map.resources :account_settings, 
     :collection => {
       :online => :get, :save_personal_info => :post,

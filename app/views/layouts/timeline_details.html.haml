@@ -7,8 +7,10 @@
     %title= "Eternos - " + h(yield(:title) || "Timeline Events")
     / bundle do
     - stylesheet 'timeline_details.css'
-      
+    - load_prototype
+        
     = yield(:head)
+    = yield(:js_libs)
     = yield(:javascript)
     / end bundle
   %body
@@ -16,7 +18,6 @@
       .popuptop
       .popup-content
         .top-box
-          %a.stop-btn{:href=>'#'}
           .clearboth
           #notice.flash_notice= show_flash_messages
           .clearboth

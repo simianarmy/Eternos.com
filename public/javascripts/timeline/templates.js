@@ -44,11 +44,11 @@ var ETemplates = {
 					'<div class="tooltip_container"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
 			},
 			eventItemWithTooltip: function () {
-				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
+				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650">#{title}</a>#{hidden_items}' + 
 					'<div class="tooltip_container"><p/>#{tt_content}</div>#{inline_content}</li>');
 			},      
 			eventItemTooltipItem: function () {
-				return new Template('<div class="event_preview_item_container"><a href="#{event_details_link}" class="lightview" title=":: :: fullscreen: true" rel="iframe">#{content}</a></div><br/>');
+				return new Template('<div class="event_preview_item_container"><a href="#{event_details_link}" class="lightview" title=":: Timeline Details :: topclose: true, width: 650" rel="iframe">#{content}</a></div><br/>');
 			},
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');

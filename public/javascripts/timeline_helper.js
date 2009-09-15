@@ -1071,12 +1071,16 @@ var ETimeline = function (opts) {
 						 	href: a.href,
 						  rel: a.rel,
 							options: {
-								fullscreen: true
+								caption: 'Timeline Details',
+								topclose: true, 
+								width: 650
 							}
 						});
 					}
 			 	}
 			}
+			// Hide tooltip on any click
+			document.observe('click', function(e) { Tips.hideAll(); });
     },
 		// Add search results to timeline event source
 		_addEvents: function (events) {

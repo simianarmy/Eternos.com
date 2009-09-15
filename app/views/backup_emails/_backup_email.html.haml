@@ -1,13 +1,15 @@
-.content
+- div_for(backup_email, :class => 'content') do
   .title_post_email= backup_email.subject
-  .cearboth
+  .clearboth
   %p.title_posted
     From:
-    %span{:style => "font-weight:bold"}= backup_email.sender
+    %span{:style => "font-weight:bold"}= mail_to(backup_email.sender, nil, :subject => "Re: #{backup_email.subject}")
     &nbsp; Date:
     = backup_email.received_at
   .image_post
     = image_tag 'email_accept.png', :style => "margin-top: -32px;"
   .clearboth
   .message_content
-    = link_to 'Click here to view contents', '#'
+    - @div = dom_id(backup_email, 'decrypted')
+    = link_to_remote "Click here to view contents", :update => @div, :url => { :controller => 'backup_emails', :action => "body", :id => backup_email.id }
+    %div{:id => @div}
