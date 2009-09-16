@@ -532,16 +532,18 @@ class AccountSettingsController < ApplicationController
     initialize_from_params
     
     respond_to do |format|
-      if update_personal_info        
-        current_user.completed_setup_step(1) if has_required_personal_info_fields?
-        format.js {
-          flash[:notice] = "Personal Info Saved";
-          render :nothing => true
-        }
+      if update_personal_info 
+        if has_required_personal_info_fields?
+          current_user.completed_setup_step(1) 
+          flash[:notice] = "Required Info Saved. You may continue to Step 2 anytime."
+        else
+          #flash[:notice] = "Personal Info Saved, but some required fields are missing."
+        end
+        format.js
       else
         format.js {
-          flash[:error] = "Unable to save your changes!"
-          render :nothing => true
+          flash[:error] = "Unable to save your changes: <br/>" +
+            @errors.join('<br/>')
         }
       end
     end 
@@ -615,8 +617,15 @@ class AccountSettingsController < ApplicationController
   end
   
    def update_personal_info
-     current_user.profile.update_attributes(@new_profile) &&
-     current_user.address_book.update_attributes(@new_address_book)
+     @errors = []
+     unless current_user.profile.update_attributes(@new_profile)
+      @errors = current_user.profile.errors.full_messages
+      return false
+    end
+    unless current_user.address_book.update_attributes(@new_address_book)
+      @errors = current_user.address_book.errors.full_messages
+    end
+    @errors.empty?
    end
    
    def has_required_personal_info_fields?

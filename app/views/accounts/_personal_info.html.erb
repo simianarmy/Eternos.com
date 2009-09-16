@@ -1,3 +1,4 @@
+<div id="notice" class="flash_notice"></div>
 <% form_remote_tag :url => save_personal_info_account_settings_path, :complete => "updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps})" do %>
   <table class="table-form1" width="460" >
   <tbody>
@@ -47,7 +48,7 @@
 	    <td class="coll-form1" valign="top">Gender*</td>
 		<td class="coll-form2" valign="center">:</td>
 		<td class="coll-form3" valign="center">		    
-		  <%= radio_submit_onclick(ab, :gender, "Male", "submit_form_personal", @address_book.gender, "left") %> Male
+		  <%= radio_submit_onclick(ab, :gender, "male", "submit_form_personal", @address_book.gender, "left") %> Male
 		</td>
 		</tr>
 		<tr>
@@ -141,7 +142,8 @@
     <%- end -%>
   </tbody>
 </table>
-<%= submit_tag 'Save', :style => 'height: 25px' %>
+<%= #submit_tag 'Save', :style => 'height: 25px' 
+%>
 <%= hidden_submit("submit_form_personal") %>
 <%- end -%>
 <%= javascript_tag "calculate_time_zone('address_book_timezone');" %>

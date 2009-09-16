@@ -274,12 +274,13 @@ class ApplicationController < ActionController::Base
     session[:return_to] = request.request_uri
   end
 
+  # TODO: Fix these in production
   def route_not_found
-    render :template => "errors/404", :status => 404, :layout => nil
+    #render :template => "errors/404", :status => 404, :layout => nil
   end
 
   def server_error
-    render :template => "errors/500", :status => 500, :layout => nil
+    #render :template => "errors/500", :status => 500, :layout => nil
   end
 
   def check_enable_maintenaince_mode
