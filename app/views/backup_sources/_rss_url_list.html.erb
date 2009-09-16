@@ -9,12 +9,13 @@
     <% @feed_urls.each do |@feed| -%>
       <tr id="url-list-<%= @feed.id %>">
         <td class="coll-form12" valign="center"><%= in_place_editor_field(:feed, :rss_url) %></td>
-        <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
-                                                      :html => {:class => 'blue-btn4'},
-                                                      :url => {:controller => 'backup_sources', :action => 'remove_url', :id => @feed},
-                                                      :confirm => 'Are you sure?',
-                                                      :loading => "$('progress-bar').show();",
-                                                      :complete => "$('progress-bar').hide();" %>    
+        <td class="coll-form12" valign="center">
+        <%= link_to_remote 'Remove', 
+        :html => {:class => 'blue-btn4'},
+        :url => {:controller => 'backup_sources', :action => 'remove_url', :id => @feed},
+        :confirm => 'Are you sure?',
+        :loading => "$('progress-bar').show();",
+        :complete => "$('progress-bar').hide();" %>    
         </td>
       </tr>
     <% end %>

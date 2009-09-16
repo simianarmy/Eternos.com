@@ -7,3 +7,4 @@ if (@activated)
   page["twitter-link"].removeClassName('twitter-btn')
   page["twitter-link"].addClassName('twitter-active')
 end
+page.call "setDinamycHeight('account-setting-content');"

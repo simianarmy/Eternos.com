@@ -96,7 +96,7 @@ class FacebookBackupController < ApplicationController
     if auth
       current_user.completed_setup_step(2)
       # Run backup & update confirmation status on 1st check
-      @backup_source.confirmed if !@backup_source.confirmed?
+      @backup_source.confirmed! if !@backup_source.confirmed?
     end
     
     respond_to do |format|

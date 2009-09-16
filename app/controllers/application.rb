@@ -142,7 +142,7 @@ class ApplicationController < ActionController::Base
   def ajax_authorization_update(object)
     flash[:notice] = "Successfully updated authorizations."
   end
-
+  
   # Helper to avoid checking for nil value in params
   # from http://snippets.dzone.com/posts/show/5437
   # kinda ugly...but helpful

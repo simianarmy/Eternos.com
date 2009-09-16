@@ -11,10 +11,24 @@ class AccountSettingsController < ApplicationController
   def index
     find_user_profile
     check_facebook_sync
-    
     clear_timeline_cache
     session[:setup_account] = true
     
+    # Dynamic action view based on current setup step
+    @content_page = case @completed_steps
+    when 1
+      load_online
+      'online'
+    when 2
+      load_email
+      'email_account'
+    when 3
+      load_history
+      'your_history'
+    else
+      'personal_info'
+    end
+
     respond_to do |format|
       format.html
       format.js
@@ -116,7 +130,7 @@ class AccountSettingsController < ApplicationController
     end
   end
   
-  def online
+  def load_online
     @online_account = BackupSource.new
     @feed_url = FeedUrl.new
     # What is this sillyness?
@@ -132,6 +146,11 @@ class AccountSettingsController < ApplicationController
       @rss_url = backup_sources.by_site(BackupSite::Blog).first
       @rss_confirmed = @rss_url && @rss_url.confirmed?
     end
+    @rss_url_list = render_to_string :partial => 'backup_sources/rss_url_list'
+  end
+  
+  def online
+    load_online
     
     respond_to do |format|
       format.js do
@@ -139,17 +158,21 @@ class AccountSettingsController < ApplicationController
           if params[:page].blank?
             setup_layout_account_setting(page, "step2", "account_settings/online")
           end
-          page.replace_html 'result-urls', :partial => 'shared/url_list'
         end
       end
     end
   end
   
   # TODO: Move to EmailAccounts controller
-  def email_account
+  def load_email
     find_email_accounts
     @current_gmail = @email_accounts.first
-    
+    @email_account_list = render_to_string :partial => 'backup_sources/email_account_list'
+  end
+  
+  def email_account
+    load_email
+      
     if params[:method].blank?
       respond_to do |format|
         format.js do
@@ -157,7 +180,7 @@ class AccountSettingsController < ApplicationController
             if params[:page].blank?
               setup_layout_account_setting(page, "step3", "account_settings/email_account")
             end
-            page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
+            page.replace_html 'result-email-contacts', :partial => 'backup_sources/email_account_list'
           end
         end
       end
@@ -167,13 +190,18 @@ class AccountSettingsController < ApplicationController
       end
       find_email_accounts
       render :update do |page|
-        page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
+        page.replace_html 'result-email-contacts', :partial => 'backup_sources/email_account_list'
       end
     end
   end
 
-  def your_history
+  def load_history
     find_object_history
+  end
+  
+  def your_history
+    load_history
+    
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -534,12 +562,21 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       if update_personal_info 
         if has_required_personal_info_fields?
-          current_user.completed_setup_step(1) 
-          flash[:notice] = "Required Info Saved. You may continue to Step 2 anytime."
+          @current_step = current_user.setup_step
+  
+          current_user.completed_setup_step(1)
+          flash[:notice] = "Saved."
         else
           #flash[:notice] = "Personal Info Saved, but some required fields are missing."
         end
-        format.js
+        format.js {
+          # On 1st successful save, we want to refresh page to next step
+          unless @current_step > 0
+            render :update do |page|
+              page.redirect_to :action => 'index'
+            end
+          end
+        }
       else
         format.js {
           flash[:error] = "Unable to save your changes: <br/>" +
@@ -719,4 +756,6 @@ class AccountSettingsController < ApplicationController
    def clear_timeline_cache
      session[:refresh_timeline] = true
    end
+   
+  
 end

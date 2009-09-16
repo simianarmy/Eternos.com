@@ -1,22 +1,4 @@
-<div id="notice" class="flash_notice"></div>
-<% form_remote_tag :url => save_personal_info_account_settings_path, :complete => "updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps})" do %>
-  <table class="table-form1" width="460" >
-  <tbody>
-    <tr>
-      <td colspan="3">
-	    <div class="title2">Personal Info</div><br />
-			<div class="textarea7">
-			  Please tell us about yourself!  This data is held with the strictest of privacy controls.  
-			  <br/>
-			  Field marked with a * are required.
-			</div>
-  	  </td>
-    </tr>
-    <tr>
-      <td colspan="3">
-	    <hr class="line1" /><a href="#" class="plusminus"></a>
-	  </td>
-    </tr>
+
     <%- fields_for @address_book do |ab| %>
       <tr>
         <td class="coll-form1" valign="center">First Name*</td>
@@ -130,10 +112,5 @@
       </tr>
 -->
     <%- end -%>
-  </tbody>
-</table>
-<%= #submit_tag 'Save', :style => 'height: 25px' 
-%>
-<%= hidden_submit("submit_form_personal") %>
-<%- end -%>
+  
 <%= javascript_tag "calculate_time_zone('address_book_timezone');" %>

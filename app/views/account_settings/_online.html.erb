@@ -21,17 +21,19 @@
   <div class="network-login-box" id="form-box">
     <div id="twitter-box" style="display:none;">
       <div id="twitter_notice" class="flash_notice"></div>
+      <%= image_tag "errors/twitter-top-box.gif" %>
+      <div class="network-box2">
       <% form_remote_for @online_account,  :url => add_twitter_backup_sources_path,
-                                           :html => {:id=> 'form-online-account'},
-                                           :loading => "$('progress-bar').show();",
-                                           :complete => "$('progress-bar').hide();  resizeScrollbar(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps})"  do |f| %>
-       <%= image_tag "errors/twitter-top-box.gif" %>
-       <%= hidden_field_tag :site_name, "twitter" %>
-       <%- unless @twitter_account.nil? -%>
+      :html => {:id=> 'form-online-account'},
+      :loading => "$('progress-bar').show();",
+      :complete => "onFormSubmitComplete();"  do |f| %>
+        
+        <%= hidden_field_tag :site_name, "twitter" %>
+        <%- unless @twitter_account.nil? -%>
          <%- username = @twitter_account.auth_login -%>
          <%- password = @twitter_account.auth_password -%>
-       <%- end  -%>
-       <div class="network-box">
+        <%- end  -%>
+        
          <table class="table-form2" align="left">
             <tr>
               <td class="coll-form4" valign="center">Username</td>
@@ -47,43 +49,39 @@
                 <%= f.password_field :auth_password, :class => "textbox1", :value => password %>
               </td>
             </tr>
-          </table>
-          <table class="table-form3" align="left">
-            <tr>
-              <td width="100%" align="right">
-                <%= f.submit "Submit", :class => "submit-btn" %>
-              </td>
-            </tr>
-          </table>
-					<div style="clear:both"></div>
+         </table>
+				 <div style="clear:both"></div>
+				 <%= f.submit "Submit", :class => "submit-btn4" %>
+      <%- end -%>
+      <%= image_tag "errors/fb-box-footer.gif" %>
       </div>
-     <%- end -%>
-     <%= image_tag "errors/fb-box-footer.gif" %>
-     <div id="result-twitter-accounts"><%= render :partial => 'shared/twitter_list' %></div>
-   </div>
+      <div id="result-twitter-accounts"><%= render :partial => 'shared/twitter_list' %></div>
+    </div>
 
    <div class="network-login-box" id="form-box">
      <div id="rss-box" style="display:none;">
        <div id="rss_notice" class="flash_notice"></div>
-        <%= image_tag "errors/rss-top.png" %>
+       <%= image_tag "errors/rss-top.png" %>
        <div class="network-box2">
          <% form_remote_for @feed_url,
             :url => add_feed_url_backup_sources_path,
             :loading => "$('progress-bar').show();",
-            :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});"  do |f| %>
+            :complete => "onFormSubmitComplete();"  do |f| %>
 
          <table class="table-form5" align="left">
 		   <tr>
 		     <td class="coll-form8" valign="center">URL</td>
                      <td class="coll-form2" valign="center">:</td>
-                     <td class="coll-form9" valign="center"><%= f.text_field :rss_url, :class => "textbox7" %><%= f.submit "Submit", :class => "submit-btn4" %></td>
+                     <td class="coll-form9" valign="center">
+                      <%= f.text_field :rss_url, :class => "textbox7" %>
+                      <%= f.submit "Submit", :class => "submit-btn4" %></td>
                    </tr>
 		</table>
             
          <% end %>
        </div>
        <%= image_tag "errors/fb-box-footer.gif" %>
-       <div id="result-urls"></div>
+       <div id="result-urls"><%= @rss_url_list %></div>
      </div>
    </div>
    
@@ -93,5 +91,10 @@
   
 </div>
 
-<%= #javascript_tag "Scroller.reset('account-setting-content');setDinamycHeight('account-setting-content');" 
+<%= javascript_tag "function onFormSubmitComplete() {
+  $('progress-bar').hide(); 
+  updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});
+  //resizeScrollbar();
+  setDinamycHeight('account-setting-content');
+}"
 %>

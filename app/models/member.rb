@@ -4,7 +4,7 @@ class Member < User
   has_many :invitations, :foreign_key => 'sender_id', :dependent => :destroy
   has_many :guest_invitations, :foreign_key => 'sender_id', :dependent => :destroy
  
-  with_options :dependent => :destroy, :foreign_key => 'user_id' do |m|
+  with_options :foreign_key => 'user_id' do |m|
     m.has_many :relationships
     m.has_many :stories, :order => 'updated_at DESC'
     m.has_many :messages, :order => :start_at

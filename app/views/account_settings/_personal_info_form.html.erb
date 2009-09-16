@@ -1,0 +1,113 @@
+<%- fields_for @address_book do |ab| %>
+  <tr>
+    <td class="coll-form1" valign="center">First Name*</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :first_name %></td>
+  </tr>
+  <tr>
+    <td class="coll-form1" valign="center">Middle Name</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :middle_name %></td>
+  </tr>
+  <tr>
+    <td class="coll-form1" valign="center">Last Name*</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :last_name %></td>
+  </tr>
+  <tr>
+    <td class="coll-form1" valign="center">Suffix</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :name_suffix %></td>
+  </tr>
+  <tr>
+    <td class="coll-form1" valign="center">Title</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :name_title %></td>
+  </tr>
+
+  <tr>
+  <td class="coll-form1" valign="top">Gender*</td>
+<td class="coll-form2" valign="top">:</td>
+<td class="coll-form3" valign="top">
+  <%= ab.radio_button :gender, "male" %> Male
+  <br/>
+  <%= ab.radio_button :gender, "female" %> Female
+  <br/>
+  <%= ab.radio_button :gender, "transgender" %> Transgender
+</td>
+</tr>
+
+<tr>
+  <td class="coll-form1" valign="center">Birthdate*</td>
+<td class="coll-form2" valign="center">:</td>
+<td class="coll-form3" valign="center"> 
+	<div class="birthdate-box">
+		<%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year}, {:class => 'bday-box'}) %>
+	</div>
+</td>
+</tr>
+
+  <tr>
+    <td class="coll-form1" valign="center">Timezone</td>
+<td class="coll-form2" valign="center">:</td>
+<td class="coll-form3" valign="center"> 
+      <%= time_zone_submit_onselect(ab, :timezone, "submit_form_personal", nil, {}, {:id => "address_book_timezone"} ) %>
+    </td>
+  </tr>
+  
+<%- end -%>
+
+<%- fields_for @profile do |profile| -%>
+  <tr>
+    <td class="coll-form1" valign="center">Height</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= profile.text_field :height %></td>
+  </tr>
+
+   <tr>
+    <td class="coll-form1" valign="center">Weight</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"> <%= profile.text_field :weight %></td>
+  </tr>
+
+  <tr>
+    <td class="coll-form1" valign="center">Ethnicity</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"> <%=profile.text_field :race %> </td>
+  </tr>
+
+  <tr>
+    <td class="coll-form1" valign="center">Religion</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"> <%= profile.text_field :religion %> </td>
+  </tr>
+
+  <tr>
+    <td class="coll-form1" valign="center">Political Views</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center">  <%= profile.text_field :political_views %> </td>
+  </tr>
+
+  <tr>
+    <td class="coll-form1" valign="center">Sexual Orientation</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center">  <%= profile.text_field :sexual_orientation %> </td>
+  </tr>
+
+<%- end -%>
+
+<%- fields_for @address_book do |ab| %>
+<!--
+  <tr>
+    <td class="coll-form1" valign="center">Website</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center">  <%= text_field_submit_onchange(ab, :website, "submit_form_personal") %> </td>
+  </tr>
+
+   <tr>
+    <td class="coll-form1" valign="center">Social security</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center">  <%= text_field_submit_onchange(ab, :ssn, "submit_form_personal") %> </td>
+  </tr>
+-->
+<%- end -%>

@@ -1,5 +1,5 @@
 <div id="account-setting-nav">
-
+  
   <%- link_class = active_link == "step1" ? "step1-active" : "step1-btn"  -%>
   <%= link_to_remote "", { :url => personal_info_account_settings_path, :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", :complete => "$('progress-bar').hide();" }, :class =>  link_class %>
 
@@ -11,7 +11,7 @@
   </div>
   <div id="step2-disabled" style="<%= style_hidden_if(@completed_steps >= 1) %>">
     <%= link_to '', '#', :class => link_class, :id => 'step2' %>
-    <%= javascript_tag "new Effect.Opacity('step2', { from: 1.0, to: 0.5 });" %>
+    <%= javascript_tag "new Effect.Opacity('step2', { from: 1.0, to: 0.2 });" %>
   </div>
   
   <%- link_class = active_link == "step3" ? "step3-active" : "step3-btn"  -%>
@@ -20,7 +20,7 @@
   </div>
   <div id="step3-disabled" style="<%= style_hidden_if(@completed_steps >= 2) %>">
     <%= link_to '', '#', :class => link_class, :id => 'step3' %>
-    <%= javascript_tag "new Effect.Opacity('step3', { from: 1.0, to: 0.5 });" %>
+    <%= javascript_tag "new Effect.Opacity('step3', { from: 1.0, to: 0.2 });" %>
   </div>
   
   <!--
@@ -30,9 +30,9 @@
   </div>
   <div id="step4-disabled" style="<%= style_hidden_if(@completed_steps >= 3) %>">
     <%= link_to '', '#', :class => link_class, :id => 'step4' %>
-    <%= javascript_tag "new Effect.Opacity('step4', { from: 1.0, to: 0.5 });" %>
+    <%= javascript_tag "new Effect.Opacity('step4', { from: 1.0, to: 0.2 });" %>
   </div>
-
+  
   <%- link_class = active_link == "step5" ? "step5-active" : "step5-btn"  -%>
   <%#= link_to_remote "", { :url => upgrades_account_settings_path,  :loading =>  "Effect.Fade('account-setting-content');"}, :class => link_class %>
 

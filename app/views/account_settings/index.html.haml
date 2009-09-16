@@ -23,13 +23,14 @@
           .clear
         .clear
     .popup-content-left
-      = render :partial => "setting_nav", :locals => { :active_link => "step1" }
+      = render :partial => "setting_nav", :locals => { :active_link => "step" + (@completed_steps+1).to_s }
     
     /- Bad things happen if we use .popup-content-right
     .pop-content-right
       %center
         = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
-      = render :partial => 'account_settings/personal_info'
+      = render :partial => @content_page
+      
       .clear
   = image_tag "errors/popup-footer.png"
 
