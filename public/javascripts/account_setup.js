@@ -25,10 +25,9 @@ document.observe("dom:loaded", function() {
       }
     })
   }
-	//Scroller.reset('account-setting-content');
-  //setDinamycHeight('account-setting-content');
-  scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
-	setDinamycHeight('scrollbar_content');
+	Scroller.reset('account-setting-content');
+  setDinamycHeight('account-setting-content');
+ // scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
 });
 
 // Callback for Facebook Backup App settings.
@@ -46,6 +45,12 @@ var on_facebook_backup_auth_close = function(check_url) {
 			}
 		}
 	} );
+}
+
+function resizeScrollbar() {
+	Scroller.reset('account-setting-content');
+	//setDinamycHeight('account-setting-content');
+	//scrollbar.recalculateLayout();  
 }
 
 function updateStep(check_url, completed_steps) {
@@ -71,7 +76,7 @@ function setDinamycHeight(id){
   height = win_dimension()[1];
   heightDiv = 0.83*height;
   $(id).style.height = heightDiv + "px";
-	scrollbar.recalculateLayout();  
+	resizeScrollbar();
 }
 
 function resetDinamycHeight(id){
@@ -348,9 +353,9 @@ function addRowAddress(){
   $('save-button-address').show();    
   $('form_address').value = window.counter;    
   
-  window.counter++
-	//Scroller.reset('account-setting-content');	
-	scrollbar.recalculateLayout();  
+  window.counter++;
+	resizeScrollbar();
+	
 }
 
 
@@ -496,8 +501,7 @@ function addRowJob(){
   $('form_job').value = window.counter_job;
   
   window.counter_job++
-	//Scroller.reset('account-setting-content');	
-	scrollbar.recalculateLayout();  
+	resizeScrollbar();
 }
 
 window.counter_school = 1;
@@ -675,8 +679,7 @@ function addRowSchool(){
   $('form_school').value = window.counter_school;
   
   window.counter_school++
-	//Scroller.reset('account-setting-content');	
-	scrollbar.recalculateLayout();  
+	resizeScrollbar();
 }
 
 window.counter_medical = 1;
@@ -816,8 +819,8 @@ function addRowMedical(){
   $('form_medical').value = window.counter_medical;
   
   window.counter_medical++
-	//Scroller.reset('account-setting-content');	
-	scrollbar.recalculateLayout();  
+	resizeScrollbar();
+
 }
 
 window.counter_medical_condition = 1;
@@ -912,8 +915,7 @@ function addRowMedicalCondition(){
   $('form_medical_condition').value = window.counter_medical_condition;
   
   window.counter_medical_condition++
-	//Scroller.reset('account-setting-content');	
-	scrollbar.recalculateLayout();  
+	resizeScrollbar();
 }
 
 window.counter_family = 1;
@@ -1041,9 +1043,8 @@ function addRowFamily(){
   $('save-button-family').show();
   $('form_family').value = window.counter_family;
   
-  window.counter_family++
-	//Scroller.reset('account-setting-content');	
-	scrollbar.recalculateLayout();  
+  window.counter_family++;
+	resizeScrollbar();
 }
 
 window.counter_relationship = 1;
@@ -1189,9 +1190,8 @@ function addRowRelationship(){
   $('save-button-relationship').show();
   $('form_relationship').value = window.counter_relationship;
   
-  window.counter_relationship++
-	//Scroller.reset('account-setting-content');	
-	scrollbar.recalculateLayout();  
+  window.counter_relationship++;
+	resizeScrollbar();
 }
 
 function createDateElement(text, val){

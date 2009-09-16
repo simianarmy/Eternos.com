@@ -12,9 +12,11 @@ end
 namespace :beta do
   desc "Send out invitation codes to interested users"
   task :send_invitation_codes => :environment do
+    limit = ENV['MAX'] ? ENV['MAX'].to_i : 20
     sender = Member.first
-    NotifyEmail.sent_at_nil.each do |email|
-      invite(sender, email.email)
+    NotifyEmail.sent_at_nil[0..limit].each do |email|
+      puts "Inviting #{email.email}\n"
+      #invite(sender, email.email)
     end
   end
   

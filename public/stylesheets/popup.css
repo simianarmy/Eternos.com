@@ -346,8 +346,7 @@ body{
 	width:650px;
 	height:auto;
 	margin-top:20px;
-    padding: 0 0 0 100px;
-
+  padding: 0 0 0 100px;
 }
 
 .popuptop{
@@ -430,7 +429,10 @@ body{
 
 .right{	float:right;}
 
-.left{float:left; margin:5px 0 5px 5px;}
+.left {
+	float:left; 
+	/*margin:5px 0 5px 5px;*/
+}
 
 .left2{float:left; margin:5px 0 5px 20px;}
 
@@ -833,11 +835,11 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .textbox4{width:90px; height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 
 #address_book_timezone{width:240px; height:20px;margin:2px 0 2px 0;font-family:arial;font-size:10.5px}
-
+/* this is fucked
 #address_book_gender_male{margin:5px 3px 5px -1px;}
 #address_book_gender_female{margin:5px 3px 5px 28px;}
 #address_book_gender_transgender{margin:5px 3px 5px 28px;}
-
+*/
 #address_book_first_name{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
 #address_book_middle_name{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}
 #address_book_last_name{width:235px; height:18px;text-align:left;font-family:arial;font-size:11px;color:#393b3e;margin:2px 0 2px 0;}

@@ -73,13 +73,10 @@ module AjaxHelper
   def link_to_show_hide_online(id, name = "", option = {}, element_to_hide=[])
     action = "$('#{id}').show();"
     element_to_hide.each do |element|
-      action += "$('#{element}').hide();"
-      if id.eql?("rss-box")
-        action += "Scroller.reset('account-setting-content');resetDinamycHeight('account-setting-content');"
-      elsif id.eql?("twitter-box")
-        action += "$('backup_source_auth_password').value='';Scroller.reset('account-setting-content');resetDinamycHeight('account-setting-content');$('flash-message').innerHTML='';"
-      else
-        action += "resetDinamycHeight('account-setting-content');"
+      action += "$('#{element}').hide(); resizeScrollbar();"
+      
+      if id.eql?("twitter-box")
+        action += "$('backup_source_auth_password').value=''; $('flash-message').innerHTML='';"
       end
     end
     link_to_function name, action, option

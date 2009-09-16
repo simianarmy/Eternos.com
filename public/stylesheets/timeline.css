@@ -381,7 +381,6 @@ list-style-position:outside;
 list-style-type:none;
 margin:5px 0;
 padding:2px 0 2px 23px;
-
 }
 
 .event_list_group_even li.twitter {
@@ -394,4 +393,31 @@ padding:2px 0 2px 23px;
 
 .event_list_group_even li.rss{
 background:transparent url(/images/feed-icon.png) no-repeat scroll left 1px;
+}
+
+.event_list_inline_item {
+	float:right;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	text-decoration:none;
+	color:#3860AB;
+}
+
+a.event_list_inline_item:hover {
+	text-decoration:underline;
+}
+
+.event_preview_item_container {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+.event_preview_item_container a {
+	font-size: 12px;
+	text-decoration:none;
+	color:#494a4c;
+}
+
+.event_preview_item_container a:hover {
+	text-decoration:underline;
 }

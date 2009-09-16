@@ -17,6 +17,14 @@ module RjsHelper
   end
   
   # Displays any flash notices
+  def show_flash(domid = :notice)
+    unless page.context.flash.empty?
+      page.replace_html domid, page.context.show_flash_messages
+      page.visual_effect :appear, domid
+      page.context.flash.discard
+    end
+  end
+  
   def flash_and_fade(domid = :notice)
     unless page.context.flash.empty?
       page.replace_html domid, page.context.show_flash_messages

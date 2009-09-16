@@ -191,6 +191,12 @@ module LayoutHelper
     javascript "timeline/events", "timeline/templates", "timeline_helper", "date"
   end
   
+  def use_scrollbar
+    stylesheet 'scrollbar'
+    javascript 'slider', 'scroller'
+    #javascript 'livepipe-ui/livepipe', 'livepipe-ui/scrollbar'
+  end
+  
   def load_timeline_js
     # this is supposed to work ... but getting errors in 
     #javascript_tag("
