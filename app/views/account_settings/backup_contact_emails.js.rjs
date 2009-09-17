@@ -1,0 +1,2 @@
+page.flash_and_fade
+page.replace_html 'result-email-contacts', @email_account_list

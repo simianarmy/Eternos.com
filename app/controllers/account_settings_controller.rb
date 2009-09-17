@@ -157,6 +157,8 @@ class AccountSettingsController < ApplicationController
         render :update do |page|
           if params[:page].blank?
             setup_layout_account_setting(page, "step2", "account_settings/online")
+          else
+            page.replace_html 'result-urls', @rss_url_list
           end
         end
       end
@@ -170,27 +172,20 @@ class AccountSettingsController < ApplicationController
     @email_account_list = render_to_string :partial => 'backup_sources/email_account_list'
   end
   
-  def email_account
-    load_email
-      
-    if params[:method].blank?
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            if params[:page].blank?
-              setup_layout_account_setting(page, "step3", "account_settings/email_account")
-            end
-            page.replace_html 'result-email-contacts', :partial => 'backup_sources/email_account_list'
-          end
-        end
-      end
-    else
+  def email_account    
+    if params[:method] == 'delete'
       begin
         current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id]).destroy
       end
-      find_email_accounts
-      render :update do |page|
-        page.replace_html 'result-email-contacts', :partial => 'backup_sources/email_account_list'
+    end
+    load_email
+    
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          setup_layout_account_setting(page, "step3", "account_settings/email_account")
+          page.replace_html 'result-email-contacts', @email_account_list
+        end
       end
     end
   end
@@ -566,8 +561,6 @@ class AccountSettingsController < ApplicationController
   
           current_user.completed_setup_step(1)
           flash[:notice] = "Saved."
-        else
-          #flash[:notice] = "Personal Info Saved, but some required fields are missing."
         end
         format.js {
           # On 1st successful save, we want to refresh page to next step
@@ -618,26 +611,15 @@ class AccountSettingsController < ApplicationController
         :last_login_at => Time.now)
       @current_gmail.confirmed!
       current_user.completed_setup_step(3)
-            
-      find_email_accounts
-
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            @success = true
-            page.replace_html "flash-message", :text => "Your email account was successfully saved."
-            page.replace_html 'result-email-contacts', :partial => 'shared/email_account_list'
-          end
-        end
-      end
+      load_email
+      @success = true    
+      flash[:notice] = "Your email account was successfully saved."
     rescue Exception => message
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            page.replace_html "flash-message", :text => message.to_s
-          end
-        end
-      end
+      flash[:error] = message.to_s
+    end
+    
+    respond_to do |format|
+      format.js
     end
   end
   
