@@ -1,0 +1,3 @@
+setup_layout_account_setting(page, "account_settings/email_account")
+page.replace_html 'result-email-contacts', :partial => 'backup_sources/email_account_list', 
+  :locals => {:email_accounts => @email_accounts}

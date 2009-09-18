@@ -7,11 +7,18 @@ body{
 	padding:0;
 }
 
-.network-box2{
+.twitter-box{
+	width:451px;
+	height: auto;
+	background:url(/images/errors/fb-box.gif) repeat-y;
+	padding:20px 0 0px 0;
+}
+
+.rss-box{
 	width:451px;
 	height:50px;
 	background:url(/images/errors/fb-box.gif) repeat-y;
-	padding:20px 0 5px 0;
+	padding:20px 0 0px 0;
 }
 
 .table-form5{
@@ -629,7 +636,7 @@ a.flickr-btn:hover{
 	font-size:11px;
 	margin:2px 0 0 5px;
 	background:url(/images/errors/submit-btn.gif) 0 0;
-	float:left;
+	float:right;
 }
 
 .submit-btn4:hover{

@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
     },
     :collection => {
       :online => :get, :save_personal_info => :post,
-      :personal_info => :get, :facebook_sync => :get, :email_account => :get,
+      :personal_info => :get, :facebook_sync => :get, :email => :get,
       :your_history => :get, :upgrades => :get, :billings => :get,
       :always_sync_with_facebook => :get, :select_region => :get, 
       :add_another_address => :post, :remove_address => :delete,
@@ -41,7 +41,7 @@ ActionController::Routing::Routes.draw do |map|
       :set_feed_rss_url => :put
   }
   #map.resources :email_accounts
-  map.resources :gmail_accounts
+  map.resources :gmail_accounts, :collection => {:index => :get}
   
   # Redirect requests to flashrecorder xml config file to proper location
   map.connect ':anywhere/flashrecorder.xml', :controller => 'recordings', 

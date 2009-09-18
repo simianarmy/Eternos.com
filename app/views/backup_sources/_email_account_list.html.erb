@@ -2,7 +2,7 @@
   <%= javascript_tag("$('step3-button-hide').click();") %>
 <%- end -%>
 
-<% if @email_accounts.any? %>
+<% if email_accounts.any? %>
   <br />
 	<div class="title7">Your Email Accounts</div>
   <table class="table-form6" border="0" cellpadding="0" cellspacing="0">
@@ -11,24 +11,26 @@
         <td class="coll-form11" bgcolor="#8bcdff" align="center">Password</td>
         <td class="coll-form10" bgcolor="#8bcdff" align="center">Action</td>
       </tr>
-    <% @email_accounts.each do |@email_account| -%>
+    <% email_accounts.each do |@email_account| -%>
       <tr id="contact-list-<%= @email_account.id %>">
         <td class="coll-form12" valign="center"><%= restful_in_place_editor(:span, @email_account, :auth_login) %></td>
         <td class="coll-form13" valign="center"><%= restful_in_place_editor(:span, @email_account, :auth_password, :value => (@email_account.auth_password).gsub(/./,'*')) %>
         </td>
-        <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
-                                                      :url => {:action => 'email_account', :id => @email_account},
-                                                      :confirm => 'Are you sure?',
-                                                      :with => "'method=delete'", 
-                                                      :loading => "$('progress-bar').show();",
-                                                      :complete => "$('progress-bar').hide();",
- 						      :html => {:class => "blue-btn4"}%>    
+        <td class="coll-form12" valign="center">
+        <%= link_to_remote 'Remove', 
+          :url => {:controller => 'gmail_accounts', :action => 'destroy', :id => @email_account},
+          :confirm => 'Are you sure?',
+          :with => "'method=delete'", 
+          :loading => "$('progress-bar').show();",
+          :complete => "$('progress-bar').hide();",
+          :html => {:class => "blue-btn4"}
+          %>    
         </td>
       </tr>
     <% end %>
   </table>
   <br>
-<%= will_paginate(@email_accounts) %>
+<%= will_paginate(email_accounts) %>
 <% end %>
 
 

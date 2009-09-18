@@ -4,6 +4,10 @@ class GmailAccountsController < EmailAccountsController
   before_filter :login_required
   require_role "Member"
   
+  def index
+    load_accounts
+  end
+  
   def update
     @item = current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id])
     
@@ -28,5 +32,26 @@ class GmailAccountsController < EmailAccountsController
         end
       }
     end
+  end
+  
+  def destroy    
+    begin
+      current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id]).destroy
+      flash[:notice] = 'Email account removed'
+    rescue
+      flash[:error] = "Error deleting email account"
+    end
+
+    load_accounts
+    
+    respond_to do |format|
+      format.js 
+    end
+  end
+  
+  private
+  
+  def load_accounts
+    @email_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
   end
 end

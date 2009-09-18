@@ -28,7 +28,9 @@ class BackupSourcesController < ApplicationController
             backup_source.confirmed!
             current_user.completed_setup_step(2)
             @activated = true
-            flash[:notice] = "Activated!"
+            find_twitter_accounts # reload accounts list
+            
+            flash[:notice] = "Twitter account successfully saved"
           end 
         else
           flash[:notice] = "Twitter account is already activated"
@@ -36,12 +38,10 @@ class BackupSourcesController < ApplicationController
       else
         flash[:error] = "Twitter account is not valid"
       end
-      
-      find_twitter_account
     rescue
        flash[:error] = "Twitter account is not valid"
     end
-    
+      
     respond_to do |format|
       format.js
     end
@@ -50,12 +50,13 @@ class BackupSourcesController < ApplicationController
   def remove_twitter_account
     begin
       remove_account(BackupSite::Twitter, params[:id])
+      flash[:notice] = "Twitter account removed"
     rescue
       flash[:error] = "Could not find twitter account to remove"
     end
-    find_twitter_account
+    find_twitter_accounts
     find_twitter_confirmed
-    
+
     respond_to do |format|
       format.js
     end
@@ -69,16 +70,15 @@ class BackupSourcesController < ApplicationController
       if @feed_url.save
         @feed_url.confirmed!
         current_user.completed_setup_step(2)
-        
-        # Get paginated list of feeds, ordered by most recent
-        @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate(
-        :page => params[:page], :per_page => 10, :order => 'created_at DESC')
+        flash[:notice] = "Feed sucessfully saved"
       else
         flash[:error] = @feed_url.errors.full_messages
       end
     rescue
       flash[:error] = "Unexpected error adding this feed!"
     end
+    
+    @feed_urls = find_rss_accounts
     
     respond_to do |format|
       format.js
@@ -88,6 +88,7 @@ class BackupSourcesController < ApplicationController
   def remove_url
     begin
       remove_account(BackupSite::Blog, params[:id])
+      flash[:notice] = "Feed removed"
     rescue
       flash[:error] = "Could not find rss account to remove"
     end
@@ -101,13 +102,18 @@ class BackupSourcesController < ApplicationController
   
   private
   
-  def find_twitter_account
+  def find_twitter_accounts
     @twitter_accounts = current_user.backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
   end
   
   def find_twitter_confirmed
     @twitter_account   = current_user.backup_sources.by_site(BackupSite::Twitter).first
     @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
+  end
+  
+  def find_rss_accounts
+    @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate(
+      :page => params[:page], :per_page => 10, :order => 'created_at DESC')
   end
   
   def find_rss_confirmed

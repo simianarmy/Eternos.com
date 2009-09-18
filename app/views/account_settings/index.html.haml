@@ -6,7 +6,7 @@
   .popuptop
   .popup-content
     .top-box
-      = link_to_function "", "window.parent.Lightview.hide();", {:class => "stop-btn"}
+      = link_to_function "", "window.parent.Lightview.hide();", {:id => "close-as-btn", :class => "stop-btn"}
       .clear
       .top-box2
         #account-setting-title.acc-title
@@ -34,3 +34,17 @@
       .clear
   = image_tag "errors/popup-footer.png"
 
+:javascript
+  // Tricky scrollbar code - probably shouldn't mess with this unless you know what 
+  // you're doing
+  document.observe('dom:loaded', function() {
+    if (#{@completed_steps} === 3) {
+      resetDinamycHeightStepFour('account-setting-content');
+    } else {
+      setDinamycHeight('account-setting-content');
+    }
+    $('close-as-btn').observe('click', function(e) {
+      var f;
+      if (f = $('personal_info_form')) { f.request(); }
+    });
+  });

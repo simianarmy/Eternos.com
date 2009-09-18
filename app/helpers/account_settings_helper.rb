@@ -3,9 +3,11 @@ module AccountSettingsHelper
     (user.login_count == 1) && session[:setup_account].nil?
   end
   
-  def setup_layout_account_setting(page, active_link, partial_content)
-    page.replace "account-setting-nav", :partial => "account_settings/setting_nav",
-      :locals => {:active_link => active_link }, :layout => false
+  def setup_layout_account_setting(page, partial_content)
     page.replace "account-setting-content", :partial => partial_content, :layout => false
+  end
+  
+  def call_update_step_js(steps)
+    "updateStep('#{completed_steps_account_setting_path(current_user)}', #{steps});"
   end
 end

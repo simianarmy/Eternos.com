@@ -28,6 +28,7 @@ class FeedUrl < BackupSource
       begin
         # feed:// should be converted to http://
         url = self.rss_url.gsub('feed://', 'http://')
+        self.rss_url = url = 'http://' + url unless self.rss_url.match('^[https?|feed]://')
         @feed_info = Feedzirra::Feed.fetch_and_parse(url, :timeout => 30)
         unless valid_feed? @feed_info
           # Try feed auto-discovery

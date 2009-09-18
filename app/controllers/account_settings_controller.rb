@@ -20,7 +20,7 @@ class AccountSettingsController < ApplicationController
       load_online
       'online'
     when 2
-      load_email
+      load_email_accounts
       'email_account'
     when 3
       load_history
@@ -87,7 +87,7 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "step1", "account_settings/personal_info")
+          setup_layout_account_setting(page, "account_settings/personal_info")
         end
       end
     end
@@ -102,7 +102,7 @@ class AccountSettingsController < ApplicationController
         format.js do
           render :update do |page|
             @sync_message = "Sync Successfull"
-            setup_layout_account_setting(page, "step1", "account_settings/personal_info")
+            setup_layout_account_setting(page, "account_settings/personal_info")
             page.replace "sync-message", :partial => "account_settings/sync_message"
             page.visual_effect :highlight, "sync-message"
           end
@@ -146,50 +146,37 @@ class AccountSettingsController < ApplicationController
       @rss_url = backup_sources.by_site(BackupSite::Blog).first
       @rss_confirmed = @rss_url && @rss_url.confirmed?
     end
-    @rss_url_list = render_to_string :partial => 'backup_sources/rss_url_list'
   end
   
   def online
     load_online
     
     respond_to do |format|
-      format.js do
+      format.js {
         render :update do |page|
           if params[:page].blank?
-            setup_layout_account_setting(page, "step2", "account_settings/online")
+            page.replace "account-setting-content", :partial => 'online', :layout => false
+#            setup_layout_account_setting(page, "step2", "account_settings/online")
           else
-            page.replace_html 'result-urls', @rss_url_list
+            page.replace_html 'result-urls', :partial => 'backup_sources/rss_url_list', 
+              :locals => {:feed_urls => @feed_urls}
           end
         end
-      end
+      }
     end
   end
   
-  # TODO: Move to EmailAccounts controller
-  def load_email
-    find_email_accounts
+  def email
+    load_email_accounts
     @current_gmail = @email_accounts.first
-    @email_account_list = render_to_string :partial => 'backup_sources/email_account_list'
+  
+    respond_to do |format|
+      format.js {
+        render :template => 'account_settings/email_account'
+      }
+    end
   end
   
-  def email_account    
-    if params[:method] == 'delete'
-      begin
-        current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id]).destroy
-      end
-    end
-    load_email
-    
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          setup_layout_account_setting(page, "step3", "account_settings/email_account")
-          page.replace_html 'result-email-contacts', @email_account_list
-        end
-      end
-    end
-  end
-
   def load_history
     find_object_history
   end
@@ -200,7 +187,7 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "step4", "account_settings/your_history")
+          setup_layout_account_setting(page, "account_settings/your_history")
         end
       end
     end  
@@ -532,7 +519,7 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "step5", "account_settings/upgrades")
+          setup_layout_account_setting(page, "account_settings/upgrades")
         end
       end
     end
@@ -543,7 +530,7 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "step6", "account_settings/billings")
+          setup_layout_account_setting(page, "account_settings/billings")
         end
       end
     end
@@ -611,13 +598,13 @@ class AccountSettingsController < ApplicationController
         :last_login_at => Time.now)
       @current_gmail.confirmed!
       current_user.completed_setup_step(3)
-      load_email
       @success = true    
       flash[:notice] = "Your email account was successfully saved."
     rescue Exception => message
       flash[:error] = message.to_s
     end
     
+    load_email_accounts
     respond_to do |format|
       format.js
     end
@@ -724,8 +711,8 @@ class AccountSettingsController < ApplicationController
    def find_relationship
      @relationships = Relationship.find_all_by_user_id(current_user.id)
    end
-
-   def find_email_accounts
+   
+   def load_email_accounts
      @email_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
    end
    

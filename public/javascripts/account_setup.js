@@ -26,8 +26,7 @@ document.observe("dom:loaded", function() {
     })
   }
 	Scroller.reset('account-setting-content');
-  setDinamycHeight('account-setting-content');
- // scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
+	resizeScrollbar();
 });
 
 // Callback for Facebook Backup App settings.
@@ -48,9 +47,11 @@ var on_facebook_backup_auth_close = function(check_url) {
 }
 
 function resizeScrollbar() {
-	Scroller.reset('account-setting-content');
-	//setDinamycHeight('account-setting-content');
-	//scrollbar.recalculateLayout();  
+	setDinamycHeight('account-setting-content');
+}
+
+function clearFlash() {
+  $$('.flash_notice').each(function(e) { e.update(''); });
 }
 
 function updateStep(check_url, completed_steps) {
@@ -76,7 +77,7 @@ function setDinamycHeight(id){
   height = win_dimension()[1];
   heightDiv = 0.83*height;
   $(id).style.height = heightDiv + "px";
-	resizeScrollbar();
+	//resizeScrollbar();
 }
 
 function resetDinamycHeight(id){
@@ -187,7 +188,7 @@ function addRowAddress(){
   var tr1 = new Element('tr');
     var td1 = new Element('td', {colspan: "3"});
       var div1 = new Element('div', {Class: "title6"});
-      var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormAddress();}', Class: "blue-btn3" });
+      var linkCancel = new Element('a', { href:"#", onClick:'{deleteFormAddress();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -313,7 +314,7 @@ function addRowAddress(){
     td83.appendChild(inputPostalCode);
 
   //tr9
-  td91.innerHTML = "Move In";
+  td91.innerHTML = "Move In Date";
   td92.innerHTML = ":";
   tr9.appendChild(td91);
   tr9.appendChild(td92);
@@ -323,9 +324,9 @@ function addRowAddress(){
     td93.appendChild(getYear(selectMoveInYear));
 
   //tr10
-  td101.innerHTML = "Move Out";
+  td101.innerHTML = "Move Out Date";
   td102.innerHTML = ":";
-  spanText.innerHTML = "Still living here?";
+  spanText.innerHTML = "Current Address";
   tr10.appendChild(td101);
   tr10.appendChild(td102);
   tr10.appendChild(td103);
@@ -379,7 +380,7 @@ function addRowJob(){
   var tr1 = new Element('tr', {});
     var td1 = new Element('td', {colspan: "3"});
       var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormJob();}', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'{deleteFormJob();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -525,7 +526,7 @@ function addRowSchool(){
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormSchool();}', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'{deleteFormSchool();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -697,7 +698,7 @@ function addRowMedical(){
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormMedical();}', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'{deleteFormMedical();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -835,7 +836,7 @@ function addRowMedicalCondition(){
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormMedicalCondition();}', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'{deleteFormMedicalCondition();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -943,7 +944,7 @@ function addRowFamily(){
   var tr1 = new Element('tr', {});
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-		var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormFamily();}', Class: "blue-btn3" });
+		var linkCancel = new Element('a', { href:"#", onClick:'{deleteFormFamily();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -1075,7 +1076,7 @@ function addRowRelationship(){
  var tr1 = new Element('tr');
   var td1 = new Element('td', {colspan: "3"});
     var div1 = new Element('div', {Class: "title6"});
-	var linkCancel = new Element('a', { href:"#", onClick:'if(confirm("Are you sure?") == true){deleteFormRelationship();}', Class: "blue-btn3" });
+	var linkCancel = new Element('a', { href:"#", onClick:'{deleteFormRelationship();}', Class: "blue-btn3" });
  
   var tr2 = new Element('tr');
     var td2 = new Element('td', {colspan: "3"});
@@ -1223,7 +1224,7 @@ function toggleCustomTextFamily(id){
 }
 
 function getRegion(val,elementId){
-  new Ajax.Request('account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'',
+  new Ajax.Request('select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'',
                    onLoading:function(request){$('loading-image-'+elementId).show();}, 
                    onComplete:function(request){$('loading-image-'+elementId).hide();} });return false;
 }

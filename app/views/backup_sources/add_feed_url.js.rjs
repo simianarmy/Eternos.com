@@ -1,8 +1,7 @@
 page.flash_and_fade :rss_notice
-if @feed_url.valid?
+unless @feed_url.new_record?
   page[:feed_url_rss_url].value = ""
-  page.replace_html "result-urls", :partial => 'rss_url_list', :locals => {:feed_urls => @feed_urls}
+  page.replace_html "result-urls", :partial => 'backup_sources/rss_url_list', :locals => {:feed_urls => @feed_urls}
   page["rss-link"].removeClassName('rss-btn')
   page["rss-link"].addClassName('rss-active')
 end
-page.call "setDinamycHeight('account-setting-content');"

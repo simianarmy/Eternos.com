@@ -1,0 +1,9 @@
+<%= javascript_tag "
+
+function onFormSubmitComplete() {
+ 
+  $('progress-bar').hide(); 
+  #{call_update_step_js(@completed_steps)}
+  resizeScrollbar();
+}"
+%>
