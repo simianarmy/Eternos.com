@@ -3,50 +3,67 @@
 
 - @data.each do |data|
   - @job = data[:job]
-  %h3= "Job #{@job.id}"
+  %h3= "Job #{@job.id} : User #{@job.member.name} (#{@job.member.id})"
   %br
-  = "Run time #{@job.created_at.to_s} to #{@job.finished_at.to_s}"
-  %br
-  Percent complete: 
-  = @job.percent_complete
-  \%
+  = "Run time: #{distance_of_time_in_words(@job.created_at, @job.finished_at)} (#{@job.created_at.to_s} to #{@job.finished_at.to_s})"
   %br
   Status:
   = @job.status
   %br
-  Size:
-  = @job.size
+  Size: TODO
   %br
   Errors:
   = @job.error_messages.to_s
   %p
     %h3 Backup Source Jobs
   - data[:source_jobs].each do |j|
-    = "Source: #{j.backup_source.backup_site.name rescue ''}"
+    = "Job id: #{j.id}"
     %br
-    = "Run time #{j.created_at.to_s} to #{j.finished_at.to_s}"
+    Source: 
+    - if j.backup_source && j.backup_source.backup_site
+      = j.backup_source.backup_site.name
+    - else
+      Unknown source or site name!
+    
+    %br
+    = "Run time: #{distance_of_time_in_words(j.created_at, j.finished_at)} (#{j.created_at.to_s} to #{j.finished_at.to_s})"
     %br
     Percent complete: 
     = j.percent_complete
     \%
     %br
     Status:
-    = j.status
+    = j.status == 1 ? 'Ok' : 'Failed'
     %br
-    Size:
-    = j.size
+    Size: TODO
     %br
-    Errors:
-    = j.error_messages.to_s
+    - if j.error_messages
+      Errors:
+      = j.error_messages.to_s
     %p
-      %br
-  %hr
-
-%p
-  %h2 Backup States
-  
-- @data.each do |data|
-  - @state = data[:state]
-  %pre= @state.to_yaml
+  %br
+  %h3 Backup State
+  %br
+  - bs = data[:state]
+  Items backed up? 
+  = bs.items_saved ? 'Yes' : 'No'
+  %br
+  In progress?
+  = bs.in_progress ? 'Yes' : 'No'
+  %br
+  Last backup at:
+  = bs.last_backup_finished_at.to_s(:time_period_date_with_time)
+  %br
+  Last successful backup at: 
+  = bs.last_successful_backup_at.to_s(:time_period_date_with_time)
+  %br
+  Last failed backup at:
+  = bs.last_failed_backup_at.to_s(:time_period_date_with_time)
+  %br
+  == Last backup job: #{bs.last_backup_job_id}
+  %br
+  Last error message:
+  = bs.last_messages.to_s
+  %p
   %hr
   

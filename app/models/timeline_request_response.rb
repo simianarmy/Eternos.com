@@ -37,9 +37,16 @@ private
   # Parses rest uri for actions & opts
   def search_events
     RAILS_DEFAULT_LOGGER.debug @options.inspect
-    klass = @options[:fake] ? TimelineSearchFaker : TimelineSearch
-    #klass = TimelineSearch # Switching to real data
-    klass.new(@params[:id], [@params[:start_date], @params[:end_date]], @options).results
+    
+    if ENV['RAILS_ENV'] == 'development'
+      klass = @options[:fake] ? TimelineSearchFaker : TimelineSearch
+      id = @params[:id]
+    else
+      klass = TimelineSearch
+      # Enable use of params[:id] once member + guest checking enabled
+      id = current_user.id 
+    end
+    klass.new(id, [@params[:start_date], @params[:end_date]], @options).results
   end
   
   def parse_search_filters(args)
