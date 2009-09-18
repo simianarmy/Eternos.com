@@ -567,7 +567,7 @@ module ActionView
 
           private
             def request
-              @controller.request
+              request? && @controller.request
             end
 
             def request?
