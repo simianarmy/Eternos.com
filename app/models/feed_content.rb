@@ -25,6 +25,7 @@ class FeedContent < ActiveRecord::Base
   def save_screencap
     if (s = ScreenCapture.capture(feed_entry.url)) && File.exist?(s)
       self.screencap = File.new(s)
+      self.size = File.size(s)
       self.save # save to start s3 upload
       File.delete(s)
     end
@@ -36,6 +37,16 @@ class FeedContent < ActiveRecord::Base
   
   def screencap_thumb_url
     return_unless_missing(screencap.url(:thumb))
+  end
+  
+  def bytes
+    if self.size > 0
+      self.size
+    elsif self.html_content
+      self.html_content.length
+    else
+      0
+    end
   end
   
   protected

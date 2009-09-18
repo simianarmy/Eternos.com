@@ -411,6 +411,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string  "screencap_content_type"
     t.datetime "created_at"
     t.datetime "screencap_updated_at"
+    t.integer "size", :null => false, :default => 0
   end
   
   add_index "feed_contents", ["feed_entry_id"]

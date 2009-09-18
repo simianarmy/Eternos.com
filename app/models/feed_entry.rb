@@ -36,8 +36,7 @@ class FeedEntry < ActiveRecord::Base
   end
   
   def bytes
-    (summary ? summary.length : 0) + (rss_content ? rss_content.length : 0) + 
-    (feed_content ? feed_content.content.size : 0)
+    feed_content.try(:bytes) || 0
   end
   
   def screencap_url

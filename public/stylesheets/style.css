@@ -5,7 +5,12 @@ body{
 	background:#292c32;
 }
 */
-img {behavior:url("pngbehavior.htc");}
+/* img {behavior:url("pngbehavior.htc");} */
+
+img { 
+	behavior: url(/stylesheets/iepngfix.htc) 
+}
+
 #topbar{
 	width:875px;
 	height:35px;

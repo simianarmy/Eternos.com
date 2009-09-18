@@ -16,6 +16,9 @@ a {
   overflow: hidden;
 }
 
+.bold {
+	font-weight: bold;
+}
 /*#container {
   width: 75%;
   margin: 0 auto;
