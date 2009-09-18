@@ -21,7 +21,7 @@ config.action_view.debug_rjs                         = false
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
 config.action_controller.asset_host = Proc.new { |source, request|
-  "#{request.protocol}staging.eternos.com"
+  (request ? request.protocol : 'http://') + "staging.eternos.com"
 }
 config.log_level = :debug
 
