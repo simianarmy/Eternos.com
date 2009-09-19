@@ -1,6 +1,4 @@
 page.flash_and_fade :rss_notice
-unless @rss_confirmed
-  page["rss-link"].removeClassName('rss-active')
-  page["rss-link"].addClassName('rss-btn')
-end
+
 page.replace_html "result-urls", :partial => 'rss_url_list', :locals => {:feed_urls => @feed_urls}
+page.call 'updateSourceActivationIcon', 'rss', (@feed_urls && @feed_urls.any?) ? 'true' : 'false'

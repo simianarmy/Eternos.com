@@ -3,9 +3,6 @@ page['backup_source_auth_login'].value=""
 page['backup_source_auth_password'].value=""
 page.replace_html('result-twitter-accounts', :partial => 'backup_sources/twitter_list', 
     :locals => {:list => @twitter_accounts}) if @twitter_accounts
+page.call 'updateSourceActivationIcon', 'twitter', (@twitter_accounts && @twitter_accounts.any?) ? 'true' : 'false'
 
-if (@activated)
-  page["twitter-link"].removeClassName('twitter-btn')
-  page["twitter-link"].addClassName('twitter-active')
-end
 

@@ -33,13 +33,13 @@
   </div>
   
   <%- link_class = active_link == "step4" ? "step4-active" : "step4-btn"  -%>
-  <div id="step4" class="step" style="<%= style_hidden_if(@completed_steps < 3) %>">
+  <div id="step4" class="step" style="<%= style_hidden_if(@completed_steps < 2) %>">
     <%= link_to_remote("", { :url => your_history_account_settings_path,
       :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
       :complete => "highlightStep(4); $('progress-bar').hide();"}, 
       :class => link_class) %>
   </div>
-  <div id="step4-disabled" style="<%= style_hidden_if(@completed_steps >= 3) %>">
+  <div id="step4-disabled" style="<%= style_hidden_if(@completed_steps >= 2) %>">
     <%= link_to '', '#', :class => link_class, :id => 'step4-link' %>
     <%= javascript_tag "new Effect.Opacity('step4-disabled', { from: 1.0, to: 0.2 });" %>
   </div>

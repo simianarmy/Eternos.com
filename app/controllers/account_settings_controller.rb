@@ -19,12 +19,9 @@ class AccountSettingsController < ApplicationController
     when 1
       load_online
       'online'
-    when 2
+    when 2, 3
       load_email_accounts
       'email_account'
-    when 3
-      load_history
-      'your_history'
     else
       'personal_info'
     end

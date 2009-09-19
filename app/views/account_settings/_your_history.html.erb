@@ -216,11 +216,16 @@
 </div>
 
 <script type="text/javascript">
+// What's this for?
 //resetDinamycHeightStepFour('account-setting-content');
 
-// This is wrong wrong wrong ... the correct way to do dynamic form content
+// This is wrong ... the correct way to do dynamically create form content
 // is in app/views/profiles/_general.html.haml
-// TODO: get rid of this 
+// Things that are wrong with this code: 
+// 1) Use of window global variable (bad js, browser incompatible)
+// 2) Use of Rails AR model classes - should be done in the controller
+// 3) Form selects should be created with Rails form helpers - this will surely break one day
+
 window.types = new Array();
 window.countries = new Array();
 window.types_relationship = new Array();

@@ -6,15 +6,15 @@
 			Your twitter account and your blog can be updated as well.  Look for more types of online accounts soon, click the FEEDBACK button to your right to submit your ideas for which types of account you'd like to see us add next!</div>
 	<hr class="line2" /></div>
   <div class="network-icon-box">
-    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", 
+    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn'}", 
       :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
     <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { 
       on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}');
       updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});
       });" 
     %>
-    <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-link"}, ["rss-box"])  %>
-    <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-link"}, ["twitter-box"])  %>
+    <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-button"}, ["rss-box"])  %>
+    <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"}, ["twitter-box"])  %>
   </div>
 
   <div style="clear:both"></div> 

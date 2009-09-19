@@ -38,11 +38,8 @@
   // Tricky scrollbar code - probably shouldn't mess with this unless you know what 
   // you're doing
   document.observe('dom:loaded', function() {
-    if (#{@completed_steps} === 3) {
-      resetDinamycHeightStepFour('account-setting-content');
-    } else {
-      setDinamycHeight('account-setting-content');
-    }
+    setDinamycHeight('account-setting-content'); 
+    // Save form info on popup close code
     $('close-as-btn').observe('click', function(e) {
       var f;
       if (f = $('personal_info_form')) { f.request(); }

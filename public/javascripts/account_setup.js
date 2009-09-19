@@ -1,5 +1,3 @@
-// global var oh no!
-var scrollbar;
 
 document.observe("dom:loaded", function() {
   // the element in which we will observe all clicks and capture
@@ -34,16 +32,21 @@ var on_facebook_backup_auth_close = function(check_url) {
 	new Ajax.Request(check_url, { method: 'get',
 		onSuccess:function(transport) {
 			json = transport.responseText.evalJSON();
-			
-			if (json && json.authenticated) {
-				$('fb-button').removeClassName('fb-btn2');
-				$('fb-button').addClassName('fb-active');
-			} else {
-				$('fb-button').addClassName('fb-btn2');
-				$('fb-button').removeClassName('fb-active');
-			}
+			updateSourceActivationIcon('fb', json && json.authenticated);
 		}
 	} );
+}
+
+function updateSourceActivationIcon(button, activate) {
+	//alert('updateSourceActivationIcon ' + button + ': ' + activate);
+	var buttonEl = $(button + '-button');
+	if (activate === 'true') {
+		buttonEl.removeClassName(button+'-btn')
+		buttonEl.addClassName(button+'-active');
+	} else {
+		buttonEl.removeClassName(button+'-active');
+		buttonEl.addClassName(button+'-btn');
+	}
 }
 
 function resizeScrollbar() {
@@ -54,6 +57,7 @@ function clearFlash() {
   $$('.flash_notice').each(function(e) { e.update(''); });
 }
 
+// Linear step activation function
 function updateStep(check_url, completed_steps) {
 	new Ajax.Request(check_url, {
 		method: 'get',
@@ -62,6 +66,11 @@ function updateStep(check_url, completed_steps) {
 			//alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
 			if (current_step > completed_steps) {
 				activateStep(current_step+1);
+				// Hack hack hack - Activate history step at same time as email step
+				if (current_step+1 === 3) {
+					activateStep(4);
+				} // End hack hack hack
+				highlightStep(current_step+1);
 			}
 		}
 	});
@@ -83,7 +92,6 @@ function activateStep(stepNum) {
 	var step = 'step' + stepNum;
 	$(step + '-disabled').hide();
 	$(step).show();
-	highlightStep(stepNum);
 }
 
 function activatedFb(){
