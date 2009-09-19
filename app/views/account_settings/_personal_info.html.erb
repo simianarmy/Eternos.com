@@ -1,7 +1,9 @@
 <div id="account-setting-content" class="makeScroll">
 
 <div id="notice" class="flash_notice"></div>
-<% form_remote_tag :html => {:url => save_personal_info_account_settings_path, :id => 'personal_info_form'},
+<% form_remote_tag :html => { :action => url_for(:action => 'save_personal_info'), 
+  :id => 'personal_info_form' },
+  :url => { :action => 'save_personal_info' },
   :complete => "updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps})" do %>
   <table class="table-form1" width="460" >
     <tbody>

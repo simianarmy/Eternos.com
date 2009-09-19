@@ -41,7 +41,7 @@ ActionController::Routing::Routes.draw do |map|
       :set_feed_rss_url => :put
   }
   #map.resources :email_accounts
-  map.resources :gmail_accounts, :collection => {:index => :get}
+  map.resources :gmail_accounts
   
   # Redirect requests to flashrecorder xml config file to proper location
   map.connect ':anywhere/flashrecorder.xml', :controller => 'recordings', 

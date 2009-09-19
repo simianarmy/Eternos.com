@@ -1,3 +1,2 @@
 page.flash_and_fade
-page.replace_html 'result-email-contacts', render :partial => 'backup_sources/email_account_list', 
-  :locals => {:emails_accounts => @email_accounts}
+page.remove "contact-list-#{@email.id}"

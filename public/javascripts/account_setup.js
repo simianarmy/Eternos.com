@@ -61,12 +61,29 @@ function updateStep(check_url, completed_steps) {
 			current_step = parseInt(transport.responseText);
 			//alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
 			if (current_step > completed_steps) {
-				//alert('displaying ' + 'step'+(current_step+1)+'-enabled');
-				$('step'+(current_step+1)+'-enabled').show();
-				$('step'+(current_step+1)+'-disabled').hide();
+				activateStep(current_step+1);
 			}
 		}
 	});
+}
+
+function highlightStep(stepNum) {
+  var step = 'step' + stepNum;
+  $(step).down('a').addClassName(step + '-active').removeClassName(step + '-btn');
+  
+  $$('.step').each(function(div) {
+    if (div.id !== step && div.down('a').hasClassName(div.id + '-active')) {
+      div.down('a').removeClassName(div.id + '-active');
+      div.down('a').addClassName(div.id + '-btn');
+    }
+  });
+}
+
+function activateStep(stepNum) {
+	var step = 'step' + stepNum;
+	$(step + '-disabled').hide();
+	$(step).show();
+	highlightStep(stepNum);
 }
 
 function activatedFb(){

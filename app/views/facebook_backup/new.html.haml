@@ -25,11 +25,11 @@
         Simply click on the lock button below
       \- it takes only several seconds to setup your Facebook account for backup!
       %br
-
-	
+      
       .fb-btn1
         = link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), @login_url, :class => 'facebook lightview', :rel => 'iframe', :title => ' :: :: width: 700, height: 800'
-        
+      = link_to_function "Cancel", "parent.Lightview.hide()"
+      
     #continue{:style=> "display:none;"}
       .popup-text1
         Facebook has granted us permission to backup your data!

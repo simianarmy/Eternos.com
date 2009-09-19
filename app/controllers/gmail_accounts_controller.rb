@@ -36,14 +36,13 @@ class GmailAccountsController < EmailAccountsController
   
   def destroy    
     begin
-      current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id]).destroy
+      @email = current_user.backup_sources.by_site(BackupSite::Gmail).find(params[:id])
+      @email.destroy
       flash[:notice] = 'Email account removed'
     rescue
       flash[:error] = "Error deleting email account"
     end
-
-    load_accounts
-    
+      
     respond_to do |format|
       format.js 
     end

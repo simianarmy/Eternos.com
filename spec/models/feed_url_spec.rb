@@ -45,11 +45,18 @@ describe FeedUrl do
       @feed.errors.should have(1).error_on(:rss_url)
     end
     
-    it "should auto-discover feed from page" do
+    it "should auto-discover feed from http://feedproxy.google.com/TechCrunch => http://feeds.feedburner.com/TechCrunch" do
       @feed.rss_url = 'http://www.techcrunch.com/'
       @feed.should be_valid
       @feed.save
-      @feed.feed.feed_url_s.should == 'http://feedproxy.google.com/TechCrunch'
+      @feed.feed.feed_url_s.should == 'http://feeds.feedburner.com/TechCrunch'
+    end
+
+    it "should auto-discover feed from simian187.vox.com => http://simian187.vox.com/library/posts/atom.xml" do
+      @feed.rss_url = 'simian187.vox.com'
+      @feed.should be_valid
+      @feed.save
+      @feed.feed.feed_url_s.should == 'http://simian187.vox.com/library/posts/atom.xml'
     end
     
     it "should create FeedUrl object" do

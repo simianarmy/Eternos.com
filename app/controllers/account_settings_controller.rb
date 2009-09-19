@@ -155,8 +155,7 @@ class AccountSettingsController < ApplicationController
       format.js {
         render :update do |page|
           if params[:page].blank?
-            page.replace "account-setting-content", :partial => 'online', :layout => false
-#            setup_layout_account_setting(page, "step2", "account_settings/online")
+            setup_layout_account_setting(page, "online")
           else
             page.replace_html 'result-urls', :partial => 'backup_sources/rss_url_list', 
               :locals => {:feed_urls => @feed_urls}

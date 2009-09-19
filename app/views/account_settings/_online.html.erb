@@ -1,4 +1,5 @@
 <div id="account-setting-content" class="makeScroll">
+  <div id="notice" class="flash_notice"></div>
   <div class="title3">Backup your Online Accounts<br /><br />
 	<div class="textarea7">We currently provide an easy way for you to backup your online data, including all your Facebook account data, status updates, friends and pictures.  
 		<p>
@@ -8,8 +9,8 @@
     <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", 
       :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
     <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { 
-      updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});
       on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}');
+      updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});
       });" 
     %>
     <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-link"}, ["rss-box"])  %>

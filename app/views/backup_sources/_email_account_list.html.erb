@@ -17,10 +17,10 @@
         <td class="coll-form13" valign="center"><%= restful_in_place_editor(:span, @email_account, :auth_password, :value => (@email_account.auth_password).gsub(/./,'*')) %>
         </td>
         <td class="coll-form12" valign="center">
-        <%= link_to_remote 'Remove', 
-          :url => {:controller => 'gmail_accounts', :action => 'destroy', :id => @email_account},
+        <%= link_to_remote 'Remove', :url => { :controller => 'gmail_accounts', 
+          :action => 'destroy', :id => @email_account.id },
+          :method => 'delete',
           :confirm => 'Are you sure?',
-          :with => "'method=delete'", 
           :loading => "$('progress-bar').show();",
           :complete => "$('progress-bar').hide();",
           :html => {:class => "blue-btn4"}
