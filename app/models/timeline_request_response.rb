@@ -8,7 +8,8 @@ class TimelineRequestResponse
   # events: collection of TimelineEvent objects
   attr_writer :results
   
-  def initialize(uri, params={})
+  def initialize(user_id, uri, params={})
+    @id         = user_id
     @uri        = uri
     @params     = params
     @options    = parse_search_filters(params[:filters])
@@ -39,14 +40,17 @@ private
     id = if @options[:mapped]
       klass = @options[:fake] ? TimelineSearchFaker : TimelineSearch
       @params[:id]
-    elsif current_user
+    elsif @id > 0
       klass = TimelineSearch
       # Enable use of params[:id] once member + guest checking enabled
-      current_user.id
+      @id
     else
-      raise "Unable to determine search user id"
+      RAILS_DEFAULT_LOGGER.warn "Unable to determine search user id"
+      nil
     end
     RAILS_DEFAULT_LOGGER.debug "search member id = #{id}"
+    return unless id
+    
     klass.new(id, [@params[:start_date], @params[:end_date]], @options).results
   end
   

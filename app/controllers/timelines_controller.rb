@@ -70,9 +70,10 @@ class TimelinesController < ApplicationController
     else
       md5 = Digest::MD5.hexdigest(request.url)
       refresh = session[:refresh_timeline] #|| current_user.refresh_timeline?
+      uid = current_user ? current_user.id : 0
       
       BenchmarkHelper.rails_log("Timeline search #{request.url}") do
-        @response = cache(md5, refresh) { TimelineRequestResponse.new(request.url, params).to_json }
+        @response = cache(md5, refresh) { TimelineRequestResponse.new(uid, request.url, params).to_json }
       end
       session[:refresh_timeline] = nil
     end
