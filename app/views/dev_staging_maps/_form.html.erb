@@ -16,5 +16,17 @@
       <%= @dev_staging_map.staging_user_id %>
     <% end %>
   </p>
+  <p>
+    Production Member ID:
+    <% if ENV['RAILS_ENV'] == 'development' %>
+      <%= f.text_field :production_user_id %>
+    <% else %>
+      <%= @dev_staging_map.production_user_id %>
+    <% end %>
+  </p>
+  <p>
+    Target Environment:
+    <%= f.text_field :environment %>
+  </p>
   <p><%= f.submit "Submit", :style => "height: 30px;" %></p>
 <% end %>

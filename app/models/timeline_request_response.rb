@@ -36,16 +36,17 @@ private
 
   # Parses rest uri for actions & opts
   def search_events
-    RAILS_DEFAULT_LOGGER.debug @options.inspect
-    
-    if ENV['RAILS_ENV'] == 'development'
+    id = if @options[:mapped]
       klass = @options[:fake] ? TimelineSearchFaker : TimelineSearch
-      id = @params[:id]
-    else
+      @params[:id]
+    elsif current_user
       klass = TimelineSearch
       # Enable use of params[:id] once member + guest checking enabled
-      id = current_user.id 
+      current_user.id
+    else
+      raise "Unable to determine search user id"
     end
+    RAILS_DEFAULT_LOGGER.debug "search member id = #{id}"
     klass.new(id, [@params[:start_date], @params[:end_date]], @options).results
   end
   

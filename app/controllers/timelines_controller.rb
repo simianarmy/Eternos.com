@@ -64,20 +64,11 @@ class TimelinesController < ApplicationController
     #member_view = (params[:id].to_i == current_user.id)
     
     # Proxy ajax request for dev env. to staging server
-    if false && (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id)) &&
-      (dev_map.staging_user_id > 0)
-      uri = URI.parse request.url
-      uri.host = 'beta.eternos.com'
-      uri.path.gsub!(/js\/\d+\//, "js/#{dev_map.staging_user_id}/")
-      uri.port = 80
-      unless @json
-        RAILS_DEFAULT_LOGGER.debug "Proxy calling #{uri.to_s}"
-        @json = Curl::Easy.perform(uri.to_s).body_str
-      end
+    if (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id)) && dev_map.mapped_id
+      proxy_search(dev_map)
       @response = ActiveSupport::JSON.decode(@json) if @json
     else
       md5 = Digest::MD5.hexdigest(request.url)
-      RAILS_DEFAULT_LOGGER.debug "memcache key = #{request.url} => #{md5}"
       refresh = session[:refresh_timeline] #|| current_user.refresh_timeline?
       
       BenchmarkHelper.rails_log("Timeline search #{request.url}") do
@@ -104,6 +95,18 @@ class TimelinesController < ApplicationController
     
   def find_host
     @host = current_user.get_host
+  end
+  
+  def proxy_search(dev_map)
+    uri = URI.parse request.url
+    uri.host = dev_map.env + '.eternos.com'
+    uri.path.gsub!(/js\/\d+\//, "js/#{dev_map.mapped_id}/")
+    uri.path += '/mapped=1'
+    uri.port = 80
+    unless @json
+      RAILS_DEFAULT_LOGGER.debug "Proxy calling #{uri.to_s}"
+      @json = Curl::Easy.perform(uri.to_s).body_str
+    end
   end
   
 end

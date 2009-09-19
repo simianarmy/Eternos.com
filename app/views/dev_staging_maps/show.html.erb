@@ -8,7 +8,14 @@
   <strong>Staging Member ID:</strong>
   <%=h @dev_staging_map.staging_user_id %>
 </p>
-
+<p>
+  <strong>Production Member ID:</strong>
+  <%=h @dev_staging_map.production_user_id %>
+</p>
+<p>
+  <strong>Target Environment:</strong>
+  <%=h @dev_staging_map.environment %>
+</p>
 <p>
   <%= link_to "Edit", edit_dev_staging_map_path(@dev_staging_map) %> |
   <%= link_to "Destroy", @dev_staging_map, :confirm => 'Are you sure?', :method => :delete %>
