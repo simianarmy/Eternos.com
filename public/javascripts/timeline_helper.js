@@ -882,7 +882,7 @@ var ETimeline = function (opts) {
       }), Timeline.createBandInfo({
         width: "76%",
         intervalUnit: Timeline.DateTime.DAY,
-        intervalPixels: 100,
+        intervalPixels: 70,
         date: this.centerDate,
         eventSource: this.eventSource,
         theme: this.theme
