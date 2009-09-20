@@ -10,6 +10,11 @@ class PhotoThumbnail < ActiveRecord::Base
   
   before_destroy :delete_from_cloud
   
+  serialize_with_options do
+    methods :start_date, :url
+    only :size, :width, :height, :content_type
+  end
+  
   def cdn_url
     S3Buckets::MediaBucket.url(s3_key) if s3_key
   end

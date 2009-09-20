@@ -54,7 +54,7 @@ var ETemplates = {
 				return new Template('<div id="#{id}">#{content}</div>');
 			},
 			tooltipTitle: function(){
-			  return new Template("<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/#{icon}'> &nbsp;&nbsp;#{title}");
+			  return new Template("<img style='width:12px;height:12px;' src='/javascripts/timeline/icons/#{icon}'>&nbsp;#{title}");
 			},
 			detailsLink: function() {
 				return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');

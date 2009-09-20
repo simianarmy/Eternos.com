@@ -131,9 +131,9 @@ var ETLAddressEventSource = Class.create(ETLEventSource, {
 var ETEvent = {
 	// Utilities, constants and vars needed
 	itemTypes: [
-		{type: "facebook_activity_stream_item", display_text: "Facebook Post", display_text_plural: "Facebook Posts", icon: "facebook.gif"}, 
+		{type: "facebook_activity_stream_item", display_text: "Facebook&nbsp;Post", display_text_plural: "Facebook&nbsp;Posts", icon: "facebook.gif"}, 
 		{type: "twitter_activity_stream_item", display_text: "Tweet", display_text_plural: "Tweets", icon: "twitter.gif"}, 
-		{type: "feed_entry", display_text: "Blog Post", display_text_plural: "Blog Posts", icon: "rss.png"}, 
+		{type: "feed_entry", display_text: "Blog&nbsp;Post", display_text_plural: "Blog&nbsp;Posts", icon: "rss.png"}, 
 		{type: "backup_email", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
 		{type: "photo", display_text: "Image", display_text_plural: "Images", icon: "photo.png"},
 		{type: "video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
@@ -141,8 +141,8 @@ var ETEvent = {
 		{type: "audio", display_text: "Audio", display_text_plural: "Audio", icon: "audio.png"},
 		{type: "document", display_text: "Document", display_text_plural: "Documents", icon: "doc.png"},
 		{type: "school", display_text: "School", display_text_plural: "Schools", icon: "school.png"},
-		{type: "family", display_text: "Family Member", display_text_plural: "Family Members", icon: "family-member.png"},
-		{type: "medical", display_text: "Medical Data", display_text_plural: "Medical Data", icon: "medic-data.png"},
+		{type: "family", display_text: "Family&nbsp;Member", display_text_plural: "Family&nbsp;Members", icon: "family-member.png"},
+		{type: "medical", display_text: "Medical&nbsp;Data", display_text_plural: "Medical&nbsp;Data", icon: "medic-data.png"},
 		{type: "medical_conditions", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
 		{type: "job", display_text: "Job", display_text_plural: "Jobs", icon: "job"}, 
 		{type: "address", display_text: "Address", display_text_plural: "Addresses", icon: "address.png"}

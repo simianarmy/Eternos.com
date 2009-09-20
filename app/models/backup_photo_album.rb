@@ -14,7 +14,8 @@ class BackupPhotoAlbum < ActiveRecord::Base
   # Returns photo ids of photos in album within arg dates
   named_scope :photos_between_dates, lambda { |s, e| 
     {
-      :joins => :backup_photos,
+      #:include => { :backup_photos => :photo },
+      :joins => 'backup_photos',
       :conditions => {'backup_photos.created_at' => s..e},
       :select => 'backup_photos.id'
     }

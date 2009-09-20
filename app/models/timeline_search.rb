@@ -48,11 +48,13 @@ class TimelineSearch
   def results
     # do search 
     search_methods.each do |meth|
+      RAILS_DEFAULT_LOGGER.debug "calling #{meth}..."
       if res = self.send(meth)
         RAILS_DEFAULT_LOGGER.debug "#{meth} returned #{res.size} items"
         res.each {|res| add_events(res)}
       end
     end
+    RAILS_DEFAULT_LOGGER.debug "Done fetching items."
     @events
   end
   
@@ -85,11 +87,7 @@ class TimelineSearch
   end
   
   def get_backup_photos
-    returning Array.new  do |res|
-      if fb = facebook_source
-        res = fb.photos_between_dates(@start_date, @end_date).map(&:photo)
-      end
-    end
+    facebook_source ? BackupPhoto.belonging_to_source(facebook_source.id).between_dates(@start_date, @end_date).with_photo.map(&:photo) : []
   end
   
   def get_emails

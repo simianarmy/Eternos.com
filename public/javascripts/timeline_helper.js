@@ -428,7 +428,7 @@ var ETimeline = function (opts) {
 		},
     _setTitle: function () {
       if (this.num > 1) {
-        this.title = this.num + " " + this.first.display_text_plural;
+        this.title = this.num + '&nbsp;' + this.first.display_text_plural;
       } else if (this.num == 1) {
         this.title = this.first.display_text;
       }
@@ -694,6 +694,9 @@ var ETimeline = function (opts) {
       //var merged = this.jsonEvents.results.concat(events.results);
       //this.jsonEvents.results = merged;
       this.jsonEvents = events;
+			
+			console.log("got " + events.resultCount + " results");
+			console.dir(this.jsonEvents);
     },
 		// Takes JSON object containing timeline search results
 		// Parses & adds results to internal collections
@@ -758,7 +761,8 @@ var ETimeline = function (opts) {
           var response = transport.responseText || "";
           timeline.onSearchSuccess(response);
         },
-        onFailure: function () {
+        onFailure: function (err) {
+				//	alert('Search error! ' + err);
           timeline.onSearchError();
         },
         onLoading: function () {

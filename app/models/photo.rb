@@ -14,6 +14,11 @@ class Photo < Content
   @@exif_date_format = '%Y:%m:%d %H:%M:%S'
   cattr_accessor :exif_date_format
 
+  serialize_with_options do
+    methods :start_date, :url, :thumbnail_url
+    only :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
+  end
+  
   # Use RMagik & EXIF to get date a photo was taken
   after_attachment_saved do |attach|
     if image = Magick::Image.read(attach.full_filename).first

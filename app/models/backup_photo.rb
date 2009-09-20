@@ -2,7 +2,7 @@
 
 class BackupPhoto < ActiveRecord::Base
   belongs_to :backup_photo_album
-  belongs_to :photo, :foreign_key => 'content_id', :dependent => :destroy
+  belongs_to :photo, :class_name => 'Content', :foreign_key => 'content_id', :dependent => :destroy
   
   validates_presence_of :source_url
   validates_uniqueness_of :source_photo_id, :scope => :backup_photo_album_id
@@ -41,7 +41,15 @@ class BackupPhoto < ActiveRecord::Base
       :conditions => {:created_at => start_date..end_date}
     }
   }
-    
+  named_scope :belonging_to_source, lambda { |id| 
+    {
+      :joins => :backup_photo_album,
+      :conditions => ['backup_photo_albums.backup_source_id = ?', id]
+    }
+  }
+  named_scope :with_photo, {
+    :include => :photo
+  }
   EditableAttributes = [:caption, :source_url, :tags]
   
   def self.db_attributes

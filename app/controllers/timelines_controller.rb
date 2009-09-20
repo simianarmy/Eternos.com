@@ -83,8 +83,9 @@ class TimelinesController < ApplicationController
       }
       # html for debug view
       format.html {
-        @json = @response
-        @response = ActiveSupport::JSON.decode(@response)
+        render :inline => @response
+        #@json = @response
+        #@response = ActiveSupport::JSON.decode(@response)
       }
     end
   end
