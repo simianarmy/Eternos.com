@@ -5,6 +5,8 @@ module AccountSettingsHelper
   
   def setup_layout_account_setting(page, partial_content)
     page.replace "account-setting-content", :partial => partial_content, :layout => false
+    page.call 'setDinamycHeight', 'account-setting-content';
+    page.call 'Scroller.setAll'
   end
   
   def call_update_step_js(steps)

@@ -37,9 +37,7 @@
 :javascript
   // Tricky scrollbar code - probably shouldn't mess with this unless you know what 
   // you're doing
-  document.observe('dom:loaded', function() {
-    setDinamycHeight('account-setting-content'); 
-    
+  document.observe('dom:loaded', function() {  
     // Save form info on popup close code
     $('close-as-btn').observe('click', function(e) {
       var f;

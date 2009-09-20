@@ -311,6 +311,8 @@ Scroller.updateAll = function () {
 /*
     Hook up some global event handlers.
  */
-Event.observe(window, "load", Scroller.setAll);
-Event.observe(window, "resize", Scroller.updateAll);
+document.observe("dom:loaded", function() {
+	Scroller.setAll();
+	Event.observe(window, "resize", Scroller.updateAll);
+});
 

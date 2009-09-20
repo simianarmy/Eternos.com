@@ -1,6 +1,6 @@
 <% unless @relationships.blank? %>
-  <table>
   <% @relationships.each do |relationship| -%>
+      <table id="<%= dom_id(relationship) %>">
 					<tr>
 			      <td colspan="3" height="10px" valign="top"><hr class="line2" /></td>
 			    </tr>
@@ -42,6 +42,6 @@
                                                                         :confirm => "Are you sure?" %>
                                 </td>
 		      </tr>
+		    </table>
   <% end %>
-  </table>
 <% end %>

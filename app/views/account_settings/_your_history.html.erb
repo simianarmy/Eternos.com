@@ -7,7 +7,7 @@
           </td>
           <td></td>
           <td>
-            <div class="add-btn-box"><%= link_to_function "+ Add New", "addRowAddress();", :class => 'add1-text' %></div>
+            <div class="add-btn-box"><%= link_to_function "+ Add New", "addRowAddress(); ", :class => 'add1-text' %></div>
             <div style="clear:both"></div>
           </td>
         </tr>
@@ -37,7 +37,7 @@
 <thead class="scrollContent">
     <tr>
 			<td>
-        <div class="title5">Job</div>
+        <div class="title5">Jobs</div>
 				<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowJob();", :class => 'add1-text' %></div>
 				<div style="clear:both"></div>
       </td>
@@ -68,7 +68,7 @@
   <thead class="scrollContent">
     <tr>
 			<td>
-        <div class="title5">School</div>
+        <div class="title5">Schools</div>
 				<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowSchool();", :class => 'add1-text' %></div>
 				<div style="clear:both"></div>
       </td>
@@ -160,7 +160,7 @@
 		  <thead class="scrollContent">
 		    <tr>
 					<td>
-	          <div class="title5">Family Relationship</div>
+	          <div class="title5">Family Relationships</div>
 						<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowFamily();", :class => 'add1-text' %></div>
 						<div style="clear:both"></div>
 	        </td>
@@ -190,7 +190,7 @@
 		  <thead class="scrollContent">
 		    <tr>
 					<td>
-	          <div class="title5">Prior Relationship</div>
+	          <div class="title5">Prior Relationships</div>
 						<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowRelationship();", :class => 'add1-text' %></div>
 						<div style="clear:both"></div>
 	        </td>
@@ -215,10 +215,13 @@
 <% end -%>
 </div>
 
-<script type="text/javascript">
-// What's this for?
-//resetDinamycHeightStepFour('account-setting-content');
+<%= javascript_tag "
+// Some hacking for crazy scroller + dynamic window heights
+//setDinamycHeight('account-setting-content'); 
+"
+%>
 
+<%= javascript_tag "
 // This is wrong ... the correct way to do dynamically create form content
 // is in app/views/profiles/_general.html.haml
 // Things that are wrong with this code: 
@@ -229,17 +232,18 @@
 window.types = new Array();
 window.countries = new Array();
 window.types_relationship = new Array();
+"
+%>
 
 <% Circle.find(:all, :order => {:name => " ASC"}).each do |type| -%>
-window.types_relationship.push([<%= type.id %>, "<%= type.name %>"]);
+  <%= javascript_tag "window.types_relationship.push([#{type.id}, '#{type.name}']);" %>
 <% end %>
 
 <% Family::TYPES.each do |type| -%>
-window.types.push(["<%= type %>", "<%= type %>"]);
+  <%= javascript_tag "window.types.push(['#{type}', '#{type}']);" %>
 <% end %>
 
 <% Country.find(:all, :order => {:name => " ASC"}).each do |country| -%>
-window.countries.push([<%= country.id %>, "<%= country.name %>"]);
+  <%= javascript_tag "window.countries.push([#{country.id}, encodeURI('#{escape_javascript(country.name)}')]);" %>
 <% end %>
 
-</script>

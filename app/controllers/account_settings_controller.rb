@@ -19,16 +19,17 @@ class AccountSettingsController < ApplicationController
     when 1
       load_online
       'online'
-    when 2,3
+    when 2
       load_email_accounts
       'email_account'
-    # when 3
-    #      load_history
-    #      'your_history'
+    when 3
+      load_history
+      'your_history'
     else
       'personal_info'
     end
-    @active_step = [@completed_steps+1, 3].min
+#    @active_step = [@completed_steps+1, 3].min
+    @active_step = @completed_steps + 1
     
     respond_to do |format|
       format.html
@@ -228,17 +229,12 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to Addresses controller
   def remove_address
-    @address = Address.find(params[:id])
-    @address.destroy
-    
-    find_address
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-        page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
-        end
-      end
+    begin
+      @address = current_user.profile.addresses.find(params[:id])
+      @address.destroy
     end
+    
+    respond_to_ajax_remove @address
   end
 
   # TODO: Move to Jobs controller
@@ -275,17 +271,12 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to Jobs controller
   def remove_job
-    @job = Job.find(params[:id])
-    @job.destroy
+    begin
+      @job = current_user.profile.careers.find(params[:id])
+      @job.destroy
+    end
     
-    find_job
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
-        end
-      end
-    end 
+    respond_to_ajax_remove @job
   end
   
   # TODO: Move to Schools/Education controller
@@ -322,17 +313,12 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to Schools/Education controller
   def remove_school
-    @school = School.find(params[:id])
-    @school.destroy
+    begin
+      @school = current_user.profile.schools.find(params[:id])
+      @school.destroy
+    end
     
-    find_school
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
-        end
-      end
-    end 
+    respond_to_ajax_remove @school
   end
   
   # TODO: Move to appropriate controller
@@ -365,17 +351,12 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def remove_medical
-    @medical = Medical.find(params[:id])
-    @medical.destroy
+    begin
+      @medical = current_user.profile.medicals.find(params[:id])
+      @medical.destroy
+    end
     
-    find_medical
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
-        end
-      end
-    end 
+    respond_to_ajax_remove @medical
   end
   
   # TODO: Move to appropriate controller
@@ -408,17 +389,12 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def remove_medical_condition
-    @medical_condition = MedicalCondition.find(params[:id])
-    @medical_condition.destroy
+    begin
+      @medical_condition = current_user.profile.medical_conditions.find(params[:id])
+      @medical_condition.destroy
+    end
     
-    find_medical_condition
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
-        end
-      end
-    end 
+    respond_to_ajax_remove @medical_condition
   end
   
   # TODO: Move to appropriate controller
@@ -454,17 +430,12 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def remove_family
-    @family = Family.find(params[:id])
-    @family.destroy
+    begin
+      @family = current_user.profile.families.find(params[:id])
+      @family.destroy
+    end
     
-    find_family
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
-        end
-      end
-    end 
+    respond_to_ajax_remove @family
   end
   
   # TODO: Move to appropriate controller
@@ -501,17 +472,12 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def remove_relationship
-    @relationship = Relationship.find(params[:id])
-    @relationship.destroy
+    begin
+      @relationship = current_user.relationships.find(params[:id])
+      @relationship.destroy
+    end
     
-    find_relationship
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
-        end
-      end
-    end 
+    respond_to_ajax_remove @relationship
   end
   
   # TODO: Move to appropriate controller
@@ -726,5 +692,13 @@ class AccountSettingsController < ApplicationController
      session[:refresh_timeline] = true
    end
    
-  
+   def respond_to_ajax_remove(obj)
+     respond_to do |format|
+       format.js do
+         render :update do |page|
+           page.replace_html "#{obj.to_str}_#{obj.id}"
+         end
+       end
+     end
+   end
 end

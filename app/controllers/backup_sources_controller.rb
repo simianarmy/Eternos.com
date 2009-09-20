@@ -28,7 +28,6 @@ class BackupSourcesController < ApplicationController
             backup_source.confirmed!
             current_user.completed_setup_step(2)
             @activated = true
-            find_twitter_accounts # reload accounts list
             
             flash[:notice] = "Twitter account successfully saved"
           end 
@@ -42,6 +41,7 @@ class BackupSourcesController < ApplicationController
        flash[:error] = "Twitter account is not valid"
     end
       
+    find_twitter_accounts # reload accounts list
     respond_to do |format|
       format.js
     end
@@ -78,7 +78,7 @@ class BackupSourcesController < ApplicationController
       flash[:error] = "Unexpected error adding this feed!"
     end
     
-    @feed_urls = find_rss_accounts
+    find_rss_accounts
     
     respond_to do |format|
       format.js
@@ -92,7 +92,7 @@ class BackupSourcesController < ApplicationController
     rescue
       flash[:error] = "Could not find rss account to remove"
     end
-    @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
+    find_rss_accounts
     find_rss_confirmed
     
     respond_to do |format|

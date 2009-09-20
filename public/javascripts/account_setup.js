@@ -1,30 +1,30 @@
-
+var initialLoad = true;
 document.observe("dom:loaded", function() {
+	setDinamycHeight('account-setting-content'); 
+	
   // the element in which we will observe all clicks and capture
   // ones originating from pagination links
-  var container = $(document.body)
+  var container = $(document.body);
 
   if (container) {
-    var img = new Image
-    img.src = '/images/spinner.gif'
+    var img = new Image;
+    img.src = '/images/spinner.gif';
 
     function createSpinner() {
-      new Element('img', { src: img.src, 'class': 'spinner' })
+      new Element('img', { src: img.src, 'class': 'spinner' });
     }
 
     container.observe('click', function(e) {
-      var el = e.element()
+      var el = e.element();
       if (el.match('.pagination a')) {
-        el.up('.pagination').insert(createSpinner())
+        el.up('.pagination').insert(createSpinner());
         new Ajax.Request(el.href, { asynchronous:true, evalScripts:true, method: 'get',
                         onLoading:function(request){$('progress-bar').show();}, 
-                        onComplete:function(request){$('progress-bar').hide();} })
-        e.stop()
+                        onComplete:function(request){$('progress-bar').hide();} });
+        e.stop();
       }
     })
   }
-	Scroller.reset('account-setting-content');
-	resizeScrollbar();
 });
 
 // Callback for Facebook Backup App settings.
@@ -50,7 +50,7 @@ function updateSourceActivationIcon(button, activate) {
 }
 
 function resizeScrollbar() {
-	setDinamycHeight('account-setting-content');
+	Scroller.updateAll();
 }
 
 function clearFlash() {
@@ -369,9 +369,9 @@ function addRowAddress(){
   tableParent.appendChild(tr3);
   tableParent.appendChild(tr11);
   tableParent.appendChild(tr4);
-  tableParent.appendChild(tr5);
-  tableParent.appendChild(tr6);
   tableParent.appendChild(tr7);
+	tableParent.appendChild(tr5);
+  tableParent.appendChild(tr6);
   tableParent.appendChild(tr8);
   tableParent.appendChild(tr9);
   tableParent.appendChild(tr10);
@@ -381,7 +381,6 @@ function addRowAddress(){
   
   window.counter++;
 	resizeScrollbar();
-	
 }
 
 
@@ -1249,7 +1248,7 @@ function toggleCustomTextFamily(id){
 }
 
 function getRegion(val,elementId){
-  new Ajax.Request('select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'',
+  new Ajax.Request('/account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'',
                    onLoading:function(request){$('loading-image-'+elementId).show();}, 
                    onComplete:function(request){$('loading-image-'+elementId).hide();} });return false;
 }
