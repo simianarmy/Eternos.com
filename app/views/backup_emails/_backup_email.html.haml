@@ -14,5 +14,8 @@
   .clearboth
   .message_content
     - @div = dom_id(backup_email, 'decrypted')
-    = link_to_remote_busy dom_id(backup_email), "Click here to view contents", :update => @div, :url => { :controller => 'backup_emails', :action => "body", :id => backup_email.id }
+    - @hide = dom_id(backup_email, 'hide')
+    = link_to_remote_busy(dom_id(backup_email), "Click here to view contents", :url => { :controller => 'backup_emails', :action => "body", :id => backup_email.id })
     %div{:id => @div}
+    %div{:id => @hide, :style=>"display:none"}
+      = link_to_function "Hide", "$('#{@div}').innerHTML = ''; $('#{@hide}').hide()"

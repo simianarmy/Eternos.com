@@ -13,7 +13,6 @@ body{
 
 .data {
 width:616px;
-height:300px;
 overflow-x:hidden;
 overflow-y:scroll;
 }
@@ -40,6 +39,7 @@ color:#3860AB;
 	width:650px;
 	margin-top:20px;
 	padding:0;
+	height:100%;
 }
 
 .popuptop{

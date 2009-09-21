@@ -1,5 +1,9 @@
 .top-box2
   .acc-title Details For Timeline Events
-.data  
+#details_content.data.makeScroll
   = render :partial => @events
 
+:javascript
+  document.observe('dom:loaded', function() {
+    setDinamycHeight('details_content');
+  });

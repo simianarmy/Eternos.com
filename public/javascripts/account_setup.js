@@ -102,19 +102,6 @@ function activatedFb(){
   parent.document.getElementById('fb-button').setAttribute('class', 'fb-active');
 }
 
-function setDinamycHeight(id){
-  height = win_dimension()[1];
-  heightDiv = 0.83*height;
-  $(id).style.height = heightDiv + "px";
-	//resizeScrollbar();
-}
-
-function resetDinamycHeight(id){
-  heightDiv = 590;
-  $(id).style.height = heightDiv + "px";
-  $(id).style.overflow = "hidden";
-}
-
 function resetDinamycHeightStepFour(id){
   heightDiv = 590;
   $(id).style.height = heightDiv + "px";

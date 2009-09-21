@@ -41,14 +41,14 @@ var ETemplates = {
 			},
 			eventItemWithTooltipOLD: function () {
 				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
-					'<div class="tooltip_container"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div>#{inline_content}</li>');
+					'<div class="tooltip_container"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div></li>');
 			},
 			eventItemWithTooltip: function () {
-				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650">#{title}</a>#{hidden_items}' + 
-					'<div class="tooltip_container"><p/>#{tt_content}</div>#{inline_content}</li>');
+				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
+					'<div class="tooltip_container"><p/>#{tt_content}</div></li>');
 			},      
 			eventItemTooltipItem: function () {
-				return new Template('<div class="event_preview_item_container"><a href="#{event_details_link}" class="lightview" title=":: Timeline Details :: topclose: true, width: 650" rel="iframe">#{content}</a></div><br/>');
+				return new Template('<div class="event_preview_item_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a></div><br/>');
 			},
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');
@@ -67,6 +67,11 @@ var ETemplates = {
 	        s.hide();
           DefaultTooltipOptions.title = element.innerHTML;
 	        new Tip(element, s, Object.extend(DefaultTooltipOptions, eventTooltipOptions));
+					// Add observer to hide it on click
+					element.observe('click', function(e) {
+						element.prototip.hide();
+						return true;
+					});
 	      });
 			},
 			createTimelineTooltips: function() {

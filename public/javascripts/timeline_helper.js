@@ -111,11 +111,15 @@ var ETimeline = function (opts) {
   var options = Object.extend(opts, {});
   var api = '0.1';
 
+	var getWinHeight = function() {
+		return win_dimension()[1] * 0.8;
+	};
   // Private instances & functions
   that.templates = ETemplates;
   that.options = options;
   that.monthSelector = null;
-
+	that.getWinHeight = getWinHeight;
+	
   var ETLUtil = function() {
 		return {
 			pauseExec: function (ms) {
@@ -504,8 +508,8 @@ var ETimeline = function (opts) {
         title: this._getTooltipTitle(),
         link_url: this._getLinkUrl(),
         link_rel: this._getLinkRel(),
+				details_win_height: that.getWinHeight(),
         tt_content: this._getTooltipContents()
-        //inline_content: this._getInlineContents()
       })
     },
 		_getTooltipTitle: function() {
@@ -517,6 +521,7 @@ var ETimeline = function (opts) {
       this.items.each(function (item) {
         this.tooltipHtml += this.tooltipItemTemplate.evaluate({
 					event_details_link: this._getItemDetailsUrl(item),
+					details_win_height: that.getWinHeight(),
           content: item.getPreviewHtml()
         });
       },
@@ -1088,7 +1093,8 @@ var ETimeline = function (opts) {
 							options: {
 								caption: 'Timeline Details',
 								topclose: true, 
-								width: 650
+								width: 650,
+								height: that.getWinHeight()
 							}
 						});
 					}
