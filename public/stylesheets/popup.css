@@ -421,7 +421,7 @@ body{
 	float:left;
 }
 
-.fb-btn{
+.fb-btn {
 	width:134px;
 	height:21px;
 	background:url(/images/errors/fb-btn.png) 0 0;
@@ -430,7 +430,7 @@ body{
 	float:right;
 }
 
-.fb-btn:hover{
+.fb-btn:hover {
 	background:url(/images/errors/fb-btn.png) 0 21px;
 }
 
