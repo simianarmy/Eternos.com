@@ -20,12 +20,10 @@ class ApplicationController < ActionController::Base
   #comment this statement if you want to test the rescue page in development mode
   unless ActionController::Base.consider_all_requests_local
     rescue_from ActionController::RoutingError, ActionView::MissingTemplate,
-      ActionController::UnknownAction,
-      :with => :route_not_found
-    rescue_from  ActiveRecord::RecordInvalid,ActiveRecord::StaleObjectError,
-      ActiveRecord::RecordNotSaved, ActionController::RoutingError::NameError, ActiveRecord::RecordNotFound, 
-      :with => :server_error
-    #rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+      ActionController::UnknownAction, ActionController::UnknownController,
+      :with => :render_404
+    rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+    rescue_from RuntimeError, :with => :render_500
   end
   
   helper :all # include all helpers, all the time
@@ -275,12 +273,12 @@ class ApplicationController < ActionController::Base
   end
 
   # TODO: Fix these in production
-  def route_not_found
-    #render :template => "errors/404", :status => 404, :layout => nil
+  def render_404
+    render :template => "errors/404", :status => :not_found, :layout => false
   end
 
-  def server_error
-    #render :template => "errors/500", :status => 500, :layout => nil
+  def render_500
+    render :template => "errors/500", :status => :internal_server_error, :layout => false
   end
 
   def check_enable_maintenaince_mode
