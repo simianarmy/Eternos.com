@@ -235,15 +235,20 @@ window.types_relationship = new Array();
 "
 %>
 
+<script type="text/javascript">
+//<![CDATA[
 <% Circle.find(:all, :order => {:name => " ASC"}).each do |type| -%>
-  <%= javascript_tag "window.types_relationship.push([#{type.id}, '#{type.name}']);" %>
+  <%= "window.types_relationship.push([#{type.id}, '#{escape_javascript(type.name)}']);\n" %>
 <% end %>
 
 <% Family::TYPES.each do |type| -%>
-  <%= javascript_tag "window.types.push(['#{type}', '#{type}']);" %>
+  <%= "window.types.push(['#{type}', '#{escape_javascript(type)}']);\n" %>
 <% end %>
 
 <% Country.find(:all, :order => {:name => " ASC"}).each do |country| -%>
-  <%= javascript_tag "window.countries.push([#{country.id}, encodeURI('#{escape_javascript(country.name)}')]);" %>
+  <%= "window.countries.push([#{country.id}, encodeURI('#{escape_javascript(country.name)}')]);\n" %>
 <% end %>
+//]]>
+</script>
+
 

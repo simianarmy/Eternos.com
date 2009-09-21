@@ -37,4 +37,7 @@
 <% end %>
 
 </div>
-<%= javascript_tag "calculate_time_zone('address_book_timezone');" %>
+<%= javascript_tag "
+  resetDinamycHeight('account-setting-content');
+  calculate_time_zone('address_book_timezone');" 
+%>

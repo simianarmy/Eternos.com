@@ -442,7 +442,9 @@ var ETimeline = function (opts) {
         return this._getInlineItemHtml();
       }
     },
-    _getLinkUrl: function (item) {
+		// Popup link code for all items
+    _getLinkUrl: function () {
+			var item = this.first;
       if (item.isArtifact()) {
         this.detailsUrl = item.attributes.url;
       } else { 
@@ -454,6 +456,17 @@ var ETimeline = function (opts) {
       }
 			return this.detailsUrl;
     },
+		// Popup link code for individual item
+		_getItemDetailsUrl: function(item) {
+			if (item.isArtifact()) {
+				return item.attributes.url;
+			} else {
+				return this.eventDetailsLinkTemplate.evaluate({
+					memberId: that.memberID,
+					eventType: item.type,
+					eventIds: item.getID()});
+			}
+		},
     // Determine 'rel' attribute for Lightview link html
     _getLinkRel: function () {
       if (this.first.isArtifact()) {
@@ -469,7 +482,7 @@ var ETimeline = function (opts) {
       if (this.num > 1) {
         for (var i = 1; i < this.num; i++) {
           other_items += this.hiddenItemTemplate.evaluate({
-            link_url: this._getLinkUrl(this.items[i]),
+            link_url: this._getLinkUrl(),
             link_rel: this._getLinkRel()
           });
         }
@@ -479,7 +492,7 @@ var ETimeline = function (opts) {
         b_title: this.getTitle(),
 				title: this.tooltipTitleTemplate.evaluate({
 					icon: this.first.icon, title: this.getTitle()}),
-        link_url: this._getLinkUrl(this.first),
+        link_url: this._getLinkUrl(),
         link_rel: this._getLinkRel(),
         hidden_items: other_items,
         tt_content: this._getTooltipContents()
@@ -489,7 +502,7 @@ var ETimeline = function (opts) {
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
         title: this._getTooltipTitle(),
-        link_url: this._getLinkUrl(this.first),
+        link_url: this._getLinkUrl(),
         link_rel: this._getLinkRel(),
         tt_content: this._getTooltipContents()
         //inline_content: this._getInlineContents()
@@ -503,10 +516,7 @@ var ETimeline = function (opts) {
       this.tooltipHtml = '';
       this.items.each(function (item) {
         this.tooltipHtml += this.tooltipItemTemplate.evaluate({
-					event_details_link: this.eventDetailsLinkTemplate.evaluate({
-						memberId: that.memberID,
-						eventType: item.type,
-						eventIds: item.getID()}),
+					event_details_link: this._getItemDetailsUrl(item),
           content: item.getPreviewHtml()
         });
       },
@@ -696,7 +706,7 @@ var ETimeline = function (opts) {
       this.jsonEvents = events;
 			
 			console.log("got " + events.resultCount + " results");
-			console.dir(this.jsonEvents);
+			//console.dir(this.jsonEvents);
     },
 		// Takes JSON object containing timeline search results
 		// Parses & adds results to internal collections
@@ -886,7 +896,7 @@ var ETimeline = function (opts) {
       }), Timeline.createBandInfo({
         width: "76%",
         intervalUnit: Timeline.DateTime.DAY,
-        intervalPixels: 70,
+        intervalPixels: 70, //100
         date: this.centerDate,
         eventSource: this.eventSource,
         theme: this.theme

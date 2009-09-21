@@ -1,6 +1,8 @@
 var initialLoad = true;
 document.observe("dom:loaded", function() {
-	setDinamycHeight('account-setting-content'); 
+	if ($('account-setting-content')) {
+		setDinamycHeight('account-setting-content'); 
+	}
 	
   // the element in which we will observe all clicks and capture
   // ones originating from pagination links
@@ -38,14 +40,16 @@ var on_facebook_backup_auth_close = function(check_url) {
 }
 
 function updateSourceActivationIcon(button, activate) {
-	//alert('updateSourceActivationIcon ' + button + ': ' + activate);
+//	alert('updateSourceActivationIcon ' + button + ': ' + activate);
 	var buttonEl = $(button + '-button');
-	if (activate === 'true') {
-		buttonEl.removeClassName(button+'-btn')
+	var stupidCSSFix = (button === 'fb') ? '-btn2' : '-btn';
+
+	if (activate || (activate === 'true')) {
+		buttonEl.removeClassName(button+stupidCSSFix)
 		buttonEl.addClassName(button+'-active');
 	} else {
 		buttonEl.removeClassName(button+'-active');
-		buttonEl.addClassName(button+'-btn');
+		buttonEl.addClassName(button+stupidCSSFix);
 	}
 }
 
@@ -106,7 +110,7 @@ function setDinamycHeight(id){
 }
 
 function resetDinamycHeight(id){
-  heightDiv = 350;
+  heightDiv = 590;
   $(id).style.height = heightDiv + "px";
   $(id).style.overflow = "hidden";
 }

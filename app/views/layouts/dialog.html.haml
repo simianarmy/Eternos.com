@@ -4,14 +4,15 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - if params[:controller] == "facebook_backup"
-      - stylesheet 'application',  '/javascripts/lightview/css/lightview'
-    - else
-      - stylesheet 'member', 'screen', 'application', '/javascripts/lightview/css/lightview'
-    / Put these in partials as needed: javascript :defaults, 'CustomFormElements', 'cvi_busy_lib'
+    - stylesheet 'member', 'screen', 'application'
+    - load_prototype unless @no_prototype
+    - use_lightview
+    - use_lowpro
+    - javascript 'application'
     = yield(:head)
+    = yield(:js_libs)
     = yield(:javascript)
-    = javascript_include_tag prototype, scriptaculous, 'lightview/js/lightview'
+      
     / end bundle
   %body
     #container
