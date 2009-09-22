@@ -29,7 +29,7 @@ var ETemplates = {
 		// Events section templates
 		eventListTemplates: {
 			events: function () {
-				return new Template('<div id="events_header"><p class="events_list_title">#{title}</p></div>' + 
+				return new Template('<div id="events_header"><p class="details_box_title">#{title}</p></div>' + 
 					'<div id="events_list">#{events}</div>');
 			},
 			eventGroup: function () {
@@ -58,6 +58,9 @@ var ETemplates = {
 			},
 			detailsLink: function() {
 				return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');
+			},
+			noEvents: function() {
+				return new Template('No events for this month.<br/><a href="#" id="prev_event_search">Previous events</a>&nbsp;&nbsp;<a href="#" id="next_event_search">Future events</a>');
 			},
 			createEventItemTooltips: function() {
 				// Create tooltip for each event list link
@@ -91,14 +94,17 @@ var ETemplates = {
 		// Artifacts section templates
 		artifactTemplates: {
 			artifacts: function () {
-				return new Template("<div class=\"artibox-top\"><div class=\"title5\">#{title}</div></div>" + "<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" + "<img src=\"/images/artibox-bottom.gif\" /></div>");
+				return new Template("<div class=\"artibox-top\"><p class=\"details_box_title\">#{title}</p></div>" + "<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" + "<img src=\"/images/artibox-bottom.gif\" /></div>");
 			},
 			artifactBox: function () {
 				return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="thumnails2"/></a></li>');
 			}
 		},
 		dateSelectorTemplate: function() {
-			return new Template("<a id=\"month_selector_down\" href=\"\" class=\"btn-left\"></a><span class=\"subtitle6\">#{month}</span><a id=\"month_selector_up\" href=\"\" class=\"btn-right\"></a><a id=\"year_selector_down\" href=\"\" class=\"btn-left\"></a><span class=\"subtitle7\">#{year}</span><a id=\"year_selector_up\" href=\"\" class=\"btn-right\"></a><div style=\"clear: both\"></div>");
+			return new Template('<a id="month_selector_down"" href="#" class="btn-left"></a><span class="subtitle6">#{month}</span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span class="subtitle7">#{year}</span><a id="year_selector_up" href="#" class="btn-right"><div style="clear: both"></div>');
+		},
+		eventSelectorTemplate: function() {
+			return new Template('<a id="prev_event" href="" class="btn-left"></a><span class="subtitle7">&nbsp;Most&nbsp;Recent&nbsp;</span><a id="next_event" href="#" class="btn-right">');
 		},
 		loadingTemplate: function() {
 		  return new Template("<div><span>Loading #{type}...</span></div>");

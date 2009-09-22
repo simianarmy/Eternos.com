@@ -179,18 +179,28 @@ var ETimeline = function (opts) {
         month: this.activeMonth,
         year: this.activeYear
       });
+			if (!this._canClickNextMonth()) {
+				this.disableClick('month_selector_up');
+			}
+			if (!this._canClickNextYear()) {
+				this.disableClick('year_selector_up');
+			}
     },
 		_populate: function () {
       this._initContent();
       this._write();
       this.enableClick();
     },
-    disableClick: function () {
+		_canClickNextMonth: function() {
+			return this.activeDate.clone().addMonths(1).moveToFirstDayOfMonth().compareTo(Date.today()) !== 1;
+		},
+		_canClickNextYear: function() {
+			return this.activeDate.clone().addYears(1).moveToFirstDayOfMonth().compareTo(Date.today()) !== 1;
+		},
+    disableClick: function (id) {
+			new Effect.Opacity(id, { from: 1.0, to: 0.2 })
 		},
     enableClick: function () {
-			var now = Date.today();
-			var newdate;
-			
       $('month_selector_down').observe('click', function (event) {
 	      event.stop();
         this.stepDate(this.activeDate.clone().addMonths(-1));
@@ -201,14 +211,14 @@ var ETimeline = function (opts) {
 			}.bind(this));
 			$('month_selector_up').observe('click', function (event) {
 				event.stop();
-				if ((newdate = this.activeDate.clone().addMonths(1)).clone().moveToFirstDayOfMonth().compareTo(now) !== 1) {
-        	this.stepDate(newdate);
+				if (this._canClickNextMonth()) {
+        	this.stepDate(this.activeDate.clone().addMonths(1));
       	}
 			}.bind(this)); 
 			$('year_selector_up').observe('click', function (event) {
 				event.stop();
-				if ((newdate = this.activeDate.clone().addYears(1)).clone().moveToFirstDayOfMonth().compareTo(now) !== 1) {
-					this.stepDate(newdate);
+				if (this._canClickNextYear()) {
+					this.stepDate(this.activeDate.clone().addYears(1));
 				}
 			}.bind(this));
     },
@@ -229,7 +239,6 @@ var ETimeline = function (opts) {
 			}
 			console.log("Date selector stepping from " + this.activeDate + " to " + newDate);
 			this.setDate(newDate);
-      this.disableClick();
       this._populate();
       
 			var params = {
@@ -596,6 +605,7 @@ var ETimeline = function (opts) {
       this.rawItems 			= [];
       this.items 					= [];
       this.groupTemplate 	= that.templates.eventListTemplates.eventGroup();
+			this.noEventsTemplate = that.templates.eventListTemplates.noEvents();
     },
     // Add event source to collection keyed by event date
     addSource: function (source) {
@@ -614,7 +624,7 @@ var ETimeline = function (opts) {
       var event;
       var activeDates;
 			
-      console.log("Populating with events from " + td.getFullMonth());
+      console.log("Populating with events from " + td);
 
       // Only use events that fall in the active date month
       activeDates = this.dates.select(function (d) {
@@ -637,6 +647,9 @@ var ETimeline = function (opts) {
         });
       }.bind(this));
 
+			if (html === '') {
+				html = this.noEventsTemplate.evaluate();
+			}
       return html;
     },
 		clearLatest: function () {
@@ -772,12 +785,12 @@ var ETimeline = function (opts) {
 
       new Ajax.Request(url, {
         method: 'get',
-        onSuccess: function (transport) {
+        onComplete: function (transport) {
           var response = transport.responseText || "";
           timeline.onSearchSuccess(response);
         },
         onFailure: function (err) {
-				//	alert('Search error! ' + err);
+					alert('Search error! ' + err);
           timeline.onSearchError();
         },
         onLoading: function () {
@@ -858,6 +871,7 @@ var ETimeline = function (opts) {
       this.options 	= params.options;
 			this.searchInProgress	= false;
 			this.disableSearch = false;
+			this.initialLoad = true;
       this.rawEvents = new ETLEventParser(that.utils.emptyResponse);
 			
       // Timeline instance vars
@@ -1206,7 +1220,13 @@ var ETimeline = function (opts) {
 				if (newDate !== this.currentDate) {
 					this.scrollTo(newDate);
 				}
+			} else if (this.initialLoad) {
+				// If first timeline load & there are no events to display, 
+				// we should probably display some helpful link or popup
+				//alert('first time loading ... no data for the month!');
 			}
+			this.initialLoad = false;
+			
 			// Hides any tooltip on click (required to hide on tooltip element link click)
 			$$('a').each(function (e) {
 				e.observe('click', function(e) { Tips.hideAll(); });

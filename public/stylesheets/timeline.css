@@ -146,12 +146,6 @@ a.paginate-btn:hover{
 	background:url(/images/arrow-right.gif) 0 22px;
 }
 
-.title5{
-	font-family:arial;
-	font-size:13px;
-	color:white;
-}
-
 #story-area{
 	width:568px;
 	height:auto;
@@ -182,10 +176,18 @@ a.paginate-btn:hover{
 
 .artibox-top{
 	width:272px;
-	height:20px;
-	background:url(/images/artibox-top.gif) no-repeat;
-	margin:10px 0 0 0;
-	padding:5px 0 0 10px;
+	height:41px; /* 20 */
+	background:url(/images/artibox-top2.gif) no-repeat;
+/*	margin:10px 0 0 0; */
+	padding:0px 0 0 10px; 
+}
+
+.artibox-title {
+	padding-left:12px;
+	padding-top:13px;
+	font-weight:bold;
+	font-size:16px;
+	color:#FFFFFF;
 }
 
 .artibox{
@@ -325,7 +327,7 @@ width:558px;
 border:5px solid #dee9f4;
 }
 
-.events_list_title{
+.details_box_title {
 padding-left:12px;
 padding-top:13px;
 font-weight:bold;
