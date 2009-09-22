@@ -1,23 +1,18 @@
 # $Id$
 class UserMailer < ActionMailer::Base
+  layout 'email'
+  
   def signup_notification(user)
-    layout 'email'
-    
     setup_email(user)
     @subject    += 'Please activate your new account'
     @body[:url]  = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
   end
   
   def activation(user)
-    layout 'email'
-    
     setup_email(user)
     @subject    = "Your #{AppConfig.app_name} account has been activated!"
     @user = user
     base_domain = "http://" + AppConfig.base_domain
-    @body[:images_url] = base_domain + "/images"
-    @body[:support_url] = base_domain + "/about/contact"
-    @body[:manage_url] = base_domain + "/member_home"
   end
   
   def invitation(invitation, signup_url)

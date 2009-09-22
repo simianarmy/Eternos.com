@@ -4,7 +4,6 @@ class Profile < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
   
   with_options :dependent => :destroy do |m|
-    m.has_many :addresses, :as => :addressable
     m.has_many :careers, :class_name => 'Job'
     m.has_many :schools
     m.has_many :medicals
@@ -25,9 +24,10 @@ class Profile < ActiveRecord::Base
   
   # Returns associations in hash that fall within specified date range  
   def timeline(starting, ending)
-    {:addresses         => addresses.in_dates(starting, ending),
+    {
     :careers            => careers.in_dates(starting, ending),
-    :education          => schools.in_dates(starting, ending)}
+    :education          => schools.in_dates(starting, ending)
+    }
   end
   
   def birth_address
@@ -45,7 +45,7 @@ class Profile < ActiveRecord::Base
   private
   
   def save_associations
-    (addresses+careers+schools).each do |ass|
+    (careers+schools).each do |ass|
       begin
         ass.save!
       rescue

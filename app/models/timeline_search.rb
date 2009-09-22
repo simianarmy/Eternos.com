@@ -69,8 +69,13 @@ class TimelineSearch
   end
   
   def get_durations
-    if p = @member.profile
-      p.timeline(@start_date, @end_date).values
+    returning Array.new do |durations|
+      if p = @member.profile
+        durations = p.timeline(@start_date, @end_date).values
+      end
+      if @member.address_book.addresses.any?
+        durations << @member.address_book.addresses.in_dates(@start_date, @end_date)
+      end
     end
   end
   
@@ -144,7 +149,7 @@ class TimelineSearchFaker < TimelineSearch
     require 'faker'
     
     super(user_id, dates, options)
-    @methods = search_methods.reject { |t| t == :get_profile }
+    @methods = search_methods.reject { |t| [:get_profile].include? t }
   end
   
   def results
@@ -199,10 +204,7 @@ class TimelineSearchFaker < TimelineSearch
   end
   
   def get_emails
-    if e = GmailAccount.all.rand.backup_emails.rand
-      e.subject = ::Faker::Lorem.sentence
-      e
-    end
+    BackupEmail.all.rand
   end
   
   def get_feed_items
@@ -220,8 +222,13 @@ class TimelineSearchFaker < TimelineSearch
   end
   
   def get_durations
-    if p = Profile.all.rand
-      p.timeline(@start_date, @end_date).values
+    returning Array.new do |durations|
+      if p = Profile.all.rand
+        durations = p.timeline(@start_date, @end_date).values
+      end
+      if a = Address.all.rand
+        durations << a
+      end
     end
   end 
 end

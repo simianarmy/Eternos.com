@@ -1,78 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Email Notification</title>
-</head>
-<body style="width:665px;height:601px;background:white url(<%= @images_url %>/email/bg-email.gif) no-repeat;padding-left:72px;">
-			<table width="582" border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td align="left" style="height:60px; padding-top:10px"><%= image_tag @images_url + "/email/email-logo.png" %><br /><br /></td>
-				</tr>
-				<tr>
-					<td><%= image_tag @images_url + "/email/box-top.png" %></td>
-				</tr>
-				<tr>
-					<td width="552" style="background:url(<%= @images_url %>/email/email-box.png) repeat-y;	padding:10px 15px 10px 20px;">
-						<table width="540" border="0" cellpadding="0" cellspacing="0">
-							<tr>
-								<td bgcolor="#44aeff" style="padding:4px 0 4px 0;" align="center">
-									<span style="font-family:arial;font-size:14px;color:white"><b>Congratulations, your account has been activated!</b></span>
-								</td>
-							</tr>
-							<tr>
-								<td style="font-family:arial;font-size:12px;color:#333333;	text-align:justify;line-height:20px;padding-top:10px;">
-									<br />
-									<b><i>
-										Thank you for signing up for an Eternos Beta account.  We have just released our software to the public and appreciate any comments, suggestions or bug reports you can provide!  There always is a "FEEDBACK" button on our site, if you run into anything that you consider could be improved, please let us know!
-									</i></b><br />
-								</td>
-							</tr>
-							<tr>
-								<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
-									<br />
-									Your account has been created!  You will have access to all our features for FREE.  We will be adding some premium features in the future, but all of our beta users will get access to those features for a generous, but limited time, when they are released.  We do this to thank you for your support and your patience in helping us beta test our site.
-									<br /><br />
-								</td>
-							</tr>
-							<tr>
-								<td style="width:540px;height:1px;background:url(<%= @images_url %>/email/dotted.gif) repeat-x;margin-top:10px;"></td>
-							</tr>
-							<tr>
-								<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
-									Login: <%= @user.email %>
-									<br />
-								</td>
-							</tr>
-							<tr>
-								<td style="width:540px;height:1px;background:url(<%= @images_url %>/email/dotted.gif) repeat-x;margin-top:10px;"></td>
-							</tr>
-							<tr>
-								<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
-									<br />Regards,<br />
-									Eternos - Your data, forever
-									<br /><br />
-									<%= link_to "Contact Eternos support", @support_url, :class => "blue-btn" %>
-									<br />
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td><%= image_tag @images_url + "/email/box-bottom.png" %></td>
-				</tr>
-				<tr>
-					<td align="left">
-						<table width="582" border="0" cellpadding="0" cellspacing="0">
-							<tr>
-								<td style="font-family:arial;font-size:10px;color:#4b4b4b;padding-top:10px;text-align:center">
-									Copyright (c) 2008-2009, Eon Digital Preservation, Inc. All rights reserved.
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-</body>
-</html>
+<table width="540" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td bgcolor="#44aeff" style="padding:4px 0 4px 0;" align="center">
+			<span style="font-family:arial;font-size:14px;color:white"><b>Congratulations, your account has been activated!</b></span>
+		</td>
+	</tr>
+	<tr>
+		<td style="font-family:arial;font-size:12px;color:#333333;	text-align:justify;line-height:20px;padding-top:10px;">
+			<br />
+			<b><i>
+				Thank you for signing up for an Eternos Beta account.  We have just released our software to the public and appreciate any comments, suggestions or bug reports you can provide!  There always is a "FEEDBACK" button on our site, if you run into anything that you consider could be improved, please let us know!
+			</i></b><br />
+		</td>
+	</tr>
+	<tr>
+		<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
+			<br />
+			Your account has been created!  You will have access to all our features for FREE.  We will be adding some premium features in the future, but all of our beta users will get access to those features for a generous, but limited time, when they are released.  We do this to thank you for your support and your patience in helping us beta test our site.
+			<br /><br />
+		</td>
+	</tr>
+	<tr>
+		<td style="width:540px;height:1px;background:url(<%= image_path '/email/dotted.gif' %>) repeat-x;margin-top:10px;"></td>
+	</tr>
+	<tr>
+		<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
+			Login: <%= @user.email %>
+			<br />
+		</td>
+	</tr>
+	<tr>
+		<td style="width:540px;height:1px;background:url(<%= image_path '/email/dotted.gif' %>) repeat-x;margin-top:10px;"></td>
+	</tr>
+	<tr>
+		<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
+			<br />Regards,<br />
+			Eternos - Your data, forever
+			<br /><br />
+      support@eternos.com<br/>
+      Become a Fan of Eternos on Facebook http://www.facebook.com/pages/Eternoscom/134291337425<br/>
+      Follow us on Twitter: @TeamEternos</br>
+			<br />
+		</td>
+	</tr>
+</table>

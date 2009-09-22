@@ -648,7 +648,11 @@ var ETimeline = function (opts) {
       }.bind(this));
 
 			if (html === '') {
-				html = this.noEventsTemplate.evaluate();
+				html = this.groupTemplate.evaluate({
+          date: '',
+					odd_or_even: 'event',
+          body: this.noEventsTemplate.evaluate()
+        });
 			}
       return html;
     },
@@ -790,7 +794,8 @@ var ETimeline = function (opts) {
           timeline.onSearchSuccess(response);
         },
         onFailure: function (err) {
-					alert('Search error! ' + err);
+					alert('Search error! ' + err.inspect);
+					console.log(err.inspect);
           timeline.onSearchError();
         },
         onLoading: function () {
@@ -866,8 +871,9 @@ var ETimeline = function (opts) {
 			this.resizeTimerID = null;
       this.params = params;
       this.memberID = params.memberID;
-      this.startDate = params.startDate || new ETLDate(date);
-      this.endDate = params.endDate || new ETLDate(date);
+      this.startDate = params.startDate;
+      this.endDate = params.endDate;
+			this.birthDate = params.startDate.toDate();
       this.options 	= params.options;
 			this.searchInProgress	= false;
 			this.disableSearch = false;
@@ -1129,6 +1135,15 @@ var ETimeline = function (opts) {
 			this.eventSource._listeners.invoke('onAddMany');
 			this.redraw();
     },
+		// Search events prior to current display month
+		_searchPastEvents: function() {
+			alert('searching past');
+			this.searchEvents({
+        startDate: this.birthDate,
+        endDate: this.currentDate,
+				noCache: true
+      });
+		},
 		// Required due to bug in timeline that kills tooltips after they go out of bounds
 		redraw: function() {
 			console.log("[re]creating timeline tooltips")
@@ -1160,6 +1175,7 @@ var ETimeline = function (opts) {
     onSearchError: function () {
 			this.searchInProgress = false;
       this.hideLoading();
+			this.rawEvents.populateResults(this.currentDate);
       //TODO:
     },
     onSearchSuccess: function (results) {
@@ -1191,12 +1207,14 @@ var ETimeline = function (opts) {
 			p.endDate = p.endDate.addMonths(1).endingMonth();
 			
       // Don't repeat searches for same dates
-      if (this.searchCache.hasDates(p.startDate, p.endDate)) {
+      if (!p.noCache && this.searchCache.hasDates(p.startDate, p.endDate)) {
         this._loadCached();
       } else {
 				if (!this.searchInProgress) {
 					// Add dates to cache so we don't repeat ajax call
-					this.searchCache.addDates(p.startDate, p.endDate);
+					if (!p.noCache) {
+						this.searchCache.addDates(p.startDate, p.endDate);
+					}
 					// Start Ajax search process - callbacks will handle response
 					this.searchInProgress = true;
 					new ETLSearch(this, p);
@@ -1220,10 +1238,19 @@ var ETimeline = function (opts) {
 				if (newDate !== this.currentDate) {
 					this.scrollTo(newDate);
 				}
-			} else if (this.initialLoad) {
-				// If first timeline load & there are no events to display, 
-				// we should probably display some helpful link or popup
-				//alert('first time loading ... no data for the month!');
+			} else {
+				// No events to display:
+				// Setup previous, future events link click handlers
+				if (el = $('prev_event_search')) {
+					el.observe('click', function(e) {
+						this._searchPastEvents();
+					}.bind(this));
+				}
+				if (el = $('next_event_search')) {
+					el.observe('click', function(e) {
+						this._searchFutureEvents();
+					}.bind(this));
+				}
 			}
 			this.initialLoad = false;
 			

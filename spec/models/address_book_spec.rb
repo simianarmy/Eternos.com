@@ -47,7 +47,7 @@ describe AddressBook do
     it "should return updated address object after save" do
       id = @address_book.addresses.first.id
       @address_book.update_attributes(:address_attributes => {:id => id,:street_1 => 'new jack'})
-      @address_book.addresses.first.street_1.should eql('new jack')
+      @address_book.addresses.first.reload.street_1.should eql('new jack')
     end
   
     it "should return valid home address when queried" do

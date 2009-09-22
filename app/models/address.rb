@@ -44,24 +44,24 @@ class Address < ActiveRecord::Base
     :country => Proc.new {|address| address.country.name }
   
   with_options :if => :validatible_location do |m|
-#    m.validates_presence_of :street_1
-#    m.validates_presence_of :city
-#    m.validates_presence_of :country_id, :on => :create
-     m.validates_presence_of :region_id, 
-      :if => :known_region_required?
-#    m.validates_numericality_of :postal_code                      
+    m.validates_presence_of :street_1
+    m.validates_presence_of :city
+    m.validates_presence_of :country_id, :on => :create
+    m.validates_presence_of :region_id, :if => :known_region_required?
+    m.validates_presence_of :postal_code                      
 ##  validates_presence_of :custom_region,
 ##                          :message => 'Custom Region!?',
 ##                          :if => :custom_region_required?
     m.before_save :ensure_exclusive_references
   end
   
-  validate :if => :validatible_location do |address|
-    address.errors.add("", "Please enter a first street address") if address.street_1.blank?
-    address.errors.add("", "Please select a country") if address.country_id.blank?
-    address.errors.add("", "Please enter a city name") if address.city.blank?
-    address.errors.add("", "Postal code not a number") unless address.postal_code.to_s =~ /\A[+-]?\d+\Z/
-  end
+  # Why was this added - duplicates above code??
+  # validate :if => :validatible_location do |address|
+  #     address.errors.add("", "Please enter a street address") if address.street_1.blank?
+  #     address.errors.add("", "Please select a country") if address.country_id.blank?
+  #     address.errors.add("", "Please enter a city name") if address.city.blank?
+  #     address.errors.add("", "Postal code not a number") unless address.postal_code.to_s =~ /\A[+-]?\d+\Z/
+  #   end
   
   LocationTypes = {
     'Home' => 'home',

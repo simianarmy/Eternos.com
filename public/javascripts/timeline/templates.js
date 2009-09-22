@@ -60,7 +60,8 @@ var ETemplates = {
 				return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');
 			},
 			noEvents: function() {
-				return new Template('No events for this month.<br/><a href="#" id="prev_event_search">Previous events</a>&nbsp;&nbsp;<a href="#" id="next_event_search">Future events</a>');
+				return new Template('No events for this month.');
+				//<a href="#" id="prev_event_search">Previous events</a>&nbsp;&nbsp;<a href="#" id="next_event_search">Future events</a>');
 			},
 			createEventItemTooltips: function() {
 				// Create tooltip for each event list link

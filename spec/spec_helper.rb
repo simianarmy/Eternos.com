@@ -260,6 +260,10 @@ module AddressBookSpecHelper
   def create_user_details(user)
     @member_detail = create_address_book(:user => user)
   end
+  
+  def create_address_book_address(user)
+    user.address_book.update_attributes(create_address_attrs)
+  end
 end
 
 module ContentAuthorizationSpecHelper

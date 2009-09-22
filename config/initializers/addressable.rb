@@ -7,6 +7,7 @@
 module Addressable
   # Create or update address from params
   def address_attributes=(attr)
+    attr.symbolize_keys!
     if attr[:id].blank?
       attr.merge!(:addressable => self)
       attr[:location_type] ||= Address::DefaultLocationType

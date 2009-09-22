@@ -51,11 +51,11 @@ class AddressBook < ActiveRecord::Base
   
   # Returns home address or builds new address object with home location type
   def home_address
-    addresses.find_home(:first) || addresses.build(:location_type => Address::Home)
+    addresses.home.first || addresses.build(:location_type => Address::Home)
   end
   
   def billing_address
-    addresses.find_billing(:first) || addresses.build(:location_type => Address::Billing)
+    addresses.billing.first || addresses.build(:location_type => Address::Billing)
   end
   
   def full_name
