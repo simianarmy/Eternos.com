@@ -198,7 +198,7 @@ var ETimeline = function (opts) {
 			return this.activeDate.clone().addYears(1).moveToFirstDayOfMonth().compareTo(Date.today()) !== 1;
 		},
     disableClick: function (id) {
-			new Effect.Opacity(id, { from: 1.0, to: 0.2 })
+			new Effect.Opacity(id, { from: 1.0, to: 0.4 })
 		},
     enableClick: function () {
       $('month_selector_down').observe('click', function (event) {

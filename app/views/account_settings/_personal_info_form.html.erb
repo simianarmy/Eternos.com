@@ -1,4 +1,4 @@
-<%- fields_for @address_book do |ab| %>
+<%- fields_for address_book do |ab| %>
   <tr>
     <td class="coll-form1" valign="center">First Name*</td>
   <td class="coll-form2" valign="center">:</td>
@@ -42,7 +42,11 @@
 <td class="coll-form2" valign="center">:</td>
 <td class="coll-form3" valign="center"> 
 	<div class="birthdate-box">
-		<%= ab.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year}, {:class => 'bday-box'}) %>
+		<%= ab.date_select_with_datepicker(:birthdate, {
+		    :add_month_numbers => true, :order => [:day,:month,:year], 
+		    :default => address_book.birthdate,
+		    :start_year => Date.today.year, :end_year => 100.years.ago.year}) 
+		%>
 	</div>
 </td>
 </tr>
@@ -96,7 +100,7 @@
 
 <%- end -%>
 
-<%- fields_for @address_book do |ab| %>
+<%- fields_for address_book do |ab| %>
 <!--
   <tr>
     <td class="coll-form1" valign="center">Website</td>

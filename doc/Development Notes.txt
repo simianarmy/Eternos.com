@@ -21,6 +21,7 @@ Database
 Search/Indexing: 
   Sphinx - High-perf, Craigslist uses
     thinking_sphinx rails plugin: thinking_sphinx
+    http://www.engineyard.com/blog/2009/5-tips-for-sphinx-indexing/?utm_medium=email&utm_source=CM&utm_content=797866984&utm_campaign=EY+Newsletter+9-22-09+-+Version+A+_+khutih&utm_term=topfivetipsforimplementingSphinx
   http://railscasts.com/episodes/111-advanced-search-form
   Xapian
 

@@ -22,7 +22,7 @@
     %p.input
       = f.label "Cover Photo"
       = f.file_field :photo  
-  %p= render :partial => 'shared/tags_form_field', :locals => {:object => @story, :f => f}
+  /- %p= render :partial => 'shared/tags_form_field', :locals => {:object => @story, :f => f}
   %br
   %br
   %p= f.submit :Create

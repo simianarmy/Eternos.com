@@ -52,18 +52,20 @@
             %td.coll-form1{:valign => 'center'} Move In Date
             %td.coll-form2{:valign => 'center'} :
             %td.coll-form3{:valign => 'center'}
-              %span{:id => @address_form_id + '_moved_in_on'}= addr_form.date_select_with_datepicker(:moved_in_on, {:add_month_numbers => true, :order => [:day,:month,:year], :default => address.moved_in_on, :start_year => Date.today.year, :end_year => 100.years.ago.year, :object => address})
+              = addr_form.date_select_with_datepicker(:moved_in_on, {:add_month_numbers => true, :order => [:day,:month,:year], :default => address.moved_in_on, :start_year => Date.today.year, :end_year => 100.years.ago.year})
           %tr
             %td.coll-form1{:valign => 'center'} Move Out Date
             %td.coll-form2{:valign => 'center'} :
             %td.coll-form3{:valign => 'center'}
               #present-address
                 #date-present-address
-                  %span= addr_form.date_select_with_datepicker(:moved_out_on, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+                  = addr_form.date_select_with_datepicker(:moved_out_on, {:add_month_numbers => true, :order => [:day,:month,:year], :default => address.moved_out_on, :start_year => Date.today.year, :end_year => 100.years.ago.year})
               = check_box_tag "#{addressable}[address_attributes][current_address]"
               %span#text-present-addresses Current Address
     = submit_tag "Save", :id => "save-button-address", :class => "submit-btn3"
     %br
     #address_book_notice.error-message
-
+:javascript
+  // Required when rendering page via Ajax call
+  datePickerController.create();
    

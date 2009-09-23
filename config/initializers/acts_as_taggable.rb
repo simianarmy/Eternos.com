@@ -37,7 +37,7 @@ module Eternos
         def get_tags
           tag_s.blank? ? tag_list : tag_s
         end
-  
+        
         def validate_tags
           if (val = get_tags).blank? || (val == I18n.t('form.input.tags.hint'))
             errors.add(:tags, "Please enter some tags")

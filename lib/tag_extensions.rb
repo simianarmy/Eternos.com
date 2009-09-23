@@ -3,7 +3,7 @@ class ActiveRecord::Base
   TagSeparator = ','
   
   def tag_with(tags, user)
-    tags.downcase.split(TagSeparator).each do |tag|
+    tag_list.downcase.split(TagSeparator).each do |tag|
       begin
         t = Tag.find_or_create_by_name(tag)
         Tagging.create(:tag => t, 

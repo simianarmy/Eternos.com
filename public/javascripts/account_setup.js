@@ -34,7 +34,7 @@ var on_facebook_backup_auth_close = function(check_url) {
 	new Ajax.Request(check_url, { method: 'get',
 		onSuccess:function(transport) {
 			json = transport.responseText.evalJSON();
-			updateSourceActivationIcon('fb', json && json.authenticated);
+			updateSourceActivationIcon('fb', (json && json.authenticated) ? 'true' : 'false');
 		}
 	} );
 }
@@ -44,10 +44,12 @@ function updateSourceActivationIcon(button, activate) {
 	var buttonEl = $(button + '-button');
 	var stupidCSSFix = (button === 'fb') ? '-btn2' : '-btn';
 
-	if (activate || (activate === 'true')) {
+	if (activate == 'true') {
+		//alert('activating button ' + button);
 		buttonEl.removeClassName(button+stupidCSSFix)
 		buttonEl.addClassName(button+'-active');
 	} else {
+		//alert('deactivating button ' + button);
 		buttonEl.removeClassName(button+'-active');
 		buttonEl.addClassName(button+stupidCSSFix);
 	}

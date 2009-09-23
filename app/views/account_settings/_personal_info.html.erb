@@ -25,7 +25,7 @@
       <% if @completed_steps >= 1 %>
         <%= render :partial => 'accounts/personal_info_form' %>
       <% else %>
-        <%= render :partial => 'personal_info_form' %>
+        <%= render :partial => 'personal_info_form', :locals => {:address_book => @address_book} %>
       <% end %>
     </tbody>
   </table>
@@ -39,5 +39,6 @@
 </div>
 <%= javascript_tag "
   resetDinamycHeight('account-setting-content');
-  calculate_time_zone('address_book_timezone');" 
+  calculate_time_zone('address_book_timezone');
+  datePickerController.create();"  
 %>

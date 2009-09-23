@@ -6,3 +6,6 @@ http://www.ridingtheclutch.com/2009/01/08/cache-anything-easily-with-rails-and-m
 
 Use Enterprise Ruby: 
 supposedly way better memory usage, performance with Passenger, thread usage
+
+Ravelry case:
+  http://highscalability.com/how-ravelry-scales-10-million-requests-using-rails
