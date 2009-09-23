@@ -1,6 +1,6 @@
 - @address_form_id = dom_id(address_book) + '_address' 
 %div{:id => @address_form_id}
-  - form_remote_for "#{addressable}[address_attributes]", address, :url => {:controller => 'address_books', :action => 'update'}, :loading => "load_busy($('#{@address_form_id}'));", :complete => "unload_busy();" do |addr_form|
+  - form_remote_for "address_book[address_attributes]", address, :url => {:controller => 'account_settings', :action => 'new_address'}, :loading => "alert('foo'); load_busy($('#{@address_form_id}'));", :complete => "unload_busy();" do |addr_form|
     = addr_form.hidden_field :id, :value => address ? address.id : ''
     #table-form-address-wrapper
       #table-form-address
@@ -64,8 +64,8 @@
               %span#text-present-addresses Current Address
     = submit_tag "Save", :id => "save-button-address", :class => "submit-btn3"
     %br
-    #address_book_notice.error-message
 :javascript
   // Required when rendering page via Ajax call
   datePickerController.create();
+  resizeScrollbar();
    

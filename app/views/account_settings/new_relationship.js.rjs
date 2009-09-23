@@ -1,0 +1,7 @@
+page.flash_and_fade :relationship_notice
+if @relationship.new_record?
+  
+else
+  page.insert_html :bottom, :'table-relationships', :partial => 'relationship', 
+      :locals => {:relationships => @relationship}
+end

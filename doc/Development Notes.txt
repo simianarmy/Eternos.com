@@ -40,6 +40,7 @@ File DL & uploads:
   http://www.therailsway.com/2009/4/23/uploading-files
   
 Merchant/Payment Processing:
+  Braintreepaymentsolutions.com - processor
 	http://railskits.com/saas/ - purchased
 	active_merchant plugin
 

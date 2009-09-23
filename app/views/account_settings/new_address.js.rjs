@@ -1,0 +1,7 @@
+if @address
+  page.flash_and_fade :address_book_notice
+  page.remove dom_id(@address_book) + '_address'
+  page.insert_html :bottom, :'table-addresses', :partial => 'address', :locals => { :addresses => [@address] }
+else
+  page.show_flash :address_book_notice
+end

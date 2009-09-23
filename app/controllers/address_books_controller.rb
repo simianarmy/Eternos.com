@@ -28,7 +28,8 @@ class AddressBooksController < ApplicationController
     @address_book = current_user.address_book
     
     respond_to do |format|
-      if @address_book.update_attributes(params[:address_book])
+      if @address_book.update_attributes(params[:address_book]) && 
+        @address_book.valid?
         flash[:notice] = "Address Book succesfully updated"
         format.html { 
           redirect_to member_details_url
@@ -39,7 +40,7 @@ class AddressBooksController < ApplicationController
           render :action => 'index'
         }
         format.js {
-          flash[:error] = @address_book.errors.full_messages.join('<br/>')
+          flash[:error] = @address_book.errors.full_messages.reject{|err| err == 'is invalid'}.join('<br/>')
         }
       end
     end

@@ -3,10 +3,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AddressBook do
   include AddressBookSpecHelper
-  it_should_behave_like "a member is signed in"
+  it_should_behave_like "a mocked member is signed in"
   
   before(:each) do
-    @address_book = new_address_book(:user=>@user)
+    @address_book = new_address_book(:user => @member)
   end
 
   it "should not be valid without required attributes" do
@@ -25,9 +25,22 @@ describe AddressBook do
     @address_book.home_address.should be_an_instance_of Address
   end
 
+  describe "on create" do
+    before(:each) do
+      @address_book.save
+    end
+    
+    describe "on update_attributes" do
+      it "should not add address if attributes are invalid" do
+        @address_book.update_attributes(:address_attributes => {})
+        @address_book.should_not be_valid
+      end
+    end
+  end
+  
   describe "with one address" do 
     before(:each) do
-      @address_book = create_user_details(@user)
+      @address_book.save
     end
   
     it "should have one address" do 

@@ -31,12 +31,12 @@ ActionController::Routing::Routes.draw do |map|
       :personal_info => :get, :facebook_sync => :get, :email => :get,
       :your_history => :get, :upgrades => :get, :billings => :get,
       :always_sync_with_facebook => :get, :select_region => :get, 
-      :add_another_address => :post, :remove_address => :delete,
+      :new_address => :post, :remove_address => :delete,
       :add_another_job => :post, :remove_job => :delete,
       :add_another_medical => :post, :remove_medical => :delete,
       :add_another_medical_condition => :post, :remove_medical_condition => :delete,
       :add_another_family => :post, :remove_family => :delete,
-      :add_another_relationship => :post, :remove_relationship => :delete,
+      :new_relationship => :post, :remove_relationship => :delete,
       :backup_contact_emails => :post, :add_another_school => :post, :remove_school => :delete, 
       :set_feed_rss_url => :put
   }

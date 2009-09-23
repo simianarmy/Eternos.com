@@ -152,7 +152,7 @@ function getYear(selectYear){
   optn.text = y;
   selectYear.options.add(optn);
 
-  for(var i=1; i<=10; i++){
+  for(var i=1; i<=100; i++){
     var optn = document.createElement("option");
     optn.value = y-i;
     optn.text = y-i;

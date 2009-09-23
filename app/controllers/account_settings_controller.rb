@@ -195,34 +195,19 @@ class AccountSettingsController < ApplicationController
   end
   
   # TODO: Move to AddressBooks controller
-  def add_another_address
-    begin
-      params[:addresses].each_value do |val|
-        start_at = Time.local(val[:year_in],val[:month_in],val[:day_in])
-        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day]) unless val[:end_year].nil? 
-        val.merge!(:user_id => current_user.id, :moved_in_on => start_at, :moved_out_on => end_at)
-        val.delete_if{|k, v| ["year_in", "month_in", "day_in", "end_year", "end_month", "end_day"].include?(k)}
-        @address = Address.new(val)
-        @address.addressable = current_user.profile
-        @address.save!
-      end
-      
-      find_address
-      render :update do |page|
-        page.remove "table-form-address"
-        page.insert_html :bottom, "table-form-address-wrapper", "<div id=\"table-form-address\"></div>"
-        page.hide "save-button-address"
-        page.replace_html "table-addresses", :partial => 'new_address', :locals => {:addresses => @addresses}
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-address", :inline => "<%= error_messages_for 'address' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                        
-        end
+  def new_address
+    @address_book = current_user.address_book
+    
+    respond_to do |format|
+      if @address_book.update_attributes(params[:address_book]) && 
+        @address_book.valid?
+        @address = @address_book.addresses.reload.last
+        flash[:notice] = "Address Book succesfully updated"
+        format.js
+      else
+        format.js {
+          flash[:error] = @address_book.errors.full_messages.reject{|err| err == 'is invalid'}.join('<br/>')
+        }
       end
     end
   end
@@ -439,35 +424,23 @@ class AccountSettingsController < ApplicationController
   end
   
   # TODO: Move to appropriate controller
-  def add_another_relationship
+  def new_relationship
     begin
-      params[:relationships].each_value do |val|
-        start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day]) unless val[:end_year].nil? 
-        val.merge!(:user_id => current_user.id, :start_at => start_at, :end_at => end_at)
-        val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
-        @relationship = Relationship.new(val)
-        @relationship.save!
+      @relationship = current_user.relationships.new(params[:relationship])
+      @relationship.end_at = nil if params[:current] == '1'
+      
+      if @relationship.save
+        flash[:notice] = "Relationship saved"
+      else
+        flash[:error] = @relationship.errors.full_messages.join('<br/>')
       end
-
-      find_relationship
-      render :update do |page|
-        page.remove "table-form-relationship"
-        page.insert_html :bottom, "table-form-relationship-wrapper", "<div id=\"table-form-relationship\"></div>"
-        page.hide "save-button-relationship"
-        page.replace_html "table-relationships", :partial => 'new_relationship', :locals => {:relationships => @relationships}
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-relationship", :inline => "<%= error_messages_for 'relationship' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                             
-        end
-      end   
+    rescue
+      flash[:error] = "Unexpected error saving data: " + $!
     end
+    
+    respond_to do |format|
+      format.js
+    end   
   end
   
   # TODO: Move to appropriate controller
