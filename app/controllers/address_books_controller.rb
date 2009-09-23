@@ -20,16 +20,28 @@ class AddressBooksController < ApplicationController
   end
   
   def update
-    if ignore_nil { params[:address_book][:existing_phone_number_attributes] }
-      params[:address_book][:existing_phone_number_attributes] ||= {}
+    begin
+      if params[:address_book][:existing_phone_number_attributes]
+        params[:address_book][:existing_phone_number_attributes] ||= {}
+      end
     end
-    
     @address_book = current_user.address_book
-    if @address_book.update_attributes(params[:address_book])
-      flash[:notice] = "Successfully Updated"
-      redirect_to member_details_url
-    else
-      render :action => 'index'
+    
+    respond_to do |format|
+      if @address_book.update_attributes(params[:address_book])
+        flash[:notice] = "Address Book succesfully updated"
+        format.html { 
+          redirect_to member_details_url
+        }
+        format.js
+      else       
+        format.html {
+          render :action => 'index'
+        }
+        format.js {
+          flash[:error] = @address_book.errors.full_messages.join('<br/>')
+        }
+      end
     end
   end
 end

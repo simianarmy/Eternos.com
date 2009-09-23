@@ -230,7 +230,7 @@ class AccountSettingsController < ApplicationController
   # TODO: Move to Addresses controller
   def remove_address
     begin
-      @address = current_user.profile.addresses.find(params[:id])
+      @address = current_user.address_book.addresses.find(params[:id])
       @address.destroy
     end
     
@@ -651,7 +651,8 @@ class AccountSettingsController < ApplicationController
    end
    
    def find_address
-     @addresses = current_user.profile.addresses
+     @address_book = current_user.address_book
+     @addresses = @address_book.addresses
    end
    
    def find_job

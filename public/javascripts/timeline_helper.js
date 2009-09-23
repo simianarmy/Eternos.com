@@ -650,7 +650,7 @@ var ETimeline = function (opts) {
 			if (html === '') {
 				html = this.groupTemplate.evaluate({
           date: '',
-					odd_or_even: 'event',
+					odd_or_even: 'even',
           body: this.noEventsTemplate.evaluate()
         });
 			}

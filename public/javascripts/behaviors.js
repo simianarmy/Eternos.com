@@ -270,7 +270,7 @@ var RadioGroupToggle = Behavior.create({
 // Updates region select using Ajax query on a country selection change
 
 var AjaxCountryRegionSelect = Behavior.create({
-	initialize: function() {
+	initialize: function() {     
 		this.opts = {
 			country_select_id: this.element.id,
 			region_select_id: this.element.readAttribute('region_select_id'),
@@ -283,8 +283,8 @@ var AjaxCountryRegionSelect = Behavior.create({
 	onchange: function(evt) {
 		var params = 'select_id=' + this.opts.region_select_id + '&country_id=' + this.element.value;
 		new Ajax.Request(this.opts.regions_url, 
-			Object.extend({asynchronous:true, evalScripts:true, parameters: params}, 
-				AJ.busy_options(this.element.up('div').id)));
+			Object.extend({asynchronous:true, evalScripts:true, method: 'get', parameters: params}));
+		
 	}
 });
 

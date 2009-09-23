@@ -78,7 +78,7 @@ ActionController::Routing::Routes.draw do |map|
       :create_from_selection => :post }
   end
     
-  map.resources :addresses, :collection => { :country_regions => :post }
+  map.resources :addresses, :collection => { :country_regions => :get }
 
   map.resources :prelaunch, :controller => "prelaunch"
   map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'

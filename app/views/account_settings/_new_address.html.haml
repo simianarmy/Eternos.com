@@ -1,0 +1,69 @@
+- @address_form_id = dom_id(address_book) + '_address' 
+%div{:id => @address_form_id}
+  - form_remote_for "#{addressable}[address_attributes]", address, :url => {:controller => 'address_books', :action => 'update'}, :loading => "load_busy($('#{@address_form_id}'));", :complete => "unload_busy();" do |addr_form|
+    = addr_form.hidden_field :id, :value => address ? address.id : ''
+    #table-form-address-wrapper
+      #table-form-address
+        %table#add-new-address.popup-newbox
+          %tr
+            %td{:colspan => "3"}
+              .title6
+                Add New Address
+                = link_to_function "Cancel", "$('#{@address_form_id}').remove();", :class => "blue-btn3"
+          %tr
+            %td{:colspan => "3"}
+              %hr.line1
+          %tr
+            %td.coll-form1{:valign => 'center'} Location
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'}
+              = select_tag "#{addressable}[address_attributes][location_type]", options_for_select(Address::LocationTypes), :class => 'textbox8'
+          %tr
+            %td.coll-form1{:valign => 'center'} Street
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'}
+              = addr_form.text_field :street_1, :id => @address_form_id + '_street_1', :class => 'textbox5'
+          %tr
+            %td.coll-form1{:valign => 'center'} Street 2
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'}
+              = addr_form.text_field :street_2, :id => @address_form_id + '_street_2', :class => 'textbox5'
+          %tr
+            %td.coll-form1{:valign => 'center'} City
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'}
+              = addr_form.text_field :city, :id => @address_form_id + '_city', :class => 'textbox5'
+          %tr
+            %td.coll-form1{:valign => 'center'} Country
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'}
+              = addr_form.collection_select :country_id, Country.find(:all, :order => :name), :id, :name, {:prompt => "Select a Country"}, :id => @address_form_id + '_country', :class => 'ajax_region_select textbox8', :onchange => "new AjaxCountryRegionSelect(this).onchange();", :region_select_id => @address_form_id + '_region', :region_url => country_regions_addresses_path, :region_id => address.nil? ? '' : address.region_id
+          %tr{:id => @address_form_id + '_region_container'}
+            %td.coll-form1{:valign => 'center'} Region
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center', :id=>"#{@address_form_id}_region_container"}
+              = addr_form.collection_select :region_id, address_regions(address), :id, :name, {:prompt => "Select a Region", :selected => valid_for_region_select(address) ? address.region : ''}, :id => @address_form_id + '_region', :class => 'textbox8'
+          %tr
+            %td.coll-form1{:valign => 'center'} Zip/Postal Code
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'} 
+              = addr_form.text_field :postal_code, :style => "width: 100px", :id => @address_form_id + '_postal_code', :class => 'textbox5'
+          %tr
+            %td.coll-form1{:valign => 'center'} Move In Date
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'}
+              %span{:id => @address_form_id + '_moved_in_on'}= addr_form.date_select_with_datepicker(:moved_in_on, {:add_month_numbers => true, :order => [:day,:month,:year], :default => address.moved_in_on, :start_year => Date.today.year, :end_year => 100.years.ago.year, :object => address})
+          %tr
+            %td.coll-form1{:valign => 'center'} Move Out Date
+            %td.coll-form2{:valign => 'center'} :
+            %td.coll-form3{:valign => 'center'}
+              #present-address
+                #date-present-address
+                  %span= addr_form.date_select_with_datepicker(:moved_out_on, {:add_month_numbers => true, :order => [:day,:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+              = check_box_tag "#{addressable}[address_attributes][current_address]"
+              %span#text-present-addresses Current Address
+    = submit_tag "Save", :id => "save-button-address", :class => "submit-btn3"
+    %br
+    #address_book_notice.error-message
+
+   

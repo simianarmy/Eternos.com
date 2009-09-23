@@ -34,20 +34,6 @@ module FormsHelper
           }
   end
   
-  def add_job_link(name, owner)
-    link_to_function(name) do |page|
-      page.insert_html :bottom, :careers, :partial => "profiles/career", 
-        :object => Job.new
-    end
-  end
-  
-  def add_school_link(name, owner)
-    link_to_function(name) do |page|
-      page.insert_html :bottom, :education, :partial => "school", 
-        :object => School.new
-    end
-  end
-  
   def fields_for_phone_number(phone, owner, *args, &block)
     fields_for_association('phone_number', phone, owner, *args, &block)
   end

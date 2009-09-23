@@ -1,0 +1,66 @@
+<% unless @addresses.blank? %>
+  <% @addresses.each do |address| -%>
+    <table id="<%= dom_id(address) %>">
+			<tr>
+	      <td colspan="3" height="10px" valign="center"><hr class="line2" /></td>
+	    </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Location Type</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.location_type %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Street1</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.street_1 %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Street2</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.street_2 %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Country</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.country.name if address.country %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Region</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.region.name if address.region %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">City</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.city %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Postal Code</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.postal_code %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Moved In</td>
+	    	<td class="coll-form2" valign="center">:</td>
+	    	<td class="coll-form3" valign="center"><%= address.moved_in_on.to_date if address.moved_in_on %></td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center">Moved Out</td>
+	    	<td class="coll-form2" valign="center">:</td>
+        <td class="coll-form3" valign="center">
+        <%= address.moved_out_on ? address.moved_out_on.to_date : "Current Address" %>
+        </td>
+      </tr>
+			<tr>
+        <td class="coll-form6" valign="center"></td>
+	    	<td class="coll-form2" valign="center"></td>
+        <td class="coll-form3" 	><%= link_to_remote 'Remove',
+        :html => {:class => 'remove-btn'},
+        :url => {:action => 'remove_address', :id => address}, 
+        :confirm => "Are you sure?" %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+<% end %>
+

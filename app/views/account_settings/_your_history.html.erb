@@ -1,36 +1,30 @@
-<div id="account-setting-content" class="makeScroll">  
+<div id="account-setting-content" class="makeScroll">
+  <div id="address_book">
    <table id="table-history-addresses" class="table-form4" border="0" cellspacing="0" cellpadding="0">
      <thead class="scrollContent">
         <tr>
           <td>
             <div class="title5">Addresses</div>
-          </td>
-          <td></td>
-          <td>
-            <div class="add-btn-box"><%= link_to_function "+ Add New", "addRowAddress(); ", :class => 'add1-text' %></div>
+            <div class="add-btn-box">
+            <%= link_to_function "+ Add New" do |page|
+              page.insert_html :bottom, :address_book, :partial => "new_address", 
+                :locals => { :address_book => @address_book, :addressable => 'address_book', 
+                  :location => '', :address => (@address || @address_book.build_address) } 
+              end    
+              %> 
+              <%= #link_to_function "+ Add New", "addRowAddress(); ", :class => 'add1-text' 
+              %>
+            </div>
             <div style="clear:both"></div>
           </td>
         </tr>
       </thead>
       <tbody id="table-addresses">
-        <%= render :partial => 'new_address', :locals => {:addresses => @addresses} %>
+        <%= render :partial => 'address', :locals => {:addresses => @addresses} %>
       </tbody>
     </table>
-
-    <% form_remote_for @address,
-      :url => {:action => 'add_another_address'},
-      :loading => "$('image-loading-address').show();",
-      :complete => "rstCountAddress();$('image-loading-address').hide();" do -%>
-      <%= hidden_field_tag "form_address" %>
-      <div id="table-form-address-wrapper"><div id="table-form-address"></div></div>
-      <div>
-        <%= submit_tag 'Save', :id => 'save-button-address', :style => 'display:none;', :class => 'submit-btn3' %>
-        <%= image_tag "spinner.gif", :id => 'image-loading-address', :style => 'display:none;' %>
-      </div>
-      <br />
-      <div id="error-message-address" class="error-message"></div> 
-    <% end -%>  
-    
+  </div>
+  <br/>
 	<div class="line3"></div>
 
 <table class="table-form4" id="table-history-jobs" border="0" cellspacing="0" cellpadding="0">
@@ -230,7 +224,6 @@ resetDinamycHeightStepFour('account-setting-content');
 // 3) Form selects should be created with Rails form helpers - this will surely break one day
 
 window.types = new Array();
-window.countries = new Array();
 window.types_relationship = new Array();
 "
 %>
@@ -245,9 +238,6 @@ window.types_relationship = new Array();
   <%= "window.types.push(['#{type}', '#{escape_javascript(type)}']);\n" %>
 <% end %>
 
-<% Country.find(:all, :order => {:name => " ASC"}).each do |country| -%>
-  <%= "window.countries.push([#{country.id}, encodeURI('#{escape_javascript(country.name)}')]);\n" %>
-<% end %>
 //]]>
 </script>
 

@@ -10,6 +10,6 @@ class CountryRegionsRenderer < Renderer
   def update_regions(region_domid, regions)
     page.show region_domid
     page.replace_html region_domid, :partial => 'country_regions', :locals => { :regions => regions }
-    page.visual_effect :highlight, region_domid + '_container'
+    page.visual_effect :highlight, region_domid + '_container', :duration => 1.0
   end
 end
