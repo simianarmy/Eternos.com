@@ -33,6 +33,10 @@ Message Queue Communication:
       sweat_shop: Async worker queue on top of rabbitmq/amqp: http://github.com/famoseagle/sweat_shop/tree/master
       carrot: Synchronous ampq client
       
+Shipping Integration 
+  ShippingLogic: from the awesome authlogic & searchlogic guy - http://github.com/binarylogic/shippinglogic
+  FedEx, UPS, USPS, etc. (Only FedEx is supported at this time) 
+
 General:
 
 File DL & uploads:

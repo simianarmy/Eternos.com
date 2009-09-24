@@ -80,7 +80,7 @@ class TimelineSearch
   end
   
   def get_facebook_items
-    @member.activity_stream.items.facebook.between_dates(@start_date, @end_date)
+    conditional_query @member.activity_stream.items.facebook.search
   end
   
   def get_twitter_items
@@ -96,12 +96,7 @@ class TimelineSearch
   end
   
   def get_emails
-    returning Array.new do |emails|
-      @member.backup_sources.by_site(BackupSite::Gmail).each do |gmail|
-        emails << gmail.backup_emails.between_dates(@start_date, @end_date)
-      end
-      emails.flatten
-    end
+    BackupEmail.belonging_to_user(@member.id).between_dates(@start_date, @end_date)
   end
   
   def get_feed_items
@@ -139,6 +134,10 @@ class TimelineSearch
     evts.compact.flatten.each do |res|
       @events << TimelineEvent.new(res)
     end
+  end
+  
+  def conditional_query(search)
+    @params[:proximity] ? search.all : search.between_dates(@start_date, @end_date).all
   end
 end
 

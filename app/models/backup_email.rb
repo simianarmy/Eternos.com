@@ -36,6 +36,9 @@ class BackupEmail < ActiveRecord::Base
   named_scope :between_dates, lambda {|s, e| 
     { :conditions => ['DATE(received_at) BETWEEN ? AND ?', s, e] }
   }
+  self.scope_procedure :belonging_to_user, lambda { |id| 
+    backup_source_user_id_eq(id)
+  }
   
   # Parses raw email string to extract email attributes & contents
   # Catch exceptions from mail parsing or file saving io

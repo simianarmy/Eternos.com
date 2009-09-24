@@ -60,8 +60,10 @@ var ETemplates = {
 				return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');
 			},
 			noEvents: function() {
-				return new Template('No events for this month.');
-				//<a href="#" id="prev_event_search">Previous events</a>&nbsp;&nbsp;<a href="#" id="next_event_search">Future events</a>');
+				return new Template('<div class="event_list_group_even">' + 
+					'No events for this month.&nbsp;&nbsp;' + 
+					'<a class="event_preview_item_container" href="#" id="prev_event_search">Show past events</a>&nbsp;&nbsp;<a href="#" id="next_event_search" class="event_preview_item_container">Show future events</a>' +
+					'</div>');
 			},
 			createEventItemTooltips: function() {
 				// Create tooltip for each event list link
@@ -90,6 +92,19 @@ var ETemplates = {
 					}
 					new Tip(element, ev.collection._getTooltipContents(), Object.extend(DefaultTooltipOptions, timelineTooltipOptions));
 				});
+			},
+			createSearchClickHandlers: function(timeline) {
+				// Setup previous, future events link click handlers when there are no events to display
+				if (el = $('prev_event_search')) {
+					el.observe('click', function(e) {
+						timeline.searchClosestEvents('past');
+					});
+				}
+				if (el = $('next_event_search')) {
+					el.observe('click', function(e) {
+						timeline.searchClosestEvents('future');
+					});
+				}
 			}
 		},
 		// Artifacts section templates
