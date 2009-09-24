@@ -34,13 +34,8 @@ class BackupPhoto < ActiveRecord::Base
     transitions :from => [:downloading, :downloaded], :to => :failed_download
   end
   
+  include CommonDateScopes
   named_scope :needs_download, :conditions => { :state => ['pending_download', 'failed_download'] }
-  
-  named_scope :between_dates, lambda { |start_date, end_date|
-    {
-      :conditions => {:created_at => start_date..end_date}
-    }
-  }
   named_scope :belonging_to_source, lambda { |id| 
     {
       :joins => :backup_photo_album,

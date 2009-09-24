@@ -24,19 +24,12 @@ class ActivityStreamItem < ActiveRecord::Base
       :attachment_type  => item.attachment_type)
   end
   
+  include CommonDateScopes
   named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
   named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
   named_scope :with_attachment, :conditions => ['attachment_data IS NOT ?', nil]
   named_scope :with_photo, :conditions => {:attachment_type => 'photo'}
   named_scope :with_video, :conditions => {:attachment_type => 'video'}
-  named_scope :latest, lambda { |num|
-    {
-      :order => 'published_at DESC', :limit => num || 1
-    }
-  }
-  named_scope :between_dates, lambda {|s, e| 
-    { :conditions => ['DATE(published_at) BETWEEN ? AND ?', s, e] }
-  }
   
   def bytes
     message.length + (attachment_data ? attachment_data.length : 0)

@@ -69,6 +69,7 @@ class TimelineSearch
   end
   
   def get_durations
+    # TODO: Proximity search support
     returning Array.new do |durations|
       if p = @member.profile
         durations = p.timeline(@start_date, @end_date).values
@@ -80,29 +81,29 @@ class TimelineSearch
   end
   
   def get_facebook_items
-    conditional_query @member.activity_stream.items.facebook.search
+    query @member.activity_stream.items.facebook.search
   end
   
   def get_twitter_items
-    @member.activity_stream.items.twitter.between_dates(@start_date, @end_date)
+    query @member.activity_stream.items.twitter.search
   end
   
   def get_stream_media
-    @member.activity_stream.items.with_attachment.between_dates(@start_date, @end_date)
+    query @member.activity_stream.items.with_attachment.search
   end
   
   def get_backup_photos
-    facebook_source ? BackupPhoto.belonging_to_source(facebook_source.id).between_dates(@start_date, @end_date).with_photo.map(&:photo) : []
+    query(BackupPhoto.belonging_to_source(facebook_source.id).with_photo.search).map(&:photo) if facebook_source
   end
   
   def get_emails
-    BackupEmail.belonging_to_user(@member.id).between_dates(@start_date, @end_date)
+    query BackupEmail.belonging_to_user(@member.id).search
   end
   
   def get_feed_items
     returning Array.new do |items|
       @member.backup_sources.by_site(BackupSite::Blog).each do |feed|
-        items << feed.feed.entries.between_dates(@start_date, @end_date)
+        items += query(feed.feed.entries.search)
       end
       items.flatten
     end
@@ -136,8 +137,14 @@ class TimelineSearch
     end
   end
   
-  def conditional_query(search)
-    @params[:proximity] ? search.all : search.between_dates(@start_date, @end_date).all
+  # Takes Searchlogic Search object containing named scope chains & adds necessary
+  # search filters
+  def query(search)
+    if @params[:proximity]
+      search.all
+    else
+      search.after(@start_date).before(@end_date).all
+    end
   end
 end
 

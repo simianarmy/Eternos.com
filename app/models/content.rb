@@ -45,6 +45,7 @@ class Content < ActiveRecord::Base
   before_create :set_content_type_by_content
   before_destroy :delete_from_cloud
   
+  include CommonDateScopes
   named_scope :recordings, :conditions => {:is_recording => true}
 
   # Class methods

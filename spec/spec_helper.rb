@@ -31,7 +31,8 @@ Spork.prefork do
     # in your config/boot.rb
     config.use_transactional_fixtures = true
     config.use_instantiated_fixtures  = false
-    Test::Unit::TestCase.fixture_path = config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
+    #Test::Unit::TestCase.fixture_path = config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
+    ActiveSupport::TestCase.fixture_path = config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
 
     # == Fixtures
     #

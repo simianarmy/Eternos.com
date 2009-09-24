@@ -84,7 +84,8 @@ class Address < ActiveRecord::Base
 	named_scope :business, :conditions	=> {:location_type => Business}
 	named_scope :billing, :conditions		=> {:location_type => Billing}
 	named_scope :birth, :conditions			=> {:location_type => Birth}
-	# TODO: use acts_as helper
+	
+	include CommonDateScopes
 	named_scope :in_dates, lambda { |start_date, end_date|
 		{
 			:conditions => ["(moved_in_on >= ? AND moved_out_on <= ?) OR " +

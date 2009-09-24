@@ -28,18 +28,13 @@ class BackupEmail < ActiveRecord::Base
   
   before_destroy :delete_s3_contents
   
-  named_scope :latest, lambda { |num|
+  include CommonDateScopes
+  named_scope :belonging_to_user, lambda { |id| 
     {
-      :order => 'received_at DESC', :limit => num || 1
+      :joins => :backup_source,
+      :conditions => ['backup_sources.user_id = ?', id]
     }
   }
-  named_scope :between_dates, lambda {|s, e| 
-    { :conditions => ['DATE(received_at) BETWEEN ? AND ?', s, e] }
-  }
-  self.scope_procedure :belonging_to_user, lambda { |id| 
-    backup_source_user_id_eq(id)
-  }
-  
   # Parses raw email string to extract email attributes & contents
   # Catch exceptions from mail parsing or file saving io
   def email=(raw_email)

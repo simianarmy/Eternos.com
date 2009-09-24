@@ -3,7 +3,7 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
-class Test::Unit::TestCase
+class ActiveSupport::TestCase
   # RoleRequirementTestHelper must be included to test RoleRequirement
   include RoleRequirementTestHelper
 

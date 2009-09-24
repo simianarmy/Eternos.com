@@ -15,11 +15,7 @@ class FeedEntry < ActiveRecord::Base
   xss_terminate :except => [ :categories ]
   acts_as_archivable :on => :published_at
 
-  # TODO: Just use self.newest (see acts_as_archivable)
-  named_scope :latest, :order => 'published_at DESC', :limit => 1
-  named_scope :between_dates, lambda {|s, e| 
-    { :conditions => ['DATE(published_at) BETWEEN ? AND ?', s, e] }
-  }
+  include CommonDateScopes
   after_create :save_contents
   
   def to_s

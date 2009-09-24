@@ -164,6 +164,7 @@ require 'load_email_configuration'
 require 'tag_extensions'
 require 's3_helper'
 require 'timeline_events'
+require 'common_scopes'
 # For saas
 require 'association_proxy'
 require 'rvideo'
