@@ -9,15 +9,18 @@ Date.prototype.getFullMonth = function () {
   var m = this.getMonth() + 1 + "";
   return (m.length < 2) ? "0" + m : m;
 }
-// Returns YYYY-MM-DD string
+// Returns YYYY-MM-DD string with day set to beginning of the month
 Date.prototype.startingMonth = function () {
   return this.getFullYear() + "-" + this.getFullMonth() + "-01";
 }
-// Returns YYYY-MM-DD string
+// Returns YYYY-MM-DD string with day set to end of the month
 Date.prototype.endingMonth = function () {
   return this.getFullYear() + "-" + this.getFullMonth() + "-" + this.numDays();
 }
-
+// Return YYYY-MM-DD string representation of the date
+Date.prototype.toMysqlDateString = function () {
+	return this.getFullYear() + "-" + this.getFullMonth() + "-" + this.getDate();
+}
 Date.prototype.getMonthName = function () {
   var nm = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var nu = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -101,6 +104,9 @@ var orderDatesDescending = function (x, y) {
 };
 String.prototype.toDate = function() {
 	return mysqlDateToDate(this);
+}
+String.prototype.toMysqlDateFormat = function() {
+	return this.replace(MysqlDateRE, "$1 $2 $3").split(' ').join('-');
 }
 
 // ETimeline 'class'
@@ -597,8 +603,6 @@ var ETimeline = function (opts) {
     },
     // Add event source to collection keyed by event date
     addSource: function (source) {
-      var day = source.eventDateString();
-
       this.sources.push(source);
 			this.latestSources.push(source);
 			
@@ -659,8 +663,34 @@ var ETimeline = function (opts) {
 			}.bind(this));
 			return results;
 		},
+		// Search dates array for closest date to passed date, past or future
+		getClosestDate: function(date, direction) {
+			var dt = date.toMysqlDateString();
+			var closest = null;
+			
+			this.dates.sort(); // sort dates ascending
+			for (var i=0; i<this.dates.length; i++) {
+				if (direction === 'past') {
+					if (this.dates[i] <= dt) { 
+						closest = this.dates[i];
+					} else {
+						break;
+					}
+				} else {
+					if (this.dates[i] >= dt) {
+						closest = this.dates[i];
+						break;
+					}
+				}
+			}
+			if (closest) {
+				alert('closest date = ' + closest);
+				closest = closest.toDate();
+			} 
+			return closest;
+		},
 		_groupSourceByDate: function (res, dates, source) {
-			var day = source.eventDateString();
+			var day = this._formatEventDate(source.getEventDate());
 			
 			if (!dates.include(day)) {
 				res[day] = new Array(source);
@@ -689,10 +719,18 @@ var ETimeline = function (opts) {
       //--results.each(function(item){console.log(item.length)});
       return results;
     },
+		// Returns event's date occurrence, as date string
+		_formatEventDate: function(date) {
+			if (typeof date === 'date') {
+				return date.toMysqlDateString();
+			} else if (typeof date === 'string') {
+				return date.toMysqlDateFormat();
+			}
+		},
     _eventDate: function (date) {
       var d = mysqlDateToDate(date);
       return d.toLocaleDateString();
-    }
+    }			
   });
 
   //Eternos Timeline Event Parser
@@ -716,13 +754,17 @@ var ETimeline = function (opts) {
     },
 		// Takes JSON object containing timeline search results
 		// Parses & adds results to internal collections
-    pushEvents: function (events) {
+    addEvents: function (events) {
       this._mergeEvents(events.evalJSON());
 			this._populate();
     },
 		// Returns latest parsed results objects array.
 		getEventGroups: function() {
 			return this.eventItems.getLatestEventGroups();
+		},
+		// Returns nearest existing event date to date
+		getClosestEventDate: function(date, past_or_future) {
+			return this.eventItems.getClosestDate(date, past_or_future);
 		},
     doParsing: function () {
 			var event;
@@ -758,10 +800,12 @@ var ETimeline = function (opts) {
       //this.endDate = '2010-01-01'; 
       this.startDate = params.startDate || new ETLDate(date).outDate;
       this.endDate = params.endDate || new ETLDate(date).outDate;
+			this.params = params;
       this.options = Object.toQueryString(params.options);
       this.complete = false;
       this.timeline = timeline;
-
+			this.onComplete = this.params.onComplete;
+			
       this._getFullSearchUrl();
       this._getJSON(this.fullSearchUrl);
     },
@@ -769,21 +813,21 @@ var ETimeline = function (opts) {
       this.fullSearchUrl = this.searchUrl + that.memberID + '/' + this.startDate + '/' + this.endDate + '/' + this.options
     },
     _getJSON: function (url) {
-      var timeline = this.timeline;
-
+			var that = this;
+      
       new Ajax.Request(url, {
         method: 'get',
         onComplete: function (transport) {
           var response = transport.responseText || "";
-          timeline.onSearchSuccess(response);
+					that.onComplete.apply(that.timeline, [response]);
         },
         onFailure: function (err) {
-					alert('Search error! ' + err.inspect);
+					$('notice').innerHTML = 'Search error!'
 					console.log(err.inspect);
-          timeline.onSearchError();
+          that.timeline.onSearchError();
         },
         onLoading: function () {
-          timeline.onSearching();
+          that.timeline.onSearching();
         }
       });
     }
@@ -1159,12 +1203,17 @@ var ETimeline = function (opts) {
 			this.rawEvents.populateResults(this.currentDate);
       //TODO:
     },
-    onSearchSuccess: function (results) {
+    onEventSearchSuccess: function (results) {
 			this.searchInProgress = false;
       this.hideLoading();
 			// Add to timeline, events & artifacts
       this.parseSearchResults(results);
     },
+		onProximitySearchSuccess: function (results) {
+			this.searchInProgress = false;
+			this.hideLoading();
+			this.parseProximitySearchResults(results);
+		},
 		// On date nav button click or past/future events search
 		onNewDate: function(newDate) {
 			this.scrollTo(newDate, {populate: false});
@@ -1178,13 +1227,24 @@ var ETimeline = function (opts) {
 		},
 		// Search events prior to current display month
 		searchClosestEvents: function(past_or_future) {
-			that.eventSection.showLoading();
 			this.seeking = past_or_future;
-			this.searchEvents({
-				startDate: this.currentDate.startingMonth(),
-				endDate: this.currentDate.startingMonth(),
-        range: false,
-				options: { proximity: past_or_future }
+			/* This works but skips over unsearched date ranges */
+			/*
+			if (dt = this.rawEvents.getClosestEventDate(this.centerDate, past_or_future)) {
+				if ()
+				this._setCenterDate(dt);
+				this._loadCached();
+			} 
+			*/
+			
+			// Search for nearest event
+			// If we get a result, do a full search on that result's date
+			this.updateEvents({
+					startDate: this.centerDate,
+					endDate: this.centerDate,
+        	range: false,
+					onComplete: this.onProximitySearchSuccess,
+					options: { proximity: past_or_future }
       });
 		},
     searchEvents: function (params) {
@@ -1193,13 +1253,18 @@ var ETimeline = function (opts) {
 				startDate: this.currentDate,
 				endDate: this.currentDate,
         options: this.options,
-				range: true
+				range: true,
+				onComplete: this.onEventSearchSuccess
       }, params);
 
+			// Convert dates to string
 			// Make sure entire months are searched since we cache results by month
 			if (p.range) {
 				p.startDate = p.startDate.addMonths(-1).startingMonth();
 				p.endDate = p.endDate.addMonths(1).endingMonth();
+			} else {
+				p.startDate = p.startDate.toMysqlDateString();
+				p.endDate = p.endDate.toMysqlDateString();
 			}
       // Don't repeat searches for same dates
       if (p.range && this.searchCache.hasDates(p.startDate, p.endDate)) {
@@ -1220,7 +1285,7 @@ var ETimeline = function (opts) {
 			var newDate;
 			
 			// Parse json results & save
-      this.rawEvents.pushEvents(results);
+      this.rawEvents.addEvents(results);
 			this.rawEvents.populateResults(this.currentDate);
 			
 			// Add to timeline event sources
@@ -1238,6 +1303,26 @@ var ETimeline = function (opts) {
 				e.observe('click', function(e) { Tips.hideAll(); });
 			});
     },
+		parseProximitySearchResults: function (results) {
+			var parsed = results.evalJSON();
+			var evt;
+			var dates = [];
+			var date;
+			
+			// Get closest date
+			if (parsed && (parsed.resultCount > 0)) {
+				for (var i=0; i<parsed.results.length; i++) {
+					dates.push(ETEvent.createSource(parsed.results[i]).getEventDate());
+				}
+				// Use 1st result since we just want the date
+				dates.sort();
+				date = (this.seeking === 'past') ? dates.pop() : dates[0];
+				alert('got proximity date = ' + date);
+				this.onNewDate(date.toDate());
+			} else {
+				alert('no results from proximity search');
+			}
+		},
 		scrollTo: function(date, opts) {
 			opts = Object.extend({populate: true}, opts);
 			

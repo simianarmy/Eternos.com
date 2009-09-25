@@ -484,13 +484,14 @@ class AccountSettingsController < ApplicationController
       if update_personal_info 
         if has_required_personal_info_fields?
           @current_step = current_user.setup_step
-  
           current_user.completed_setup_step(1)
-          flash[:notice] = "Saved."
+          flash[:notice] = "Saved"
+        else
+          flash[:error] = "Please fill in all required fields"
         end
         format.js {
           # On 1st successful save, we want to refresh page to next step
-          unless @current_step > 0
+          unless flash[:error] || (@completed_steps > 0)
             render :update do |page|
               page.redirect_to :action => 'index'
             end

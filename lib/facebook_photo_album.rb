@@ -39,4 +39,8 @@ class FacebookPhoto < BackupPhotoProxy
   def source_url
     @photo.src_big
   end
+  
+  def added_at
+    Time.at @photo.created.to_i unless @photo.created.blank?
+  end
 end

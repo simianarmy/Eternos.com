@@ -93,7 +93,10 @@ class TimelineSearch
   end
   
   def get_backup_photos
-    query(BackupPhoto.belonging_to_source(facebook_source.id).with_photo.search).map(&:photo) if facebook_source
+    if facebook_source && (res = query(BackupPhoto.belonging_to_source(facebook_source.id).with_photo.search))
+      RAILS_DEFAULT_LOGGER.debug "backup photo search: #{res.inspect}"
+      res.compact.map(&:photo) 
+    end
   end
   
   def get_emails
@@ -140,11 +143,20 @@ class TimelineSearch
   # Takes Searchlogic Search object containing named scope chains & adds necessary
   # search filters
   def query(search)
-    if @params[:proximity]
-      search.all
+    if @options[:proximity]
+      # closest events before or after a date
+      proximity_search search, @options[:proximity]
     else
+      # Date range query
+      # Only doing it this way cuz Searchlogic can't handle my between_dates named_scope
       search.after(@start_date).before(@end_date).all
     end
+  end
+  
+  # Searches for event closest to start_date.  
+  def proximity_search(search, direction)
+    (direction == 'past') ? search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
+    [search.first]
   end
 end
 

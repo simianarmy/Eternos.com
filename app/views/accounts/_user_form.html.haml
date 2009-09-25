@@ -1,8 +1,9 @@
 = custom_error_messages_for :user, :full_messages => true
 
-%p.input#invitation-token
-  Invitation Code: 
-  = text_field_tag 'user[invitation_token]', @invitation_token
+- if AppConfig.invitation_required
+  %p.input#invitation-token
+    Invitation Code: 
+    = text_field_tag 'user[invitation_token]', @invitation_token
 %p.input#fb-name
 %p.input#first-name-input
   First Name:

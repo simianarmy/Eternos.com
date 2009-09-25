@@ -35,6 +35,11 @@ class BackupEmail < ActiveRecord::Base
       :conditions => ['backup_sources.user_id = ?', id]
     }
   }
+  # For Rails+Searchlogic 2.3.2
+  #scope_procedure :belonging_to_user, lambda { |id| 
+  #  backup_source_user_id_eq(id)
+  #}
+  
   # Parses raw email string to extract email attributes & contents
   # Catch exceptions from mail parsing or file saving io
   def email=(raw_email)

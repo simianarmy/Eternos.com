@@ -9,7 +9,7 @@ class BackupPhoto < ActiveRecord::Base
   
   serialize :tags
   xss_terminate :except => [ :tags ]
-  acts_as_archivable :on => :created_at
+  acts_as_archivable :on => :added_at
   acts_as_state_machine :initial => :pending_download
   
   include TimelineEvents
@@ -45,7 +45,7 @@ class BackupPhoto < ActiveRecord::Base
   named_scope :with_photo, {
     :include => :photo
   }
-  EditableAttributes = [:caption, :source_url, :tags]
+  EditableAttributes = [:caption, :title, :added_at, :source_url, :tags]
   
   def self.db_attributes
     EditableAttributes
@@ -73,7 +73,8 @@ class BackupPhoto < ActiveRecord::Base
           :content_type => Content.detect_mimetype(@filename),
           :description => caption,
           :filename => File.basename(@filename),
-          :temp_path => File.new(@filename))
+          :temp_path => File.new(@filename),
+          :taken_at => added_at)
         c.tag_with(tags.join(','), @member) if tags
         self.photo = c
       end
