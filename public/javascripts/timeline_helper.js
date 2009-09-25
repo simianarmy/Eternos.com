@@ -795,22 +795,21 @@ var ETimeline = function (opts) {
     initialize: function (timeline, params) {
       var date = new Date();
 
-      this.searchUrl = "/timeline/search/js/";
+      this.searchUrl = "/timeline/search/js";
       //this.startDate = '2008-01-01'; 
       //this.endDate = '2010-01-01'; 
       this.startDate = params.startDate || new ETLDate(date).outDate;
       this.endDate = params.endDate || new ETLDate(date).outDate;
-			this.params = params;
       this.options = Object.toQueryString(params.options);
       this.complete = false;
       this.timeline = timeline;
-			this.onComplete = this.params.onComplete;
+			this.onComplete = params.onComplete;
 			
       this._getFullSearchUrl();
       this._getJSON(this.fullSearchUrl);
     },
     _getFullSearchUrl: function () {
-      this.fullSearchUrl = this.searchUrl + that.memberID + '/' + this.startDate + '/' + this.endDate + '/' + this.options
+      this.fullSearchUrl = [this.searchUrl, that.memberID, this.startDate, this.endDate, this.options].join('/');
     },
     _getJSON: function (url) {
 			var that = this;

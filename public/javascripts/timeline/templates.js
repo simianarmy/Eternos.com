@@ -62,7 +62,7 @@ var ETemplates = {
 			noEvents: function() {
 				return new Template('<div class="event_list_group_even">' + 
 					'No events for this month.&nbsp;&nbsp;' + 
-					'<a class="event_preview_item_container" href="#" id="prev_event_search">Show past events</a>&nbsp;&nbsp;<a href="#" id="next_event_search" class="event_preview_item_container">Show future events</a>' +
+					'<a class="event_preview_item_container" href="#" id="prev_event_search">Previous events</a>&nbsp;&nbsp;<a href="#" id="next_event_search" class="event_preview_item_container">Next events</a>' +
 					'</div>');
 			},
 			createEventItemTooltips: function() {

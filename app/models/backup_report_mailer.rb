@@ -6,7 +6,7 @@ class BackupReportMailer < ActionMailer::Base
   def daily_storage_report(stats)
     setup
     @recipients  = "reports@eternos.com"
-    @subject     = "Daily backup storage stats: #{Date.yesterday} - #{Date.today}"
+    @subject     = "[#{RAILS_ENV}] Daily backup storage stats: #{Date.yesterday} - #{Date.today}"
   
     @stats      = stats
     @stats_keys = stats[:total].keys.reject { |k| k.to_s =~ /_size$/ } - [:backup_items, :s3_cost]
@@ -15,7 +15,7 @@ class BackupReportMailer < ActionMailer::Base
   def daily_jobs_report(data)
     setup
     @recipients  = "reports@eternos.com"
-    @subject     = "Daily backup jobs data: #{Date.yesterday} - #{Date.today}"
+    @subject     = "[#{RAILS_ENV}] Daily backup jobs data: #{Date.yesterday} - #{Date.today}"
    
     @data         = data
   end

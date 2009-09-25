@@ -52,13 +52,13 @@
   = bs.in_progress ? 'Yes' : 'No'
   %br
   Last backup at:
-  = bs.last_backup_finished_at.to_s(:time_period_date_with_time)
+  = bs.last_backup_finished_at.to_s(:short) if bs.last_backup_finished_at
   %br
   Last successful backup at: 
-  = bs.last_successful_backup_at.to_s(:time_period_date_with_time)
+  = bs.last_successful_backup_at.to_s(:short) if bs.last_successful_backup_at
   %br
   Last failed backup at:
-  = bs.last_failed_backup_at.to_s(:time_period_date_with_time)
+  = bs.last_failed_backup_at.to_s(:short) if bs.last_failed_backup_at
   %br
   == Last backup job: #{bs.last_backup_job_id}
   %br
