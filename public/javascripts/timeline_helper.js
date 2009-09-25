@@ -1088,15 +1088,18 @@ var ETimeline = function (opts) {
 					this._onScroll();
 				}
 		},
+		// Takes array of dates & determines which date to scroll to based on search type
+		_getScrollToDate: function(dates) {
+			dates.sort();
+			return (this.seeking === 'future') ? dates[0] : dates.pop();
+		},
     _updateTitles: function (d) {
       that.artifactSection.updateTitle(this._getTitleFromDate(d, "Artifacts"));
       that.eventSection.updateTitle(this._getTitleFromDate(d, "Events"));
 			that.monthSelector.update(d);
     },
     _loadCached: function () {
-			this._updateTitles(this.centerDate);
-      this.rawEvents.populateResults(this.centerDate);
-			this.redraw();
+			this.scrollTo(this.centerDate);
     },
     _create: function () {
 			var li;
@@ -1125,9 +1128,6 @@ var ETimeline = function (opts) {
 			};
 			/*
 			 * ============== END */
-
-      
-
 			// Setup click handler for timeline events
 			Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
 				// Should fire click() on matching event list target link
@@ -1292,8 +1292,8 @@ var ETimeline = function (opts) {
 			groupedEvents = this.rawEvents.getEventGroups();
 			if (groupedEvents.length > 0) {
 				this._addEvents(groupedEvents);
-				// Center timeline on latest new event
-				newDate = groupedEvents.pluck('start_date').max().toDate();
+				// Center timeline on latest new event or 1st or last
+				newDate = this._getScrollToDate(groupedEvents.pluck('start_date')).toDate();
 				if (newDate !== this.currentDate) {
 					this.scrollTo(newDate);
 				}
@@ -1302,6 +1302,7 @@ var ETimeline = function (opts) {
 			$$('a').each(function (e) {
 				e.observe('click', function(e) { Tips.hideAll(); });
 			});
+			this.seeking = null;
     },
 		parseProximitySearchResults: function (results) {
 			var parsed = results.evalJSON();
@@ -1315,12 +1316,13 @@ var ETimeline = function (opts) {
 					dates.push(ETEvent.createSource(parsed.results[i]).getEventDate());
 				}
 				// Use 1st result since we just want the date
-				dates.sort();
-				date = (this.seeking === 'past') ? dates.pop() : dates[0];
-				alert('got proximity date = ' + date);
-				this.onNewDate(date.toDate());
+				date = this._getScrollToDate(dates).toDate();
+				console.log('got proximity date = ' + date)
+				this._setCenterDate(date); // confusing
+				this.updateEvents({startDate: date, endDate: date});
 			} else {
-				alert('no results from proximity search');
+				console.log('no results from proximity search');
+				this.rawEvents.populateResults(this.currentDate);
 			}
 		},
 		scrollTo: function(date, opts) {
