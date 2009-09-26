@@ -10,10 +10,8 @@
     - stylesheet 'reset-fonts-grids', 'screen', 'application', 'public', 'style'
     - load_prototype
     - javascript 'timer'
-      
-    = yield(:head)
     = yield(:js_libs)
-    = yield(:javascript)
+    = yield(:head)
     / end bundle
   %body
     #custom-doc.yui-t7
@@ -26,6 +24,7 @@
           = yield
         = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless params['controller'] == 'home'
+    = yield(:javascript)
     = fb_connect_javascript_tag
     = init_fb_connect "XFBML"
 

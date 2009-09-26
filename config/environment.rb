@@ -84,7 +84,7 @@ Rails::Initializer.run do |config|
   config.gem 'ruby-hmac', :lib => 'hmac'
   config.gem 'rio', :version => '>= 0.4.2'
   config.gem 'shared-mime-info'
-  config.gem 'simianarmy-facebooker', :lib => 'facebooker', :version => '>= 1.0.40'
+  config.gem 'simianarmy-facebooker', :lib => 'facebooker', :version => '>= 1.0.50'
   # Needs libxslt, libxml2
   config.gem 'nokogiri', :version => '>= 1.3.2'
   # Needs libcurl

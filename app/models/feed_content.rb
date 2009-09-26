@@ -10,7 +10,9 @@ class FeedContent < ActiveRecord::Base
   has_attached_file :screencap, 
   :styles => { :thumb => "300x300" },
   :storage => :s3,
-  :s3_credentials => "#{RAILS_ROOT}/config/amazon_s3.yml",
+  # Parse credentials into hash on load since file might disappear after deploy
+  # when this file is used by non-Rails apps (ie. backup daemons)
+  :s3_credentials => YAML.load_file("#{RAILS_ROOT}/config/amazon_s3.yml"),
   :s3_headers => {'Expires' => 1.year.from_now.httpdate},
   :url => ":class/:id/:basename_:style.:extension",
   :path => ":class/:id/:basename_:style.:extension",

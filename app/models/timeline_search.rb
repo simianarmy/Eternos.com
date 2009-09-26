@@ -94,7 +94,6 @@ class TimelineSearch
   
   def get_backup_photos
     if facebook_source && (res = query(BackupPhoto.belonging_to_source(facebook_source.id).with_photo.search))
-      RAILS_DEFAULT_LOGGER.debug "backup photo search: #{res.inspect}"
       res.compact.map(&:photo) 
     end
   end
