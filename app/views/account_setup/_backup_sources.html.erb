@@ -1,23 +1,22 @@
-<div id="account-setting-content" class="makeScroll">
+<div id="account-setting-content">
   <div id="notice" class="flash_notice"></div>
   <div class="title3"><h3>Backup Your Online Identity</h3><br />
-	<div class="textarea7">
-	  <p/>
-	  Add the online accounts that you would like us to backup for you.
-	  Eternos currently provides backup services for:
-	  <br/>
-	  <br/>
-	  <b>Facebook</b>: Wall posts & photos
-	  <br/>
-	  <b>Twitter</b>: Tweets
-	  <br/>
-	  <b>RSS Feeds</b>: Text contents &amp; screen captures
-	  <br/>
-	  <b>Gmail Accounts</b>: Emails are encrypted before backing up
-	  <p/>
-	  <br/>
-    
-		</div>
+    <div class="textarea7">
+      <p/>
+      Add the online accounts that you would like us to backup for you.
+      Eternos currently provides backup services for:
+      <br/>
+      <br/>
+      <b>Facebook</b>: Wall posts & photos
+      <br/>
+      <b>Twitter</b>: Tweets
+      <br/>
+      <b>RSS Feeds</b>: Text contents &amp; screen captures
+      <br/>
+      <b>Gmail Accounts</b>: All saved emails
+      <p/>
+      <br/>
+    </div>
 	<hr class="line2" /></div>
   <div class="network-icon-box">
     <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", 
@@ -104,11 +103,12 @@
        </div>
      </div>
    </div>
+   <%= render :partial => 'security_blurb' %>
    <div class="feedback-text">
 		  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.
 	  </div>
   </div>  
 </div>
-<%= javascript_tag "resetDinamycHeight('account-setting-content');" %>
+
 
 

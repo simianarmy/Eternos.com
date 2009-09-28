@@ -1,0 +1,45 @@
+<%- fields_for address_book do |ab| %>
+<tr>
+  <td class="coll-form1" valign="center">Title</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= select "address_book", "name_title",  AddressBook::NAME_TITLES, { :include_blank => true, :selected => address_book.name_title }, :style => "width: 60px" %></td>
+</tr>
+
+<tr>
+  <td class="coll-form1" valign="center">First Name <font style="color: red;">*</font></td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :first_name %></td>
+</tr>
+<tr>
+  <td class="coll-form1" valign="center">Middle Name</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :middle_name %></td>
+</tr>
+<tr>
+  <td class="coll-form1" valign="center">Last Name <font style="color: red;">*</font></td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= ab.text_field :last_name %></td>
+</tr>
+<tr>
+  <td class="coll-form1" valign="center">Suffix</td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= select "address_book", "name_suffix",  AddressBook::NAME_SUFFIXES, { :include_blank => true, :selected => address_book.name_suffix }, :style => "width: 60px" %></td>
+</tr>
+
+
+<tr>
+  <td class="coll-form1" valign="center">Birthdate <font style="color: red;">*</font></td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"> 
+    <div class="birthdate-box">
+      <%= ab.date_select_with_datepicker(:birthdate, {
+        :add_month_numbers => true, :order => [:day,:month,:year], 
+        :default => address_book.birthdate,
+        :start_year => Date.today.year, :end_year => 100.years.ago.year}) 
+        %>
+      </div>
+    </td>
+  </tr>
+<%- end -%>
+
+

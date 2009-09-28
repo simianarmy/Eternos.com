@@ -5,32 +5,24 @@
     %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
     %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}
-    %title= "Eternos Members - " + h(yield(:title) || "Home")
+    
     / bundle do
     - stylesheet 'screen', 'account_settings', 'application'
+    -# Include javascript libs manually to prevent cacheing that breaks scripts
     - load_prototype
     - use_lightview
+    - use_scrollbar
     - use_calendar
     - use_busy
-    - use_prototip
+    - use_lowpro
     - use_form
     
     - javascript 'application', 'account_setup'
       
     = yield(:head)
     = yield(:js_libs)
-    = yield(:javascript)
-    
+
     / end bundle
   %body
-    #wrapper
-      #header
-        #logo.alignleft
-          %h1= link_to((image_tag 'eternos.gif', :id => 'eternos_logo', :border => '0'),  root_path)
-  
-      #content
-        #sub_content
-          = yield
-    
-    = render :partial => 'shared/get_satisfaction'
-    
+    = yield
+    = yield(:javascript)
