@@ -94,6 +94,7 @@ Rails::Initializer.run do |config|
   config.gem 'jnunemaker-columbus', :lib => 'columbus'
   config.gem "markevans-block_helpers", :lib => "block_helpers", :source => "http://gems.github.com"
   config.gem 'right_aws'
+  config.gem 'moomerman-twitter_oauth', :lib => 'twitter_oauth', :source => "http://gems.github.com"
   # Application Profiling plugin - only runs on dev env
   #config.gem 'fiveruns_tuneup'
   

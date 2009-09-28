@@ -6,7 +6,7 @@ class AccountSettingsController < ApplicationController
   before_filter :load_facebook_connect
   before_filter :set_facebook_session
   before_filter :load_completed_steps
-  layout 'account_setup'
+  layout 'account_settings'
   
   def index
     find_user_profile
@@ -576,7 +576,7 @@ class AccountSettingsController < ApplicationController
    
    def has_required_personal_info_fields?
      (ab = current_user.address_book) &&
-     !ab.first_name.blank? && !ab.last_name.blank? && !ab.gender.blank? && ab.birthdate
+     !ab.first_name.blank? && !ab.last_name.blank? && ab.birthdate
    end
    
    def initialize_from_params

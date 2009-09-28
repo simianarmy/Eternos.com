@@ -2,6 +2,9 @@
 
 /*general--------------------------------------------------------------------------------------------------------------------------*/
 
+/* I'm not seeing inheritance being used...am I wrong? */
+/* What's up with the weird naming?  More descriptive class names than col1, col2, ... col10 would help */
+
 body{
 	margin:0;
 	padding:0;
@@ -282,7 +285,7 @@ body{
 	width:428px;
 	height:auto;
 	font-family:arial;
-	font-size:11px;
+	font-size:12px;
 	color:#33373f;
 	text-align:justify;
 	margin-bottom:5px;
@@ -636,7 +639,7 @@ a.flickr-btn:hover{
 	font-size:11px;
 	margin:2px 0 0 5px;
 	background:url(/images/errors/submit-btn.gif) 0 0;
-	float:right;
+	float:left;
 }
 
 .submit-btn4:hover{
@@ -813,8 +816,6 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin:10px 20px 0 10px;
 }
 
-
-
 .coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form2{width:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 
@@ -822,6 +823,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .coll-form2b{width:5px; padding-top:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 
 .coll-form3{width:330px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+
 .coll-form4{width:200px; text-align:right;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form5{width:200px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 .coll-form6{width:100px; text-align:left;font-family:arial;font-size:11px;color:#808080;}
@@ -842,7 +844,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .textbox4{width:90px; height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 
 #address_book_timezone{width:240px; height:20px;margin:2px 0 2px 0;font-family:arial;font-size:10.5px}
-/* this is fucked
+/* this is f'd
 #address_book_gender_male{margin:5px 3px 5px -1px;}
 #address_book_gender_female{margin:5px 3px 5px 28px;}
 #address_book_gender_transgender{margin:5px 3px 5px 28px;}
@@ -891,6 +893,7 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	font-size:14px;
 	color:#404142;
 	margin-top:10px;
+  /*border: solid 4px #66CCFF;*/
 }
 
 .title3{
@@ -1455,4 +1458,22 @@ h5{
 	background:#ffadc2;
 	border:1px solid #c50c0c;
 	margin-bottom:5px;
+}
+
+.feedback-text {
+	width: auto;
+	font-family:arial;
+	font-size:10px;
+	padding:5px 0 5px 0;
+	
+	border:0px solid #c50c0c;
+	margin-top: 10px;
+	margin-bottom:5px;
+}
+
+#twitter_connect_button {
+  margin:20 auto;
+  width:250px;
+  font-size:20px;
+  color:red;
 }

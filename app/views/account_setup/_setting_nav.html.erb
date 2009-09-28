@@ -7,7 +7,7 @@
       :class =>  link_class %>
   </div>
 
-  <%- link_class = (@active_step == 2) ? "step2-active" : "step2-btn"  -%>
+  <%- link_class = (@active_step >= 2) ? "step2-active" : "step2-btn"  -%>
   <div id="step2" class="step" style="<%= style_hidden_if(@active_step < 2) %>">
     <%= link_to_remote("", { :url => backup_sources_account_setup_path,  
         :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 

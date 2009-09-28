@@ -1,6 +1,6 @@
 module AccountSettingsHelper
   def needs_account_setup(user)
-    (user.login_count == 1) && session[:setup_account].nil?
+    current_user.setup_step == 0 && session[:setup_account].nil?
   end
   
   def setup_layout_account_setting(page, partial_content)

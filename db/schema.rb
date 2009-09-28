@@ -225,6 +225,8 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "type"
     t.string   "auth_login"
     t.string   "auth_password"
+    t.string   "auth_token"
+    t.string   "auth_secret"
     t.string   "rss_url"
     t.boolean  "auth_confirmed",         :default => false, :null => false
     t.string   "auth_error"

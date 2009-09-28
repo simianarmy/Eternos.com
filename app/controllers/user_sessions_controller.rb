@@ -28,7 +28,7 @@ class UserSessionsController < ApplicationController
       redirect_back member_home_url
     else
       if facebook_session && !params['commit']
-        redirect_to new_account_path
+        redirect_to new_account_path(:plan => 'Free')
       else
         flash[:error] = I18n.t('user_sessions.new.login_failed')
         render :action => :new

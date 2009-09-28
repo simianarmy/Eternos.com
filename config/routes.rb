@@ -2,6 +2,9 @@
 
 ActionController::Routing::Routes.draw do |map|
   # Singleton resources
+  map.resource :account_setup, :controller => 'account_setup', :member => {
+    :personal_info => :get, :backup_sources => :get
+  }
   map.resource :profile
   map.resource :facebook_profile
   map.resource :fb, :controller => 'fb'
@@ -20,7 +23,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :backup_sites
   map.resources :backup_sources, :collection => {
     :add_feed_url => :post,
-    :add_twitter => :post
+    :add_twitter => :get,
+    :twitter_auth => :get
   }
   map.connect 'backup_emails/body/:id', :controller => 'backup_emails', :action => 'body'
   map.resources :account_settings, :member => {

@@ -70,7 +70,7 @@ class AccountsController < ApplicationController
         session[:account_id] = @account.id
         render :action => 'billing'
       else
-        flash_redirect "Your account has been created.", member_home_url
+        flash_redirect "Your account has been created.", account_settings_url
         #rennder :action => 'thanks', :layout => false
       end
     else

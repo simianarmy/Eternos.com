@@ -15,6 +15,30 @@ class BackupSource < ActiveRecord::Base
       :conditions => {'backup_sites.name' => name}
     }
   }
+  named_scope :twitter, lambda {
+    {
+      :joins => :backup_site,
+      :conditions => {'backup_sites.name' => BackupSite::Twitter}
+    }
+  }
+  named_scope :facebook, lambda {
+    {
+      :joins => :backup_site,
+      :conditions => {'backup_sites.name' => BackupSite::Facebook}
+    }
+  }
+  named_scope :blog, lambda {
+    {
+      :joins => :backup_site,
+      :conditions => {'backup_sites.name' => BackupSite::Blog}
+    }
+  }
+  named_scope :gmail, lambda {
+    {
+      :joins => :backup_site,
+      :conditions => {'backup_sites.name' => BackupSite::Gmail}
+    }
+  }
   named_scope :confirmed, :conditions => {:auth_confirmed => true}
   named_scope :needs_scan, :conditions => {:needs_initial_scan => true}
   named_scope :photo_album, lambda {|id| 
