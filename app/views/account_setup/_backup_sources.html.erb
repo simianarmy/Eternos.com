@@ -19,8 +19,7 @@
 	<hr class="line2" />
 	<%= show_flash_messages :fade => 4 %>
   <div class="network-icon-box">
-    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", 
-      :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
+    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
     <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { 
       on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}');
       updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});
@@ -36,7 +35,7 @@
   
     <div id="twitter-box" style="display:none;">
       <div id="twitter_notice" class="flash_notice"></div>
-      <%= link_to 'Connect Your Twitter Account', add_twitter_backup_sources_path %>
+      <%= link_to image_tag('twitter_button_3_lo.gif'), add_twitter_backup_sources_path %>
       
       <div style="clear:both"></div>
       <div id="result-twitter-accounts">

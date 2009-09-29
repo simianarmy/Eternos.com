@@ -42,7 +42,7 @@ class BackupSourcesController < ApplicationController
             flash[:notice] = "Twitter account successfully saved"
           end
         else
-          flash[:notice] = "Twitter account is already activated"
+          flash[:error] = "Twitter account is already activated"
         end
       else
         flash[:error] = "Twitter account is not valid"

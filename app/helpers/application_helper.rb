@@ -4,9 +4,13 @@ module ApplicationHelper
 
   def flash_notices(options={})
     returning String.new do |html|
-      [:notice, :error].collect {|type| html << content_tag('div', flash[type], :id => "flash_#{type}") if flash[type] }
-      if options.key?(:fade) && html.any?
-        html << javascript_tag("setTimeout('new Effect.Fade(\"flash_notice\");', #{options[:fade]*1000});")
+      [:notice, :error].collect do |type| 
+        if flash[type]
+          html << content_tag('div', flash[type], :id => "flash_#{type}")
+          if options.key?(:fade)
+            html << javascript_tag("setTimeout(function() { new Effect.Fade('flash_#{type}') }, #{options[:fade]*1000});")
+          end
+        end
       end
     end
   end
