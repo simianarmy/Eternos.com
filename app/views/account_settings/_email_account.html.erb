@@ -6,38 +6,7 @@
 		<center>
       <div id="notice" class="flash_notice"></div>
       
-    <% form_remote_for :email,
-        :url => {:action => 'backup_contact_emails'},
-        :html => {:id => "backup_email_address"},
-        :loading => "$('progress-bar').show();",
-        :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});" do |f| -%>
-		<table class="table1" border="0" cellspacing="0" cellpadding="0">
-			 	<tr>
-	        <td colspan="3" class="titlebox1">Your Emails</td>
-	      </tr>
-	      <tr>
-	        <td class="coll-form7" valign="bottom">Email</td>
-		    	<td class="coll-form2" valign="bottom">:</td>
-                <%- value = @current_gmail.nil? ? "" : @current_gmail.auth_login -%>
-		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.text_field :email, :value => value %></td>
-	      </tr>
-	      <tr>
-	        <td class="coll-form7" valign="bottom">Password</td>
-		    	<td class="coll-form2" valign="bottom">:</td>
-		    	<td class="coll-form3" valign="bottom">&nbsp;<%= f.password_field :password %></td>
-	      </tr>
-				<tr>
-	        <td width="100%" align="right" colspan="3">
-	          <%= submit_tag "Backup", {:id => "button_submit", :style => "display:none"} %>
-	          <input type="button" value="Add Account" class="submit-btn5" onclick="$('button_submit').click()"/>
-	        </td>
-	      </tr>
-		</table>
-    <% end %>
-		</center>
-		<div id="result-email-contacts">
-		  <%= render :partial => 'backup_sources/email_account_list', :locals => {:email_accounts => @email_accounts} %>
-    </div>
+      <%= render :partial => 'gmail' %>
  </div>
 </div>
 <%= javascript_tag "

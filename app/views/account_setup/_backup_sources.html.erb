@@ -20,14 +20,17 @@
 	
 	<%= show_flash_messages :fade => 4 %>
   <div class="network-icon-box">
-    <%= link_to_show_hide_online('facebook-box', "", {:class => "#{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :id => "fb-button"}, ["twitter-box", "rss-box"]) %>
+    <%= link_to_backup_source_icon('facebook-box', "", {:class => "#{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :id => "fb-button"}) %>
 
-    <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-button"}, ["facebook-box", "rss-box"])  %>
+    <%= link_to_backup_source_icon('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-button"})  %>
     
-    <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"}, ["facebook-box", "twitter-box"])  %>
+    <%= link_to_backup_source_icon('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"})  %>
+    
+    <%= link_to_backup_source_icon('gmail-box', "Gmail", {:class => "#{@rss_confirmed ? 'gmail-active' : 'gmail-btn'}", :id => "gmail-button"})  %>
   </div>
 
   <div style="clear:both"></div>
+  <div id="notice" class="flash_notice"></div>
   <div id="twitter_notice" class="flash_notice"></div>
   <div id="facebook_notice" class="flash_notice"></div>
   <div id="rss_notice" class="flash_notice"></div>
@@ -72,41 +75,43 @@
     </div>
   
    
-   <div class="network-login-box" id="form-box">
-     <div id="rss-box" style="display:none;">
-       <div id="rss_blurb">
+    <div class="network-login-box" id="form-box">
+      <div id="rss-box" style="display:none;">
+        <div id="rss_blurb">
           Add your blogs here and we will begin backing them up every day.
           <p/>
           <br/>
         </div>
-       <%= image_tag "errors/rss-top.png" %>
-       <div class="rss-box">
-         <% form_remote_for @feed_url,
-            :url => add_feed_url_backup_sources_path,
-            :loading => "$('progress-bar').show();",
-            :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});"  do |f| %>
-            
-            <table class="table-form5" align="left">
-              <tr>
-                <td class="coll-form8" valign="center">URL</td>
-                <td class="coll-form2" valign="center">:</td>
-                <td class="coll-form9" valign="center">
-                  <%= f.text_field :rss_url, :class => "textbox7" %>
-                  <%= f.submit "Submit", :class => "submit-btn4" %>
-                </td>
-              </tr>
-            </table>
-            
-         <% end %>
-       </div>
-       <%= image_tag "errors/fb-box-footer.gif" %>
-       <div id="result-urls">
-        <%= render :partial => 'backup_sources/rss_url_list', :locals => {:feed_urls => @feed_urls} %>
-       </div>
-     </div>
+        <%= image_tag "errors/rss-top.png" %>
+        <div class="rss-box">
+          <% form_remote_for @feed_url,
+          :url => add_feed_url_backup_sources_path,
+          :loading => "$('progress-bar').show();",
+          :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});"  do |f| %>
+
+          <table class="table-form5" align="left">
+            <tr>
+              <td class="coll-form8" valign="center">URL</td>
+              <td class="coll-form2" valign="center">:</td>
+              <td class="coll-form9" valign="center">
+                <%= f.text_field :rss_url, :class => "textbox7" %>
+                <%= f.submit "Add Feed", :class => "submit-btn4" %>
+              </td>
+            </tr>
+          </table>
+
+          <% end %>
+        </div>
+        <%= image_tag "errors/fb-box-footer.gif" %>
+        <div id="result-urls">
+          <%= render :partial => 'backup_sources/rss_url_list', :locals => {:feed_urls => @feed_urls} %>
+        </div>
+    </div>
    </div>
+   
+   <%= render :partial => 'account_settings/gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => @current_gmail, :email_accounts => @email_accounts} %>
    <br/>
-  
+    
    <%= render :partial => 'security_blurb' %>
    <div class="feedback-text">
 		  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.

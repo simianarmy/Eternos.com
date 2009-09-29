@@ -1,0 +1,47 @@
+<div class="network-login-box" id="form-box">
+  <div id="gmail-box" style="display:none;">
+    <div id="gmail_blurb">
+      <span style="font-size: x-smaller"><font style="font-weight: bold">IMPORTANT</font>: Gmail is currently the only online email provider we support.  However, you can now easily migrate other online email accounts such as Hotmail and Yahoo to your Gmail account for us to backup.  Read more here:
+        <%= link_to 'Google Blog announcement', "http://gmailblog.blogspot.com/2009/05/import-your-mail-and-contacts-from.html", :target => '_new' %>
+        and 
+        <%= link_to 'Gmail Migration Directions',  "http://mail.google.com/support/bin/answer.py?answer=117173", :target => '_new' %>.
+      </span>
+  		<br /><br />
+    </div>
+
+  <% form_remote_for :email,
+      :url => {:controller => 'gmail_accounts', :method => :post},
+      :html => {:id => "backup_email_address"},
+      :loading => "$('progress-bar').show();",
+      :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{completed_steps});" do |f| -%>
+  <table class="table1" border="0" cellspacing="0" cellpadding="0">
+  	 	<tr>
+        <td colspan="3" class="titlebox1">Gmail Account Credentials</td>
+      </tr>
+      <tr>
+        <td colspan="3">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="coll-form7" valign="center">Email</td>
+      	<td class="coll-form2" valign="center">:</td>
+              <%- value = current_gmail.nil? ? "" : current_gmail.auth_login -%>
+      	<td class="coll-form3" valign="center">&nbsp;<%= f.text_field :email, :value => value %></td>
+      </tr>
+      <tr>
+        <td class="coll-form7" valign="center">Password</td>
+      	<td class="coll-form2" valign="center">:</td>
+      	<td class="coll-form3" valign="center">&nbsp;<%= f.password_field :password %></td>
+      </tr>
+  		<tr>
+        <td width="100%" align="right" colspan="3">
+          <%= submit_tag "Backup", {:id => "button_submit", :style => "display:none"} %>
+          <input type="button" value="Add Account" class="submit-btn5" onclick="$('button_submit').click()"/>
+        </td>
+      </tr>
+  </table>
+  <% end %>
+  </center>
+  <div id="result-email-contacts">
+    <%= render :partial => 'backup_sources/email_account_list', :locals => {:email_accounts => email_accounts} %>
+  </div>
+</div>

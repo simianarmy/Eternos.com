@@ -4,14 +4,11 @@ class AccountSetupController < ApplicationController
   before_filter :login_required
   require_role "Member"
   before_filter :load_facebook_desktop
-  before_filter :load_session
+  before_filter :load_facebook_session
   before_filter :load_completed_steps
   layout 'account_setup'
   
   def show
-    find_user_profile
-    check_facebook_sync
-    clear_timeline_cache
     session[:setup_account] = true
     
     # Dynamic action view based on current setup step
@@ -19,6 +16,7 @@ class AccountSetupController < ApplicationController
       load_online
       'backup_sources'
     else
+      find_user_profile
       'personal_info'
     end
     @active_step = @completed_steps + 1
@@ -105,7 +103,7 @@ class AccountSetupController < ApplicationController
       )
     
     @feed_url = FeedUrl.new
-
+    
     backup_sources = current_user.backup_sources
     if backup_sources.any?
       if @facebook_account = backup_sources.facebook.first
@@ -125,6 +123,8 @@ class AccountSetupController < ApplicationController
       @feed_urls = current_user.backup_sources.blog.paginate :page => params[:page], :per_page => 10
       @rss_url = backup_sources.blog.first
       @rss_confirmed = @rss_url && @rss_url.confirmed?
+      load_email_accounts
+      @current_gmail = @email_accounts.first
     end
   end
   
@@ -142,48 +142,6 @@ class AccountSetupController < ApplicationController
           end
         end
       }
-    end
-  end
-  
-  def email
-    load_email_accounts
-    @current_gmail = @email_accounts.first
-  
-    respond_to do |format|
-      format.js {
-        render :template => 'account_settings/email_account'
-      }
-    end
-  end
-  
-  
-  #
-  # *******   DEVELOPERS: LEAVE THIS METHOD ALONE!!! *******
-  #
-  def backup_contact_emails
-    begin
-      # Contacts authenticates in initialization.  If there are any problems logging in, 
-      # an exception is raised.
-      Contacts::Gmail.new(params[:email][:email], params[:email][:password])
-
-      # At this point authentication has been authorized - create account & add to backup sources
-      @current_gmail = GmailAccount.create!(
-        :auth_login => params[:email][:email], 
-        :auth_password => params[:email][:password], 
-        :user_id => current_user.id,
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
-        :last_login_at => Time.now)
-      @current_gmail.confirmed!
-      current_user.completed_setup_step(3)
-      @success = true    
-      flash[:notice] = "Your email account was successfully saved."
-    rescue Exception => message
-      flash[:error] = message.to_s
-    end
-    
-    load_email_accounts
-    respond_to do |format|
-      format.js
     end
   end
   
@@ -212,16 +170,8 @@ class AccountSetupController < ApplicationController
    end
    
    def find_user_profile
-      @user = current_user
-      @address_book = @user.address_book
+      @address_book = current_user.address_book
       @profile  = current_user.profile
-   end
-
-   def check_facebook_sync
-     if @user.always_sync_with_facebook
-       @checked_always_sync = true
-       merge_with_facebook
-     end
    end
    
    def load_email_accounts
@@ -230,12 +180,6 @@ class AccountSetupController < ApplicationController
    
    def load_completed_steps
      @completed_steps = current_user.setup_step
-   end
-   
-   # If account settings change causes timeline data to update, we need the timeline
-   # to refresh
-   def clear_timeline_cache
-     session[:refresh_timeline] = true
    end
    
    def respond_to_ajax_remove(obj)
@@ -248,7 +192,7 @@ class AccountSetupController < ApplicationController
      end
    end
    
-   def load_session
+   def load_facebook_session
      @fb_session = Facebooker::Session.current
    end
 end

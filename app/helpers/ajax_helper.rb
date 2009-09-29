@@ -63,16 +63,12 @@ module AjaxHelper
     link_to_function name, action, option
   end
   
-  def link_to_show_hide_online(id, name = "", option = {}, element_to_hide=[])
+  def link_to_show_hide_online(id, name = "", elements_to_hide = [], options = {})
     action = "$('#{id}').show();"
-    element_to_hide.each do |element|
+    elements_to_hide.each do |element|
       action += "$('#{element}').hide();"
-      # Put this in twitter page's oncomplete action
-      #if id.eql?("twitter-box")
-      #  action += "$('backup_source_auth_password').value=''; clearFlash();"
-      #end
     end
-    link_to_function name, action, option
+    link_to_function name, action, options
   end
   
 end
