@@ -1,6 +1,7 @@
 # $Id$
 
 require 'twitter_oauth'
+require 'crack/json' # for just json
 
 class BackupSourcesController < ApplicationController
   before_filter :login_required
@@ -17,7 +18,7 @@ class BackupSourcesController < ApplicationController
   end
     
   def add_twitter
-    request_token = @client.request_token(:oauth_callback => 'http://dev.eternos.com/backup_sources/twitter_auth')
+    request_token = @client.request_token(:oauth_callback => twitter_auth_backup_sources_url(:host => 'dev.eternos.com'))
     session[:request_token] = request_token.token
     session[:request_token_secret] = request_token.secret
     redirect_to request_token.authorize_url
@@ -25,19 +26,21 @@ class BackupSourcesController < ApplicationController
   
   def twitter_auth
     begin
-      if twitter_account_authenticated?  
-        backup_source = current_user.backup_sources.twitter.find_by_auth_login(params[:backup_source][:auth_login])
+      if twitter_account_authenticated_oauth?  
+        backup_source = current_user.backup_sources.twitter.find_by_auth_token(@access_token.token)
         if backup_source.nil?
-          backup_source = current_user.backup_sources.new(params[:backup_source].merge({
-            :backup_site_id => backup_site.id, 
+          # Try to get twitter screen name for backup source title
+          backup_source = current_user.backup_sources.new(
+            :backup_site_id => BackupSite.name_eq(BackupSite::Twitter).first.id,
+            :title => twitter_screen_name(@access_token) || '',
             :auth_token => @access_token.token,
             :auth_secret => @access_token.secret
-            }))
+            )
           if backup_source.save
             backup_source.confirmed!
             current_user.completed_setup_step(2)            
             flash[:notice] = "Twitter account successfully saved"
-          end 
+          end
         else
           flash[:notice] = "Twitter account is already activated"
         end
@@ -167,10 +170,27 @@ class BackupSourcesController < ApplicationController
      )
   end
   
-  def twitter_account_authenticated?
+  def twitter_account_authenticated_oauth?
     # Exchange the request token for an access token.
-    @access_token = @client.access_token(:oauth_verifier => params[:oauth_verifier])
+    @access_token = @client.authorize(
+      session[:request_token],
+      session[:request_token_secret],
+      :oauth_verifier => params[:oauth_verifier])
+    
     @client.authorized?
-    #Twitter::Base.new(Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password])).verify_credentials
-  end 
+  end
+  
+  def twitter_account_authenticated_httpauth?
+    # Using HTTPAuth
+    Twitter::Base.new(Twitter::HTTPAuth.new(params[:backup_source][:auth_login], params[:backup_source][:auth_password])).verify_credentials
+  end
+  
+  def twitter_screen_name(access_token)
+    @response = access_token.get '/account/verify_credentials.json'
+    if @response.body 
+      json = Crack::JSON.parse(@response.body)
+      RAILS_DEFAULT_LOGGER.debug "verify_credentials = #{json.inspect}"
+      json['screen_name']
+    end
+  end
 end

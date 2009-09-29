@@ -1,5 +1,4 @@
 <div id="account-setting-content">
-  <div id="notice" class="flash_notice"></div>
   <div class="title3"><h3>Backup Your Online Identity</h3><br />
     <div class="textarea7">
       <p/>
@@ -17,7 +16,8 @@
       <p/>
       <br/>
     </div>
-	<hr class="line2" /></div>
+	<hr class="line2" />
+	<%= show_flash_messages :fade => 4 %>
   <div class="network-icon-box">
     <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", 
       :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
@@ -30,11 +30,12 @@
     <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"}, ["twitter-box"])  %>
   </div>
 
-  <div style="clear:both"></div> 
+  <div style="clear:both"></div>
+  <div id="twitter_notice" class="flash_notice"></div>
   <br />
-  <div class="network-login-box" id="form-box">
+  
     <div id="twitter-box" style="display:none;">
-      
+      <div id="twitter_notice" class="flash_notice"></div>
       <%= link_to 'Connect Your Twitter Account', add_twitter_backup_sources_path %>
       
       <div style="clear:both"></div>
@@ -42,7 +43,7 @@
         <%= render :partial => 'backup_sources/twitter_list', :locals => { :list => @twitter_accounts } %>
       </div>
     </div>
-   </div>
+  
    
    <div class="network-login-box" id="form-box">
      <div id="rss-box" style="display:none;">

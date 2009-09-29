@@ -72,7 +72,7 @@ class AccountSetupController < ApplicationController
   # TODO: Move to RSS controller
   def set_feed_rss_url
     begin
-      @feed = current_user.backup_sources.by_site(BackupSite::Blog).find(params[:id])
+      @feed = current_user.backup_sources.blog.find(params[:id])
       @feed.rss_url = params[:value]
       if @feed.save
         current_user.completed_setup_step(2)
@@ -101,13 +101,13 @@ class AccountSetupController < ApplicationController
 
     backup_sources = current_user.backup_sources
     if backup_sources.any?
-      @facebook_account  = backup_sources.by_site(BackupSite::Facebook).first
+      @facebook_account  = backup_sources.facebook.first
       @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
-      @twitter_accounts = backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
-      @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
+      @twitter_accounts = backup_sources.twitter.paginate :page => params[:page], :per_page => 10
+      @twitter_account   = backup_sources.twitter.first
       @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
-      @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
-      @rss_url = backup_sources.by_site(BackupSite::Blog).first
+      @feed_urls = current_user.backup_sources.blog.paginate :page => params[:page], :per_page => 10
+      @rss_url = backup_sources.blog.first
       @rss_confirmed = @rss_url && @rss_url.confirmed?
     end
   end
@@ -209,7 +209,7 @@ class AccountSetupController < ApplicationController
    end
    
    def load_email_accounts
-     @email_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
+     @email_accounts = current_user.backup_sources.gmail.paginate :page => params[:page], :per_page => 10
    end
    
    def load_completed_steps

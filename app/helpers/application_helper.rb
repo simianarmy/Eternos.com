@@ -2,8 +2,13 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  def flash_notices
-    [:notice, :error].collect {|type| content_tag('div', flash[type], :id => "flash_#{type}") if flash[type] }
+  def flash_notices(options={})
+    returning String.new do |html|
+      [:notice, :error].collect {|type| html << content_tag('div', flash[type], :id => "flash_#{type}") if flash[type] }
+      if options.key?(:fade) && html.any?
+        html << javascript_tag("setTimeout('new Effect.Fade(\"flash_notice\");', #{options[:fade]*1000});")
+      end
+    end
   end
   
   alias_method :show_flash_messages, :flash_notices

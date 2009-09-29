@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "backup_source_jobs", ["backup_job_id"], :name => "index_backup_source_jobs_on_backup_job_id"
 
   create_table "backup_sources", :force => true do |t|
+    t.string   "title"
     t.string   "type"
     t.string   "auth_login"
     t.string   "auth_password"
