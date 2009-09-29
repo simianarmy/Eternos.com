@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :wysiwyg_preview
   map.resource :backup_state
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { 
-    :check_auth => :get, :permissions => :get }
+    :check_auth => :get, :permissions => :get, :authorized => :get, :cancel => :get }
     
   map.resources :timeline_events, :collection => {
     :events => :get

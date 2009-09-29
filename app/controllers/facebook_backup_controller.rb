@@ -3,11 +3,11 @@
 require 'facebook_desktop'
 
 class FacebookBackupController < ApplicationController
-  before_filter :login_required, :except => [:authorized, :removed]
-  require_role "Member", :for_all_except  => [:authorized, :removed]
+  before_filter :login_required
+  require_role "Member"
   before_filter :load_facebook_desktop
   before_filter :load_session
-  before_filter :load_backup_source, :except => [:authorized, :removed]
+  before_filter :load_backup_source
   layout 'dialog'
   
   #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
@@ -106,27 +106,59 @@ class FacebookBackupController < ApplicationController
     end
   end
     
-  # Called by Facebook after 1st time app authorization.  Passes a bunch of fb_sig_* values.
-  # May be definitive way to ensure proper authentication, replacing the authenticate action.
-  # Problem is, no Rails session info passed so can't lookup user to save facebook info!
-  # For now, simply save params to log.  Data might be parsed separately if needed.
+  # Called by Facebook after Desktop app authentication + authorization. 
+  # FB returns session values in session param as JSON object.  
+  # Save:
+  # session_key
+  # secret
+  # uid
   
-  # Important params:
-  # fb_sig_user: User's Facebook ID
-  # fb_sig_authorize: "1" = authorized
-  # fb_sig_ss: User's session secret
   def authorized
-    RAILS_DEFAULT_LOGGER.info "#{self.to_s}:authorized called by Facebook:\n"
-    RAILS_DEFAULT_LOGGER.info params.inspect
+    RAILS_DEFAULT_LOGGER.debug "#{self.class.to_s}:authorized called by Facebook:\n"
+    fb_session = ActiveSupport::JSON.decode(params[:session])
+    RAILS_DEFAULT_LOGGER.debug "Session json = " + fb_session.inspect
     
-    render :nothing => true, :status => 200
+    if fb_session['uid']
+      current_user.update_attribute(:facebook_uid, fb_session['uid'])
+      current_user.set_facebook_session_keys(fb_session['session_key'], fb_session['secret'])
+      flash[:notice] = "Facebook account authorized for backup!"
+
+      current_user.completed_setup_step(2)
+      # Run backup & update confirmation status on 1st check
+      @backup_source.confirmed! if !@backup_source.confirmed?
+    end
+    
+    respond_to do |format|
+      format.html {
+        redirect_to account_setup_path    
+      }
+      format.js {
+        render :nothing => true, :status => 200
+      }
+    end
   end
   
-  def removed
-    RAILS_DEFAULT_LOGGER.info "#{self.to_s}:removed called by Facebook:\n"
-    RAILS_DEFAULT_LOGGER.info params.inspect
+  def cancel
+    RAILS_DEFAULT_LOGGER.info "#{self.to_s}:cancel called by Facebook:\n"
     
-    render :nothing => true, :status => 200
+    # Send Facebook revoke authorization 
+    current_user.facebook_session_connect @session
+    @session.post('facebook.auth.revokeAuthorization', :uid => @session.user.id)
+    
+    # Remove session keys
+    @backup_source.update_attribute(:auth_confirmed, false)
+    current_user.set_facebook_session_keys(nil, nil)
+    
+    flash[:notice] = "Facebook account removed from Eternos Backup."
+    
+    respond_to do |format|
+      format.html {
+        redirect_to account_setup_path    
+      }
+      format.js {
+        render :nothing => true, :status => 200
+      }
+    end
   end
   
   def canvas
@@ -153,11 +185,10 @@ class FacebookBackupController < ApplicationController
   
   def load_session
     @session = Facebooker::Session.current
-    RAILS_DEFAULT_LOGGER.debug "Facebook session: #{@session.inspect}"
   end
   
   def load_backup_source
-    @backup_source = current_user.backup_sources.by_site(BackupSite::Facebook).first 
+    @backup_source = current_user.backup_sources.facebook.first 
     @backup_source ||= current_user.backup_sources.create(
       :backup_site => BackupSite.find_by_name(BackupSite::Facebook))
   end

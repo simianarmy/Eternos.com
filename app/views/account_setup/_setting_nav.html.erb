@@ -2,7 +2,7 @@
   <%- link_class = (@active_step <= 1) ? "step1-active" : "step1-btn"  -%>
   <div id="step1" class="step">
     <%= link_to_remote "", { :url => personal_info_account_setup_path, 
-      :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
+      :loading =>  "Effect.Fade('account-setup-content');$('progress-bar').show();", 
       :complete => "highlightStep(1); $('progress-bar').hide();" }, 
       :class =>  link_class %>
   </div>
@@ -10,7 +10,7 @@
   <%- link_class = (@active_step >= 2) ? "step2-active" : "step2-btn"  -%>
   <div id="step2" class="step" style="<%= style_hidden_if(@active_step < 2) %>">
     <%= link_to_remote("", { :url => backup_sources_account_setup_path,  
-        :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
+        :loading =>  "Effect.Fade('account-setup-content');$('progress-bar').show();", 
         :complete => "highlightStep(2); ;$('progress-bar').hide(); "
         }, :class => link_class) %>
   </div>

@@ -237,7 +237,6 @@ class ApplicationController < ActionController::Base
   end
   
   def load_facebook_desktop
-    Facebooker.load_configuration(File.join(RAILS_ROOT, 'config', 'facebooker_desktop.yml'))
     Facebooker::Session.current = FacebookDesktopApp::Session.create
   end
   

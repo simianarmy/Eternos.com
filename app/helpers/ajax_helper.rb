@@ -54,8 +54,7 @@ module AjaxHelper
   def format_ajax_notice
     render :partial => 'shared/ajax_notice'
   end
-
-
+  
   def link_to_show_hide(id, name = "", option = {}, element_to_hide=[])
     action = "$('#{id}').show();"
     element_to_hide.each do |element|
@@ -63,8 +62,6 @@ module AjaxHelper
     end
     link_to_function name, action, option
   end
-  
-  #This method used only for Online Account
   
   def link_to_show_hide_online(id, name = "", option = {}, element_to_hide=[])
     action = "$('#{id}').show();"

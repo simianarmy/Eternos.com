@@ -353,22 +353,29 @@ body{
 }
 
 .popup-container{
-	width:650px;
+	width:700px;
 	height:auto;
 	margin-top:20px;
   padding: 0 0 0 100px;
 }
 
+.acc-setup-container {
+	width: 700px;
+	height:auto;
+	margin-top:20px;
+  padding: 0 0 0 30px;
+}
+
 .popuptop{
-	width:650px;
+	width:700px;
 	height:11px;
-	background:url('/images/errors/popup-top.png') transparent no-repeat;
+	background:url('/images/acc-setup-top-bar.png') transparent no-repeat;
 	_background-image: none;
 	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/errors/popup-top.png',sizingMethod='scale');
 }
 
 .popup-content{
-	width:650px;
+	width:700px;
 	height:auto;
 	background:url(/images/errors/popup-content.png) repeat-y;
 	margin:0;
@@ -376,7 +383,7 @@ body{
 }
 
 .top-box{
-	width:645px;
+	width:695px;
 	height:auto;
 	margin:0;
 }
@@ -1191,6 +1198,12 @@ h5{
 	font-weight:bold;
 	color:#4a4a4a;
 	margin:-50px 0 0 98px;
+}
+
+#account-setup-content{
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: auto;
 }
 
 #account-setting-content{

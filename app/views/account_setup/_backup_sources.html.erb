@@ -1,5 +1,5 @@
-<div id="account-setting-content">
-  <div class="title3"><h3>Backup Your Online Identity</h3><br />
+<div id="account-setup-content">
+  <div class="title3"><h3>Backup Your Online Life</h3><br />
     <div class="textarea7">
       <p/>
       Add the online accounts that you would like us to backup for you.
@@ -15,26 +15,54 @@
       <b>Gmail Accounts</b>: All saved emails
       <p/>
       <br/>
+      Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your  Timeline.  Easily browse, tag, annotate, remove, and share any of your life's events.
     </div>
-	<hr class="line2" />
+	
 	<%= show_flash_messages :fade => 4 %>
   <div class="network-icon-box">
-    <%= link_to '', new_facebook_backup_path, :class => "lightview #{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :title => ' :: :: width: 700, height: 800, closeButton: false', :id => "fb-button", :rel => 'iframe' %>
-    <%= javascript_tag "Event.observe(document, 'lightview:hidden', function(evt) { 
-      on_facebook_backup_auth_close('#{check_auth_facebook_backup_path}');
-      updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});
-      });" 
-    %>
-    <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-button"}, ["rss-box"])  %>
-    <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"}, ["twitter-box"])  %>
+    <%= link_to_show_hide_online('facebook-box', "", {:class => "#{@facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :id => "fb-button"}, ["twitter-box", "rss-box"]) %>
+
+    <%= link_to_show_hide_online('twitter-box', "", {:class => "#{@twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-button"}, ["facebook-box", "rss-box"])  %>
+    
+    <%= link_to_show_hide_online('rss-box', "", {:class => "#{@rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"}, ["facebook-box", "twitter-box"])  %>
   </div>
 
   <div style="clear:both"></div>
   <div id="twitter_notice" class="flash_notice"></div>
+  <div id="facebook_notice" class="flash_notice"></div>
+  <div id="rss_notice" class="flash_notice"></div>
   <br />
   
+  <div id="facebook-box" style="display:none;">
+    <% if @facebook_user %>
+      <div id="result-facebook-account">
+        Currently backing up <font style="font-weight: bold"><%= @facebook_user.name %>'s</font> Facebook Account
+        <br/>
+        <span>
+        <%= image_tag @facebook_user.pic_small %>
+        </span>
+        <br/>
+        <%= link_to 'Revoke Backup Permissions', cancel_facebook_backup_path %>
+    </div>
+    <% else %>
+      <div id="facebook_blurb">
+        Simply click on the Facebook button below to begin saving your Facebook photos &amp; wall posts.
+        <p/>
+        <br/>
+      </div>
+      <div class="fb-btn1">
+        <%= link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), @fb_login_url %>
+      </div>
+    <% end %>
+    <div style="clear:both"></div>
+  </div>
+  
     <div id="twitter-box" style="display:none;">
-      <div id="twitter_notice" class="flash_notice"></div>
+      <div id="twitter_blurb">
+        Simply click the "Sign in with Twitter" button below to begin saving your Tweets.  Add as many Twitter accounts as you want.    
+        <p/>
+        <br/>
+      </div>
       <%= link_to image_tag('twitter_button_3_lo.gif'), add_twitter_backup_sources_path %>
       
       <div style="clear:both"></div>
@@ -46,23 +74,28 @@
    
    <div class="network-login-box" id="form-box">
      <div id="rss-box" style="display:none;">
-       <div id="rss_notice" class="flash_notice"></div>
+       <div id="rss_blurb">
+          Add your blogs here and we will begin backing them up every day.
+          <p/>
+          <br/>
+        </div>
        <%= image_tag "errors/rss-top.png" %>
        <div class="rss-box">
          <% form_remote_for @feed_url,
             :url => add_feed_url_backup_sources_path,
             :loading => "$('progress-bar').show();",
             :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});"  do |f| %>
-
-         <table class="table-form5" align="left">
-		     <tr>
-		     <td class="coll-form8" valign="center">URL</td>
-                     <td class="coll-form2" valign="center">:</td>
-                     <td class="coll-form9" valign="center">
-                      <%= f.text_field :rss_url, :class => "textbox7" %>
-                      <%= f.submit "Submit", :class => "submit-btn4" %></td>
-                   </tr>
-          </table>
+            
+            <table class="table-form5" align="left">
+              <tr>
+                <td class="coll-form8" valign="center">URL</td>
+                <td class="coll-form2" valign="center">:</td>
+                <td class="coll-form9" valign="center">
+                  <%= f.text_field :rss_url, :class => "textbox7" %>
+                  <%= f.submit "Submit", :class => "submit-btn4" %>
+                </td>
+              </tr>
+            </table>
             
          <% end %>
        </div>
@@ -72,6 +105,8 @@
        </div>
      </div>
    </div>
+   <br/>
+  
    <%= render :partial => 'security_blurb' %>
    <div class="feedback-text">
 		  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.

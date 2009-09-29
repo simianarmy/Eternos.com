@@ -3,8 +3,8 @@
 class AccountSetupController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  before_filter :load_facebook_connect
-  before_filter :set_facebook_session
+  before_filter :load_facebook_desktop
+  before_filter :load_session
   before_filter :load_completed_steps
   layout 'account_setup'
   
@@ -97,12 +97,28 @@ class AccountSetupController < ApplicationController
   end
   
   def load_online
+    # Desktop login url 
+    # Using url described on http://wiki.developers.facebook.com/index.php/Authorization_and_Authentication_for_Desktop_Applications#Prompting_for_Permissions
+    @fb_login_url = @fb_session.login_url_with_perms(
+      :next => authorized_facebook_backup_url(:host => request.host), 
+      :next_cancel => cancel_facebook_backup_url(:host => request.host)
+      )
+    
     @feed_url = FeedUrl.new
 
     backup_sources = current_user.backup_sources
     if backup_sources.any?
-      @facebook_account  = backup_sources.facebook.first
-      @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
+      if @facebook_account = backup_sources.facebook.first
+        if @facebook_confirmed = @facebook_account.confirmed?
+          begin
+            current_user.facebook_session_connect @fb_session
+            @fb_session.user.populate(:pic_small, :name) if @fb_session.verify
+            @facebook_user = @fb_session.user
+          end
+        end
+      else
+        @facebook_confirmed = false
+      end
       @twitter_accounts = backup_sources.twitter.paginate :page => params[:page], :per_page => 10
       @twitter_account   = backup_sources.twitter.first
       @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
@@ -230,5 +246,9 @@ class AccountSetupController < ApplicationController
          end
        end
      end
+   end
+   
+   def load_session
+     @fb_session = Facebooker::Session.current
    end
 end

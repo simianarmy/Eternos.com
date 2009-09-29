@@ -1,5 +1,5 @@
 - use_busy
-- stylesheet 'popup'
+- stylesheet 'account_settings'
 
 // - title 'Enable Facebook Backup'
 .fb-popupbox
@@ -19,23 +19,7 @@
         Grant Access to Facebook Data
       We need you to grant us permission to access your Facebook data, which includes your status updates and pictures.
 
-      %br
-      %br
-      %span.bold
-        Simply click on the lock button below
-      \- it takes only several seconds to setup your Facebook account for backup!
-      %br
-      
-      .fb-btn1
-        = link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), @login_url, :class => 'facebook lightview', :rel => 'iframe', :title => ' :: :: width: 700, height: 800'
-      = link_to_function "Cancel", "parent.Lightview.hide()"
-      
-    #continue{:style=> "display:none;"}
-      .popup-text1
-        Facebook has granted us permission to backup your data!
-      = link_to "Next Step", {:action => 'authenticate', :auth_token => @auth_token}, :class =>"popup-textbtn1"
-      = image_tag "facebook-backup/arrow-right.gif", :class => "arrow-right"
-		
+      - render :partial => 'begin', :locals => {:auth_token => @auth_token, :login_url => @login_url}
       .clear
   = image_tag "facebook-backup/fb-bottom.png"
 
