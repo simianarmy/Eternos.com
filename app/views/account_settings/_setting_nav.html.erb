@@ -6,7 +6,7 @@
       :complete => "highlightStep(1); $('progress-bar').hide();" }, 
       :class =>  link_class %>
   </div>
-
+<!--
   <%- link_class = gen_step_class(2, @active_step)  -%>
   <div id="step2" class="step">
     <%= link_to_remote("", { :url => online_account_settings_path,  
@@ -14,7 +14,7 @@
         :complete => "highlightStep(2); ;$('progress-bar').hide(); "
         }, :class => link_class) %>
   </div>
-  
+-->
   <%- link_class = gen_step_class(4, @active_step)  -%>
   <div id="step4" class="step">
     <%= link_to_remote("", { :url => your_history_account_settings_path,

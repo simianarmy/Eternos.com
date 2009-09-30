@@ -36,7 +36,7 @@
             
         #inner_menu.alignright
           %ul#navlist
-            /- %li.home= link_to 'backup sites', account_setup_path
+            %li.home= link_to 'account setup', account_setup_path
             %li.support
               /= link_to 'account_settings', account_settings_path, :id => 'account-setting', :class => 'lightview', :rel => 'iframe', :title => "Account Settings :: :: width: 800, autosize: false, closeButton: false"
               = link_to_lightview 'account settings', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}

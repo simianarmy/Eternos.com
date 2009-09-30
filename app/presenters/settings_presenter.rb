@@ -6,7 +6,7 @@
 class SettingsPresenter < Presenter
   attr_accessor :address_book, :profile, :new_address_book, :new_profile,
     :active_step, :completed_steps, 
-    :facebook_account, :facebook_confirmed, :facebook_user, :fb_login_url,
+    :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, :fb_login_url,
     :twitter_accounts, :twitter_account, :twitter_confirmed,
     :feed_urls, :feed_url, :rss_url, :rss_confirmed,
     :email_accounts, :current_gmail, :gmail_confirmed,
@@ -67,7 +67,8 @@ class SettingsPresenter < Presenter
           begin
             @user.facebook_session_connect @fb_session
             @fb_session.user.populate(:pic_small, :name) if @fb_session.verify
-            @facebook_user = @fb_session.user
+            @facebook_user = @fb_session.user.name
+            @facebook_pic = @fb_session.user.pic_small
           end
         end
       else
