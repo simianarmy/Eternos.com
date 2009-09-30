@@ -8,4 +8,8 @@ module AccountSetupHelper
     icons.delete(id)
     link_to_show_hide_online(id, name, icons, options)
   end
+  
+  def gen_step_class(step, active_step)
+    (active_step == step) ? "step#{step}-active" : (active_step > step) ? "step#{step}complete-btn" : "step#{step}-btn"
+  end
 end

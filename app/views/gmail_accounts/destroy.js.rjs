@@ -1,2 +1,2 @@
 page.flash_and_fade
-page.remove "contact-list-#{@email.id}"
+page.replace_html 'result-email-contacts', @email_account_list

@@ -1,4 +1,5 @@
-var initialLoad = true;
+var MAX_STEPS = 2;
+
 document.observe("dom:loaded", function() {
 	if ($('account-setting-content')) {
 		setDinamycHeight('account-setting-content'); 
@@ -65,18 +66,21 @@ function clearFlash() {
 
 // Linear step activation function
 function updateStep(check_url, completed_steps) {
+	var sel;
 	new Ajax.Request(check_url, {
 		method: 'get',
 		onSuccess:function(transport) {
 			current_step = parseInt(transport.responseText);
-			//alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
+			alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
 			if (current_step > completed_steps) {
-				activateStep(current_step+1);
-				// Hack hack hack - Activate history step at same time as email step
-				if (current_step+1 === 3) {
-					activateStep(4);
-				} // End hack hack hack
-				highlightStep(current_step+1);
+				showCompleteStep(current_step);
+				if ((current_step+1) <= MAX_STEPS) {
+					activateStep(current_step+1);
+					highlightStep(current_step+1);
+				}
+				if (current_step == MAX_STEPS && (sel = $('account-setup-complete'))) {
+					sel.show();
+				}
 			}
 		}
 	});
@@ -94,10 +98,16 @@ function highlightStep(stepNum) {
   });
 }
 
+// Activate next step
 function activateStep(stepNum) {
 	var step = 'step' + stepNum;
 	$(step + '-disabled').hide();
 	$(step).show();
+}
+
+function showCompleteStep(stepNum) {
+	var step = 'step' + stepNum;
+	$(step).down('a').addClassName(step + 'complete-btn');
 }
 
 function activatedFb(){

@@ -1,13 +1,8 @@
 <div id="account-setting-content" class="makeScroll">
-  <div class="title3">Backup Your Emails</div>
-  <div class="textarea6">
-    We now allow you to back up your Gmail account!  Gmail is currently the only provider we support your email backup with, however, you can easily migrate your email from Hotmail, Yahoo, and other services.  Read more here: <a href="http://gmailblog.blogspot.com/2009/05/import-your-mail-and-contacts-from.html">Google Blog announcement</a> and <a href="http://mail.google.com/support/bin/answer.py?answer=117173">Gmail Migration Directions</a>.
-		<br /><br />
-		<center>
-      <div id="notice" class="flash_notice"></div>
+  <div id="notice" class="flash_notice"></div>
       
-      <%= render :partial => 'gmail' %>
- </div>
+  <%= render :partial => 'gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => @current_gmail, :email_accounts => @email_accounts} %>
+ 
 </div>
 <%= javascript_tag "
   setDinamycHeight('account-setting-content');

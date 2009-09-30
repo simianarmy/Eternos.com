@@ -14,7 +14,7 @@
     - javascript 'application', 'login'
     = yield(:head)
     = yield(:js_libs)
-    
+    = yield(:javascript)
     / end bundle
     
   %body
@@ -64,7 +64,6 @@
       = render :partial => 'shared/site_footer'
         
     = render :partial => 'shared/get_satisfaction'
-    = yield(:javascript)
     :javascript
       // This needs to be global to all js
       var lightview_height = 0.9 * win_dimension()[1];

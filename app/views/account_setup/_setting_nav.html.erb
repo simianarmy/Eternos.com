@@ -1,5 +1,5 @@
 <div id="account-setting-nav">
-  <%- link_class = (@active_step <= 1) ? "step1-active" : "step1-btn"  -%>
+  <%- link_class = gen_step_class(1, @active_step)  -%>
   <div id="step1" class="step">
     <%= link_to_remote "", { :url => personal_info_account_setup_path, 
       :loading =>  "Effect.Fade('account-setup-content');$('progress-bar').show();", 
@@ -7,7 +7,7 @@
       :class =>  link_class %>
   </div>
 
-  <%- link_class = (@active_step >= 2) ? "step2-active" : "step2-btn"  -%>
+  <%- link_class = gen_step_class(2, @active_step)  -%>
   <div id="step2" class="step" style="<%= style_hidden_if(@active_step < 2) %>">
     <%= link_to_remote("", { :url => backup_sources_account_setup_path,  
         :loading =>  "Effect.Fade('account-setup-content');$('progress-bar').show();", 
@@ -17,5 +17,8 @@
   <div id="step2-disabled" style="<%= style_hidden_if(@active_step >= 2) %>">
     <%= link_to '', '#', :class => link_class, :id => 'step2-link' %>
     <%= javascript_tag "new Effect.Opacity('step2-disabled', { from: 1.0, to: 0.2 });" %>
+  </div>
+  <div id="account-setup-complete" style="<%= style_hidden_if(@active_step <= 2) %>">
+    <%= link_to 'Member Homepage', member_home_path %>
   </div>
 </div>

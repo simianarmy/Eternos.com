@@ -15,35 +15,16 @@
         :complete => "highlightStep(2); ;$('progress-bar').hide(); "
         }, :class => link_class) %>
   </div>
-  <div id="step2-disabled" style="<%= style_hidden_if(@active_step >= 2) %>">
-    <%= link_to '', '#', :class => link_class, :id => 'step2-link' %>
-    <%= javascript_tag "new Effect.Opacity('step2-disabled', { from: 1.0, to: 0.2 });" %>
-  </div>
-  <!--
+  
   <%- link_class = (@active_step == 3) ? "step3-active" : "step3-btn"  -%>
   <div id="step3" class="step" style="<%= style_hidden_if(@active_step < 3) %>">
-    <%= link_to_remote("", { :url => email_account_settings_path, :method => :get, 
-      :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
-      :complete => "highlightStep(3); $('progress-bar').hide();" }, 
-      :class => link_class) %>
-  </div>
-  <div id="step3-disabled" style="<%= style_hidden_if(@active_step >= 3) %>">
-    <%= link_to '', '#', :class => link_class, :id => 'step3-link' %>
-    <%= javascript_tag "new Effect.Opacity('step3-disabled', { from: 1.0, to: 0.2 });" %>
-  </div>
-  
-  <%- link_class = (@active_step == 4) ? "step4-active" : "step4-btn"  -%>
-  <div id="step4" class="step" style="<%= style_hidden_if(@active_step < 3) %>">
     <%= link_to_remote("", { :url => your_history_account_settings_path,
       :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
-      :complete => "highlightStep(4); $('progress-bar').hide();"}, 
-      :class => link_class, :id => 'step4-btn') %>
+      :complete => "highlightStep(3); $('progress-bar').hide();"}, 
+      :class => link_class, :id => 'step3-btn') %>
   </div>
-  <div id="step4-disabled" style="<%= style_hidden_if(@active_step >= 3) %>">
-    <%= link_to '', '#', :class => link_class, :id => 'step4-link' %>
-    <%= javascript_tag "new Effect.Opacity('step4-disabled', { from: 1.0, to: 0.2 });" %>
-  </div>
-
+  
+<!--
   <%- link_class = active_link == "step5" ? "step5-active" : "step5-btn"  -%>
   <%#= link_to_remote "", { :url => upgrades_account_settings_path,  :loading =>  "Effect.Fade('account-setting-content');"}, :class => link_class %>
 
