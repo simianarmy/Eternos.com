@@ -71,7 +71,7 @@ function updateStep(check_url, completed_steps) {
 		method: 'get',
 		onSuccess:function(transport) {
 			current_step = parseInt(transport.responseText);
-			alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
+			//alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
 			if (current_step > completed_steps) {
 				showCompleteStep(current_step);
 				if ((current_step+1) <= MAX_STEPS) {

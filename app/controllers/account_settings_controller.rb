@@ -1,32 +1,31 @@
 # $Id$
 
+require 'settings_presenter'
+
 class AccountSettingsController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  before_filter :load_facebook_connect
-  before_filter :set_facebook_session
+  before_filter :load_facebook
+  before_filter :load_presenter
   before_filter :load_completed_steps
   layout 'account_settings'
   
   def index
-    find_user_profile
-    check_facebook_sync
+#    check_facebook_sync
     clear_timeline_cache
     session[:setup_account] = true
     
     # Dynamic action view based on current setup step
     @content_page = case @completed_steps
+    when 0
+      @settings.load_personal_info
+      'personal_info'
     when 1
       load_online
-      'online'
-    when 2
-      load_email_accounts
-      'email_account'
-    when 3
-      load_history
-      'your_history'
+      'backup_sources'
     else
-      'personal_info'
+      @settings.load_history
+      'your_history'
     end
 #    @active_step = [@completed_steps+1, 3].min
     @active_step = @completed_steps + 1
@@ -85,11 +84,12 @@ class AccountSettingsController < ApplicationController
   end
 
   def personal_info
-    find_user_profile
+    @settings.load_personal_info
+    
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "account_settings/personal_info")
+          update_account_settings_layout(page, "personal_info")
         end
       end
     end
@@ -104,8 +104,8 @@ class AccountSettingsController < ApplicationController
         format.js do
           render :update do |page|
             @sync_message = "Sync Successfull"
-            setup_layout_account_setting(page, "account_settings/personal_info")
-            page.replace "sync-message", :partial => "account_settings/sync_message"
+            update_account_settings_layout(page, "personal_info")
+            page.replace "sync-message", :partial => "sync_message"
             page.visual_effect :highlight, "sync-message"
           end
         end  
@@ -113,7 +113,7 @@ class AccountSettingsController < ApplicationController
         format.js do
           render :update do |page|
             @sync_message = "Can't sync with facebook"
-            page.replace "sync-message", :partial => "account_settings/sync_message"
+            page.replace "sync-message", :partial => "sync_message"
             page.visual_effect  :highlight, "sync-message"
           end
         end
@@ -125,28 +125,10 @@ class AccountSettingsController < ApplicationController
         format.js do
           render :update do |page|
             @sync_message = "Can't sync with facebook"
-            page.replace "sync-message", :partial => "account_settings/sync_message"
+            page.replace "sync-message", :partial => "sync_message"
             page.visual_effect :highlight, "sync-message"
           end
         end
-    end
-  end
-  
-  def load_online
-    @online_account = BackupSource.new
-    @feed_url = FeedUrl.new
-    # What is this sillyness?
-    # @recent_backup_sites, @activated_twitter = current_user.backup_sites_names
-    backup_sources = current_user.backup_sources
-    if backup_sources.any?
-      @facebook_account  = backup_sources.by_site(BackupSite::Facebook).first
-      @facebook_confirmed = @facebook_account && @facebook_account.confirmed?
-      @twitter_accounts = backup_sources.by_site(BackupSite::Twitter).paginate :page => params[:page], :per_page => 10
-      @twitter_account   = backup_sources.by_site(BackupSite::Twitter).first
-      @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
-      @feed_urls = current_user.backup_sources.by_site(BackupSite::Blog).paginate :page => params[:page], :per_page => 10
-      @rss_url = backup_sources.by_site(BackupSite::Blog).first
-      @rss_confirmed = @rss_url && @rss_url.confirmed?
     end
   end
   
@@ -156,39 +138,19 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js {
         render :update do |page|
-          if params[:page].blank?
-            setup_layout_account_setting(page, "online")
-          else
-            page.replace_html 'result-urls', :partial => 'backup_sources/rss_url_list', 
-              :locals => {:feed_urls => @feed_urls}
-          end
+          update_account_settings_layout(page, "backup_sources")
         end
       }
     end
   end
   
-  def email
-    load_email_accounts
-    @current_gmail = @email_accounts.first
-  
-    respond_to do |format|
-      format.js {
-        render :template => 'account_settings/email_account'
-      }
-    end
-  end
-  
-  def load_history
-    find_object_history
-  end
-  
   def your_history
-    load_history
+    @settings.load_history
     
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "account_settings/your_history")
+          update_account_settings_layout(page, "your_history")
         end
       end
     end  
@@ -458,7 +420,7 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "account_settings/upgrades")
+          update_account_settings_layout(page, "account_settings/upgrades")
         end
       end
     end
@@ -469,7 +431,7 @@ class AccountSettingsController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          setup_layout_account_setting(page, "account_settings/billings")
+          update_account_settings_layout(page, "account_settings/billings")
         end
       end
     end
@@ -477,189 +439,67 @@ class AccountSettingsController < ApplicationController
 
   # TODO: Move to appropriate controller
   def save_personal_info
-    find_user_profile
-    initialize_from_params
+    @settings.load_personal_info
     
-    respond_to do |format|
-      if update_personal_info 
-        if has_required_personal_info_fields?
-          @current_step = current_user.setup_step
-          current_user.completed_setup_step(1)
-          flash[:notice] = "Saved"
-        else
-          flash[:error] = "Please fill in all required fields"
-        end
-        format.js {
-          # On 1st successful save, we want to refresh page to next step
-          unless flash[:error] || (@completed_steps > 0)
-            render :update do |page|
-              page.redirect_to :action => 'index'
-            end
-          end
-        }
+    if @settings.update_personal_info
+      if @settings.has_required_personal_info_fields?
+        @current_step = current_user.setup_step
+        current_user.completed_setup_step(1)
+        flash[:notice] = "Personal Info Saved"
       else
-        format.js {
-          flash[:error] = "Unable to save your changes: <br/>" +
-            @errors.join('<br/>')
-        }
+        flash[:error] = "Please fill in all required fields"
       end
-    end 
-  end
-  
-  # I already did this somewhere else, oh well...
-  def select_region
-    @regions = Region.find_all_by_country_id(params[:id])
-    if @regions
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            page.replace_html "select-region-#{params[:cols_id]}", :partial => 'select_region', :locals => {:regions => @regions, :element => params[:cols_id]}
-          end
-        end
-      end 
-    end
-  end
-  
-  #
-  # *******   DEVELOPERS: LEAVE THIS METHOD ALONE!!! *******
-  #
-  def backup_contact_emails
-    begin
-      # Contacts authenticates in initialization.  If there are any problems logging in, 
-      # an exception is raised.
-      Contacts::Gmail.new(params[:email][:email], params[:email][:password])
-
-      # At this point authentication has been authorized - create account & add to backup sources
-      @current_gmail = GmailAccount.create!(
-        :auth_login => params[:email][:email], 
-        :auth_password => params[:email][:password], 
-        :user_id => current_user.id,
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
-        :last_login_at => Time.now)
-      @current_gmail.confirmed!
-      current_user.completed_setup_step(3)
-      @success = true    
-      flash[:notice] = "Your email account was successfully saved."
-    rescue Exception => message
-      flash[:error] = message.to_s
+    else
+      flash[:error] = "Unable to save your changes: <br/>" + settings.errors.join('<br/>')
     end
     
-    load_email_accounts
     respond_to do |format|
       format.js
-    end
+    end 
   end
   
   private
 
-  # because the views of this controller used in internal IFRAME
-  # SO, we have to override login_required method in the parent class
-  # The login_required method in parent class doesn't suit in IFRAME.
-  def login_required
-    unless current_user
-      flash[:notice] = "You must be logged in to access this page"
-      render :partial => "login_required"
+  # Load facebook Connect or Desktop app based on action
+  def load_facebook
+    if %w[ online ].include?(params[:action])
+      RAILS_DEFAULT_LOGGER.debug "Loading Facebook Desktop App"
+      load_facebook_desktop
+    else
+      RAILS_DEFAULT_LOGGER.debug "Loading Facebook Connect App"
+      load_facebook_connect
     end
   end
   
-   def update_personal_info
-     @errors = []
-     unless current_user.profile.update_attributes(@new_profile)
-      @errors = current_user.profile.errors.full_messages
-      return false
-    end
-    unless current_user.address_book.update_attributes(@new_address_book)
-      @errors = current_user.address_book.errors.full_messages
-    end
-    @errors.empty?
-   end
-   
-   def has_required_personal_info_fields?
-     (ab = current_user.address_book) &&
-     !ab.first_name.blank? && !ab.last_name.blank? && ab.birthdate
-   end
-   
-   def initialize_from_params
-     @new_address_book = params[:address_book]
-     @new_profile = params[:profile]
-   end
-   
-   def find_user_profile
-      @user = current_user
-      @address_book = @user.address_book
-      @profile  = current_user.profile
-   end
+  def load_presenter
+    @settings = SettingsPresenter.new(current_user, Facebooker::Session.current, params)
+  end
 
-   def check_facebook_sync
-     if @user.always_sync_with_facebook
-       @checked_always_sync = true
-       merge_with_facebook
-     end
-   end
+  def check_facebook_sync
+    if current_user.always_sync_with_facebook
+      @checked_always_sync = true
+      merge_with_facebook
+    end
+  end
 
-   def merge_with_facebook
-     saved = false
-     if facebook_session && (fb_user = facebook_session.user)
-       facebook_profile = FacebookUserProfile.populate(fb_user)
-       @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
-        saved = update_personal_info
-      end
-      return saved
-   end
-   
-   def find_object_history
-     find_address
-     find_job
-     find_school
-     find_medical
-     find_medical_condition
-     find_family
-     find_relationship
-     @address = Address.new
-     @job = Job.new
-     @school = School.new
-     @medical = Medical.new
-     @medical_condition = MedicalCondition.new
-     @family = Family.new
-     @relationship = Relationship.new
-   end
-   
-   def find_address
-     @address_book = current_user.address_book
-     @addresses = @address_book.addresses
-   end
-   
-   def find_job
-     @jobs = current_user.profile.careers
-   end
-   
-   def find_school
-     @schools = current_user.profile.schools
-   end
-   
-   def find_medical
-     @medicals = current_user.profile.medicals
-   end
-   
-   def find_medical_condition
-     @medical_conditions = current_user.profile.medical_conditions
-   end
-   
-   def find_family
-     @families = current_user.profile.families
-   end
-   
-   def find_relationship
-     @relationships = Relationship.find_all_by_user_id(current_user.id)
-   end
-   
-   def load_email_accounts
-     @email_accounts = current_user.backup_sources.by_site(BackupSite::Gmail).paginate :page => params[:page], :per_page => 10
-   end
-   
-   def load_completed_steps
-     @completed_steps = current_user.setup_step
-   end
+  def merge_with_facebook
+    saved = false
+    if facebook_session && (fb_user = facebook_session.user)
+      facebook_profile = FacebookUserProfile.populate(fb_user)
+      @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
+      saved = update_personal_info
+    end
+    return saved
+  end
+
+  def load_completed_steps
+    @completed_steps = current_user.setup_step
+  end
+
+  def load_online
+    @settings.load_backup_sources
+    @settings.create_fb_login_url(request)
+  end
    
    # If account settings change causes timeline data to update, we need the timeline
    # to refresh

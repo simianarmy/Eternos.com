@@ -9,8 +9,8 @@
             <div class="add-btn-box">
             <%= link_to_function "+ Add New" do |page|
               page.insert_html :bottom, :address_book, :partial => "new_address", 
-                :locals => { :address_book => @address_book, :addressable => 'address_book', 
-                  :location => '', :address => (@address || @address_book.build_address) } 
+                :locals => { :address_book => settings.address_book, :addressable => 'address_book', 
+                  :location => '', :address => (settings.address || settings.address_book.build_address) } 
               end    
               %> 
               <%= #link_to_function "+ Add New", "addRowAddress(); ", :class => 'add1-text' 
@@ -24,7 +24,7 @@
         <tr><td>
         <div id="address_book_notice" class="error-message"></div>
         <div id="table-addresses">
-          <%= render :partial => 'address', :locals => {:addresses => @addresses} %>
+          <%= render :partial => 'address', :locals => {:addresses => settings.addresses} %>
         </div>
         </td></tr>
       </tbody>
@@ -44,10 +44,10 @@
     </tr>
     </thead>
     <tbody id="table-jobs">
-      <%= render :partial => 'new_job', :locals => {:jobs => @jobs} %>
+      <%= render :partial => 'new_job', :locals => {:jobs => settings.jobs} %>
     </tbody>
   </table>
-<% form_remote_for @job, 
+<% form_remote_for settings.job, 
                       :url => {:action => 'add_another_job'},
                       :loading => "$('image-loading-job').show();",
                       :complete => "rstCountJob();$('image-loading-job').hide();" do -%>
@@ -75,10 +75,10 @@
     </tr>
     </thead>
     <tbody id="table-schools">
-      <%= render :partial => 'new_school', :locals => {:schools => @schools} %>
+      <%= render :partial => 'new_school', :locals => {:schools => settings.schools} %>
     </tbody>
   </table>
-<% form_remote_for @school, 
+<% form_remote_for settings.school, 
                   :url => {:action => 'add_another_school'},
                   :loading => "$('image-loading-school').show();",
                   :complete => "rstCountSchool();$('image-loading-school').hide();" do -%>
@@ -107,10 +107,10 @@
     </tr>
     </thead>
     <tbody id="table-medicals">
-      <%= render :partial => 'new_medical', :locals => {:medicals => @medicals} %>
+      <%= render :partial => 'new_medical', :locals => {:medicals => settings.medicals} %>
     </tbody>
   </table>
-<% form_remote_for @medical, 
+<% form_remote_for settings.medical, 
                               :url => {:action => 'add_another_medical'},
                               :loading => "$('image-loading-medical').show();",
                               :complete => "rstCountMedical();$('image-loading-medical').hide();" do -%>
@@ -137,10 +137,10 @@
 	    </tr>
       </thead>
       <tbody id="table-medical-conditions">
-        <%= render :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions} %>
+        <%= render :partial => 'new_medical_condition', :locals => {:medical_conditions => settings.medical_conditions} %>
       </tbody>
     </table>
-<% form_remote_for @medical_condition,
+<% form_remote_for settings.medical_condition,
                                       :url => {:action => 'add_another_medical_condition'},
                                       :loading => "$('image-loading-medical-condition').show();",
                                       :complete => "rstCountMedicalCondition();$('image-loading-medical-condition').hide();" do -%>
@@ -167,10 +167,10 @@
 		    </tr>
 	      </thead>
 	      <tbody id="table-families">
-	        <%= render :partial => 'new_family', :locals => {:families => @families} %>
+	        <%= render :partial => 'new_family', :locals => {:families => settings.families} %>
 	      </tbody>
 	    </table>
-<% form_remote_for @family, 
+<% form_remote_for settings.family, 
                               :url => {:action => 'add_another_family'},
                               :loading => "$('image-loading-family').show();",
                               :complete => "rstCountFamily();$('image-loading-family').hide();" do -%>
@@ -195,7 +195,7 @@
           <div class="add-btn-box">
             <%= link_to_function "+ Add New" do |page|
               page.insert_html :bottom, :'table-relationships', :partial => "new_relationship", 
-              :locals => { :relationship => @relationship } 
+              :locals => { :relationship => settings.relationship } 
               end    
               %>
             </div>
@@ -207,7 +207,7 @@
         <tr><td>
           <div id="relationship_notice" class="error-message"></div>
           <div id="table-relationships">
-            <%= render :partial => 'relationship', :locals => {:relationships => @relationships} %>
+            <%= render :partial => 'relationship', :locals => {:relationships => settings.relationships} %>
           </div>
         </td></tr>
       </tbody>

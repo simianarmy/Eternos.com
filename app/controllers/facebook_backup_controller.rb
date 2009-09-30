@@ -12,92 +12,10 @@ class FacebookBackupController < ApplicationController
   
   #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
   
-  def new
-    # Make sure user not already authenticated
-    if current_user.authenticated_for_facebook_desktop?
-      begin
-        # Login with user's saved fb session and try a facebooker operation to 
-        # test for session validity
-        current_user.facebook_session_connect @session        
-        if @session.verify && @session.secured? && !@session.expired?
-          redirect_to :action => :permissions
-          return
-        end
-      rescue
-        # No problem they just need to login again
-        RAILS_DEFAULT_LOGGER.debug "Facebook connect failed on authenticated user!"
-      end
-    end
-    
-    begin
-      @auth_token = @session.auth_token
-      @login_url = @session.login_url
-    rescue Facebooker::Session::SessionExpired
-      load_facebook_desktop
-      load_session
-      retry
-    end
-  end
-  
-  def authenticate
-    begin
-      @session.auth_token = params[:auth_token]
-      @session.secure_with_session_secret!
-      
-      # Save facebook uid, session, & secret key for headless login
-      if @session.secured? && !@session.expired? && (user = @session.user) 
-        current_user.update_attribute(:facebook_uid, user.id)
-        current_user.set_facebook_session_keys(@session.session_key, @session.secret_from_session)
-        flash[:notice] = "Login successful!"
-        redirect_to :action => :permissions
-      else
-        raise "Unable to secure login session"
-      end
-    rescue Exception => e
-      flash[:error] = "Authentication error in Facebook app: #{e.to_s}"
-      redirect_to :action => :new
-    end
-  end
-  
-  def permissions
-    # Get facebook auth data for the app
-    current_user.facebook_session_connect @session
-    unless @session.secured?
-      flash[:error] = "Unable to log you in to Facebook App: connect method failed.  Please Try Again"
-      redirect_to :action => :new
-      return
-    end
-    @offline_url = @session.permission_url(:offline_access) unless check_permission(:offline_access)
-    @stream_url = @session.permission_url(:read_stream) unless check_permission(:read_stream)
-    
-    respond_to do |format|
-      format.html {
-        # Turn off confirmed flag if insufficient permissions
-        if @backup_source.confirmed? && (@offline_url || @stream_url)
-          @backup_source.update_attribute(:auth_confirmed, false)
-        end
-      }
-      format.js {
-        render :json => {:offline => @offline_url.nil?, :stream => @stream_url.nil?}
-      }
-    end
-  end
-  
   # For js ajax requests to check user's auth status
   # Wonder if it will work w/out cookies
   def check_auth
-    auth = begin
-      current_user.facebook_session_connect @session
-      check_permission(:offline_access) && check_permission(:read_stream)
-    rescue
-      false
-    end
-    
-    if auth
-      current_user.completed_setup_step(2)
-      # Run backup & update confirmation status on 1st check
-      @backup_source.confirmed! if !@backup_source.confirmed?
-    end
+    auth = has_permissions?
     
     respond_to do |format|
       format.js {
@@ -112,7 +30,6 @@ class FacebookBackupController < ApplicationController
   # session_key
   # secret
   # uid
-  
   def authorized
     RAILS_DEFAULT_LOGGER.debug "#{self.class.to_s}:authorized called by Facebook:\n"
     fb_session = ActiveSupport::JSON.decode(params[:session])
@@ -121,11 +38,12 @@ class FacebookBackupController < ApplicationController
     if fb_session['uid']
       current_user.update_attribute(:facebook_uid, fb_session['uid'])
       current_user.set_facebook_session_keys(fb_session['session_key'], fb_session['secret'])
-      flash[:notice] = "Facebook account authorized for backup!"
-
-      current_user.completed_setup_step(2)
-      # Run backup & update confirmation status on 1st check
-      @backup_source.confirmed! if !@backup_source.confirmed?
+      if has_permissions?
+        save_authorization 
+        flash[:notice] = "Facebook account authorized for backup!"
+      else
+        flash[:error] = "You must grant ALL requested permissions to the Eternos Backup application."
+      end
     end
     
     respond_to do |format|
@@ -139,15 +57,11 @@ class FacebookBackupController < ApplicationController
   end
   
   def cancel
-    RAILS_DEFAULT_LOGGER.info "#{self.to_s}:cancel called by Facebook:\n"
-    
-    # Send Facebook revoke authorization 
-    current_user.facebook_session_connect @session
-    @session.post('facebook.auth.revokeAuthorization', :uid => @session.user.id)
+    revoke_permissions
     
     # Remove session keys
-    @backup_source.update_attribute(:auth_confirmed, false)
     current_user.set_facebook_session_keys(nil, nil)
+    @backup_source.update_attribute(:auth_confirmed, false)
     
     flash[:notice] = "Facebook account removed from Eternos Backup."
     
@@ -161,11 +75,14 @@ class FacebookBackupController < ApplicationController
     end
   end
   
+  # What is this for?
   def canvas
     render :nothing => true, :status => 200
   end
   
   def destroy
+    revoke_permissions
+    
     @backup_source.update_attribute(:auth_confirmed, false)
     current_user.set_facebook_session_keys(nil, nil)
 
@@ -193,10 +110,32 @@ class FacebookBackupController < ApplicationController
       :backup_site => BackupSite.find_by_name(BackupSite::Facebook))
   end
   
+  def save_authorization
+    # Not the right place for this but oh well
+    current_user.completed_setup_step(2)
+    # Run backup & update confirmation status on 1st check
+    @backup_source.confirmed!
+  end
+  
+  def has_permissions?
+    begin
+      current_user.facebook_session_connect @session
+      check_permission(:offline_access) && check_permission(:read_stream)
+    rescue
+      false
+    end
+  end
+  
   # Helper for ajax permission check methods
   def check_permission(perm)
     @session.user.has_permission?(perm)
   rescue
     false
+  end
+  
+  def revoke_permissions
+    # Send Facebook revoke authorization 
+    current_user.facebook_session_connect @session
+    @session.post('facebook.auth.revokeAuthorization', :uid => @session.user.id)
   end
 end

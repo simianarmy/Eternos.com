@@ -1,43 +1,6 @@
 <div id="account-setup-content">
-<% form_remote_tag :html => { :action => url_for(:action => 'save_personal_info'), 
-  :id => 'personal_info_form' },
-  :url => { :action => 'save_personal_info' },
-  :complete => "updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps})" do %>
-  <table class="table-form1" width="460" >
-    <tbody>
-      <tr>
-        <td colspan="3">
-  	    <div class="title2"><h3>Name & Birthdate</h3></div><br />
-  			<div class="textarea7">
-  			  Your birthdate is required for us to properly display your Timeline information.  
-  			  Feel free to enter additional details about your name here as well.
-  			  <br/>
-  			  Fields marked with a <font style="color: red;">*</font> must be filled in.
-  			</div>
-    	  </td>
-      </tr>
-      <tr>
-        <td colspan="3">
-  	    <hr class="line1" /><a href="#" class="plusminus"></a>
-  	  </td>
-  	  <tr>
-  	    <td colspan="3">
-  	      <div id="notice" class="flash_notice"></div>
-  	      </td>
-  	      </tr>
-      </tr>
-      <%= render :partial => 'personal_info_form', :locals => {:address_book => @address_book} %>
-    </tbody>
-  </table>
-  <% if @completed_steps == 0 %>
-    <%= submit_tag('Next Step', :class => "submit-btn4") %>
-  <% else %>
-    <%= submit_tag('Save', :class => "submit-btn4") %>
-  <% end %>
-<% end %>
-
+  <%= render :partial => 'account_settings/personal_info_form', :locals => {:address_book => @settings.address_book, :completed_steps => @completed_steps, :setup => true} %>
 </div>
 <%= javascript_tag "
-
-  datePickerController.create();"  
+  document.observe('dom:loaded', function() { datePickerController.create() }); "
 %>

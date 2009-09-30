@@ -28,7 +28,7 @@
     .pop-content-right
       %center
         = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
-      = render :partial => @content_page
+      = render :partial => @content_page, :locals => {:settings => @settings}
       
       .clear
   = image_tag "errors/popup-footer.png", :width => "700px"

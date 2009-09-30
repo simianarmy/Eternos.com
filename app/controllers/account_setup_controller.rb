@@ -1,10 +1,13 @@
 # $Id$
 
+require 'settings_presenter'
+
 class AccountSetupController < ApplicationController
   before_filter :login_required
   require_role "Member"
   before_filter :load_facebook_desktop
   before_filter :load_facebook_session
+  before_filter :load_presenter
   before_filter :load_completed_steps
   layout 'account_setup'
   
@@ -16,7 +19,7 @@ class AccountSetupController < ApplicationController
       load_online
       'backup_sources'
     else
-      find_user_profile
+      @settings.load_personal_info
       'personal_info'
     end
     @active_step = @completed_steps + 1
@@ -29,19 +32,18 @@ class AccountSetupController < ApplicationController
 
   # TODO: Move to profile controller
   def save_personal_info
-    find_user_profile
-    initialize_from_params
+    @settings.load_personal_info
     
-    if update_personal_info 
-      if has_required_personal_info_fields?
+    if @settings.update_personal_info
+      if @settings.has_required_personal_info_fields?
         @current_step = current_user.setup_step
         current_user.completed_setup_step(1)
-        flash[:notice] = "Name & Birthdate Saved"
+        flash[:notice] = "Personal Info Saved"
       else
         flash[:error] = "Please fill in all required fields"
       end
     else
-      flash[:error] = "Unable to save your changes: <br/>" + @errors.join('<br/>')
+      flash[:error] = "Unable to save your changes: <br/>" + settings.join('<br/>')
     end
     
     respond_to do |format|
@@ -58,7 +60,7 @@ class AccountSetupController < ApplicationController
     end 
   end
   
-  # TODO: Move to RSS controller
+  # TODO: Move to Feeds controller
   def set_feed_rss_url
     begin
       @feed = current_user.backup_sources.blog.find(params[:id])
@@ -75,7 +77,8 @@ class AccountSetupController < ApplicationController
   end
   
   def personal_info
-    find_user_profile
+    @settings.load_personal_info
+    
     respond_to do |format|
       format.js do
         render :update do |page|
@@ -85,92 +88,27 @@ class AccountSetupController < ApplicationController
     end
   end
   
-  def load_online
-    # Desktop login url 
-    # Using url described on http://wiki.developers.facebook.com/index.php/Authorization_and_Authentication_for_Desktop_Applications#Prompting_for_Permissions
-    @fb_login_url = @fb_session.login_url_with_perms(
-      :next => authorized_facebook_backup_url(:host => request.host), 
-      :next_cancel => cancel_facebook_backup_url(:host => request.host)
-      )
-    
-    @feed_url = FeedUrl.new
-    
-    backup_sources = current_user.backup_sources
-    if backup_sources.any?
-      if @facebook_account = backup_sources.facebook.first
-        if @facebook_confirmed = @facebook_account.confirmed?
-          begin
-            current_user.facebook_session_connect @fb_session
-            @fb_session.user.populate(:pic_small, :name) if @fb_session.verify
-            @facebook_user = @fb_session.user
-          end
-        end
-      else
-        @facebook_confirmed = false
-      end
-      @twitter_accounts = backup_sources.twitter.paginate :page => params[:page], :per_page => 10
-      @twitter_account   = backup_sources.twitter.first
-      @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
-      @feed_urls = current_user.backup_sources.blog.paginate :page => params[:page], :per_page => 10
-      @rss_url = backup_sources.blog.first
-      @rss_confirmed = @rss_url && @rss_url.confirmed?
-      load_email_accounts
-      @current_gmail = @email_accounts.first
-    end
-  end
-  
   def backup_sources
     load_online
     
     respond_to do |format|
       format.js {
         render :update do |page|
-          if params[:page].blank?
-            update_account_setup_layout(page, "backup_sources")
-          else
-            page.replace_html 'result-urls', :partial => 'backup_sources/rss_url_list', 
-              :locals => {:feed_urls => @feed_urls}
-          end
+          update_account_setup_layout(page, "backup_sources")
         end
       }
     end
   end
   
   private
-
-   def update_personal_info
-     @errors = []
-     unless current_user.profile.update_attributes(@new_profile)
-      @errors = current_user.profile.errors.full_messages
-      return false
-    end
-    unless current_user.address_book.update_attributes(@new_address_book)
-      @errors = current_user.address_book.errors.full_messages
-    end
-    @errors.empty?
-   end
-   
-   def has_required_personal_info_fields?
-     (ab = current_user.address_book) &&
-     !ab.first_name.blank? && !ab.last_name.blank? && ab.birthdate
-   end
-   
-   def initialize_from_params
-     @new_address_book = params[:address_book]
-     @new_profile = params[:profile]
-   end
-   
-   def find_user_profile
-      @address_book = current_user.address_book
-      @profile  = current_user.profile
-   end
-   
-   def load_email_accounts
-     @email_accounts = current_user.backup_sources.gmail.paginate :page => params[:page], :per_page => 10
-   end
    
    def load_completed_steps
      @completed_steps = current_user.setup_step
+   end
+   
+   def load_online
+     @settings.load_backup_sources
+     @settings.create_fb_login_url(request)
    end
    
    def respond_to_ajax_remove(obj)
@@ -184,6 +122,10 @@ class AccountSetupController < ApplicationController
    end
    
    def load_facebook_session
-     @fb_session = Facebooker::Session.current
+     @fb_session ||= Facebooker::Session.current
+   end
+   
+   def load_presenter
+     @settings = SettingsPresenter.new(current_user, load_facebook_session, params)
    end
 end
