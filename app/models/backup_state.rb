@@ -31,7 +31,7 @@ class BackupState < ActiveRecord::Base
   
   # Tries to estimated time left in current backup job
   def time_remaining
-    member.backup_jobs.recent.time_remaining rescue 0
+    member.last_backup_job.time_remaining rescue 0
   end
   
   def first_time_data_available?

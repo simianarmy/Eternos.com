@@ -1,24 +1,37 @@
 <% use_timeline %>
+<% javascript 'jsProgressBarHandler' %>
+
 <% header '<span class="subtitle1">' + @member_name + ':</span><span class="subtitle2">Your TimeLine(tm)</span>' 
 %>
 <div id="content-container3">
   <div id="timeline-top">
-      <span style="font-size: x-small">
-        If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We welcome any feedback you might have!
+    <div id="backups" class="backup-container">
+      <%= render :partial => 'backup_bars', :locals => {:backups => @backups} %>
+    </div>
+    <span class="tl_helptext">
+      To browse events in your Timeline, hold your mouse over the icons for a preview.  Click the icons for full details, or click an individual item inside the preview window.
+      <br/>
+      To navigate the Timeline: Drag it left or right, use the mouse scroll wheel, or the arrow keys, or double click on a date.
       </span>
     <div class="timelinebox">
       <div id="my-timeline" style="height:375px;border: 1px solid #aaa;"></div>
       <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
     </div>
-    <span><font style="font-size: x-small">To navigate the Timeline: use the mouse scroll wheel, the arrow keys, drag the Timeline, or double click on a date.</font>
 		<div class="dotline"></div>
   </div>
   <div id="timeline-detail">
+    <span class="tl_helptext tooltip" style="display: none;">Click the arrows around the dates to browse nearby months or years.</span>
     <div id="month-selector"></div>
 		<div style="clear:both"></div>
     <div id="story-area"></div>
     <div id="arti-area"></div>			            
 		<div style="clear:both"></div>
+  </div>
+  <br/>
+  <div id="timeline-footer" class="tl_helptext">
+  <span class="tl_helptext">
+    If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We welcome any feedback you might have!
+  </span>
   </div>
 </div>
 

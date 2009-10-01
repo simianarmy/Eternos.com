@@ -60,6 +60,10 @@ class Member < User
     end
   end
   
+  def last_backup_job
+    backup_jobs.recent.first
+  end
+  
   # Returns all used categories
   def all_categories
     stories.map(&:category).delete_if {|c| c.nil?}.uniq

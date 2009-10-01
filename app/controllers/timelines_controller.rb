@@ -20,7 +20,6 @@ class TimelinesController < ApplicationController
   # Collect any other data that the timeline page needs on load.
   # All other requests will be done via AJAX queries.0
   def show
-    # Use map table to map dev users to their staging account
     @member = current_user
     @member_name = @member.full_name
     @tl_start_date, @tl_end_date = cache("tl_date_range:#{@member.id}", session[:refresh_timeline]) { 
@@ -28,16 +27,23 @@ class TimelinesController < ApplicationController
     }
     @fake = 'fake' if params[:fake]
     
-    @hide_timeline = if @member.need_backup_setup?
+    if @member.need_backup_setup?
       flash[:error] = "<h4>You do not have any accounts to backup yet!</h4>To setup your online accounts, click the 'account settings' link above and go to Step 2."
-    elsif !@member.has_backup_data?
-      flash[:notice] = "We are backing up your data and will email you when it is ready to view!"
+      @hide_timeline = true
+    else
+      if !@member.has_backup_data?
+        flash[:notice] = "We are backing up your data and will email you when it is ready to view!"
+        @hide_timeline = true
+      end
+      
+      if @member.backup_in_progress? && ((estimated_time = @member.backup_state.time_remaining) > 0)
+        estimated = help.distance_of_time_in_words(Time.now, Time.now + estimated_time)
+        flash[:notice] = "Backup in progress...estimated completion in #{estimated}."
+      end
+      
+      @backups = BackupSourceJob.descend_by_created_at[0..3] #@member.last_backup_job.backup_source_jobs rescue []
     end
     
-    if @member.backup_in_progress? && ((estimated_time = @member.backup_state.time_remaining) > 0)
-      estimated = help.distance_of_time_in_words(Time.now, Time.now + estimated_time)
-      flash[:notice] = "Backup in progress...will complete in #{estimated}."
-    end
   end
   
   def debug

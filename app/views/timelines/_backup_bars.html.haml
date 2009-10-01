@@ -1,0 +1,16 @@
+- if @backups.any?
+  .clear &nbsp;
+  Backup Progress
+  %br
+  - @backups.each do |bs|
+    .backup-box{:id => @boxid = dom_id(bs)}
+      = backup_progress_icon(bs.backup_source.backup_site.name)
+      = progress_bar( dom_id(bs, 'complete'), (bs.percent_complete.to_f/100), false, true)
+      .backup_tip{:id => @tipid = dom_id(bs, 'tip'), :style => "display: none;"}
+        == Latest #{bs.backup_source.backup_site.name.capitalize} Backup Status
+      = javascript_tag "new Tip($('#{@boxid}'), $('#{@tipid}'), { fixed: true, hideOthers: true, viewport: true});"
+  #hideit{:style => "float: right;"}
+    = link_to_function 'hide', "$('backups').hide();"
+  .clear &nbsp;
+- else
+  No Recent Backups

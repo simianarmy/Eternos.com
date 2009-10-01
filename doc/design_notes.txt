@@ -3,3 +3,6 @@ Great css templates
   
 Multi-step Instructions Example:
   http://www.braintreepaymentsolutions.com/application
+  
+Basic css for aligning
+  http://brams.dk/torben/technotes/css/sample.html

@@ -2,11 +2,22 @@
 
 /*timeline--------------------------------------------------------------------------------------------------------------------------*/
 
+body{
+margin:0px;
+padding:0px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+}
 
 #content-container3{
 	width:861px;
 	height:auto;
 	padding:0;
+}
+
+.tl_helptext {
+	font-size: 11px;
+	background-color: #ffe;
 }
 
 .subtitle1{
@@ -57,11 +68,21 @@
 	margin:10px 0 10px 0;
 }
 
+.backup-container {
+	/* border: 1px solid; */
+	background-color: #ffe;
+	margin-bottom: 10px;
+	font-size: 11px;
+}
+
 .backup-box{
-	width:194.25px;
+	float: left;
+	/*
+	width: 100px;
 	height:50px;
+	*/
 	padding:0 10px 0 10px;
-	margin:20px 0 10px 0;
+	/*margin:20px 0 10px 0;*/
 }
 
 .progress-bar{
@@ -308,13 +329,6 @@ a.paginate-btn:hover{
 }
 
 /* Events list--------------------------------------------------------------------------------------------------------------------------*/
-
-body{
-margin:0px;
-padding:0px;
-font-family:Arial, Helvetica, sans-serif;
-font-size:12px;
-}
 
 #events_header{
 background:transparent url(/images/storybox-top.gif) no-repeat;

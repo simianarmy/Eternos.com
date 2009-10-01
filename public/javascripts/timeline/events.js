@@ -163,7 +163,7 @@ var ETEvent = {
 		} else if (type === "address") {	
 			return new ETLAddressEventSource(data);
 		} else {
-			alert("Unknown type from source: " + data.type);
+			console.log("Unknown type from source: " + data.type);
 			return null;
 		}
 	},
