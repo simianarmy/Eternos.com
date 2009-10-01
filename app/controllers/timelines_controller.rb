@@ -41,7 +41,8 @@ class TimelinesController < ApplicationController
         flash[:notice] = "Backup in progress...estimated completion in #{estimated}."
       end
       
-      @backups = BackupSourceJob.descend_by_created_at[0..3] #@member.last_backup_job.backup_source_jobs rescue []
+      # BackupSourceJob.descend_by_created_at[0..3] #
+      @backups = @member.last_backup_job.backup_source_jobs rescue []
     end
     
   end

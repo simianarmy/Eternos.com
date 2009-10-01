@@ -2,7 +2,7 @@
   .clear &nbsp;
   Latest Backups
   %br
-  - @backups.each do |job|
+  - @backups.reject{|b| b.backup_source.nil? || b.backup_source.backup_site.nil?}.each do |job|
     .backup-box{:id => @boxid = dom_id(job)}
       = backup_progress_icon(job.backup_source.backup_site.name)
       = progress_bar( dom_id(job, 'complete'), (job.percent_complete.to_f/100), false, true)
