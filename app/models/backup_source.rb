@@ -80,6 +80,12 @@ class BackupSource < ActiveRecord::Base
     BackupJobPublisher.add_source(self)
   end
   
+  def next_backup_at
+    if confirmed? && !disabled
+      last_backup_at + 1.day
+    end
+  end
+      
   def photo_album(id)
     backup_photo_albums.find_by_source_album_id(id)
   end

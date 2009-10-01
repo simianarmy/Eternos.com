@@ -25,12 +25,7 @@ module TimelinesHelper
   end
 
   def backup_progress_icon(name)
-    name.downcase!
-    icon = if %w( facebook twitter ).include? name.downcase
-      "#{name}.gif"
-    else
-      "#{icon}.png"
-    end
+    icon = name.downcase + (%w( facebook twitter ).include?(name) ? '.gif' : '.png')
     
     "<img alt='#{name}' style='width:12px;height:12px;' src='/javascripts/timeline/icons/#{icon}'>"
   end

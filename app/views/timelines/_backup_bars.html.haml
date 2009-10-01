@@ -1,13 +1,21 @@
 - if @backups.any?
   .clear &nbsp;
-  Backup Progress
+  Latest Backups
   %br
-  - @backups.each do |bs|
-    .backup-box{:id => @boxid = dom_id(bs)}
-      = backup_progress_icon(bs.backup_source.backup_site.name)
-      = progress_bar( dom_id(bs, 'complete'), (bs.percent_complete.to_f/100), false, true)
-      .backup_tip{:id => @tipid = dom_id(bs, 'tip'), :style => "display: none;"}
-        == Latest #{bs.backup_source.backup_site.name.capitalize} Backup Status
+  - @backups.each do |job|
+    .backup-box{:id => @boxid = dom_id(job)}
+      = backup_progress_icon(job.backup_source.backup_site.name)
+      = progress_bar( dom_id(job, 'complete'), (job.percent_complete.to_f/100), false, true)
+      .backup_tip{:id => @tipid = dom_id(job, 'tip'), :style => "display: none;"}
+        == Latest #{job.backup_source.backup_site.name.capitalize} Backup
+        %br
+        == #{job.percent_complete} % Complete - #{job.successful? ? 'Successful' : 'Failed'}
+        %br
+        - if job.finished_at
+          == Finished #{distance_of_time_in_words(job.finished_at, Time.now)} ago
+          %br
+        == Next backup scheduled for #{job.backup_source.next_backup_at.to_s(:short)}
+        
       = javascript_tag "new Tip($('#{@boxid}'), $('#{@tipid}'), { fixed: true, hideOthers: true, viewport: true});"
   #hideit{:style => "float: right;"}
     = link_to_function 'hide', "$('backups').hide();"
