@@ -142,7 +142,7 @@ CUTYCAPT
 end
 
 #after "deploy:symlink", "deploy:google_analytics"
-after "deploy:symlink", "deploy:cleanup"
+#after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons
 after "deploy:symlink", "deploy:sendmail"
 #after "deploy:symlink", "deploy:update_crontab"
 after "deploy:symlink", "deploy:symlink_shared"

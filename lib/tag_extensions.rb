@@ -7,7 +7,7 @@ class ActiveRecord::Base
       begin
         t = Tag.find_or_create_by_name(tag)
         Tagging.create(:tag => t, 
-          :taggable => self, :user_id => user.id)
+          :taggable => self, :tagger => user)
       rescue ActiveRecord::StatementInvalid => e
         raise unless e.to_s[/Duplicate entry/]
       end    

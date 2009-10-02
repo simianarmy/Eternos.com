@@ -8,7 +8,8 @@ class Element < ActiveRecord::Base
   acts_as_restricted :owner_method => :owner
   acts_as_time_period
   acts_as_list :scope => :story
-  acts_as_taggable_custom :owner_method => Proc.new {|e| e.story.member}
+  #acts_as_taggable_custom :owner_method => Proc.new {|e| e.story.member}
+  acts_as_taggable_on :tags
   acts_as_time_locked
   
   attr_accessor :with_new_decoration

@@ -16,7 +16,9 @@ class BackupSourcesController < ApplicationController
   end
     
   def add_twitter
-    request_token = TwitterBackup.oauth_client.request_token(:oauth_callback => twitter_auth_backup_sources_url(:host => request.host))
+    request_token = TwitterBackup::OAuth.oauth_client.request_token(
+      :oauth_callback => twitter_auth_backup_sources_url(:host => request.host)
+      )
     session[:request_token] = request_token.token
     session[:request_token_secret] = request_token.secret
     redirect_to request_token.authorize_url
@@ -24,18 +26,18 @@ class BackupSourcesController < ApplicationController
   
   def twitter_auth
     begin
-      if TwitterBackup.account_authenticated?(session[:request_token], 
+      if TwitterBackup::OAuth.account_authenticated?(session[:request_token], 
         session[:request_token_secret],
         params[:oauth_verifier]
         )
-        @access_token = TwitterBackup.access_token
+        @access_token = TwitterBackup::OAuth.access_token
         RAILS_DEFAULT_LOGGER.debug "Twitter access_token = #{@access_token.inspect}"
         backup_source = current_user.backup_sources.twitter.find_by_auth_token(@access_token.token)
         if backup_source.nil?
           # Try to get twitter screen name for backup source title
           backup_source = current_user.backup_sources.new(
             :backup_site_id => BackupSite.name_eq(BackupSite::Twitter).first.id,
-            :title => TwitterBackup.screen_name || '',
+            :title => TwitterBackup::OAuth.screen_name || '',
             :auth_token => @access_token.token,
             :auth_secret => @access_token.secret
             )
@@ -56,36 +58,6 @@ class BackupSourcesController < ApplicationController
 
     redirect_to account_setup_path
   end
-
-  def og_twitter_auth
-    begin
-      if TwitterBackup.account_authenticated_httpauth?(params[:backup_source][:auth_login], params[:backup_source][:auth_password])  
-        backup_source = current_user.backup_sources.twitter.find_by_auth_login(params[:backup_source][:auth_login])
-        if backup_source.nil?
-          backup_source = current_user.backup_sources.new(params[:backup_source].merge({
-            :backup_site_id => backup_site.id
-            }))
-          if backup_source.save
-            backup_source.confirmed!
-            current_user.completed_setup_step(2)            
-            flash[:notice] = "Twitter account successfully saved"
-          end 
-        else
-          flash[:notice] = "Twitter account is already activated"
-        end
-      else
-        flash[:error] = "Twitter account is not valid"
-      end
-    rescue
-       flash[:error] = "Twitter account is not valid"
-    end
-
-    find_twitter_accounts # reload accounts list
-    respond_to do |format|
-      format.js
-    end
-  end
-  
   
   def remove_twitter_account
     begin

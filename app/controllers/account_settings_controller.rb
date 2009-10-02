@@ -450,7 +450,7 @@ class AccountSettingsController < ApplicationController
         flash[:error] = "Please fill in all required fields"
       end
     else
-      flash[:error] = "Unable to save your changes: <br/>" + settings.errors.join('<br/>')
+      flash[:error] = "Unable to save your changes: <br/>" + @settings.errors.join('<br/>')
     end
     
     respond_to do |format|
