@@ -20,9 +20,6 @@ class AccountSettingsController < ApplicationController
     when 0
       @settings.load_personal_info
       'personal_info'
-    when 1
-      load_online
-      'backup_sources'
     else
       @settings.load_history
       'your_history'
