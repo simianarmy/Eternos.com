@@ -24,9 +24,14 @@ module TimelinesHelper
     end
   end
 
+  # Displays backup job progress bar
+  def backup_progress_bar(job)
+    backup_progress_icon(job.backup_source.backup_site.name) + " " +
+    progress_bar(dom_id(job, 'complete'), (job.percent_complete.to_f/100), false, true)
+  end
+  
   def backup_progress_icon(name)
     icon = name.downcase + (%w( facebook twitter ).include?(name) ? '.gif' : '.png')
-    
     "<img alt='#{name}' style='width:12px;height:12px;' src='/javascripts/timeline/icons/#{icon}'>"
   end
 end

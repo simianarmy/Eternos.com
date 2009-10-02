@@ -64,6 +64,18 @@ describe BackupPhoto do
         @photo.starting_download!
         @photo.photo.thumbnails.should have(1).thing
       end
+      
+      it "should assign tags to photo object" do
+        @photo.tags = 'foo, fee'
+        @photo.starting_download!
+        @photo.reload.photo.tags.should have(2).things
+      end
+      
+      it "should assign added_at attribute to photo object" do
+        @photo.added_at = Time.now
+        @photo.starting_download!
+        @photo.reload.photo.taken_at.should == @photo.added_at
+      end
     end
   end   
 end

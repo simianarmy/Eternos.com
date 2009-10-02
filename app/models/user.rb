@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
   acts_as_authorized_user
   acts_as_authorizable
   
+  acts_as_tagger
+  
   # Virtual attributes
   attr_accessor :invitation_required, :registration_required
   

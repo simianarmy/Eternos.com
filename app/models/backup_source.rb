@@ -82,8 +82,12 @@ class BackupSource < ActiveRecord::Base
   
   def next_backup_at
     if confirmed? && !disabled
-      last_backup_at + 1.day
-    end
+      if last_backup_at
+        last_backup_at + 1.day
+      else
+        1.hour.from_now
+      end
+    end  
   end
       
   def photo_album(id)

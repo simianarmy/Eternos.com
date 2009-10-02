@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090624162633) do
+ActiveRecord::Schema.define(:version => 20091001214733) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "attachment_type"
     t.string   "activity_type"
     t.string   "type"
-    t.integer  "activity_stream_id", :null => true
+    t.integer  "activity_stream_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -97,9 +97,9 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   end
 
   create_table "app_settings", :force => true do |t|
-    t.binary  "master_c"
+    t.binary "master_c"
   end
-  
+
   create_table "av_attachments", :force => true do |t|
     t.integer  "av_attachable_id"
     t.string   "av_attachable_type"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   end
 
   create_table "backup_emails", :force => true do |t|
-    t.integer  "backup_source_id", :null => false
+    t.integer  "backup_source_id",  :null => false
     t.string   "message_id"
     t.string   "mailbox"
     t.string   "subject"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.datetime "updated_at"
     t.string   "state"
   end
+
   add_index "backup_emails", ["backup_source_id"], :name => "index_backup_emails_on_backup_source_id"
 
   create_table "backup_job_archives", :force => true do |t|
@@ -154,7 +155,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   create_table "backup_photo_albums", :force => true do |t|
     t.integer  "backup_source_id",                :null => false
     t.string   "source_album_id",                 :null => false
-    t.string   "cover_id",                        :null => true
+    t.string   "cover_id"
     t.integer  "size",             :default => 0, :null => false
     t.string   "name"
     t.text     "description"
@@ -168,18 +169,18 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "backup_photo_albums", ["source_album_id"], :name => "index_backup_photo_albums_on_source_album_id"
 
   create_table "backup_photos", :force => true do |t|
-    t.integer  "backup_photo_album_id",                    :null => false
-    t.string   "source_photo_id",                          :null => false
+    t.integer  "backup_photo_album_id", :null => false
+    t.string   "source_photo_id",       :null => false
     t.integer  "content_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "added_at"
     t.text     "source_url"
     t.string   "caption"
-    t.string   "title"
     t.string   "tags"
     t.string   "state"
     t.text     "download_error"
+    t.datetime "added_at"
+    t.string   "title"
   end
 
   add_index "backup_photos", ["backup_photo_album_id"], :name => "index_backup_photos_on_backup_photo_album_id"
@@ -222,12 +223,9 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "backup_source_jobs", ["backup_job_id"], :name => "index_backup_source_jobs_on_backup_job_id"
 
   create_table "backup_sources", :force => true do |t|
-    t.string   "title"
     t.string   "type"
     t.string   "auth_login"
     t.string   "auth_password"
-    t.string   "auth_token"
-    t.string   "auth_secret"
     t.string   "rss_url"
     t.boolean  "auth_confirmed",         :default => false, :null => false
     t.string   "auth_error"
@@ -243,10 +241,14 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.boolean  "needs_initial_scan",     :default => true,  :null => false
     t.datetime "last_login_attempt_at"
     t.datetime "last_login_at"
+    t.string   "auth_token"
+    t.string   "auth_secret"
+    t.string   "title"
   end
-  add_index "backup_sources", ["user_id"]
-  add_index "backup_sources", ["backup_site_id"]
-  
+
+  add_index "backup_sources", ["backup_site_id"], :name => "index_backup_sources_on_backup_site_id"
+  add_index "backup_sources", ["user_id"], :name => "index_backup_sources_on_user_id"
+
   create_table "backup_states", :force => true do |t|
     t.datetime "last_successful_backup_at"
     t.datetime "last_failed_backup_at"
@@ -301,9 +303,10 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "commentable_type"
     t.integer  "user_id",                        :default => 0,  :null => false
   end
+
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
-   create_table "content_accessors", :force => true do |t|
+  create_table "content_accessors", :force => true do |t|
     t.integer  "content_authorization_id"
     t.integer  "user_id"
     t.integer  "circle_id"
@@ -373,6 +376,13 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "state"
   end
 
+  create_table "dev_staging_maps", :force => true do |t|
+    t.integer "dev_user_id",        :null => false
+    t.integer "staging_user_id",    :null => false
+    t.string  "environment"
+    t.integer "production_user_id", :null => false
+  end
+
   create_table "elements", :force => true do |t|
     t.integer  "story_id"
     t.datetime "created_at"
@@ -410,17 +420,17 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "families", ["profile_id"], :name => "index_families_on_profile_id"
 
   create_table "feed_contents", :force => true do |t|
-    t.integer "feed_entry_id",  :null => false
-    t.text    "html_content"
-    t.string  "screencap_file_name"
-    t.string  "screencap_content_type"
+    t.integer  "feed_entry_id",                         :null => false
+    t.text     "html_content"
+    t.string   "screencap_file_name"
     t.datetime "created_at"
+    t.string   "screencap_content_type"
     t.datetime "screencap_updated_at"
-    t.integer "size", :null => false, :default => 0
+    t.integer  "size",                   :default => 0, :null => false
   end
-  
-  add_index "feed_contents", ["feed_entry_id"]
-  
+
+  add_index "feed_contents", ["feed_entry_id"], :name => "index_feed_contents_on_feed_entry_id"
+
   create_table "feed_entries", :force => true do |t|
     t.integer  "feed_id",      :null => false
     t.string   "author"
@@ -448,7 +458,7 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   end
 
   add_index "feeds", ["backup_source_id"], :name => "index_feeds_on_backup_source_id"
-    
+
   create_table "guest_invitations", :force => true do |t|
     t.integer  "sender_id",                        :null => false
     t.integer  "circle_id"
@@ -673,10 +683,6 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
   add_index "roles_users", ["role_id"], :name => "role_id"
   add_index "roles_users", ["user_id"], :name => "user_id"
 
-  create_table "schema_migrations", :id => false do |t|
-    t.string 'version', :null => false
-  end
-  
   create_table "schools", :force => true do |t|
     t.integer "profile_id",                          :null => false
     t.integer "country_id",           :default => 0, :null => false
@@ -780,10 +786,13 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.integer  "taggable_id"
     t.string   "taggable_type"
     t.datetime "created_at"
-    t.integer  "user_id"
+    t.integer  "tagger_id"
+    t.string   "context"
+    t.string   "tagger_type"
   end
 
   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
   add_index "taggings", ["taggable_id", "taggable_type"], :name => "index_taggings_on_taggable_id_and_taggable_type"
 
   create_table "tags", :force => true do |t|
@@ -860,15 +869,10 @@ ActiveRecord::Schema.define(:version => 20090624162633) do
     t.string   "facebook_secret_key"
     t.string   "facebook_session_key"
     t.boolean  "always_sync_with_facebook"
-    t.integer "setup_step", :null => false, :default => 0
+    t.integer  "setup_step",                              :default => 0,         :null => false
   end
 
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
 
-  create_table "dev_staging_maps", :force => true do |t|
-    t.integer "dev_user_id", "staging_user_id", "production_user_id", :null => false
-    t.string "environment"
-  end
-  
 end

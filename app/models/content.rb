@@ -28,7 +28,8 @@ class Content < ActiveRecord::Base
   acts_as_restricted :owner_method => :owner
   acts_as_archivable :order => 'DESC'
   acts_as_time_locked
-  acts_as_taggable_custom :owner_method => :owner
+  #acts_as_taggable_custom :owner_method => :owner
+  acts_as_taggable_on :tags
   acts_as_av_attachable
   
   validates_presence_of :title, :message => "Please Enter a Title"

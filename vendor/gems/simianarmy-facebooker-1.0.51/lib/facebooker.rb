@@ -24,8 +24,8 @@ begin
     end
   end
 rescue
-  puts "*** DANGER!!! REQUIRING json! Conflicts w/ ActiveSupport::JSON***"
-  require 'json'
+  raise "*** DANGER!!! REQUIRING json! Conflicts w/ ActiveSupport::JSON***"
+  #require 'json'
 end
 require 'zlib'
 require 'digest/md5'

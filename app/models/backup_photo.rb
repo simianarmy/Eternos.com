@@ -1,6 +1,8 @@
 # $Id$
 
 class BackupPhoto < ActiveRecord::Base
+  include AfterCommit::ActiveRecord
+  
   belongs_to :backup_photo_album
   belongs_to :photo, :class_name => 'Content', :foreign_key => 'content_id', :dependent => :destroy
   
@@ -64,19 +66,18 @@ class BackupPhoto < ActiveRecord::Base
       # Sanity check
       @member = backup_photo_album.backup_source.member
       @filename = File.join(Dir::tmpdir, URI::parse(source_url).path.split('/').last)
-      logger.info "Downloading #{source_url} to #{@filename}..."
+      logger.debug "Downloading #{source_url} to #{@filename}..."
 
       t = rio(@filename) < rio(source_url) # Download to temp file
       if t.bytes > 0
-        c = Photo.create!(
+        self.photo = Photo.create!(
           :owner => @member,
           :content_type => Content.detect_mimetype(@filename),
           :description => caption,
           :filename => File.basename(@filename),
           :temp_path => File.new(@filename),
+          :tag_list => tags || '',
           :taken_at => added_at)
-        c.tag_with(tags.join(','), @member) if tags
-        self.photo = c
       end
     rescue
       update_attribute(:download_error, $!)
@@ -85,4 +86,10 @@ class BackupPhoto < ActiveRecord::Base
     end
   end
 
+  protected
+  
+  def after_commit_on_create
+    logger.debug "Sending job to image download worker: #{self.id}"
+    ImageDownloadWorker.async_download_image(:id => self.id)
+  end
 end
