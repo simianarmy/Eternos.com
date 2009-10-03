@@ -7,7 +7,7 @@
 
 
 class ActivityStreamProxy
-  attr_accessor :id, :created, :updated, :message, :type, :attachment_type
+  attr_accessor :id, :author, :created, :updated, :message, :type, :attachment_type
   
   class Attachment
     attr_reader :data

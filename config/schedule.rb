@@ -23,16 +23,12 @@ set :cron_log, "#{RAILS_ROOT}/log/cron.log"
 
 rake_opts = '--trace'
 
-every 1.day, :at => "2am" do
+every 2.hours do
   rake "#{rake_opts} backup:publish_jobs"
 end
 
 every 1.day do
   rake "#{rake_opts} backup:generate_report"
-end
-
-every 1.hour do
-  rake "#{rake_opts} backup:download_photos"
 end
 
 every :saturday, :at => "4am" do

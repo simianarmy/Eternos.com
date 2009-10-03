@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.datetime "published_at"
     t.datetime "edited_at"
     t.string   "guid"
+    t.string   "author"
     t.text     "message"
     t.text     "attachment_data"
     t.string   "attachment_type"

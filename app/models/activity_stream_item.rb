@@ -16,6 +16,7 @@ class ActivityStreamItem < ActiveRecord::Base
   def self.create_from_proxy(item)
     create!(
       :guid             => item.id,
+      :author           => item.author,
       :edited_at        => item.updated ? Time.at(item.updated) : nil,
       :published_at     => item.created ? Time.at(item.created) : nil,
       :message          => item.message,

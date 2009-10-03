@@ -23,7 +23,6 @@ AUTHORIZATION_MIXIN = "object roles"
   #
   # This can be set to a hash or to an explicit path like '/login'
   #
-
 LOGIN_REQUIRED_REDIRECTION = '/login'
 PERMISSION_DENIED_REDIRECTION = '/member_home'
 

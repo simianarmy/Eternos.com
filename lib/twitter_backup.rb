@@ -1,7 +1,6 @@
 # $Id$
 
 # Supports number of twitter gems 
-require 'crack/json' # for twitter json parsing
 
 module TwitterBackup
   # Uses TwitterOAuth::Client object from twitter_oauth gem
@@ -12,7 +11,7 @@ module TwitterBackup
   end
   
   module OAuth
-    require 'twitter_oauth'
+#    require 'twitter_oauth'
     
     class << self
       attr_reader :access_token
@@ -47,7 +46,7 @@ module TwitterBackup
   
   # Uses Twitter::Base object
   module Twitter
-    require 'twitter'
+#    require 'twitter'
     
     class << self
       # Returns Twitter::Base object from oauth credentials

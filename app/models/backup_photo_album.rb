@@ -41,7 +41,6 @@ class BackupPhotoAlbum < ActiveRecord::Base
   # Save album properies & any associated photos
   def save_album(album, photos=nil)
     if update_attributes(album.to_h)
-      logger.debug photos.inspect if photos
       save_photos(photos) if photos
     end
   end
