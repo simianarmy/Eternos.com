@@ -18,10 +18,23 @@ class BackupEmail < ActiveRecord::Base
   
   include TimelineEvents
   serialize :sender
-  serialize_with_options do
-    only :id, :subject, :sender
-    methods :start_date
+  
+  # Required to handle subject.to_json exceptions when subject cannot be decrypted
+  # and returns a binary byte string which causes JSON to blork
+  def to_json
+    res = {:id => id, :sender => sender, :start_date => start_date, :subject => subject}
+    begin
+      res.to_json
+    rescue JSON::GeneratorError
+      res[:subject] = 'Could not decrypt subject!'
+      res.to_json
+    end
   end
+      
+  # serialize_with_options do
+  #     only :id, :sender
+  #     methods :start_date, :subject
+  #   end
   
   acts_as_archivable :on => :received_at
   acts_as_saved_to_cloud
@@ -70,7 +83,7 @@ class BackupEmail < ActiveRecord::Base
   def recipient
     backup_source.email
   end
-    
+  
   def gen_s3_key
     [mailbox.gsub(/\//, '_'), message_id, backup_source_id].join(':')
   end
