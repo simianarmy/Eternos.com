@@ -4,8 +4,15 @@ http://www.ricroberts.com/articles/2009/04/09/boost-speed-and-save-bandwidth-wit
 Using memcached with Rails:
 http://www.ridingtheclutch.com/2009/01/08/cache-anything-easily-with-rails-and-memcached.html
 
-Use Enterprise Ruby: 
+Use Enterprise Ruby: (in use)
 supposedly way better memory usage, performance with Passenger, thread usage
 
 Ravelry case:
   http://highscalability.com/how-ravelry-scales-10-million-requests-using-rails
+  
+Mysqlplus (in use)
+An enhanced MySQL database driver. With support for async operations and threaded database access.
+
+slim attributes http://slim-attributes.rubyforge.org/ boosts mysql speed by using arrays instead of hashed lookup.
+Hash extension gem also results in speedups when used: 
+  http://blog.chak.org/2008/02/09/speeding-up-activerecord-with-hashes-take-2/

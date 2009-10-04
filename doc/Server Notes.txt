@@ -51,7 +51,8 @@ Ruby gems that must be built on server:
   nokogiri
   hpricot
   json?
-
+  mysqlplus: http://github.com/oldmoe/mysqlplus
+    
 
 Populating application database:
   rake RAILS_ENV=production db:dataset:load_fixtures
