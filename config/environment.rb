@@ -11,6 +11,9 @@ RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+require 'rubygems'
+require 'active_support'
+
 # Authorization plugin for role based access control
 # You can override default authorization system constants here.
 

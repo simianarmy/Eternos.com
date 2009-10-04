@@ -30,7 +30,8 @@ class TimelineRequestResponse
     @response.merge!(:resultCount => @results.size,
       :results => @results,
       :status => @status,
-      :responseDetails => @details).to_json
+      :responseDetails => @details)
+    @response.to_json
   end
   
 private
