@@ -544,6 +544,18 @@ a.rss-btn:hover{
 	background:url(/images/errors/rss-btn.gif) 0 77px;
 }
 
+a.gmail-btn{
+	width:97px;
+	height:79px;
+	background:url(/images/errors/gmail-btn.gif) center 0;
+	margin:0 5px 0 0;
+	float:left;
+}
+
+a.gmail-btn:hover{
+	background:url(/images/errors/gmail-btn.gif) 0 79px;
+}
+
 a.flickr-btn{
 	width:130px;
 	height:47px;
@@ -560,6 +572,7 @@ a.flickr-btn:hover{
 .twitter-active{width:165px; height:94px; background:url(/images/errors/twitter-active.gif); float:left;margin:0 ;}
 .flickr-active{width:175px; height:52px; background:url(/images/errors/flickr-active.gif); float:left;margin:0 10px 0 10px}
 .rss-active{width:77px; height:100px; background:url(/images/errors/rss-active.gif); float:left;margin:0 10px 0 10px}
+.gmail-active{width:110px; height:102px; background:url(/images/errors/gmail-active.gif); float:left;margin:0 10px 0 10px}
 
 .submit-btn{
 	width:98px;
@@ -659,8 +672,14 @@ a.flickr-btn:hover{
 a.step1-btn{width:140px;height:43px;background:url(/images/errors/step1.png) 0 0;display:block;margin-bottom:15px;}
 a.step1-btn:hover{background:url(/images/errors/step1.png) 0 43px;}
 
+a.step1-1-btn{width:140px;height:43px;background:url(/images/errors/step1-1.png) 0 0;display:block;margin-bottom:15px;}
+a.step1-1-btn:hover{background:url(/images/errors/step1-1.png) 0 43px;}
+
 a.step2-btn{width:140px;height:43px;background:url(/images/errors/step2.png) 0 0;display:block;margin-bottom:15px;}
 a.step2-btn:hover{background:url(/images/errors/step2.png) 0 43px;}
+
+a.step2-1-btn{width:140px;height:43px;background:url(/images/errors/step2-1.png) 0 0;display:block;margin-bottom:15px;}
+a.step2-1-btn:hover{background:url(/images/errors/step2-1.png) 0 43px;}
 
 a.step3-btn{width:140px;height:43px;background:url(/images/errors/step3.png) 0 0;display:block;margin-bottom:15px;}
 a.step3-btn:hover{background:url(/images/errors/step3.png) 0 43px;}
@@ -668,25 +687,40 @@ a.step3-btn:hover{background:url(/images/errors/step3.png) 0 43px;}
 a.step4-btn{width:140px;height:43px;background:url(/images/errors/step4.png) 0 0;display:block;margin-bottom:15px;}
 a.step4-btn:hover{background:url(/images/errors/step4.png) 0 43px;}
 
+a.step4-1-btn{width:140px;height:43px;background:url(/images/errors/step4-1.png) 0 0;display:block;margin-bottom:15px;}
+a.step4-1-btn:hover{background:url(/images/errors/step4-1.png) 0 43px;}
+
 a.step5-btn{width:140px;height:43px;background:url(/images/errors/step5.png) 0 0;display:block;margin-bottom:15px;}
 a.step5-btn:hover{background:url(/images/errors/step5.png) 0 43px;}
 
 a.step6-btn{width:140px;height:43px;background:url(/images/errors/step6.png) 0 0;display:block;margin-bottom:15px;}
 a.step6-btn:hover{background:url(/images/errors/step6.png) 0 43px;}
 
+a.stepcomplete-btn{width:140px;height:69px;background:url(/images/errors/step-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.stepcomplete-btn:hover{background:url(/images/errors/step-complete.png) 0 -69px;}
+
 /*complete step button------------------------------------------------------------------------------------------------------*/
 
 a.step1complete-btn{width:140px;height:43px;background:url(/images/errors/step1-complete.png) 0 0;display:block;margin-bottom:15px;}
 a.step1complete-btn:hover{background:url(/images/errors/step1-complete.png) 0 43px;}
 
+a.step1-1complete-btn{width:140px;height:43px;background:url(/images/errors/step1-1-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step1-1complete-btn:hover{background:url(/images/errors/step1-1-complete.png) 0 43px;}
+
 a.step2complete-btn{width:140px;height:43px;background:url(/images/errors/step2-complete.png) 0 0;display:block;margin-bottom:15px;}
 a.step2complete-btn:hover{background:url(/images/errors/step2-complete.png) 0 43px;}
+
+a.step2-1complete-btn{width:140px;height:43px;background:url(/images/errors/step2-1-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step2-1complete-btn:hover{background:url(/images/errors/step2-1-complete.png) 0 43px;}
 
 a.step3complete-btn{width:140px;height:43px;background:url(/images/errors/step3-complete.png) 0 0;display:block;margin-bottom:15px;}
 a.step3complete-btn:hover{background:url(/images/errors/step3-complete.png) 0 43px;}
 
 a.step4complete-btn{width:140px;height:43px;background:url(/images/errors/step4-complete.png) 0 0;display:block;margin-bottom:15px;}
 a.step4complete-btn:hover{background:url(/images/errors/step4-complete.png) 0 43px;}
+
+a.step4-1complete-btn{width:140px;height:43px;background:url(/images/errors/step4-1-complete.png) 0 0;display:block;margin-bottom:15px;}
+a.step4-1complete-btn:hover{background:url(/images/errors/step4-1-complete.png) 0 43px;}
 
 a.step5complete-btn{width:140px;height:43px;background:url(/images/errors/step5-complete.png) 0 0;display:block;margin-bottom:15px;}
 a.step5complete-btn:hover{background:url(/images/errors/step5-complete.png) 0 43px;}
@@ -699,14 +733,23 @@ a.step6complete-btn:hover{background:url(/images/errors/step6-complete.png) 0 43
 a.step1incomplete-btn{width:140px;height:43px;background:url(/images/errors/step1-incomplete.png) 0 0;display:block;margin-bottom:15px;}
 a.step1incomplete-btn:hover{background:url(/images/errors/step1-incomplete.png) 0 43px;}
 
+a.step1-1incomplete-btn{width:140px;height:43px;background:url(/images/errors/step1-1-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step1-1incomplete-btn:hover{background:url(/images/errors/step1-1-incomplete.png) 0 43px;}
+
 a.step2incomplete-btn{width:140px;height:43px;background:url(/images/errors/step2-incomplete.png) 0 0;display:block;margin-bottom:15px;}
 a.step2incomplete-btn:hover{background:url(/images/errors/step2-incomplete.png) 0 43px;}
+
+a.step2-1incomplete-btn{width:140px;height:43px;background:url(/images/errors/step2-1-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step2-1incomplete-btn:hover{background:url(/images/errors/step2-1-incomplete.png) 0 43px;}
 
 a.step3incomplete-btn{width:140px;height:43px;background:url(/images/errors/step3-incomplete.png) 0 0;display:block;margin-bottom:15px;}
 a.step3incomplete-btn:hover{background:url(/images/errors/step3-incomplete.png) 0 43px;}
 
 a.step4incomplete-btn{width:140px;height:43px;background:url(/images/errors/step4-incomplete.png) 0 0;display:block;margin-bottom:15px;}
 a.step4incomplete-btn:hover{background:url(/images/errors/step4-incomplete.png) 0 43px;}
+
+a.step4-1incomplete-btn{width:140px;height:43px;background:url(/images/errors/step4-1-incomplete.png) 0 0;display:block;margin-bottom:15px;}
+a.step4-1incomplete-btn:hover{background:url(/images/errors/step4-1-incomplete.png) 0 43px;}
 
 a.step5incomplete-btn{width:140px;height:43px;background:url(/images/errors/step5-incomplete.png) 0 0;display:block;margin-bottom:15px;}
 a.step5incomplete-btn:hover{background:url(/images/errors/step5-incomplete.png) 0 43px;}
@@ -715,9 +758,12 @@ a.step6incomplete-btn{width:140px;height:43px;background:url(/images/errors/step
 a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 0 43px;}
 
 .step1-active{width:140px;height:43px;background:url(/images/errors/step1.png) 0 43px;display:block;margin-bottom:15px;}
+.step1-1-active{width:140px;height:43px;background:url(/images/errors/step1-1.png) 0 43px;display:block;margin-bottom:15px;}
 .step2-active{width:140px;height:43px;background:url(/images/errors/step2.png) 0 43px;display:block;margin-bottom:15px;}
+.step2-1-active{width:140px;height:43px;background:url(/images/errors/step2-1.png) 0 43px;display:block;margin-bottom:15px;}
 .step3-active{width:140px;height:43px;background:url(/images/errors/step3.png) 0 43px;display:block;margin-bottom:15px;}
 .step4-active{width:140px;height:43px;background:url(/images/errors/step4.png) 0 43px;display:block;margin-bottom:15px;}
+.step4-1-active{width:140px;height:43px;background:url(/images/errors/step4-1.png) 0 43px;display:block;margin-bottom:15px;}
 .step5-active{width:140px;height:43px;background:url(/images/errors/step5.png) 0 43px;display:block;margin-bottom:15px;}
 .step6-active{width:140px;height:43px;background:url(/images/errors/step6.png) 0 43px;display:block;margin-bottom:15px;}
 
@@ -1212,6 +1258,12 @@ h5{
   width:468px !important;
 }
 
+#account-setting-content2{
+  overflow-y: auto;
+  overflow-x: hidden;
+  width:546px !important;
+}
+
 .scroll-track{
   	height:10px;
   	width:5px;
@@ -1489,4 +1541,28 @@ h5{
   width:250px;
   font-size:20px;
   color:red;
+}
+
+.acc-setup-top{
+	width:700px;
+	height:12px;
+	background:url('/images/acc-setup-top.png') transparent no-repeat;
+	_background-image: none;
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/errors/popup-top.png',sizingMethod='scale');
+}
+
+.acc-setup-body{
+	width:700px;
+	height:auto;
+	background:url(/images/errors/acc-setup-body.png) repeat-y;
+	margin:0;
+	padding:0;
+}
+
+.acc-setup-down{
+	width:700px;
+	height:16px;
+	background:url('/images/acc-setup-down.png') transparent no-repeat;
+	_background-image: none;
+	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/errors/popup-top.png',sizingMethod='scale');
 }

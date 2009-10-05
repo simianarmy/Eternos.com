@@ -2,8 +2,8 @@
 - title 'Account Setup'
   
 .acc-setup-container
-  .popuptop
-  .popup-content
+  .acc-setup-top
+  .acc-setup-body
     .top-box
       .clear
       .top-box2
@@ -30,5 +30,5 @@
         = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
       = render :partial => @content_page, :locals => {:settings => @settings}
       
-      .clear
-  = image_tag "errors/popup-footer.png", :width => "700px"
+		.clear
+  .acc-setup-down

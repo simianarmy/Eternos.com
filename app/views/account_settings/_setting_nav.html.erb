@@ -1,5 +1,5 @@
 <div id="account-setting-nav">
-  <%- link_class = gen_step_class(1, @active_step)  -%>
+  <%- link_class = gen_step_class(1-1, @active_step)  -%>
   <div id="step1" class="step">
     <%= link_to_remote "", { :url => personal_info_account_settings_path, 
       :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
@@ -7,7 +7,7 @@
       :class =>  link_class %>
   </div>
 <!--
-  <%- link_class = gen_step_class(2, @active_step)  -%>
+  <%- link_class = gen_step_class(2-1, @active_step)  -%>
   <div id="step2" class="step">
     <%= link_to_remote("", { :url => online_account_settings_path,  
         :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
@@ -15,19 +15,24 @@
         }, :class => link_class) %>
   </div>
 -->
-  <%- link_class = gen_step_class(4, @active_step)  -%>
+  <%- link_class = gen_step_class(4-1, @active_step)  -%>
   <div id="step4" class="step">
     <%= link_to_remote("", { :url => your_history_account_settings_path,
       :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
       :complete => "highlightStep(4); $('progress-bar').hide();"}, 
-      :class => link_class, :id => 'step4-btn') %>
+      :class => link_class,
+			:id => 'step4-btn') %>
   </div>
   
 <!--
   <%- link_class = active_link == "step5" ? "step5-active" : "step5-btn"  -%>
-  <%#= link_to_remote "", { :url => upgrades_account_settings_path,  :loading =>  "Effect.Fade('account-setting-content');"}, :class => link_class %>
+  <%#= link_to_remote "", { :url => upgrades_account_settings_path,
+		:loading =>  "Effect.Fade('account-setting-content');"},
+		:class => link_class %>
 
   <%- link_class = active_link == "step6" ? "step6-active" : "step6-btn"  -%>
-  <%#= link_to_remote "", { :url => billings_account_settings_path,  :loading =>  "Effect.Fade('account-setting-content');"}, :class => link_class %>
+  <%#= link_to_remote "", { :url => billings_account_settings_path,
+		:loading =>  "Effect.Fade('account-setting-content');"},
+		:class => link_class %>
   -->
 </div>
