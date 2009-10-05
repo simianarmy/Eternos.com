@@ -16,10 +16,9 @@ class Account < ActiveRecord::Base
   after_create :create_admin
   #after_create :send_welcome_email
   
-  # Replacing
-  #acts_as_paranoid
-  # with
+  # Need better solution that soft_deletable...look for using default_scope in Rails 2.3
   acts_as_soft_deletable
+  
   acts_as_authorizable
   acts_as_state_machine :initial => :login
   

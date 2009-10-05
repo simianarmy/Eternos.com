@@ -21,15 +21,12 @@ class Member < User
     m.has_one :profile
   end
   
-  # Scoped finders
-  named_scope :with_backup_targets,
-    :joins => :backup_sources, 
-    :conditions => { :backup_sources => { :auth_confirmed => true } }
-  
   named_scope :needs_backup, lambda { |cutoff_date|
     {
-    :include => [:backup_state],
-    :conditions => ['(backup_states.id IS NULL) OR (backup_states.in_progress = ? AND backup_states.last_backup_finished_at <= ?)', 
+    :joins => :backup_state,
+    :conditions => ['(backup_states.id IS NULL) OR (backup_states.in_progress = ? AND ' +
+      '((backup_states.last_backup_finished_at <= ?) OR ' +
+      '(backup_states.last_failed_backup_at > backup_states.last_successful_backup_at)))', 
       false, cutoff_date || Time.now]
   } }
   
@@ -62,6 +59,11 @@ class Member < User
   
   def last_backup_job
     backup_jobs.recent.first
+  end
+  
+  # Has this member setup their account yet?
+  def need_backup_setup?
+    backup_sources.active.empty?
   end
   
   # Returns all used categories
@@ -125,11 +127,6 @@ class Member < User
   
   def authenticated_for_facebook_desktop?
     not (facebook_id.blank? || facebook_session_key.blank? || facebook_secret_key.blank?)
-  end
-  
-  # Has this member setup their account yet?
-  def need_backup_setup?
-    backup_sources.confirmed.empty?
   end
     
   def has_backup_data?

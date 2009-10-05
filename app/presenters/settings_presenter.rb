@@ -78,20 +78,16 @@ class SettingsPresenter < Presenter
       end
       @twitter_accounts = backup_sources.twitter.paginate :page => params[:page], :per_page => 10
       @twitter_account   = backup_sources.twitter.first
-      @twitter_confirmed = @twitter_account && @twitter_account.confirmed?
-      @feed_urls = @user.backup_sources.blog.paginate :page => params[:page], :per_page => 10
+      @twitter_confirmed = @twitter_accounts && @twitter_accounts.any? {|t| t.confirmed?}
+      @feed_urls = backup_sources.blog.paginate :page => params[:page], :per_page => 10
       @feed_url = FeedUrl.new
-      @rss_confirmed = @rss_url && @rss_url.confirmed?
-      load_email_accounts
+      @rss_confirmed = @feed_urls && @feed_urls.any? {|t| t.confirmed?}
+      @email_accounts = @user.backup_sources.gmail.paginate :page => params[:page], :per_page => 10
       @current_gmail = @email_accounts.first
-      @gmail_confirmed = @current_gmail && @current_gmail.confirmed?
+      @gmail_confirmed = @email_accounts && @email_accounts.any? {|t| t.confirmed?}
     end
   end
   
-  def load_email_accounts
-    @email_accounts = @user.backup_sources.gmail.paginate :page => params[:page], :per_page => 10
-  end
-
   def load_history
     load_personal_info
     

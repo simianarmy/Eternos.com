@@ -25,8 +25,8 @@
   	      </td>
   	      </tr>
       </tr>
-      <%= render :partial => 'profiles/personal_info_form', :locals => {:address_book => address_book, :basic_view => setup} %>
+      <%= render :partial => 'profiles/personal_info_form', :locals => {:address_book => address_book, :profile => profile, :basic_view => setup} %>
     </tbody>
   </table>
-  <%= setup ? submit_tag('Next Step', :class => "submit-btn4") : hidden_submit("submit_form_personal") %>
+  <%= setup ? submit_tag('Next Step', :class => "submit-btn4") : submit_tag("Save", :class => "submit-btn4") %>
 <% end %>

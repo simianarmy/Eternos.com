@@ -1,5 +1,5 @@
 <div id="account-setting-content" class="makeScroll">
-  <%= render :partial => 'personal_info_form', :locals => {:address_book => @settings.address_book, :completed_steps => @completed_steps, :setup => false} %>
+  <%= render :partial => 'personal_info_form', :locals => {:address_book => @settings.address_book, :profile => @settings.profile, :completed_steps => @completed_steps, :setup => false} %>
 </div>
 <% javascript "timezone_detector" %>
 <%= javascript_tag "

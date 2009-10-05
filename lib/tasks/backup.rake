@@ -23,9 +23,9 @@ namespace :backup do
   end
   
   desc "Generate backup jobs"
-  task :publish_jobs => :environment do
+  task :run_scheduled => :environment do
     cutoff = ENV['FORCE'] ? Time.now : nil
-    BackupJobPublisher.run cutoff
+    BackupScheduler.run :cutoff => cutoff
     system "/usr/local/bin/god restart memcached"
   end
   

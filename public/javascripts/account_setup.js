@@ -86,12 +86,12 @@ function updateStep(check_url, completed_steps) {
 	});
 }
 
-function highlightStep(stepNum) {
-  var step = 'step' + stepNum;
-  $(step).down('a').addClassName(step + '-active').removeClassName(step + '-btn');
+function highlightStep(step_id) {
+  //var step = 'step' + stepNum;
+  $(step_id).down('a').addClassName(step_id + '-active').removeClassName(step_id + '-btn');
   
   $$('.step').each(function(div) {
-    if (div.id !== step && div.down('a').hasClassName(div.id + '-active')) {
+    if ((div.id !== step_id) && div.down('a').hasClassName(div.id + '-active')) {
       div.down('a').removeClassName(div.id + '-active');
       div.down('a').addClassName(div.id + '-btn');
     }

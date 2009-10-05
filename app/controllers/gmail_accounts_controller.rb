@@ -73,6 +73,7 @@ class GmailAccountsController < EmailAccountsController
       flash[:error] = "Error deleting email account"
     end
       
+    load_accounts
     respond_to do |format|
       format.js 
     end

@@ -5,26 +5,37 @@
 
 
 class BackupJobPublisher
-  class << self
-    # Adds member backup job requests to backup queue for all eligible members
-    # Should be called periodically from some cron-like utility
-    def run(cutoff_time = 1.day.ago)
-      MessageQueue.execute do
-        q = MessageQueue.pending_backup_jobs_queue
-        
-        Member.needs_backup(cutoff_time).with_backup_targets.uniq.each do |member|
-          member.backup_in_progress! 
-          q.publish BackupJobMessage.new.member_payload(member)
-          RAILS_DEFAULT_LOGGER.info "Sent backup job to queue for member #{member.name} (#{member.id})"
-        end
-      end
+  class BackupJobMessage
+    # Returns payload object for a member and multiple backup sources
+    def member_payload(member, *sources)
+      payload(member.id, *sources)
     end
 
+    private
+
+    def source_to_h(source)
+      {:id => source.id, :source => source.backup_site.type_name}
+    end
+
+    def payload(id, *sources)
+      {:user_id => id, :target_sites => sources.flatten.map {|s| source_to_h(s)}}.to_yaml # why not to_json?
+    end
+  end
+  
+  class << self
+    # Adds member backup jobs to backup queue
+    def run(member, sources)
+      MessageQueue.execute do
+        q = MessageQueue.pending_backup_jobs_queue
+        member.backup_in_progress! 
+        publish_sources q, member, *sources
+      end
+    end
 
     # Adds backup job request to backup queue for a single backup source
     def add_source(backup_source)
       MessageQueue.execute do
-        publish_source MessageQueue.pending_backup_jobs_queue, backup_source
+        publish_sources MessageQueue.pending_backup_jobs_queue, backup_source.member, backup_source
       end
     end
 
@@ -33,17 +44,18 @@ class BackupJobPublisher
       MessageQueue.execute do
         q = MessageQueue.pending_backup_jobs_queue
         
-        Member.with_backup_targets.uniq.each do |u|
-          u.backup_sources.by_site(site.name).each do |source|
-            publish_source q, source
-          end
+        Member.each do |m|
+          sources = m.backup_sources.active.by_site(site.name)
+          publish_sources(q, m, *sources) if sources.any?
         end
       end
     end
     
-    def publish_source(q, source)
-      q.publish BackupJobMessage.new.source_payload(source)
-      RAILS_DEFAULT_LOGGER.info "Sent backup job to queue for backup source (#{source.id})"
+    private
+    
+    def publish_sources(q, member, *sources)
+      q.publish BackupJobMessage.new.member_payload(member, *sources)
+      RAILS_DEFAULT_LOGGER.info "Sent backup job to queue for member #{member.name} (#{member.id})"
     end
   end
 end

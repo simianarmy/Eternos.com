@@ -1,3 +1,4 @@
 page.flash_and_fade
 page.replace_html 'result-email-contacts', :partial => 'backup_sources/email_account_list', 
   :locals => {:email_accounts => @email_accounts}
+page.call 'updateSourceActivationIcon', 'gmail', (@email_accounts && @email_accounts.any?) ? 'true' : 'false'

@@ -104,14 +104,6 @@ Fixjour  do
       :backup_site => new_backup_site)
   end
   
-  define_builder(BackupSourceDay) do |klass, overrides|
-    klass.new(:backup_source => new_backup_source,
-      :backup_day => Date.today - rand(365),
-      :status_id => BackupStatus::Success,
-      :in_progress => false,
-      :skip => false)
-  end
-  
   define_builder(BackupSourceJob) do |klass, overrides|
     klass.protected :backup_source, :backup_job
     klass.new(

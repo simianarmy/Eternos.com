@@ -11,8 +11,10 @@ class BackupSourceJob < ActiveRecord::Base
   serialize :messages
   xss_terminate :except => [ :error_messages, :messages ] # conflicts w/serialize
   
+  acts_as_archivable :on => :created_at
+  
   def successful?
-    status && (status == BackupStatus::Success)
+    finished? && status && (status == BackupStatus::Success)
   end
   
   def reset_progress
@@ -25,8 +27,12 @@ class BackupSourceJob < ActiveRecord::Base
     backup_source.update_attribute(:last_backup_at, t)
   end
   
+  def finished?
+    !!finished_at
+  end
+  
   def time_remaining
-    return 0 if finished_at
+    return 0 if finished?
     
     remaining = 0
     if percent_complete > 0 && percent_complete < 100

@@ -10,16 +10,7 @@
         #account-setting-title.acc-title
           Account Setup
         .top-rightbox
-          - if @active_step == 0
-            #sync-message
-            = link_to_remote "", { :url => facebook_sync_account_settings_path, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();"} , :class => "fb-btn"
-            .clear
-            .top-text1
-              &nbsp;Always do this
-            - form_remote_tag :url => always_sync_with_facebook_account_settings_path do
-              = check_box_submit_on_click "facebook_sync", "submit_form_sync", 1, @checked_always_sync
-              = hidden_submit("submit_form_sync")
-            .clear
+          = render :partial => 'account_settings/fb_sync_button', :locals => { :active_step => @active_step, :checked => @checked_always_sync }
         .clear
     .popup-content-left
       = render :partial => "setting_nav", :locals => { :active_link => "step" + @active_step.to_s }
@@ -30,5 +21,5 @@
         = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
       = render :partial => @content_page, :locals => {:settings => @settings}
       
-		.clear
+    .clear
   .acc-setup-down

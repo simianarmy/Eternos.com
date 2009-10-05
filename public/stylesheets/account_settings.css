@@ -353,37 +353,37 @@ body{
 }
 
 .popup-container{
-	width:700px;
+	width:650px;
 	height:auto;
 	margin-top:20px;
   padding: 0 0 0 100px;
 }
 
 .acc-setup-container {
-	width: 700px;
+	width: 650px;
 	height:auto;
 	margin-top:20px;
   padding: 0 0 0 30px;
 }
 
 .popuptop{
-	width:700px;
+	width:650px;
 	height:11px;
-	background:url('/images/acc-setup-top-bar.png') transparent no-repeat;
+	background:url('/images/errors/popup-top.png') transparent no-repeat;
 	_background-image: none;
 	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/errors/popup-top.png',sizingMethod='scale');
 }
 
 .popup-content{
-	width:700px;
+	width:650px;
 	height:auto;
-	background:url(/images/errors/popup-content.png) repeat-y;
+	background:url('/images/errors/popup-content.png') repeat-y;
 	margin:0;
 	padding:0;
 }
 
 .top-box{
-	width:695px;
+	width:645px;
 	height:auto;
 	margin:0;
 }
@@ -482,7 +482,7 @@ body{
 }
 
 .network-icon-box{
-	width:481px;
+	width: 500px; /* 481px; */
 	height:80px;
 	margin:10px 0 0 0;
 }
@@ -1554,7 +1554,7 @@ h5{
 .acc-setup-body{
 	width:700px;
 	height:auto;
-	background:url(/images/errors/acc-setup-body.png) repeat-y;
+	background:url('/images/acc-setup-body.png') repeat-y;
 	margin:0;
 	padding:0;
 }
