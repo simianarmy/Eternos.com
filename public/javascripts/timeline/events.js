@@ -59,6 +59,9 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 var ETLFacebookActivityStreamEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function() {
 		var html = this.attributes.message;
+		if (this.attributes.author) {
+			html += '<br><b>Posted by:</b> ' + this.attributes.author;
+		}
 		if (this.attributes.attachment_data != null) {
 			html += '<br/>'
 			if (this.attributes.thumbnail_url != null) {

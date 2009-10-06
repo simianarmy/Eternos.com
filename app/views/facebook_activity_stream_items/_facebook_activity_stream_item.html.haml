@@ -13,6 +13,9 @@
 
     %p= item.message
     .clearboth
+    - if item.author
+      == Author: #{item.author}
+      %br
     %p.posted
       == Posted: #{item.published_at}
       - if item.published_at != item.edited_at
