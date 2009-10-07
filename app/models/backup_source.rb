@@ -39,7 +39,7 @@ class BackupSource < ActiveRecord::Base
       :conditions => {'backup_sites.name' => BackupSite::Gmail}
     }
   }  
-  named_scope :active, :conditions => {:auth_confirmed => true, :disabled => false}
+  named_scope :active, :conditions => {:auth_confirmed => true, :disabled => false, :deleted_at => nil}
   named_scope :needs_scan, :conditions => {:needs_initial_scan => true}
   named_scope :photo_album, lambda {|id| 
     { :joins => :backup_photo_albums, :conditions => {'backup_photo_albums.source_album_id' => id} }
@@ -77,6 +77,10 @@ class BackupSource < ActiveRecord::Base
       #  Initiate backup on auth confirmation
       reload.backup  
     end
+  end
+  
+  def active?
+    !self.disabled && !self.deleted_at
   end
   
   # add this backup source to backup queue

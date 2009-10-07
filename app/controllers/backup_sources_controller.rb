@@ -133,7 +133,9 @@ class BackupSourcesController < ApplicationController
     @rss_confirmed = @rss_url && @rss_url.confirmed?
   end
   
+  # Soft delete backup sources - too important to remove accidentally
   def remove_account(type, id)
+    #current_user.backup_sources.by_site(type).find(id).update_attribute(:deleted_at, true)
     current_user.backup_sources.by_site(type).find(id).destroy
   end
 end

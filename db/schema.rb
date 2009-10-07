@@ -234,6 +234,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.date     "latest_day_backed_up"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.integer  "user_id"
     t.integer  "backup_site_id"
     t.boolean  "disabled",               :default => false, :null => false

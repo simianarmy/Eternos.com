@@ -14,7 +14,6 @@ config.whiny_nils = true
 # Full error reports are disabled and caching is turned on
 config.action_controller.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
-config.action_view.debug_rjs                         = false
 
 # Use a different cache store in production
 # config.cache_store = :mem_cache_store
@@ -23,7 +22,7 @@ config.action_view.debug_rjs                         = false
 config.action_controller.asset_host = Proc.new { |source, request|
   (request ? request.protocol : 'http://') + "staging.eternos.com"
 }
-config.log_level = :debug
+#config.log_level = :debug
 
 #Disable delivery errors, bad email addresses will be ignored
 config.action_mailer.raise_delivery_errors = true
@@ -31,7 +30,8 @@ config.action_mailer.raise_delivery_errors = true
 # Use SMTP protocol to deliver emails
 config.action_mailer.delivery_method = :smtp
 
-#config.log_level = :debug
+# Performance monitor
+config.gem "newrelic_rpm"
 
 # Setup memcached connection
 puts "=> Connecting to memcached on #{MEMCACHED_HOST}"
