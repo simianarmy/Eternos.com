@@ -226,7 +226,8 @@ a.paginate-btn:hover{
 	margin-right:10px;
 }
 
-.thumnails2{
+
+.arti-thumb {
 	width:71px;
 	height:71px;
 	border:3px solid #526071;
@@ -288,46 +289,6 @@ a.paginate-btn:hover{
 	clear:both;
 }
 
-.event_list_item_container-FIXME{
-	margin:-20px 0 0 5px;
-	line-height:20px;
-}
-
-.event_list_group-FIXME{
-	width:548px;
-	height:auto;
-	font-family:arial;
-	font-size:11px;
-	color:#3a4c62;
-	text-align:left;
-	border:none;
-	margin-top:5px;
-	border-bottom:1px dotted #3a4c62;
-}
-
-.event_list_date-FIXME{
-	width:100px;
-	height:auto;
-	padding:5px 10px 0 0;
-	float:left;
-}
-.event_list_group_items-FIXME{
-	float:left;
-}
-
-.event_list_item_container-FIXME a{
-	font-family:arial;
-	font-size:11px;
-	color:#205db9;
-	margin:10px 0 5px 0;
-	text-decoration:none;
-	float:left;
-}
-
-.event_list_item_container-FIXME a:hover{
-	text-decoration:underline;
-}
-
 /* Events list--------------------------------------------------------------------------------------------------------------------------*/
 
 #events_header{
@@ -369,17 +330,17 @@ font-size:11px;
 }
 
 ul.event_list_group{
-float:left;
+float:right;
 height:auto;
 margin-left:209px;
 margin-top:0;
 padding-left:0;
+padding-right: 5px;
 width:200px;
 margin-bottom:3px;
 }
 
 .event_list_group_odd li{
-float:right;
 list-style-image:none;
 list-style-position:outside;
 list-style-type:none;
@@ -391,7 +352,6 @@ color:#2ea4ff;
 }
 
 .event_list_group_even li{
-float:right;
 list-style-image:none;
 list-style-position:outside;
 list-style-type:none;
@@ -428,13 +388,13 @@ a.event_list_inline_item:hover {
 	font-size:14px;
 }
 
-.event_preview_item_container a {
+.tooltip_container a {
 	font-size: 12px;
 	text-decoration:none;
 	color:#494a4c;
 }
 
-.event_preview_item_container a:hover {
+.tooltip_container a:hover {
 	text-decoration:underline;
 }
 

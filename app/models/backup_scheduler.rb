@@ -35,7 +35,16 @@ class BackupScheduler
     end
     
     def next_source_backup_at(bs)
-      'sometime'
+      if !bs.disabled
+        if bs.last_backup_at
+          RAILS_DEFAULT_LOGGER.debug "Next source backup at #{bs.last_backup_at} + #{run_interval}"
+          bs.last_backup_at + run_interval
+        elsif source_scheduled_for_backup?(bs)
+          RAILS_DEFAULT_LOGGER.debug "Next source backup at top of the hour"
+          # next top of the hour
+          Time.now.utc + (60 - Time.now.strftime("%M").to_i).minutes
+        end
+      end
     end
   end
 end

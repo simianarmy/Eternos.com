@@ -1264,31 +1264,6 @@ h5{
   width:546px !important;
 }
 
-.scroll-track{
-  	height:10px;
-  	width:5px;
-  	background:silver;
-}
-
-.scroll-handle{
- height:7px;
- width:5px;
- background:#2ea4ff;
- cursor:pointer;
- }
-
-.scroll-track-top{
-  height:9px;
-  width:5px;
-  background:url(/images/errors/arrow-up.gif);
-}
-
-.scroll-track-bot{
-  height:9px;
-  width:5px;
-  background:url(/images/errors/arrow-bot.gif);
-}
-
 .pagination {
   padding: 3px;
   margin: 3px;

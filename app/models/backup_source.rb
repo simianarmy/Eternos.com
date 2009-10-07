@@ -45,6 +45,10 @@ class BackupSource < ActiveRecord::Base
     { :joins => :backup_photo_albums, :conditions => {'backup_photo_albums.source_album_id' => id} }
   }
   
+  def latest_backup
+    backup_source_jobs.newest
+  end
+  
   # Uses searchlogic association named_scope to find all photos
   # def photos
   #     backup_photo_albums.backup_photos_id_not_null.map(&:backup_photos)
@@ -81,13 +85,7 @@ class BackupSource < ActiveRecord::Base
   end
   
   def next_backup_at
-    if confirmed? && !disabled
-      if last_backup_at
-        last_backup_at + 1.day
-      else
-        1.hour.from_now
-      end
-    end  
+    BackupScheduler.next_source_backup_at(self)
   end
       
   def photo_album(id)

@@ -42,7 +42,7 @@ class TimelinesController < ApplicationController
       end
       
       #@backups = BackupSourceJob.descend_by_created_at[0..3] #
-      @backups = @member.last_backup_job.backup_source_jobs rescue []
+      @backups = @member.backup_sources.map(&:latest_backup).compact rescue []
     end
     
   end

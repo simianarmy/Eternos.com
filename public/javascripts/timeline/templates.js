@@ -39,16 +39,14 @@ var ETemplates = {
 			hiddenItem: function () {
 				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 			},
-			eventItemWithTooltipOLD: function () {
-				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a  href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: :: fullscreen: true">#{title}</a>#{hidden_items}' + 
-					'<div class="tooltip_container"><span class="tooltip_title"><b>#{title}</b></span><p/><br/>#{tt_content}</div></li>');
-			},
 			eventItemWithTooltip: function () {
-				return new Template('<li id="evli:#{list_item_id}" class="event_list_item"><div class="event_list_item_container"><a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
-					'<div class="tooltip_container"><p/>#{tt_content}</div></li>');
+				return new Template('<li id="evli:#{list_item_id}" class="event_list_item">' +
+					'<div class="event_list_item_container">' +
+					'<a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
+					'<div class="tooltip_container"><p/>#{tt_content}</div></div><div style="clear:both"></div></li>');
 			},      
 			eventItemTooltipItem: function () {
-				return new Template('<div class="event_preview_item_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a></div><br/>');
+				return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a></div><br/>');
 			},
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');
@@ -113,7 +111,7 @@ var ETemplates = {
 				return new Template("<div class=\"artibox-top\"><p class=\"details_box_title\">#{title}</p></div>" + "<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" + "<img src=\"/images/artibox-bottom.gif\" /></div>");
 			},
 			artifactBox: function () {
-				return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="thumnails2"/></a></li>');
+				return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="arti-thumb"/></a></li>');
 			}
 		},
 		dateSelectorTemplate: function() {

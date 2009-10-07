@@ -114,12 +114,6 @@ function activatedFb(){
   parent.document.getElementById('fb-button').setAttribute('class', 'fb-active');
 }
 
-function resetDinamycHeightStepFour(id){
-  heightDiv = 590;
-  $(id).style.height = heightDiv + "px";
-  $(id).style.overflow = "hidden";
-}
-
 function getDay(selectDay){
    for(var i=1; i<=31; i++){
     var optn = document.createElement("option");
