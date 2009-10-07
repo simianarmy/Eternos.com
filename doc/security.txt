@@ -1,3 +1,8 @@
 http://www.quarkruby.com/2007/9/20/ruby-on-rails-security-guide
 http://guides.rubyonrails.org/security.html
 http://www.slideshare.net/raesene/web-appliction-security-scotland-on-rails-presentation
+
+PayPal Security Key:
+  https://www.paypal.com/cgi-bin/webscr?cmd=xpt/Marketing_CommandDriven/securitycenter/PayPalSecurityKey-outside
+RSA Key Fob:
+  http://en.wikipedia.org/wiki/SecurID

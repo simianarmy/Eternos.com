@@ -78,6 +78,7 @@ class BackupPhoto < ActiveRecord::Base
           :temp_path => File.new(@filename),
           :tag_list => tags || '',
           :taken_at => added_at)
+        save!
       end
     rescue
       update_attribute(:download_error, $!)
