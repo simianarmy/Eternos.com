@@ -44,7 +44,7 @@ class BackupJobPublisher
       MessageQueue.execute do
         q = MessageQueue.pending_backup_jobs_queue
         
-        Member.each do |m|
+        Member.active.each do |m|
           sources = m.backup_sources.active.by_site(site.name)
           publish_sources(q, m, *sources) if sources.any?
         end

@@ -35,7 +35,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
   # Checks passed album object for differences with this instance
   def modified?(album)
     return !album.modified.blank? if self.modified.nil?
-    (album.modified > self.modified) || (album.size != self.size)
+    (album.modified.to_i > self.modified.to_i) || (album.size.to_i != self.size)
   end
   
   # Save album properies & any associated photos
@@ -62,5 +62,8 @@ class BackupPhotoAlbum < ActiveRecord::Base
       backup_photos.import p
     end
   end
-  
+
+  def to_s
+    "#{source_album_id} : #{name} : #{description}"
+  end
 end
