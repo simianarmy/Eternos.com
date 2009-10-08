@@ -1,4 +1,4 @@
-- if @backups.any?
+- if @backups.try(:any?)
   .clear &nbsp;
   Latest Backups
   %br

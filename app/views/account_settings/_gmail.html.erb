@@ -42,6 +42,6 @@
   <% end %>
   </center>
   <div id="result-email-contacts">
-    <%= render :partial => 'backup_sources/email_account_list', :locals => {:email_accounts => email_accounts} %>
+    <%= render(:partial => 'backup_sources/email_account_list', :locals => {:email_accounts => email_accounts}) if email_accounts %>
   </div>
 </div>

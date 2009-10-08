@@ -70,8 +70,5 @@
       //alert('lightview_height = ' + lightview_height);
       document.observe('dom:loaded', function() { 
         handle_timeout_popups(#{session_timeout_seconds});
-        if (#{needs_account_setup(current_user) ? 'true' : 'false'}) {
-          handle_account_setup();
-        }
       });
       
