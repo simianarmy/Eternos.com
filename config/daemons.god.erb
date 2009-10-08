@@ -85,6 +85,18 @@ God.watch do |w|
   generic_monitoring(w, :cpu_limit => 80.percent, :memory_limit => 100.megabytes)
 end
 
+God.watch do |w|
+  script = "Xvfb"
+  w.name = "Xvfb"
+  w.group = "eternos"
+  w.interval = 5.minutes
+  w.start = "Xvfb :1 -screen 0 1024x768x24"
+  w.start_grace = 20.seconds
+  w.restart_grace = 20.seconds
+    
+  generic_monitoring(w, :cpu_limit => 80.percent, :memory_limit => 100.megabytes)
+end
+  
 God::Contacts::Email.server_settings = {
   :address => "smtp.gmail.com",
   :port => 587,

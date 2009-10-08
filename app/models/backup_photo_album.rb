@@ -23,7 +23,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
   EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
   
   def self.import(source, album)
-    self.create(
+    self.create!(
       {:backup_source => source, :source_album_id => album.id}.merge(album.to_h)
     )
   end
