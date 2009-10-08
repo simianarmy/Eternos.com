@@ -49,7 +49,10 @@ Merchant/Payment Processing:
 	active_merchant plugin
 
 Performance Monitoring / Profiling:
-	NewRelic RPM
+	NewRelic RPM - purchased
+	
+Email Campaigns:
+  madmimi.com
 	
 Error Handling:
 	Exception Notifications: http://railscasts.com/episodes/104-exception-notifications

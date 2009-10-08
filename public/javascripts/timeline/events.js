@@ -8,8 +8,6 @@ var ETLEventSource = Class.create({
 		console.log("constructing ETLEventSource for " + s.type);
 		this.type 								= s.type;
 		this.attachment_type			= s.attachment_type;
-		this.display_text 				= s.display_text
-		this.display_text_plural 	= s.display_text_plural;
 		this.icon 								= s.icon;
 		this.start_date 					= s.start_date;
 		this.end_date 						= s.end_date;
@@ -30,6 +28,9 @@ var ETLEventSource = Class.create({
 	getID: function() {
 		return this.attributes.id;
 	},
+	getIcon: function() {
+		return ETEvent.getSourceIcon(this.getDisplayType());
+	},
 	getURL: function() {
 		return this.attributes.url;
 	},
@@ -39,15 +40,55 @@ var ETLEventSource = Class.create({
 	getTitle: function() {
 		return this.attributes.title;
 	},
+	// Display title may be different than our type if attachment type is media
+	getDisplayTitle: function(num) {
+		var title = '', props = ETEvent.typeAttributes(this.getDisplayType());
+		if (num > 1) {
+    	title = num + '&nbsp;' + props.display_text_plural;
+  	} else {
+    	title = props.display_text;
+		}
+		return title;
+  },
 	getText: function() {
 		return this.attributes.message || this.attributes.description;
 	},
 	getEventDate: function() {
 		return this.start_date;
 	},
+	getEventDateObj: function() {
+		return this.getStartDateObj();
+	},
+	getStartDateObj: function() {
+		return Date.parseExact(this.start_date, "yyyy-MM-ddTHH:mm:ssZ");
+	},
+	getEndDateObj: function() {
+		return Date.parseExact(this.end_date, "yyyy-MM-ddTHH:mm:ssZ");
+	},
 	// Returne rails action path for viewing event source collection by date
 	eventDetailsPath: function(memberId) {
 		return ['tl_details', memberId, this.type].join('/');
+	},
+	getEventTimeHtml: function() {
+		var d, time = '';
+		if ((this.start_date != null) && (d = this.getStartDateObj())) {
+			time = '<br/><span class="event_time">' + d.toLocaleTimeString();
+		}
+		if ((this.end_date != null) && (this.start_date !== this.end_date) && 
+			(d = this.getEndDateObj())) {
+			time += ' to ' + d.toLocaleTimeString();
+		}
+		if (time !== '') { 
+			time += '</span>';
+		}
+		return time;
+	},
+	getEventAuthorHtml: function() {
+		var author 	= '';
+		if (this.attributes.author) {
+			author = '<br/><span class="event_author"><b>Posted by:</b> ' + this.attributes.author + '</span>';
+		}
+		return author;
 	}
 });
 
@@ -67,40 +108,76 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 		} else if (this.attributes.description !== undefined) {
 			caption = this.attributes.description;
 		}
-		return this.previewTemplate.evaluate({img_url: this.attributes.thumbnail_url, 
+		return this.previewTemplate.evaluate({
+			img_url: this.attributes.thumbnail_url, 
 			caption: caption});
 	}
 });
-// Facebook event
-var ETLFacebookActivityStreamEventSource = Class.create(ETLEventSource, {
-	getPreviewHtml: function() {
-		var html = this.attributes.message;
-		if (this.attributes.author) {
-			html += '<br><b>Posted by:</b> ' + this.attributes.author;
+
+var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = new Template('#{message}#{author}#{time}#{source}#{media}');
+		$super(s);
+	},
+	getSource: function() {
+		var source = '';
+		if (this.isMedia()) {
+			source = '<br/><span class="event_time">Source: ' + this.source + '</span>';
 		}
-		if (this.attributes.attachment_data != null) {
-			html += '<br/>'
-			if (this.attributes.thumbnail_url != null) {
-				html += this.attributes.thumbnail_url;
-			} else if (this.attributes.url != null) {
-				html += this.attributes.url;
+		return source;
+	},
+	getEventMediaHtml: function() {
+		var media = '', url = '', thumb = '';
+		
+		if (this.isMedia() && ((url = this.getURL()) != null)) {
+			media += '<br/><a href="' + url + '" class="lightview">';
+
+			if (((thumb = this.getThumbnailURL()) != null) && (thumb !== url)) {
+				media += '<img src="' + thumb + '">';
 			} else {
-				//console.log("Unknown data facebook attachment type: " + this.attributes.attachment_type)
+				media += 'Click to View';
 			}
+			media += '</a>';
 		}
-		return html;
+		// Debug attributes:
+		// media += print_r(this.attributes); //'';
+		return media;
+	},
+	getPreviewHtml: function() {
+		return this.previewTemplate.evaluate({
+			message: this.attributes.message.urlToLink(),
+			author: this.getEventAuthorHtml(),
+			time: this.getEventTimeHtml(),
+			source: this.getSource(),
+			media: this.getEventMediaHtml()
+		});
+	}
+});
+// Facebook event
+var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSource, {
+	initialize: function($super, s) {
+		this.source = 'Facebook';
+		$super(s);
 	}
 });
 // Twitter event
-var ETLTwitterActivityStreamEventSource = Class.create(ETLEventSource, {
+var ETLTwitterActivityStreamEventSource = Class.create(ETLActivityStreamEventSource, {
+	initialize: function($super, s) {
+		this.source = 'Twitter';
+		$super(s);
+	},
 	getPreviewHtml: function() {
-		return this.attributes.message;
+		return this.previewTemplate.evaluate({
+			message: this.attributes.message,
+			time: this.getEventTimeHtml()
+		});
 	}
 });
 // RSS event
 var ETLFeedEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function() {
 		var thumb, preview = this.attributes.name;
+		preview += this.getEventTimeHtml();
 		if (((thumb = this.attributes.screencap_thumb_url) != null) && !thumb.match('missing')) {
 			preview += '<br/><img src="' + thumb + '" width="100" height="100">';
 		}
@@ -110,7 +187,7 @@ var ETLFeedEventSource = Class.create(ETLEventSource, {
 // Email event
 var ETLEmailEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function() {
-		return this.attributes.subject;
+		return this.attributes.subject + this.getEventTimeHtml();
 	}
 });
 // Video event
@@ -162,7 +239,7 @@ var ETEvent = {
 	// Class factory function - returns ETLEventSource child class object based on passed type string
 	createSource: function(data) {
 		var type = data.type; //(data.attachment_type == null) ? data.type : data.attachment_type;
-		var s = this.itemTypes.find(function(t) { return type === t.type});
+		var s = this.typeAttributes(type);
 		var data = Object.extend(data, s);
 		
 		if (type === "facebook_activity_stream_item") {
@@ -194,6 +271,19 @@ var ETEvent = {
 	},
 	getSourceIcon: function(type) {
 		return this.itemTypes.find(function(t) { return type === t.type}).icon;
+	},
+	typeAttributes: function(type) {
+		return this.itemTypes.find(function(t) { return type === t.type});
 	}
 };
 
+// Utility functions - may move these to utility file if useful
+if (String.prototype.urlToLink == null) {
+	String.prototype.urlToLink = function() {
+		var t = this;
+		t = t.replace(/((www\.|(http|https|ftp|news|file)+\:\/\/)[_.a-zA-Z0-9-]+\.[_a-zA-Z0-9\/_:@=.+?,##%&~-]*[^.|\'|\# |!|\(|?|,| |>|<|;|\)])/g, '$1');
+		t = t.replace('href="www', 'href="http://www');
+		t = t.replace(/((www\.|(http|https|ftp|news|file))+:\/\/[^ ]+)/g, '<div class="tooltip_link"><a href="$1" target="_new" rel="nofollow">$1</a></div>');
+		return t;
+	}
+}

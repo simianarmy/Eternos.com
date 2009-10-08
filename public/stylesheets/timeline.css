@@ -395,7 +395,8 @@ a.event_list_inline_item:hover {
 }
 
 .tooltip_container a:hover {
-	text-decoration:underline;
+	text-decoration:none;
+	background-color: #ffe;
 }
 
 .tooltip_photo {
@@ -403,3 +404,15 @@ a.event_list_inline_item:hover {
 	width: 120px;
 }
 
+.tooltip_link a {
+	color: blue;
+}
+
+.tooltip_link a:hover {
+	text-decoration: underline;
+}
+
+.event_time {
+	font-size: 10px;
+	color: gray;
+}

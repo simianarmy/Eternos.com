@@ -415,16 +415,24 @@ var ETimeline = function (opts) {
   //Eternos Timeline Event Item(s)
   var ETLEventItems = Class.create({
     initialize: function (items) {
+			this.MaxMediaTooltipItems	= 5;
+			this.MaxTooltipItems = 10;
+			
+			// Sort items by datetime
+			items.sort(function(a, b) {
+				return a.getEventDateObj().compareTo(b.getEventDateObj());
+			});
       this.items = items;
       this.first = items[0];
-			this.id = this.first.attributes.id;
+			this.id = this.first.getID();
       this.type = this.first.type;
       this.start_date = this.first.start_date;
       this.end_date = this.first.end_date;
       this.attributes = this.first.attributes;
       this.num = items.length;
       this.items = items;
-			this.title = '';
+			this.title = this.first.getDisplayTitle(this.num);
+			this.icon = this.first.getIcon();
 			
       this.hiddenItemTemplate = that.templates.eventListTemplates.hiddenItem();
       this.itemWithTooltipTemplate = that.templates.eventListTemplates.eventItemWithTooltip();
@@ -438,14 +446,6 @@ var ETimeline = function (opts) {
 				return i.attributes.id;
 			});
 		},
-    _setTitle: function () {
-      if (this.num > 1) {
-        this.title = this.num + '&nbsp;' + this.first.display_text_plural;
-      } else if (this.num == 1) {
-        this.title = this.first.display_text;
-      }
-			return this.title;
-    },
     _setHtml: function () {
       // Need to format the link so all content will be displayed
       if (this.first.isArtifact()) {
@@ -458,7 +458,7 @@ var ETimeline = function (opts) {
     _getLinkUrl: function () {
 			var item = this.first;
       if (item.isArtifact()) {
-        this.detailsUrl = item.attributes.url;
+        this.detailsUrl = item.getURL();
       } else { 
         this.detailsUrl = this.eventDetailsLinkTemplate.evaluate({
 					memberId: that.memberID,
@@ -471,7 +471,7 @@ var ETimeline = function (opts) {
 		// Popup link code for individual item
 		_getItemDetailsUrl: function(item) {
 			if (item.isArtifact()) {
-				return item.attributes.url;
+				return item.getURL();
 			} else {
 				return this.eventDetailsLinkTemplate.evaluate({
 					memberId: that.memberID,
@@ -483,7 +483,7 @@ var ETimeline = function (opts) {
     _getLinkRel: function () {
       if (this.first.isArtifact()) {
         // Lightview auto-detects content so just need to know if gallery or not
-        this.detailsLinkRel = (this.num > 1) ? 'gallery[' + this.first.attributes.id + ']' : '';
+        this.detailsLinkRel = (this.num > 1) ? 'gallery[' + this.first.getID() + ']' : '';
       } else {
         this.detailsLinkRel = 'iframe';
       }
@@ -501,9 +501,9 @@ var ETimeline = function (opts) {
       }
       return this.itemWithTooltipTemplate.evaluate({
 				list_item_id: this.id,
-        b_title: this.getTitle(),
+        b_title: this.title,
 				title: this.tooltipTitleTemplate.evaluate({
-					icon: this.first.icon, title: this.getTitle()}),
+					icon: this.icon, title: this.title}),
         link_url: this._getLinkUrl(),
         link_rel: this._getLinkRel(),
         hidden_items: other_items,
@@ -522,32 +522,40 @@ var ETimeline = function (opts) {
     },
 		_getTooltipTitle: function() {
 			return this.tooltipTitleTemplate.evaluate({
-				icon: this.first.icon, title: this.getTitle()});
+				icon: this.icon, title: this.title});
 		},
     _getTooltipContents: function () {
+			var i, count, item;
+			
+			if (this.num == 0) {
+				return '';
+			}
+			if (this.first.isMedia()) {
+				count = Math.min(this.MaxMediaTooltipItems, this.num);
+			} else {
+				count = Math.min(this.MaxTooltipItems, this.num);
+			}
       this.tooltipHtml = '';
-      this.items.each(function (item) {
+			for (i=0; i<count; i++) {
+				item = this.items[i];
         this.tooltipHtml += this.tooltipItemTemplate.evaluate({
 					event_details_link: this._getItemDetailsUrl(item),
 					details_win_height: that.getWinHeight(),
           content: item.getPreviewHtml()
         });
-      },
-      this);
+      }
+			// Add link to view all
+			if (count < this.num) {
+				this.tooltipHtml += '<br/><a href="#">View All</a>';
+			}
       return this.tooltipHtml;
     },
     _getInlineContents: function () {
       return this.inlineEventsTemplate.evaluate({
-        id: this.first.attributes.id,
+        id: this.first.getID(),
         content: 'TODO'
       });
     },
-		getTitle: function() {
-			if (this.title === '') {
-				this._setTitle();
-			}
-			return this.title;
-		},
     populate: function () {
       return this._setHtml();
     }
@@ -563,10 +571,10 @@ var ETimeline = function (opts) {
 			this.end_date = this.latest = event.end_date;
       this.title = event.title;
       this.type = event.type;
-			this.id = event.attributes.id;
+			this.id = event.id,
 			this.num = event.num;
 			
-      icon_s = ETEvent.getSourceIcon(this.type);
+      icon_s = event.icon;
       this.icon = that.utils.assetUrl + that.utils.imgUrl + icon_s + that.utils.iconPostfix;
  
       this.event = new Timeline.DefaultEventSource.Event({
