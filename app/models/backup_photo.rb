@@ -45,7 +45,7 @@ class BackupPhoto < ActiveRecord::Base
     }
   }
   named_scope :with_photo, {
-    :include => :photo
+    :include => {:photo => :thumbnails}
   }
   EditableAttributes = [:caption, :title, :added_at, :source_url, :tags]
   

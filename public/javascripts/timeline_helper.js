@@ -45,6 +45,9 @@ Date.prototype.monthRange = function (num, dir) {
 Date.prototype.equalsYearMonth = function(other) {
 	return (this.getYear() === other.getYear()) && (this.getFullMonth() === other.getFullMonth());
 }
+Date.prototype.equalsDay = function(other) {
+	return this.clone().clearTime().equals(other.clone().clearTime());
+}
 // isMonthAfter
 // Returns true iff  date's month is > passed dated
 Date.prototype.isMonthAfter = function(d) {
@@ -286,15 +289,17 @@ var ETimeline = function (opts) {
       console.log("Displaying artifacts for: " + activeDate);
 
 			$A(this._itemsInDate(activeDate).randomize()).each(function (item, i) {
-        ul_class = (i >= realthis.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : "class=\"visible-artifact-item\"";
+				console.log("Adding artifact #" + i + ": type: " + item.type);
+        
+				ul_class = (i >= realthis.numShowed) ? "class=\"hidden-artifact-item\" style=\"display:none\"" : "class=\"visible-artifact-item\"";
         s += realthis.boxTemplate.evaluate({
-					id: item.attributes.id,
+					id: item.getID(),
           num: i,
           style: ul_class,
-          url: item.attributes.url,
-          thumbnail_url: item.attributes.thumbnail_url,
-					title: item.attributes.title,
-					caption: item.attributes.description
+          url: item.getURL(),
+          thumbnail_url: item.getThumbnailURL(),
+					title: item.getTitle(),
+					caption: item.getText()
         });
       });
 			return s;
@@ -302,7 +307,7 @@ var ETimeline = function (opts) {
     _write: function (content) {
 			var c = content || '';
       if (c === '' || this.items.length < 1) {
-        c = that.utils.blankArtifactImg;
+        c = (div = $('artifact_info')) ? div.innertHTML : 'copy here';//that.utils.blankArtifactImg;
       }
       this.parent.innerHTML = this.template.evaluate({
         title: this.title,
@@ -776,7 +781,10 @@ var ETimeline = function (opts) {
 					// Skip artifacts with missing source
 					if (event.attributes.url == null) { return; }
           that.artifactSection.addItem(event);
-        }
+        } else if (ETEvent.isArtifact(event.getDisplayType())) {
+					// Skip image attachments (already included in artifacts)
+					return;
+				}
         this.eventItems.addSource(event);
       }.bind(this));
     },
@@ -904,6 +912,7 @@ var ETimeline = function (opts) {
       this.options 	= params.options;
 			this.searchInProgress	= this.seeking = false;
 			this.disableSearch = false;
+			this.inScrollTo = false;
       this.rawEvents = new ETLEventParser(that.utils.emptyResponse);
 			
       // Timeline instance vars
@@ -1081,7 +1090,7 @@ var ETimeline = function (opts) {
 			}
 		},
 		_onMouseScroll: function () {
-				if (!this.timeline._dragging) {
+				if (!this.timeline._dragging && !this.inScrollTo) {
 					console.log("onMouseScroll");
 					//this._updateTitles(band.getCenterVisibleDate());
 					this._onScroll();
@@ -1216,7 +1225,7 @@ var ETimeline = function (opts) {
 		// On date nav button click or past/future events search
 		onNewDate: function(newDate) {
 			this.scrollTo(newDate, {populate: false});
-			this._setCenterDate(newDate);
+			//this._setCenterDate(newDate);
 			this.updateEvents({startDate: newDate});
 		},
 		// shows loading box & performs search
@@ -1227,15 +1236,7 @@ var ETimeline = function (opts) {
 		// Search events prior to current display month
 		searchClosestEvents: function(past_or_future) {
 			this.seeking = past_or_future;
-			/* This works but skips over unsearched date ranges */
-			/*
-			if (dt = this.rawEvents.getClosestEventDate(this.centerDate, past_or_future)) {
-				if ()
-				this._setCenterDate(dt);
-				this._loadCached();
-			} 
-			*/
-			
+		
 			// Search for nearest event
 			// If we get a result, do a full search on that result's date
 			this.updateEvents({
@@ -1293,7 +1294,9 @@ var ETimeline = function (opts) {
 				this._addEvents(groupedEvents);
 				// Center timeline on latest new event or 1st or last
 				newDate = this._getScrollToDate(groupedEvents.pluck('start_date')).toDate();
-				if (newDate !== this.currentDate) {
+				// auto scroll within the search results month if necessary
+				if (!newDate.equalsDay(this.currentDate) && (newDate.equalsYearMonth(this.currentDate))) {
+					console.log("auto scrolling to " + newDate);
 					this.scrollTo(newDate);
 				}
 			}
@@ -1328,12 +1331,15 @@ var ETimeline = function (opts) {
 			opts = Object.extend({populate: true}, opts);
 			
 			console.log("Scrolling to date " + date);
+			this.inScrollTo = true;
 			this.timeline.getBand(1).setCenterVisibleDate(date);
+			this._setCenterDate(date);
 			this._updateTitles(date);
 			if (opts.populate) {
 				this.rawEvents.populateResults(date);
 				this.redraw();
 			}
+			this.inScrollTo = false;
 		}
   });
 

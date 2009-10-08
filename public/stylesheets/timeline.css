@@ -398,4 +398,8 @@ a.event_list_inline_item:hover {
 	text-decoration:underline;
 }
 
+.tooltip_photo {
+	float: left;
+	width: 120px;
+}
 

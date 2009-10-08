@@ -15,10 +15,15 @@ module CommonDateScopes
         { :conditions => ["DATE(#{self.archivable_attribute.to_s}) BETWEEN ? AND ?", s, e] }
       }
       named_scope :before, lambda {|date|
-        { :conditions => ["DATE(#{self.archivable_attribute.to_s}) <= ?", date] }
+        { 
+          #:conditions => ["(#{self.archivable_attribute.to_s} IS NULL) OR (DATE(#{self.archivable_attribute.to_s}) <= ?)", 
+          :conditions => ["#{self.archivable_attribute.to_s} <= ?", date] 
+        }
       }
       named_scope :after, lambda {|date|
-        { :conditions => ["DATE(#{self.archivable_attribute.to_s}) >= ?", date] }
+        { 
+          :conditions => ["#{self.archivable_attribute.to_s} >= ?", date] 
+        }
       }
       named_scope :sorted, lambda {
         { :order => "#{self.archivable_attribute.to_s} ASC" }

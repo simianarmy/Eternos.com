@@ -16,7 +16,7 @@ var ETLEventSource = Class.create({
 		this.attributes 					= s.attributes;
 	},
 	isArtifact: function() {
-		return ETEvent.isArtifact(this.type) || ETEvent.isArtifact(this.attachment_type);
+		return ETEvent.isArtifact(this.type); // || ETEvent.isArtifact(this.attachment_type);
 	},
 	isMedia: function() {
 		return ETEvent.isMedia(this.type) || ETEvent.isMedia(this.attachment_type);
@@ -30,6 +30,18 @@ var ETLEventSource = Class.create({
 	getID: function() {
 		return this.attributes.id;
 	},
+	getURL: function() {
+		return this.attributes.url;
+	},
+	getThumbnailURL: function() {
+		return this.attributes.thumbnail_url;
+	}, 
+	getTitle: function() {
+		return this.attributes.title;
+	},
+	getText: function() {
+		return this.attributes.message || this.attributes.description;
+	},
 	getEventDate: function() {
 		return this.start_date;
 	},
@@ -41,18 +53,22 @@ var ETLEventSource = Class.create({
 
 // Photo event
 var ETLPhotoEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = new Template('<div class="tooltip_photo"><img src="#{img_url}"><br/>#{caption}</div><br/>');
+		$super(s);
+	},
 	isArtifact: function() {
 		return true;
 	},
 	getPreviewHtml: function() {
-		var str = '';
+		var caption = '';
 		if (this.attributes.caption !== undefined) {
-			str = this.attributes.caption;
+			caption = this.attributes.caption;
 		} else if (this.attributes.description !== undefined) {
-			str = this.attributes.description;
+			caption = this.attributes.description;
 		}
-		str += '<br/><img src="' + this.attributes.thumbnail_url + '">';
-		return str;
+		return this.previewTemplate.evaluate({img_url: this.attributes.thumbnail_url, 
+			caption: caption});
 	}
 });
 // Facebook event
@@ -145,7 +161,7 @@ var ETEvent = {
 	
 	// Class factory function - returns ETLEventSource child class object based on passed type string
 	createSource: function(data) {
-		var type = (data.attachment_type == null) ? data.type : data.attachment_type;
+		var type = data.type; //(data.attachment_type == null) ? data.type : data.attachment_type;
 		var s = this.itemTypes.find(function(t) { return type === t.type});
 		var data = Object.extend(data, s);
 		

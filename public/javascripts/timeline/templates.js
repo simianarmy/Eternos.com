@@ -70,6 +70,9 @@ var ETemplates = {
 	        s = element.next('div.tooltip_container');
 	        s.hide();
           DefaultTooltipOptions.title = element.innerHTML;
+					if (DefaultTooltipOptions.title.match('Image')) {
+						DefaultTooltipOptions.width = 'auto';
+					}
 	        new Tip(element, s, Object.extend(DefaultTooltipOptions, eventTooltipOptions));
 					// Add observer to hide it on click
 					element.observe('click', function(e) {

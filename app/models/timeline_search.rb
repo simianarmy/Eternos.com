@@ -104,7 +104,7 @@ class TimelineSearch
   
   def get_feed_items
     returning Array.new do |items|
-      @member.backup_sources.by_site(BackupSite::Blog).each do |feed|
+      @member.backup_sources.blog.each do |feed|
         items += query(feed.feed.entries.search)
       end
       items.flatten
@@ -130,7 +130,7 @@ class TimelineSearch
   protected
   
   def facebook_source
-    @facebook_source ||= @member.backup_sources.by_site(BackupSite::Facebook).first
+    @facebook_source ||= @member.backup_sources.facebook.first
   end
   
   def add_events(*evts)
