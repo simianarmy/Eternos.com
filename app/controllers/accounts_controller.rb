@@ -23,6 +23,14 @@ class AccountsController < ApplicationController
     if params[:invitation_token]
       @invitation_token = params[:invitation_token]
     end
+    # If here from main page fb connect, load fb-related data
+    begin
+      if facebook_session && (fbuser = facebook_session.user) && (prof = FacebookUserProfile.populate(fbuser))
+        @user[:first_name] = prof[:first_name]
+        @user[:last_name] = prof[:last_name]
+        @user.facebook_id = fbuser.uid
+      end
+    end
   end
 
   # 1 or 2-step process
@@ -70,8 +78,7 @@ class AccountsController < ApplicationController
         session[:account_id] = @account.id
         render :action => 'billing'
       else
-        flash_redirect "Your account has been created.", account_settings_url
-        #rennder :action => 'thanks', :layout => false
+        flash_redirect "Your account has been created.", account_setup_url
       end
     else
       @checked = false
