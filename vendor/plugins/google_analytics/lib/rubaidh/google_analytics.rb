@@ -156,12 +156,15 @@ module Rubaidh # :nodoc:
         extra_code = "pageTracker._setDomainName(\"#{override_domain_name}\");"
         self.override_domain_name = nil
       end
-      
+
       code = if local_javascript
-        <<-HTML
+        # Doesn't use ssl asset correctly??
+        tag =<<-HTML
         <script src="#{LocalAssetTagHelper.new.javascript_path( 'ga.js' )}" type="text/javascript">
         </script>
         HTML
+        tag.gsub!('http:', 'https:') if ssl
+        tag
       else
         <<-HTML
       <script type="text/javascript">

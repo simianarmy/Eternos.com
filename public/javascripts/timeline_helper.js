@@ -307,7 +307,7 @@ var ETimeline = function (opts) {
     _write: function (content) {
 			var c = content || '';
       if (c === '' || this.items.length < 1) {
-        c = (div = $('artifact_info')) ? div.innertHTML : 'copy here';//that.utils.blankArtifactImg;
+        c = (div = $('artifact_info')) ? div.innertHTML : '';//that.utils.blankArtifactImg;
       }
       this.parent.innerHTML = this.template.evaluate({
         title: this.title,

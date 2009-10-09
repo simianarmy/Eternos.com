@@ -60,10 +60,10 @@ var ETLEventSource = Class.create({
 		return this.getStartDateObj();
 	},
 	getStartDateObj: function() {
-		return Date.parseExact(this.start_date, "yyyy-MM-ddTHH:mm:ssZ");
+		return this._parseEventDateString(this.start_date);
 	},
 	getEndDateObj: function() {
-		return Date.parseExact(this.end_date, "yyyy-MM-ddTHH:mm:ssZ");
+		return this._parseEventDateString(this.end_date);
 	},
 	// Returne rails action path for viewing event source collection by date
 	eventDetailsPath: function(memberId) {
@@ -89,6 +89,15 @@ var ETLEventSource = Class.create({
 			author = '<br/><span class="event_author"><b>Posted by:</b> ' + this.attributes.author + '</span>';
 		}
 		return author;
+	},
+	// Parses event date from string into date object
+	_parseEventDateString: function(date) {
+		// try to parse iso datetime
+		var parsed = Date.parseExact(date, "yyyy-MM-ddTHH:mm:ssZ");
+		if (!parsed) {
+			parsed = date.toDate();
+		}
+		return parsed;
 	}
 });
 

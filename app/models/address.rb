@@ -42,8 +42,8 @@ class Address < ActiveRecord::Base
 		:recipient => Proc.new {|address| address.addressable.try(:full_name) || ""},
 		:zip => :postal_code,
 		:street => [:street_1, :street_2],
-		:state => Proc.new {|address| address.region.name },
-		:country => Proc.new {|address| address.country.name }
+		:state => Proc.new {|address| address.region.try(:name) },
+		:country => Proc.new {|address| address.country.try(:name) }
 	
 	with_options :if => :validatible_location do |m|
 		m.validates_presence_of :street_1
