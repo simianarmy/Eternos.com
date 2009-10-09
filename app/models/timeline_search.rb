@@ -70,14 +70,15 @@ class TimelineSearch
   
   def get_durations
     # TODO: Proximity search support
-    returning Array.new do |durations|
-      if p = @member.profile
-        durations = p.timeline(@start_date, @end_date).values
-      end
-      if @member.address_book.addresses.any?
-        durations << @member.address_book.addresses.in_dates(@start_date, @end_date)
-      end
+    # returning Array.new do ... not working out for me
+    durations = []
+    if p = @member.profile
+      durations = p.timeline(@start_date, @end_date).values
     end
+    if @member.address_book.addresses.any?
+      durations << @member.address_book.addresses.in_dates(@start_date, @end_date)
+    end
+    durations.flatten
   end
   
   def get_facebook_items
@@ -103,12 +104,11 @@ class TimelineSearch
   end
   
   def get_feed_items
-    returning Array.new do |items|
-      @member.backup_sources.blog.each do |feed|
-        items += query(feed.feed.entries.search)
-      end
-      items.flatten
+    items = []
+    @member.backup_sources.blog.each do |feed|
+      items << query(feed.feed.entries.search)
     end
+    items.flatten
   end
   
   # Helper for searching by type (constant or string)
