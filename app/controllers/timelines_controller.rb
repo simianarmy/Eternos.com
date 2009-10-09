@@ -28,7 +28,7 @@ class TimelinesController < ApplicationController
     @fake = 'fake' if params[:fake]
     
     if @member.need_backup_setup?
-      flash[:error] = "<h4>You do not have any accounts to backup yet!</h4>To setup your online accounts, click the 'account settings' link above and go to Step 2."
+      flash[:error] = "<h4>You do not have any accounts to backup yet!</h4>To setup your online accounts, click the 'account setup' link above and go to Step 2."
       @hide_timeline = true
     else
       if !@member.has_backup_data?

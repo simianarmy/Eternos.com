@@ -14,7 +14,7 @@ class BackupSourceJob < ActiveRecord::Base
   acts_as_archivable :on => :created_at
   
   def successful?
-    finished? && status && (status == BackupStatus::Success)
+    status && (status == BackupStatus::Success)
   end
   
   def reset_progress

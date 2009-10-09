@@ -65,25 +65,27 @@ class BackupPhoto < ActiveRecord::Base
     begin
       # Sanity check
       @member = backup_photo_album.backup_source.member
-      @filename = File.join(Dir::tmpdir, URI::parse(source_url).path.split('/').last)
+      @filename = File.join(AppConfig.s3_staging_dir, URI::parse(source_url).path.split('/').last)
       logger.debug "Downloading #{source_url} to #{@filename}..."
 
-      t = rio(@filename) < rio(source_url) # Download to temp file
-      if t.bytes > 0
-        self.photo = Photo.create!(
-          :owner => @member,
-          :content_type => Content.detect_mimetype(@filename),
-          :description => caption,
-          :filename => File.basename(@filename),
-          :temp_path => File.new(@filename),
-          :tag_list => tags || '',
-          :taken_at => added_at)
-        save!
-      end
+      @img = rio(@filename)
+      rio(source_url).binmode > @img
+
+      raise "Rio error saving #{source_url} to #{@filename}" unless @img.size?
+
+      self.photo = Photo.create!(
+      :owner => @member,
+      :content_type => Content.detect_mimetype(@filename),
+      :description => caption,
+      :filename => File.basename(@filename),
+      :temp_path => File.new(@filename),
+      :tag_list => tags || '',
+      :taken_at => added_at)
+      save!
     rescue
       update_attribute(:download_error, $!)
     ensure
-      rio(@filename).delete if @filename && File.exist?(@filename)
+      rio(@filename).delete if rio(@filename).exist?
     end
   end
 
