@@ -10,6 +10,7 @@ Database
 	Running MySQL on EC2 + EBS for storage:
 	http://developer.amazonwebservices.com/connect/entry.jspa?externalID=1663&categoryID=100
   http://www.igvita.com/2009/02/13/tokyo-cabinet-beyond-key-value-store/
+  Consistent Hashing Technique: http://www.linux-mag.com/cache/7561/1.html
   
 [Cloud] Storage/Backup: 
 	Amazon S3

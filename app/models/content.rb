@@ -26,7 +26,7 @@ class Content < ActiveRecord::Base
   acts_as_saved_to_cloud
   acts_as_commentable
   acts_as_restricted :owner_method => :owner
-  acts_as_archivable :order => 'DESC'
+  acts_as_archivable :on => :created_at
   acts_as_time_locked
   #acts_as_taggable_custom :owner_method => :owner
   acts_as_taggable_on :tags
@@ -35,11 +35,13 @@ class Content < ActiveRecord::Base
   validates_presence_of :title, :message => "Please Enter a Title"
   searches_on 'contents.filename'
   
-  include TimelineEvents
   serialize_with_options do
     methods :start_date, :url, :thumbnail_url
     only :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
   end
+  # Define start_date = created_at for serializing.  Define in child classes if start_date
+  # should return a different column value
+  def start_date; created_at end
   
   before_create :set_title
   # TODO: Make this work w/ attachment_fu

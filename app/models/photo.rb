@@ -18,6 +18,9 @@ class Photo < Content
     methods :start_date, :url, :thumbnail_url
     only :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
   end
+  # Alias start_date to taken_at attribute since we can't override acts_as_archivable in 
+  # STI children
+  def start_date; taken_at end
   
   # Use RMagik & EXIF to get date a photo was taken
   after_attachment_saved do |attach|
