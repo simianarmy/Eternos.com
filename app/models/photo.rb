@@ -20,7 +20,10 @@ class Photo < Content
   end
   # Alias start_date to taken_at attribute since we can't override acts_as_archivable in 
   # STI children
-  def start_date; taken_at end
+  # taken_at can be nil so make sure some date is returned
+  def start_date
+    taken_at || created_at 
+  end
   
   # Use RMagik & EXIF to get date a photo was taken
   after_attachment_saved do |attach|

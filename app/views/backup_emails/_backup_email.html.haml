@@ -15,7 +15,8 @@
   .message_content
     - @div = dom_id(backup_email, 'decrypted')
     - @hide = dom_id(backup_email, 'hide')
-    = link_to_remote_busy(dom_id(backup_email), "Click here to view contents", :url => { :controller => 'backup_emails', :action => "body", :id => backup_email.id })
+    - @busyid = dom_id(backup_email)
+    = link_to_remote('View contents', :url => { :controller => 'backup_emails', :action => "body", :id => backup_email.id }, :loading => "load_busy($('#{@busyid}'))", :complete => "unload_busy(); setDinamycHeight('details_content'); Scroller.updateAll();")
     %div{:id => @div}
     %div{:id => @hide, :style=>"display:none"}
       = link_to_function "Hide", "$('#{@div}').innerHTML = ''; $('#{@hide}').hide()"
