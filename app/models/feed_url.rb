@@ -40,11 +40,7 @@ class FeedUrl < BackupSource
         end
       rescue
       end
-      if valid_feed? @feed_info
-        self.auth_confirmed = true
-      else
-        errors.add(:rss_url, "Invalid RSS feed")
-      end
+      errors.add(:rss_url, "Invalid RSS feed") unless valid_feed? @feed_info
     end
   end
   

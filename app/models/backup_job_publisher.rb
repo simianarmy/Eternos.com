@@ -54,8 +54,8 @@ class BackupJobPublisher
     private
     
     def publish_sources(q, member, *sources)
-      q.publish BackupJobMessage.new.member_payload(member, *sources)
-      RAILS_DEFAULT_LOGGER.info "Sent backup job to queue for member #{member.name}"
+      q.publish payload = BackupJobMessage.new.member_payload(member, *sources)
+      RAILS_DEFAULT_LOGGER.info "Sent backup payload to queue: #{payload.inspect}"
     end
   end
 end

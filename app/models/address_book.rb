@@ -63,6 +63,7 @@ class AddressBook < ActiveRecord::Base
   
   def full_name
     returning String.new do |name|
+      name << name_title << ' ' unless name_title.blank?
       name << first_name.capitalize
       name << ' ' + middle_name.first.upcase + '.' unless middle_name.blank?
       name << ' ' + last_name.capitalize

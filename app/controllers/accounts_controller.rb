@@ -30,6 +30,8 @@ class AccountsController < ApplicationController
         @user[:last_name] = prof[:last_name]
         @user.facebook_id = fbuser.uid
       end
+    rescue
+      # Nothing to say..
     end
   end
 
