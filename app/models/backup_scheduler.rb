@@ -42,7 +42,7 @@ class BackupScheduler
           next_run_time
         end
         # Don't schedule for sometime in the past
-        scheduled.nil? || (scheduled <= Time.now) ? next_run_time : scheduled
+        (scheduled.nil? || (scheduled <= Time.now)) ? next_run_time : scheduled
       end
     end
     

@@ -399,6 +399,10 @@ a.event_list_inline_item:hover {
 	background-color: #ffe;
 }
 
+.tooltip_as {
+	width: 300px;
+}
+
 .tooltip_photo {
 	float: left;
 	width: 120px;

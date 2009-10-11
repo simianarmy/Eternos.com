@@ -7,11 +7,13 @@ var ETLEventSource = Class.create({
 	initialize: function(s) {
 		console.log("constructing ETLEventSource for " + s.type);
 		this.type 								= s.type;
+		this.attributes 					= s.attributes;
 		this.attachment_type			= s.attachment_type;
 		this.icon 								= s.icon;
-		this.start_date 					= s.start_date;
-		this.end_date 						= s.end_date;
-		this.attributes 					= s.attributes;
+		this.start_date_str 			= s.start_date;
+		this.end_date_str 				= s.end_date;
+		this.start_date_obj 			= this._getStartDateObj(); // Create this now for sorts
+		this.end_date_obj					= this._getEndDateObj();
 	},
 	isArtifact: function() {
 		return ETEvent.isArtifact(this.type); // || ETEvent.isArtifact(this.attachment_type);
@@ -53,17 +55,16 @@ var ETLEventSource = Class.create({
 	getText: function() {
 		return this.attributes.message || this.attributes.description;
 	},
+	// Returns event date as string
 	getEventDate: function() {
-		return this.start_date;
+		return this.start_date_str;
 	},
+	getEventEndDate: function() { 
+		return this.end_date_str;
+	},
+	// Returns event date as Date
 	getEventDateObj: function() {
-		return this.getStartDateObj();
-	},
-	getStartDateObj: function() {
-		return this._parseEventDateString(this.start_date);
-	},
-	getEndDateObj: function() {
-		return this._parseEventDateString(this.end_date);
+		return this.start_date_obj;
 	},
 	// Returne rails action path for viewing event source collection by date
 	eventDetailsPath: function(memberId) {
@@ -71,12 +72,11 @@ var ETLEventSource = Class.create({
 	},
 	getEventTimeHtml: function() {
 		var d, time = '';
-		if ((this.start_date != null) && (d = this.getStartDateObj())) {
-			time = '<br/><span class="event_time">' + d.toLocaleTimeString();
+		if (this.start_date_obj) {
+			time = '<br/><span class="event_time">' + this.start_date_obj.toLocaleTimeString();
 		}
-		if ((this.end_date != null) && (this.start_date !== this.end_date) && 
-			(d = this.getEndDateObj())) {
-			time += ' to ' + d.toLocaleTimeString();
+		if (this.end_date_obj) {
+			time += ' to ' + this.end_date_obj.toLocaleTimeString();
 		}
 		if (time !== '') { 
 			time += '</span>';
@@ -90,9 +90,16 @@ var ETLEventSource = Class.create({
 		}
 		return author;
 	},
+	_getStartDateObj: function() {
+		return this._parseEventDateString(this.start_date_str);
+	},
+	_getEndDateObj: function() {
+		return this._parseEventDateString(this.end_date_str);
+	},
 	// Parses event date from string into date object
 	_parseEventDateString: function(date) {
 		// try to parse iso datetime
+		if (!date) { return; }
 		var parsed = Date.parseExact(date, "yyyy-MM-ddTHH:mm:ssZ");
 		if (!parsed) {
 			parsed = date.toDate();
@@ -125,7 +132,7 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 
 var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
-		this.previewTemplate = new Template('#{message}#{author}#{time}#{source}#{media}');
+		this.previewTemplate = new Template('<div class="tooltip_as">#{message}#{author}#{time}#{source}#{media}</div>');
 		$super(s);
 	},
 	getSource: function() {
