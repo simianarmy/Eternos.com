@@ -388,8 +388,11 @@ a.event_list_inline_item:hover {
 	font-size:14px;
 }
 
-.tooltip_container a {
+.tooltip_container {
 	font-size: 12px;
+}
+
+.tooltip_container a {
 	text-decoration:none;
 	color:#494a4c;
 }

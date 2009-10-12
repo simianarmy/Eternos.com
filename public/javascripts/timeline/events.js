@@ -98,20 +98,17 @@ var ETLEventSource = Class.create({
 	},
 	// Parses event date from string into date object
 	_parseEventDateString: function(date) {
+		// TODO: Optimize - Date.parseExact is slow
 		// try to parse iso datetime
 		if (!date) { return; }
-		var parsed = Date.parseExact(date, "yyyy-MM-ddTHH:mm:ssZ");
-		if (!parsed) {
-			parsed = date.toDate();
-		}
-		return parsed;
+		return date.toISODate();
 	}
 });
 
 // Photo event
 var ETLPhotoEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
-		this.previewTemplate = new Template('<div class="tooltip_photo"><img src="#{img_url}"><br/>#{caption}</div><br/>');
+		this.previewTemplate = ETemplates.tooltipTemplates.image;
 		$super(s);
 	},
 	isArtifact: function() {
@@ -132,7 +129,7 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 
 var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
-		this.previewTemplate = new Template('<div class="tooltip_as">#{message}#{author}#{time}#{source}#{media}</div>');
+		this.previewTemplate = ETemplates.tooltipTemplates.activity_stream_item;
 		$super(s);
 	},
 	getSource: function() {

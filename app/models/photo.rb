@@ -16,7 +16,7 @@ class Photo < Content
 
   serialize_with_options do
     methods :start_date, :url, :thumbnail_url
-    only :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
+    only :id, :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
   end
   # Alias start_date to taken_at attribute since we can't override acts_as_archivable in 
   # STI children

@@ -18,16 +18,16 @@ var ETemplates = {
 			borderColor: '#74C5FF',
 			fixed: true,
 			hideOthers: true,
-			viewport: true
+			viewport: true,
+			closeButton: true,
+			hideOn: { element: 'tip', event: 'mouseout' }
 		},
 		eventTooltipOptions: {
 			hook: {
-				target: 'topRight',
-				tip: 'bottomLeft'
+				target: 'topMiddle',
+				tip: 'bottomMiddle'
 			},
-			stem: 'bottomLeft',
-			fixed: true,
-			hideOn: { element: 'tip', event: 'mouseout' }
+			stem: 'bottomMiddle',
 		},
 		timelineTooltipOptions: {
 			hook: {
@@ -49,10 +49,16 @@ var ETemplates = {
 			hiddenItem: function () {
 				return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 			}(),
-			eventItemWithTooltip: function () {
-				return new Template('<li id="evli:#{list_item_id}" class="event_list_item">' +
+			eventGroupItem: function() {
+				return new Template('<li class="event_list_item">' +
 				'<div class="event_list_item_container">' +
-				'<a href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
+				'<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>' + 
+				'</div><div style="clear:both"></div></li>');
+			}(),
+			eventItemWithTooltip: function () {
+				return new Template('<li class="event_list_item">' +
+				'<div class="event_list_item_container">' +
+				'<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
 				'<div id="evlitt:#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div style="clear:both"></div></li>');
 			}(),      
 			eventItemTooltipItem: function () {
@@ -72,6 +78,14 @@ var ETemplates = {
 				'No events for this month.&nbsp;&nbsp;' + 
 				'<a class="event_preview_item_container" href="#" id="prev_event_search">Previous events</a>&nbsp;&nbsp;<a href="#" id="next_event_search" class="event_preview_item_container">Next events</a>' +
 				'</div>');
+			}()
+		},
+		tooltipTemplates: {
+			activity_stream_item: function() {
+				return new Template('<div class="tooltip_as">#{message}#{author}#{time}#{source}#{media}</div>');
+			}(),
+			image: function() {
+				return new Template('<div class="tooltip_photo"><img src="#{img_url}"><br/>#{caption}</div><br/>');
 			}()
 		},
 		// Artifacts section templates
