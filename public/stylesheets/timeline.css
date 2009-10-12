@@ -402,13 +402,18 @@ a.event_list_inline_item:hover {
 	background-color: #ffe;
 }
 
+.tooltip_media_container {
+	font-size: 12px;
+	width: 120px;
+}
+
 .tooltip_as {
 	width: 300px;
 }
 
-.tooltip_photo {
-	float: left;
-	width: 120px;
+.tooltip_feed {
+	width: 300px;
+	padding-bottom: 5px;
 }
 
 .tooltip_link a {
@@ -422,4 +427,8 @@ a.event_list_inline_item:hover {
 .event_time {
 	font-size: 10px;
 	color: gray;
+}
+
+.debug_container {
+	font-size: 10px;
 }

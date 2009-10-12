@@ -522,6 +522,7 @@ Timeline._Band.prototype._onMouseScroll = function(innerFrame, evt, target) {
     }
     else if (mouseWheel === 'scroll') {
     	var move_amt = 50 * (delta < 0 ? -1 : 1);
+
       this._moveEther(move_amt);
     }
   }
@@ -554,11 +555,13 @@ Timeline._Band.prototype._onKeyDown = function(keyboardInput, evt, target) {
         case 37: // left arrow
         case 38: // up arrow
             this._scrollSpeed = Math.min(50, Math.abs(this._scrollSpeed * 1.05));
+
             this._moveEther(this._scrollSpeed);
             break;
         case 39: // right arrow
         case 40: // down arrow
             this._scrollSpeed = -Math.min(50, Math.abs(this._scrollSpeed * 1.05));
+
             this._moveEther(this._scrollSpeed);
             break;
         default:
@@ -605,6 +608,7 @@ Timeline._Band.prototype._autoScroll = function(distance, f) {
     var b = this;
     var a = SimileAjax.Graphics.createAnimation(
         function(abs, diff) {
+	
             b._moveEther(diff);
         }, 
         0, 
@@ -639,7 +643,6 @@ Timeline._Band.prototype._moveEther = function(shift) {
     } else {
         this.softLayout();
     }    
-    
     this._onChanging();
 }
 
@@ -666,6 +669,7 @@ Timeline._Band.prototype._fireOnScroll = function() {
 Timeline._Band.prototype._setSyncWithBandDate = function() {
     if (this._syncWithBand) {
         var centerDate = this._ether.pixelOffsetToDate(this.getViewLength() / 2);
+
         this._syncWithBand.setCenterVisibleDate(centerDate);
     }
 };

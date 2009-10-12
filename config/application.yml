@@ -34,6 +34,7 @@ production:
   base_domain: beta.eternos.com
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
   s3_staging_dir: /usr/local/eternos/cloud_staging
+  invitation_required: false
     
 staging:
   <<: *default_settings

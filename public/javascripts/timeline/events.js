@@ -5,7 +5,7 @@
 //Eternos Timeline Event Source base class
 var ETLEventSource = Class.create({
 	initialize: function(s) {
-		console.log("constructing ETLEventSource for " + s.type);
+		//console.log("constructing ETLEventSource for " + s.type);
 		this.type 								= s.type;
 		this.attributes 					= s.attributes;
 		this.attachment_type			= s.attachment_type;
@@ -71,17 +71,17 @@ var ETLEventSource = Class.create({
 		return ['tl_details', memberId, this.type].join('/');
 	},
 	getEventTimeHtml: function() {
-		var d, time = '';
+		var time = '';
 		if (this.start_date_obj) {
-			time = '<br/><span class="event_time">' + this.start_date_obj.toLocaleTimeString();
+			time = this.start_date_obj.toLocaleTimeString();
 		}
 		if (this.end_date_obj) {
 			time += ' to ' + this.end_date_obj.toLocaleTimeString();
 		}
 		if (time !== '') { 
-			time += '</span>';
+			return this._getSmallTooltipLine(time)
 		}
-		return time;
+		return '';
 	},
 	getEventAuthorHtml: function() {
 		var author 	= '';
@@ -102,6 +102,10 @@ var ETLEventSource = Class.create({
 		// try to parse iso datetime
 		if (!date) { return; }
 		return date.toISODate();
+	},
+	// Helper to generate 1-line tooltip contents
+	_getSmallTooltipLine: function(text) {
+		return ETemplates.tooltipTemplates.single_line_small.evaluate({text: text});
 	}
 });
 
@@ -135,7 +139,7 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 	getSource: function() {
 		var source = '';
 		if (this.isMedia()) {
-			source = '<br/><span class="event_time">Source: ' + this.source + '</span>';
+			source = this._getSmallTooltipLine('Source: ' + this.source);
 		}
 		return source;
 	},
@@ -188,13 +192,25 @@ var ETLTwitterActivityStreamEventSource = Class.create(ETLActivityStreamEventSou
 });
 // RSS event
 var ETLFeedEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.feed;
+		$super(s);
+	},
 	getPreviewHtml: function() {
-		var thumb, preview = this.attributes.name;
-		preview += this.getEventTimeHtml();
+		var thumb, preview = '', source = '';
+	
 		if (((thumb = this.attributes.screencap_thumb_url) != null) && !thumb.match('missing')) {
-			preview += '<br/><img src="' + thumb + '" width="100" height="100">';
+			preview = '<img src="' + thumb + '" width="100" height="100" style="float: left">';
 		}
-		return preview;
+		if (this.getURL() !== '') {
+			source = this._getSmallTooltipLine(this.getURL());
+		}
+		return this.previewTemplate.evaluate({
+			preview: preview,
+			message: this.attributes.name,
+			source: source,
+			time: this.getEventTimeHtml()
+		});
 	}
 });
 // Email event

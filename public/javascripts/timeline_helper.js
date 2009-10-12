@@ -118,6 +118,26 @@ String.prototype.toISODate = function() {
 	}
 	return dt;
 }
+// Timeline-wide debug flag
+var DEBUG = false;
+
+// Timeline debug module
+var ETDebug = function() {
+	function onpage(msg) {
+		if (DEBUG) {
+			$('debug_box').innerHTML += msg + ' ';
+		}
+	};
+	function log(msg) {
+		if (DEBUG) {
+			console.log(msg);
+		}
+	};
+	return {
+		onpage: onpage,
+		log: log
+	};
+}();
 
 //Eternos Timeline Date
 var ETLDate = Class.create({
@@ -177,7 +197,7 @@ var ETUI = function() {
 			var tipContents, parts, ttopts;
 			
 			if (element.prototip != null) { 
-				console.log("event item already has prototip attribute");
+				ETDebug.log("event item already has prototip attribute");
 				return true;
 			}
 			// get the event id from the container div id
@@ -199,6 +219,7 @@ var ETUI = function() {
 				el.stopObserving();
 			});
 		},
+		// May be possible to hook Timeline paint function to add observer
 		createTimelineEventIconObservers: function() {
 			$$('.timeline-event-icon').each(function(el) {
 				if (el.observingMouseOver === undefined) {
@@ -206,21 +227,17 @@ var ETUI = function() {
 						el.fire('event_icon:hover');
 					});
 					el.observingMouseOver = true;
-				} else {
-					console.log("timeline icon mouseover observer already created");
 				}
 			});
 		},
 		onEventIconMouseOver: function(element) {
-			var tipContents;
-			
 			if (element.prototip != null) { 
-				console.log("timeline icon already has prototip attribute");
+				ETDebug.log("timeline icon already has prototip attribute");
 				return true;
 			} 
-			console.log('creating tooltip on ' + element.id);
+			ETDebug.log('creating tooltip on ' + element.id);
 			ev = Timeline.EventUtils.decodeEventElID(element.id).evt;
-			
+						
 			createTooltip(element, ev.getEventID(), ETemplates.timelineTooltipOptions);
 		},
 		createSearchClickHandlers: function(timeline) {
@@ -242,7 +259,7 @@ var ETUI = function() {
 // Eternos Timeline Event Items html generator
 var ETLEventItems = Class.create({
   initialize: function (items, opts) {
-		this.MaxMediaTooltipItems	= 5;
+		this.MaxArtifactTooltipItems	= 5;
 		this.MaxTooltipItems = 10;
 		
 		// Sort items by datetime
@@ -332,7 +349,7 @@ var ETLEventItems = Class.create({
     }
 */
     return this.itemWithTooltipTemplate.evaluate({
-			list_item_id: this.id,
+			list_item_id: tooltipGenerator.key(this),
       b_title: this.title,
 			title: this.tooltipTitleTemplate.evaluate({
 				icon: this.icon, title: this.title}),
@@ -346,7 +363,7 @@ var ETLEventItems = Class.create({
   },
   _getInlineItemHtml: function () {
 		return ETemplates.eventListTemplates.eventGroupItem.evaluate({
-			list_item_id: this.id,
+			list_item_id: tooltipGenerator.key(this),
       title: this.getTooltipTitle(),
       link_url: this._getLinkUrl(),
       link_rel: this._getLinkRel(),
@@ -380,12 +397,13 @@ var ETLEventItems = Class.create({
 		if (this.num == 0) {
 			return '';
 		}
-		if (this.first.isMedia()) {
-			count = Math.min(this.MaxMediaTooltipItems, this.num);
+		if (this.first.isArtifact()) {
+			count = Math.min(this.MaxArtifactTooltipItems, this.num);
+			this.tooltipHtml = '<div class="tooltip_media_container">';
 		} else {
 			count = Math.min(this.MaxTooltipItems, this.num);
+			this.tooltipHtml = '<div class="tooltip_all_container">';
 		}
-    this.tooltipHtml = '<div class="tooltip_container">';
 		for (i=0; i<count; i++) {
 			item = this.items[i];
       this.tooltipHtml += this.tooltipItemTemplate.evaluate({
@@ -412,13 +430,16 @@ var ETLEventItems = Class.create({
 var tooltipGenerator = function() {
 	var eventItemsMap = {};
 	
+	function key(evItemsObj) {
+		return parseInt(evItemsObj.id + evItemsObj.type, 16); // Convert to hex num
+	}
 	// Map id to ETLEventItems class object
-	function add(eventId, evItemsObj) {
-		eventItemsMap[eventId] = evItemsObj;
+	function add(evItemsObj) {
+		eventItemsMap[key(evItemsObj)] = evItemsObj;
 	};
-	function generate(eventId) {
+	function generate(key) {
 		var itemsObj, results = {};
-		if (itemsObj = eventItemsMap[eventId]) {
+		if (itemsObj = eventItemsMap[key]) {
 			results = {
 				title: itemsObj.getTooltipTitle(),
 				body: itemsObj.getTooltipContents(),
@@ -428,6 +449,7 @@ var tooltipGenerator = function() {
 		return results;
 	};
 	return {
+		key: key,
 		add: add,
 		generate: generate
 	}
@@ -439,7 +461,7 @@ var tooltipGenerator = function() {
 var ETLTimelineEvent = Class.create({
   initialize: function (events) {
 		var icon_s;
-    var date = events.start_date.toISODate();
+    var date = events.start_date.toDate();
     this.start_date = this.earliest = date;
 		this.end_date = this.latest = events.end_date;
     this.title = events.title;
@@ -460,14 +482,14 @@ var ETLTimelineEvent = Class.create({
       icon: this.icon,
 			classname: 'tl_event',
 			caption: 'Click to view details',
-			eventID: this.id
+			eventID: tooltipGenerator.key(this) // Not numeric!
 			// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources
     });
 		// Set icon size for event using frequency = size trick
 		// Used here:
 		 // Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js:473
 		this.event.iconSize = ETemplates.getIconSize(this.num);
-		//console.log("Added timeline event with tooltip id " + this.id);
+		//ETDebug.log("Added timeline event with tooltip id " + this.id);
   }
 });
 
@@ -568,7 +590,7 @@ var ETimeline = function (opts) {
 				// Don't allow stepping into the future
 				return;
 			}
-			console.log("Date selector stepping from " + this.activeDate + " to " + newDate);
+			ETDebug.log("Date selector stepping from " + this.activeDate + " to " + newDate);
 			this.setDate(newDate);
 			that.timeline.onNewDate(newDate);
     }
@@ -607,12 +629,12 @@ var ETimeline = function (opts) {
       var s = '', ul_class;
 			var item, artis = this._itemsInDate(activeDate).randomize();
 			
-      console.log("Displaying artifacts for: " + activeDate);
+      ETDebug.log("Displaying artifacts for: " + activeDate);
 
 			numDisplay = Math.min(artis.length, this.MaxDisplayCount);
 			for (i=0; i<numDisplay; i++) {
 				item = artis[i];
-				console.log("Adding artifact #" + i + ": type: " + item.type);
+				ETDebug.log("Adding artifact #" + i + ": type: " + item.type);
         
 				ul_class = "class=\"visible-artifact-item\"";
         s += this.boxTemplate.evaluate({
@@ -658,15 +680,15 @@ var ETimeline = function (opts) {
 						// TODO: Fix me
 						// This is f'd up - title attibutes get lost, and we start seeing 
 						// a lot of duplicates in artifacts
-						console.log("Swapping artifact with html: " + h[j].innerHTML);
+						ETDebug.log("Swapping artifact with html: " + h[j].innerHTML);
 						v[i].update(h[j].innerHTML);
 						if (h[j].down().title !== '') { // correct some weirdness
-							console.log("setting title attribute: " + h[j].down().title);
+							ETDebug.log("setting title attribute: " + h[j].down().title);
 							v[i].down().writeAttribute({title: h[j].down().title});
 						}
-						console.log("Swapping artifact with html: " + tmp.innerHTML);
+						ETDebug.log("Swapping artifact with html: " + tmp.innerHTML);
 						h[j].update(tmp.innerHTML);
-						//console.log("setting title attribute: " + tmp_title);
+						//ETDebug.log("setting title attribute: " + tmp_title);
 						//h[j].down().writeAttribute({title: tmp_title});
 					}
 				}.bind(this), this.timeOut);
@@ -762,7 +784,7 @@ var ETimeline = function (opts) {
       var event;
       var activeDates;
 			
-      console.log("Populating with events from " + td);
+      ETDebug.log("Populating with events from " + td);
 
       // Only use events that fall in the active date month
       activeDates = this.dates.select(function (d) {
@@ -774,7 +796,7 @@ var ETimeline = function (opts) {
 
         currentItems.each(function (group, index) {
           event = new ETLEventItems(group, {memberID: that.memberID});
-					tooltipGenerator.add(event.id, event);
+					tooltipGenerator.add(event);
           this.items.push(event);
           itemsHtml += event.populate();
         }.bind(this));
@@ -807,7 +829,7 @@ var ETimeline = function (opts) {
 			dates.each(function(d) {
 				this._groupItemsByType(grouped[d]).each(function(items) {
 					results.push(ev = new ETLEventItems(items, {memberID: that.memberID}));
-					tooltipGenerator.add(ev.id, ev);
+					tooltipGenerator.add(ev);
 				});
 			}.bind(this));
 			return results;
@@ -865,7 +887,7 @@ var ETimeline = function (opts) {
         }
       }
       
-      //--results.each(function(item){console.log(item.length)});
+      //--results.each(function(item){ETDebug.log(item.length)});
       return results;
     },
 		// Returns event's date occurrence, as date string
@@ -893,12 +915,12 @@ var ETimeline = function (opts) {
       this.doParsing();
     },
     _mergeEvents: function (events) {
-      console.log("Merging events");
+      ETDebug.log("Merging events");
       //var merged = this.jsonEvents.results.concat(events.results);
       //this.jsonEvents.results = merged;
       this.jsonEvents = events;
 			
-			console.log("got " + events.resultCount + " results");
+			ETDebug.log("got " + events.resultCount + " results");
 			//console.dir(this.jsonEvents);
     },
 		// Takes JSON object containing timeline search results
@@ -973,8 +995,6 @@ var ETimeline = function (opts) {
 					that.onComplete.apply(that.timeline, [response]);
         },
         onFailure: function (err) {
-					$('notice').innerHTML = 'Search error!'
-					console.log(err.inspect);
           that.timeline.onSearchError();
         },
         onLoading: function () {
@@ -1003,7 +1023,7 @@ var ETimeline = function (opts) {
         stepDate = new ETLDate(sd, 's').getOutDate();
         endDate = new ETLDate(ed, 's').getOutDate();
         do {
-          console.log("Adding " + this.hashDate(stepDate) + " to search date cache");
+          ETDebug.log("Adding " + this.hashDate(stepDate) + " to search date cache");
           searched[this.hashDate(stepDate)] = true;
           stepDate.addMonths(1);
         } while (stepDate <= endDate);
@@ -1019,7 +1039,7 @@ var ETimeline = function (opts) {
 
         var found = false;
         do {
-					console.log("Checking search cache for date " + this.hashDate(stepDate));
+					ETDebug.log("Checking search cache for date " + this.hashDate(stepDate));
           if (searched[this.hashDate(stepDate)]) {
             found = true;
             break;
@@ -1030,7 +1050,7 @@ var ETimeline = function (opts) {
         return found;
       }
     };
-  };
+  }();
 
   // Eternos Timeline Base
   // params:
@@ -1070,15 +1090,14 @@ var ETimeline = function (opts) {
       this.tlMinDate = null;
       this.tlMaxDate = null;
       this.centerDate = null;
-      this.searchCache = searchCache();
 
       this.init(true);
     },
     _getMemberAge: function () {
       this.memberAge = this.endDate.toDate().getFullYear() - this.startDate.toDate().getFullYear();
       this.firstBandPixels = that.utils.tlEffectiveWidth / (this.memberAge / 10);
-			console.log("Member age: " + this.memberAge);
-			console.log("age pixels: " + this.firstBandPixels);
+			ETDebug.log("Member age: " + this.memberAge);
+			ETDebug.log("age pixels: " + this.firstBandPixels);
     },
     _setupTheme: function () {
 			//this.defaultTheme = Timeline.ClassicTheme.create();
@@ -1125,14 +1144,14 @@ var ETimeline = function (opts) {
       this.bandInfos[3].syncWith = 1;
 
       this.bandInfos[0].highlight = false;
-      this.bandInfos[1].highlight = true;
+      this.bandInfos[1].highlight = false;
       this.bandInfos[2].highlight = true;
       this.bandInfos[3].highlight = true;
 
       var start_date = new ETLDate(this.startDate, 'gregorian').getOutDate();
       var end_date = new ETLDate(this.endDate, 'gregorian').getOutDate();
 
-			console.log("band start, end dates: " + start_date + " - " + end_date);
+			ETDebug.log("band start, end dates: " + start_date + " - " + end_date);
       this.bandInfos[0].etherPainter = new Timeline.YearCountEtherPainter({
         startDate: start_date,
         multiple: 5,
@@ -1155,6 +1174,8 @@ var ETimeline = function (opts) {
         theme: this.theme
       })];
     },
+		// What exactly does this do??  Caused big bugs in IE
+		/*
     _handleWindowResize: function () {
 			var t = this;
       Event.observe(window, 'resize', function() {
@@ -1166,15 +1187,17 @@ var ETimeline = function (opts) {
       	}
 			});
     },
+*/
     _handleBandScrolling: function () {
 			Timeline._Band.prototype._onMouseUp = function(B,A,C) {
 				this.setDragging(false);
 				this._keyboardInput.focus();
-				console.log("onMouseUp");
+				ETDebug.onpage("onMouseUp");
 				
 				that.timeline._onScroll();
       };
-			this.timeline.getBand(1).addOnScrollListener(this._onMouseScroll.bind(this));
+			// The line below causes infinite onScroll/redraw loop in IE...find alternative!
+			//this.timeline.getBand(1).addOnScrollListener(this._onMouseScroll.bindAsEventListener(this));
     },
 		_handleUIEvents: function() {
 			// Hide tooltip on any click
@@ -1208,8 +1231,6 @@ var ETimeline = function (opts) {
       var tlMaxDate;
 			var currCenterDate;
 			
-			//this.timeline.hideBackupMessage();
-			
 			band = this.timeline.getBand(1);
 			currCenterDate = this.centerDate;
 			this._setCenterDate(band.getCenterVisibleDate());
@@ -1237,17 +1258,19 @@ var ETimeline = function (opts) {
           endDate: tlMaxDate
         });
       } else if (!currCenterDate.equalsYearMonth(band.getCenterVisibleDate())) {
-				console.log("onmouseup to new month: " + this.centerDate);
+				ETDebug.log("onmouseup to new month: " + this.centerDate);
 				this.updateEvents({startDate: this.centerDate});
       } else {
 				// Recreate tooltips on every scroll, timleline loses them somehow if you scroll too far
+				ETDebug.onpage("redrawing from _onScroll");
 				this.redraw();
 			}
 		},
+		// This gets called during any screen updates in IE
+		// Need to guard against infinite loops bug in IE.
 		_onMouseScroll: function () {
 				if (!this.timeline._dragging && !this.inScrollTo) {
-					console.log("onMouseScroll");
-					//this._updateTitles(band.getCenterVisibleDate());
+					ETDebug.onpage("_onMouseScroll");
 					this._onScroll();
 				}
 		},
@@ -1316,7 +1339,7 @@ var ETimeline = function (opts) {
 			var tooltip_el;
 			
 			events.each(function(event) {
-			  //--console.log(event.num);
+			  //--ETDebug.log(event.num);
 				this.eventSource.add((new ETLTimelineEvent(event)).event);
       }.bind(this));
 			// Force timeline to redraw so that events show up
@@ -1328,13 +1351,23 @@ var ETimeline = function (opts) {
 			// Before [re]creating DOM, remove existing in-memory observers & Tips
 			ETUI.onEventSectionLoading();
 	
-      console.log("loading events & artifacts for: " + d)
+      ETDebug.log("loading events & artifacts for: " + d)
       this._updateTitles(d);
       that.artifactSection.showLoading();
       that.eventSection.showLoading();
     },
+		showNotice: function(msg) {
+			$('flash_notice').innerHTML = msg;
+			$('flash_notice').appear();
+		},
+		showError: function(msg) {
+			$('flash_error').innerHTML = msg;
+			$('flash_error').appear();
+		},
 		// Required due to bug in timeline that kills tooltips after they go out of bounds
 		redraw: function() {
+			ETDebug.onpage('in redraw');
+			// Required flag for IE onScroll bug
 			ETUI.createTimelineEventIconObservers();
 		},
     init: function () {
@@ -1344,7 +1377,8 @@ var ETimeline = function (opts) {
       this._setupTheme();
       this._setupBands();
       this._create();
-      this._handleWindowResize();
+			// Causes horrible bug in IE where layout() constantly updates center date.
+     // this._handleWindowResize();
       this._handleBandScrolling();
  			this._handleUIEvents();
 				
@@ -1363,6 +1397,7 @@ var ETimeline = function (opts) {
     onSearchError: function () {
 			this.searchInProgress = false;
       this.hideLoading();
+			this.showError("An error occurred fetching your timeline data.  Please refresh the page.");
 			this.rawEvents.populateResults(this.currentDate);
       //TODO: display errors
     },
@@ -1421,12 +1456,12 @@ var ETimeline = function (opts) {
 				p.endDate = p.endDate.toMysqlDateString();
 			}
       // Don't repeat searches for same dates
-      if (p.range && this.searchCache.hasDates(p.startDate, p.endDate)) {
+      if (p.range && searchCache.hasDates(p.startDate, p.endDate)) {
         this._loadCached();
       } else {
 				if (!this.searchInProgress) {
 					// Add dates to cache so we don't repeat ajax call
-					this.searchCache.addDates(p.startDate, p.endDate);
+					searchCache.addDates(p.startDate, p.endDate);
 
 					// Start Ajax search process - callbacks will handle response
 					this.searchInProgress = true;
@@ -1450,14 +1485,17 @@ var ETimeline = function (opts) {
 				newDate = this._getScrollToDate(groupedEvents.pluck('start_date')).toDate();
 				// auto scroll within the search results month if necessary
 				if (!newDate.equalsDay(this.currentDate) && (newDate.equalsYearMonth(this.currentDate))) {
-					console.log("auto scrolling to " + newDate);
+					ETDebug.log("auto scrolling to " + newDate);
 					this.scrollTo(newDate);
 				}
 			}
+			/*
+			ETDebug.onpage("setting click handlers for all links");
 			// Hides any tooltip on click (required to hide on tooltip element link click)
 			$$('a').each(function (e) {
 				e.observe('click', function(e) { Tips.hideAll(); });
 			});
+			*/
 			this.seeking = null;
     },
 		parseProximitySearchResults: function (results) {
@@ -1473,23 +1511,24 @@ var ETimeline = function (opts) {
 				}
 				// Use 1st result since we just want the date
 				date = this._getScrollToDate(dates).toDate();
-				console.log('got proximity date = ' + date)
+				ETDebug.log('got proximity date = ' + date)
 				this._setCenterDate(date); // confusing
 				this.updateEvents({startDate: date, endDate: date});
 			} else {
-				console.log('no results from proximity search');
+				ETDebug.log('no results from proximity search');
 				this.rawEvents.populateResults(this.currentDate);
 			}
 		},
 		scrollTo: function(date, opts) {
 			opts = Object.extend({populate: true}, opts);
-			
-			console.log("Scrolling to date " + date);
+			ETDebug.onpage("Scrolling to date " + date);
+
 			this.inScrollTo = true;
 			this.timeline.getBand(1).setCenterVisibleDate(date);
 			this._setCenterDate(date);
 			this._updateTitles(date);
 			if (opts.populate) {
+				ETDebug.onpage("scrollTo populating results");
 				this.rawEvents.populateResults(date);
 				this.redraw();
 			}

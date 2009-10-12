@@ -85,7 +85,13 @@ var ETemplates = {
 				return new Template('<div class="tooltip_as">#{message}#{author}#{time}#{source}#{media}</div>');
 			}(),
 			image: function() {
-				return new Template('<div class="tooltip_photo"><img src="#{img_url}"><br/>#{caption}</div><br/>');
+				return new Template('<img src="#{img_url}"><br/>#{caption}<br/>');
+			}(),
+			feed: function() {
+				return new Template('<div class="tooltip_feed">#{preview}#{message}#{source}#{time}</div>');
+			}(),
+			single_line_small: function() {
+				return new Template('<br/><span class="event_time">#{text}</span>');
 			}()
 		},
 		// Artifacts section templates
