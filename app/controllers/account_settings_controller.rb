@@ -384,22 +384,22 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def new_relationship
+    @relationship = current_user.relationships.new(params[:relationship])
+    @relationship.end_at = nil if params[:current] == '1'
+
     begin
-      @relationship = current_user.relationships.new(params[:relationship])
-      @relationship.end_at = nil if params[:current] == '1'
-      
       if @relationship.save
         flash[:notice] = "Relationship saved"
       else
         flash[:error] = @relationship.errors.full_messages.join('<br/>')
       end
     rescue
-      flash[:error] = "Unexpected error saving data: " + $!
+      flash[:error] = "Unexpected error saving relationship: " + $!
     end
-    
+
     respond_to do |format|
-      format.js
-    end   
+      format.js # why isn't his working???
+    end
   end
   
   # TODO: Move to appropriate controller

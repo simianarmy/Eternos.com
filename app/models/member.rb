@@ -6,6 +6,7 @@ class Member < User
  
   with_options :foreign_key => 'user_id' do |m|
     m.has_many :relationships
+    m.has_many :trustees
     m.has_many :stories, :order => 'updated_at DESC'
     m.has_many :messages, :order => :start_at
     m.has_many :documentaries, :order => :start_at

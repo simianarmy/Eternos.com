@@ -294,7 +294,9 @@ class ApplicationController < ActionController::Base
   end
   
   def dynamic_layout
-    if params[:dialog]
+    if request.xhr? 
+      nil
+    elsif params[:dialog]
       'dialog'
     elsif current_user && !current_user.role.nil?
       current_user.role.downcase

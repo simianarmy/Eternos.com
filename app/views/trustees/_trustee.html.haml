@@ -1,0 +1,13 @@
+- @domId = dom_id(trustee)
+- @item_edit_id = @domId + "_edit_row"
+%tr{:id => @domId}
+  %td
+    = trustee.name
+  %td
+    = trustee.relationship
+  %td
+    = trustee.emails
+  %td
+    %div{:style=>"width: 176px;"}
+      = link_to 'Delete', trustee_path(trustee), :class => 'remote_delete'
+      %br.clearboth

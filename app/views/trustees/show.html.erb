@@ -1,0 +1,12 @@
+<% title "Trustees" %>
+
+<p>
+  <strong>Name:</strong>
+  <%=h @trustees.name %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_trustees_path(@trustees) %> |
+  <%= link_to "Destroy", @trustees, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", trustees_path %>
+</p>

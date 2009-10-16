@@ -1490,7 +1490,6 @@ var ETimeline = function (opts) {
 				}
 			}
 			/*
-			ETDebug.onpage("setting click handlers for all links");
 			// Hides any tooltip on click (required to hide on tooltip element link click)
 			$$('a').each(function (e) {
 				e.observe('click', function(e) { Tips.hideAll(); });

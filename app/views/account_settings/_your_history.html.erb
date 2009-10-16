@@ -1,3 +1,4 @@
+<!-- Forgive the mess, this changed hands a few times.. -->
 <div id="account-setting-content" class="makeScroll">
   <div id="address_book">
   
@@ -186,33 +187,34 @@
 
 <div class="line3"></div>
 
-<div id="relationships">
-  <table class="table-form4" id="table-history-families" border="0" cellspacing="0" cellpadding="0">
+  <table class="table-form4" id="table-history-relationships" border="0" cellspacing="0" cellpadding="0">
     <thead class="scrollContent">
       <tr>
         <td>
-          <div class="title5">Prior Relationships</div>
+          <div class="title5">Personal Relationships</div>
           <div class="add-btn-box">
-            <%= link_to_function "+ Add New" do |page|
-              page.insert_html :bottom, :'table-relationships', :partial => "new_relationship", 
+            <%= link_to_function "+ Add New", :class => 'add1-text' do |page|
+              page.insert_html :bottom, 'table-form-relationship', :partial => "new_relationship", 
               :locals => { :relationship => settings.relationship } 
               end    
               %>
-            </div>
-            <div style="clear:both"></div>
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>
-          <div id="relationship_notice" class="error-message"></div>
-          <div id="table-relationships">
-            <%= render :partial => 'relationship', :locals => {:relationships => settings.relationships} %>
           </div>
-        </td></tr>
-      </tbody>
-    </table>
-  </div>
+          <div style="clear:both"></div>
+        </td>
+      </tr>
+    </thead>
+    <tbody id="relationships">
+      <%= render :partial => 'relationship', :locals => {:relationships => settings.relationships} %>
+    </tbody>
+  </table>
+      
+      <div id="table-form-relationship-wrapper">
+        <div id="relationship_notice" class="error-message"></div> 
+        <div id="table-form-relationship"></div>
+      </div>
+  
+<div class="line3"></div>
+
 </div>
 
 <%= javascript_tag "

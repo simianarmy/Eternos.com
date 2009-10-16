@@ -1,0 +1,13 @@
+%p.input
+  %label Full Name
+  = f.text_field :name
+%br
+%p.input
+  %label Relationship
+  = f.text_field :relationship
+%br
+%p
+  %label Contact Email Addresses (one per line)
+  
+  = f.text_area :emails, :rows => 5
+%br

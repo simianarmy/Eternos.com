@@ -6,3 +6,15 @@ PayPal Security Key:
   https://www.paypal.com/cgi-bin/webscr?cmd=xpt/Marketing_CommandDriven/securitycenter/PayPalSecurityKey-outside
 RSA Key Fob:
   http://en.wikipedia.org/wiki/SecurID
+  
+McAfee Alert Items:
+  Hide .svn directories in Apache:
+    RedirectMatch 404 .*/\.svn(/|$) 
+    
+  SSL Protocol Version 2 Detection
+    In Apache, you need to modify the SSLCipherSuite directive in the httpd.conf or ssl.conf file. An example would be editing the following lines to something like:
+    SSLCipherSuite ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+    
+  Weak SSL Ciphers Suites Supported
+    You must reconfigure the SSLCipherSuite directive in the httpd.conf or ssl.conf file as such:
+    SSLCipherSuite ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP

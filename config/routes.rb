@@ -14,6 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { 
     :check_auth => :get, :permissions => :get, :authorized => :get, :cancel => :get }
     
+  # regular resources
   map.resources :timeline_events, :collection => {
     :events => :get
   }
@@ -28,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
   }
   map.connect 'backup_emails/body/:id', :controller => 'backup_emails', :action => 'body'
   map.resources :account_settings, :member => {
-    :completed_steps => :get
+    :completed_steps => :get,
     },
     :collection => {
       :online => :get, :save_personal_info => :post,
@@ -83,7 +84,8 @@ ActionController::Routing::Routes.draw do |map|
   end
     
   map.resources :addresses, :collection => { :country_regions => :get }
-
+  map.resources :trustees
+  
   map.resources :prelaunch, :controller => "prelaunch"
   map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
   map.connect 'fb/*keywords', :controller => 'prelaunch', :action => 'index'

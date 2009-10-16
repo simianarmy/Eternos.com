@@ -1,0 +1,10 @@
+unless @trustee.new_record?
+  page.insert_html :bottom, :trustees_table, :partial => 'trustee', :locals => {:trustee => @trustee}
+  page.visual_effect :highlight, dom_id(@trustee), :duration => 2.0
+  page.hide :add_trustee
+  page.hide :rjs_notice
+else
+  # show errors
+  page.show_flash :rjs_notice
+end
+flash.discard

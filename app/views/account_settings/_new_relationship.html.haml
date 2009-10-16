@@ -1,43 +1,40 @@
-- @domid = dom_id(relationship)
-%div{:id => @domid}
-  - form_remote_for relationship, :url => { :controller => 'account_settings', :action => 'new_relationship' }, :loading => "load_busy($('table-form-relationship');", :complete => "unload_busy();" do |form|
-    = form.hidden_field :id, :value => relationship ? relationship.id : ''
-    #table-form-relationship-wrapper
-      #table-form-relationship
-        %table#add-new-relationship.popup-newbox
-          %tr
-            %td{:colspan => "3"}
-              .title6
-                Add New Relationship
-                = link_to_function "Cancel", "$('#{@domid}').remove();", :class => "blue-btn3"
-          %tr
-            %td{:colspan => "3"}
-              %hr.line1
-          %tr
-            %td.coll-form1{:valign => 'center'} Name
-            %td.coll-form2{:valign => 'center'} :
-            %td.coll-form3{:valign => 'center'}
-              = form.text_field :name, :class => 'textbox5'
-          %tr
-            %td.coll-form1{:valign => 'center'} Description
-            %td.coll-form2{:valign => 'center'} :
-            %td.coll-form3{:valign => 'center'}
-              = form.text_field :description, :class => 'textbox5'
-          %tr
-            %td.coll-form1{:valign => 'center'} Started
-            %td.coll-form2{:valign => 'center'} :
-            %td.coll-form3{:valign => 'center'}
-              = form.date_select_with_datepicker(:start_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => relationship.start_at, :start_year => Date.today.year, :end_year => 100.years.ago.year})
-          %tr
-            %td.coll-form1{:valign => 'center'} Ended
-            %td.coll-form2{:valign => 'center'} :
-            %td.coll-form3{:valign => 'center'}
-              = form.date_select_with_datepicker(:end_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => relationship.end_at, :start_year => Date.today.year, :end_year => 100.years.ago.year})
-              %br
-              = check_box_tag "current"
-              %span#text-present-addresses Current / Ongoing
-    = submit_tag "Save", :id => "save-button-relationship", :class => "submit-btn3"
+#new_relationship.popup-newbox
+  - form_remote_for :relationship, :url => new_relationship_account_settings_path, :loading => "load_busy($('new_relationship'));" do |junk|
+    %table
+      %tr
+        %td{:colspan => "3"}
+          .title6
+            Add New Relationship
+            = link_to_function "Cancel", "$('new_relationship').remove();", :class => "blue-btn3"
+      %tr
+        %td{:colspan => "3"}
+          %hr.line1
+      %tr
+        %td.coll-form1{:valign => 'center'} Name
+        %td.coll-form2{:valign => 'center'} :
+        %td.coll-form3{:valign => 'center'}
+          = text_field_tag 'relationship[name]'
+      %tr
+        %td.coll-form1{:valign => 'center'} Description
+        %td.coll-form2{:valign => 'center'} :
+        %td.coll-form3{:valign => 'center'}
+          = text_field_tag 'relationship[description]'
+      %tr
+        %td.coll-form1{:valign => 'center'} Started
+        %td.coll-form2{:valign => 'center'} :
+        %td.coll-form3{:valign => 'center'}
+          = date_select_with_datepicker('relationship', :start_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => relationship.start_at, :start_year => Date.today.year, :end_year => 100.years.ago.year})
+      %tr
+        %td.coll-form1{:valign => 'center'} Ended
+        %td.coll-form2{:valign => 'center'} :
+        %td.coll-form3{:valign => 'center'}
+          = date_select_with_datepicker('relationship', :end_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => relationship.end_at, :start_year => Date.today.year, :end_year => 100.years.ago.year})
+          %br
+          = check_box_tag :current
+          %span#text-present-addresses Current / Ongoing
     %br
+    = submit_tag 'Save', :id => 'save-button-relationship', :disable_with => "Saving...", :class => 'submit-btn3'
+    
 :javascript
   // Required when rendering page via Ajax call
   datePickerController.create();

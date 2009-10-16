@@ -839,6 +839,16 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.text     "command_expanded"
   end
 
+  create_table "trustees", :force => true do |t|
+    t.integer  "user_id",                        :null => false
+    t.text     "emails"
+    t.string   "relationship"
+    t.string   "name"
+    t.string   "contact_method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+  
   create_table "users", :force => true do |t|
     t.string   "login",                                                          :null => false
     t.string   "email",                                                          :null => false

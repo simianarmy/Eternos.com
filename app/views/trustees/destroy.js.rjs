@@ -1,0 +1,2 @@
+page.flash_and_fade
+page.hide dom_id(@trustee)
