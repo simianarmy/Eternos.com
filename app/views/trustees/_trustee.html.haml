@@ -2,12 +2,11 @@
 - @item_edit_id = @domId + "_edit_row"
 %tr{:id => @domId}
   %td
-    = trustee.name
+    = restful_in_place_editor :span, trustee, :name
   %td
-    = trustee.relationship
+    = restful_in_place_editor :span, trustee, :relationship
   %td
-    = trustee.emails
+    = restful_in_place_editor :span, trustee, :emails
   %td
-    %div{:style=>"width: 176px;"}
-      = link_to 'Delete', trustee_path(trustee), :class => 'remote_delete'
-      %br.clearboth
+    = link_to 'Delete', trustee_path(trustee), :class => 'remote_delete'
+

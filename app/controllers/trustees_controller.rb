@@ -35,12 +35,19 @@ class TrusteesController < ApplicationController
   end
   
   def update
-    @trustees = current_user.trustees.find(params[:id])
-    if @trustees.update_attributes(params[:trustee])
-      flash[:notice] = "Successfully updated trustees."
-      redirect_to @trustees
+    @trustee = current_user.trustees.find(params[:id])
+    if @trustee.update_attributes(params[:trustee])
+      flash[:notice] = "Successfully updated trustee info."
     else
-      render :action => 'edit'
+      flash[:error] = @trustee.errors.full_messages.join('<br/>')
+      @trustee.reload
+    end
+    
+    respond_to do |format|
+      format.html { 
+        redirect_to trustees_url
+      }
+      format.js
     end
   end
   

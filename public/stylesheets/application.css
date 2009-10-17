@@ -136,10 +136,14 @@ a {
 input {
 	margin: 0 0 5px 5px;
 	font-size: 11px;
-	width:240px;
-	height:14px;
+/*	width:240px; */
+/*	height:14px; */
 	border:1px solid #898989;
 	color:#898989;
+}
+
+input[type=text] {
+	width: 240px;
 }
 
 input[type=radio] {
@@ -149,6 +153,11 @@ input[type=radio] {
 input[type=checkbox] {
 	width: 20px;
 }
+
+input[type=submit] {
+	width: 84px;
+}
+
 /**/
 /*input[type=text] {*/
 /*	font-size: 11px;*/
@@ -156,10 +165,6 @@ input[type=checkbox] {
 /*	height:14px;*/
 /*	border:1px solid #898989;*/
 /*	color:#898989;*/
-}
-
-input[type=submit] {
-	width: 84px;
 }
 
 #title input[type=text] {

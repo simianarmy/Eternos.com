@@ -1,4 +1,3 @@
-- use_prototip
 - use_form
 - title_icon image_tag 'contactus.png', :class => 'alignleft'
 - title 'Trustees'
@@ -18,7 +17,7 @@
   #rjs_notice
   - form_remote_for @trustee do |f|
     = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
-    = submit_tag 'Add Trustee', :style=>"width: 100px; height: 30px", :disable_with => "Adding..."
+    = submit_tag 'Add Trustee', :disable_with => "Adding..."
     = link_to 'Cancel', '#', :id => "toggle_add_trustee", :class => "toggleable"
 
 %p

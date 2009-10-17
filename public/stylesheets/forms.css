@@ -2,27 +2,76 @@
  * Forms & input
  */
 
+/*
+input {
+	margin: 0 0 5px 5px;
+	font-size: 11px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
+	color:#898989;
+}
+*/
+input[type=radio] {
+  width: 20px;
+}
+
+input[type=checkbox] {
+	width: 20px;
+}
+/**/
+/*input[type=text] {*/
+/*	font-size: 11px;*/
+/*	width:240px;*/
+/*	height:14px;*/
+/*	border:1px solid #898989;*/
+/*	color:#898989;*/
+}
+/*
+input[type=submit] {
+	width: 84px;
+}
+*/
+/*
+#title input[type=text] {
+	font-size: 11px;
+	width:240px;
+	height:14px;
+	border:1px solid #898989;
+	color:#898989;
+}
+
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+	border:1px solid #898989;
+	color:#898989;
+	background-color: lightyellow;
+}
+*/
+
+/*
 p.input {
 	text-align: right;
 	margin: 0 0 10px 0;
 	clear: both;
 }
+*/
 
 td.label {
 	float: right;
 	text-align: right;
 }
 
+/*
 form p {
 	font-size: 11px;
 }
-
+*/
 /* @group Forms */
 
 form#sign-up {
 	
 }
-
+/*
 input {
 	padding: 5px;
 	margin: 0 0 0 5px;
@@ -32,6 +81,7 @@ input {
 	color:#5f5f5f;
 	font-size: 11px;
 }
+*/
 
 input#username{
 	padding: 5px;
@@ -59,7 +109,7 @@ input.login {
 	padding: 3px 0px 4px;
 	width: 90px;
 }
-
+/*
 input.submit {
 	background: url(/images/submit-button.jpg) no-repeat;
 	border: none;
@@ -68,6 +118,7 @@ input.submit {
 	color: #fff;
 	font-size: 22px;
 }
+*/
 
 input.continue {
 	background: url(/images/continue.jpg) no-repeat;
