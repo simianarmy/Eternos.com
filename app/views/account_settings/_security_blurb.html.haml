@@ -1,5 +1,10 @@
 #security_info.textarea7
   %br
+  :plain
+    <!-- START SCANALERT CODE -->
+    <a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=beta.eternos.com"><img width="115" height="32" border="0" src="//images.scanalert.com/meter/beta.eternos.com/12.gif" alt="McAfee Secure sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;"></a>
+    <!-- END SCANALERT CODE -->
+  %br
   %a{:href => '#', :onclick => "$('security_text').show(); return false;"}
     Storage &amp; Security Details
   #security_text{:style => "display: none;"}
@@ -9,6 +14,7 @@
     %li No Eternos employee, Amazon staff, or any affiliated personnel will be able to view or decrypt your backup data.  
     %li Your data  will be stored digitally in a secure facility for as long as you specify.
     %br
-    = link_to 'Full Security Policy', '#'
-    %br
-    %a{:href => "#", :onclick => "$('security_text').hide(); return false;"} hide info
+    #links
+      = link_to 'Eternos Security Policy', '/about/security', :target => "_new", :style => "float: left"
+      %a{:href => "#", :onclick => "$('security_text').hide(); return false;", :style => "float: right"} hide
+  %br
