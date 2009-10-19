@@ -193,12 +193,12 @@ class AccountSettingsController < ApplicationController
         @job.save!
       end
 
-      find_job
+      @settings.find_job
       render :update do |page|
         page.remove "table-form-job"
         page.insert_html :bottom, "table-form-job-wrapper", "<div id=\"table-form-job\"></div>"
         page.hide "save-button-job"
-        page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @jobs}
+        page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @settings.jobs}
       end
     rescue ActiveRecord::ActiveRecordError
       render :update do |page|
@@ -235,12 +235,12 @@ class AccountSettingsController < ApplicationController
         @school.save!
       end
 
-      find_school
+      @settings.find_school
       render :update do |page|
         page.remove "table-form-school"
         page.insert_html :bottom, "table-form-school-wrapper", "<div id=\"table-form-school\"></div>"
         page.hide "save-button-school"
-        page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @schools}
+        page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @settings.schools}
       end
     rescue ActiveRecord::ActiveRecordError
       render :update do |page|
@@ -273,12 +273,12 @@ class AccountSettingsController < ApplicationController
         @medical.save!
       end
 
-      find_medical
+      @settings.find_medical
       render :update do |page|
         page.remove "table-form-medical"
         page.insert_html :bottom, "table-form-medical-wrapper", "<div id=\"table-form-medical\"></div>"
         page.hide "save-button-medical"
-        page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @medicals}
+        page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @settings.medicals}
       end
     rescue ActiveRecord::ActiveRecordError
       render :update do |page|
@@ -311,12 +311,13 @@ class AccountSettingsController < ApplicationController
         @medical_condition.save!
       end
 
-      find_medical_condition
+      @settings.find_medical_condition
       render :update do |page|
         page.remove "table-form-medical-condition"
         page.insert_html :bottom, "table-form-medical-condition-wrapper", "<div id=\"table-form-medical-condition\"></div>"
         page.hide "save-button-medical-condition"
-        page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', :locals => {:medical_conditions => @medical_conditions}
+        page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', 
+          :locals => {:medical_conditions => @settings.medical_conditions}
       end
     rescue ActiveRecord::ActiveRecordError
       render :update do |page|
@@ -352,12 +353,12 @@ class AccountSettingsController < ApplicationController
         @family.save!
       end
 
-      find_family
+      @settings.find_family
       render :update do |page|
         page.remove "table-form-family"
         page.insert_html :bottom, "table-form-family-wrapper", "<div id=\"table-form-family\"></div>"
         page.hide "save-button-family"
-        page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @families}
+        page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @settings.families}
       end
     rescue ActiveRecord::ActiveRecordError
       render :update do |page|

@@ -1,6 +1,6 @@
 # $Id$
 class UserMailer < ActionMailer::Base
-  layout 'email'
+  #layout 'email'
   
   def signup_notification(user)
     setup_email(user)

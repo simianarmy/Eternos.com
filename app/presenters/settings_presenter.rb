@@ -25,9 +25,18 @@ class SettingsPresenter < Presenter
     @params = params
   end
   
+  
+  def address_book
+    @address_book ||= @user.address_book
+  end
+  
+  def profile
+    @profile ||= @user.profile
+  end
+  
   def load_personal_info
-    @address_book = @user.address_book
-    @profile  = @user.profile
+    @address_book = address_book
+    @profile  = profile
   end
   
   def update_personal_info
@@ -87,10 +96,9 @@ class SettingsPresenter < Presenter
       @gmail_confirmed = @email_accounts && @email_accounts.any? {|t| t.confirmed?}
     end
   end
+
   
   def load_history
-    load_personal_info
-    
     find_address
     find_job
     find_school
@@ -108,27 +116,27 @@ class SettingsPresenter < Presenter
   end
 
   def find_address
-    @addresses = @address_book.addresses
+    @addresses = address_book.addresses
   end
 
   def find_job
-    @jobs = @profile.careers
+    @jobs = profile.careers
   end
 
   def find_school
-    @schools = @profile.schools
+    @schools = profile.schools
   end
 
   def find_medical
-    @medicals = @profile.medicals
+    @medicals = profile.medicals
   end
 
   def find_medical_condition
-    @medical_conditions = @profile.medical_conditions
+    @medical_conditions = profile.medical_conditions
   end
 
   def find_family
-    @families = @profile.families
+    @families = profile.families
   end
 
   def find_relationship
