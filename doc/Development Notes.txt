@@ -45,7 +45,7 @@ File DL & uploads:
   http://www.therailsway.com/2009/4/23/uploading-files
   
 Merchant/Payment Processing:
-  Braintreepaymentsolutions.com - processor
+  Braintreepaymentsolutions.com - processor - applying
 	http://railskits.com/saas/ - purchased
 	active_merchant plugin
 
@@ -56,7 +56,7 @@ Email Campaigns:
   madmimi.com
 	
 Error Handling:
-	Exception Notifications: http://railscasts.com/episodes/104-exception-notifications
+	Exception Notifications: http://railscasts.com/episodes/104-exception-notifications - using
 	Hosted Error Reports: http://www.hoptoadapp.com/welcome
 
 Generating RSS Feed: http://railscasts.com/episodes/87-generating-rss-feeds

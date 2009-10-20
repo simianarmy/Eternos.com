@@ -9,7 +9,9 @@ class RecordingsController < ApplicationController
   
   def new
     @parent = params[:attach_to]
-    render :layout => false
+    if params[:layout]
+      render :layout => params[:layout]
+    end
   end
   
   def create

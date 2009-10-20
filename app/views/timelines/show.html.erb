@@ -1,10 +1,14 @@
 <% use_timeline %>
 <% javascript 'jsProgressBarHandler' %>
+<% use_flash %>
+<% javascript 'backtothehtml', 'swfobject' %>
 
 <% header '<span class="subtitle1">' + @member_name + ':</span><span class="subtitle2">Your TimeLine(tm)</span>' 
 %>
+
 <div id="content-container3">
   <div id="timeline-top">
+    <div id="recorder_pane"></div>
     <div id="backups" class="backup-container">
       <%= render :partial => 'backup_bars', :locals => {:backups => @backups} 
       %>
@@ -13,33 +17,20 @@
     <div id="flash_notice" style="display: none"></div>
     <div id="flash_error" style="display: none"></div>
     
+    <div id="timeline_links" class="alignright">
+      <%= #attach_recording_link 'Record Message', :div => 'recorder_pane' 
+        recording_popup_link 'Record Message'
+      %>
+      <%= render :partial => 'helplink' %>
+      
+    </div>
+    <div class="clearboth"></div>
+    
     <div class="timelinebox">
-      <div id="my-timeline" style="height:375px;border: 1px solid #aaa;"></div>
+      <div id="my-timeline" style="height:335px;border: 1px solid #aaa;"></div>
       <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
     </div>
     <div id="debug_box" class="debug_container"></div>
-    <div>
-     <span class="tl_helptext" id="nav_help">Help</span>
-    </div>
-    
-    <span id="nav_tip" style="display: none">
-      To browse events in your Timeline, hold your mouse over the icons for a preview.  
-      <br/>
-      Click the icons for full details, or click an individual item inside the preview window.
-      <br/>
-      To navigate the Timeline: Drag it left or right, use the mouse scroll wheel, or the arrow keys, or double click on a date.
-      </span>
-    <%= javascript_tag "new Tip($('nav_help'), $('nav_tip'), {
-    title: 'Timeline Help',
-    width: '400px',
-		border: 6,
-		borderColor: '#74C5FF',
-		fixed: true,
-		hideOthers: true,
-		viewport: true,
-		closeButton: true,
-		hideOn: { element: 'tip', event: 'mouseout' }
-    });" %>
     
 		<div class="dotline"></div>
   </div>

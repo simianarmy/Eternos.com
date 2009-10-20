@@ -67,7 +67,7 @@ class AddressBook < ActiveRecord::Base
       name << first_name.capitalize
       name << ' ' + middle_name.first.upcase + '.' unless middle_name.blank?
       name << ' ' + last_name.capitalize
-      name << ", #{name_suffix.capitalize}" unless name_suffix.blank?
+      name << ", #{name_suffix}" unless name_suffix.blank?
     end
   end
   

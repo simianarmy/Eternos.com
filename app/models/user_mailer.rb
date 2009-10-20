@@ -16,7 +16,7 @@ class UserMailer < ActionMailer::Base
   end
   
   def invitation(invitation, signup_url)
-    subject 'Your Eternos.com Invitation Code'
+    subject 'Invitation From Eternos.com'
     recipients  invitation.recipient_email
     from  "#{AppConfig.from_email}"
     reply_to "#{AppConfig.support_email}"

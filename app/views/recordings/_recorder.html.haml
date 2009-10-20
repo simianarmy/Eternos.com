@@ -1,6 +1,2 @@
-- use_flash
-= link_to_function 'Close', "$('av_recording').innerHTML = '';"
-%br
-%p
 #recorder
   = swfobject_tag "/swf/Recorder.swf?userid=#{current_user.id}", :div_id => "recorder", :size => "640x480", :flash_version => 7, :parameters => {:movie => "Recorder.swf?userid=#{current_user.id}", :quality => "high"}, :variables => {:quality => 'high'}

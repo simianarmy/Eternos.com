@@ -184,6 +184,11 @@ span.select {
 	color:#595959;
 }
 
+#dialog-container {
+  width: 90%;
+  padding: 15px;
+}
+
 #content-container{
 	width:785px;
 	height:auto;

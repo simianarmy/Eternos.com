@@ -12,19 +12,19 @@
     = yield(:head)
     = yield(:js_libs)
     = yield(:javascript)
-      
+    
     / end bundle
   %body
-    #container
+    #dialog-container
       .content_title.alignleft
         %h2= yield(:title)
         
       / for rjs flash notices
-      - unless params[:controller] == "facebook_backup"
-        #notice.flash_notice= show_flash_messages
+      #notice.flash_notice= show_flash_messages
       .context
         .clearboth
         %p= yield(:header)
       = yield
       / end of sub content
       .clearboth
+    

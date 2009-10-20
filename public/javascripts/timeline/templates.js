@@ -104,7 +104,7 @@ var ETemplates = {
 			}()
 		},
 		dateSelectorTemplate: function() {
-			return new Template('<a id="month_selector_down"" href="#" class="btn-left"></a><span id="display_month" class="subtitle6">#{month}</span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle7">#{year}</span><a id="year_selector_up" href="#" class="btn-right"><div style="clear: both"></div>');
+			return new Template('<a id="month_selector_down"" href="#" class="btn-left"></a><span id="display_month" class="subtitle6">#{month}</span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6">#{year}</span><a id="year_selector_up" href="#" class="btn-right"><div style="clear: both"></div>');
 		}(),
 		eventSelectorTemplate: function() {
 			return new Template('<a id="prev_event" href="" class="btn-left"></a><span class="subtitle7">&nbsp;Most&nbsp;Recent&nbsp;</span><a id="next_event" href="#" class="btn-right">');

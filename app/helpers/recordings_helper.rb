@@ -27,4 +27,9 @@ module RecordingsHelper
       :loading => "load_busy($('recording'))",
       :complete => "unload_busy(); $('recording').fade();"}
   end
+  
+  def recording_popup_link(title)
+    link_to title, new_recording_path(:dialog => true), :class => 'lightview', :rel => 'iframe',
+      :title => ':: Create Recording :: width: 620, height: 700'
+  end
 end

@@ -6,6 +6,10 @@ def invite(sender, recipient)
   if @invitation.save
     UserMailer.deliver_invitation(@invitation, signup_url(@invitation.token, 'Free', :host => AppConfig.base_domain))
     puts "Invite sent to #{recipient}"
+    true
+  else
+    puts @invitation.errors.full_messages.join(",")
+    false
   end
 end
 
@@ -16,7 +20,9 @@ namespace :beta do
     sender = Member.first
     NotifyEmail.sent_at_nil[0..limit].each do |email|
       puts "Inviting #{email.email}\n"
-      #invite(sender, email.email)
+      if invite(sender, email.email)
+        email.update_attribute(:sent_at, Time.now)
+      end
     end
   end
   
