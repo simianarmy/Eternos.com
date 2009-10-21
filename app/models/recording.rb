@@ -4,7 +4,7 @@
 
 class Recording < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
-  has_one :content, :dependent => :destroy, :foreign_key => 'parent_id'
+  belongs_to :content, :dependent => :destroy
   
   validates_presence_of :filename, :message => "Error creating file"
   #validates_uniqueness_of :filename, :message => "Filename is in use"
@@ -47,7 +47,7 @@ class Recording < ActiveRecord::Base
   end
   
   def to_s
-    (audio? ? 'Audio' : 'Video') + "Recording - (#{number_to_human_size(size)})"
+    (audio? ? 'Audio' : 'Video') + " recording: #{filename}"
   end
   
   def save_content(inspector)
@@ -55,6 +55,8 @@ class Recording < ActiveRecord::Base
       info[:inspector] = inspector
       klass.create_from_recording(info) or 
         raise ContentCreationException.new('Unable to create #{content.class} object')
+      self.content = klass
+      save!
     end
   end
     

@@ -24,18 +24,21 @@ class RecordingsController < ApplicationController
     respond_to do |format|
       if @recording.save
         # Save recording id to session for new object
-        session[recording_session_key.to_sym] = @recording.id
+        session[recording_session_key.to_sym] = session[:last_recording] = @recording.id
         
-        RecordingWorker.async_analyze(:id => @recording.id)
+        # start transcoding process
+        @recording.analyze
+        
         # Return status code only to flash app
         # On success, will redirect to redirecturl value in config xml
         format.html { 
-#          flash[:notice] = "Recording processed." 
+          flash[:notice] = "Recording saved."
           render :nothing => true, :status => 200
         }
       else
         format.html {
           flash[:error] = @recording.errors.full_messages
+          RAILS_DEFAULT_LOGGER.debug "Error saving recording: " + flash[:error]
           render :nothing => true, :status => 500
         }
       end
@@ -43,7 +46,7 @@ class RecordingsController < ApplicationController
   end
   
   def show
-    @recording = current_user.contents.find(params[:id]) rescue nil
+    @recording = current_user.recordings.find(params[:id]) rescue nil
     
     respond_to do |format|
       format.html
@@ -87,6 +90,7 @@ class RecordingsController < ApplicationController
     else
       recordings_path
     end
+    RAILS_DEFAULT_LOGGER.debug "recorder redirect on save to #{@redirect_on_save_url}"
     respond_to do |format|
       format.xml { render :layout => false }
     end

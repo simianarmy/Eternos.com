@@ -45,7 +45,6 @@ class WebVideo < Content
     info = data[:inspector]
     
     returning create(
-      :parent_id => data[:parent_id],
       :owner => data[:member],
       :is_recording => true,
       :title => "Video recording: #{File.basename(data[:filename])}",

@@ -89,7 +89,7 @@ module LayoutHelper
   end
   
   def use_flash
-    javascript 'swfobject'
+    javascript 'backtothehtml', 'swfobject'
   end
   
   def use_flashplayer

@@ -32,11 +32,10 @@ class DocumentariesController < StoriesController
       Recording.destroy(session[:last_recording]) rescue nil
       session[:last_recording] = nil
     end
-    @recording = if session[:last_recording]
-      Recording.find(session[:last_recording])
-    else
-      Recording.new
+    if session[:last_recording] 
+      @recording = Recording.find(session[:last_recording]) rescue nil
     end
+    @recording ||= Recording.new
   end
     
 end

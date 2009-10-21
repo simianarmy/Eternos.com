@@ -21,8 +21,8 @@ class Audio < Content
   def self.create_from_recording(data)
     logger.info "Creating new audio from recording: #{data[:filename]}"
     
-    returning create(:owner => data[:member],
-      :parent_id => data[:parent_id],
+    returning create(
+      :owner => data[:member],
       :is_recording => true,
       :size => File.size(data[:filename]),
       :title => "Audio recording: #{File.size(data[:filename])}",

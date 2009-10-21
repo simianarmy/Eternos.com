@@ -633,7 +633,8 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
   add_index "recipients", ["user_id"], :name => "index_recipients_on_user_id"
 
   create_table "recordings", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id", :null => false
+    t.integer  "content_id"
     t.string   "filename",         :null => false
     t.string   "state",            :null => false
     t.string   "processing_error"

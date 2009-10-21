@@ -1,5 +1,6 @@
-- title "New Story"
+- title "Create Your Message"
 - use_lightview
+- use_flash
 - use_soundmanager
 
 = custom_error_messages_for :documentary
@@ -17,9 +18,6 @@
     %br
     = render :partial => 'stories/form', :locals => {:f => f, :story => @documentary}
 - else
-  %p.input
-    Record your message here
-  %br
   = render :partial => 'recordings/recorder'
 
 

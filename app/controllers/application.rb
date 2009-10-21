@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   unless ActionController::Base.consider_all_requests_local
     rescue_from ActionController::RoutingError, ActionView::MissingTemplate,
       ActionController::UnknownAction, ActionController::UnknownController,
-      :with => :render_404
+      ActionController::InvalidAuthenticityToken, :with => :render_404
     rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
     rescue_from RuntimeError, :with => :render_500
   end

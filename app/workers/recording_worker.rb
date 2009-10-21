@@ -8,8 +8,9 @@ class RecordingWorker < Workling::Base
   
   def analyze(payload)
     logger.debug "RecordingWorker::analyze got payload: #{payload.inspect}"
-    return unless @recording = Recording.find(payload[:id])
-    
+    return unless @recording = safe_find {
+      Recording.find(payload[:id])
+    }    
     begin
       logger.debug "Analyzing recording"
       @recording.start_processing!

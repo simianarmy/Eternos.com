@@ -1,2 +1,22 @@
+#recording_instructions
+  %p
+    In order to record successfully and to get the highest quality recording please carefully follow the instructions below.
+  .clearboth
+  
+  %li 
+    1. Make sure that your webcam is turned on and is working.  
+    = link_to 'Webcam help', '#'
+  %li 2. Push the record button (REC) to start the recording.
+  %li 3. When you are finished, push the same button (STOP).
+  %li 4. To preview your recording, hit the PLAY button.
+  %li 5. You can re-record (Steps 2-3) until you are satisfied with your recording.
+  %li 6. Push SAVE button to save your recording.
+  %p
+    %strong Note: 
+    Prior to recording lengthy content, and to ensure the recorder is working properly, it is advisable to record and playback a short practice recording.
+    %span.alignright= link_to_function 'Hide', "$('recording_instructions').hide()"
+  .clearboth
+  
+
 #recorder
   = swfobject_tag "/swf/Recorder.swf?userid=#{current_user.id}", :div_id => "recorder", :size => "640x480", :flash_version => 7, :parameters => {:movie => "Recorder.swf?userid=#{current_user.id}", :quality => "high"}, :variables => {:quality => 'high'}
