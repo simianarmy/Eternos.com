@@ -1,6 +1,4 @@
 #inner_menu.alignright
   %ul#navlist
     %li.home= link_to 'account setup', account_setup_path
-    %li.support= link_to_lightview 'profile', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
-    %li= link_to 'create recording', new_recording_path(:dialog=>true), :class => 'lightview', :rel => 'iframe', :title => ':: Record Your Story :: width: 700, height: 700'
     %li.logout= link_to "log&nbsp;out", logout_path

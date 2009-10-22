@@ -24,8 +24,10 @@
           %h1= link_to((image_tag 'eternos.gif', :id => 'eternos_logo', :border => '0'),  root_path)
           /= render :partial => 'shared/login_box' unless @hide_login_box
         #menu.alignright
-          - cache 'user_nav' do
+          = render :partial => 'users/inner_nav'
+					- cache 'user_nav' do
             = render :partial => 'users/nav'
+					
         .clearboth
       
       #topdiv
@@ -34,7 +36,7 @@
           = yield(:title_icon)
           %h2= yield(:title)
             
-        = render :partial => 'users/inner_nav'
+        
         .clearboth
         
         / for rjs flash notices
