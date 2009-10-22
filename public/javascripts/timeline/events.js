@@ -237,10 +237,21 @@ var ETLJobEventSource = Class.create(ETLEventSource, {
 });
 // Address event
 var ETLAddressEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.address;
+		$super(s);
+	},
 	getPreviewHtml: function() {
-		return [this.attributes.street_1, this.attributes.city,
-			this.attributes.country_id, 
-			this.attributes.postal_code].join('<br/>');
+		var dates = this.attributes.moved_in_on;
+		if (this.attributes.moved_out_on !== '' && 
+			this.attributes.moved_out_on !== this.attributes.moved_in_on) {
+			dates += ' to ' + this.attributes.moved_out_on;
+		}
+		return this.previewTemplate.evaluate({
+			postal: this.attributes.postal_address,
+			dates: dates,
+			type: this.attributes.location_type
+		});
 	}
 });
 

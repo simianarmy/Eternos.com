@@ -1,10 +1,12 @@
-%span#nav_help.tl_helptext Help
+%a#nav_help.tl_helptext{:href=>'#'} Help
 %span#nav_tip{:style => "display: none"}
   To browse events in your Timeline, hold your mouse over the icons for a preview.  
   %br
   Click the icons for full details, or click an individual item inside the preview window.
   %br
   To navigate the Timeline: Drag it left or right, use the mouse scroll wheel, or the arrow keys, or double click on a date.
+  %br
+  Click the arrows around the month & year dates to browse nearby months or years.
   
 :javascript
   new Tip($('nav_help'), $('nav_tip'), {

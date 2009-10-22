@@ -25,7 +25,7 @@
           /= render :partial => 'shared/login_box' unless @hide_login_box
         #menu.alignright
           = render :partial => 'users/inner_nav'
-					- cache 'user_nav' do
+          - cache 'user_nav' do
             = render :partial => 'users/nav'
 					
         .clearboth

@@ -31,8 +31,9 @@ class Address < ActiveRecord::Base
 	
 	include TimelineEvents
 	serialize_with_options do
-		methods :postal_address, :start_date
+		methods :postal_address, :start_date, :end_date
 	end
+	def end_date; end_at end
 	
 	# For formatting postal addresses from over 60 countries.
 	# Problem: :country must return 2-letter country code for this plugin 
@@ -88,9 +89,9 @@ class Address < ActiveRecord::Base
 	include CommonDateScopes
 	named_scope :in_dates, lambda { |start_date, end_date|
 		{
-			:conditions => ["(moved_in_on >= ? AND moved_out_on <= ?) OR " +
+			:conditions => ["((moved_out_on IS NOT NULL) AND (? BETWEEN moved_in_on AND moved_out_on)) OR " +
 				"(moved_out_on IS NULL AND moved_in_on <= ? AND DATE(NOW()) > ?)",
-				start_date, end_date,
+				start_date,
 				end_date, start_date]
 			}
 		}

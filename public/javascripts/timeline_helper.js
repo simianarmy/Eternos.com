@@ -514,13 +514,8 @@ var ETimeline = function (opts) {
       this.activeDate 			= new Date();
       this.advanceMonths 		= new Array();
       this.pastMonths 			= new Array();
-      this.template 				= ETemplates.dateSelectorTemplate;
 			this.monthUpDisabled	= false;
 			this.yearUpDisabled		= false;
-			this.parent.innerHTML = this.template.evaluate({
-        month: this.activeDate.getMonthName(),
-        year: this.activeDate.getFullYear()
-      });
 			this._enableNavButtons();
     },
     _populate: function () {
@@ -738,7 +733,6 @@ var ETimeline = function (opts) {
         events: this.content
       });
       ETUI.createEventListItemObservers();
-			ETUI.createSearchClickHandlers(that.timeline);
     },
     populate: function (content) {
       var html = content || '';
@@ -1209,6 +1203,7 @@ var ETimeline = function (opts) {
 			document.observe('event_icon:hover', function(e) {
 				ETUI.onEventIconMouseOver(e.element());
 			});
+			ETUI.createSearchClickHandlers(this);
 		},
     _setReqDates: function () {
       this.currentDate = new Date();

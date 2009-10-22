@@ -75,9 +75,7 @@ var ETemplates = {
 			}(),
 			noEvents: function() {
 				return new Template('<div class="event_list_group_even">' + 
-				'No events for this month.&nbsp;&nbsp;' + 
-				'<a class="event_preview_item_container" href="#" id="prev_event_search">Previous events</a>&nbsp;&nbsp;<a href="#" id="next_event_search" class="event_preview_item_container">Next events</a>' +
-				'</div>');
+				'No events for this month.</div>');
 			}()
 		},
 		tooltipTemplates: {
@@ -89,6 +87,9 @@ var ETemplates = {
 			}(),
 			feed: function() {
 				return new Template('<div class="tooltip_feed">#{preview}#{message}#{source}#{time}</div>');
+			}(),
+			address: function() {
+				return new Template('<div class="tooltip_address">#{postal}<br/><span style="font-weight: bold">Type: #{type}</span><br/><span class="event_time">#{dates}</span></div>');
 			}(),
 			single_line_small: function() {
 				return new Template('<br/><span class="event_time">#{text}</span>');
@@ -103,9 +104,6 @@ var ETemplates = {
 				return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="arti-thumb"/></a></li>');
 			}()
 		},
-		dateSelectorTemplate: function() {
-			return new Template('<a id="month_selector_down"" href="#" class="btn-left"></a><span id="display_month" class="subtitle6">#{month}</span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6">#{year}</span><a id="year_selector_up" href="#" class="btn-right"><div style="clear: both"></div>');
-		}(),
 		eventSelectorTemplate: function() {
 			return new Template('<a id="prev_event" href="" class="btn-left"></a><span class="subtitle7">&nbsp;Most&nbsp;Recent&nbsp;</span><a id="next_event" href="#" class="btn-right">');
 		}(),

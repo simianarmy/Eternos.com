@@ -1,7 +1,5 @@
 <% use_timeline %>
 <% javascript 'jsProgressBarHandler' %>
-<% use_flash %>
-<% javascript 'backtothehtml', 'swfobject' %>
 
 <% header '<span class="subtitle1">' + @member_name + ':</span><span class="subtitle2">Your TimeLine(tm)</span>' 
 %>
@@ -17,6 +15,11 @@
     <div id="flash_notice" style="display: none"></div>
     <div id="flash_error" style="display: none"></div>
     
+    <div class="alignleft">
+      <div id="month-selector">
+        <a id="month_selector_down" href="#" class="btn-left"></a><span id="display_month" class="subtitle6"></span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6"></span><a id="year_selector_up" href="#" class="btn-right"></a>
+      </div>
+    </div>
     <div id="timeline_links" class="alignright">
       <%= #attach_recording_link 'Record Message', :div => 'recorder_pane' 
         recording_popup_link 'Record Message'
@@ -35,12 +38,13 @@
 		<div class="dotline"></div>
   </div>
   <div id="timeline-detail">
-    <span class="tl_helptext tooltip" style="display: none;">Click the arrows around the dates to browse nearby months or years.</span>
-    <div id="month-selector"></div>
-		<div style="clear:both"></div>
+    <div id="proximity_search">
+      <a class="btn-left" href="#" id="prev_event_search"></a>&nbsp;&nbsp;<a class="btn-right" href="#" id="next_event_search"></a>
+		</div>
+		<div class="clearboth"></div>
     <div id="story-area"></div>
     <div id="arti-area"></div>			            
-		<div style="clear:both"></div>
+		<div class="clearboth"></div>
   </div>
   <br/>
   <div id="timeline-footer" class="tl_helptext">
