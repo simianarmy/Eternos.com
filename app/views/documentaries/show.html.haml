@@ -12,11 +12,12 @@
   = custom_error_messages_for :story
 
   %p= restful_in_place_editor 'span', @story, 'title', :class => 'message_title'
-  %p.input
+  -#
+    %p.input
     Description:
     = restful_in_place_editor 'span', @story, 'description', :rows => 5, :value => !@story.description.blank? ? @story.description : 'Add description'
     
-  #recording= show_recording(@story.recording)
+  #recording= show_recording(@recording)
   /= render :partial => 'shared/audio_controls'
   
   = render :partial => 'decorations/list', :locals => {:parent => @story}

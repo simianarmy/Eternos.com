@@ -8,7 +8,7 @@ class DocumentariesController < StoriesController
   
   def show
     @story = @documentary = current_user.documentaries.find(params[:id])
-    @recording = @documentary.recording
+    @recording = @documentary.attached_recording
   end
   
   def create

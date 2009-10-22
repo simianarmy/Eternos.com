@@ -1,28 +1,21 @@
 - use_prototip
 - use_wysiwyg
-- use_flash
 - use_form
 
-= custom_error_messages_for :story
-
 #input_fields
-  %p#title.input
+  %p#title
     = f.text_field :title, :value => story.title, :class => 'withHint', :defaultValue => 'ENTER A TITLE'
   %br  
   = render :partial => 'shared/new_common_settings', :locals => {:f => f, :object => story, :category => true}
   %p
   %br
-  -#= debug @recording
-  = render :partial => 'shared/av_attachment', :locals => {:parent => story, :recording => @recording}
-  %p
-  %br
-  = show_wysiwyg_content(story, :story, fckeditor_options)
+  = show_wysiwyg_content(story, :story, fckeditor_options) if local_assigns[:show_editor]
   %br
   /
     %p.input
       = f.label "Cover Photo"
       = f.file_field :photo  
-  /- %p= render :partial => 'shared/tags_form_field', :locals => {:object => @story, :f => f}
+  %p= render :partial => 'shared/tags_form_field', :locals => {:object => @story, :f => f}
   %br
   %br
   %p= f.submit :Create

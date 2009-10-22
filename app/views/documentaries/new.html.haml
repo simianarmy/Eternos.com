@@ -3,17 +3,14 @@
 - use_flash
 - use_soundmanager
 
+%p
+%br
+
 = custom_error_messages_for :documentary
 - unless @recording.new_record?
   - form_for @documentary do |f|
     = f.hidden_field 'recording_id', :value => @recording.id
-    %p
-      Your recording: 
-      - if @recording.complete?
-        = link_to_recording(@recording) 
-      - else
-        = @recording.state
-      = link_to 'Start Over', new_documentary_path(:redo=>'1')
+    = render :partial => 'shared/av_attachment', :locals => {:parent => @documentary, :recording => @recording}
     %p
     %br
     = render :partial => 'stories/form', :locals => {:f => f, :story => @documentary}

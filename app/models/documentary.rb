@@ -1,5 +1,3 @@
-class Documentary < Story
-  belongs_to :recording
-  
+class Documentary < Story  
   acts_as_decoratable
 end

@@ -14,22 +14,27 @@ class Story < ActiveRecord::Base
   acts_as_time_period
   acts_as_commentable
   acts_as_taggable_on :tags
-  #acts_as_taggable_custom :owner_method => :member
   acts_as_time_locked
   acts_as_av_attachable
   acts_as_decoratable
   
   include Categorizable
-  
-  validates_presence_of :title, :message => "Please enter a title for your story"
-  #validates_presence_of :description, :message => "Please enter a description for your story"
+
+  with_options :if => :story_validations_required? do |s|
+    s.validates_presence_of :title, :message => "Please enter a title for your story"
+    s.validates_presence_of :category, :message => "Select or enter a Category"
+    #s.validates_presence_of :description, :message => "Please enter a description for your story"
+  end
   validates_attachment_size :photo, :less_than => 5.megabytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
   validates_as_time_period
-  validates_presence_of_tags
-  validates_presence_of :category, :message => "Select or enter a Category"
   
-  searches_on :title, :description
+  # Used for STI children validation
+  def story_validations_required?
+    self.instance_of? Story
+  end
+  
+  #searches_on :title, :description
   
   # Class methods
   
