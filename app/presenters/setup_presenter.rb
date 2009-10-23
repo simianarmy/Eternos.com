@@ -3,20 +3,13 @@
 # Presenter class for account_setup & account_settings controller views
 # Contains common methods for both controllers
 
-class SettingsPresenter < Presenter
+class SetupPresenter < Presenter
   attr_accessor :address_book, :profile, :new_address_book, :new_profile,
     :active_step, :completed_steps, 
     :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, :fb_login_url,
     :twitter_accounts, :twitter_account, :twitter_confirmed,
     :feed_urls, :feed_url, :rss_url, :rss_confirmed,
     :email_accounts, :current_gmail, :gmail_confirmed,
-    :address, :addresses,
-    :job, :jobs,
-    :school, :schools,
-    :medical, :medicals,
-    :medical_condition, :medical_conditions,
-    :family, :families,
-    :relationship, :relationships,
     :errors, :params
   
   def initialize(user, fb_session, params)
@@ -96,53 +89,5 @@ class SettingsPresenter < Presenter
       @gmail_confirmed = @email_accounts && @email_accounts.any? {|t| t.confirmed?}
     end
   end
-
-  
-  def load_history
-    find_address
-    find_job
-    find_school
-    find_medical
-    find_medical_condition
-    find_family
-    find_relationship
-    @address = Address.new
-    @job = Job.new
-    @school = School.new
-    @medical = Medical.new
-    @medical_condition = MedicalCondition.new
-    @family = Family.new
-    @relationship = Relationship.new
-  end
-
-  def find_address
-    @addresses = address_book.addresses
-  end
-
-  def find_job
-    @jobs = profile.careers
-  end
-
-  def find_school
-    @schools = profile.schools
-  end
-
-  def find_medical
-    @medicals = profile.medicals
-  end
-
-  def find_medical_condition
-    @medical_conditions = profile.medical_conditions
-  end
-
-  def find_family
-    @families = profile.families
-  end
-
-  def find_relationship
-    @relationships = @user.relationships
-  end
-
 end
-  
   

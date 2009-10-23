@@ -1,7 +1,5 @@
 # $Id$
 
-require 'settings_presenter'
-
 class AccountSettingsController < ApplicationController
   before_filter :login_required
   require_role "Member"
@@ -32,7 +30,31 @@ class AccountSettingsController < ApplicationController
       format.js
     end
   end
-
+  
+  def personal_info
+    @settings.load_personal_info
+    
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          update_account_settings_layout(page, "personal_info")
+        end
+      end
+    end
+  end
+  
+  def your_history
+    @settings.load_history
+    
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          update_account_settings_layout(page, "your_history")
+        end
+      end
+    end  
+  end
+   
   # For the ajax api
   def completed_steps
     respond_to do |format|
@@ -41,23 +63,7 @@ class AccountSettingsController < ApplicationController
       }
     end  
   end
-  
-  # TODO: Move to RSS controller
-  def set_feed_rss_url
-    begin
-      @feed = current_user.backup_sources.by_site(BackupSite::Blog).find(params[:id])
-      @feed.rss_url = params[:value]
-      if @feed.save
-        current_user.completed_setup_step(2)
-        render :text => @feed.send(:rss_url).to_s
-      else
-        render :text => @feed.errors.full_messages
-      end
-    rescue Exception => e
-      render :text => e.to_s
-    end
-  end
-  
+
   # TODO: Move to FacebookProfiles controller
   def always_sync_with_facebook
     if params[:facebook_sync]
@@ -80,21 +86,8 @@ class AccountSettingsController < ApplicationController
     end
   end
 
-  def personal_info
-    @settings.load_personal_info
-    
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          update_account_settings_layout(page, "personal_info")
-        end
-      end
-    end
-  end
-
   # TODO: Move to FacebookProfiles controller
   def facebook_sync
-    find_user_profile
     saved = merge_with_facebook
     respond_to do|format|
       if saved
@@ -127,30 +120,6 @@ class AccountSettingsController < ApplicationController
           end
         end
     end
-  end
-  
-  def online
-    load_online
-    
-    respond_to do |format|
-      format.js {
-        render :update do |page|
-          update_account_settings_layout(page, "backup_sources")
-        end
-      }
-    end
-  end
-  
-  def your_history
-    @settings.load_history
-    
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          update_account_settings_layout(page, "your_history")
-        end
-      end
-    end  
   end
   
   # TODO: Move to AddressBooks controller
@@ -457,7 +426,11 @@ class AccountSettingsController < ApplicationController
   end
   
   private
-
+  
+  def load_completed_steps
+    @completed_steps = current_user.setup_step
+  end
+  
   # Load facebook Connect or Desktop app based on action
   def load_facebook
     if %w[ online ].include?(params[:action])
@@ -470,7 +443,7 @@ class AccountSettingsController < ApplicationController
   end
   
   def load_presenter
-    @settings = SettingsPresenter.new(current_user, Facebooker::Session.current, params)
+    @settings = ProfilePresenter.new(current_user, Facebooker::Session.current, params)
   end
 
   def check_facebook_sync
@@ -485,18 +458,9 @@ class AccountSettingsController < ApplicationController
     if facebook_session && (fb_user = facebook_session.user)
       facebook_profile = FacebookUserProfile.populate(fb_user)
       @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
-      saved = update_personal_info
+      saved = @settings.update_personal_info
     end
     return saved
-  end
-
-  def load_completed_steps
-    @completed_steps = current_user.setup_step
-  end
-
-  def load_online
-    @settings.load_backup_sources
-    @settings.create_fb_login_url(request)
   end
    
    # If account settings change causes timeline data to update, we need the timeline

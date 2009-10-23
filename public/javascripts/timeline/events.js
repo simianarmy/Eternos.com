@@ -98,7 +98,7 @@ var ETLEventSource = Class.create({
 	getEventAuthorHtml: function() {
 		var author 	= '';
 		if (this.attributes.author) {
-			author = '<br/><span class="event_author"><b>Posted by:</b> ' + this.attributes.author + '</span>';
+			author = '<br/><span class="event_author">Author: ' + this.attributes.author + '</span>';
 		}
 		return author;
 	},
@@ -195,11 +195,12 @@ var ETLTwitterActivityStreamEventSource = Class.create(ETLActivityStreamEventSou
 		this.source = 'Twitter';
 		$super(s);
 	},
-	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
-			message: this.attributes.message,
-			time: this.getEventTimeHtml()
-		});
+	getSource: function() {
+		var source = '';
+		if (this.attributes.source !== '') {
+			source = this._getSmallTooltipLine('Source: ' + this.attributes.source);
+		}
+		return source;
 	}
 });
 // RSS event

@@ -1,7 +1,5 @@
 # $Id$
 
-require 'settings_presenter'
-
 class AccountSetupController < ApplicationController
   before_filter :login_required
   require_role "Member"
@@ -43,7 +41,7 @@ class AccountSetupController < ApplicationController
         flash[:error] = "Please fill in all required fields"
       end
     else
-      flash[:error] = "Unable to save your changes: <br/>" + settings.join('<br/>')
+      flash[:error] = "Unable to save your changes: <br/>" + @settings.errors.join('<br/>')
     end
     
     respond_to do |format|
@@ -126,6 +124,6 @@ class AccountSetupController < ApplicationController
    end
    
    def load_presenter
-     @settings = SettingsPresenter.new(current_user, load_facebook_session, params)
+     @settings = SetupPresenter.new(current_user, load_facebook_session, params)
    end
 end

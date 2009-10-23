@@ -10,7 +10,7 @@
         #account-setting-title.acc-title
           Account Setup
         .top-rightbox
-          = render :partial => 'account_settings/fb_sync_button', :locals => { :active_step => @active_step, :checked => @checked_always_sync }
+          
         .clear
     .popup-content-left
       = render :partial => "setting_nav", :locals => { :active_link => "step" + @active_step.to_s }

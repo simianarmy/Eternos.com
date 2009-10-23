@@ -1,5 +1,4 @@
-- if active_step == 0
-  #sync-message
+#sync-message
   = link_to_remote "", { :url => facebook_sync_account_settings_path, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();"} , :class => "fb-btn"
   .clear
   .top-text1
