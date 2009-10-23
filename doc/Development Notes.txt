@@ -67,7 +67,8 @@ Threaded Comments: http://github.com/jackdempsey/acts_as_commentable/tree/master
 Video Streaming/Playback:
 	http + S3 as streaming server
 	Adobe streaming media server
-
+  HTML5 http://diveintohtml5.org/video.html
+  
 Transcoding Video:
 	http://devblog.rorcraft.com/2007/8/18/how-to-compile-ffmpeg-on-mac-and-linux
 	transcoding to Flash: FFMPEG open source library

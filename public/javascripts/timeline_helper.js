@@ -119,13 +119,15 @@ String.prototype.toISODate = function() {
 	return dt;
 }
 // Timeline-wide debug flag
-var DEBUG = false;
+var DEBUG 			= true;
+var DEBUG_BOX 	= false; // show debug in box
 
 // Timeline debug module
 var ETDebug = function() {
 	function onpage(msg) {
-		if (DEBUG) {
+		if (DEBUG_BOX) {
 			$('debug_box').innerHTML += msg + ' ';
+			log(msg);
 		}
 	};
 	function log(msg) {
@@ -133,9 +135,15 @@ var ETDebug = function() {
 			console.log(msg);
 		}
 	};
+	function dump(msg) {
+		if (DEBUG) {
+			console.dir(msg);
+		}
+	};
 	return {
 		onpage: onpage,
-		log: log
+		log: log,
+		dump: dump
 	};
 }();
 
@@ -161,6 +169,42 @@ var ETLDate = Class.create({
 function getWinHeight() {
 	return win_dimension()[1] * 0.8;
 };
+
+// Helper module to allow onmouseover-time creation of tooltip html
+// Maps event id => ETLEventItems object
+
+var tooltipGenerator = function() {
+	var eventItemsMap = {};
+	
+	// data is object containing id & type attributes
+	function key(data) {
+		return parseInt(data.id + data.type, 16); // Convert to hex num
+	}
+	// Map id to ETLEventItems class object
+	function add(evItemsObj) {
+		eventItemsMap[key(evItemsObj)] = evItemsObj;
+	};
+	function value(data) {
+		return eventItemsMap[key(data)];
+	};
+	function generate(key) {
+		var itemsObj, results = {};
+		if (itemsObj = eventItemsMap[key]) {
+			results = {
+				title: itemsObj.getTooltipTitle(),
+				body: itemsObj.getTooltipContents(),
+				type: itemsObj.type
+			};
+		}
+		return results;
+	};
+	return {
+		key: key,
+		value: value,
+		add: add,
+		generate: generate
+	}
+}();
 
 // UI action event handlers
 var ETUI = function() {
@@ -221,7 +265,7 @@ var ETUI = function() {
 		},
 		// May be possible to hook Timeline paint function to add observer
 		createTimelineEventIconObservers: function() {
-			$$('.timeline-event-icon').each(function(el) {
+			$$('.tl_event').each(function(el) {
 				if (el.observingMouseOver === undefined) {
 					el.observe('mouseover', function(e) {
 						el.fire('event_icon:hover');
@@ -238,7 +282,8 @@ var ETUI = function() {
 			ETDebug.log('creating tooltip on ' + element.id);
 			ev = Timeline.EventUtils.decodeEventElID(element.id).evt;
 						
-			createTooltip(element, ev.getEventID(), ETemplates.timelineTooltipOptions);
+			createTooltip(element, ev.getEventID(), 
+				ev.isInstant() ? ETemplates.timelineTooltipOptions : ETemplates.timelineDurationTooltipOptions);
 		},
 		createSearchClickHandlers: function(timeline) {
 			// Setup previous, future events link click handlers when there are no events to display
@@ -287,6 +332,8 @@ var ETLEventItems = Class.create({
     this.inlineEventsTemplate 		= ETemplates.eventListTemplates.inlineEvents;
     this.tooltipTitleTemplate 		= ETemplates.eventListTemplates.tooltipTitle;
 		this.eventDetailsLinkTemplate = ETemplates.eventListTemplates.detailsLink;
+		// Add object to tooltip cache
+		tooltipGenerator.add(this);
   },
 	_getItemIDs: function() {
 		return this.items.collect(function(i) {
@@ -349,7 +396,7 @@ var ETLEventItems = Class.create({
     }
 */
     return this.itemWithTooltipTemplate.evaluate({
-			list_item_id: tooltipGenerator.key(this),
+			list_item_id: tooltipGenerator.key({id: this.id, type: this.type}),
       b_title: this.title,
 			title: this.tooltipTitleTemplate.evaluate({
 				icon: this.icon, title: this.title}),
@@ -363,7 +410,7 @@ var ETLEventItems = Class.create({
   },
   _getInlineItemHtml: function () {
 		return ETemplates.eventListTemplates.eventGroupItem.evaluate({
-			list_item_id: tooltipGenerator.key(this),
+			list_item_id: tooltipGenerator.key({id: this.id, type: this.type}),
       title: this.getTooltipTitle(),
       link_url: this._getLinkUrl(),
       link_rel: this._getLinkRel(),
@@ -424,74 +471,40 @@ var ETLEventItems = Class.create({
   }
 });
 
-// Helper module to allow onmouseover-time creation of tooltip html
-// Maps event id => ETLEventItems object
 
-var tooltipGenerator = function() {
-	var eventItemsMap = {};
+// Returns new Timeline.DefaultEventSource.Event object
+var ETimelineEvent = function(events) {
+	var icon_s = events.icon;
+	var icon = ETemplates.utils.assetUrl + ETemplates.utils.imgUrl + icon_s + ETemplates.utils.iconPostfix;
+	var sdate = events.start_date.toDate();
+	var edate = (events.end_date != null) ? events.end_date.toDate() : null;
+	var isDuration = (sdate !== edate);
 	
-	function key(evItemsObj) {
-		return parseInt(evItemsObj.id + evItemsObj.type, 16); // Convert to hex num
-	}
-	// Map id to ETLEventItems class object
-	function add(evItemsObj) {
-		eventItemsMap[key(evItemsObj)] = evItemsObj;
-	};
-	function generate(key) {
-		var itemsObj, results = {};
-		if (itemsObj = eventItemsMap[key]) {
-			results = {
-				title: itemsObj.getTooltipTitle(),
-				body: itemsObj.getTooltipContents(),
-				type: itemsObj.type
-			};
-		}
-		return results;
-	};
-	return {
-		key: key,
-		add: add,
-		generate: generate
-	}
-}();
-
-
-//Eternos Timeline Event Source (Timeline.DefaultEventSource.Event)
-
-var ETLTimelineEvent = Class.create({
-  initialize: function (events) {
-		var icon_s;
-    var date = events.start_date.toDate();
-    this.start_date = this.earliest = date;
-		this.end_date = this.latest = events.end_date;
-    this.title = events.title;
-    this.type = events.type;
-		this.id = events.id,
-		this.num = events.num;
-		
-    icon_s = events.icon;
-    this.icon = ETemplates.utils.assetUrl + ETemplates.utils.imgUrl + icon_s + ETemplates.utils.iconPostfix;
-
-    this.event = new Timeline.DefaultEventSource.Event({
-      start: this.start_date,
-      end: this.end_date,
-      latestStart: this.latest,
-      earliestEnd: this.earliest,
-			durationEvent: (this.start_date != this.end_date),
-      instant: true,
-      icon: this.icon,
-			classname: 'tl_event',
-			caption: 'Click to view details',
-			eventID: tooltipGenerator.key(this) // Not numeric!
-			// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources
-    });
-		// Set icon size for event using frequency = size trick
-		// Used here:
-		 // Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js:473
-		this.event.iconSize = ETemplates.getIconSize(this.num);
-		//ETDebug.log("Added timeline event with tooltip id " + this.id);
-  }
-});
+	var ev = new Timeline.DefaultEventSource.Event({
+		start: sdate,
+		end: edate,
+		latestStart: sdate,
+		earliestEnd: edate,
+		durationEvent: isDuration,
+		instant: !isDuration,
+		icon: icon,
+		classname: 'tl_event',
+		caption: 'Click to view details',
+		eventID: tooltipGenerator.key({id: events.id, type: events.type}) // Not numeric!
+		// for all possible attributes, see http://code.google.com/p/simile-widgets/wiki/Timeline_EventSources
+	});
+	// this.title = events.title;
+	// 	this.type = events.type;
+	// 	this.id = events.id,
+	// 	this.num = events.num;
+	
+	// Set icon size for event using frequency = size trick
+	// Used here:
+	// Timeline.OriginalEventPainter /public/javascripts/timeline/timeline_js/scripts/original-painter.js:473
+	ev.iconSize = ETemplates.getIconSize(events.num);
+	
+	return ev;
+};
 
 // ETimeline 'class'
 var ETimeline = function (opts) {
@@ -756,7 +769,9 @@ var ETimeline = function (opts) {
   var ETLEventCollection = Class.create({
     initialize: function () {
       this.sources 				= [];
+			this.durations		 	= {};
 			this.latestSources	= [];
+			this.latestDurations	= [];
       this.dates 					= [];
       this.rawItems 			= [];
       this.items 					= [];
@@ -766,10 +781,20 @@ var ETimeline = function (opts) {
     // Add event source to collection keyed by event date
     addSource: function (source) {
       this.sources.push(source);
-			this.latestSources.push(source);
-			
-			this._groupSourceByDate(this.rawItems, this.dates, source);
+
+			if (source.isDuration()) {
+				// Check duration cache for existing value, skip if found
+				if (!this.durations[tooltipGenerator.key(source)]) {
+					this.durations[tooltipGenerator.key(source)] = source;
+					this.latestDurations.push(source);
+				}
+			} else {
+				this.latestSources.push(source);
+				this._groupSourceByDate(this.rawItems, this.dates, source);
+			}
     },
+		// Generates html for events list section
+		// TODO: HTML generation should be handled in ETLEventSection class.
     populate: function (targetDate) {
       var td = targetDate || that.monthSelector.activeDate;
       var currentItems;
@@ -790,7 +815,6 @@ var ETimeline = function (opts) {
 
         currentItems.each(function (group, index) {
           event = new ETLEventItems(group, {memberID: that.memberID});
-					tooltipGenerator.add(event);
           this.items.push(event);
           itemsHtml += event.populate();
         }.bind(this));
@@ -808,25 +832,34 @@ var ETimeline = function (opts) {
       return html;
     },
 		clearLatest: function () {
-			this.latestSources = [];
+			this.latestSources.clear();
+			this.latestDurations.clear();
 		},
-		// return grouped event sources 
+		// Groups latest events grouped by type, day
+		// Returns array of ETLEventItems
 		getLatestEventGroups: function() {
 			var grouped = new Array();
 			var dates 	= [];
 			var results	= [];
-			var ev;
 			
+			// Skip duration events, group all by dates
 			this.latestSources.each(function(s) {
 				grouped = this._groupSourceByDate(grouped, dates, s);
 			}.bind(this));
+			// Group by type per day
 			dates.each(function(d) {
 				this._groupItemsByType(grouped[d]).each(function(items) {
-					results.push(ev = new ETLEventItems(items, {memberID: that.memberID}));
-					tooltipGenerator.add(ev);
+					results.push(new ETLEventItems(items, {memberID: that.memberID}));
 				});
 			}.bind(this));
 			return results;
+		},
+		// Returns duration events as array of ETLEventItems
+		getLatestDurationEvents: function() {
+			return this.latestDurations.collect(
+				function(value) {
+					return new ETLEventItems([value], {memberID: that.memberID});
+				});
 		},
 		// Search dates array for closest date to passed date, past or future
 		getClosestDate: function(date, direction) {
@@ -909,13 +942,8 @@ var ETimeline = function (opts) {
       this.doParsing();
     },
     _mergeEvents: function (events) {
-      ETDebug.log("Merging events");
-      //var merged = this.jsonEvents.results.concat(events.results);
-      //this.jsonEvents.results = merged;
+      ETDebug.log("Merging events for " + events.resultCount + " results");
       this.jsonEvents = events;
-			
-			ETDebug.log("got " + events.resultCount + " results");
-			//console.dir(this.jsonEvents);
     },
 		// Takes JSON object containing timeline search results
 		// Parses & adds results to internal collections
@@ -926,6 +954,10 @@ var ETimeline = function (opts) {
 		// Returns latest parsed results objects array.
 		getEventGroups: function() {
 			return this.eventItems.getLatestEventGroups();
+		},
+		// Returns latest duration objects array
+		getDurationEvents: function() {
+			return this.eventItems.getLatestDurationEvents();
 		},
 		// Returns nearest existing event date to date
 		getClosestEventDate: function(date, past_or_future) {
@@ -1333,13 +1365,16 @@ var ETimeline = function (opts) {
 		_addEvents: function (events) {
 			var tooltip_el;
 			
-			events.each(function(event) {
-			  //--ETDebug.log(event.num);
-				this.eventSource.add((new ETLTimelineEvent(event)).event);
-      }.bind(this));
-			// Force timeline to redraw so that events show up
-			this.eventSource._listeners.invoke('onAddMany');
-			this.redraw();
+			if ((events != null) && (events.length > 0)) {
+				ETDebug.log("adding events to timeline");
+				events.each(function(event) {
+					ETDebug.dump(event);
+					this.eventSource.add(ETimelineEvent(event));
+	      }.bind(this));
+				// Force timeline to redraw so that events show up
+				this.eventSource._listeners.invoke('onAddMany');
+				this.redraw();
+			}
     },
 		// Update events titles & show loading html
     _eventsLoading: function (d) {
@@ -1472,9 +1507,11 @@ var ETimeline = function (opts) {
       this.rawEvents.addEvents(results);
 			this.rawEvents.populateResults(this.currentDate);
 			
-			// Add to timeline event sources
-			groupedEvents = this.rawEvents.getEventGroups();
-			if (groupedEvents.length > 0) {
+			// Add new duration events to timeline, each duration event only needs to be added once
+			this._addEvents(this.rawEvents.getDurationEvents());
+			// Add events (grouped by day,type) to timeline 
+			
+			if ((groupedEvents = this.rawEvents.getEventGroups()).length > 0) {
 				this._addEvents(groupedEvents);
 				// Center timeline on latest new event or 1st or last
 				newDate = this._getScrollToDate(groupedEvents.pluck('start_date')).toDate();

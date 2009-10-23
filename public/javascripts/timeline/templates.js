@@ -16,10 +16,10 @@ var ETemplates = {
 			width: '400px',
 			border: 6,
 			borderColor: '#74C5FF',
-			fixed: true,
 			hideOthers: true,
 			viewport: true,
 			closeButton: true,
+			fixed: true,
 			hideOn: { element: 'tip', event: 'mouseout' }
 		},
 		eventTooltipOptions: {
@@ -27,7 +27,7 @@ var ETemplates = {
 				target: 'topMiddle',
 				tip: 'bottomMiddle'
 			},
-			stem: 'bottomMiddle',
+			stem: 'bottomMiddle'
 		},
 		timelineTooltipOptions: {
 			hook: {
@@ -35,6 +35,12 @@ var ETemplates = {
 				tip: 'topLeft'
 			},
 			stem: 'topLeft'
+		},
+		timelineDurationTooltipOptions: {
+			hook: {
+				tip: 'topLeft',
+				mouse: true
+			}
 		},
 		// Events section templates
 		eventListTemplates: {
@@ -89,7 +95,7 @@ var ETemplates = {
 				return new Template('<div class="tooltip_feed">#{preview}#{message}#{source}#{time}</div>');
 			}(),
 			address: function() {
-				return new Template('<div class="tooltip_address">#{postal}<br/><span style="font-weight: bold">Type: #{type}</span><br/><span class="event_time">#{dates}</span></div>');
+				return new Template('<div class="tooltip_address">#{postal}<br/><span>Type: #{type}</span><br/><span>#{dates}</span></div>');
 			}(),
 			single_line_small: function() {
 				return new Template('<br/><span class="event_time">#{text}</span>');

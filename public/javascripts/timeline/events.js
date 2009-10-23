@@ -21,6 +21,9 @@ var ETLEventSource = Class.create({
 	isMedia: function() {
 		return ETEvent.isMedia(this.type) || ETEvent.isMedia(this.attachment_type);
 	},
+	isDuration: function() {
+		return (this.end_date_obj != null) && (this.start_date_obj !== this.end_date_obj);
+	},
 	getPreviewHtml: function() {
 		return 'Click link to view';
 	},
@@ -70,13 +73,22 @@ var ETLEventSource = Class.create({
 	eventDetailsPath: function(memberId) {
 		return ['tl_details', memberId, this.type].join('/');
 	},
-	getEventTimeHtml: function() {
+	getEventTimeHtml: function(opts) {
 		var time = '';
+		opts = Object.extend({
+			format: 'time'
+		}, opts);
+		
 		if (this.start_date_obj) {
-			time = this.start_date_obj.toLocaleTimeString();
+			time = opts.format === 'time' ? 
+				this.start_date_obj.toLocaleTimeString() : 
+				this.start_date_obj.toLocaleDateString();
 		}
 		if (this.end_date_obj) {
-			time += ' to ' + this.end_date_obj.toLocaleTimeString();
+			time += ' to ';
+			time += (opts.format === 'time') ? 
+				this.end_date_obj.toLocaleTimeString() : 
+				this.end_date_obj.toLocaleDateString();
 		}
 		if (time !== '') { 
 			return this._getSmallTooltipLine(time)
@@ -242,14 +254,9 @@ var ETLAddressEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		var dates = this.attributes.moved_in_on;
-		if (this.attributes.moved_out_on !== '' && 
-			this.attributes.moved_out_on !== this.attributes.moved_in_on) {
-			dates += ' to ' + this.attributes.moved_out_on;
-		}
 		return this.previewTemplate.evaluate({
 			postal: this.attributes.postal_address,
-			dates: dates,
+			dates: this.getEventTimeHtml({format: 'date'}),
 			type: this.attributes.location_type
 		});
 	}
