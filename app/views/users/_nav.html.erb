@@ -1,8 +1,9 @@
-<div id="submenu">
-   <%= #attach_recording_link 'Record Message', :div => 'recorder_pane' 
+<ul id="submenu">
+   <li><%= #attach_recording_link 'Record Message', :div => 'recorder_pane' 
       recording_popup_link 'Record Message'
-    %>
-	<%= link_to 'Life Key', stories_path %>
-	<%= link_to_lightview 'Profile', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'} 
-	%>
-</div>
+    %></li>
+	<li><%= link_to 'Life Key', stories_path %></li>
+	<li><%= link_to_lightview 'Profile', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'} 
+	%></li>
+</ul>
+<div class="clearboth">&nbsp;<div>
