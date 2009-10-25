@@ -109,9 +109,11 @@ function gridView() {
         var item = $('<div class="grid_item">').click(function() {
             //largeView(this, i);
         });
-        $('<img/>').attr("src", this.source_url)
-                   .css("width", this.photo.width / 100 + "em")
-                   .css("height", this.photo.height / 100 + "em")
+        $('<img/>').attr("src", this.photo.url)
+                   //.css("width", this.photo.width / 100 + "em")
+                   //.css("height", this.photo.height / 100 + "em")
+									 .css("width", 260 / 100 + "em")
+                   .css("height", 192 / 100 + "em")
                    .appendTo(item);
         $("<strong/>").html(this.photo.description).appendTo(item);
         item.appendTo("#content");
@@ -142,7 +144,7 @@ function mosaicView() {
     var detail = $('<div id="mosaic_detail">').click(function(i) {
         //largeView(this, current);
     });
-    $("<img/>").attr("src", data[current].source_url).appendTo(detail);
+    $("<img/>").attr("src", data[current].photo.url).appendTo(detail);
     $("<strong/>").html(data[current].photo.description).appendTo(detail);
     detail.appendTo("#content");
 
@@ -152,7 +154,8 @@ function mosaicView() {
         $('<div class="mosaic_item">')
             .css({
                 backgroundPosition: "0px " + (-160 * i) + "px",
-                backgroundImage: "url(" + sprite + ")"
+                //backgroundImage: "url(" + sprite + ")"
+								backgroundImage: "url(" + data[i].photo.thumbnail.url + ")"
             })
             .data("num", i)
             .click(function() {
@@ -162,7 +165,7 @@ function mosaicView() {
                 $(this).addClass("selected");
 
                 $("#mosaic_detail").animate({ opacity: 0 }, "fast", function() {
-                    $("#mosaic_detail img").attr("src", data[num].source_url);
+                    $("#mosaic_detail img").attr("src", data[num].photo.url);
                     $("#mosaic_detail strong").html(data[num].photo.description);
                     $(this).animate({ opacity: 1 }, "fast");
                 });

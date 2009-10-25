@@ -19,12 +19,13 @@ class BackupPhotoAlbum < ActiveRecord::Base
     # Because serialize_with_options only supports 1 level of nesting, we have 
     # to specify the attributes to exclude manually in the include hash - booo
     includes :backup_photos => {
-      :except => [:backup_photo_album_id, :source_photo_id, :content_id, :created_at,
+      :except => [:id, :tags, :source_url, :backup_photo_album_id, :source_photo_id, :content_id, :created_at,
         :updated_at, :state, :download_error, :added_at],
       :include => { :photo => { 
+        :methods => [:url, :thumbnail],
         :except => [:id, :size, :type, :filename, :thumbnail, :bitrate, :created_at, 
           :updated_at, :user_id, :content_type, :duration, :version, :processing_error_message,
-          :fps, :state, :is_recording, :s3_key]  
+          :fps, :state, :is_recording, :s3_key] 
       } } }
   end
   
