@@ -50,7 +50,7 @@ SESSION_DURATION_SECONDS  = 86400 # 1 day before session times out
 # An enhanced MySQL database driver. With support for async operations and threaded database access.
 require 'mysqlplus' # Add 1st per mysqlplus instructions
 
-Rails::Initializer.run do |config|
+Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.

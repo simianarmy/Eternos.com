@@ -1,3 +1,3 @@
 class Album < ActiveRecord::Base
-  belongs_to :story
+  has_many :photos, :as => :collection, :dependent => :destroy
 end

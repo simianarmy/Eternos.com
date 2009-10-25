@@ -80,7 +80,8 @@ class BackupPhoto < ActiveRecord::Base
       :filename => File.basename(@filename),
       :temp_path => File.new(@filename),
       :tag_list => tags || '',
-      :taken_at => added_at)
+      :taken_at => added_at,
+      :collection => backup_photo_album)
       save!
     rescue
       update_attribute(:download_error, $!)

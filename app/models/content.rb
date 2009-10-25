@@ -4,6 +4,7 @@ class Content < ActiveRecord::Base
   has_many :decorations, :dependent => :destroy
   has_many :elements, :through => :decorations
   belongs_to :owner, :class_name => 'Member', :foreign_key => 'user_id'
+  belongs_to :collection, :polymorphic => true
   
   class UnknownContentTypeException < Exception; end
   
@@ -50,7 +51,8 @@ class Content < ActiveRecord::Base
   
   include CommonDateScopes
   named_scope :recordings, :conditions => {:is_recording => true}
-
+  named_scope :photos, :conditions => {:type => 'Photo'}
+  
   # Class methods
   
   # Class factory

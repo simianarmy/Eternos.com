@@ -1,0 +1,20 @@
+- stylesheet 'image_gallery'
+- javascript 'image_gallery'
+- use_jquery
+!!!
+%html
+  %head
+    %title Image Gallery
+    = yield(:head)
+    = yield(:js_libs)
+  %body
+    %h1 Image Gallery
+    #content
+    #controls
+      #views
+        %a#grid.selected{:href => '#'} Grid
+        %a#mosaic{:href => "#"} Mosaic
+      #slider
+    :javascript
+      var albums = #{@albums};
+    = yield(:javascript)

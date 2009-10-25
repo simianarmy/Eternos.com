@@ -7,17 +7,25 @@ class Photo < Content
     :content_type => :image,
     :thumbnails => { :thumb => '100x100>' },
     :processor => 'ImageMagick'}
-    
+  
   has_attachment attachment_opts
   validates_as_attachment
  
   @@exif_date_format = '%Y:%m:%d %H:%M:%S'
   cattr_accessor :exif_date_format
 
+  alias_attribute :album, :collection
+  
   serialize_with_options do
     methods :start_date, :url, :thumbnail_url
     only :id, :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
   end
+  
+  serialize_with_options(:gallery) do
+    methods :url, :thumbnail_url
+    only :width, :height, :title, :description
+  end
+  
   # Alias start_date to taken_at attribute since we can't override acts_as_archivable in 
   # STI children
   # taken_at can be nil so make sure some date is returned
@@ -42,7 +50,7 @@ class Photo < Content
   def thumbnailable?
     true
   end
-    
+  
   def rebuild_thumbnails
     # Need original data in new temp file data to re-save
     if data = file_data

@@ -11,6 +11,23 @@ class BackupPhotoAlbum < ActiveRecord::Base
   validates_presence_of :backup_source
   validates_uniqueness_of :source_album_id, :scope => :backup_source_id
   
+  alias_method :photos, :backup_photos
+  
+  serialize_with_options(:gallery) do
+    methods :cover_photo_url
+    except :id, :backup_source_id, :source_album_id, :cover_id
+    # Because serialize_with_options only supports 1 level of nesting, we have 
+    # to specify the attributes to exclude manually in the include hash - booo
+    includes :backup_photos => {
+      :except => [:backup_photo_album_id, :source_photo_id, :content_id, :created_at,
+        :updated_at, :state, :download_error, :added_at],
+      :include => { :photo => { 
+        :except => [:id, :size, :type, :filename, :thumbnail, :bitrate, :created_at, 
+          :updated_at, :user_id, :content_type, :duration, :version, :processing_error_message,
+          :fps, :state, :is_recording, :s3_key]  
+      } } }
+  end
+  
   # Returns photo ids of photos in album within arg dates
   named_scope :photos_between_dates, lambda { |s, e| 
     {
@@ -32,6 +49,14 @@ class BackupPhotoAlbum < ActiveRecord::Base
     EditableAttributes
   end
   
+  def cover_photo
+    BackupPhoto.find_by_source_photo_id(cover_id).photo
+  end
+  
+  def cover_photo_url
+    cover_photo.url rescue nil
+  end
+  
   # Checks passed album object for differences with this instance
   def modified?(album)
     return !album.modified.blank? if self.modified.nil?
@@ -39,16 +64,16 @@ class BackupPhotoAlbum < ActiveRecord::Base
   end
   
   # Save album properies & any associated photos
-  def save_album(album, photos=nil)
+  def save_album(album, new_photos=nil)
     if update_attributes(album.to_h)
-      save_photos(photos) if photos
+      save_photos(new_photos) if new_photos
     end
   end
   
   # Saves any new photos in album
-  def save_photos(photos)
-    return unless photos && photos.any?
-    new_photo_ids = photos.map(&:id)
+  def save_photos(new_photos)
+    return unless new_photos && new_photos.any?
+    new_photo_ids = new_photos.map(&:id)
     existing_photo_ids = backup_photos.map(&:source_photo_id)
     
     # Delete old photos
@@ -57,7 +82,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
     end
     
     # Add all new photos
-    photos.each do |p|
+    new_photos.each do |p|
       next if existing_photo_ids.include? p.id
       backup_photos.import p
     end

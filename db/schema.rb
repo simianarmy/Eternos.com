@@ -347,6 +347,8 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "state"
     t.boolean  "is_recording",             :default => false,      :null => false
     t.string   "s3_key"
+    t.integer "collection_id"
+    t.string  "collection_type"
   end
 
   create_table "countries", :force => true do |t|

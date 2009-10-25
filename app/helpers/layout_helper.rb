@@ -78,8 +78,17 @@ module LayoutHelper
     javascript "lightview/js/lightview" 
   end
   
+  def load_google_api
+    content_for(:js_libs) {
+      javascript_include_tag request.protocol + "www.google.com/jsapi?key=#{AppConfig.google_api_key}"
+    }
+  end
+  
   def use_jquery
-    javascript 'jQuery/jquery-1.2.6', 'jQuery/jquery-ui'
+    load_google_api
+    content_for(:js_libs) {
+      javascript_tag 'google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");'
+    }
   end
   
   def use_scrollable
@@ -89,7 +98,11 @@ module LayoutHelper
   end
   
   def use_flash
-    javascript 'backtothehtml', 'swfobject'
+    load_google_api
+    content_for(:js_libs) {
+      javascript_tag 'google.load("swfobject", "2.2");'
+    }
+    javascript 'backtothehtml'
   end
   
   def use_flashplayer
@@ -172,9 +185,7 @@ module LayoutHelper
 
   def load_prototype
     @no_prototype = true # Disable layout include
-    content_for(:js_libs) {
-      javascript_include_tag request.protocol + "www.google.com/jsapi?key=#{AppConfig.google_api_key}"
-    }
+    load_google_api
     content_for(:js_libs) {
       javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
     }

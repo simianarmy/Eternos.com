@@ -9,12 +9,12 @@ class TimelineSearch
     :email      => :get_emails,
     :twitter    => :get_twitter_items,
     :facebook   => :get_facebook_items,
-    :photos     => [:get_backup_photos],
+    :photos     => :get_images,
     :blog       => :get_feed_items,
     :profile    => [:get_profile, :get_durations]
   }
   @@filter_action_map = {
-    :artifact   =>  [:get_backup_photos, :get_stream_media], 
+    :artifact   =>  [:get_images, :get_stream_media], 
     :duration   =>  [:get_durations]
   }
   
@@ -93,10 +93,8 @@ class TimelineSearch
     query @member.activity_stream.items.with_attachment.search
   end
   
-  def get_backup_photos
-    if facebook_source && (res = query(BackupPhoto.belonging_to_source(facebook_source.id).with_photo.search))
-      res.compact.map(&:photo) 
-    end
+  def get_images
+    query @member.contents.photos.search
   end
   
   def get_emails
@@ -121,7 +119,7 @@ class TimelineSearch
     when "BackupEmail"
       get_emails
     when "Photo"
-      get_backup_photos
+      get_images
     when "FeedEntry"
       get_feed_items
     end
@@ -216,8 +214,8 @@ class TimelineSearchFaker < TimelineSearch
   end
    
   # Returns random photo from random album
-  def get_backup_photos
-    BackupPhoto.all.rand.photo
+  def get_images
+    Photo.all.rand
   end
   
   def get_emails

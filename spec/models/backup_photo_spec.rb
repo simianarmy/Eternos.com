@@ -76,6 +76,11 @@ describe BackupPhoto do
         @photo.starting_download!
         @photo.reload.photo.taken_at.should == @photo.added_at
       end
+      
+      it "should assign photo's backup photo album to photo object collection attribute" do
+        @photo.starting_download!
+        @photo.reload.photo.collection.should == @photo.backup_photo_album
+      end
     end
   end   
 end

@@ -1,0 +1,308 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    overflow: hidden;
+    height:100%;
+    border:0;
+}
+
+h1 {
+    background: rgb(40, 40, 40);
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(75, 75, 75)), to(rgb(13, 13, 13)));
+    color: white;
+    font: 29px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-shadow: rgb(0, 0, 0) 0px -2px 0px;
+    line-height: 57px;
+    padding-left: 26px;
+    margin: 0;
+    border-bottom: 1px solid rgb(31, 31, 31);
+    position:absolute;
+    top:0;
+    left:0;
+    display:block;
+    width:100%;
+    height:57px;
+    z-index:5;
+    overflow:hidden;
+    margin:0;
+}
+
+h1.view {
+    text-align: center;
+    font-size: 24px;
+    text-shadow: rgb(0, 0, 0) 0px -1px 1px;
+    padding: 0px;
+}
+
+.button {
+    background: rgb(29, 29, 29);
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(96, 96, 96)), color-stop(0.5, rgb(9, 9, 9)), to(rgb(29, 29, 29)));
+    border: 1px solid rgb(35, 35, 35);
+    border-top-color: rgb(55, 55, 55);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    height: 24px;
+    color: rgb(224, 224, 224);
+    font: bold 13px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding: 5px 10px 0 10px;
+    display: inline-block;
+    text-shadow: rgb(30, 30, 30) 0px 0px 2px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    cursor: default;
+    position: absolute;
+    top: 13px;
+    left: 26px;
+    z-index: 5;
+}
+
+.button:active {
+    background: rgb(12, 12, 12);
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(68, 68, 68)), color-stop(0.5, rgb(7, 7, 7)), to(rgb(12, 12, 12)));
+
+}
+
+#content {
+    padding-left: 26px;
+    overflow:auto;
+    position:absolute;
+    z-index:3;
+    top:57px;
+    bottom:0px;
+    left:0px;
+    right: 0px;
+}
+
+/*
+    Controls
+*/
+
+#controls {
+    background: rgb(51, 51, 51);
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(30, 30, 30)), color-stop(0.2, rgb(51, 51, 51)));
+    display: none;
+    position:absolute;
+    margin:0;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:40px;
+    z-index:5;
+    overflow:hidden;
+}
+
+#slider {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    width: 137px;
+    height: 15px;
+    background: url(http://gallery.me.com/g/images/gallery/view_control/track_fill_left.png) no-repeat;
+    border: none;
+    -webkit-border-radius: 0px;
+}
+
+#slider .ui-slider-handle {
+    background: url(http://gallery.me.com/g/images/gallery/view_control/knob.png) no-repeat;
+    width: 16px;
+    height: 16px;
+    outline: none;
+    position: absolute;
+    top: -6px;
+    margin-left: -6px;
+    z-index: 2;
+    cursor: default;
+}
+
+.ui-slider {
+    position: relative;
+    text-align: left;
+}
+
+#views {
+    position: absolute;
+    top: 12px;
+    left: 20px;
+}
+
+#views a {
+    color: rgb(97, 97, 97);
+    text-decoration: none;
+    font: bold 12px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-shadow: rgb(17, 17, 17) 0px -1px 1px;
+    margin-right: 17px;
+    padding-left: 20px;
+    display: inline-block;
+    cursor: pointer;
+    background: url(http://gallery.me.com/g/images/gallery/view_control/view_sprite.png) no-repeat;
+}
+
+#views #mosaic {
+    background-position: 0px -20px;
+}
+
+#views #grid:hover, #views #grid.selected {
+    color: white;
+    background-position: 0px -80px;
+}
+
+#views #mosaic:hover, #views #mosaic.selected {
+    color: white;
+    background-position: 0px -100px;
+}
+
+.album_view {
+	font-size: 16px !important;
+}
+
+.album_view h2 {
+	color: rgb(96, 121, 149);
+	font: 21px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-shadow: black 0px 2px 3px;
+}
+
+.album_view  .item {
+    width: 160px;
+    height: 200px;
+    cursor: pointer;
+    float: left;
+    margin-right: 50px;
+    white-space: nowrap;
+}
+
+.album_view .item .skimmer {
+    width: 160px;
+    height: 160px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+}
+
+.album_view .item strong {
+    color: rgb(191, 191, 191);
+    font: bold 15px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-shadow: black 0px 0px 2px;
+    display: block;
+    -webkit-transition: all 500ms;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.album_view .item span {
+    color: rgb(102, 102, 102);
+    font: bold 11px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-shadow: black 0px 0px 2px;
+    -webkit-transition: color 500ms;
+}
+
+.album_view .item:hover strong {
+    color: white;
+}
+
+.grid_view {
+    font-size: 75px;
+    overflow: auto;
+}
+
+.grid_item  {
+    float: left;
+    margin: 0 0.5em 1.2em 0;
+    cursor: pointer;
+    height:2em;
+    width: 2.5em;
+    line-height: 3em;
+    text-align: center;
+}
+
+.grid_item strong {
+    color: rgb(170, 170, 170);
+    font: bold 13px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-shadow: black 0px 0px 2px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-transition: color 500ms;
+}
+
+.grid_item:hover strong {
+    color: white;
+}
+
+.grid_item img {
+    vertical-align: bottom;
+    background: rgb(30, 30, 30);
+    background: -webkit-gradient(linear, left top, left bottom, from(rgb(50, 50, 50)), to(rgb(10, 10, 10)));
+    -webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left 130%, from(transparent), color-stop(0.5, transparent), to(rgba(255, 255, 255, 0.5)));
+}
+
+
+.album_view .item:hover span {
+    color: rgb(112, 176, 255);
+}
+
+.mosaic_view {
+    overflow: hidden !important;
+    padding-top: 30px;
+    min-width: 700px;
+}
+
+#mosaic_detail {
+    width: 62%;
+    min-width: 435px;
+    height: 95%;
+    cursor: pointer;
+}
+
+#mosaic_detail img {
+    display: block;
+    margin: auto;
+    max-width: 100%;
+    max-height: 97%;
+    min-height: 212px;
+    -webkit-box-reflect:below 1px -webkit-gradient(linear, left top, left 130%, from(transparent), color-stop(0.5, transparent), to(rgba(255, 255, 255, 0.4)));
+}
+
+#mosaic_detail strong {
+    color: rgb(170, 170, 170);
+    font: bold 13px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: center;
+    padding-bottom: 50px;
+    padding-top: 5px;
+    display: block;
+    -webkit-transition: color 500ms;
+}
+
+#mosaic_detail:hover strong {
+    color: white;
+}
+
+#mosaic_grid {
+    position: absolute;
+    left: 64%;
+    top: 0px;
+    bottom: 0px;
+    width: auto;
+    padding-top: 20px; /* 30 - 10 */
+    padding-left: 2px;
+    min-width: 250px;
+    overflow: auto;
+}
+
+.mosaic_item {
+    width: 95px;
+    height: 95px;
+    float: left;
+    margin: 10px 10px 0 0;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.mosaic_item:hover {
+    outline: 1px solid rgb(170, 170, 170);
+}
+
+.mosaic_item.selected {
+    outline: 2px solid rgb(170, 170, 170);
+}
+
