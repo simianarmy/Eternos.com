@@ -80,13 +80,14 @@ module LayoutHelper
   
   def load_google_api
     content_for(:js_libs) {
-      javascript_include_tag request.protocol + "www.google.com/jsapi?key=#{AppConfig.google_api_key}"
+      content = javascript_include_tag(request.protocol + "www.google.com/jsapi?key=#{AppConfig.google_api_key}")
+      content += yield if block_given?
+      concat content
     }
   end
   
   def use_jquery
-    load_google_api
-    content_for(:js_libs) {
+    load_google_api {
       javascript_tag 'google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");'
     }
   end
@@ -98,11 +99,10 @@ module LayoutHelper
   end
   
   def use_flash
-    load_google_api
-    content_for(:js_libs) {
-      javascript_tag 'google.load("swfobject", "2.2");'
-    }
-    javascript 'backtothehtml'
+    #content_for(:javascript) { 
+    #  javascript_tag 'google.load("swfobject", "2.2");' 
+    #}
+    javascript 'swfobject', 'backtothehtml'
   end
   
   def use_flashplayer
@@ -185,8 +185,7 @@ module LayoutHelper
 
   def load_prototype
     @no_prototype = true # Disable layout include
-    load_google_api
-    content_for(:js_libs) {
+    load_google_api {
       javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
     }
   end

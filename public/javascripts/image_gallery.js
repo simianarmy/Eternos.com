@@ -262,6 +262,7 @@ function largeView(photo, i) {
     });
 };
 
+// Example code
 var gallery = "Image Gallery";
 var albums_orig = [
     {
@@ -274,66 +275,6 @@ var albums_orig = [
                 width: 260,
                 height: 192
             },
-            {
-                title: "Mike and Nancy",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-202/web.jpg?ver=12151358290001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "Carrying the canoe",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-203/web.jpg?ver=12151358330001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "In the tent",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-204/web.jpg?ver=12151358290001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "Starting a laugh",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-205/web.jpg?ver=12151358330001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "The whole gang",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-206/web.jpg?ver=12151358300001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "Paddling downstream",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-207/web.jpg?ver=12151358280001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "Carla and Sarah",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-208/web.jpg?ver=12151358320001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "No shoes required",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-209/web.jpg?ver=12151358310001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "Nancy",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-2010/web.jpg?ver=12151358280001",
-                width: 260,
-                height: 192
-            },
-            {
-                title: "Getting ready to float",
-                src: "http://gallery.me.com/emily_parker/100579/Lake-20Tahoe-2011/web.jpg?ver=12151358320001",
-                width: 260,
-                height: 192
-            }
         ]
     }
     //Add more albums here...
