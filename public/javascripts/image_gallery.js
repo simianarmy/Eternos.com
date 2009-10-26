@@ -107,7 +107,7 @@ function gridView() {
     //add the items in the album to the grid, and set the size of the image in ems.
     $.each(data, function(i) {
         var item = $('<div class="grid_item">').click(function() {
-            //largeView(this, i);
+            largeView(this, i);
         });
         $('<img/>').attr("src", this.photo.url)
                    //.css("width", this.photo.width / 100 + "em")
@@ -142,7 +142,7 @@ function mosaicView() {
 
     //add the large view with title
     var detail = $('<div id="mosaic_detail">').click(function(i) {
-        //largeView(this, current);
+        largeView(this, current);
     });
     $("<img/>").attr("src", data[current].photo.url).appendTo(detail);
     $("<strong/>").html(data[current].photo.description).appendTo(detail);
@@ -176,6 +176,90 @@ function mosaicView() {
 
     //select the current item in the thumbnail grid view
     $(".mosaic_item:nth-child("+ (current + 1) +")").addClass("selected");
+};
+
+function largeView(photo, i) {
+    current = i;
+    var item = data[i];
+
+    var hovered = false;
+
+    $("h1").hide();
+    $(".button").remove();
+    $("#controls").hide();
+    $("#content").css({ bottom: "0px", top: "0px" });
+    $("#content").attr("class", "").addClass("large_view");
+    $("#content *").remove();
+
+    $('<div class="button">Back to Album</div>').click(function() {
+        view(); //go back to the current view
+    }).appendTo("#content");
+
+    var large = $('<div id="main">');
+    $("<img/>").attr("src", item.photo.url).appendTo(large);
+    $("<strong/>").html(item.caption).appendTo(large);
+    large.appendTo("#content");
+
+    var wrapper = $('<div id="hover_view_wrapper">');
+    var hover = $('<div id="hover_view">').hover(function() {
+        hovered = true;
+    }, function() {
+        hovered = false;
+    });
+
+    $('<div id="previous" title="Previous">').click(function() {
+        if(!data[current-1]) return;
+
+        $(".large_view #hover_view #next").removeClass("disabled");
+        if(!data[current-2]) $(this).addClass("disabled");
+
+        current--;
+        $(".large_view #main").animate({ opacity: 0 }, "fast", function() {
+            $(".large_view img").attr("src", data[current].photo.url);
+            $(".large_view strong").html(data[current].caption);
+            $(this).animate({ opacity: 1 }, "fast");
+        });
+    }).appendTo(hover);
+
+    $('<div id="next" title="Next">').click(function() {
+        if(!data[current+1]) return;
+
+        $(".large_view #hover_view #previous").removeClass("disabled");
+        if(!data[current+2]) $(this).addClass("disabled");
+
+        current++;
+        $(".large_view #main").animate({ opacity: 0 }, "fast", function() {
+            $(".large_view img").attr("src", data[current].photo.url);
+            $(".large_view strong").html(data[current].caption);
+            $(this).animate({ opacity: 1 }, "fast");
+        });
+    }).appendTo(hover);
+
+    wrapper.append(hover).appendTo("#content");
+
+    if(current == 0) {
+        $(".large_view #hover_view #previous").addClass("disabled");
+    }
+    else if(current == data.length-1) {
+        $(".large_view #hover_view #next").addClass("disabled");
+    }
+
+    var timer;
+    var showing = false;
+
+    $("#content").mousemove(function(event) {
+        if(!showing) {
+            showing = true;
+            $(".large_view #hover_view").stop().animate({ opacity: 1 });
+        }
+
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+            if(hovered) return;
+            showing = false;
+            $(".large_view #hover_view").stop().animate({ opacity: 0 });
+        }, 2000);
+    });
 };
 
 var gallery = "Image Gallery";

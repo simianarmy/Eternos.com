@@ -306,3 +306,83 @@ h1.view {
     outline: 2px solid rgb(170, 170, 170);
 }
 
+.large_view {
+    overflow: hidden !important;
+    min-height: 400px;
+    padding: 0px !important;
+}
+
+.large_view #main {
+    margin: 50px auto 0 auto;
+    height: 80%;
+    width: 80%;
+    text-align: center;
+}
+
+.large_view #main img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.large_view #main strong {
+    color: rgb(170, 170, 170);
+    font: bold 13px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    display: block;
+}
+
+.large_view #hover_view_wrapper {
+    position: absolute;
+    bottom: 20px;
+    left: 0px;
+    width: 100%;
+}
+
+.large_view #hover_view {
+    margin: auto;
+    width: 221px;
+    height: 58px;
+    background: rgb(31, 31, 31);
+    background: rgba(31, 31, 31, 0.9);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+.large_view #hover_view #previous {
+    width: 42px;
+    height: 48px;
+    background: url(../images/arrows.png) 0 -320px no-repeat;
+    cursor: pointer;
+    margin-left: 50px;
+    float: left;
+}
+
+.large_view #hover_view #previous:hover {
+    background-position: 0 -257px;
+}
+
+.large_view #hover_view #previous.disabled {
+    background-position: 0 -194px;
+}
+
+.large_view #hover_view #next {
+    width: 41px;
+    height: 48px;
+    background: url(../images/arrows.png) 0 -131px no-repeat;
+    cursor: pointer;
+    margin-left: 130px;
+}
+
+.large_view #hover_view #next:hover {
+    background-position: 0 -68px;
+}
+
+.large_view #hover_view #next.disabled {
+    background-position: 0 -5px;
+}
+
+
+
