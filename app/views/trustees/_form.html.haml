@@ -1,19 +1,13 @@
-%table
-  %tr
-    %td
-      %p.input
-        %label Full Name
-    %td= f.text_field :name
-  %tr
-    %td
-      %p.input
-        %label Relationship
-    %td= f.text_field :relationship
-  %tr
-    %td{:valign=>"top"}
-      %p.input
-        %label 
-          Contact Email Addresses
-          %br
-          (one per line)
-    %td= f.text_area :emails, :rows => 5
+#name
+  .label Name :
+  = f.text_field :name, :class => 'field'
+#relation
+  .label Relationship :
+  = f.text_field :relationship, :class => 'field'
+#emails
+  .label 
+    Contact email addresses :
+    %br
+    %font{:size => "1"}
+      %i (one email per line)
+  = f.text_area :emails, :rows => 5, :class => 'field'

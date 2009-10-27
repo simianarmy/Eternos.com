@@ -1,31 +1,37 @@
-- use_form
-- title_icon image_tag 'contactus.png', :class => 'alignleft'
-- title 'Trustees'
-- header 'lorem ipsum'
+/- use_form
+- stylesheet 'trustees'
+- title '<h2 id="main">Trustees</h2>'
 
-.content_title.alignleft
-  %h2 Lorem Ipsum
-.clearboth
-
-%br
-%p.alignleft= link_to image_tag('newguestbtn.gif', :id => "toggle_add_trustee", :class => "toggleable"), '#'
-.clearboth
-
-#add_trustee.alignleft{:style => style_hidden_if(@trustee.errors.empty?)}
-  %p Enter new trustee contact details below
-  %br
-  #rjs_notice
-  - form_remote_for @trustee do |f|
-    = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
-    = submit_tag 'Add Trustee', :disable_with => "Adding..."
-    = link_to 'Cancel', '#', :id => "toggle_add_trustee", :class => "toggleable"
-
-%p
-%br.clearboth
-%br
-- if @trustees.any?
+.half.left{:style => "width: 420px"}
+  %p.border-dotted
+    In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, nunc eget pretium porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.
+  %h2.left 
+    Lorem
+    %span Ipsum
   
-  Current Trustees
-  %br
-  %table#trustees_table
-    = render :partial => @trustees
+  = link_to image_tag('trustees/add-button1.png', :id => "toggle_add_trustee", :class => "toggleable"), '#', :class => 'right'
+  .clear &nbsp;
+
+  #add_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
+    %p Enter new trustee contact details below
+    #rjs_notice
+    - form_remote_for @trustee do |f|
+      = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
+      .clear &nbsp;
+      .button
+        = link_to image_tag('trustees/add-button2.png'), '#'
+        = link_to 'Cancel', '#', :id => "toggle_add_trustee", :class => "toggleable", :style => "marging-top:5px"
+
+.half.right
+  #table
+    .header Current Trustees
+    .body
+      .title
+        .row1 Name
+        .row2 Relationship
+        .row3 Email
+        .row54 Action
+        .clear
+      = render :partial => @trustees if @trustees.any?
+    .footer &nbsp;
+.clear &nbsp;

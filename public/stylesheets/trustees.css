@@ -1,0 +1,173 @@
+/* Trustees pages CSS */
+
+body {
+margin:0;
+padding:0;
+font:12px arial;
+letter-spacing:1px
+}
+
+#sub_content {
+padding:0 12px;
+font-size:12px;
+color:#4b4b4b
+}
+
+.half {
+width:428px
+}
+
+.left {
+float:left
+}
+
+.right {
+float:right
+}
+
+.clear {
+clear:both;
+height:0;
+line-height:0
+}
+
+a img {
+border:none
+}
+
+.border-dotted {
+border-bottom:2px dotted;
+padding-bottom:20px;
+margin-top:0}
+
+#table {
+background:url(/images/trustees/table-body.png) repeat-y;
+letter-spacing:0}
+
+#table .header {
+background:url(/images/trustees/table-header.png) no-repeat;
+padding:6px 10px;
+color:#fff}
+
+#table .title {
+margin:0 1px;
+background:#f8fbfe;
+font-size:0.9em;
+color:#02419e;
+font-weight:bold;
+padding:5px 10px}
+
+#table .odd, #table .even {
+margin:0 5px;
+padding:10px 5px;
+font-size:0.9em}
+
+#table .even {
+background:#f2f7fe}
+
+#table .paging {
+border-top:1px solid #02419e;
+margin:10px 5px 0;
+padding:5px 5px 0;
+font-size:0.9em;
+text-align:right}
+
+#table .paging a {
+margin:0 2px;
+display:inline block;
+color:#4c4c4c}
+
+#table .footer {
+background:url(/images/trustees/table-footer.png) bottom no-repeat;
+height:10px}
+
+#table .row1, #table .row2, #table .row3, #table .row4 {
+float:left;
+overflow:hidden;
+text-align:center}
+
+#table .row1 {
+width:123px;
+text-align:left}
+
+#table .row2 {
+width:75px}
+
+#table .row3 {
+width:170px}
+
+#table .row4 {
+width:38px}
+
+#table .row4 a{
+	width:12px;
+	height:16px;
+	background:url(/images/trustees/delete.png) 0 0;
+	display:block;
+	border:none;
+	cursor:pointer;
+	margin-left:13px;
+}
+
+#table .row4 a:hover{
+	background:url(/images/trustees/delete.png) 0 16px;
+}
+
+h2 {
+font-weight:normal;
+color:#656565;
+margin:0}
+
+h2#main {
+background:url(/images/trustees/trustee-header.png) left no-repeat;
+padding:10px 0 10px 50px;
+margin-bottom:10px}
+
+h2 span {
+color:#02419e}
+
+p {
+font-size:11.5px}
+
+form#new_trustee {
+background:url(/images/trustees/form-bg.png) no-repeat;
+height:205px;
+padding:15px
+}
+
+.label {
+float:left;
+clear:both;
+width:160px;
+margin-top:10px;
+padding:5px 0;
+font-size:11px;
+text-align:right;
+margin-right:5px}
+
+.field {
+float:left;
+border:1px solid #989898;
+background:url(/images/trustees/field.png) top repeat-x;
+width:220px;
+margin-top:12px}
+
+input.field {
+padding:3px 0}
+
+em {
+font-weight:normal}
+
+.button {
+border-top:1px solid #02419e;
+margin:10px 3px;
+padding:5px 0;
+font-size:0.9em;
+text-align:right}
+
+.button a {
+display:block;
+float:right;
+margin-left:15px
+}
+
