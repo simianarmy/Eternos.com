@@ -850,6 +850,9 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "contact_method"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "confirmed"
+    t.datetime "confirmed_at"
+    t.datetime "last_inquiry_at"    
   end
   
   create_table "users", :force => true do |t|
