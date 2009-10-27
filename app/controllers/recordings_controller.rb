@@ -37,7 +37,7 @@ class RecordingsController < ApplicationController
         }
       else
         format.html {
-          flash[:error] = @recording.errors.full_messages
+          flash[:error] = @recording.errors.full_messages.to_s
           RAILS_DEFAULT_LOGGER.debug "Error saving recording: " + flash[:error]
           render :nothing => true, :status => 500
         }

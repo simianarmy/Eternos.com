@@ -46,9 +46,9 @@ namespace :deploy do
 
   desc "Stops work daemons"
   task :stop_daemons, :roles => :app do
-    run "god unmonitor eternos_#{stage}"
     #run "god stop eternos-email-uploader"
     run "god stop eternos-workling_#{stage}"
+    run "god unmonitor eternos_#{stage}"
   end
 
   desc "Restarts any work daemons"

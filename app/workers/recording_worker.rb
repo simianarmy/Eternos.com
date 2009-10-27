@@ -4,6 +4,7 @@
 
 
 class RecordingWorker < Workling::Base
+  include WorklingHelper
   class ContentCreationException < Exception; end
   
   def analyze(payload)

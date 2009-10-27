@@ -52,6 +52,7 @@ class Content < ActiveRecord::Base
   include CommonDateScopes
   named_scope :recordings, :conditions => {:is_recording => true}
   named_scope :photos, :conditions => {:type => 'Photo'}
+  named_scope :collections, :group => 'collection_id', :include => :collection
   
   # Class methods
   
