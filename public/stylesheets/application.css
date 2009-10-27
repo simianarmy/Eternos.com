@@ -199,3 +199,20 @@ div.draggable {
 	cursor: move;
 }
 
+.inplaceeditor-form { /* The form */
+}
+
+.inplaceeditor-form input[type="text"] { /* Input box */
+}
+
+.inplaceeditor-form textarea { /* Textarea, if multiple columns */
+}
+
+.inplaceeditor-form input[type="submit"] { /* The submit button */
+	width: 40px;
+}
+
+.inplaceeditor-form a { /* The cancel link */
+  
+}
+

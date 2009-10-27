@@ -1,6 +1,6 @@
 /- use_form
 - stylesheet 'trustees'
-- title '<h2 id="main">Trustees</h2>'
+- title_icon '<h2 id="main">Trustees</h2>'
 
 .half.left{:style => "width: 420px"}
   %p.border-dotted
@@ -19,7 +19,7 @@
       = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
       .clear &nbsp;
       .button
-        = link_to image_tag('trustees/add-button2.png'), '#'
+        = link_to_function image_tag('trustees/add-button2.png'), "$(this).up('form').onsubmit()"
         = link_to 'Cancel', '#', :id => "toggle_add_trustee", :class => "toggleable", :style => "marging-top:5px"
 
 .half.right
@@ -32,6 +32,7 @@
         .row3 Email
         .row54 Action
         .clear
-      = render :partial => @trustees if @trustees.any?
+      #trustees_table_rows
+        = render :partial => @trustees if @trustees.any?
     .footer &nbsp;
 .clear &nbsp;

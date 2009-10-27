@@ -5,13 +5,20 @@ class Trustee < ActiveRecord::Base
   validates_presence_of :relationship, :message => "Please describe your relationship to the trustee (ie. brother, father)"
   validate :validate_emails
   
+  serialize :emails
+  
+  def emails=(vals)
+    list = vals.split("\n").reject{|e| e.blank?}.map(&:strip)
+    write_attribute(:emails, list)
+  end
+  
   def validate_emails
-    email_list = emails.split("\n")
-    unless email_list.any?
+    unless emails.any?
       errors.add(:emails, "Please enter at least one contact email")
     else
-      email_list.each do |e|
-        unless EmailVeracity::Address.new(e).valid?
+      emails.each do |e|
+        e.strip!
+        unless e.blank? || EmailVeracity::Address.new(e).valid?
           errors.add(:emails, "'#{e}' is not a valid email address")
         end
       end

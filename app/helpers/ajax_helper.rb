@@ -9,6 +9,7 @@ module AjaxHelper
     domid = dom_id(obj) + "_#{attr}"
     options[:url] = url_for(obj) unless options.has_key? :url
     options[:id] = domid unless options.has_key? :id
+    options[:class] ||= 'inplaceeditor-form'
     
     #edops = jsonify editOptions
     #ajops = jsonify ajaxOptions
@@ -30,8 +31,10 @@ module AjaxHelper
       :with => "'domId=#{domid}&#{objname}[#{attr}]=' +escape($F(Form.findFirstElement(form)))",
       :script => true,
       :cols => 40,
+      :save_text => 'Save',
       :saving_text => "Updating..."
       })
+    options.merge! editOptions
     
     tg += in_place_editor(domid, options)
   end
