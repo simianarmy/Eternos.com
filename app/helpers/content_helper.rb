@@ -36,7 +36,7 @@ module ContentHelper
     if video.kind_of? WebVideo
       capture(show_video_player(video, :hidden => true, :autoPlay => true, :filename => false)) do |flash|
         link_to(video.to_s, "##{dom_id(video)}", :class => 'lightview', 
-          :title => "#{video.title} :: #{video.description} :: autosize: true") + flash
+          :title => "#{video.title} :: #{video.description} :: width: #{video.width}, height: #{video.height}") + flash
       end
     else
       # Link to lightview that plays embedded video
@@ -46,32 +46,6 @@ module ContentHelper
   
   def link_to_audio(object, options={})
     render :partial => 'shared/audio_link', :locals => {:audio => object, :options => options}
-  end
-  
-  def link_to_recording(recording, options={})
-    case rec = recording.content
-    when WebVideo
-      link_to_video(rec, options.merge(:thumbnail=>false))
-    when Audio
-      link_to_audio(rec, options)
-    when nil
-      link_to(options[:title] || recording.filename, '#video_player', :class => 'popup_get')
-    end
-  end
-  
-  # Creates link to lightview popup for recorder
-  # Takes optional describable object id
-  # => ie. photo id, description id
-  def link_to_recorder(describable_object_id=0)
-    link_to_lightview 'Record spoken or video description',  
-      "/swf/Recorder.swf?userid=#{current_user.id}", {
-          :class => 'recording_popup_link', 
-          :onclick => "create_cookie('#{RECORDING_CONTENT_PARENT_COOKIE}', 
-            '#{describable_object_id}')"
-          },
-        {:title => "'Record spoken description'", :rel => "'flash'"}, 
-        {:width => 380, :height => 297, 
-          :flashvars => "'movie=Recorder.swf?userid=#{current_user.id}&quality=high'"}
   end
   
   def show_video_player(video, options={})

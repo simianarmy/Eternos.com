@@ -1,0 +1,14 @@
+- title "Recording - Additional Info"
+
+%p Lorem Ipsum
+%br
+= render :partial => 'shared/av_attachment', :locals => {:parent => @documentary, :recording => @recording}
+%br
+%p Lorem Ipsum
+= custom_error_messages_for :documentary
+- form_for @documentary do |f|
+  = f.hidden_field 'recording_id', :value => @recording.id
+  %p
+  %br
+  = render :partial => 'stories/form', :locals => {:f => f, :story => @documentary}
+  %p= f.submit :Save

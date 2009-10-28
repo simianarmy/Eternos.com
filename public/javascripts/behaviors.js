@@ -281,10 +281,11 @@ var AjaxCountryRegionSelect = Behavior.create({
 		}
 	},
 	onchange: function(evt) {
-		var params = 'select_id=' + this.opts.region_select_id + '&country_id=' + this.element.value;
-		new Ajax.Request(this.opts.regions_url, 
-			Object.extend({asynchronous:true, evalScripts:true, method: 'get', parameters: params}));
-		
+		if (this.opts) {
+			var params = 'select_id=' + this.opts.region_select_id + '&country_id=' + this.element.value;
+			new Ajax.Request(this.opts.regions_url, 
+				Object.extend({asynchronous:true, evalScripts:true, method: 'get', parameters: params}));
+		}
 	}
 });
 
@@ -510,21 +511,23 @@ var Slideshow = Behavior.create({
 var Flowplayer = Behavior.create({
 	initialize: function() {
 		var opts = {};
+		var url;
 		if ((rel = this.element.readAttribute('rel')) !== null) {
 			opts = Object.extend(opts, rel.evalJSON());
 		}
+		url = (this.element.href !== '') ? this.element.href : this.element.readAttribute('url');
 		if (window.flowplayer) {
 			// Create Flowplayer & use 1st frame of video as splash image --> 
 			flowplayer(this.element.id, FlowplayerSwfUrl, {
 				key: FLOWPLAYER_PRODUCT_KEY,
 				clip: { 
-					url: this.element.readAttribute('url'),
+					url: url,
 					autoPlay: opts.autoPlay || false,  
 					autoBuffering: true,
-					initialScale: opts.scale || 'scale'
+					//initialScale: opts.scale || 'scale'
 				},
 				logo: {
-					//url: '/images/eternos.gif',
+					url: '/images/favico.png',
 					fullscreenOnly: false
 				}
 			});

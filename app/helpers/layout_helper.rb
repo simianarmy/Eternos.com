@@ -5,12 +5,14 @@
 #   helper :layout
 module LayoutHelper
   @@js = []
-  mattr_accessor :js
+  @@google_api_loaded = false
+  mattr_accessor :js, :google_api_loaded
   
   class << self
     def clear_js_cache
       RAILS_DEFAULT_LOGGER.debug "Clearing js includes"
       LayoutHelper.js = []
+      LayoutHelper.google_api_loaded = false
     end
   end
   
@@ -78,18 +80,25 @@ module LayoutHelper
     javascript "lightview/js/lightview" 
   end
   
+  # wow this js include business is getting complicated
   def load_google_api
-    content_for(:js_libs) {
-      content = javascript_include_tag(request.protocol + "www.google.com/jsapi?key=#{AppConfig.google_api_key}")
-      content += yield if block_given?
+    content = ''
+    content += javascript_include_tag(request.protocol + "www.google.com/jsapi?key=#{AppConfig.google_api_key}") unless @@google_api_loaded
+    content += yield if block_given?
+    @@google_api_loaded = true
+    
+    content_for(:js_libs) {      
       concat content
     }
   end
   
   def use_jquery
-    load_google_api {
-      javascript_tag 'google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");'
+    load_google_api
+    content_for(:javascript) { 
+      javascript_tag('google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");')
     }
+    # Make sure jquery doesn't conflict with any loaded prototype libs
+    javascript 'application_jquery'
   end
   
   def use_scrollable
@@ -174,7 +183,7 @@ module LayoutHelper
   def use_autocomplete
     use_jquery
     stylesheet 'jquery.autocomplete'
-    javascript 'jQuery/jquery.autocomplete', 'application_jquery'
+    javascript 'jQuery/jquery.autocomplete'
   end
   
   def use_uploader

@@ -2,6 +2,7 @@
 module WysiwigHelper
   
   def show_wysiwyg_content(object, field, options={})
+    use_wysiwyg
     options[:update_url] ||= url_for(object)
     #render :partial => 'shared/wysiwyg_content', :locals => {:object => object, 
     render :partial => 'shared/wysiwyg_edit', :locals => {:object => object, 

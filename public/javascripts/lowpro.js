@@ -1,13 +1,16 @@
+/* jslint immed:false */
 LowPro = {};
 LowPro.Version = '0.5';
 LowPro.CompatibleWithPrototype = '1.6';
 
-if (Prototype.Version.indexOf(LowPro.CompatibleWithPrototype) != 0 && window.console && window.console.warn)
-  console.warn("This version of Low Pro is tested with Prototype " + LowPro.CompatibleWithPrototype + 
-                  " it may not work as expected with this version (" + Prototype.Version + ")");
+if ( Prototype.Version.indexOf(LowPro.CompatibleWithPrototype) !== 0 && window.console && window.console.warn) {
+  console.warn("This version of Low Pro is tested with Prototype " + LowPro.CompatibleWithPrototype + " it may not work as expected with this version (" + Prototype.Version + ")");
+}
 
-if (!Element.addMethods) 
-  Element.addMethods = function(o) { Object.extend(Element.Methods, o) };
+if (!Element.addMethods) {
+  Element.addMethods = function(o) { Object.extend(Element.Methods, o); };
+}
+  
 
 // Simple utility methods for working with the DOM
 DOM = {};
@@ -23,19 +26,23 @@ DOM.Builder = {
          children = Array.prototype.slice.call(arguments, 1);
        } else {
          children = arguments;
-       };
-       children = $A(children).flatten()
+       }
+       children = $A(children).flatten();
      }
      return DOM.Builder.create(tag, attrs, children);
     };
   },
 	create : function(tag, attrs, children) {
-		attrs = attrs || {}; children = children || []; tag = tag.toLowerCase();
+		tag = tag.toLowerCase();
+		attrs = attrs || {}; 
+		children = children || []; 
+		
 		var el = new Element(tag, attrs);
 	  
 		for (var i=0; i<children.length; i++) {
-			if (typeof children[i] == 'string') 
+			if (typeof children[i] == 'string') {
 			  children[i] = document.createTextNode(children[i]);
+			}
 			el.appendChild(children[i]);
 		}
 		return $(el);
@@ -49,20 +56,20 @@ DOM.Builder = {
 				     "select|option|blockquote|cite|br|hr|dd|dl|dt|address|a|button|abbr|acronym|" +
 				     "script|link|style|bdo|ins|del|object|param|col|colgroup|optgroup|caption|" + 
 				     "label|dfn|kbd|samp|var").split("|");
-  var el, i=0;
-	while (el = els[i++]) 
+	for( var i = 0, l = els.length; i < l; i++ ) {
+	  el = els[i];
 	  window['$' + el] = DOM.Builder.tagFunc(el);
+	}
 })();
 
 DOM.Builder.fromHTML = function(html) {
   var root;
-  if (!(root = arguments.callee._root))
+  if (!(root = arguments.callee._root)){
     root = arguments.callee._root = document.createElement('div');
+  }
   root.innerHTML = html;
   return root.childNodes[0];
 };
-
-
 
 // Wraps the 1.6 contentloaded event for backwards compatibility
 //
@@ -71,8 +78,11 @@ DOM.Builder.fromHTML = function(html) {
 // Event.onReady(callbackFunction);
 Object.extend(Event, {
   onReady : function(f) {
-    if (document.body) f();
-    else document.observe('dom:loaded', f);
+    if (document.body) { 
+      f();
+    } else {
+      document.observe('dom:loaded', f);
+    }
   }
 });
 
@@ -96,8 +106,9 @@ Event.addBehavior = function(rules) {
   if (!ab.responderApplied) {
     Ajax.Responders.register({
       onComplete : function() { 
-        if (Event.addBehavior.reassignAfterAjax) 
-          setTimeout(function() { ab.reload() }, 10);
+        if (Event.addBehavior.reassignAfterAjax) {
+          setTimeout(function() { ab.reload(); }, 10);
+        }
       }
     });
     ab.responderApplied = true;
@@ -111,39 +122,50 @@ Event.addBehavior = function(rules) {
 
 Event.delegate = function(rules) {
   return function(e) {
-      var element = $(e.element());
-      for (var selector in rules)
-        if (element.match(selector)) return rules[selector].apply(this, $A(arguments));
+    for (var selector in rules) {
+      if ( selector !== null ) {
+        var parts = $A(selector.split(','));
+        var match_found = parts.any(function(part) { return e.findElement(part) != null; });
+        if ( match_found ){ return rules[selector].apply(this, $A(arguments)); }
+      }
     }
-}
+  };
+};
 
 Object.extend(Event.addBehavior, {
-  rules : {}, cache : [],
+  rules : {},
+  cache : [],
   reassignAfterAjax : false,
   autoTrigger : true,
   
   load : function(rules) {
     for (var selector in rules) {
-      var observer = rules[selector];
-      var sels = selector.split(',');
-      sels.each(function(sel) {
-        var parts = sel.split(/:(?=[a-z]+$)/), css = parts[0], event = parts[1];
-        $$(css).each(function(element) {
-          if (event) {
-            observer = Event.addBehavior._wrapObserver(observer);
-            $(element).observe(event, observer);
-            Event.addBehavior.cache.push([element, event, observer]);
-          } else {
-            if (!element.$$assigned || !element.$$assigned.include(observer)) {
-              if (observer.attach) observer.attach(element);
-              
-              else observer.call($(element));
-              element.$$assigned = element.$$assigned || [];
-              element.$$assigned.push(observer);
-            }
-          }
+      if ( selector ){
+        var observers = [rules[selector]].flatten();
+        var sels = selector.split(',');
+        sels.each( function(sel) {
+          observers.each(function(observer) {
+            var parts = sel.split(/:(?=[a-z]+$)/), css = parts[0], event = parts[1];
+            $$(css).each(function(element) {
+              if (event) {
+                var wrappedObserver = Event.addBehavior._wrapObserver(observer);
+                $(element).observe(event, wrappedObserver);
+                Event.addBehavior.cache.push([element, event, wrappedObserver]);                
+              } else {
+                if (!element.$$assigned || !element.$$assigned.include(observer)) {
+                  if (observer.attach) {
+                    observer.attach(element);
+                  } else {
+                    observer.call($(element));
+                  }
+                  element.$$assigned = element.$$assigned || [];
+                  element.$$assigned.push(observer);
+                }
+              }
+            });
+          });
         });
-      });
+      }
     }
   },
   
@@ -162,8 +184,10 @@ Object.extend(Event.addBehavior, {
   
   _wrapObserver: function(observer) {
     return function(event) {
-      if (observer.call(this, event) === false) event.stop(); 
-    }
+      if (observer.call(this, event) === false) {
+        event.stop();
+      }
+    };
   }
   
 });
@@ -202,26 +226,25 @@ $$$ = Event.addBehavior.bind(Event);
 var Behavior = {
   create: function() {
     var parent = null, properties = $A(arguments);
-    if (Object.isFunction(properties[0]))
+    if (Object.isFunction(properties[0])) {
       parent = properties.shift();
-
+    }
       var behavior = function() { 
-        var behavior = arguments.callee;
+        var args = null;
         if (!this.initialize) {
-          var args = $A(arguments);
+          args = $A(arguments);
 
           return function() {
             var initArgs = [this].concat(args);
             behavior.attach.apply(behavior, initArgs);
           };
         } else {
-          var args = (arguments.length == 2 && arguments[1] instanceof Array) ? 
-                      arguments[1] : Array.prototype.slice.call(arguments, 1);
-
+          args = (arguments.length == 2 && arguments[1] instanceof Array) ? arguments[1] : Array.prototype.slice.call(arguments, 1);
           this.element = $(arguments[0]);
           this.initialize.apply(this, args);
           behavior._bindEvents(this);
           behavior.instances.push(this);
+          behavior.instance = this;
         }
       };
 
@@ -230,20 +253,21 @@ var Behavior = {
     behavior.superclass = parent;
     behavior.subclasses = [];
     behavior.instances = [];
+    behavior.instance = null;
 
     if (parent) {
       var subclass = function() { };
       subclass.prototype = parent.prototype;
-      behavior.prototype = new subclass;
+      behavior.prototype = new subclass();
       parent.subclasses.push(behavior);
     }
 
-    for (var i = 0; i < properties.length; i++)
+    for (var i = 0; i < properties.length; i++){
       behavior.addMethods(properties[i]);
-
-    if (!behavior.prototype.initialize)
+    }
+    if (!behavior.prototype.initialize){
       behavior.prototype.initialize = Prototype.emptyFunction;
-
+    }
     behavior.prototype.constructor = behavior;
 
     return behavior;
@@ -253,42 +277,50 @@ var Behavior = {
       return new this(element, Array.prototype.slice.call(arguments, 1));
     },
     _bindEvents : function(bound) {
-      for (var member in bound)
-        if (member.match(/^on(.+)/) && typeof bound[member] == 'function')
-          bound.element.observe(RegExp.$1, Event.addBehavior._wrapObserver(bound[member].bindAsEventListener(bound)));
+      for (var member in bound) {
+        var matches = member.match(/^on(.+)/);
+        if (matches && typeof bound[member] == 'function')
+          bound.element.observe(matches[1], Event.addBehavior._wrapObserver(bound[member].bindAsEventListener(bound)));
+      }
     }
   }
 };
 
-
-
 Remote = Behavior.create({
   initialize: function(options) {
-    if (this.element.nodeName == 'FORM') new Remote.Form(this.element, options);
-    else new Remote.Link(this.element, options);
+    if (this.element.nodeName == 'FORM'){ 
+      return new Remote.Form(this.element, options);
+    } else { 
+      return new Remote.Link(this.element, options);
+    }
   }
 });
 
 Remote.Base = {
   initialize : function(options) {
     this.options = Object.extend({
-      evaluateScripts : true
+      evalScripts : true
     }, options || {});
     
     this._bindCallbacks();
   },
   _makeRequest : function(options) {
-    if (options.update) new Ajax.Updater(options.update, options.url, options);
-    else new Ajax.Request(options.url, options);
+    if (options.confirm && !confirm(options.confirm)) { return false;  }
+    if (options.update) { 
+      var updater = new Ajax.Updater(options.update, options.url, options);
+    } else {
+      var request = new Ajax.Request(options.url, options);
+    }
     return false;
   },
   _bindCallbacks: function() {
     $w('onCreate onComplete onException onFailure onInteractive onLoading onLoaded onSuccess').each(function(cb) {
-      if (Object.isFunction(this.options[cb]))
+      if (Object.isFunction(this.options[cb])) {
         this.options[cb] = this.options[cb].bind(this);
+      }
     }.bind(this));
   }
-}
+};
 
 Remote.Link = Behavior.create(Remote.Base, {
   onclick : function() {
@@ -297,20 +329,20 @@ Remote.Link = Behavior.create(Remote.Base, {
   }
 });
 
-
 Remote.Form = Behavior.create(Remote.Base, {
   onclick : function(e) {
     var sourceElement = e.element();
-    
     if (['input', 'button'].include(sourceElement.nodeName.toLowerCase()) && 
-        sourceElement.type == 'submit')
+        ['submit', 'image'].include(sourceElement.type)) {
       this._submitButton = sourceElement;
+    }
   },
   onsubmit : function() {
+    var additionalParameters = (this._submitButton) ? { submit: this._submitButton.name } : {};
     var options = Object.extend({
       url : this.element.action,
       method : this.element.method || 'get',
-      parameters : this.element.serialize({ submit: this._submitButton.name })
+      parameters : this.element.serialize(additionalParameters)
     }, this.options);
     this._submitButton = null;
     return this._makeRequest(options);

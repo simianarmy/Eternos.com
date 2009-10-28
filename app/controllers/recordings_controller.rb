@@ -19,10 +19,12 @@ class RecordingsController < ApplicationController
     if params[:filename] and (params[:filename] !~ /\.\w+$/)
       params[:filename] += ".flv"
     end
-    @recording = Recording.new(:member => current_user, :filename => params[:filename])
+    @documentary = current_user.documentaries.new
+    @documentary.recording = Recording.new(:member => current_user, :filename => params[:filename])
     
     respond_to do |format|
-      if @recording.save
+      if @documentary.save
+        @recording = @documentary.attached_recording
         # Save recording id to session for new object
         session[recording_session_key.to_sym] = session[:last_recording] = @recording.id
         
@@ -33,13 +35,13 @@ class RecordingsController < ApplicationController
         # On success, will redirect to redirecturl value in config xml
         format.html { 
           flash[:notice] = "Recording saved."
-          render :nothing => true, :status => 200
+          render :inline => "&message=true"
         }
       else
         format.html {
           flash[:error] = @recording.errors.full_messages.to_s
           RAILS_DEFAULT_LOGGER.debug "Error saving recording: " + flash[:error]
-          render :nothing => true, :status => 500
+          render :inline => "&message=false"
         }
       end
     end
@@ -85,11 +87,12 @@ class RecordingsController < ApplicationController
     else
       'recording'
     end
-    @redirect_on_save_url = if params[:anywhere]
-      url_for(:controller => params[:anywhere], :action => :new, :recording => 1)
-    else
-      recordings_path
-    end
+    # @redirect_on_save_url = if params[:anywhere]
+    #       url_for(:controller => params[:anywhere], :action => :new, :recording => 1)
+    #     else
+    #       recordings_path
+    #     end
+    @redirect_on_save_url = post_recording_documentaries_path
     RAILS_DEFAULT_LOGGER.debug "recorder redirect on save to #{@redirect_on_save_url}"
     respond_to do |format|
       format.xml { render :layout => false }

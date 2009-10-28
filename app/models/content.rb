@@ -164,8 +164,8 @@ class Content < ActiveRecord::Base
     S3Buckets::MediaBucket.url(s3_key) if s3_key
   end
   
-  def thumbnail_url
-    thumbnail.url rescue thumbnail_path(:thumb)
+  def thumbnail_url(tp=:thumb)
+    thumbnail.url rescue thumbnail_path(tp)
   end
   
   # Returns path to thumbnail if one exists, or generic icon for the type

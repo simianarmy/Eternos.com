@@ -19,3 +19,15 @@ Hash extension gem also results in speedups when used:
 
 Passenger settings for opt.
   http://stackoverflow.com/questions/853532/slow-initial-server-startup-when-using-phusion-passenger-and-rails
+  
+Gzip apache contents:
+  - enable mod_deflate in Apache 2.2+
+  - per vhost:
+  <Location />
+      AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript
+      BrowserMatch ^Mozilla/4 gzip-only-text/html
+      BrowserMatch ^Mozilla/4\.0[678] no-gzip
+      BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+      # Make sure proxies don't deliver the wrong content
+      Header append Vary User-Agent env=!dont-vary
+  </Location>

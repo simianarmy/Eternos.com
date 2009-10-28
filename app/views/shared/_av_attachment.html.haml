@@ -1,6 +1,7 @@
+- use_soundmanager if recording.audio?
+
 - unless recording.new_record?
   #recording
-    Attached recording: 
     - if recording.complete?
       = link_to_recording(recording) 
     - else

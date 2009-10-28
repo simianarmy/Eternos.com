@@ -53,9 +53,8 @@ class Recording < ActiveRecord::Base
   def save_content(inspector)
     source_info do |info, klass|
       info[:inspector] = inspector
-      klass.create_from_recording(info) or 
+      self.content = klass.create_from_recording(info) or 
         raise ContentCreationException.new('Unable to create #{content.class} object')
-      self.content = klass
       save!
     end
   end

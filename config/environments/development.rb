@@ -34,3 +34,7 @@ if File.exists?(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
   File.delete(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
 end
 
+# For fancy activerecord table views in irb/console
+config.gem 'hirb'
+require 'hirb'
+Hirb::View.enable

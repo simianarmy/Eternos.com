@@ -79,9 +79,10 @@ ActionController::Routing::Routes.draw do |map|
       :create_from_selection => :post }
   end
   
-  map.resources :documentaries do |docs|
-    docs.resources :decorations, :collection => { :sort => :post, 
-      :create_from_selection => :post }
+  map.resources :documentaries, :collection => { :post_recording => :get } do |docs|
+    docs.resources :decorations, :collection => { 
+      :sort => :post, :create_from_selection => :post 
+    }
   end
     
   map.resources :addresses, :collection => { :country_regions => :get }

@@ -1,13 +1,11 @@
 - use_flashplayer
-:javascript
-  var FlowplayerSwfUrl = "#{video_player_swf_url}"
 
-#video_title
-  - unless options[:filename] == false
-    %span= object.to_s
-    %br
-%div.video_player{:id=>dom_id(object), :url => "#{object.absolute_url(request)}",  :rel=>"#{options.to_json}"}
+- if (options[:thumbnail] != false) && object.has_thumbnail?
+  %a.video_player{:href => "#{object.absolute_url(request)}", :id => dom_id(object), :style => "background-image:url(#{object.preview_url})"}
+    = image_tag 'play_large.png', :alt => object.to_s
+- else
+  .video_player{:id=>dom_id(object), :url => "#{object.absolute_url(request)}",  :rel=>"#{options.to_json}"}
 
-- if options[:hidden]
-  :javascript
-    $('#{dom_id(object)}').hide()
+.clearboth
+= javascript_tag "$('#{dom_id(object)}').hide()" if options[:hidden]
+= javascript_tag "var FlowplayerSwfUrl = '#{video_player_swf_url}'"

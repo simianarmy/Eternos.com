@@ -349,6 +349,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "s3_key"
     t.integer "collection_id"
     t.string  "collection_type"
+    t.integer "parent_id"
   end
 
   create_table "countries", :force => true do |t|
@@ -716,7 +717,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
 
   create_table "stories", :force => true do |t|
     t.integer  "user_id",                           :null => false
-    t.string   "title",                             :null => false
+    t.string   "title", :null => true               
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start_at"

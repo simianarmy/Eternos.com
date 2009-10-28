@@ -7,18 +7,18 @@ class TrusteesController < ApplicationController
   end
   
   def show
-    @trustees = current_user.trustees.find(params[:id])
+    @trustee = current_user.trustees.find(params[:id])
   end
   
   def new
-    @trustees = current_user.trustees.new
+    @trustee = current_user.trustees.new
   end
   
   def create
     @trustee = current_user.trustees.new(params[:trustee])
     if @trustee.save
       # Send confirmation emails to trustee email addresses
-      TrusteeMailer.request_confirmation(current_user, @trustee.emails)
+      #TrusteeMailer.confirmation_request(current_user, @trustee.emails)
       flash[:notice] = "Successfully created trustee."
     else
       flash[:error] = @trustee.errors.full_messages.join('<br/>')
@@ -33,7 +33,7 @@ class TrusteesController < ApplicationController
   end
   
   def edit
-    @trustees = current_user.trustees.find(params[:id])
+    @trustee = current_user.trustees.find(params[:id])
   end
   
   def update

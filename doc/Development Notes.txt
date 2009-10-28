@@ -103,7 +103,8 @@ S3:
   http://thewebfellas.com/blog/2009/8/29/protecting-your-paperclip-downloads
   
 UI:
-
+  jQuery UI Tools by Flowplayer http://flowplayer.org/tools/index.html
+  
 CSS: 
   http://www.blueprintcss.org/
 

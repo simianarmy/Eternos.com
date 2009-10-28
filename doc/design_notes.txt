@@ -10,3 +10,5 @@ Basic css for aligning
 Coda Panel (Horizontal scroll)
   http://www.panic.com/coda/
   http://jqueryfordesigners.com/coda-slider-effect/
+  
+jQuery tools for slick UI: http://flowplayer.org/tools/index.html

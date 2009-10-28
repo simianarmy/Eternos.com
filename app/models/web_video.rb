@@ -95,7 +95,11 @@ class WebVideo < Content
   end
   
   def preview_url
-    thumbnail(:thumb => :preview)
+    thumb_url('preview')
+  end
+  
+  def thumbnail_url
+    thumb_url('thumb')
   end
   
   def playable?
@@ -111,5 +115,9 @@ class WebVideo < Content
   # Override attachment_fu
   def destroy_thumbnails
     thumbnail_class.find_all_by_parent_id(self.id).map { |thumb| thumb.destroy }
+  end
+  
+  def thumb_url(type)
+    thumbnails.find_by_thumbnail(type).url rescue nil
   end
 end

@@ -24,6 +24,32 @@ class DocumentariesController < StoriesController
     end
   end
   
+  def update
+    @documentary = current_user.documentaries.find(params[:id])
+    respond_to do |format|
+      if @documentary.update_attributes(params[:documentary])
+        format.html { 
+          flash[:notice] = "Successfully updated."
+          redirect_to @documentary 
+        }
+      else
+        format.html
+      end
+    end
+  end
+    
+  # Called by Flash recorder app when SAVE action is successful (after 
+  # create action has completed successfully)
+  # New recording's record ID is saved in a session variable
+  def post_recording
+    begin
+      @recording = Recording.find session[:last_recording]
+      @story = @documentary = current_user.documentaries.av_attachment_recording_id_eq(@recording.id).first
+    rescue
+      flash[:error] = "Unexpected error saving your recording!"
+    end
+  end
+  
   private
   
   def build_recording

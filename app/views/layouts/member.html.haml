@@ -14,9 +14,9 @@
     - javascript 'application', 'login'
     = yield(:head)
     = yield(:js_libs)
+    /- FIX: Doesn't work when put at bottom of <body>
     = yield(:javascript)
     / end bundle
-    
   %body
     #wrapper
       #header
@@ -60,11 +60,12 @@
       = render :partial => 'shared/site_footer'
         
     = render :partial => 'shared/get_satisfaction'
+    
     :javascript
       // This needs to be global to all js
       var lightview_height = 0.9 * win_dimension()[1];
       //alert('lightview_height = ' + lightview_height);
-      document.observe('dom:loaded', function() { 
+      Element.observe(window, 'load', function() { 
         handle_timeout_popups(#{session_timeout_seconds});
       });
       

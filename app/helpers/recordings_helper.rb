@@ -1,4 +1,17 @@
 module RecordingsHelper
+  # Displays link to av recording, with optional thumbnail & title
+  def link_to_recording(recording, options={})
+    case rec = recording.content
+    when WebVideo
+      link_to_video(rec, options)
+    when Audio
+      link_to_audio(rec, options)
+    when nil
+      link_to(options[:title] || recording.filename, '#video_player', :class => 'popup_get')
+    end
+  end
+  
+  # Who uses this?  Seems a little too multi-purpose
   def show_recording(recording)
     if recording.new_record?
       attach_recording_link('Record something')
@@ -12,6 +25,21 @@ module RecordingsHelper
           :id => 'flash_error')
       end
     end
+  end
+  
+  # Creates link to lightview popup for recorder flash app
+  # Takes optional describable object id
+  # => ie. photo id, description id
+  def link_to_recorder(describable_object_id=0)
+    link_to_lightview 'Record spoken or video description',  
+      "/swf/Recorder.swf?userid=#{current_user.id}", {
+          :class => 'recording_popup_link', 
+          :onclick => "create_cookie('#{RECORDING_CONTENT_PARENT_COOKIE}', 
+            '#{describable_object_id}')"
+          },
+        {:title => "'Record spoken description'", :rel => "'flash'"}, 
+        {:width => 380, :height => 297, 
+          :flashvars => "'movie=Recorder.swf?userid=#{current_user.id}&quality=high'"}
   end
   
   def attach_recording_link(title, options={})
