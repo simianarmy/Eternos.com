@@ -1,5 +1,5 @@
-%a#nav_help.tl_helptext{:href=>'#'} Help
-%span#nav_tip{:style => "display: none"}
+%a#nav_help.tooltip-target{:rel => "{title: 'Timeline Help', showOn: 'click', stem: 'bottomRight', hook: { target: 'topLeft', tip: 'bottomRight'}}"} Help
+#nav_tip.tooltip
   To browse events in your Timeline, hold your mouse over the icons for a preview.  
   %br
   Click the icons for full details, or click an individual item inside the preview window.
@@ -7,21 +7,3 @@
   To navigate the Timeline: Drag it left or right, use the mouse scroll wheel, or the arrow keys, or double click on a date.
   %br
   Click the arrows around the month & year dates to browse nearby months or years.
-  
-:javascript
-  new Tip($('nav_help'), $('nav_tip'), {
-    title: 'Timeline Help',
-    width: '400px',
-    border: 6,
-    borderColor: '#74C5FF',
-    fixed: true,
-    hideOthers: true,
-    viewport: true,
-    showOn: 'click',
-    hideOn: { element: 'closeButton', event: 'click' },
-    stem: 'bottomRight',
-    hook: {
-      target: 'topLeft',
-      tip: 'bottomRight'
-    }
-  });

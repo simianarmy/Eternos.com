@@ -10,6 +10,11 @@ class WebVideo < Content
   has_attachment attachment_opts
   # Class methods
   
+  serialize_with_options do
+    methods :start_date, :url, :thumbnail_url, :preview_url
+    only :id, :title, :width, :height, :description
+  end
+  
   # Use RVideo to get attributes & thumbnail
   after_attachment_saved do |attach|
     # Don't repeat this if creators have already done this

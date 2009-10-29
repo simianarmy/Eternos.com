@@ -38,7 +38,7 @@ class Content < ActiveRecord::Base
   
   serialize_with_options do
     methods :start_date, :url, :thumbnail_url
-    only :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description
+    only :size, :type, :title, :filename, :width, :height, :taken_at, :description
   end
   # Define start_date = created_at for serializing.  Define in child classes if start_date
   # should return a different column value
@@ -52,6 +52,7 @@ class Content < ActiveRecord::Base
   include CommonDateScopes
   named_scope :recordings, :conditions => {:is_recording => true}
   named_scope :photos, :conditions => {:type => 'Photo'}
+  named_scope :media, :conditions => {:type => ['WebVideo', 'Audio', 'Music']}
   named_scope :collections, :group => 'collection_id', :include => :collection
   
   # Class methods

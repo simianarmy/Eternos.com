@@ -21,7 +21,7 @@
     #wrapper
       #header
         #logo.alignleft
-          %h1= link_to((image_tag 'eternos.gif', :id => 'eternos_logo', :border => '0'),  root_path)
+          %h1= link_to((image_tag 'eternos.gif', :id => 'eternos_logo', :border => '0'),  member_home_path)
           /= render :partial => 'shared/login_box' unless @hide_login_box
         #menu.alignright
           = render :partial => 'users/inner_nav'

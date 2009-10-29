@@ -381,8 +381,7 @@ span.select {
 	color:#02419e;
 }
 
-#recording_instructions {
-	width: 90%;
+.tooltip {
 	font-family:arial;
 	font-size:12px;
 	background-color: #ffe;

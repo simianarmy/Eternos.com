@@ -10,6 +10,7 @@ class TimelineSearch
     :twitter    => :get_twitter_items,
     :facebook   => :get_facebook_items,
     :photos     => :get_images,
+    :media      => :get_media,
     :blog       => :get_feed_items,
     :profile    => [:get_profile, :get_durations]
   }
@@ -33,6 +34,8 @@ class TimelineSearch
     end
   end
   
+  # Determines which data to search for by checking options 
+  # If no filter actions specified, uses @@type_action_map methods
   def search_methods
     # apply additional optional filters
     methods = []
@@ -93,6 +96,10 @@ class TimelineSearch
     query @member.activity_stream.items.with_attachment.search
   end
   
+  def get_media
+    query @member.contents.media.search
+  end
+  
   def get_images
     query @member.contents.photos.search
   end
@@ -120,6 +127,8 @@ class TimelineSearch
       get_emails
     when "Photo"
       get_images
+    when "WebVideo", "Audio", "Music"
+      get_media
     when "FeedEntry"
       get_feed_items
     end
@@ -216,6 +225,10 @@ class TimelineSearchFaker < TimelineSearch
   # Returns random photo from random album
   def get_images
     Photo.all.rand
+  end
+  
+  def get_media
+    [WebVideo.all.rand] + [Audio.all.rand]
   end
   
   def get_emails

@@ -332,18 +332,30 @@ var LightviewClose = Behavior.create({
 var PrototipBehavior = Behavior.create({
 	initialize: function() {
 		// Parse json string of options from rel attribute
-		opts = {}
+		this.tipOpts = {	
+			width: '400px',
+			border: 6,
+    	borderColor: '#74C5FF',
+    	fixed: true,
+    	hideOthers: true,
+    	viewport: true
+		};
+		this.opts = {};
 		try {
 			if (rel = this.element.readAttribute('rel')) {
-				opts = rel.evalJSON();
+				this.tipOpts = Object.extend(rel.evalJSON(), this.tipOpts);
 			}
 		} catch(err) {
 			// log error
 		}
-		this.opts = opts;
+		if (this.tipOpts.showOn === 'click') {
+			this.tipOpts = Object.extend({
+	    	hideOn: { element: 'closeButton', event: 'click' },
+			}, this.tipOpts);
+		}
 		if (tooltip = this.element.next('.tooltip')) {
 			$(tooltip).hide();
-			new Tip(this.element, tooltip, opts);
+			new Tip(this.element, tooltip, this.tipOpts);
 		}
 	},
 	onclick: function(evt) {

@@ -242,6 +242,16 @@ var ETLVideoEventSource = Class.create(ETLEventSource, {
 		}
 	}
 });
+// Audio event
+var ETLAudioEventSource = Class.create(ETLEventSource, {
+	getPreviewHtml: function($super) {
+		if (this.attributes.message !== null) {
+			return this.attributes.message;
+		} else {
+			return $super.getPreviewHtml();
+		}
+	}
+});
 // Job event
 var ETLJobEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function() {
@@ -273,6 +283,7 @@ var ETEvent = {
 		{type: "backup_email", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
 		{type: "photo", display_text: "Image", display_text_plural: "Images", icon: "photo.png"},
 		{type: "video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
+		{type: "web_video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
 		{type: "music", display_text: "Music", display_text_plural: "Music", icon: "music.png"},
 		{type: "audio", display_text: "Audio", display_text_plural: "Audio", icon: "audio.png"},
 		{type: "document", display_text: "Document", display_text_plural: "Documents", icon: "doc.png"},
@@ -300,8 +311,10 @@ var ETEvent = {
 			return new ETLEmailEventSource(data);
 		} else if (type === "photo") {
 			return new ETLPhotoEventSource(data);
-		} else if (type === "video") {
+		} else if (type === "video" || type === "web_video") {
 			return new ETLVideoEventSource(data);
+		} else if (type === "audio") {
+			return new ETLAudioEventSource(data);
 		} else if (type === "job") {
 			return new ETLJobEventSource(data);
 		} else if (type === "address") {	
@@ -312,7 +325,7 @@ var ETEvent = {
 		}
 	},
 	isMedia: function(type) {
-		return (type === 'photo' || type === 'video' || type === 'web_video');
+		return (type === 'photo' || type === 'video' || type === 'web_video' || type === 'audio');
 	},
 	isArtifact: function(type) {
 		return (type === 'photo');

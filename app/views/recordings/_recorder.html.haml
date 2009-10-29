@@ -1,10 +1,12 @@
 - use_flash
-#recording_instructions
+- use_prototip
 
+%a.tooltip-target{:rel => "{title: 'Recorder Help', showOn: 'click'}"} Instructions
+.tooltip
   %p
     In order to record successfully and to get the highest quality recording please carefully follow the instructions below.
   .clearboth
-  
+  %br
   %li 
     1. Make sure that your webcam is turned on and is working.  
     = link_to 'Webcam help', '#'
@@ -14,9 +16,10 @@
   %li 5. You can re-record (Steps 2-3) until you are satisfied with your recording.
   %li 6. Push SAVE button to save your recording.
   %p
+  %br
     %strong Note: 
     Prior to recording lengthy content, and to ensure the recorder is working properly, it is advisable to record and playback a short practice recording.
-    %span.alignright= link_to_function 'Hide', "$('recording_instructions').hide()"
+    /%span.alignright= link_to_function 'Hide', "$('recording_instructions').hide()"
   .clearboth
   
 
