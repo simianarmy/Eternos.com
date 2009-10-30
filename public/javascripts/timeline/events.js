@@ -234,12 +234,22 @@ var ETLEmailEventSource = Class.create(ETLEventSource, {
 });
 // Video event
 var ETLVideoEventSource = Class.create(ETLEventSource, {
-	getPreviewHtml: function($super) {
-		if (this.attributes.message !== null) {
-			return this.attributes.message;
-		} else {
-			return $super.getPreviewHtml();
-		}
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.video;
+		$super(s);
+	},
+	getPreviewHtml: function($super) {			
+		return this.previewTemplate.evaluate({
+			id: this.getID(),
+			video_url: this.attributes.url,
+			thumbnail_url: this.attributes.thumbnail_url,
+			thumb_width: this.attributes.thumb_width,
+			thumb_height: this.attributes.thumb_height,
+			title: this.attributes.title,
+			message: this.attributes.description || this.attributes.title,
+			duration: this._getSmallTooltipLine(this.attributes.duration),
+			time: this.getEventTimeHtml()
+		});
 	}
 });
 // Audio event

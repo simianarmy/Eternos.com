@@ -9,9 +9,6 @@ class RecordingsController < ApplicationController
   
   def new
     @parent = params[:attach_to]
-    if params[:layout]
-      render :layout => params[:layout]
-    end
   end
   
   def create
@@ -19,7 +16,7 @@ class RecordingsController < ApplicationController
     if params[:filename] and (params[:filename] !~ /\.\w+$/)
       params[:filename] += ".flv"
     end
-    @documentary = current_user.documentaries.new
+    @documentary = current_user.documentaries.new(:title => params[:filename])
     @documentary.recording = Recording.new(:member => current_user, :filename => params[:filename])
     
     respond_to do |format|

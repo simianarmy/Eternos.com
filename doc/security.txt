@@ -18,3 +18,5 @@ McAfee Alert Items:
   Weak SSL Ciphers Suites Supported
     You must reconfigure the SSLCipherSuite directive in the httpd.conf or ssl.conf file as such:
     SSLCipherSuite ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+
+BBB Online Reliability Program: http://www.bbbonline.org/reliability/requirement_small.asp

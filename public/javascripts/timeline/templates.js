@@ -65,10 +65,16 @@ var ETemplates = {
 				return new Template('<li class="event_list_item">' +
 				'<div class="event_list_item_container">' +
 				'<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
-				'<div id="evlitt:#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div style="clear:both"></div></li>');
+				'<div id="evlitt:#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clear"></div></li>');
 			}(),      
 			eventItemTooltipItem: function () {
 				return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a></div><br/>');
+			}(),
+			mediaTooltip: function() {
+				return new Template('<div class="event_preview_item_container tooltip_container"><div id="playlist">#{playlist}</div><div id="player" class="player plain"></div>');
+			}(),
+			mediaPlaylistItem: function() {
+				return new Template('<a href="#{url}"><img src="#{thumbnail_url}"/><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</a>');
 			}(),
 			inlineEvents: function() {
 				return new Template('<div id="#{id}">#{content}</div>');
@@ -93,6 +99,9 @@ var ETemplates = {
 			}(),
 			feed: function() {
 				return new Template('<div class="tooltip_feed">#{preview}#{message}#{source}#{time}</div>');
+			}(),
+			video: function() {
+				return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clear"></div>');
 			}(),
 			address: function() {
 				return new Template('<div class="tooltip_address">#{postal}<br/><span>Type: #{type}</span><br/><span>#{dates}</span></div>');

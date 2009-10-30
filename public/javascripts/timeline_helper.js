@@ -325,13 +325,7 @@ var ETLEventItems = Class.create({
     this.items = items;
 		this.title = this.first.getDisplayTitle(this.num);
 		this.icon = this.first.getIcon();
-		
-    this.hiddenItemTemplate 			= ETemplates.eventListTemplates.hiddenItem;
-    this.itemWithTooltipTemplate 	= ETemplates.eventListTemplates.eventItemWithTooltip;
-    this.tooltipItemTemplate 			= ETemplates.eventListTemplates.eventItemTooltipItem;
-    this.inlineEventsTemplate 		= ETemplates.eventListTemplates.inlineEvents;
-    this.tooltipTitleTemplate 		= ETemplates.eventListTemplates.tooltipTitle;
-		this.eventDetailsLinkTemplate = ETemplates.eventListTemplates.detailsLink;
+ 
 		// Add object to tooltip cache
 		tooltipGenerator.add(this);
   },
@@ -340,21 +334,16 @@ var ETLEventItems = Class.create({
 			return i.attributes.id;
 		});
 	},
-  _setHtml: function () {
-    // Need to format the link so all content will be displayed
-    if (this.first.isArtifact()) {
-      return this._getArtifactItemHtml();
-    } else {
-      return this._getInlineItemHtml();
-    }
-  },
+	_getItemID: function() {
+		return tooltipGenerator.key({id: this.id, type: this.type});
+	},
 	// Popup link code for all items
   _getLinkUrl: function () {
 		var item = this.first;
     if (item.isArtifact()) {
       this.detailsUrl = item.getURL();
     } else { 
-      this.detailsUrl = this.eventDetailsLinkTemplate.evaluate({
+      this.detailsUrl = ETemplates.eventListTemplates.detailsLink.evaluate({
 				memberId: this.options.memberID,
 				eventType: this.type,
 				eventIds: encodeURIComponent(this._getItemIDs())
@@ -367,7 +356,7 @@ var ETLEventItems = Class.create({
 		if (item.isArtifact()) {
 			return item.getURL();
 		} else {
-			return this.eventDetailsLinkTemplate.evaluate({
+			return ETemplates.eventListTemplates.detailsLink.evaluate({
 				memberId: this.options.memberID,
 				eventType: item.type,
 				eventIds: item.getID()});
@@ -384,21 +373,10 @@ var ETLEventItems = Class.create({
 		return this.detailsLinkRel;
   },
   _getArtifactItemHtml: function () {
-	/*
-    var other_items = '';
-    if (this.num > 1) {
-      for (var i = 1; i < this.num; i++) {
-        other_items += this.hiddenItemTemplate.evaluate({
-          link_url: this._getLinkUrl(),
-          link_rel: this._getLinkRel()
-        });
-      }
-    }
-*/
-    return this.itemWithTooltipTemplate.evaluate({
-			list_item_id: tooltipGenerator.key({id: this.id, type: this.type}),
+    return ETemplates.eventListTemplates.eventItemWithTooltip.evaluate({
+			list_item_id: this._getItemID(),
       b_title: this.title,
-			title: this.tooltipTitleTemplate.evaluate({
+			title: ETemplates.eventListTemplates.tooltipTitle.evaluate({
 				icon: this.icon, title: this.title}),
       link_url: this._getLinkUrl(),
       link_rel: this._getLinkRel()
@@ -410,14 +388,14 @@ var ETLEventItems = Class.create({
   },
   _getInlineItemHtml: function () {
 		return ETemplates.eventListTemplates.eventGroupItem.evaluate({
-			list_item_id: tooltipGenerator.key({id: this.id, type: this.type}),
+			list_item_id: this._getItemID(),
       title: this.getTooltipTitle(),
       link_url: this._getLinkUrl(),
       link_rel: this._getLinkRel(),
 			details_win_height: getWinHeight()
 		});
 	/*
-    return this.itemWithTooltipTemplate.evaluate({
+    return ETemplates.eventListTemplates.eventItemWithTooltip.evaluate({
 			list_item_id: this.id,
       title: this._getTooltipTitle(),
       link_url: this._getLinkUrl(),
@@ -428,46 +406,77 @@ var ETLEventItems = Class.create({
 */
   },
 	_getInlineContents: function () {
-    return this.inlineEventsTemplate.evaluate({
+    return ETemplates.eventListTemplates.inlineEvents.evaluate({
       id: this.first.getID(),
       content: 'TODO'
     });
   },
+	_getMediaItemsPlaylistHtml: function() {
+		var html = '';
+		this.items.each(function(i) {
+			html += ETemplates.eventListTemplates.mediaPlaylistItem.evaluate({
+				url: i.getURL(),
+				thumbnail_url: i.getThumbnailURL(),
+				title: i.getTitle(),
+				description: i.attributes.description,
+				time: i.getEventTimeHtml(),
+				duration: i.attributes.duration_to_s
+			});
+		});
+		return html;
+	},
 	getTooltipTitle: function() {
-		return this.tooltipTitleTemplate.evaluate({
+		return ETemplates.eventListTemplates.tooltipTitle.evaluate({
 			icon: this.icon, title: this.title});
 	},
 	// Generates tooltip html for all types.  Used by both event list & timeline icons
   getTooltipContents: function () {
-		var i, count, item;
+		var i, count, item, html = '';
+		var winHeight = getWinHeight();
 		
 		if (this.num == 0) {
+			// this should never happen
 			return '';
 		}
-		if (this.first.isArtifact()) {
-			count = Math.min(this.MaxArtifactTooltipItems, this.num);
-			this.tooltipHtml = '<div class="tooltip_media_container">';
+		// Media tooltip requires more work
+		if (this.first.isMedia()) {
+			// Builds tooltip html for media items - creates playlist & viewer
+			return ETemplates.eventListTemplates.mediaTooltip.evaluate({
+				playlist: this._getMediaItemsPlaylistHtml()
+			});
 		} else {
-			count = Math.min(this.MaxTooltipItems, this.num);
-			this.tooltipHtml = '<div class="tooltip_all_container">';
+			// Images & the rest handled below
+			if (this.first.isArtifact()) {
+				count = Math.min(this.MaxArtifactTooltipItems, this.num);
+				html = '<div class="tooltip_arti_container">';
+			} else {
+				count = Math.min(this.MaxTooltipItems, this.num);
+				html = '<div class="tooltip_all_container">';
+			}
+			for (i=0; i<count; i++) {
+				item = this.items[i];
+	      html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate({
+					event_details_link: this._getItemDetailsUrl(item),
+					details_win_height: winHeight,
+	        content: item.getPreviewHtml()
+	      });
+	    }
+			// Add link to view all
+			if (count < this.num) {
+				html += '<br/><a href="#">View All</a>';
+			}
 		}
-		for (i=0; i<count; i++) {
-			item = this.items[i];
-      this.tooltipHtml += this.tooltipItemTemplate.evaluate({
-				event_details_link: this._getItemDetailsUrl(item),
-				details_win_height: getWinHeight(),
-        content: item.getPreviewHtml()
-      });
-    }
-		// Add link to view all
-		if (count < this.num) {
-			this.tooltipHtml += '<br/><a href="#">View All</a>';
-		}
-		this.tooltipHtml += '</div>';
+		html += '</div>';
+		this.tooltipHtml = html;
     return this.tooltipHtml;
   },
   populate: function () {
-    return this._setHtml();
+    // Need to format the link so all content will be displayed
+    if (this.first.isArtifact()) {
+      return this._getArtifactItemHtml();
+		} else {
+      return this._getInlineItemHtml();
+    }
   }
 });
 

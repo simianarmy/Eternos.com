@@ -11,8 +11,9 @@ class WebVideo < Content
   # Class methods
   
   serialize_with_options do
-    methods :start_date, :url, :thumbnail_url, :preview_url
-    only :id, :title, :width, :height, :description
+    methods :start_date, :url, :thumbnail_url, :thumb_width, :thumb_height, :preview_url,
+      :duration_to_s
+    only :id, :title, :width, :height, :description, :taken_at
   end
   
   # Use RVideo to get attributes & thumbnail
@@ -92,19 +93,20 @@ class WebVideo < Content
     end
   end
   
-  # Override base url 
-  def url
-    #polymorphic_path(self, :format => :flv)
-    # for testing, use public link
-    public_filename
-  end
-  
   def preview_url
-    thumb_url('preview')
+    thumb(:preview).try(:url)
   end
   
   def thumbnail_url
-    thumb_url('thumb')
+    thumb(:thumb).try(:url)
+  end
+  
+  def thumb_width(type=:thumb)
+    thumb(type).try(:width)
+  end
+  
+  def thumb_height(type=:thumb)
+    thumb(type).try(:height)
   end
   
   def playable?
@@ -122,7 +124,7 @@ class WebVideo < Content
     thumbnail_class.find_all_by_parent_id(self.id).map { |thumb| thumb.destroy }
   end
   
-  def thumb_url(type)
-    thumbnails.find_by_thumbnail(type).url rescue nil
+  def thumb(type)
+    thumbnails.find_by_thumbnail(type)
   end
 end

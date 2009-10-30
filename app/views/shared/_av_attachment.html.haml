@@ -1,15 +1,12 @@
 - use_soundmanager if recording.audio?
 
 - unless recording.new_record?
+  - @links = []
   #recording
-    - if recording.complete?
-      = link_to_recording(recording) 
-    - else
-      = recording.state
-      = link_to_recording(recording, :title => 'Preview') + "|" unless recording.error?
-    
-    = detach_recording_link(recording, :parent => parent.to_str)
-  = attach_recording_link('Redo', :parent => parent.to_str, :div => :av_recording)
+    = show_recording(recording)
+    - @links << detach_recording_link(recording, :parent => parent.to_str) unless recording.error?
+  - @links << link_to('Retry', new_recording_path(:dialog => params[:dialog])) 
+  = @links.join("&nbsp;|&nbsp;")
 - else
   = attach_recording_link('Record your message', :parent => parent.to_str, :div => :av_recording)
 #av_recording

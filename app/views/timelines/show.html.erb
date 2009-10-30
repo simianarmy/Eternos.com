@@ -1,4 +1,5 @@
 <% use_timeline %>
+<% use_flashplayer %>
 <% javascript 'jsProgressBarHandler' %>
 
 <% header '<span class="subtitle1">' + @member_name + ':</span><span class="subtitle2">Your TimeLine(tm)</span>' 
@@ -51,6 +52,7 @@
 </div>
 
 <%= javascript_tag("
+var FlowplayerSwfUrl = '#{video_player_swf_url}';
 document.observe('dom:loaded', function() {
   new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',

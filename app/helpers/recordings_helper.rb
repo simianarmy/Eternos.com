@@ -6,23 +6,26 @@ module RecordingsHelper
       link_to_video(rec, options)
     when Audio
       link_to_audio(rec, options)
-    when nil
+    else
       link_to(options[:title] || recording.filename, '#video_player', :class => 'popup_get')
     end
   end
   
-  # Who uses this?  Seems a little too multi-purpose
+  # For recording create/view forms
   def show_recording(recording)
     if recording.new_record?
-      attach_recording_link('Record something')
+      attach_recording_link('Record Message')
     else
       if recording.ready?
         link_to_recording(recording)
-      elsif recording.pending?
-        content_tag(:div, 'Your recording is being processed', :id => 'flash_notice')
+      elsif recording.error?
+        content_tag(:div, 'There was an error processing your recording', :id => 'flash_error') +
+        content_tag(:div, recording.processing_error, :id => 'flash_error')  
       else
-        content_tag(:div, 'There was an error processing your recording', 
-          :id => 'flash_error')
+        content_tag(:div, :id => 'flash_notice') do |div|
+          'Your recording is being processed.  ' + 
+          link_to_recording(recording, :thumbnail => false, :title => "Preview")
+        end
       end
     end
   end
@@ -58,6 +61,6 @@ module RecordingsHelper
   
   def recording_popup_link(title)
     link_to title, new_recording_path(:dialog => true), :class => 'lightview', :rel => 'iframe',
-      :title => ':: Create Recording :: width: 620, height: 700'
+      :title => ':: Create Recording :: width: 660, height: 700'
   end
 end

@@ -398,6 +398,7 @@ a.event_list_inline_item:hover {
 }
 
 .tooltip_container {
+	overflow-y:auto;
 	font-size: 12px;
 }
 
@@ -411,7 +412,8 @@ a.event_list_inline_item:hover {
 	background-color: #ffe;
 }
 
-.tooltip_media_container {
+.tooltip_arti_container {
+	overflow-y:auto;
 	font-size: 12px;
 	width: 120px;
 }

@@ -17,7 +17,11 @@ module ContentHelper
       link_to object.title, polymorphic_path(object)
     end
   end
-      
+     
+  def link_to_audio(object, options={})
+    render :partial => 'shared/audio_link', :locals => {:audio => object, :options => options}
+  end 
+  
   # Helpers for different content-types - could be cleaned up
   def link_to_video(video, options={})
     if options[:thumbnail] == false
@@ -35,17 +39,13 @@ module ContentHelper
     # Link to lightview that plays flash video
     if video.kind_of? WebVideo
       capture(show_video_player(video, :hidden => true, :autoPlay => true, :filename => false)) do |flash|
-        link_to(video.to_s, "##{dom_id(video)}", :class => 'lightview', 
-          :title => "#{video.title} :: #{video.description} :: width: #{video.width}, height: #{video.height}") + flash
+        link_to(options[:title] || video.to_s, "##{dom_id(video)}", :class => 'lightview', :rel => 'inline',
+          :title => "#{video.title} :: #{video.description}") + flash
       end
     else
       # Link to lightview that plays embedded video
       render :partial => 'shared/video_link', :locals => {:video => video, :options => options}
     end
-  end
-  
-  def link_to_audio(object, options={})
-    render :partial => 'shared/audio_link', :locals => {:audio => object, :options => options}
   end
   
   def show_video_player(video, options={})

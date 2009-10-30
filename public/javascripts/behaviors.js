@@ -521,11 +521,11 @@ var Slideshow = Behavior.create({
 // Wrapper for Flowplayer library
 
 var Flowplayer = Behavior.create({
-	initialize: function() {
-		var opts = {};
+	initialize: function(options) {
+		this.opts = options || {};
 		var url;
 		if ((rel = this.element.readAttribute('rel')) !== null) {
-			opts = Object.extend(opts, rel.evalJSON());
+			this.opts = Object.extend(rel.evalJSON(), this.opts);
 		}
 		url = (this.element.href !== '') ? this.element.href : this.element.readAttribute('url');
 		if (window.flowplayer) {
@@ -534,15 +534,20 @@ var Flowplayer = Behavior.create({
 				key: FLOWPLAYER_PRODUCT_KEY,
 				clip: { 
 					url: url,
-					autoPlay: opts.autoPlay || false,  
+					autoPlay: this.opts.autoPlay || false,  
 					autoBuffering: true,
-					//initialScale: opts.scale || 'scale'
+					//initialScale: this.opts.scale || 'scale'
 				},
 				logo: {
 					url: '/images/favico.png',
 					fullscreenOnly: false
 				}
 			});
+		}
+	},
+	onclick: function(evt) {
+		if (this.opts.popup) {
+			alert('should popup video');
 		}
 	}
 });
@@ -563,6 +568,7 @@ Event.addBehavior({
 	'#slideshow': Slideshow({with_track: false}),
 	'#slideshow-narrated': Slideshow({with_track: true}),
 	'.video_player': Flowplayer,
+	'a.popup_video_player': Flowplayer({popup: true}),
 	'.catch_lightview_close': LightviewClose,
 	'.remote_form': RemoteForm,
 	'select': FormSelect,

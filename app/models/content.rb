@@ -53,6 +53,7 @@ class Content < ActiveRecord::Base
   named_scope :recordings, :conditions => {:is_recording => true}
   named_scope :photos, :conditions => {:type => 'Photo'}
   named_scope :media, :conditions => {:type => ['WebVideo', 'Audio', 'Music']}
+  #  :include => :thumbnails
   named_scope :collections, :group => 'collection_id', :include => :collection
   
   # Class methods
