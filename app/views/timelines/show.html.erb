@@ -34,6 +34,7 @@
     
 		<div class="dotline"></div>
   </div>
+  <div id="player" class="video_player">
   <div id="timeline-detail">
     <div id="proximity_search">
       <a class="btn-left" href="#" id="prev_event_search"></a>&nbsp;&nbsp;<a class="btn-right" href="#" id="next_event_search"></a>
@@ -52,7 +53,7 @@
 </div>
 
 <%= javascript_tag("
-var FlowplayerSwfUrl = '#{video_player_swf_url}';
+
 document.observe('dom:loaded', function() {
   new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',
@@ -68,6 +69,7 @@ document.observe('dom:loaded', function() {
       }
     }
   }).draw();
+  
 });
 ") unless @hide_timeline %>
 

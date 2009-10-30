@@ -54,7 +54,7 @@ module ContentHelper
   end
         
   def video_player_swf_url
-    '/swf/flowplayer.commercial-3.0.0-rc4.swf'
+    '/swf/flowplayer.commercial-3.1.5.swf'
   end
     
   def content_date_select(content)

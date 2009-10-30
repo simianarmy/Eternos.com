@@ -21,6 +21,9 @@ var ETLEventSource = Class.create({
 	isMedia: function() {
 		return ETEvent.isMedia(this.type) || ETEvent.isMedia(this.attachment_type);
 	},
+	isVideo: function() {
+		return ETEvent.isVideo(this.type);
+	},
 	isDuration: function() {
 		return (this.end_date_obj != null) && (this.start_date_obj !== this.end_date_obj);
 	},
@@ -339,6 +342,9 @@ var ETEvent = {
 	},
 	isArtifact: function(type) {
 		return (type === 'photo');
+	},
+	isVideo: function(type) {
+		return (type === 'web_video');
 	},
 	getSourceIcon: function(type) {
 		return this.itemTypes.find(function(t) { return type === t.type}).icon;

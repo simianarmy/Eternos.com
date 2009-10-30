@@ -1,0 +1,15 @@
+- title 'Video Gallery'
+- use_flashplayer
+
+#videos
+  %p Playlist
+  #playlist
+    - @web_videos.each do |vid|
+      = render :partial => 'playlist', :locals => {:video => vid}
+
+  #player.player.plain{:style=>"float:right;width: 320px;height: 240px;"}
+    = image_tag 'play_large.png'
+
+:javascript
+  var f = create_flowplayer('player');
+  f.playlist('#playlist', {loop:true});

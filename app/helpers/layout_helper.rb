@@ -115,7 +115,9 @@ module LayoutHelper
   end
   
   def use_flashplayer
-    javascript 'flowplayer-3.0.0-rc5.min', '/javascripts/flowplayer.js'
+    use_jquery
+    stylesheet 'media'
+    javascript 'flowplayer-3.1.4.min', 'flowplayer.playlist-3.0.7.min', '/javascripts/flowplayer.js'
   end
   
   def use_js_cookies

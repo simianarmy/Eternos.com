@@ -71,7 +71,7 @@ var ETemplates = {
 				return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a></div><br/>');
 			}(),
 			mediaTooltip: function() {
-				return new Template('<div class="event_preview_item_container tooltip_container"><div id="playlist">#{playlist}</div><div id="player" class="player plain"></div>');
+				return new Template('<div class="event_preview_item_container tooltip_container"><div id="playlist">#{playlist}</div></div>');
 			}(),
 			mediaPlaylistItem: function() {
 				return new Template('<a href="#{url}"><img src="#{thumbnail_url}"/><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</a>');

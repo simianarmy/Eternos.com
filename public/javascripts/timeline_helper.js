@@ -221,7 +221,7 @@ var ETUI = function() {
 
 		tipOptions.title = tipContents.title;
 		// Trick to determine tooltip width (for text or images)
-		if (!ETEvent.isMedia(tipContents.type)) {
+		if (!ETEvent.isArtifact(tipContents.type)) {
 			tipOptions.width = 'auto';
 		}
 		new Tip(element, tipContents.body, Object.extend(ETemplates.DefaultTooltipOptions, tipOptions));
@@ -431,7 +431,9 @@ var ETLEventItems = Class.create({
 	},
 	// Generates tooltip html for all types.  Used by both event list & timeline icons
   getTooltipContents: function () {
-		var i, count, item, html = '';
+		var i, count, item, 
+			listId = this._getItemID(),
+			html = '';
 		var winHeight = getWinHeight();
 		
 		if (this.num == 0) {
@@ -440,8 +442,12 @@ var ETLEventItems = Class.create({
 		}
 		// Media tooltip requires more work
 		if (this.first.isMedia()) {
+			// setup video player 
+			create_flowplayer('player', {playlist: '#playlist'});
+
 			// Builds tooltip html for media items - creates playlist & viewer
 			return ETemplates.eventListTemplates.mediaTooltip.evaluate({
+				id: listId,
 				playlist: this._getMediaItemsPlaylistHtml()
 			});
 		} else {

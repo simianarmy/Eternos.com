@@ -1,0 +1,9 @@
+%a{:href => video.url}
+  = image_tag video.thumbnail_url if video.has_thumbnail?
+  %strong= video.title
+  %br
+  %br
+  = video.description
+  %em= video.duration_to_s
+  %br
+  %span.event_time= video.taken_at

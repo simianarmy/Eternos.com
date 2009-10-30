@@ -1,6 +1,18 @@
 // $Id$
 //
-// Constants for Flowplayer library
+// Common helpers for Flowplayer library
 
 var FlowplayerSwfUrl = "<%= video_player_swf_url %>"
 var FLOWPLAYER_PRODUCT_KEY = "<%= FLOWPLAYER_PRODUCT_KEY %>";
+
+// returns new flowplayer instance
+function create_flowplayer(id, opts) {
+	return flowplayer(id, FlowplayerSwfUrl, 
+		Object.extend({
+			key: FLOWPLAYER_PRODUCT_KEY,
+			logo: {
+				url: '/images/favico.png',
+				fullscreenOnly: false
+			}
+		}, opts || {}));
+}

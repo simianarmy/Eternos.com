@@ -40,7 +40,7 @@ MEMCACHED_OPTIONS       = {
 }
 MEMCACHED_HOST          = 'localhost'
 
-FLOWPLAYER_PRODUCT_KEY  = '$3894b992d106ccc5f56'
+FLOWPLAYER_PRODUCT_KEY  = '#$c7beeb5fc7f67acac4d'
 YAHOO_APP_ID            = 'YxNApcLV34EgbS7EoRCAgGY4hJvSX_fQeW9uayDJ0yUbtxH8dhZXKjOSI7k8Gic7'
 FLASH_RECORDER_KEY      = 'zyrc234mq7hbs6ptw5d1v9n0j8xfkg'
 MOD_PORTER_SECRET       = 'sh4mAlam4d1nGd0ng'
