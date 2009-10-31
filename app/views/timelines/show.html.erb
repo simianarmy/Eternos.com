@@ -7,7 +7,6 @@
 
 <div id="content-container3">
   <div id="timeline-top">
-    <div id="recorder_pane"></div>
     <div id="backups" class="backup-container">
       <%= render :partial => 'backup_bars', :locals => {:backups => @backups} 
       %>
@@ -61,7 +60,7 @@
 <%= javascript_tag("
 
 document.observe('dom:loaded', function() {
-  new ETimeline({month_selector_id: 'month-selector',
+  var tl = new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',
     events_section_id: 'story-area',
     timeline_section_id: 'my-timeline',
@@ -74,8 +73,12 @@ document.observe('dom:loaded', function() {
         #{if @fake; ', fake: true' end}
       }
     }
-  }).draw();
+  });
+  tl.draw();
   
+  Event.observe(window, 'lightview:hidden', function(e) {
+    tl.reload();
+	});
 });
 ") unless @hide_timeline %>
 

@@ -64,6 +64,7 @@ a.player img {
 }
 
 #player {
+	float: left;
 	display:block; 
 	text-align:center; 
 	margin:0 15px 15px 0; 

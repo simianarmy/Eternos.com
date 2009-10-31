@@ -7,8 +7,9 @@
     - @web_videos.each do |vid|
       = render :partial => 'playlist', :locals => {:video => vid}
 
-  #player.player.plain{:style=>"float:right;width: 320px;height: 240px;"}
+  #player.player.plain.medium{:style=>"float:right;display: none"}
     /= image_tag 'play_large.png'
 
 :javascript
-  create_flowplayer('player').playlist('#playlist', {loop:true});
+  var p = create_flowplayer('player').playlist('#playlist', {loop:true});
+  jQuery('#playlist a').click(function() { jQuery('#player').show(); return true;});

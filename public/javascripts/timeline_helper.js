@@ -220,31 +220,50 @@ var ETUI = function() {
 		if ((tipContents = getTooltip(id)) == null) { return false; }
 
 		tipOptions.title = tipContents.title;
+		element.tipType = tipContents.type;
+		
 		// Trick to determine tooltip width (for text or images)
 		if (!ETEvent.isArtifact(tipContents.type)) {
 			tipOptions.width = 'auto';
 		}
 		new Tip(element, tipContents.body, Object.extend(ETemplates.DefaultTooltipOptions, tipOptions));
 		element.prototip.show();
-
-		// Some necessary post-processing for special tip contents
+		
+		postprocessTooltip(element, tipContents.type);
+		return true;
+	};
+	function preprocessTooltip(el, tipType) {
+		
+	};
+	// Perform any necessary post-processing for new tooltips
+	function postprocessTooltip(el, tipType) {
+		var player;
 		// Video contents need player initialized & playlist assigned
-		if (ETEvent.isVideo(tipContents.type)) {
-			$('video_section').appear({ duration: 1.0 });
+		if (ETEvent.isVideo(tipType)) {
+			//$('video_section').appear({ duration: 1.0 });
 			// create or fetch video player object		
 			if (!(player = $f('player'))) {
-				player = create_flowplayer('player', {clip: { 
-					// set a common clip event listener 
-				 	onStart: function(clip) { 
-						// make video player visible
-						$('video_section').appear({ duration: 1.0 });
-				  }
-				}});
+				player = create_flowplayer('player', {
+					// show playlist buttons in controlbar 
+					plugins:  { 
+						controls: { 
+							playlist: true 
+						} 
+					}
+				});
 			}
 			// assign latest playlist
 			player.playlist('#playlist');
+			// Assign click handler to each playlist item so that we can make player
+			// visible on click
+			jQuery('#playlist a').click(function() { $('video_section').appear({ duration: 1.0 });});
+		} else {
+			// Add observer to hide it on click
+			el.observe('click', function(e) {
+				el.prototip.hide();
+				return true;
+			});
 		}
-		return true;
 	};
 	return {
 		createEventListItemObservers: function() {
@@ -263,13 +282,7 @@ var ETUI = function() {
 			}
 			// get the event id from the container div id
 			parts = element.id.split(':');
-			if (createTooltip(element, parts[1], ETemplates.eventTooltipOptions)) {
-				// Add observer to hide it on click
-				element.observe('click', function(e) {
-					element.prototip.hide();
-					return true;
-				});
-			}
+			createTooltip(element, parts[1], ETemplates.eventTooltipOptions);
 		},
 		// Destroy tooltips and observers in order to prevent memory leaks
 		onEventSectionLoading: function() {
@@ -787,16 +800,22 @@ var ETimeline = function (opts) {
   //Eternos Timeline Event Collection
   var ETLEventCollection = Class.create({
     initialize: function () {
-      this.sources 				= [];
+      this.reset();
+      this.groupTemplate 	= ETemplates.eventListTemplates.eventGroup;
+			this.noEventsTemplate = ETemplates.eventListTemplates.noEvents;
+    },
+		reset: function() {
+			this.sources 				= [];
 			this.durations		 	= {};
 			this.latestSources	= [];
 			this.latestDurations	= [];
       this.dates 					= [];
       this.rawItems 			= [];
       this.items 					= [];
-      this.groupTemplate 	= ETemplates.eventListTemplates.eventGroup;
-			this.noEventsTemplate = ETemplates.eventListTemplates.noEvents;
-    },
+		},
+		empty: function() { 
+			this.reset();
+		},
     // Add event source to collection keyed by event date
     addSource: function (source) {
       this.sources.push(source);
@@ -957,13 +976,6 @@ var ETimeline = function (opts) {
       this.jsonEvents = events.evalJSON();
       this._populate();
     },
-    _populate: function () {
-      this.doParsing();
-    },
-    _mergeEvents: function (events) {
-      ETDebug.log("Merging events for " + events.resultCount + " results");
-      this.jsonEvents = events;
-    },
 		// Takes JSON object containing timeline search results
 		// Parses & adds results to internal collections
     addEvents: function (events) {
@@ -1006,6 +1018,16 @@ var ETimeline = function (opts) {
 			that.monthSelector.setDate(targetDate);
       that.artifactSection.populate(targetDate);
       that.eventSection.populate(this.eventItems.populate(targetDate));
+    },
+		empty: function() {
+			this.eventItems.empty();
+		},
+		_populate: function () {
+      this.doParsing();
+    },
+    _mergeEvents: function (events) {
+      ETDebug.log("Merging events for " + events.resultCount + " results");
+      this.jsonEvents = events;
     }
   });
 
@@ -1093,7 +1115,10 @@ var ETimeline = function (opts) {
         } while (stepDate <= endDate);
 
         return found;
-      }
+      },
+			empty: function() {
+				searched.clear();
+			}
     };
   }();
 
@@ -1246,7 +1271,7 @@ var ETimeline = function (opts) {
     },
 		_handleUIEvents: function() {
 			// Hide tooltip on any click
-			document.observe('click', function(e) { Tips.hideAll(); });
+			//document.observe('click', function(e) { Tips.hideAll(); });
 			// Handle event list mouseovers
 			document.observe('event_list_item:hover', function(e) {
 				ETUI.onEventListItemMouseOver(e.element());
@@ -1583,6 +1608,12 @@ var ETimeline = function (opts) {
 				this.redraw();
 			}
 			this.inScrollTo = false;
+		},
+		reload: function() {
+			searchCache.empty();
+			this.rawEvents.empty();
+			this.eventSource.clear();
+			this.searchEvents();
 		}
   });
 
@@ -1592,9 +1623,12 @@ var ETimeline = function (opts) {
     that.eventSection = new ETLEventSection(options.events_section_id);
     that.base = new ETLBase(options.timeline_section_id, options.timeline);
   }
-
+	var reload = function () {
+		that.base.reload();
+	}
   // Set public methods now
   me.draw = draw;
+	me.reload = reload;
   me.api = api;
 
   // Return 'class' object with only public methods exposed.
