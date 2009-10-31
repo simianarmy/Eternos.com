@@ -70,6 +70,11 @@ a.player img {
 	border:1px solid #999;
 }	
 
+#player.medium {
+	width:320px;
+	height:240px
+}
+
 /*********************************************************************/
 /* playlist for video browsing - from http://flowplayer.org/demos/plugins/javascript/playlist/youtube.htm */
 

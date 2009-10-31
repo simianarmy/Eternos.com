@@ -215,7 +215,7 @@ var ETUI = function() {
 	};
 	// Create the Tooltip object on the element identified by ID
 	function createTooltip(element, id, tipOptions) {
-		var tipContents;
+		var tipContents, player;
 				
 		if ((tipContents = getTooltip(id)) == null) { return false; }
 
@@ -227,6 +227,23 @@ var ETUI = function() {
 		new Tip(element, tipContents.body, Object.extend(ETemplates.DefaultTooltipOptions, tipOptions));
 		element.prototip.show();
 
+		// Some necessary post-processing for special tip contents
+		// Video contents need player initialized & playlist assigned
+		if (ETEvent.isVideo(tipContents.type)) {
+			$('video_section').appear({ duration: 1.0 });
+			// create or fetch video player object		
+			if (!(player = $f('player'))) {
+				player = create_flowplayer('player', {clip: { 
+					// set a common clip event listener 
+				 	onStart: function(clip) { 
+						// make video player visible
+						$('video_section').appear({ duration: 1.0 });
+				  }
+				}});
+			}
+			// assign latest playlist
+			player.playlist('#playlist');
+		}
 		return true;
 	};
 	return {
@@ -394,16 +411,6 @@ var ETLEventItems = Class.create({
       link_rel: this._getLinkRel(),
 			details_win_height: getWinHeight()
 		});
-	/*
-    return ETemplates.eventListTemplates.eventItemWithTooltip.evaluate({
-			list_item_id: this.id,
-      title: this._getTooltipTitle(),
-      link_url: this._getLinkUrl(),
-      link_rel: this._getLinkRel(),
-			details_win_height: getWinHeight(),
-      tt_content: this._getTooltipContents()
-    });
-*/
   },
 	_getInlineContents: function () {
     return ETemplates.eventListTemplates.inlineEvents.evaluate({
@@ -431,7 +438,7 @@ var ETLEventItems = Class.create({
 	},
 	// Generates tooltip html for all types.  Used by both event list & timeline icons
   getTooltipContents: function () {
-		var i, count, item, 
+		var i, count, item,
 			listId = this._getItemID(),
 			html = '';
 		var winHeight = getWinHeight();
@@ -441,10 +448,7 @@ var ETLEventItems = Class.create({
 			return '';
 		}
 		// Media tooltip requires more work
-		if (this.first.isMedia()) {
-			// setup video player 
-			create_flowplayer('player', {playlist: '#playlist'});
-
+		if (this.first.isVideo()) {
 			// Builds tooltip html for media items - creates playlist & viewer
 			return ETemplates.eventListTemplates.mediaTooltip.evaluate({
 				id: listId,
