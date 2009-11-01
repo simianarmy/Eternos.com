@@ -48,6 +48,7 @@ class DocumentariesController < StoriesController
     rescue
       flash[:error] = "Unexpected error saving your recording!"
     end
+    cookies[:needs_refresh] = '1'
     render :layout => 'dialog' # hacky
   end
   

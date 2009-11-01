@@ -650,7 +650,6 @@ var ETimeline = function (opts) {
       this.template 	= ETemplates.artifactTemplates.artifacts;
       this.loadingTemplate = ETemplates.loadingTemplate;
       this.boxTemplate = ETemplates.artifactTemplates.artifactBox;
-      this.blankImg = this.items = this.currentItems = new Array();
 			
       this.showLoading();
     },
@@ -659,19 +658,20 @@ var ETimeline = function (opts) {
 		_itemsInDate: function(date) {
 			var targetDate = date.startingMonth();
 			
-			this.currentItems = this.items.findAll(function (i) {
+			return this.items.findAll(function (i) {
         return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) && (i.getEventDateObj().startingMonth() === targetDate);
       });
-			return this.currentItems;
 		},
     _itemsToS: function (activeDate) {
 			var i, numDisplay;
       var s = '', ul_class;
-			var item, artis = this._itemsInDate(activeDate).randomize();
+			var item, artis = this._itemsInDate(activeDate);
 			
-      ETDebug.log("Displaying artifacts for: " + activeDate);
-
-			numDisplay = Math.min(artis.length, this.MaxDisplayCount);
+			if ((numDisplay = Math.min(artis.length, this.MaxDisplayCount)) > 0) {
+				artis.randomize();
+			}
+			ETDebug.log("Displaying " + numDisplay + " artifacts for: " + activeDate);
+			
 			for (i=0; i<numDisplay; i++) {
 				item = artis[i];
 				ETDebug.log("Adding artifact #" + i + ": type: " + item.type);
@@ -734,12 +734,30 @@ var ETimeline = function (opts) {
 				}.bind(this), this.timeOut);
 			}
     },
+		// Adds artifact event object to internal collection, returns 
+		// true if added.
     addItem: function (item) {
+			// Skip artifacts with missing source or if already added
+			ETDebug.log("add artifact: " + item.type);
+			if ((item.getURL() == null) || this.contains(item)) {
+				ETDebug.log("not added");
+				return false; 
+			}
       this.items.push(item);
+			return true;
     },
     addItems: function (items) {
 			this.items.concat(items);
     },
+		empty: function () {
+			this.items.clear();
+		},
+		// Returns true if items list contains item with the same source url
+		contains: function (item) {
+			return this.items.detect(function(i) { 
+				return item.getURL() === i.getURL();
+			});
+		},
     populate: function (activeDate) {      
       this._write(this._itemsToS(activeDate));
 			this.randomize();
@@ -972,14 +990,15 @@ var ETimeline = function (opts) {
   //Eternos Timeline Event Parser
   var ETLEventParser = Class.create({
     initialize: function (events) {
+		  var ev = events || [];
       this.eventItems = new ETLEventCollection();
-      this.jsonEvents = events.evalJSON();
-      this._populate();
+      this.addEvents(ev);
     },
 		// Takes JSON object containing timeline search results
 		// Parses & adds results to internal collections
     addEvents: function (events) {
-      this._mergeEvents(events.evalJSON());
+      this.jsonEvents = events.evalJSON();
+			ETDebug.log("Adding " + this.jsonEvents.resultCount + " events");
 			this._populate();
     },
 		// Returns latest parsed results objects array.
@@ -1000,13 +1019,17 @@ var ETimeline = function (opts) {
 			this.eventItems.clearLatest();
       this.jsonEvents.results.each(function(res) {
 				event = ETEvent.createSource(res);
-        if (event.isArtifact()) {
-					// Skip artifacts with missing source
-					if (event.attributes.url == null) { return; }
-          that.artifactSection.addItem(event);
-        } else if (ETEvent.isArtifact(event.getDisplayType())) {
-					// Skip image attachments (already included in artifacts)
-					return;
+				
+				// Tricky part here - we add artifacts to the artifacts collection 
+				// and to the events collection, but artifacts attached to events
+				// must only be added to the artifacts collection
+				if (event.isArtifact()) { 
+					that.artifactSection.addItem(event);
+					if (ETEvent.isArtifact(event.getDisplayType())) {
+						// Don't add to items list if artifact is attached to event
+						ETDebug.log("artifact not added");
+						return;
+					}
 				}
         this.eventItems.addSource(event);
       }.bind(this));
@@ -1021,14 +1044,11 @@ var ETimeline = function (opts) {
     },
 		empty: function() {
 			this.eventItems.empty();
+			this.jsonEvents = {};
 		},
 		_populate: function () {
       this.doParsing();
     },
-    _mergeEvents: function (events) {
-      ETDebug.log("Merging events for " + events.resultCount + " results");
-      this.jsonEvents = events;
-    }
   });
 
   //Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: Object}
@@ -1611,6 +1631,7 @@ var ETimeline = function (opts) {
 		},
 		reload: function() {
 			searchCache.empty();
+			that.artifactSection.empty();
 			this.rawEvents.empty();
 			this.eventSource.clear();
 			this.searchEvents();

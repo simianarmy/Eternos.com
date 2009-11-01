@@ -133,13 +133,13 @@ var ETemplates = {
 		getIconSize: function(n) {
 			var r;
 			if (n <= 1) {
-				r=16;
-			} else if (n <= 5) {
 				r=20;
-			} else if (n <= 10) {
+			} else if (n <= 5) {
 				r=25;
-			} else {
+			} else if (n <= 10) {
 				r=30;
+			} else {
+				r=40;
 			}
 			return r;
 		}

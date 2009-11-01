@@ -5,7 +5,7 @@
 //Eternos Timeline Event Source base class
 var ETLEventSource = Class.create({
 	initialize: function(s) {
-		//console.log("constructing ETLEventSource for " + s.type);
+		console.log("constructing ETLEventSource for " + s.type);
 		this.type 								= s.type;
 		this.attributes 					= s.attributes;
 		this.attachment_type			= s.attachment_type;
