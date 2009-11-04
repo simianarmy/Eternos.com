@@ -92,9 +92,9 @@ module LayoutHelper
     }
   end
   
-  def use_jquery
+  def use_jquery(context=:javascript)
     load_google_api
-    content_for(:javascript) { 
+    content_for(context) { 
       javascript_tag('google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");')
     }
     # Make sure jquery doesn't conflict with any loaded prototype libs

@@ -10,30 +10,30 @@ var title = ""; //The title of the currently selected album
 var sprite = ""; //The sprite of the currently selected album
 var gridView, mosaicView; //the views, defined later
 
-$(document).ready(function() {
+$j(document).ready(function() {
     view = gridView; //this referrs to a function that we havn't created yet
     albumView(); //render the album view
 
     //set up the jQuery UI slider for later use by the grid view
-    $("#slider").slider({
+    $j("#slider").slider({
     	value: 75,
     	max: 150,
     	min: 50,
     	slide: function(event, ui) {
-    	    $('#content').css('font-size',ui.value+"px");
+    	    $j('#content').css('font-size',ui.value+"px");
     	}
     });
 
     //setup the buttons for switching views
-    $("#grid").click(function() {
-        $("#views a.selected").removeClass("selected");
-        $(this).addClass("selected");
+    $j("#grid").click(function() {
+        $j("#views a.selected").removeClass("selected");
+        $j(this).addClass("selected");
         gridView();
     });
 
-    $("#mosaic").click(function() {
-        $("#views a.selected").removeClass("selected");
-        $(this).addClass("selected");
+    $j("#mosaic").click(function() {
+        $j("#views a.selected").removeClass("selected");
+        $j(this).addClass("selected");
         mosaicView();
     });
 
@@ -42,21 +42,21 @@ $(document).ready(function() {
 function albumView() {
     //remove everything from the content area that might have been there from other views,
     //as well as the back button (used later)
-    $("#content *").remove();
-    $(".button").remove();
+    $j("#content *").remove();
+    $j(".button").remove();
 
     //add the album_view class to the content view, and extent it to the bottom of the window
     //also, hide the footer, and set the title of the gallery (in the data file)
-    $("#content").attr("class", "").addClass("album_view");
-    $("#controls").hide();
-    $("#content").css({ bottom: "0px", top: "57px" });
-    $("h1").removeClass("view").html(gallery);
+    $j("#content").attr("class", "").addClass("album_view");
+    $j("#controls").hide();
+    $j("#content").css({ bottom: "0px", top: "57px" });
+    $j("h1").removeClass("view").html(gallery);
     current = 0; 
 
-    $("<h2>Albums</h2>").appendTo("#content"); //add the title of the view
-    $.each(albums, function(i) {
+    $j("<h2>Albums</h2>").appendTo("#content"); //add the title of the view
+    $j.each(albums, function(i) {
     	//create the album, and register the click handler
-        var item = $('<div class="item">').click(function() {
+        var item = $j('<div class="item">').click(function() {
             data = albums[i].photos;
             title = albums[i].name;
             sprite = albums[i].cover_photo_url;
@@ -65,20 +65,20 @@ function albumView() {
 
         //create the skimmer, and set the background image to the sprite for the album (in the data file)
         //then register the mousemove event
-        $('<div class="skimmer">').css("background", "url("+this.cover_photo_url+")").mousemove(function(e) {
+        $j('<div class="skimmer">').css("background", "url("+this.cover_photo_url+")").mousemove(function(e) {
             var x = e.pageX;
-            var offset = $(this).offset().left;
+            var offset = $j(this).offset().left;
             var w = 160 / albums[i].photos.length;
             var image = Math.floor((x - offset) / w);
-            $(this).css("background-position", "0px " + (-160 * image) + "px");
+            $j(this).css("background-position", "0px " + (-160 * image) + "px");
         }).mouseout(function() {
         	//when we mouseout, set the background position back to 0
-            $(this).css("background-position", "0px 0px");
+            $j(this).css("background-position", "0px 0px");
         }).appendTo(item);
 
         //create the album title and the number of photos label
-        $('<strong/>').html(this.name).appendTo(item);
-        $('<span/>').html(this.photos.length + (this.photos.length > 1 ? " Photos" : " Photo")).appendTo(item);
+        $j('<strong/>').html(this.name).appendTo(item);
+        $j('<span/>').html(this.photos.length + (this.photos.length > 1 ? " Photos" : " Photo")).appendTo(item);
 
         item.appendTo("#content"); //add the item to the content area
     });
@@ -87,35 +87,35 @@ function albumView() {
 function gridView() {
     //remove everything from the content area that might have been there from other views,
     //add the grid_view class to the content view, and set up the title bar
-    $("#content *").remove();
-    $("#content").attr("class", "").addClass("grid_view");
-    $("h1").addClass("view").html(title).show();
-    $(".button").remove();  
+    $j("#content *").remove();
+    $j("#content").attr("class", "").addClass("grid_view");
+    $j("h1").addClass("view").html(title).show();
+    $j(".button").remove();  
 
     //set up the footer view, and the content area
-    $("#controls").show();
-    $("#controls #slider").show();
-    $("#content").css({ bottom: "40px", top: "57px" });
+    $j("#controls").show();
+    $j("#controls #slider").show();
+    $j("#content").css({ bottom: "40px", top: "57px" });
 
     view = gridView; //set the current view
 
     //add the back button
-    $('<div class="button">').html(gallery).click(function() {
+    $j('<div class="button">').html(gallery).click(function() {
         albumView(); //go back to the current view
     }).appendTo("body");
 
     //add the items in the album to the grid, and set the size of the image in ems.
-    $.each(data, function(i) {
-        var item = $('<div class="grid_item">').click(function() {
+    $j.each(data, function(i) {
+        var item = $j('<div class="grid_item">').click(function() {
             largeView(this, i);
         });
-        $('<img/>').attr("src", this.photo.url)
+        $j('<img/>').attr("src", this.photo.url)
                    //.css("width", this.photo.width / 100 + "em")
                    //.css("height", this.photo.height / 100 + "em")
 									 .css("width", 260 / 100 + "em")
                    .css("height", 192 / 100 + "em")
                    .appendTo(item);
-        $("<strong/>").html(this.photo.description).appendTo(item);
+        $j("<strong/>").html(this.photo.description).appendTo(item);
         item.appendTo("#content");
     });
 };
@@ -123,35 +123,35 @@ function gridView() {
 function mosaicView() {
     //remove everything from the content area that might have been there from other views,
     //add the grid_view class to the content view, and set up the title bar
-    $("#content *").remove();
-    $("#content").attr("class", "").addClass("mosaic_view");
-    $("h1").addClass("view").html(title).show();
-    $(".button").remove();
+    $j("#content *").remove();
+    $j("#content").attr("class", "").addClass("mosaic_view");
+    $j("h1").addClass("view").html(title).show();
+    $j(".button").remove();
 
     //set up the footer view, and the content area
-    $("#controls #slider").hide();
-    $("#controls").show();
-    $("#content").css({ bottom: "40px", top: "57px" });
+    $j("#controls #slider").hide();
+    $j("#controls").show();
+    $j("#content").css({ bottom: "40px", top: "57px" });
 
     view = mosaicView; //set the current view
 
     //add the back button
-    $('<div class="button">').html(gallery).click(function() {
+    $j('<div class="button">').html(gallery).click(function() {
         albumView(); //go back to the current view
     }).appendTo("body");
 
     //add the large view with title
-    var detail = $('<div id="mosaic_detail">').click(function(i) {
+    var detail = $j('<div id="mosaic_detail">').click(function(i) {
         largeView(this, current);
     });
-    $("<img/>").attr("src", data[current].photo.url).appendTo(detail);
-    $("<strong/>").html(data[current].photo.description).appendTo(detail);
+    $j("<img/>").attr("src", data[current].photo.url).appendTo(detail);
+    $j("<strong/>").html(data[current].photo.description).appendTo(detail);
     detail.appendTo("#content");
 
     //add the thubnail grid, with a click handler to animate the image change
-    var grid = $('<div id="mosaic_grid">');
-    $.each(data, function(i) {
-        $('<div class="mosaic_item">')
+    var grid = $j('<div id="mosaic_grid">');
+    $j.each(data, function(i) {
+        $j('<div class="mosaic_item">')
             .css({
                 backgroundPosition: "0px " + (-160 * i) + "px",
                 //backgroundImage: "url(" + sprite + ")"
@@ -159,15 +159,15 @@ function mosaicView() {
             })
             .data("num", i)
             .click(function() {
-                var num = $(this).data("num");
+                var num = $j(this).data("num");
                 current = num;
-                $(".mosaic_item.selected").removeClass("selected");
-                $(this).addClass("selected");
+                $j(".mosaic_item.selected").removeClass("selected");
+                $j(this).addClass("selected");
 
-                $("#mosaic_detail").animate({ opacity: 0 }, "fast", function() {
-                    $("#mosaic_detail img").attr("src", data[num].photo.url);
-                    $("#mosaic_detail strong").html(data[num].photo.description);
-                    $(this).animate({ opacity: 1 }, "fast");
+                $j("#mosaic_detail").animate({ opacity: 0 }, "fast", function() {
+                    $j("#mosaic_detail img").attr("src", data[num].photo.url);
+                    $j("#mosaic_detail strong").html(data[num].photo.description);
+                    $j(this).animate({ opacity: 1 }, "fast");
                 });
             }).appendTo(grid);
     });
@@ -175,7 +175,7 @@ function mosaicView() {
     grid.appendTo("#content");
 
     //select the current item in the thumbnail grid view
-    $(".mosaic_item:nth-child("+ (current + 1) +")").addClass("selected");
+    $j(".mosaic_item:nth-child("+ (current + 1) +")").addClass("selected");
 };
 
 function largeView(photo, i) {
@@ -184,80 +184,80 @@ function largeView(photo, i) {
 
     var hovered = false;
 
-    $("h1").hide();
-    $(".button").remove();
-    $("#controls").hide();
-    $("#content").css({ bottom: "0px", top: "0px" });
-    $("#content").attr("class", "").addClass("large_view");
-    $("#content *").remove();
+    $j("h1").hide();
+    $j(".button").remove();
+    $j("#controls").hide();
+    $j("#content").css({ bottom: "0px", top: "0px" });
+    $j("#content").attr("class", "").addClass("large_view");
+    $j("#content *").remove();
 
-    $('<div class="button">Back to Album</div>').click(function() {
+    $j('<div class="button">Back to Album</div>').click(function() {
         view(); //go back to the current view
     }).appendTo("#content");
 
-    var large = $('<div id="main">');
-    $("<img/>").attr("src", item.photo.url).appendTo(large);
-    $("<strong/>").html(item.caption).appendTo(large);
+    var large = $j('<div id="main">');
+    $j("<img/>").attr("src", item.photo.url).appendTo(large);
+    $j("<strong/>").html(item.caption).appendTo(large);
     large.appendTo("#content");
 
-    var wrapper = $('<div id="hover_view_wrapper">');
-    var hover = $('<div id="hover_view">').hover(function() {
+    var wrapper = $j('<div id="hover_view_wrapper">');
+    var hover = $j('<div id="hover_view">').hover(function() {
         hovered = true;
     }, function() {
         hovered = false;
     });
 
-    $('<div id="previous" title="Previous">').click(function() {
+    $j('<div id="previous" title="Previous">').click(function() {
         if(!data[current-1]) return;
 
-        $(".large_view #hover_view #next").removeClass("disabled");
-        if(!data[current-2]) $(this).addClass("disabled");
+        $j(".large_view #hover_view #next").removeClass("disabled");
+        if(!data[current-2]) $j(this).addClass("disabled");
 
         current--;
-        $(".large_view #main").animate({ opacity: 0 }, "fast", function() {
-            $(".large_view img").attr("src", data[current].photo.url);
-            $(".large_view strong").html(data[current].caption);
-            $(this).animate({ opacity: 1 }, "fast");
+        $j(".large_view #main").animate({ opacity: 0 }, "fast", function() {
+            $j(".large_view img").attr("src", data[current].photo.url);
+            $j(".large_view strong").html(data[current].caption);
+            $j(this).animate({ opacity: 1 }, "fast");
         });
     }).appendTo(hover);
 
-    $('<div id="next" title="Next">').click(function() {
+    $j('<div id="next" title="Next">').click(function() {
         if(!data[current+1]) return;
 
-        $(".large_view #hover_view #previous").removeClass("disabled");
-        if(!data[current+2]) $(this).addClass("disabled");
+        $j(".large_view #hover_view #previous").removeClass("disabled");
+        if(!data[current+2]) $j(this).addClass("disabled");
 
         current++;
-        $(".large_view #main").animate({ opacity: 0 }, "fast", function() {
-            $(".large_view img").attr("src", data[current].photo.url);
-            $(".large_view strong").html(data[current].caption);
-            $(this).animate({ opacity: 1 }, "fast");
+        $j(".large_view #main").animate({ opacity: 0 }, "fast", function() {
+            $j(".large_view img").attr("src", data[current].photo.url);
+            $j(".large_view strong").html(data[current].caption);
+            $j(this).animate({ opacity: 1 }, "fast");
         });
     }).appendTo(hover);
 
     wrapper.append(hover).appendTo("#content");
 
     if(current == 0) {
-        $(".large_view #hover_view #previous").addClass("disabled");
+        $j(".large_view #hover_view #previous").addClass("disabled");
     }
     else if(current == data.length-1) {
-        $(".large_view #hover_view #next").addClass("disabled");
+        $j(".large_view #hover_view #next").addClass("disabled");
     }
 
     var timer;
     var showing = false;
 
-    $("#content").mousemove(function(event) {
+    $j("#content").mousemove(function(event) {
         if(!showing) {
             showing = true;
-            $(".large_view #hover_view").stop().animate({ opacity: 1 });
+            $j(".large_view #hover_view").stop().animate({ opacity: 1 });
         }
 
         clearTimeout(timer);
         timer = setTimeout(function() {
             if(hovered) return;
             showing = false;
-            $(".large_view #hover_view").stop().animate({ opacity: 0 });
+            $j(".large_view #hover_view").stop().animate({ opacity: 0 });
         }, 2000);
     });
 };

@@ -58,7 +58,6 @@
 </div>
 
 <%= javascript_tag("
-
 document.observe('dom:loaded', function() {
   var tl = new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',
@@ -76,11 +75,8 @@ document.observe('dom:loaded', function() {
   });
   tl.draw();
 
-  Event.observe(window, 'lightview:hidden', function(e) {
-    if ((jar = new CookieJar()).get('needs_refresh') != null) {
-      tl.reload();
-    }
-	});
-});
-") unless @hide_timeline %>
+  Event.observe(window, 'lightview:hidden', function(e) { 
+    //tl.reload(); 
+  });
+});") unless @hide_timeline %>
 

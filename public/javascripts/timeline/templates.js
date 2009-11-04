@@ -12,34 +12,59 @@ var ETemplates = {
 			tlEffectiveWidth: 750
 		}
 		}(),
-		DefaultTooltipOptions: {
-			width: '400px',
-			border: 6,
-			borderColor: '#74C5FF',
-			hideOthers: true,
-			viewport: true,
-			closeButton: true,
-			fixed: true,
-			hideOn: { element: 'tip', event: 'mouseout' }
+		defaultTooltipWidth: function(type) {
+			if (type === 'photo') {
+				return '120px';
+			} else if (type === 'web_video') {
+				return '340px';
+			} else {
+				return 'auto';
+			}
 		},
-		eventTooltipOptions: {
-			hook: {
-				target: 'topMiddle',
-				tip: 'bottomMiddle'
-			},
-			stem: 'bottomMiddle'
+		defaultTooltipOptions: function() {
+			return {
+				border: 6,
+				borderColor: '#74C5FF',
+				hideOthers: true,
+				viewport: true,
+				closeButton: true,
+				fixed: true,
+				hideOn: { element: 'tip', event: 'mouseout' }
+			}
 		},
-		timelineTooltipOptions: {
-			hook: {
-				target: 'bottomRight',
-				tip: 'topLeft'
-			},
-			stem: 'topLeft'
+		eventTooltipOptions: function() {
+			return {
+				hook: {
+					target: 'topMiddle',
+					tip: 'bottomMiddle'
+				},
+				stem: 'bottomMiddle'
+			}
 		},
-		timelineDurationTooltipOptions: {
-			hook: {
-				tip: 'topLeft',
-				mouse: true
+		timelineTooltipOptions: function() {
+			return {
+				hook: {
+					target: 'bottomRight',
+					tip: 'topLeft'
+				},
+				stem: 'topLeft'
+			}
+		},
+		timelineTooltipOptionsLeft: function() {
+			return {
+				hook: {
+					target: 'bottomLeft',
+					tip: 'topRight'
+				},
+				stem: 'topRight'
+			}
+		},
+		timelineDurationTooltipOptions: function() {
+			return {
+				hook: {
+					tip: 'topLeft',
+					mouse: true
+				}
 			}
 		},
 		// Events section templates

@@ -81,7 +81,7 @@ a.player img {
 
 /* playlist style */
 #playlist {
-	width:312px;
+	width:300px;
 	height:350px;
 	overflow-y:auto;
 	overflow-x:hidden;

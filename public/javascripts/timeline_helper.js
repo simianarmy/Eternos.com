@@ -215,18 +215,32 @@ var ETUI = function() {
 	};
 	// Create the Tooltip object on the element identified by ID
 	function createTooltip(element, id, tipOptions) {
-		var tipContents, player;
-				
+		var tipContents, player, leftOffset, width;
+		// Deep copy options for modifications
+		var tipOpts = Object.extend({}, tipOptions);
+		
 		if ((tipContents = getTooltip(id)) == null) { return false; }
 
-		tipOptions.title = tipContents.title;
-		element.tipType = tipContents.type;
+		// Save offset coordinates from top left of screen
+		element.lastCumulativeOffset = element.cumulativeOffset();
 		
-		// Trick to determine tooltip width (for text or images)
-		if (!ETEvent.isArtifact(tipContents.type)) {
-			tipOptions.width = 'auto';
+		// Determine tooltip position relative to icon (left or right) so that 
+		// it says in viewport
+		// viewport: true option in Tip doesn't help
+		if ((tipOpts.hook.target != null) && (tipOpts.hook.target === 'bottomRight')) {
+			leftOffset = element.lastCumulativeOffset.left;
+			width = win_dimension()[0];
+
+			if (leftOffset > (width / 2)) {
+				Object.extend(tipOpts, ETemplates.timelineTooltipOptionsLeft());
+			}
 		}
-		new Tip(element, tipContents.body, Object.extend(ETemplates.DefaultTooltipOptions, tipOptions));
+		tipOpts = Object.extend(ETemplates.defaultTooltipOptions(), tipOpts);
+		tipOpts.width = ETemplates.defaultTooltipWidth(tipContents.type);
+		tipOpts.title = tipContents.title;
+		//ETDebug.dump(tipOpts);
+		
+		new Tip(element, tipContents.body, tipOpts);
 		element.prototip.show();
 		
 		postprocessTooltip(element, tipContents.type);
@@ -282,7 +296,7 @@ var ETUI = function() {
 			}
 			// get the event id from the container div id
 			parts = element.id.split(':');
-			createTooltip(element, parts[1], ETemplates.eventTooltipOptions);
+			createTooltip(element, parts[1], ETemplates.eventTooltipOptions());
 		},
 		// Destroy tooltips and observers in order to prevent memory leaks
 		onEventSectionLoading: function() {
@@ -305,15 +319,23 @@ var ETUI = function() {
 			});
 		},
 		onEventIconMouseOver: function(element) {
+			var event;
+			
 			if (element.prototip != null) { 
 				ETDebug.log("timeline icon already has prototip attribute");
-				return true;
+				// If tooltip target changed position from last display, we must recreate it
+				if (element.cumulativeOffset().left !== element.lastCumulativeOffset.left) {
+					ETDebug.log("target position changed, recreating");
+					element.prototip.remove();
+				} else {
+					return true;
+				}
 			} 
 			ETDebug.log('creating tooltip on ' + element.id);
-			ev = Timeline.EventUtils.decodeEventElID(element.id).evt;
+			event = Timeline.EventUtils.decodeEventElID(element.id).evt;
 						
-			createTooltip(element, ev.getEventID(), 
-				ev.isInstant() ? ETemplates.timelineTooltipOptions : ETemplates.timelineDurationTooltipOptions);
+			createTooltip(element, event.getEventID(), 
+				event.isInstant() ? ETemplates.timelineTooltipOptions() : ETemplates.timelineDurationTooltipOptions());
 		},
 		createSearchClickHandlers: function(timeline) {
 			// Setup previous, future events link click handlers when there are no events to display
