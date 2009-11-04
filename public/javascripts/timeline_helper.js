@@ -1651,12 +1651,17 @@ var ETimeline = function (opts) {
 			}
 			this.inScrollTo = false;
 		},
-		reload: function() {
+		reload: function(opts) {
+			var options = Object.extend({}, opts);
 			searchCache.empty();
 			that.artifactSection.empty();
 			this.rawEvents.empty();
 			this.eventSource.clear();
-			this.searchEvents();
+			if (options.today) {
+				this.onNewDate(new Date());
+			} else {
+				this.searchEvents();
+			}
 		}
   });
 
@@ -1666,8 +1671,8 @@ var ETimeline = function (opts) {
     that.eventSection = new ETLEventSection(options.events_section_id);
     that.base = new ETLBase(options.timeline_section_id, options.timeline);
   }
-	var reload = function () {
-		that.base.reload();
+	var reload = function (opts) {
+		that.base.reload(opts);
 	}
   // Set public methods now
   me.draw = draw;

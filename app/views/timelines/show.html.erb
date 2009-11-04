@@ -21,6 +21,7 @@
       </div>
     </div>
     <div id="timeline_links" class="alignright">
+      <%= link_to_function "Refresh", 'timeline.reload()' %>&nbsp;|&nbsp;
       <%= render :partial => 'helplink' %>
     </div>
     <div class="clearboth"></div>
@@ -42,7 +43,7 @@
   <div class="clearboth"></div>
   <div id="timeline-detail">
     <div id="proximity_search">
-      <a class="btn-left" href="#" id="prev_event_search"></a>&nbsp;&nbsp;<a class="btn-right" href="#" id="next_event_search"></a>
+      <a class="btn-left" href="#" id="prev_event_search"></a>&nbsp;&nbsp;<a class="btn-right" href="#" id="next_event_search"></a>&nbsp;|&nbsp;&nbsp;<%= link_to_function 'Present', "timeline.reload({today: true});" %>
 		</div>
 		<div class="clearboth"></div>
     <div id="story-area"></div>
@@ -58,8 +59,9 @@
 </div>
 
 <%= javascript_tag("
+var timeline;
 document.observe('dom:loaded', function() {
-  var tl = new ETimeline({month_selector_id: 'month-selector',
+  timeline = new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'arti-area',
     events_section_id: 'story-area',
     timeline_section_id: 'my-timeline',
@@ -73,10 +75,10 @@ document.observe('dom:loaded', function() {
       }
     }
   });
-  tl.draw();
+  timeline.draw();
 
   Event.observe(window, 'lightview:hidden', function(e) { 
-    //tl.reload(); 
+    //timeline.reload(); 
   });
 });") unless @hide_timeline %>
 
