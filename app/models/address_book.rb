@@ -16,7 +16,7 @@ class AddressBook < ActiveRecord::Base
   after_update :save_associations
   
   NAME_TITLES = %w[ Mr. Ms. Mrs. Miss Dr. Sir ]
-  NAME_SUFFIXES = %w[ Sr. Jr. II III IV X ]
+  NAME_SUFFIXES = %w[ Jr. Sr. II III IV M.D. P.H.D. P.E. ]
   
   # Associated validation errors are not displayed properly, fix them here
   def after_validation

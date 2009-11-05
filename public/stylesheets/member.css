@@ -52,7 +52,11 @@ body {
 #navlist .logout {}
 #navlist .login { background: url(/images/login.gif) left no-repeat;  padding: 3px 15px 3px 20px; }
 
-.context { margin-top: 20px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; }
+.context { 
+	margin-top: 20px; 
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 15px; 
+}
 #sub_content { width: 861px; float: right; border-top: 1px solid #02419e; margin: 20px 0 0 0; } 
 #sub_content h2 {font-size: 30px; font-weight: normal; color: #12419e; margin: 0; padding: 0;}
 #search_content {
@@ -107,7 +111,6 @@ span.select {
 #footer p { font-family: Verdana, Geneva, sans-serif; font-size: 10px; margin-top: 15px; }
 #footer p a { color: #02419e; text-decoration: none; margin: 0 15px; }
 
-/* $Author$ additions below: */
 .message_title {
 	font-size: 30px; font-weight: bold;
 }
@@ -185,6 +188,8 @@ span.select {
 }
 
 #dialog-container {
+	overflow-y: visible;
+	overflow-x:hidden;
   width: 90%;
   padding: 15px;
 }

@@ -17,10 +17,13 @@ class Member < User
     m.has_many :backup_job_archives
     m.has_many :backup_sources
     m.has_many :backup_sites, :through => :backup_sources
+    m.has_many :security_questions
     m.has_one :activity_stream
     m.has_one :backup_state
     m.has_one :profile
   end
+  
+  attr_accessible :security_question_attributes
   
   named_scope :needs_backup, lambda { |cutoff_date|
     {
@@ -154,6 +157,12 @@ class Member < User
     self.increment!(:setup_step) if self.setup_step < step
   end
     
+  def security_question_attributes=(attributes)
+    attributes.each_pair do |idx, attr|
+      security_questions[idx.to_i].update_attributes(attr)
+    end
+  end
+   
   private
     
 end

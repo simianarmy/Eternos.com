@@ -8,24 +8,28 @@
         <td colspan="3">
   	    <div class="title2"><h3>Personal Information</h3></div><br />
   			<div class="textarea7">
-  			  Your birthdate is required for us to properly display your Timeline information.  
-  			  Feel free to enter additional details about yourself here as well.
-  			  <br/>
+  			  <% unless setup %>
+  			    Feel free to enter additional details about yourself here.
+  			    <br/>
+  			  <% end %>
   			  Fields marked with a <font style="color: red;">*</font> must be filled in.
   			</div>
     	  </td>
       </tr>
       <tr>
         <td colspan="3">
-  	    <hr class="line1" /><a href="#" class="plusminus"></a>
-  	  </td>
+  	      <hr class="line1" /><a href="#" class="plusminus"></a>
+  	    </td>
+  	  </tr>
   	  <tr>
   	    <td colspan="3">
   	      <div id="notice" class="flash_notice"></div>
-  	      </td>
-  	      </tr>
-      </tr>
-      <%= render :partial => 'profiles/personal_info_form', :locals => {:address_book => address_book, :profile => profile, :basic_view => setup} %>
+  	    </td>
+  	  </tr>
+
+      <%= render :partial => 'profiles/personal_info_form', :locals => {:address_book => settings.address_book, :profile => settings.profile, :basic_view => setup} %>
+      
+      <%= render :partial => 'account_settings/security_questions', :locals => {:security_questions => settings.security_questions} %>
     </tbody>
   </table>
   <%= setup ? submit_tag('Next Step', :class => "submit-btn4") : submit_tag("Save", :class => "submit-btn4") %>

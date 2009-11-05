@@ -199,6 +199,17 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	display: block;
 }
 
+.form-helptext {
+	display: block;
+	background-color: lightyellow;
+	margin-bottom: 5px;
+}
+
+.required-input {
+	color: red;
+	font-size: 12px;
+}
+
 div.autocomplete{background-color: #fff; border: 1px solid #999; overflow: auto;} 
 div.autocomplete ul{list-style-type:none; margin:0px; padding:0px;} 
 div.autocomplete ul li.selected { background-color: #ffb;} 

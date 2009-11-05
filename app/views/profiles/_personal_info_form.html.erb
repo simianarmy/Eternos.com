@@ -6,7 +6,7 @@
 </tr>
 
 <tr>
-  <td class="coll-form1" valign="center">First Name <font style="color: red;">*</font></td>
+  <td class="coll-form1" valign="center">First Name <span class="required-input">*</span></td>
   <td class="coll-form2" valign="center">:</td>
   <td class="coll-form3" valign="center"><%= ab.text_field :first_name %></td>
 </tr>
@@ -16,7 +16,7 @@
   <td class="coll-form3" valign="center"><%= ab.text_field :middle_name %></td>
 </tr>
 <tr>
-  <td class="coll-form1" valign="center">Last Name <font style="color: red;">*</font></td>
+  <td class="coll-form1" valign="center">Last Name <span class="required-input">*</span></td>
   <td class="coll-form2" valign="center">:</td>
   <td class="coll-form3" valign="center"><%= ab.text_field :last_name %></td>
 </tr>
@@ -26,9 +26,15 @@
   <td class="coll-form3" valign="center"><%= select "address_book", "name_suffix",  AddressBook::NAME_SUFFIXES, { :include_blank => true, :selected => address_book.name_suffix }, :style => "width: 60px" %></td>
 </tr>
 
-
 <tr>
-  <td class="coll-form1" valign="center">Birthdate <font style="color: red;">*</font></td>
+  <td colspan="3">
+    <div class="form-helptext">
+      Your birthdate is required for us to properly display your Timeline information.
+    </div>
+  </td>
+</tr>
+<tr>
+  <td class="coll-form1" valign="center">Birthdate <span class="required-input">*</span></td>
   <td class="coll-form2" valign="center">:</td>
   <td class="coll-form3" valign="center"> 
     <div class="birthdate-box">

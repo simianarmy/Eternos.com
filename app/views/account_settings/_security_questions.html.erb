@@ -1,0 +1,31 @@
+<tr>
+  <td colspan="3">
+    <span style="font-weight: bold; font-size: larger;">Security Questions</span>
+  </td>
+</tr>
+<tr>
+  <td colspan="3">
+    <div class="form-helptext">
+    Your security questions verify your identity when you contact us and when we need to confirm your account ownership. To protect your personal security, do not use mother's maiden name, pet name, Social Security Number, birthday or predictable codes or hints.
+    <br/>
+    <br/>Example: Q: Favorite high school teacher A: Susan Doe
+    </div>
+  </td>
+</tr>
+<% security_questions.each_index do |i| %>
+  <% @question = security_questions[i]; %>
+  <% fields_for("user[security_question_attributes][#{i}]", @question) do |f| %>
+<tr>
+  <td class="coll-form1" valign="center">Question <%= i+1 %> <span class="required-input">*</span></td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= f.text_field :question %>
+  </td>
+</tr>
+<tr>
+  <td class="coll-form1" valign="center">Answer <%= i+1 %> <span class="required-input">*</span></td>
+  <td class="coll-form2" valign="center">:</td>
+  <td class="coll-form3" valign="center"><%= f.text_field :answer %>
+  </td>
+</tr>
+  <% end %>
+<% end %>

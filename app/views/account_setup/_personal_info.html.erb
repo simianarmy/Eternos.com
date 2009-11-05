@@ -1,5 +1,5 @@
 <div id="account-setup-content">
-  <%= render :partial => 'account_settings/personal_info_form', :locals => {:address_book => @settings.address_book, :profile => @settings.profile, :completed_steps => @completed_steps, :setup => true} %>
+  <%= render :partial => 'account_settings/personal_info_form', :locals => {:settings => settings, :completed_steps => @completed_steps, :setup => true} %>
 </div>
 <%= javascript_tag "
   document.observe('dom:loaded', function() { datePickerController.create() }); "

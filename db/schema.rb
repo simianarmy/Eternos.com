@@ -705,6 +705,12 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
 
   add_index "schools", ["profile_id"], :name => "index_schools_on_profile_id"
 
+  create_table "security_questions", :force => true do |t|
+    t.integer  "user_id", :null => false
+    t.text  "question"
+    t.text  "answer"
+  end
+  
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
