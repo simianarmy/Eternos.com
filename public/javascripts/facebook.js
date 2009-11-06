@@ -17,10 +17,10 @@ var EternosFB = function() {
 		  });
 		  var fb_name_tag = "<fb:name uid='" + uid + "' useyou='false'></fb:name>";
 		  $('fb-name').innerHTML = 'Full Name: ' + fb_name_tag;
-		 // $('first-name-input').hide();
-		// $('last-name-input').hide();
-		  if ($('password-input')) $('password-input').hide();
-		  if ($('password-conf-input')) $('password-conf-input').hide();
+			// Don't hide password fields - needed in case Facebook disconnected
+		  //if ($('password-input')) $('password-input').hide();
+		  //if ($('password-conf-input')) $('password-conf-input').hide();
+			$('fb_pass_text').show();
 		  $('user_facebook_id').value = uid;
 		  FB.XFBML.Host.parseDomTree(); 
 	  },

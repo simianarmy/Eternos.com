@@ -4,7 +4,7 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - stylesheet 'member', 'screen', 'application'
+    - stylesheet 'member', 'screen', 'application', :cache => 'dialog_base'
     - load_prototype unless @no_prototype
     - use_lightview
     - use_lowpro

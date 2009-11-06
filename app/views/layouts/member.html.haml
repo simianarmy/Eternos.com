@@ -7,11 +7,12 @@
     %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - stylesheet 'member', 'screen', 'application'
+    - stylesheet 'member', 'screen', 'application', :cache => 'member_base'
     - load_prototype unless @no_prototype
     - use_lightview
     - use_lowpro
     - javascript 'application', 'login'
+    
     = yield(:head)
     = yield(:js_libs)
     /- FIX: Doesn't work when put at bottom of <body>
@@ -60,7 +61,9 @@
       = render :partial => 'shared/site_footer'
         
     = render :partial => 'shared/get_satisfaction'
-    
+    - if @facebook_session
+      = fb_connect_javascript_tag
+      = init_fb_connect "XFBML"
     :javascript
       // This needs to be global to all js
       var lightview_height = 0.9 * win_dimension()[1];

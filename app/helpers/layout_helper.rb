@@ -6,7 +6,8 @@
 module LayoutHelper
   @@js = []
   @@google_api_loaded = false
-  mattr_accessor :js, :google_api_loaded
+  @@layout = nil
+  mattr_accessor :js, :google_api_loaded, :layout
   
   class << self
     def clear_js_cache
@@ -30,7 +31,7 @@ module LayoutHelper
   end
   
   def stylesheet(*args)
-    content_for(:head) { stylesheet_link_tag(args, :cache => 'base_css') }
+    content_for(:head) { stylesheet_link_tag(*args) }
   end
   
   def javascript(*args)

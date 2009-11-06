@@ -6,6 +6,7 @@ require 'benchmark_helper'
 class TimelinesController < ApplicationController
   before_filter :login_required, :except => [:search]
   require_role ['Guest', 'Member'], :for_all_except => :search
+  before_filter :set_facebook_connect_session
   
   def guest_index
     find_host
@@ -28,7 +29,8 @@ class TimelinesController < ApplicationController
     @fake = 'fake' if params[:fake]
     
     if @member.need_backup_setup?
-      flash[:error] = "<h4>You do not have any accounts to backup yet!</h4>To setup your online accounts, click the 'account setup' link above and go to Step 2."
+      flash[:error] = render_to_string :partial => 'setup_link_flash'
+        
       @hide_timeline = true
     else
       if !@member.has_backup_data?

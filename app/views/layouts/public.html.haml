@@ -6,13 +6,13 @@
     %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}
     %title= "Eternos - " + h(yield(:title) || "Home")
-    / bundle do
-    - stylesheet 'reset-fonts-grids', 'screen', 'application', 'public', 'style'
+    
+    - stylesheet 'reset-fonts-grids', 'screen', 'application', 'public', 'style', :cache => 'public_base'
     - load_prototype
     - javascript 'timer'
-    = yield(:js_libs)
+    
     = yield(:head)
-    / end bundle
+    = yield(:js_libs)
   %body
     #custom-doc.yui-t7
       #wrapper
@@ -27,5 +27,4 @@
     = yield(:javascript)
     = fb_connect_javascript_tag
     = init_fb_connect "XFBML"
-
 

@@ -1,10 +1,9 @@
 class AccountsController < ApplicationController
   include ModelControllerMethods
   require_role "Member", :except => [:new, :create, :plans, :canceled, :thanks]
-  permit "admin for :account", :only => [:edit, :update, :plan, :billing, :cancel, :dashboard]
+  permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
   
-  before_filter :load_facebook_connect
-  before_filter :set_facebook_session
+  before_filter :set_facebook_connect_session
   before_filter :build_user, :only => [:new, :create]
   before_filter :build_plan, :only => [:new, :create]
   before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
@@ -33,6 +32,7 @@ class AccountsController < ApplicationController
     rescue
       # Nothing to say..
     end
+    @use_captcha = @plan.free?
   end
 
   # 1 or 2-step process
@@ -69,7 +69,10 @@ class AccountsController < ApplicationController
     #       @account.creditcard = @creditcard
     #     end
     
-    if verify_recaptcha(:model => @account) and @account.save
+    # Free subscriptions use Captcha in signup form
+    @success = @plan.free? ? verify_recaptcha(:model => @account) : true
+    
+    if @success && @account.save
       @user.register!
       @user.activate! unless @user.email_registration_required?
       

@@ -14,30 +14,31 @@
 %p.input
   Email Address:
   = f.text_field :email, :id => 'email'
-  / %span.fine-print This will serve as your login name, and must be a valid email address
-- unless user.facebook_user?
-  %p.input#password-input
-    Password:
-    = f.password_field :password
-    %span.fine-print Minimum 6 characters long
-  %p.input#password-conf-input
-    Password again:
-    = f.password_field :password_confirmation, :id => 'password-confirm'
-    %span.fine-print Confirm your password by entering it again
+  %span.fine-print This will serve as your login name, and must be a valid email address
+#fb_pass_text{:style => "display: none;"}
+  %p Choose a password in case of Facebook Account closure or disconnection
+  %br
+%p.input#password-input
+  Password:
+  = f.password_field :password
+  %span.fine-print Minimum 6 characters long
+%p.input#password-conf-input
+  Confirm Password:
+  = f.password_field :password_confirmation, :id => 'password-confirm'
+  %span.fine-print Confirm your password by entering it again
 - if user.new_record?
-
   %br
   %p.checkbox_term
     = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @checked}
     .term_text
       &nbsp;I accept the 
-      = link_to 'Terms and Conditions', '/about/terms'
+      = link_to 'Terms and Conditions', '/about/terms', :target => '_new'
   .clear
-
-  %br
-  .captcha-right
-    %p.captcha_box
-      = recaptcha_tags :ssl => request.ssl?
+  - if use_captcha
+    %br
+    .captcha-right
+      %p.captcha_box
+        = recaptcha_tags :ssl => request.ssl?
     
   %p
     %br

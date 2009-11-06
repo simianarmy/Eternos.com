@@ -1,21 +1,20 @@
 - title 'create account'
-- javascript 'CustomFormElements', 'facebook', "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js"
+- javascript 'CustomFormElements', 'facebook'
+- javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" if @use_captcha
 - use_form
 - hide_login_box
 
-%h1#page-header account information
+%h1#page-header Create account
 .yui-g
   #share-your-life
-    %h2 begin sharing your life.
-    %p Upload and save the precious moments of your life for future generations
-    %p Keep friends and loved ones involved and up-to-date with your family’s growth
-    %p Share virtually everything: movies, pictures, documents, music, and more
+    %h2 Begin sharing your life.
+    %p Your story begins here. Sign up and begin using Eternos to chronicle your life for your beloved descendants.
   
   #create-account-fb-connect
     = fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :long)
     %br
   %br
-    
+ 
   #normal-account-form
     %p Please enter required account information.
     /
@@ -32,4 +31,4 @@
         - if @plan.allow_subdomain
           = render :partial => 'subdomain_form_fields', :locals => {}
         - fields_for @user, :html => {:id => 'new_user_form'} do |f|
-          = render :partial => 'user_form', :locals => {:f => f, :user => @user}
+          = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha}
