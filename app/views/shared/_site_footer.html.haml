@@ -8,10 +8,7 @@
     %li= link_to 'Terms', '/about/terms'
   %p#footer-info
     %br
-    :plain
-      <!-- START SCANALERT CODE -->
-      <a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=beta.eternos.com"><img width="115" height="32" border="0" src="//images.scanalert.com/meter/beta.eternos.com/12.gif" alt="McAfee Secure sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;"></a>
-      <!-- END SCANALERT CODE -->
+    = render :partial => 'shared/mcafee_secure'
     = link_to(image_tag('firefox_80x15_square_blue.png',  :alt => 'Spread Firefox Affiliate Button'), 'http://www.mozilla.com/en-US/?from=sfx&amp;uid=0&amp;t=434', :target => "_new")
     %br
     %br

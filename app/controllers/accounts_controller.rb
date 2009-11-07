@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   include ModelControllerMethods
-  require_role "Member", :except => [:new, :create, :plans, :canceled, :thanks]
+  require_role "Member", :except => [:new, :create, :billing, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
   
   before_filter :set_facebook_connect_session
@@ -74,7 +74,6 @@ class AccountsController < ApplicationController
     
     if @success && @account.save
       @user.register!
-      @user.activate! unless @user.email_registration_required?
       
       if @account.needs_payment_info?
         @subscription = @account.subscription
@@ -83,6 +82,7 @@ class AccountsController < ApplicationController
         session[:account_id] = @account.id
         render :action => 'billing'
       else
+        @user.activate! unless @user.email_registration_required?
         flash_redirect "Your account has been created.", account_setup_url
       end
     else
@@ -130,6 +130,7 @@ class AccountsController < ApplicationController
           @address.last_name = @creditcard.last_name
           if @subscription.store_card(@creditcard, :billing_address => @address.to_activemerchant, :ip => request.remote_ip)
             if admin_user_pending?
+              @user.activate! unless @user.email_registration_required?
               redirect_to activate_path(@user.activation_code)
             else
               flash[:notice] = "Your billing information has been updated."
@@ -181,8 +182,8 @@ class AccountsController < ApplicationController
 
   def cancel
     if request.post? and !params[:confirm].blank?
+      debugger
       current_account.destroy
-      self.current_user = nil
       reset_session
       redirect_to :action => "canceled"
     end

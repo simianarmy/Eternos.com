@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include ActiveMerchant::Billing
 
 describe AccountsController do
-  fixtures :all
+  fixtures :accounts, :subscriptions, :subscription_plans
   #integrate_views
   include UserSpecHelper
   
@@ -12,9 +12,7 @@ describe AccountsController do
   
   describe "after creating account" do
     before(:each) do
-      @user = User.new(@user_params = 
-        { 'login' => 'foo', 'email' => 'foo@foo.com',
-          'password' => 'password', 'password_confirmation' => 'password' })
+      @user = User.new(@user_params = valid_user_attributes)
       @account = Account.new(@acct_params = 
         { 'name' => 'Bob', 'domain' => 'Bob' })
       User.expects(:new).with(@user_params).returns(@user)
@@ -25,10 +23,10 @@ describe AccountsController do
       @request.env['HTTPS'] = 'on'
     end
   
-    it 'with free plan should render create template' do
+    it 'with free plan should redirect to setup page' do
       @account.stubs(:needs_payment_info?).returns(false)
       post :create, :account => @acct_params, :user => @user_params, :plan => subscription_plans(:basic).name
-      response.should render_template('accounts/create')
+      response.should redirect_to(account_setup_url)
     end
     
     it 'with paying plan should render billing template' do
@@ -167,8 +165,9 @@ describe AccountsController do
 
     it "should log out the user" do
       @account.stubs(:destroy).returns(true)
-      controller.expects(:current_user=).with(nil)
       post :cancel, :confirm => 1
+      get member_home_path
+      response.should redirect_to(login_url)
     end
   end
 end

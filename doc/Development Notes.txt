@@ -186,6 +186,10 @@ Top Photo-Sharing Sites to allow importing from:
 Emailed content support: 
   MMS2R
 
+Mobile:
+  SMS Backup?:
+    http://www.scribd.com/doc/15336357/Integrating-SMS-Messaging-with-your-Rails-Application
+  
 Customer Support Chat App: https://www.intellichat.com/?c=518
 Animated actors for support: www.livefaceonweb.com
 

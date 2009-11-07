@@ -239,6 +239,13 @@ class ApplicationController < ActionController::Base
   def set_facebook_connect_session
     load_facebook_connect
     set_facebook_session
+    # If user is logged in to facebook but not logged in using FB Connect,
+    # destroy session info
+    if @facebook_session && @facebook_session.user && current_user && 
+      (current_user.facebook_id.to_s != @facebook_session.user.id.to_s)
+      RAILS_DEFAULT_LOGGER.debug "Facebook user id conflict - Clearing facebook session"
+      @facebook_session = nil
+    end
   end
   
   def load_facebook_desktop
