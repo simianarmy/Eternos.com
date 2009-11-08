@@ -18,6 +18,11 @@ body {
 	font: medium Arial, Sans-Serif;
 }
 
+.clearboth { clear: both ; }
+.alignright { float: right; }
+.alignleft { float: left; }
+.hidden { display: none; }
+
 /* @group Paragraphs  */
 
 p {

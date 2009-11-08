@@ -182,7 +182,6 @@ class AccountsController < ApplicationController
 
   def cancel
     if request.post? and !params[:confirm].blank?
-      debugger
       current_account.destroy
       reset_session
       redirect_to :action => "canceled"

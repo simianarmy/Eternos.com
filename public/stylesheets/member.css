@@ -1,10 +1,7 @@
 input#login_button/* Global Settings */
 
 * { padding: 0; margin: 0; }
-.clearboth { clear: both ; }
-.alignright { float: right; }
-.alignleft { float: left; }
-.hidden { display: none; }
+
 img.alignleft { margin: 0 5px 5px 0; }
 img.alignright { margin: 0 0 5px 5px; }
 img.centered { display: block; margin: 0 auto; }
