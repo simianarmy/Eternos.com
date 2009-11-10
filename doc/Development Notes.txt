@@ -142,6 +142,7 @@ WYSIWYG Text Editors:
 	MCE plugin?
   FCKEditor drag & drop: http://www.fckeditor.net/forums/viewtopic.php?f=5&t=6155
   Image Browser for FCKEditor: http://drupal.org/project/imagebrowser
+  Wysihat: http://www.80beans.com/2009/10/01/wysihat-engine/
 	
 Canvas with Drag & Drop: http://www.ernestdelgado.com/public-tests/canvasphoto/
 
@@ -210,10 +211,6 @@ Scrolling Elements w/ Ajax:
 Social Network content backup:
   http://quiteuseful.co.uk/post/77002079/social-network-backups
   
-Needed:
-	Fancy Photo Album
-	Internationalization: Now built into Rails 2.2
-
 Legal Stuff:
   Collecting signatures online: https://rightsignature.com/
   

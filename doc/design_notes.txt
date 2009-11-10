@@ -15,3 +15,6 @@ jQuery tools for slick UI: http://flowplayer.org/tools/index.html
 
 Wireframe Tools:
   http://gomockingbird.com/
+  
+Timeline Samples:
+  Flash: http://www.steve-saleen.com/timeline.php

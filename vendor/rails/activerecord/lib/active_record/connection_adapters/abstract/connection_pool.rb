@@ -109,12 +109,17 @@ module ActiveRecord
 
       # Reserve a connection, and yield it to a block. Ensure the connection is
       # checked back in when finished.
+      # If a connection already exists yield it to the block.  If no connection
+      # exists checkout a connection, yield it to the block, and checkin the 
+      # connection when finished.
       def with_connection
-        conn = checkout
-        yield conn
+        fresh_connection = true unless @reserved_connections[current_connection_id]
+        puts "ConnectionPool: fresh? #{fresh_connection}"
+        yield connection
       ensure
-        checkin conn
-      end
+        puts "Releasing connection? #{fresh_connection}"
+        release_connection if fresh_connection
+      end      
 
       # Returns true if a connection has already been opened.
       def connected?

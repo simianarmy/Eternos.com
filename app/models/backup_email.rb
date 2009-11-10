@@ -5,6 +5,8 @@ require 'ezcrypto'
 require 'singleton'
 
 class BackupEmail < ActiveRecord::Base
+  class EncryptionError < Exception; end
+  
   belongs_to :backup_source
   
   validates_presence_of :mailbox
@@ -64,7 +66,8 @@ class BackupEmail < ActiveRecord::Base
       # Encrypt and save email to disk file for async S3 upload job
       # Email content should only be unencrypted while in RAM (except for subject)
       logger.debug "Saving encrypted email to #{temp_filename}"
-      rio(temp_filename) < encrypt(raw_email)
+      raise EncryptionError.new("Email encryption failed") unless encrypted = encrypt(raw_email)
+      rio(temp_filename) < encrypted
     rescue
       logger.debug "Unexpected error in #{self.class}.email=: " + $!
       errors.add_to_base("Unexpected error in email=: " + $!)

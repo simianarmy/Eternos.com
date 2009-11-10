@@ -72,25 +72,20 @@ body{
 	padding:215px 0 0 20px;
 	margin-top:10px;
 	float:left;
-	background:url(/images/main-pic.jpg) no-repeat;
+	/*background:url(/images/main-pic.jpg) no-repeat;*/
+	background:url(/images/tl_screenshot.jpg) no-repeat;
 }
 
 #features {
-	border: 1px solid;
-	width: 150px;
 }
 
 #feature {
-	
 }
 
 .feature-title {
-	font-size: 14px;
-	font-weight: bold;
 }
 
 .feature-text {
-	font-size: 12px;
 }
 
 .right-container{

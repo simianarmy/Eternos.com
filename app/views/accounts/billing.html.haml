@@ -19,6 +19,9 @@
     /%h3= "You have selected " + site_account_plan(@plan)
     %h3 Your account info has been saved.
     %p 
+      %span{:style=>"font-weight: bold"}
+        Your account will be billed $9.99 per month as a recurring charge.
+      %br
       Simply enter your payment details below to finish creating your Eternos account.  
   %br
   - if not @account.needs_payment_info?

@@ -1,4 +1,5 @@
 class TrusteesController < ApplicationController
+  before_filter :login_required
   require_role "Member"
   
   def index
