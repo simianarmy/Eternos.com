@@ -1,11 +1,15 @@
 # $Id$
 
+# TODO: Remove some duplication with SetupPresenter
+
 class ProfilePresenter < Presenter
   delegate :phone_numbers, :to => :address_book
   delegate :gender, :height, :weight, :race, :religion, :political_views, 
   :sexual_orientation, :nickname, :ethnicity, :children, 
   :birth_address, :careers, :schools, :to => :profile
-  attr_accessor :address_book, :profile, :new_address_book, :new_profile,
+  
+  attr_accessor :address_book, :profile, :new_address_book, :new_profile, 
+    :security_questions,
   :address, :addresses,
   :job, :jobs,
   :school, :schools,
@@ -29,6 +33,10 @@ class ProfilePresenter < Presenter
     @profile ||= @user.profile
   end
 
+  def security_questions
+    @security_questions ||= @user.security_questions
+  end
+  
   def load_personal_info
     @address_book = address_book
     @profile  = profile

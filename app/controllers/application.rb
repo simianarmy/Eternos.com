@@ -238,7 +238,8 @@ class ApplicationController < ActionController::Base
   
   def set_facebook_connect_session
     load_facebook_connect
-    set_facebook_session
+    #set_facebook_session
+    create_facebook_session
     # If user is logged in to facebook but not logged in using FB Connect,
     # destroy session info
     if @facebook_session && @facebook_session.user && current_user && 
