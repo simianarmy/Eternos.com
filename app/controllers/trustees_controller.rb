@@ -18,8 +18,6 @@ class TrusteesController < ApplicationController
   def create
     @trustee = current_user.trustees.new(params[:trustee])
     if @trustee.save
-      # Send confirmation emails to trustee email addresses
-      #TrusteeMailer.confirmation_request(current_user, @trustee.emails)
       flash[:notice] = "Successfully created trustee."
     else
       flash[:error] = @trustee.errors.full_messages.join('<br/>')

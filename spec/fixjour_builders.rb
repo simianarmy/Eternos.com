@@ -279,6 +279,16 @@ Fixjour  do
       :unlock_on => 1.day.from_now)
   end
   
+  define_builder(Trustee) do |klass, overrides|
+    klass.new(:user => new_member,
+      :name => Faker::Lorem.first_name,
+      :relationship => 'brother',
+      :emails => [Faker::Internet.email],
+      :security_question => Faker::Lorem.sentence,
+      :security_answer => Faker::Lorem.sentence
+    )
+  end
+  
   define_builder(User) do |klass, overrides|
     klass.protected :facebook_uid, :invitation_limit, :state
     
