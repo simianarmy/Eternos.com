@@ -114,10 +114,8 @@ module ActiveRecord
       # connection when finished.
       def with_connection
         fresh_connection = true unless @reserved_connections[current_connection_id]
-        puts "ConnectionPool: fresh? #{fresh_connection}"
         yield connection
       ensure
-        puts "Releasing connection? #{fresh_connection}"
         release_connection if fresh_connection
       end      
 

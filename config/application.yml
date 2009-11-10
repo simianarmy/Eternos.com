@@ -38,7 +38,7 @@ production:
     
 staging:
   <<: *default_settings
-  invitation_required: true
+  invitation_required: false
   app_name: Eternos.com
   from_email: support@eternos.com
   base_domain: staging.eternos.com

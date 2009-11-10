@@ -123,6 +123,7 @@ class AccountsController < ApplicationController
   
   def billing  
     if request.post?
+      @user = current_user
       @plan = @subscription.subscription_plan
       if params[:paypal].blank?
         if @creditcard.valid? & @address.valid?

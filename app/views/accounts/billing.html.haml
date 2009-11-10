@@ -15,7 +15,7 @@
     - else
       %p
         Your trial account has expired.  To regain access to your account, enter your credit card information below.  Your first charge will happen immediately, and you will be billed monthly thereafter.
-  - elsif current_user.pending?
+  - elsif @user.pending?
     /%h3= "You have selected " + site_account_plan(@plan)
     %h3 Your account info has been saved.
     %p 
