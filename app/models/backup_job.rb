@@ -37,7 +37,7 @@ class BackupJob < ActiveRecord::Base
   end
   
   def successful?
-    status && (status == BackupStatus::Success)
+    status && (status == "ok")
   end
   
   def has_errors?

@@ -1,13 +1,7 @@
-= "Status: " + (job.successful? ? 'Ok' : 'Failed') + " : #{job.percent_complete||0} % complete"
+= "(Job #{job.id}) Status: " + (job.successful? ? 'Ok' : 'Failed')
+= " - #{job.percent_complete} % complete" if job.percent_complete
 %br
 - if job.finished_at
   = "Run time: #{distance_of_time_in_words(job.created_at, job.finished_at)} (#{job.created_at.to_s} to #{job.finished_at.to_s})"
 - else
   = "Started #{job.created_at} but not finished"
-/
-  %br
-  Size: TODO
-- if job.has_errors?
-  %br
-  Errors:
-  = job.error_messages.to_s
