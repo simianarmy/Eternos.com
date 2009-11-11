@@ -390,25 +390,34 @@ span.select {
 }
 
 #submenu {
-clear:both;
-font:bold 12px arial;
-letter-spacing:1px;
-margin:50px 0 0 0;
-float:right;
-list-style:none}
+	text-align: right;
+	padding: 0;
+
+/*	margin: 33px; */
+	list-style:none;
+}
 
 #submenu li {
-background:url(/images/submenu-limiter.png) right no-repeat;
-margin:0 15px}
+	display:inline;
+ 	background:url(/images/submenu-limiter.png) right no-repeat; 
+ 	/* margin:0 15px; */
+}
 
 #submenu li:last-child {
 background:none;
-margin-right:0}
+margin-right:0;
+}
 
 #submenu a {
-color:#253f96;
-text-transform:uppercase}
+	font:bold 12px arial;
+	letter-spacing:2px;
+	color:#253f96;
+	text-transform:uppercase;
+	text-align: center;
+	padding:10px 10px 4px 10px;
+}
 
-#submenu a:hover {
-color:#d3b129}
-
+#submenu a:hover,
+#submenu a:active {
+	color:#d3b129;
+}
