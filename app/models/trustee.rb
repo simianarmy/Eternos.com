@@ -17,6 +17,10 @@ class Trustee < ActiveRecord::Base
     
   acts_as_state_machine :initial => :new
   
+  named_scope :confirmed, :conditions => {:state => 'confirmed'}
+  named_scope :pending, :conditions => {
+      :state => [:pending_trustee_confirmation, :pending_user_confirmation]
+    }
   state :pending_trustee_confirmation
   state :pending_user_confirmation
   state :confirmed

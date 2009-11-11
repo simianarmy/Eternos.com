@@ -13,24 +13,35 @@
     #new_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
       %p Enter new trustee contact details below
       #rjs_notice
-      - form_remote_for @trustee do |f|
+      - form_for @trustee, :html => { :class => 'remote_form' } do |f|
         = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
         .clear &nbsp;
         .button
-          = link_to_function image_tag('trustees/add-button2.png'), "$(this).up('form').onsubmit()"
+          %a#remote_form_submit_button= image_tag('trustees/add-button2.png')
           = link_to 'Cancel', '#', :id => "toggle_new_trustee", :class => "toggleable", :style => "marging-top:5px"
 
   .half.right
     #table
-      .header Current Trustees
+      .header Confirmed Trustees
       .body
         .title
           .row1 Name
           .row2 Relationship
-          .row3 Confirmed
-          .row4
+          .row4 Action
           .clear
         #trustees_table_rows
-          = render :partial => @trustees if @trustees.any?
+          = render :partial => @confirmed_trustees if @confirmed_trustees.any?
+      .footer &nbsp;
+    %br
+    #table
+      .header Pending Trustees
+      .body
+        .title
+          .row1 Name
+          .row2 Relationship
+          .row4 Action
+          .clear
+        #trustees_table_rows
+          = render :partial => @pending_trustees if @pending_trustees.any?
       .footer &nbsp;
   .clear &nbsp;

@@ -68,6 +68,7 @@ class TrusteesController < ApplicationController
   private
   
   def load_objects
-    @trustees = current_user.trustees.find(:all)
+    @confirmed_trustees = current_user.trustees.confirmed
+    @pending_trustees = current_user.trustees.pending
   end
 end

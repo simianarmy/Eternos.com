@@ -580,6 +580,11 @@ Event.addBehavior({
 	'.fckeditor-drop-container': WysiwygDropTarget,
 	'.wysiwyg_preview': WysiwygPreviewer,
 	
+	// inline behaviors
+	'#remote_form_submit_button:click': function(e) {
+		e.element().up('form').fire('form:data_changed');
+		return false;
+	},
 	'#decoration_gallery_form:submit': function(e) {
 		this.selected_content.value = $$('.gallery_item-selected').collect(function(val) {
 			return /_(\d+)$/.exec(val.id)[1]; 

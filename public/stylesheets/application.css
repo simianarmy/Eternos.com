@@ -122,6 +122,7 @@ textarea.input-error {
 }
 
 .hint {
+	font-size: x-small;
   color: #aaa;
   font-style: italic;
 }
@@ -144,7 +145,7 @@ textarea.input-error {
 
 input {
 	margin: 0 0 5px 5px;
-	font-size: 11px;
+	font-size: 14px;
 /*	width:240px; */
 /*	height:14px; */
 	border:1px solid #898989;
