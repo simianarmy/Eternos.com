@@ -4,7 +4,7 @@
 
 #content-container3
   .half.left{:style => "width: 420px"}
-    %p.border-dotted
+    %p
       Welcome to the Life Key manager. Here you can add trustees that will be responsible for notifying us in the event you pass away. In the event of your passing, your trustees will be given access to your account based upon permissions that you select. Add the name, nature of your relationship, and email for each trustee. 
   
     = link_to image_tag('trustees/add-button1.png', :id => "toggle_new_trustee", :class => "toggleable"), '#', :class => 'right'
@@ -13,7 +13,7 @@
     #new_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
       %p Enter new trustee contact details below
       #rjs_notice
-      - form_for @trustee, :html => { :class => 'remote_form' } do |f|
+      - form_for @trustee, :html => { :id => 'new_trustee_form', :class => 'remote_form' } do |f|
         = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
         .clear &nbsp;
         .button
@@ -29,7 +29,7 @@
           .row2 Relationship
           .row4 Action
           .clear
-        #trustees_table_rows
+        #confirmed_trustees_table_rows
           = render :partial => @confirmed_trustees if @confirmed_trustees.any?
       .footer &nbsp;
     %br
@@ -41,7 +41,7 @@
           .row2 Relationship
           .row4 Action
           .clear
-        #trustees_table_rows
+        #pending_trustees_table_rows
           = render :partial => @pending_trustees if @pending_trustees.any?
       .footer &nbsp;
   .clear &nbsp;

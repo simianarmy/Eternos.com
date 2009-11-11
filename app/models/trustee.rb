@@ -13,23 +13,37 @@ class Trustee < ActiveRecord::Base
   
   serialize :emails
   
-  after_create :request_confirmation
-    
-  acts_as_state_machine :initial => :new
+  # Amazing how useful this is...stuff just breaks in that 1st create transaction
+  #include AfterCommit::ActiveRecord
   
-  named_scope :confirmed, :conditions => {:state => 'confirmed'}
-  named_scope :pending, :conditions => {
-      :state => [:pending_trustee_confirmation, :pending_user_confirmation]
-    }
+  acts_as_state_machine :initial => :created
+  state :created
   state :pending_trustee_confirmation
   state :pending_user_confirmation
   state :confirmed
   state :rejected
   
-  event :request_confirmation do
-    transitions :from => :new, :to => :pending_trustee_confirmation
+  event :sent_confirmation_request do
+    transitions :from => :created, :to => :pending_trustee_confirmation
   end
   
+  event :confirmation_answered do
+    transitions :from => :pending_trustee_confirmation, :to => :pending_user_confirmation
+  end
+  
+  event :approved do
+    transitions :from => :pending_user_confirmation, :to => :confirmed
+  end
+  
+  event :denied do
+    transitions :from => [:pending_user_confirmation, :confirmed], :to => :rejected
+  end
+  
+  named_scope :confirmed, :conditions => {:state => 'confirmed'}
+  named_scope :pending, :conditions => {
+      :state => [:pending_trustee_confirmation, :pending_user_confirmation]
+    }
+    
   def emails=(vals)
     list = vals.split("\n").reject{|e| e.blank?}.map(&:strip)
     write_attribute(:emails, list)
@@ -54,10 +68,15 @@ class Trustee < ActiveRecord::Base
   
   protected
   
+  def after_commit_on_create
+    send_confirmation_request
+  end
+  
   def send_confirmation_request
     # Generate security code to put in email
     write_attribute(:security_code, generate_security_code)
     TrusteeMailer.deliver_confirmation_request(user, emails)
+    sent_confirmation_request!
   end
   
   def generate_security_code

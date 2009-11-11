@@ -15,6 +15,15 @@ font-size:12px;
 	padding:0;
 }
 
+#content-container3 a {
+	color:#253f96;
+}
+
+#content-container3 a:hover,
+#content-container3 a:active {
+	color:#d3b129;
+}
+
 .tl_helptext {
 	font-size: 11px;
 	background-color: #ffe;
@@ -60,8 +69,6 @@ font-size:12px;
 #timeline_links {
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:14px;
-	text-decoration:none;
-	color:#3860AB;
 }
 
 .timelinebox {
