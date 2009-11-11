@@ -35,4 +35,12 @@ class BackupJob < ActiveRecord::Base
     return 0 if finished_at
     backup_source_jobs.map(&:time_remaining).sum
   end
+  
+  def successful?
+    status && (status == BackupStatus::Success)
+  end
+  
+  def has_errors?
+    !!error_messages.try(:any?)
+  end
 end

@@ -23,13 +23,6 @@ end
 class BackupReporter
   # Collect metrics on members' space usage and send out in mail
   class << self 
-    def run
-      storage_usage
-      backup_jobs
-    end
-
-    private
-
     def storage_usage
       # Collect each member's total backup db records, number of each backup item, 
       # total emails size, & estimated photos disk space usage.
@@ -87,10 +80,11 @@ class BackupReporter
     # Generate previous days's backup jobs report for performance analysis & 
     # error detection in beta software
     def backup_jobs
-      data = []
+      data = {}
       jobs = BackupJob.by_date Date.yesterday
+      # Group by member
       jobs.each do |job|
-        data << {:job => job, :source_jobs => job.backup_source_jobs, :state => job.member.backup_state}
+        (data[job.member] ||= []) << {:job => job, :source_jobs => job.backup_source_jobs}
       end
       BackupReportMailer.deliver_daily_jobs_report(data)
     end

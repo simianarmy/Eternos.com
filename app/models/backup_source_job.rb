@@ -17,6 +17,10 @@ class BackupSourceJob < ActiveRecord::Base
     status && (status == BackupStatus::Success)
   end
   
+  def has_errors?
+    !!error_messages.try(:any?)
+  end
+  
   def reset_progress
     update_attribute(:percent_complete, 0)
   end

@@ -56,11 +56,6 @@ namespace :backup do
       puts "Could not find backup site (options: #{BackupSite.names.join('|')})"
     end
   end
-  
-  desc "Generate backup job reports"
-  task :generate_report => :environment do
-    BackupReporter.run
-  end
 
   desc "Assign backup photo albums to backup photo -> photo objects"
   task :migrate_backup_photo_albums => :environment do

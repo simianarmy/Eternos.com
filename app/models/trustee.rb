@@ -45,7 +45,7 @@ class Trustee < ActiveRecord::Base
   end
   
   def verified?
-    !!confirmed
+    self.state && confirmed?
   end
   
   protected

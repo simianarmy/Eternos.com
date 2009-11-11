@@ -1,50 +1,25 @@
 %p
   %h2 Backup Jobs
 
-- @data.each do |data|
-  - @job = data[:job]
-  %h3= "Job #{@job.id} : User #{@job.member.name} (#{@job.member.id})"
-  %br
-  = "Run time: #{distance_of_time_in_words(@job.created_at, @job.finished_at)} (#{@job.created_at.to_s} to #{@job.finished_at.to_s})"
-  %br
-  Status:
-  = @job.status
-  %br
-  Size: TODO
-  %br
-  Errors:
-  = @job.error_messages.to_s
-  %p
-    %h3 Backup Source Jobs
-  - data[:source_jobs].each do |j|
-    = "Job id: #{j.id}"
+- @data.each_pair do |member, stats|
+  %h3= "User #{member.name} (#{member.id})"
+  - stats.each do |data|
+    - @job = data[:job]
+    = render :partial => 'backup_job_status', :locals => {:job => @job}
     %br
-    Source: 
-    - if j.backup_source && j.backup_source.backup_site
-      = j.backup_source.backup_site.name
-    - else
-      Unknown source or site name!
-    
-    %br
-    = "Run time: #{distance_of_time_in_words(j.created_at, j.finished_at)} (#{j.created_at.to_s} to #{j.finished_at.to_s})"
-    %br
-    Percent complete: 
-    = j.percent_complete
-    \%
-    %br
-    Status:
-    = j.status == 1 ? 'Ok' : 'Failed'
-    %br
-    Size: TODO
-    %br
-    - if j.error_messages
-      Errors:
-      = j.error_messages.to_s
-    %p
+    - if @job.has_errors?
+      - data[:source_jobs].each do |j|
+        Source: 
+        - if j.backup_source && j.backup_source.backup_site
+          = j.backup_source.backup_site.name
+        - else
+          Unknown backup source or site name!
+        %br
+        = render :partial => 'backup_job_status', :locals => {:job => j}
   %br
   %h3 Backup State
   %br
-  - bs = data[:state]
+  - bs = member.backup_state
   Items backed up? 
   = bs.items_saved ? 'Yes' : 'No'
   %br
