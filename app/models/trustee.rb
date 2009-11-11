@@ -44,6 +44,10 @@ class Trustee < ActiveRecord::Base
     end
   end
   
+  def verified?
+    !!confirmed
+  end
+  
   protected
   
   def send_confirmation_request

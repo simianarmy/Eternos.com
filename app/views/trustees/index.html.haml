@@ -1,35 +1,36 @@
-/- use_form
+- use_form
 - stylesheet 'trustees'
-- title_icon '<h2 id="main">Like Key Manager</h2>'
+- header 'Life Key Manager' 
 
-.half.left{:style => "width: 420px"}
-  %p.border-dotted
-    Welcome to the Life Key manager. Here you can add trustees that will be responsible for notifying us in the event you pass away. In the event of your passing, your trustees will be given access to your account based upon permissions that you select. Add the name, nature of your relationship, and email for each trustee. 
+#content-container3
+  .half.left{:style => "width: 420px"}
+    %p.border-dotted
+      Welcome to the Life Key manager. Here you can add trustees that will be responsible for notifying us in the event you pass away. In the event of your passing, your trustees will be given access to your account based upon permissions that you select. Add the name, nature of your relationship, and email for each trustee. 
   
-  = link_to image_tag('trustees/add-button1.png', :id => "toggle_add_trustee", :class => "toggleable"), '#', :class => 'right'
+    = link_to image_tag('trustees/add-button1.png', :id => "toggle_new_trustee", :class => "toggleable"), '#', :class => 'right'
+    .clear &nbsp;
+
+    #new_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
+      %p Enter new trustee contact details below
+      #rjs_notice
+      - form_remote_for @trustee do |f|
+        = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
+        .clear &nbsp;
+        .button
+          = link_to_function image_tag('trustees/add-button2.png'), "$(this).up('form').onsubmit()"
+          = link_to 'Cancel', '#', :id => "toggle_new_trustee", :class => "toggleable", :style => "marging-top:5px"
+
+  .half.right
+    #table
+      .header Current Trustees
+      .body
+        .title
+          .row1 Name
+          .row2 Relationship
+          .row3 Confirmed
+          .row4
+          .clear
+        #trustees_table_rows
+          = render :partial => @trustees if @trustees.any?
+      .footer &nbsp;
   .clear &nbsp;
-
-  #add_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
-    %p Enter new trustee contact details below
-    #rjs_notice
-    - form_remote_for @trustee do |f|
-      = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
-      .clear &nbsp;
-      .button
-        = link_to_function image_tag('trustees/add-button2.png'), "$(this).up('form').onsubmit()"
-        = link_to 'Cancel', '#', :id => "toggle_add_trustee", :class => "toggleable", :style => "marging-top:5px"
-
-.half.right
-  #table
-    .header Current Trustees
-    .body
-      .title
-        .row1 Name
-        .row2 Relationship
-        .row3 Email
-        .row54 Action
-        .clear
-      #trustees_table_rows
-        = render :partial => @trustees if @trustees.any?
-    .footer &nbsp;
-.clear &nbsp;

@@ -1,10 +1,10 @@
-#name
+%p.input
   .label Name :
-  %p.input= f.text_field :name, :class => 'field'
-#relation
+  = f.text_field :name, :class => 'field'
+%p.input
   .label Relationship :
   = f.text_field :relationship, :class => 'field'
-#emails
+%p.input
   .label 
     Contact email addresses :
     %br
@@ -12,16 +12,14 @@
       %i (one email per line)
   = f.text_area :emails, :rows => 5, :class => 'field'
 .clear
-#identity_ver
+%br
+%p
   Identity Verification
   %br
   In order to protect access to your account, we must make sure that this trustee is who you think it is.  An email address could potentially be sent to someone other than the intended recipient, or an email account could be hijacked/broken into.  Eternos verifies the identity of the trustee by asking a personal verification question of your choice and letting you confirm whether the answer is correct.
-  %p 
-  %br
-  .label
-    Question:  
-  = f.text_field :security_question, :class => 'field'
-  %br
-  .label
-    Answer: 
-  = f.text_field :security_answer, :class => 'field'
+  %p.input 
+    .label Question:  
+    = f.text_field :security_question, :class => 'field'
+  %p.input
+    .label Answer: 
+    = f.text_field :security_answer, :class => 'field'

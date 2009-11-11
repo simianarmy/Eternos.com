@@ -2,8 +2,7 @@
 <% use_flashplayer %>
 <% javascript 'jsProgressBarHandler', 'cookiejar' %>
 
-<% header '<span class="subtitle1">' + @member_name + ':</span><span class="subtitle2">Your TimeLine(tm)</span>' 
-%>
+<% header @member_name %>
 
 <div id="content-container3">
   <div id="timeline-top">
@@ -27,7 +26,7 @@
     <div class="clearboth"></div>
     
     <div class="timelinebox">
-      <div id="my-timeline" style="height:335px;border: 1px solid #aaa;"></div>
+      <div id="my-timeline"></div>
       <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
     </div>
     <div id="debug_box" class="debug_container"></div>

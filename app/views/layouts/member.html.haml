@@ -28,11 +28,9 @@
           = render :partial => 'users/inner_nav'
           %br
           %br
-          %br
           .clearboth
           - cache 'user_nav' do
             = render :partial => 'users/nav'
-					
         .clearboth
       
       #topdiv
@@ -40,8 +38,6 @@
         .content_title.alignleft
           = yield(:title_icon)
           %h2= yield(:title)
-            
-        
         .clearboth
 
         / for rjs flash notices
@@ -49,8 +45,8 @@
         = show_flash_messages
         /= render :partial => 'users/user_bar'
         .context
-          %p= yield(:header)
-
+          %span.subtitle2= yield(:header)
+          
         #sub_content
           /.content_title.alignleft
           .clearboth

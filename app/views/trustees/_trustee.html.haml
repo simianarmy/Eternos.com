@@ -6,7 +6,8 @@
   .row2
     = restful_in_place_editor :span, trustee, :relationship
   .row3
-    = restful_in_place_editor :span, trustee, :emails, {:value => trustee.emails.join("\n")}, :cols => 15, :rows => 5
+    /= restful_in_place_editor :span, trustee, :emails, {:value => trustee.emails.join("\n")}, :cols => 15, :rows => 5
+    = trustee.verified? ? 'Yes' : 'No'
   .row4
     = link_to '', trustee_path(trustee), :class => 'remote_delete'
   .clear &nbsp;
