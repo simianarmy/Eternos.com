@@ -2,12 +2,13 @@
 
 %p Lorem Ipsum
 %br
-= render :partial => 'shared/av_attachment', :locals => {:parent => @documentary, :recording => @recording}
+= render :partial => 'shared/av_attachment', :locals => {:parent => @documentary, :recording => @recording, :dialog => true}
 %br
-%p Lorem Ipsum
+%p Lorem lorem ipsum here
 = custom_error_messages_for :documentary
 - form_for @documentary do |f|
   = f.hidden_field 'recording_id', :value => @recording.id
+  = hidden_field_tag 'dialog', true
   %p
   %br
   = render :partial => 'stories/form', :locals => {:f => f, :story => @documentary}

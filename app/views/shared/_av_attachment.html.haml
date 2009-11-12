@@ -5,7 +5,7 @@
   #recording
     = show_recording(recording)
     - @links << detach_recording_link(recording, :parent => parent.to_str) unless recording.error?
-  - @links << link_to('Retry', new_recording_path(:dialog => params[:dialog])) 
+  - @links << link_to('Retry', new_recording_path(:dialog => local_assigns.has_key?(:dialog) ? dialog : false)) 
   = @links.join("&nbsp;|&nbsp;")
 - else
   = attach_recording_link('Record your message', :parent => parent.to_str, :div => :av_recording)

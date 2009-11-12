@@ -1,6 +1,6 @@
+# $Id$
+
 class DocumentariesController < StoriesController
-  include TagsAutoComplete
-  
   def new
     @documentary = current_user.documentaries.new
     build_recording
@@ -30,7 +30,7 @@ class DocumentariesController < StoriesController
       if @documentary.update_attributes(params[:documentary])
         format.html { 
           flash[:notice] = "Successfully updated."
-          redirect_to @documentary 
+          redirect_to :action => 'show', :id => @documentary, :dialog => params[:dialog]
         }
       else
         format.html

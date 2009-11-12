@@ -23,8 +23,8 @@ module RecordingsHelper
         content_tag(:div, recording.processing_error, :id => 'flash_error')  
       else
         content_tag(:div, :id => 'flash_notice') do |div|
-          'Your recording is being processed.  ' + 
-          link_to_recording(recording, :thumbnail => false, :title => "Preview")
+          'Your recording is being processed.'
+#          link_to_recording(recording, :thumbnail => false, :title => "Preview")
         end
       end
     end
