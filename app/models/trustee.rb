@@ -13,8 +13,7 @@ class Trustee < ActiveRecord::Base
   
   serialize :emails
   
-  # Amazing how useful this is...stuff just breaks in that 1st create transaction
-  #include AfterCommit::ActiveRecord
+  after_create :send_confirmation_request
   
   acts_as_state_machine :initial => :created
   state :created
@@ -67,10 +66,6 @@ class Trustee < ActiveRecord::Base
   end
   
   protected
-  
-  def after_commit_on_create
-    send_confirmation_request
-  end
   
   def send_confirmation_request
     # Generate security code to put in email

@@ -65,14 +65,15 @@ module LayoutHelper
   end
   
   # asset inclusion helpers
-  def use_orig_lightview
+  def use_lightview_25
     stylesheet '/javascripts/lightview2.5/css/lightview.css'
     javascript 'lightview2.5/js/lightview'
   end
   
   def use_lightview
-    stylesheet "/javascripts/lightview/css/lightview.css"
-    use_lightview_only_js
+    use_lightview_25
+    #stylesheet "/javascripts/lightview/css/lightview.css"
+    #use_lightview_only_js
   end
   
   def use_lightview_only_js
