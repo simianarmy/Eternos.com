@@ -28,7 +28,7 @@ class BackupPhotoDownloader
   end
     
   # For development or in case we need to rebuild
-  def self.fix_photos
+  def self.rebuild_photos
     MessageQueue.start do
       Thread.new do
         # Get all backup photos with content objects
@@ -50,6 +50,19 @@ class BackupPhotoDownloader
         end
         MessageQueue.stop
       end
+    end
+  end
+  
+  def self.fix_photos
+    MessageQueue.start do
+      # Get all backup photos with content objects
+      BackupPhoto.find_all_by_state([:downloaded, :failed_download]).each do |bp|
+        unless bp.photo
+          bp.download_error!
+          download_photo bp
+        end
+      end
+      MessageQueue.stop
     end
   end
   

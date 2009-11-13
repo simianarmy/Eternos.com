@@ -86,7 +86,7 @@ class BackupPhoto < ActiveRecord::Base
     rescue
       update_attribute(:download_error, $!)
     ensure
-      rio(@filename).delete if rio(@filename).exist?
+      @img.delete if @img && @img.exist?
     end
   end
 
