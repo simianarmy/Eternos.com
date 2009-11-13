@@ -51,7 +51,9 @@ class BackupPhotoAlbum < ActiveRecord::Base
   end
   
   def cover_photo
-    BackupPhoto.find_by_source_photo_id(cover_id).photo
+    # Try to avoid using invalid photos if there are multiple backup photos with the 
+    # same source photo id
+    BackupPhoto.find_all_by_source_photo_id(cover_id).map(&:photo).compact.first
   end
   
   def cover_photo_url
