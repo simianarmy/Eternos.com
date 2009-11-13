@@ -59,8 +59,8 @@ namespace :backup do
 
   desc "Assign backup photo albums to backup photo -> photo objects"
   task :migrate_backup_photo_albums => :environment do
-    BackupPhoto.with_photo.each do |bp|
-      bp.photo.update_attribute(:collection, bp.backup_photo_album)
+    BackupPhoto.with_photo.reject{|bp| !bp.photo}.each do |bp|
+      bp.photo.update_attribute(:collection, bp.backup_photo_album) unless bp.photo.collection
     end
   end 
 end

@@ -10,12 +10,10 @@
 				  <font class="blue">ETERNOS.COM</font> Beta launch.
 				</div>
 				-->
-				<div class="textarea">
+				<div id="main-right">
           <h3>Eternos...Chronicle your life</h3>
           <br/>
-          Features:
-          <br/>
-          <div id="features">
+          <div id="features" class="shadow">
             <div class="feature">
         			<div class="feature-title">Timeline Navigation</div>
         			<div class="feature-text">
@@ -23,7 +21,7 @@
             </div>
             <div class="feature">
         			<div class="feature-title">Video Diary</div>
-        			<div class="feature-text">a record of your personal experiences and observations.
+        			<div class="feature-text">a record of your personal experiences and observations. Your video diary will be an invaluable treasure for your descendants.
               </div>
             <div class="feature">
         			<div class="feature-title">Fully Automated Backup of:</div>
@@ -35,7 +33,7 @@
               </div>
             </div>
             <div class="feature">
-        			<div class="feature-title">LifeKey Account Stewardship</div>
+        			<div class="feature-title">Life Key</div>
         			<div class="feature-text">
         			  enables you to designate trustees that will notify Eternos of your passing. Trustees gain access to your account upon confirmation you have passed on.
               </div>
@@ -55,6 +53,6 @@
 			
       <div class="clear"></div>
       <center>
-			<%= link_to "", new_account_path(:plan => 'Basic'), {:id => "start_button", :class => "reg-btn"} %>
+			<%= link_to "", new_account_path(:plan => 'Free'), {:id => "start_button", :class => "reg-btn"} %>
 			</center>
   </div>

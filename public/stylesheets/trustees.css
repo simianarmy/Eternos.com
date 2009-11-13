@@ -69,35 +69,41 @@ color:#4c4c4c}
 background:url(/images/trustees/table-footer.png) bottom no-repeat;
 height:10px}
 
-#table .row1, #table .row2, #table .row3, #table .row4 {
+#table .col1, #table .col2, #table .col3 {
 float:left;
 overflow:hidden;
 text-align:center}
 
-#table .row1 {
-width:100px;
-text-align:left}
+#table .col1 {
+width:160px;
+text-align:left;
+}
 
-#table .row2 {
-width:100px}
+#table .col2 {
+width:160px;
+}
 
-#table .row3 {
-width:170px}
+#table .col3 {
+width:60px;
+}
 
-#table .row4 {
-width:38px}
-
-#table .row4 a{
+#table .col3  a.edit {
+	float: left;
+	display: block;
+}
+	
+#table .col3  a.delete {
+	float: right;
 	width:12px;
 	height:16px;
 	background:url(/images/trustees/delete.png) 0 0;
 	display:block;
 	border:none;
 	cursor:pointer;
-	margin-left:13px;
+	margin-left:5px;
 }
 
-#table .row4 a:hover{
+#table .col3 a.delete:hover{
 	background:url(/images/trustees/delete.png) 0 16px;
 }
 
@@ -117,7 +123,7 @@ color:#02419e}
 p {
 font-size:11.5px}
 
-form#new_trustee_form {
+form.trustee_form {
 /* background:url(/images/trustees/form-bg.png) no-repeat; */
 /*height:205px;*/
 	padding:15px;

@@ -1,10 +1,16 @@
 - @domId = dom_id(trustee)
 - @item_edit_id = @domId + "_edit_row"
 .trustee{:id => @domId, :class => cycle("even", "odd")}
-  .row1
-    = restful_in_place_editor :span, trustee, :name
-  .row2
-    = restful_in_place_editor :span, trustee, :relationship
-  .row4
-    = link_to '', trustee_path(trustee), :class => 'remote_delete'
+  .col1
+    = trustee.name
+  .col2
+    = trustee.relationship
+  .col3
+    = link_to image_tag('Edit-16x16.png'), "##{dom_id(trustee, 'edit')}", :class => 'lightview', :rel => 'inline', :title => "Edit Trustee Details :: :: autosize: true"
+    = link_to '', trustee_path(trustee), :class => 'delete remote_delete'
   .clear &nbsp;
+/ Add hidden edit form here
+- form_for trustee, :html => { :id => dom_id(trustee, 'edit'), :class => "trustee_form", :style => "display: none" } do |f|
+  = render :partial => 'form', :locals => {:f => f, :trustee => trustee}
+  = link_to_function 'Cancel', 'Lightview.hide();' 
+  = submit_tag 'Save'

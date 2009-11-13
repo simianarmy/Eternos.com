@@ -1,0 +1,11 @@
+#table
+  .header= "#{title} Trustees"
+  .body
+    .title
+      .col1 Name
+      .col2 Relationship
+      .col3 Action
+      .clear
+    %div{:id => "#{title.downcase}_trustees_table_rows"}
+      = render :partial => trustees if trustees.any?
+  .footer &nbsp;

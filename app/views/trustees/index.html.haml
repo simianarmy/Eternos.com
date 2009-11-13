@@ -13,7 +13,7 @@
     #new_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
       %p Enter new trustee contact details below
       #rjs_notice
-      - form_for @trustee, :html => { :id => 'new_trustee_form', :class => 'remote_form' } do |f|
+      - form_for @trustee, :html => { :id => 'new_trustee_form', :class => 'trustee_form remote_form' } do |f|
         = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
         .clear &nbsp;
         .button
@@ -21,27 +21,9 @@
           = link_to 'Cancel', '#', :id => "toggle_new_trustee", :class => "toggleable", :style => "marging-top:5px"
 
   .half.right
-    #table
-      .header Confirmed Trustees
-      .body
-        .title
-          .row1 Name
-          .row2 Relationship
-          .row4 Action
-          .clear
-        #confirmed_trustees_table_rows
-          = render :partial => @confirmed_trustees if @confirmed_trustees.any?
-      .footer &nbsp;
+    #confirmed= render :partial => 'list', :locals => {:title => 'Confirmed', :trustees => @confirmed_trustees}
     %br
-    #table
-      .header Pending Trustees
-      .body
-        .title
-          .row1 Name
-          .row2 Relationship
-          .row4 Action
-          .clear
-        #pending_trustees_table_rows
-          = render :partial => @pending_trustees if @pending_trustees.any?
-      .footer &nbsp;
+    #pending= render :partial => 'list', :locals => {:title => 'Pending', :trustees => @pending_trustees}
   .clear &nbsp;
+
+#edit_trustee

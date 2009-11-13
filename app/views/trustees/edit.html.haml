@@ -1,0 +1,6 @@
+- title "Edit Trustee"
+
+- form_for @trustee, :html => { :id => 'edit_trustee_form', :class => 'remote_form' } do |f|
+  = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
+  .clear &nbsp;
+  .button

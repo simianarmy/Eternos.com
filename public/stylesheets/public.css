@@ -77,15 +77,21 @@ body{
 }
 
 #features {
+	background: white;
+	padding: 0px 10px 10px 10px;
 }
 
 #feature {
+	
 }
 
 .feature-title {
+	font-weight: bold;
+	font-size: 14;
 }
 
 .feature-text {
+	margin-left: 10px;
 }
 
 .right-container{
@@ -107,7 +113,7 @@ body{
 	text-align:center;
 }
 
-.textarea{
+#main-right {
 	width:425px;
 	height:auto;
 	font-family:arial;
@@ -116,6 +122,12 @@ body{
 	text-align:justify;
 	line-height:20px;
 	padding:12px 0 15px 5px;
+}
+
+.shadow {
+	box-shadow: 5px 5px 5px #ccc;
+	-moz-box-shadow: 5px 5px 5px #ccc;
+	-webkit-box-shadow: 5px 5px 5px #ccc;
 }
 
 .clear{

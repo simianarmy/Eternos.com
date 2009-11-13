@@ -78,7 +78,8 @@ class TimelinesController < ApplicationController
       @response = ActiveSupport::JSON.decode(@json) if @json
     else
       md5 = Digest::MD5.hexdigest(request.url)
-      refresh = session[:refresh_timeline] #|| current_user.refresh_timeline?
+      # Disable memcache by forcing refresh for now...
+      refresh = true || session[:refresh_timeline] #|| current_user.refresh_timeline?
       uid = current_user ? current_user.id : 0
       
       BenchmarkHelper.rails_log("Timeline search #{request.url}") do
