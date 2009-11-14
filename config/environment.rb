@@ -192,7 +192,7 @@ ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
 # Need this to prevent the following in Renderer classes:
 # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
 include ActionController::UrlWriter
-default_url_options[:host] = 'localhost'
+default_url_options[:host] = AppConfig.base_domain
 
 # Disable email validator domain lookups
 EmailVeracity::Config[:lookup] = false

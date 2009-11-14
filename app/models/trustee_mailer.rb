@@ -10,6 +10,7 @@ class TrusteeMailer < ActionMailer::Base
     body :sender => user.full_name,
       :trustee_name => trustee.name,
       :security_code => trustee.security_code,
-      :confirmation_url => confirmation_trustees_url
+      :confirmation_url => confirmation_trustees_url,
+      :support_url => home_url('support')
   end
 end
