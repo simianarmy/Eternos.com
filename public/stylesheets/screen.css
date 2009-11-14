@@ -621,8 +621,17 @@ div.frontpage {
 	padding-top:1px;
 }
 
+.instructional_copy {
+	font-size:13px;
+}
+
 .clear{
 	clear:both;
 }
 
+.shadow {
+	box-shadow: 5px 5px 5px #ccc;
+	-moz-box-shadow: 5px 5px 5px #ccc;
+	-webkit-box-shadow: 5px 5px 5px #ccc;
+}
 /* @end */

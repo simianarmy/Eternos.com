@@ -1,6 +1,8 @@
 class TrusteesController < ApplicationController
-  before_filter :login_required
-  require_role "Member"
+  before_filter :login_required, :except => [:confirmation]
+  require_role "Member", :except => [:confirmation]
+  
+  ssl_required :confirmation
   
   def index
     load_objects
@@ -62,6 +64,26 @@ class TrusteesController < ApplicationController
         redirect_to trustees_url
       }
       format.js
+    end
+  end
+  
+  def confirmation
+    if request.post?
+      # confirm security code
+      if params[:trustee_id]
+        if @trustee = Trustee.find(params[:trustee_id])
+          if !params[:security_answer].blank?
+            @trustee.security_answer = params[:security_answer]
+            @trustee.confirmation_answered!
+            flash[:notice] = "Thank you, your answer has been recorded.  We will notify you once you have been approved by the account owner."
+            redirect_to about_path
+          else
+            flash[:error] = "You must answer the security question"
+          end
+        end
+      else
+        flash[:error] = "Invalid security code" unless @trustee = Trustee.find_by_security_code_and_state(params[:security_code], :pending_trustee_confirmation)
+      end
     end
   end
   

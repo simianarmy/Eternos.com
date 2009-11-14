@@ -18,7 +18,7 @@ class Trustee < ActiveRecord::Base
   acts_as_state_machine :initial => :created
   state :created
   state :pending_trustee_confirmation
-  state :pending_user_confirmation
+  state :pending_user_confirmation, :enter => :send_user_confirmation_request
   state :confirmed
   state :rejected
   
@@ -70,8 +70,11 @@ class Trustee < ActiveRecord::Base
   def send_confirmation_request
     # Generate security code to put in email
     write_attribute(:security_code, generate_security_code)
-    spawn { TrusteeMailer.deliver_confirmation_request(user, emails) }
+    spawn { TrusteeMailer.deliver_confirmation_request(user, self) }
     sent_confirmation_request!
+  end
+  
+  def send_user_confirmation_request
   end
   
   def generate_security_code

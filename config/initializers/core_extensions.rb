@@ -69,6 +69,20 @@ module ActiveRecord
   end
 end
 
+
+# monkey patch action mailer (Rails 2.2) to not use layouts for text/plain emails
+module ActionMailer
+  class Base
+    private
+    def candidate_for_layout?(options)
+      (!options[:file] || !options[:file].respond_to?(:content_type) ||
+      options[:file].content_type != 'text/plain') &&
+      !@template.send(:_exempt_from_layout?, default_template_name)
+    end
+  end
+end
+
+
 module MIME
   class Type
     def typical_file_extension
@@ -90,16 +104,4 @@ module MIME
   end
 end
 
-# try() added in Rails 2.3 - use this till then
-class Object
-  ##
-  #   @person ? @person.name : nil
-  # vs
-  #   @person.try(:name)
-  def try(method)
-    unless self.nil?
-      send method if respond_to? method
-    end
-  end
-end
 

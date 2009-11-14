@@ -86,7 +86,7 @@ ActionController::Routing::Routes.draw do |map|
   end
     
   map.resources :addresses, :collection => { :country_regions => :get }
-  map.resources :trustees
+  map.resources :trustees, :collection => { :confirmation => [:get, :post] }
   
   map.resources :prelaunch, :controller => "prelaunch"
   map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'

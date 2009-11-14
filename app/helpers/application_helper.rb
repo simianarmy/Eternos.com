@@ -12,6 +12,7 @@ module ApplicationHelper
           end
         end
       end
+      flash.clear
     end
   end
   

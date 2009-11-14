@@ -1,0 +1,53 @@
+- title 'Trustee Confirmation'
+- use_form
+- hide_login_box
+
+%style{:type => "text/css", :media => "screen"}
+  :plain
+    #security_question {
+      padding:15px;
+      background: #f2f7fe;
+    }
+#topbar
+  .title1 Trustee Confirmation
+#content-container
+  .subtitle1
+    Please fill out the following fields in order to confirm your identity as an Eternos Trustee.
+  #subcontent
+    %p
+    %br
+    #form{:style=>"width: 400px;"}
+      - form_tag do
+        = show_flash_messages
+        - if @trustee
+          = hidden_field_tag :trustee_id, @trustee.id
+          %span.instructional_copy
+            Answer the security question to establish your identity - your answer will be reviewed by
+            = @trustee.user.full_name
+            for correctness.  
+          %p
+          %br
+          #qa.instructional_copy 
+            Security Question:
+            %br
+            #security_question= @trustee.security_question
+           
+          %p
+          %br
+          %span.instructional_copy 
+            Answer:
+            %br
+            Do not worry about punctuation or spelling in your answer.  It will be read and approved or rejected by the person who wrote it.
+          %p.input
+            = text_area_tag :security_answer, '', :cols => 50, :rows => 4
+        - else
+          %span.instructional_copy
+            Your confirmation email from Eternos.com should contain a confirmation security code.  Copy & Paste it into the field below.
+          %p
+          %br
+          %p.input
+            Security Code :
+            = text_field_tag :security_code, ''
+        %p.input= submit_tag 'Submit'
+    
+    
