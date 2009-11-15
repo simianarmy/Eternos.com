@@ -1,5 +1,2 @@
-page.flash_and_fade
-render_with :in_place_editor do |editor|
-  editor.update(@trustee, params)
-end
+page.flash_and_fade dom_id(@trustee, 'notice')
 flash.discard

@@ -6,14 +6,14 @@
   %br
   
   - form_for trustee, :url => {:id => trustee, :action => 'confirm_answer'}, :html => { :class => "trustee_form" } do |f|
-    Question: 
+    %span.bold Question: 
     %br
-    #security_question= trustee.security_question
+    #security_question= h(trustee.security_question)
     %p
     %br
-    Answer:
+    %span.bold Answer:
     %br
-    #security_question= trustee.security_answer
+    #security_question= h(trustee.security_answer)
     %p
     %br
     

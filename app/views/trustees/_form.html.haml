@@ -1,3 +1,4 @@
+%div.flash_notice{:id => dom_id(trustee, 'notice')}
 %p.input
   .label Full Name :
   = f.text_field :name, :class => 'field'
@@ -11,9 +12,12 @@
   .label 
     Contact email addresses :
     %br
+    %span{:style => "font-size: small;"}
+      We will attempt to contact the trustee using all the addresses entered here (Max. 5)
+    %br
     %font{:size => "1"}
       %i (one email per line)
-  = f.text_area :emails, :rows => 5, :class => 'field'
+  = f.text_area :emails, :value => trustee.emails ? trustee.emails.join("\n") : '', :rows => 5, :class => 'field'
 .clear
 %br
 %p
@@ -24,7 +28,16 @@
       In order to protect access to your account, we must make sure that this trustee is who you think it is.  An email address could potentially be sent to someone other than the intended recipient, or an email account could be hijacked/broken into.  Eternos verifies the identity of the trustee by asking a personal verification question of your choice and letting you confirm whether the answer is correct.
   %p.input 
     .label Question:  
-    = f.text_field :security_question, :class => 'field'
+    = f.text_area :security_question, :class => 'field', :rows => 2
     %br
     %span.hint ex: What color was my first car?
+  %p.input
+    .label 
+      Personal Note:
+      %br
+      %span{:style => "font-size: small;"}
+        Add a personal message that will be included in the trustee confirmation email.
+    = f.text_area :personal_note, :class => 'field', :rows => 5
+%br
+        
   

@@ -13,7 +13,7 @@
     = link_to '', trustee_path(trustee), :class => 'delete remote_delete'
   .clear &nbsp;
 / Add hidden edit form here
-- form_for trustee, :html => { :id => dom_id(trustee, 'edit'), :class => "trustee_form", :style => "display: none" } do |f|
+- form_for trustee, :html => { :id => dom_id(trustee, 'edit'), :class => "remote_form trustee_form", :style => "display: none" } do |f|
   = render :partial => 'form', :locals => {:f => f, :trustee => trustee}
   = link_to_function 'Cancel', 'Lightview.hide();' 
   = submit_tag 'Save'

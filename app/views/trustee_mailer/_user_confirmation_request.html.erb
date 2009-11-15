@@ -1,0 +1,21 @@
+Hello <%= @sender %>,
+<p></br>
+This is a notice from Eternos.com to inform you that <%= @trustee_name %> has submitted the required information for the Trustee Account verification process.
+<p></br>
+Please login to your Eternos.com account and visit the Life Key page at
+<br/>
+<%= trustees_url %>
+<br/>
+to complete the verification process.  
+<br/>
+Simply click the "Verify" link underneath <%= @trustee_name.possessify %> name in the "Pending Trustees" list, and read the instructions in the popup window.
+<p><br/>
+This mail was sent by <%= AppConfig.base_domain %>.  Questions?  Comments?  Let us know: 
+<br/>
+Email: support@eternos.com
+<br/>
+Support/Feedback: <%= @support_url %>
+<br/>
+<br/>
+Eternos.com
+EON Digital Preservation, INC 4757 48th Ave SW Seattle WA 98116 USA

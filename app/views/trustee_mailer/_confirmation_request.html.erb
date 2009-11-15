@@ -1,18 +1,30 @@
 Hello <%= @trustee_name %>,
-<br/></br>
+<p></br>
 You have been designated as a Account Trustee by <%= @sender %> for their Eternos.com account.
-<br/><br/>
+<p><br/>
 As a Trustee of <%= @sender.possessify %> Eternos account, you will be counted upon to notify us in the event he or she passes away. To notify us of the passing of <%= @sender %> you simply need to follow the specified process. You will receive a quarterly email from Eternos.com containing instructions (as a courtesy reminder).
-<br/><br/>
+<p><br/>
 Please confirm that you are willing to be a Trustee for <%= @sender.possessify %> Eternos account by copying the security code and visiting the following link:
-<br/><br/>
+<p><br/>
 SECURITY CODE: <%= @security_code %>
 <br/>
 CONFIRMATION URL: <%= @confirmation_url %>
-<br/><br/>
+<p><br/>
 No further action is required on your part. We will never contact you with any commercial offers or share your information with any third parties. We encourage you to speak to <%= @sender %> or 
 contact us should you have any questions.
-<br/><br/>
+<p><br/>
+<% unless @personal_note.blank? %>
+Personal message from <%= @sender %>:
+<br/>
+---------------------
+<br/>
+<pre>
+<%= h @personal_note %>
+</pre>
+<br/>
+---------------------
+<p><br/>
+<% end %>
 This mail was sent by <%= AppConfig.base_domain %>.  Questions?  Comments?  Let us know: 
 <br/>
 Email: support@eternos.com
