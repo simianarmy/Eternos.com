@@ -165,7 +165,8 @@ input[type=checkbox] {
 }
 
 input[type=submit] {
-	width: 84px;
+	background: #02419e;
+	color: white;
 }
 
 /**/

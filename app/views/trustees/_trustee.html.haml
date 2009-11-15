@@ -3,10 +3,13 @@
 .trustee{:id => @domId, :class => cycle("even", "odd")}
   .col1
     = trustee.name
+    - if trustee.pending_user_confirmation?
+      %br
+      = link_to 'Verify Security Answer', "##{dom_id(trustee, 'confirm_answer')}", :class => 'lightview', :rel => 'inline', :title => "Confirm Security Answer :: :: autosize: true"
   .col2
     = trustee.relationship
   .col3
-    = link_to image_tag('Edit-16x16.png'), "##{dom_id(trustee, 'edit')}", :class => 'lightview', :rel => 'inline', :title => "Edit Trustee Details :: :: autosize: true"
+    = link_to image_tag('Edit-16x16.png', :alt => "Edit"), "##{dom_id(trustee, 'edit')}", :class => 'lightview', :rel => 'inline', :title => "Edit Trustee Details :: :: autosize: true"
     = link_to '', trustee_path(trustee), :class => 'delete remote_delete'
   .clear &nbsp;
 / Add hidden edit form here
@@ -14,3 +17,5 @@
   = render :partial => 'form', :locals => {:f => f, :trustee => trustee}
   = link_to_function 'Cancel', 'Lightview.hide();' 
   = submit_tag 'Save'
+/ Add hidden form
+= render :partial => 'answer_confirmation_form', :locals => {:trustee => trustee}

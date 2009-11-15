@@ -1,0 +1,29 @@
+%div{:id => dom_id(trustee, 'confirm_answer'), :style => "display: none"}
+  %span.bold Identity Verification
+  %br
+  The recipient of the Trustee confirmation email has submitted an answer to the security question that you specified.  Review their answer and choose either "Correct" or "Incorrect".
+  %p
+  %br
+  
+  - form_for trustee, :url => {:id => trustee, :action => 'confirm_answer'}, :html => { :class => "trustee_form" } do |f|
+    Question: 
+    %br
+    #security_question= trustee.security_question
+    %p
+    %br
+    Answer:
+    %br
+    #security_question= trustee.security_answer
+    %p
+    %br
+    
+    %span.instructional_copy 
+      If you choose "Correct Answer", this confirms the Trustee's identity and they will be notified by email of your approval.
+    %br
+    %p.input= submit_tag "CORRECT ANSWER - APPROVE", :name => "approve", :style => "width: auto;"
+    %br
+    %span.instructional_copy 
+      If you choose "Incorrect Answer, the trustee will be denied access & will be deleted from your list.
+    %br
+    %p.input= submit_tag "INCORRECT ANSWER - DO NOT APPROVE", :name => "reject", :style => "width: auto;"
+   

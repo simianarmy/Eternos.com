@@ -29,7 +29,7 @@
           = link_to 'Cancel', '#', :id => "toggle_new_trustee", :class => "toggleable", :style => "marging-top:5px"
 
   .half.right
-    #confirmed= render :partial => 'list', :locals => {:title => 'Confirmed', :trustees => @confirmed_trustees}
+    #confirmed= render :partial => 'list', :locals => {:title => 'Verified', :trustees => @confirmed_trustees}
     %br
     #pending= render :partial => 'list', :locals => {:title => 'Pending', :trustees => @pending_trustees}
   .clear &nbsp;

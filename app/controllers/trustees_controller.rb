@@ -87,6 +87,19 @@ class TrusteesController < ApplicationController
     end
   end
   
+  def confirm_answer
+    if @trustee = current_user.trustees.pending.find(params[:id])
+      if params[:approve]
+        @trustee.approved!
+        flash[:notice] = "Trustee #{@trustee.name} has been confirmed"
+      else
+        @trustee.denied!
+        flash[:notice] = "Trustee security answer has been rejected"
+      end
+    end
+    redirect_to trustees_path
+  end
+  
   private
   
   def load_objects
