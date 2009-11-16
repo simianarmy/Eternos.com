@@ -92,7 +92,7 @@
         </div>
         <%= image_tag "errors/rss-top.png" %>
         <div class="rss-box">
-          <% form_remote_for settings.feed_url,
+          <% form_remote_for :feed_url, settings.feed_url,
           :url => add_feed_url_backup_sources_path,
           :loading => "$('progress-bar').show();",
           :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});"  do |f| %>

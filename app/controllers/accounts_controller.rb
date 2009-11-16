@@ -32,7 +32,6 @@ class AccountsController < ApplicationController
     rescue
       # Nothing to say..
     end
-    @use_captcha = @plan.free?
   end
 
   # 1 or 2-step process
@@ -86,7 +85,7 @@ class AccountsController < ApplicationController
         flash_redirect "Your account has been created.", account_setup_url
       end
     else
-      @checked = false
+      @terms_accepted = params[:user][:terms_of_service] == "1"
       @invitation_token = params[:user][:invitation_token]
       
       render :action => 'new'#:layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
@@ -210,6 +209,7 @@ class AccountsController < ApplicationController
     
     def build_plan
       redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(params[:plan])
+      @use_captcha = @plan.free?
     end
     
     def redirect_url

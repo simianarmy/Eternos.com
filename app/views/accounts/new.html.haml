@@ -31,4 +31,4 @@
         - if @plan.allow_subdomain
           = render :partial => 'subdomain_form_fields', :locals => {}
         - fields_for @user, :html => {:id => 'new_user_form'} do |f|
-          = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha}
+          = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha, :checked_terms => @terms_accepted}
