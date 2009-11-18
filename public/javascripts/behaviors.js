@@ -1,22 +1,16 @@
 /* $Id$ */
 //
 // Behaviors for LowPro library
-
 // For rails csrf protection - generates authenticity code token for 
 // request uris
-
-var AJ =
-{
-  encode_authenticity_token:function( token )
-  {
-      return encodeURIComponent( $F(token) )
-  },
-  authenticity_token_query_parameter_for_page:function()
-  {
-      return 'authenticity_token=' + AJ.encode_authenticity_token(
-        $$( 'input[type=hidden][name=authenticity_token]' ).first()
-			);
-  },
+var AJ = {
+	encode_authenticity_token: function(token) {
+		return encodeURIComponent($F(token));
+	},
+	authenticity_token_query_parameter_for_page: function() {
+		return 'authenticity_token=' + AJ.encode_authenticity_token(
+		$$('input[type=hidden][name=authenticity_token]').first());
+	},
 	busy_options: function(id) {
 		var options = {
 			onLoading: function() {
@@ -44,13 +38,13 @@ var ToggleEffects = {
 var FCKCollection = function() {
 	var instances = [];
 	var that = {};
-	
+
 	var add_fck = function(fck) {
 		console.log("Adding FCKeditor " + fck.Name);
 		instances[instances.length] = fck;
 	};
 	that.add_fck = add_fck;
-	
+
 	that.get_fck = function(id) {
 		return instances.find(function(fck) {
 			return fck.Name === id;
@@ -64,13 +58,11 @@ FCKeditor_OnComplete = fckCollection.add_fck;
 
 // Form Behaviors 
 //
-
 Delete = Behavior.create({
-	onclick: function( event ) {
-		if ( confirm( 'Are you sure?' ) ) {
+	onclick: function(event) {
+		if (confirm('Are you sure?')) {
 			return true;
-		}
-		else {
+		} else {
 			event.stop();
 			return false;
 		}
@@ -78,50 +70,49 @@ Delete = Behavior.create({
 });
 
 // For ajax delete links - can we extend Remote.Link to simplify?
+Remote.Delete = Behavior.create(Remote.Base, {
+	onclick: function(event) {
+		var element = Event.element(event);
 
-Remote.Delete = Behavior.create( Remote.Base, {
-  onclick: function( event ) {
-    var element = Event.element( event );
-		
-    if ( element.hasClassName( 'remote_delete' ) ) {
+		if (element.hasClassName('remote_delete')) {
 			// Get parent link if we are an image
 			if (!element.href) element = element.up('a');
 			if (!element) return false;
-			
-      if ( confirm( 'Are you sure?' ) ) {
-				var busy = element.readAttribute('busy_id');
-        var options = Object.extend({
-            url:        element.href.gsub( '/destroy$', '' ),
-            method:     'delete',
-            parameters: AJ.authenticity_token_query_parameter_for_page()
-        }, AJ.busy_options(busy));
 
-        options = Object.extend( options, this.options );
-        this._makeRequest( options );
-      }
-      return false;
-    }
-    return true;
-  }
+			if (confirm('Are you sure?')) {
+				var busy = element.readAttribute('busy_id');
+				var options = Object.extend({
+					url: element.href.gsub('/destroy$', ''),
+					method: 'delete',
+					parameters: AJ.authenticity_token_query_parameter_for_page()
+				},
+				AJ.busy_options(busy));
+
+				options = Object.extend(options, this.options);
+				this._makeRequest(options);
+			}
+			return false;
+		}
+		return true;
+	}
 });
 
-RemoteForm = Behavior.create( Remote.Form, {
+RemoteForm = Behavior.create(Remote.Form, {
 	initialize: function($super, options) {
 		// Check for spinner element id option
 		// Add ajax options to remote form submit if any
-		var options = {};
-		if (rel = this.element.readAttribute('rel')) {
+		if ((rel = this.element.readAttribute('rel')) != null) {
 			var opts = rel.evalJSON();
 			if (opts.busy_id) {
 				options = Object.extend(options, AJ.busy_options(opts.busy_id));
 			}
 		}
 		// observe custom event that you fire elsewhere
-		this.element.observe('form:data_changed',this.ajaxsubmit.bindAsEventListener(this));
-		
+		this.element.observe('form:data_changed', this.ajaxsubmit.bindAsEventListener(this));
+
 		$super(options);
 	},
-	ajaxsubmit : function(event) {
+	ajaxsubmit: function(event) {
 		// without this line, you'll get an error 
 		this._submitButton = this.element;
 
@@ -132,7 +123,6 @@ RemoteForm = Behavior.create( Remote.Form, {
 
 // For form text inputs - displays default value inside input
 // using defaultValueActsAsHint function
-
 var DefaultValueAsHint = Behavior.create({
 	initialize: function() {
 		def = this.element.readAttribute('defaultValue');
@@ -156,10 +146,9 @@ var TabbedForms = Behavior.create({
 });
 
 // Validate terms of service checkbox
-
 var FormTermsValidation = Behavior.create({
 	onsubmit: function(evt) {
-		if (! $('terms_of_service').checked) {
+		if (!$('terms_of_service').checked) {
 			alert('Please accept the Terms of Use');
 			evt.stop();
 			return false;
@@ -176,18 +165,16 @@ var FormTermsValidation = Behavior.create({
 // class => toggle_on_select
 // 	and/or
 // class => submit_on_change
-
 var FormSelect = Behavior.create({
 	initialize: function() {
 		this.lastSelectedValue = this.element.selectedIndex;
 		this.autoSubmit = this.element.hasClassName('submit_on_change');
-	
-		if (this.element.hasClassName('toggle_on_select') && 
-			(opts = this.element.readAttribute('rel'))) {
+
+		if (this.element.hasClassName('toggle_on_select') && (opts = this.element.readAttribute('rel'))) {
 			opts = opts.evalJSON();
 			this.toggleVal = opts.toggleValue;
 			this.toggleEl = opts.toggleElement;
-	
+
 			// Show if selected on load
 			if (this.lastSelectedValue == this.toggleEl) {
 				$(this.toggleEl).removeClassName('hidden');
@@ -197,8 +184,8 @@ var FormSelect = Behavior.create({
 	onchange: function(evt) {
 		var toggledOn = false;
 		var target = evt.target;
-		var opt = target.options[target.selectedIndex]
-		
+		var opt = target.options[target.selectedIndex];
+
 		if (this.toggleVal) {
 			if (this.toggleVal == opt.value) {
 				// Display element named as key value
@@ -208,9 +195,9 @@ var FormSelect = Behavior.create({
 				// Hide element when non-target option selected
 				ToggleEffects.hide(this.toggleEl);
 			}
-		} 
+		}
 		if (this.autoSubmit && !toggledOn) {
-			target.fire('form:data_changed')
+			target.fire('form:data_changed');
 		}
 		this.lastSelectedValue = opt.value;
 	}
@@ -218,23 +205,23 @@ var FormSelect = Behavior.create({
 
 // Helper for jquery autocomplete - calls autocomplete method
 // with input textfield id
-
 AutoCompleteInput = Behavior.create({
 	initialize: function() {
-		id = this.element.id
-		jQuery("input#"+id).autocomplete("auto_complete_for_" + id)
+		id = this.element.id;
+		jQuery("input#" + id).autocomplete("auto_complete_for_" + id);
 	}
 });
 
 // For form radio groups where each button is associated with an element 
 // that is displayed on click.
 // Only one element can be displayed at a time, just like a radio group button.
-
 var RadioGroupToggle = Behavior.create({
 	initialize: function() {
 		var that = this;
-		this.opts = {buttons: []};
-		
+		this.opts = {
+			buttons: []
+		};
+
 		$A(this.element.select('input[type=radio]')).each(function(radio) {
 			// If there exists a radio's associated element to toggle on click
 			var id;
@@ -243,12 +230,16 @@ var RadioGroupToggle = Behavior.create({
 				if ($(id) !== null) {
 					that.opts.buttons.push({
 						id: radio.id,
-						on: function() { ToggleEffects.show_with_highlight(id); }, 
-						off: function() { ToggleEffects.hide(id); }
+						on: function() {
+							ToggleEffects.show_with_highlight(id);
+						},
+						off: function() {
+							ToggleEffects.hide(id);
+						}
 					});
 				}
 				// and attach a click handler to the radio button
-				Event.observe(radio, 'click', function() { 
+				Event.observe(radio, 'click', function() {
 					that.on_radio_click_toggle(radio);
 				});
 			}
@@ -256,7 +247,7 @@ var RadioGroupToggle = Behavior.create({
 	},
 	on_radio_click_toggle: function(el) {
 		// Toggle on radio button's matching element, hide all others
-		for (var i=0; i<this.opts.buttons.length; i++) {
+		for (var i = 0; i < this.opts.buttons.length; i++) {
 			if (this.opts.buttons[i].id === el.id) {
 				this.opts.buttons[i].on();
 			} else {
@@ -268,9 +259,8 @@ var RadioGroupToggle = Behavior.create({
 
 // For address country & region selects
 // Updates region select using Ajax query on a country selection change
-
 var AjaxCountryRegionSelect = Behavior.create({
-	initialize: function() {     
+	initialize: function() {
 		this.opts = {
 			country_select_id: this.element.id,
 			region_select_id: this.element.readAttribute('region_select_id'),
@@ -283,32 +273,35 @@ var AjaxCountryRegionSelect = Behavior.create({
 	onchange: function(evt) {
 		if (this.opts) {
 			var params = 'select_id=' + this.opts.region_select_id + '&country_id=' + this.element.value;
-			new Ajax.Request(this.opts.regions_url, 
-				Object.extend({asynchronous:true, evalScripts:true, method: 'get', parameters: params}));
+			new Ajax.Request(this.opts.regions_url, Object.extend({
+				asynchronous: true,
+				evalScripts: true,
+				method: 'get',
+				parameters: params
+			}));
 		}
 	}
 });
 
 // Helpers for Lightview library
-
 var LightviewPopup = Behavior.create({
 	initialize: function(rel) {
 		this.rel = rel;
 		this.opts = {
-			autosize:true, 
+			autosize: true,
 			ajax: {
-				evalScripts: true, 
+				evalScripts: true,
 				method: 'get'
 			}
 		};
 	},
 	onclick: function(evt) {
-		if (rel = this.element.readAttribute('rel')) {
+		if ((rel = this.element.readAttribute('rel')) != null) {
 			this.opts = Object.extend(rel.evalJSON(), {});
 		}
 		Lightview.show({
 			href: evt.currentTarget.href,
-			rel: this.rel, 
+			rel: this.rel,
 			title: evt.currentTarget.title,
 			options: this.opts
 		});
@@ -322,27 +315,26 @@ var LightviewClose = Behavior.create({
 	// (which cannot be caught any other way - b/c it is an iframe type?)
 	initialize: function() {
 		this.element.observe('lightview:hidden', function(evt) {
-	    evt.stop();
-	 	});
+			evt.stop();
+		});
 	}
 });
 
 // Helpers for Prototip library
-
 var PrototipBehavior = Behavior.create({
 	initialize: function() {
 		// Parse json string of options from rel attribute
-		this.tipOpts = {	
+		this.tipOpts = {
 			width: '400px',
 			border: 6,
-    	borderColor: '#74C5FF',
-    	fixed: true,
-    	hideOthers: true,
-    	viewport: true
+			borderColor: '#74C5FF',
+			fixed: true,
+			hideOthers: true,
+			viewport: true
 		};
 		this.opts = {};
 		try {
-			if (rel = this.element.readAttribute('rel')) {
+			if ((rel = this.element.readAttribute('rel')) != null) {
 				this.tipOpts = Object.extend(rel.evalJSON(), this.tipOpts);
 			}
 		} catch(err) {
@@ -350,10 +342,14 @@ var PrototipBehavior = Behavior.create({
 		}
 		if (this.tipOpts.showOn === 'click') {
 			this.tipOpts = Object.extend({
-	    	hideOn: { element: 'closeButton', event: 'click' }
-			}, this.tipOpts);
+				hideOn: {
+					element: 'closeButton',
+					event: 'click'
+				}
+			},
+			this.tipOpts);
 		}
-		if (tooltip = this.element.next('.tooltip')) {
+		if ((tooltip = this.element.next('.tooltip')) != null) {
 			$(tooltip).hide();
 			new Tip(this.element, tooltip, this.tipOpts);
 		}
@@ -373,13 +369,12 @@ var GalleryItem = Behavior.create({
 // Usage:
 // Make clickable element with any id (ie: show-me) and class: toggleable
 // Make div to show/hide with id using prefix: toggle_ (ie: toggle_show-me)
-
 var Toggle = Behavior.create({
 	onclick: function(evt) {
 		// Extract div to toggle from id
 		if ((m = evt.target.id.match(/toggle_(\w+)/)) && (id = m[1])) {
 			evt.stop();
-			
+
 			if ($(id).getStyle('display') == 'none') {
 				ToggleEffects.show_with_highlight(id);
 			} else {
@@ -397,21 +392,21 @@ var WysiwygDropTarget = Behavior.create({
 		this.editor = undefined;
 		this.editor_id = undefined;
 		this.wysiwyg = wysiwyg();
-		
+
 		var ta = this.element.down('textarea');
 		if (ta !== undefined) {
 			this.editor_id = ta.id;
-			
+
 			Droppables.add(this.element.id, {
 				hoverclass: 'hover',
-				onDrop:function(element, dropon) {
+				onDrop: function(element, dropon) {
 					if (this.editor === undefined) {
 						this.editor = fckCollection.get_fck(this.editor_id);
 					}
 					if (this.editor !== undefined) {
 						var drop_text = this.wysiwyg.get_artifact_html(element);
-			      this.editor.InsertHtml(drop_text);
-			   	}
+						this.editor.InsertHtml(drop_text);
+					}
 				}.bind(this)
 			});
 		}
@@ -427,7 +422,7 @@ var WysiwygPreviewer = Behavior.create({
 		this.editor = undefined;
 		this.editor_id = undefined;
 		this.previewer = wysiwyg();
-		
+
 		var ta = (this.element.up('textarea') || this.element.previous('textarea'));
 		if (ta !== undefined) {
 			this.editor_id = ta.id;
@@ -442,7 +437,7 @@ var WysiwygPreviewer = Behavior.create({
 				evt.stop();
 				// Get editor contents & pass to server for filtering - display results
 				var text = this.editor.GetXHTML();
-				
+
 				Lightview.show({
 					// When creating iframe, cannot use POST request method?
 					href: evt.target.href + '?dialog=1&message=' + encodeURIComponent(text),
@@ -466,12 +461,13 @@ var WysiwygPreviewer = Behavior.create({
 // Wrapper to Scriptaculous Draggable constructor
 var DraggableObject = Behavior.create({
 	initialize: function() {
-		new Draggable(this.element.id, {revert: true});
+		new Draggable(this.element.id, {
+			revert: true
+		});
 	}
 });
 
 // Wrapper for Accordion library
-
 var Accordion = Behavior.create({
 	initialize: function() {
 		new Accordion(this.element);
@@ -479,25 +475,25 @@ var Accordion = Behavior.create({
 });
 
 // Creates jQuery scroller
-
 var MediaScroller = Behavior.create({
 	initialize: function() {
-		jQuery('#scroller').sortable({items: '.decoration', opacity: 0.6,
-    	update: function(event, ui) {
-	      jQuery.ajax({
-	        type: "POST",
-	        url: this.readAttribute('target'),
-	        processData: true,
+		jQuery('#scroller').sortable({
+			items: '.decoration',
+			opacity: 0.6,
+			update: function(event, ui) {
+				jQuery.ajax({
+					type: "POST",
+					url: this.readAttribute('target'),
+					processData: true,
 					dataType: 'script',
-	        data: jQuery("#scroller").sortable('serialize') + '&' + AJ.authenticity_token_query_parameter_for_page()
-      	})
-    	}
-  	});
+					data: jQuery("#scroller").sortable('serialize') + '&' + AJ.authenticity_token_query_parameter_for_page()
+				});
+			}
+		});
 	}
 });
 
 // Interface to Slideshow library
-
 var Slideshow = Behavior.create({
 	initialize: function(opts) {
 		Event.observe(document, 'dom:loaded', function() {
@@ -512,14 +508,15 @@ var Slideshow = Behavior.create({
 		var element = Event.element(evt);
 		if (element.hasClassName('play_slideshow')) {
 			evt.stop();
-			if (!this.slideshow) { this.slideshow = new SlideShow(this.element, opts); }
+			if (!this.slideshow) {
+				this.slideshow = new SlideShow(this.element, opts);
+			}
 			this.slideshow.start(element);
 		}
 	}
 });
 
 // Wrapper for Flowplayer library
-
 var Flowplayer = Behavior.create({
 	initialize: function(options) {
 		this.opts = options || {};
@@ -532,9 +529,9 @@ var Flowplayer = Behavior.create({
 			// Create Flowplayer & use 1st frame of video as splash image --> 
 			flowplayer(this.element.id, FlowplayerSwfUrl, {
 				key: FLOWPLAYER_PRODUCT_KEY,
-				clip: { 
+				clip: {
 					url: url,
-					autoPlay: this.opts.autoPlay || false,  
+					autoPlay: this.opts.autoPlay || false,
 					autoBuffering: true
 					//initialScale: this.opts.scale || 'scale'
 				},
@@ -562,13 +559,19 @@ Event.addBehavior({
 	'.delete_link': Delete,
 	'.remote_delete': Remote.Delete,
 	'#item_list': Remote.Delete,
-	'.tooltip-target' : PrototipBehavior,
+	'.tooltip-target': PrototipBehavior,
 	'.withHint': DefaultValueAsHint,
 	'.accordion': Accordion,
-	'#slideshow': Slideshow({with_track: false}),
-	'#slideshow-narrated': Slideshow({with_track: true}),
+	'#slideshow': Slideshow({
+		with_track: false
+	}),
+	'#slideshow-narrated': Slideshow({
+		with_track: true
+	}),
 	'.video_player': Flowplayer,
-	'a.popup_video_player': Flowplayer({popup: true}),
+	'a.popup_video_player': Flowplayer({
+		popup: true
+	}),
 	'.catch_lightview_close': LightviewClose,
 	'.remote_form': RemoteForm,
 	'select': FormSelect,
@@ -579,7 +582,7 @@ Event.addBehavior({
 	'.draggable': DraggableObject,
 	'.fckeditor-drop-container': WysiwygDropTarget,
 	'.wysiwyg_preview': WysiwygPreviewer,
-	
+
 	// inline behaviors
 	'#remote_form_submit_button:click': function(e) {
 		e.element().up('form').fire('form:data_changed');
@@ -587,33 +590,30 @@ Event.addBehavior({
 	},
 	'#decoration_gallery_form:submit': function(e) {
 		this.selected_content.value = $$('.gallery_item-selected').collect(function(val) {
-			return /_(\d+)$/.exec(val.id)[1]; 
+			return (/_(\d+)$/).exec(val.id)[1];
 		});
 		if (this.selected_content.value == '') {
 			alert('Please select at least one');
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	},
 	'#plan_form:submit': function(evt) {
-		if (plan = $RF('plan_form', 'plan')) { 
-			$('plan_form').action = $('plan_form').action + '/' + plan; 
-			return true; 
-		} else { 
+		if ((plan = $RF('plan_form', 'plan')) != null) {
+			$('plan_form').action = $('plan_form').action + '/' + plan;
+			return true;
+		} else {
 			alert('Please select an account');
 			evt.stop();
-			return false; 
+			return false;
 		}
 	},
 	// Select text on focus
-  'input[type=text]:focus, textarea:focus': function(e) {
-    this.select();
-  }
+	'input[type=text]:focus, textarea:focus': function(e) {
+		this.select();
+	}
 });
-Event.addBehavior.reassignAfterAjax = true; 
+Event.addBehavior.reassignAfterAjax = true;
 
 // jQuery section
-
-

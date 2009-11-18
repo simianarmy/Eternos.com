@@ -160,13 +160,17 @@ a.paginate-btn:hover{
 	text-decoration:underline;
 }
 
+#proximity_search {
+	float: left;
+}
+
 .btn-left{
 	width:12px;
 	height:22px;
 	background:url(/images/arrow-left.gif) 0 0;
 	border:none;
 	display:block;
-	float:left;
+	float: left;
 	margin:0 10px 0 0;
 }
 
@@ -180,7 +184,7 @@ a.paginate-btn:hover{
   background:url(/images/arrow-right.gif) 0 0;
   border:none;
   display:block;
-  float:left;
+	float: left;
   margin:0 10px 0 10px;
 }
 
@@ -456,8 +460,29 @@ a.event_list_inline_item:hover {
 	font-size: 10px;
 }
 
-.tip-hover {
-	/* Display control links on hover */
-	background-color:#ffc;
-	border: 5px solid red;
+.tip-hover-menu {
+	padding: 5px;
+	font-size: 10px;
+	height: 10px;
+}
+
+#tip-hover-menu-items {
+	display:none;
+	list-style:none;
+	margin:0px auto;
+	padding: 5px;
+}
+
+#tip-hover-menu-items li {
+	float:left;
+	margin:0px auto;
+	padding-left: 4px;
+}
+
+.tooltip_container:hover {
+	background-color:#ffc;		
+}
+
+.tooltip_container:hover #tip-hover-menu-items{
+	display:block;
 }
