@@ -4,3 +4,8 @@ Front end JS Integration Testing:
 IE Testing:
   http://shapeshed.com/journal/testing_with_ie6_ie7_and_ie8_on_virtualbox/
   http://www.virtuosimedia.com/tutorials/ultimate-ie6-cheatsheet-how-to-fix-25-internet-explorer-6-bugs
+  
+Live Test Account:
+  Name: sample account
+  foo12@mailinator.com / password1
+  

@@ -455,3 +455,9 @@ a.event_list_inline_item:hover {
 .debug_container {
 	font-size: 10px;
 }
+
+.tip-hover {
+	/* Display control links on hover */
+	background-color:#ffc;
+	border: 5px solid red;
+}

@@ -350,7 +350,7 @@ var PrototipBehavior = Behavior.create({
 		}
 		if (this.tipOpts.showOn === 'click') {
 			this.tipOpts = Object.extend({
-	    	hideOn: { element: 'closeButton', event: 'click' },
+	    	hideOn: { element: 'closeButton', event: 'click' }
 			}, this.tipOpts);
 		}
 		if (tooltip = this.element.next('.tooltip')) {
@@ -535,7 +535,7 @@ var Flowplayer = Behavior.create({
 				clip: { 
 					url: url,
 					autoPlay: this.opts.autoPlay || false,  
-					autoBuffering: true,
+					autoBuffering: true
 					//initialScale: this.opts.scale || 'scale'
 				},
 				logo: {

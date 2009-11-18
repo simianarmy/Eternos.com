@@ -89,11 +89,13 @@ var ETemplates = {
 			eventItemWithTooltip: function () {
 				return new Template('<li class="event_list_item">' +
 				'<div class="event_list_item_container">' +
-				'<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
-				'<div id="evlitt:#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clear"></div></li>');
+				//'<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + 
+				'#{title}<div id="evlitt:#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clear"></div></li>');
 			}(),      
 			eventItemTooltipItem: function () {
-				return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a></div><br/>');
+				return new Template('<div class="event_preview_item_container tooltip_container">' +
+					//'<a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">'
+					'#{content}</div><br/>');
 			}(),
 			mediaTooltip: function() {
 				return new Template('<div class="event_preview_item_container tooltip_container"><div id="playlist">#{playlist}</div></div>');
@@ -117,22 +119,22 @@ var ETemplates = {
 		},
 		tooltipTemplates: {
 			activity_stream_item: function() {
-				return new Template('<div class="tooltip_as">#{message}#{author}#{time}#{source}#{media}</div>');
+				return new Template('<div class="tooltip_as tt-el">#{message}#{author}#{time}#{source}#{media}</div>');
 			}(),
 			image: function() {
 				return new Template('<img src="#{img_url}"><br/>#{caption}<br/>');
 			}(),
 			feed: function() {
-				return new Template('<div class="tooltip_feed">#{preview}#{message}#{source}#{time}</div>');
+				return new Template('<div class="tooltip_feed tt-el">#{preview}#{message}#{source}#{time}</div>');
 			}(),
 			video: function() {
-				return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clear"></div>');
+				return new Template('<div class="tooltip_video tt-el"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clear"></div>');
 			}(),
 			address: function() {
-				return new Template('<div class="tooltip_address">#{postal}<br/><span>Type: #{type}</span><br/><span>#{dates}</span></div>');
+				return new Template('<div class="tooltip_address tt-el">#{postal}<br/><span>Type: #{type}</span><br/><span>#{dates}</span></div>');
 			}(),
 			single_line_small: function() {
-				return new Template('<br/><span class="event_time">#{text}</span>');
+				return new Template('<br/><span class="event_time tt-el">#{text}</span>');
 			}()
 		},
 		// Artifacts section templates

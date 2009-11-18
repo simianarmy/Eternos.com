@@ -204,6 +204,7 @@ module LayoutHelper
   def use_timeline
     stylesheet 'timeline'
     
+    use_jquery
     use_prototip
     use_lightview
     use_busy

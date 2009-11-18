@@ -271,6 +271,16 @@ var ETUI = function() {
 			// Assign click handler to each playlist item so that we can make player
 			// visible on click
 			jQuery('#playlist a').click(function() { $('video_section').appear({ duration: 1.0 });});
+			
+			// Add action links on tooltip hover
+			jQuery(".tt-el").hover(
+			  function() {
+			    $(this).addClass('tip-hover');
+			  },
+			  function(){
+			    $(this).removeClass('tip-hover');
+			  }
+			);
 		} else {
 			// Add observer to hide it on click
 			el.observe('click', function(e) {
@@ -1070,7 +1080,7 @@ var ETimeline = function (opts) {
 		},
 		_populate: function () {
       this.doParsing();
-    },
+    }
   });
 
   //Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: Object}
