@@ -275,10 +275,10 @@ var ETUI = function() {
 			// Add action links on tooltip hover
 			jQuery(".tt-el").hover(
 			  function() {
-			    $(this).addClass('tip-hover');
+			//    $(this).addClass('tip-hover');
 			  },
 			  function(){
-			    $(this).removeClass('tip-hover');
+			//    $(this).removeClass('tip-hover');
 			  }
 			);
 		} else {
