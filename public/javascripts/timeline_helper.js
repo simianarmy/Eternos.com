@@ -432,7 +432,7 @@ var ETLEventItems = Class.create({
 		}
 		return this.detailsUrl;
 	},
-	// Popup link code for individual item
+	// show url for 1+ item
 	_getItemDetailsUrl: function(item) {
 		if (item.isArtifact()) {
 			return item.getURL();
@@ -441,6 +441,30 @@ var ETLEventItems = Class.create({
 				memberId: this.options.memberID,
 				eventType: item.type,
 				eventIds: item.getID()
+			});
+		}
+	},
+	// edit url for individual item
+	_getItemEditUrl: function(item) {
+		if (item.isArtifact()) {
+			return item.getURL() + '/edit';
+		} else {
+			return ETemplates.eventListTemplates.editLink.evaluate({
+				memberId: this.options.memberID,
+				eventType: item.type,
+				eventId: item.getID()
+			});
+		}
+	},
+	// delete url for individual item
+	_getItemDeleteUrl: function(item) {
+		if (item.isArtifact()) {
+			return item.getURL() + '/delete';
+		} else {
+			return ETemplates.eventListTemplates.deleteLink.evaluate({
+				memberId: this.options.memberID,
+				eventType: item.type,
+				eventId: item.getID()
 			});
 		}
 	},
@@ -535,6 +559,8 @@ var ETLEventItems = Class.create({
 				item = this.items[i];
 				html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate({
 					event_details_link: this._getItemDetailsUrl(item),
+					event_edit_link: this._getItemEditUrl(item),
+					event_delete_link: this._getItemDeleteUrl(item),
 					details_win_height: winHeight,
 					content: item.getPreviewHtml()
 				});

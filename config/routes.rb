@@ -1,6 +1,8 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :twitter_activity_stream_items
+
   # Singleton resources
   map.resource :account_setup, :controller => 'account_setup', :member => {
     :personal_info => :get, :backup_sources => :get

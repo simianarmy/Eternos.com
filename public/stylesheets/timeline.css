@@ -416,6 +416,7 @@ a.event_list_inline_item:hover {
 .tooltip_container {
 	overflow-y:auto;
 	font-size: 12px;
+	position: relative;
 }
 
 .tooltip_container a {
@@ -461,22 +462,24 @@ a.event_list_inline_item:hover {
 }
 
 .tip-hover-menu {
-	padding: 5px;
 	font-size: 10px;
-	height: 10px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index:100;
+	background-color: white;
 }
 
 #tip-hover-menu-items {
 	display:none;
 	list-style:none;
 	margin:0px auto;
-	padding: 5px;
 }
 
 #tip-hover-menu-items li {
 	float:left;
 	margin:0px auto;
-	padding-left: 4px;
+	padding: 0 5px 0 0;
 }
 
 .tooltip_container:hover {

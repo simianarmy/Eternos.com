@@ -87,7 +87,10 @@ var ETemplates = {
 			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + '<div id="evlitt:#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clear"></div></li>');
 		} (),
 		eventItemTooltipItem: function() {
-			return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{edit_link}"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item"></a></li><li><a href="#{delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0"></a></li></ul><style="clear:both" /></div></div><br/>');
+			// Lightview popup on click
+			return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{event_edit_link}"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul><style="clear:both" /></div></div><br/>');
+			// Ajax populate div on click
+			//return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="new Ajax.Updater(\'item_details\', \'#{event_details_link}\', {asynchronous:true, evalScripts:true, method:\'get\'}); return false;" class="tooltip_item">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{edit_link}"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul><style="clear:both" /></div></div><br/>');
 		} (),
 		mediaTooltip: function() {
 			return new Template('<div class="event_preview_item_container tooltip_container"><div id="playlist">#{playlist}</div></div>');
@@ -103,6 +106,12 @@ var ETemplates = {
 		} (),
 		detailsLink: function() {
 			return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');
+		} (),
+		editLink: function() {
+			return new Template('/#{eventType}/edit/#{eventId}');
+		} (),
+		deleteLink: function() {
+			return new Template('/#{eventType}/destroy/#{eventId}');
 		} (),
 		noEvents: function() {
 			return new Template('<div class="event_list_group_even">' + 'No events for this month.</div>');
