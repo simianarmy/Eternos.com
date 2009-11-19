@@ -1,20 +1,50 @@
 <!-- Forgive the mess, this changed hands a few times.. -->
 <div id="account-setting-content" class="makeScroll">
   <div id="address_book">
-  
-   <table id="table-history-addresses" class="table-form4" border="0" cellspacing="0" cellpadding="0">
-     <thead class="scrollContent">
+    <table id="table-history-addresses" class="table-form4" border="0" cellspacing="0" cellpadding="0">
+      <thead class="scrollContent">
         <tr>
           <td>
             <div class="title5">Addresses</div>
             <div class="add-btn-box">
-            <%= link_to_function "+ Add New" do |page|
-              page.insert_html :bottom, :address_book, :partial => "new_address", 
-                :locals => { :address_book => settings.address_book, :addressable => 'address_book', 
+              <%= link_to_function "+ Add New" do |page|
+                page.replace_html :new_address_container, :partial => "new_address", 
+                  :locals => { :address_book => settings.address_book, :addressable => 'address_book', 
                   :location => '', :address => (settings.address || settings.address_book.build_address) } 
-              end    
-              %> 
-              <%= #link_to_function "+ Add New", "addRowAddress(); ", :class => 'add1-text' 
+                end    
+                %> 
+                <%= #link_to_function "+ Add New", "addRowAddress(); ", :class => 'add1-text' 
+                %>
+              </div>
+              <div style="clear:both"></div>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>
+            <div id="new_address_container"></div>
+            <div id="table-addresses">
+              <%= render :partial => 'addresses', :locals => {:addresses => settings.addresses} %>
+            </div>
+          </td></tr>
+        </tbody>
+    </table>
+  </div>
+  <br/>
+  <div class="line3"></div>
+  
+  <div id="careers">
+    <table id="table-history-jobs" class="table-form4" border="0" cellspacing="0" cellpadding="0">
+      <thead class="scrollContent">
+        <tr>
+          <td>
+            <div class="title5">Jobs</div>
+            <div class="add-btn-box">
+              <%= link_to_function "+ Add New" do |page|
+                page.replace_html :new_job_container, :partial => "new_job", :locals => {:job => settings.job}
+              end
+              %>
+              <%= #link_to_function "+ Add New", "addRowJob();", :class => 'add1-text' 
               %>
             </div>
             <div style="clear:both"></div>
@@ -23,224 +53,194 @@
       </thead>
       <tbody>
         <tr><td>
-        <div id="address_book_notice" class="error-message"></div>
-        <div id="table-addresses">
-          <%= render :partial => 'address', :locals => {:addresses => settings.addresses} %>
-        </div>
+          <div id="new_job_container"></div>
+          <div id="table-jobs">
+            <%= render :partial => 'jobs', :locals => {:jobs => settings.jobs} %>
+          </div>
+        </td></tr>
+      </tbody>
+    </table>    
+  </div>
+  <br/>
+  <div class="line3"></div>
+  
+  <div id="education">
+    <table class="table-form4" id="table-history-schools" border="0" cellspacing="0" cellpadding="0">
+      <thead class="scrollContent">
+        <tr>
+          <td>
+            <div class="title5">Education</div>
+            <div class="add-btn-box">
+              <%= link_to_function "+ Add New" do |page|
+                page.replace_html :new_school_container, :partial => "new_school", :locals => {:school => settings.school}
+              end
+              %>
+            <%= #link_to_function "+ Add New", "addRowSchool();", :class => 'add1-text' 
+            %>
+            </div>
+            <div style="clear:both"></div>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>
+          <div id="new_school_container"></div>
+          <div id="table-schools">
+            <%= render :partial => 'schools', :locals => {:schools => settings.schools} %>
+          </div>
         </td></tr>
       </tbody>
     </table>
   </div>
   <br/>
-	<div class="line3"></div>
-
-<table class="table-form4" id="table-history-jobs" border="0" cellspacing="0" cellpadding="0">
-<thead class="scrollContent">
-    <tr>
-			<td>
-        <div class="title5">Jobs</div>
-				<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowJob();", :class => 'add1-text' %></div>
-				<div style="clear:both"></div>
-      </td>
-    </tr>
-    </thead>
-    <tbody id="table-jobs">
-      <%= render :partial => 'new_job', :locals => {:jobs => settings.jobs} %>
-    </tbody>
-  </table>
-<% form_remote_for settings.job, 
-                      :url => {:action => 'add_another_job'},
-                      :loading => "$('image-loading-job').show();",
-                      :complete => "rstCountJob();$('image-loading-job').hide();" do -%>
-                        <%= hidden_field_tag "form_job" %>
-  <div id="table-form-job-wrapper"><div id="table-form-job"></div></div>
-    
-  <div>
-      <%= submit_tag 'Save', :id => 'save-button-job', :style => 'display:none;', :class => 'submit-btn3' %>
-      <%= image_tag "spinner.gif", :id => 'image-loading-job', :style => 'display:none;' %>
+  <div class="line3"></div>
+  <!--This doesn't make any sense right now
+  <div id="medical_history">
+    <table class="table-form4" id="table-history-medicals" border="0" cellspacing="0" cellpadding="0">
+      <thead class="scrollContent">
+        <tr>
+          <td>
+            <div class="title5">Medical Information</div>
+            <div class="add-btn-box">
+              <%= link_to_function "+ Add New" do |page|
+                page.replace_html :new_medical_container, :partial => "new_medical", :locals => {:medical => settings.medical}
+              end
+              %>
+            </div>
+            <div style="clear:both"></div>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>
+          <div id="new_medical_container"></div>
+          <div id="table-medicals">
+            <%= render :partial => 'medicals', :locals => {:schools => settings.medicals} %>
+          </div>
+        </td></tr>
+      </tbody>
+    </table>
   </div>
-  <br />
-  <div id="error-message-job" class="error-message"></div> 
-<% end -%>
-
-<div class="line3"></div>
-	
-	<table class="table-form4" id="table-history-schools" border="0" cellspacing="0" cellpadding="0">
-  <thead class="scrollContent">
-    <tr>
-			<td>
-        <div class="title5">Schools</div>
-				<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowSchool();", :class => 'add1-text' %></div>
-				<div style="clear:both"></div>
-      </td>
-    </tr>
-    </thead>
-    <tbody id="table-schools">
-      <%= render :partial => 'new_school', :locals => {:schools => settings.schools} %>
-    </tbody>
-  </table>
-<% form_remote_for settings.school, 
-                  :url => {:action => 'add_another_school'},
-                  :loading => "$('image-loading-school').show();",
-                  :complete => "rstCountSchool();$('image-loading-school').hide();" do -%>
-            <%= hidden_field_tag "form_school" %>
-  <div id="table-form-school-wrapper"><div id="table-form-school"></div></div>
-  <div>
-      <%= submit_tag 'Save', :id => 'save-button-school', :style => 'display:none;', :class => 'submit-btn3' %>
-      <%= image_tag "spinner.gif", :id => 'image-loading-school', :style => 'display:none;' %>
-  </div>
-  <br />
-  <div id="error-message-school" class="error-message"></div> 
-<% end -%>
-
-
-<div class="line3"></div>
-
-
-<table class="table-form4" id="table-history-medicals" border="0" cellspacing="0" cellpadding="0">
-  <thead class="scrollContent">
-    <tr>
-			<td>
-        <div class="title5">Medical Information</div>
-				<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowMedical();", :class => 'add1-text' %></div>
-				<div style="clear:both"></div>
-      </td>
-    </tr>
-    </thead>
-    <tbody id="table-medicals">
-      <%= render :partial => 'new_medical', :locals => {:medicals => settings.medicals} %>
-    </tbody>
-  </table>
-<% form_remote_for settings.medical, 
-                              :url => {:action => 'add_another_medical'},
-                              :loading => "$('image-loading-medical').show();",
-                              :complete => "rstCountMedical();$('image-loading-medical').hide();" do -%>
-                                <%= hidden_field_tag "form_medical" %>
-  <div id="table-form-medical-wrapper"><div id="table-form-medical"></div></div>
-  <div>
-      <%= submit_tag 'Save', :id => 'save-button-medical', :style => 'display:none;', :class => 'submit-btn3' %>
-      <%= image_tag "spinner.gif", :id => 'image-loading-medical', :style => 'display:none;' %>
-  </div>
-  <br />
-  <div id="error-message-medical" class="error-message"></div> 
-<% end -%>
-
-<div class="line3"></div>
-
-<table class="table-form4" id="table-history-medical-conditions" border="0" cellspacing="0" cellpadding="0">
-	  <thead class="scrollContent">
-	    <tr>
-				<td>
-          <div class="title5">Medical Condition</div>
-					<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowMedicalCondition();", :class => 'add1-text' %></div>
-					<div style="clear:both"></div>
-        </td>
-	    </tr>
+  <br/>
+  <div class="line3"></div>
+-->
+    <table class="table-form4" id="table-history-medical-conditions" border="0" cellspacing="0" cellpadding="0">
+      <thead class="scrollContent">
+        <tr>
+          <td>
+            <div class="title5">Medical Condition</div>
+            <div class="add-btn-box"><%= link_to_function "+ Add New", "addRowMedicalCondition();", :class => 'add1-text' %></div>
+            <div style="clear:both"></div>
+          </td>
+        </tr>
       </thead>
       <tbody id="table-medical-conditions">
         <%= render :partial => 'new_medical_condition', :locals => {:medical_conditions => settings.medical_conditions} %>
       </tbody>
     </table>
-<% form_remote_for settings.medical_condition,
-                                      :url => {:action => 'add_another_medical_condition'},
-                                      :loading => "$('image-loading-medical-condition').show();",
-                                      :complete => "rstCountMedicalCondition();$('image-loading-medical-condition').hide();" do -%>
-                                        <%= hidden_field_tag "form_medical_condition" %>
-  <div id="table-form-medical-condition-wrapper"><div id="table-form-medical-condition"></div></div>
-  <div>
+    <% form_remote_for settings.medical_condition,
+    :url => {:action => 'new_medical_condition'},
+    :loading => "$('image-loading-medical-condition').show();",
+    :complete => "rstCountMedicalCondition();$('image-loading-medical-condition').hide();" do -%>
+    <%= hidden_field_tag "form_medical_condition" %>
+    <div id="table-form-medical-condition-wrapper"><div id="table-form-medical-condition"></div></div>
+    <div>
       <%= submit_tag 'Save', :id => 'save-button-medical-condition', :style => 'display:none;', :class => 'submit-btn3' %>
       <%= image_tag "spinner.gif", :id => 'image-loading-medical-condition', :style => 'display:none;' %>
-  </div>
-  <br />
-  <div id="error-message-medical-condition" class="error-message"></div> 
-<% end -%>
+    </div>
+    <br />
+    <div id="error-message-medical-condition" class="error-message"></div> 
+    <% end -%>
 
-<div class="line3"></div>
+    <div class="line3"></div>
 
-	<table class="table-form4" id="table-history-families" border="0" cellspacing="0" cellpadding="0">
-		  <thead class="scrollContent">
-		    <tr>
-					<td>
-	          <div class="title5">Family Relationships</div>
-						<div class="add-btn-box"><%= link_to_function "+ Add New", "addRowFamily();", :class => 'add1-text' %></div>
-						<div style="clear:both"></div>
-	        </td>
-		    </tr>
-	      </thead>
-	      <tbody id="table-families">
-	        <%= render :partial => 'new_family', :locals => {:families => settings.families} %>
-	      </tbody>
-	    </table>
-<% form_remote_for settings.family, 
-                              :url => {:action => 'add_another_family'},
-                              :loading => "$('image-loading-family').show();",
-                              :complete => "rstCountFamily();$('image-loading-family').hide();" do -%>
-                                <%= hidden_field_tag "form_family" %>
-  <div id="table-form-family-wrapper"><div id="table-form-family"></div></div>
-  <div>
+    <table class="table-form4" id="table-history-families" border="0" cellspacing="0" cellpadding="0">
+      <thead class="scrollContent">
+        <tr>
+          <td>
+            <div class="title5">Family Relationships</div>
+            <div class="add-btn-box"><%= link_to_function "+ Add New", "addRowFamily();", :class => 'add1-text' %></div>
+            <div style="clear:both"></div>
+          </td>
+        </tr>
+      </thead>
+      <tbody id="table-families">
+        <%= render :partial => 'new_family', :locals => {:families => settings.families} %>
+      </tbody>
+    </table>
+    <% form_remote_for settings.family, 
+    :url => {:action => 'new_family'},
+    :loading => "$('image-loading-family').show();",
+    :complete => "rstCountFamily();$('image-loading-family').hide();" do -%>
+    <%= hidden_field_tag "form_family" %>
+    <div id="table-form-family-wrapper"><div id="table-form-family"></div></div>
+    <div>
       <%= submit_tag 'Save', :id => 'save-button-family', :style => 'display:none;', :class => 'submit-btn3', :onclick => 'window.counter = 1;' %>
       <%= image_tag "spinner.gif", :id => 'image-loading-family', :style => 'display:none;' %>
-  </div>
-  <br />
-  <div id="error-message-family" class="error-message"></div> 
-<% end -%>
+    </div>
+    <br />
+    <div id="error-message-family" class="error-message"></div> 
+    <% end -%>
 
-<div class="line3"></div>
-
-  <table class="table-form4" id="table-history-relationships" border="0" cellspacing="0" cellpadding="0">
-    <thead class="scrollContent">
-      <tr>
-        <td>
-          <div class="title5">Personal Relationships</div>
-          <div class="add-btn-box">
-            <%= link_to_function "+ Add New", :class => 'add1-text' do |page|
-              page.insert_html :bottom, 'table-form-relationship', :partial => "new_relationship", 
-              :locals => { :relationship => settings.relationship } 
-              end    
-              %>
-          </div>
-          <div style="clear:both"></div>
-        </td>
-      </tr>
-    </thead>
-    <tbody id="relationships">
-      <%= render :partial => 'relationship', :locals => {:relationships => settings.relationships} %>
-    </tbody>
-  </table>
-      
-      <div id="table-form-relationship-wrapper">
-        <div id="relationship_notice" class="error-message"></div> 
-        <div id="table-form-relationship"></div>
-      </div>
-  
-<div class="line3"></div>
+    <div class="line3"></div>
+    
+    <div id="relationships">
+      <table class="table-form4" id="table-history-relationships" border="0" cellspacing="0" cellpadding="0">
+        <thead class="scrollContent">
+          <tr>
+            <td>
+              <div class="title5">Personal Relationships</div>
+              <div class="add-btn-box">
+                <%= link_to_function "+ Add New", :class => 'add1-text' do |page|
+                  page.replace_html :new_relationship_container, :partial => "new_relationship", 
+                  :locals => { :relationship => settings.relationship } 
+                end    
+                %>
+              </div>
+              <div style="clear:both"></div>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>
+            <div id="new_relationship_container"></div>
+            <div id="table-relationships">
+              <%= render :partial => 'relationships', :locals => {:relationships => settings.relationships} %>
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    
+    <div class="line3"></div>
 
 </div>
 
-<%= javascript_tag "
-// This is wrong ... the correct way to do dynamically create form content
-// is in app/views/profiles/_general.html.haml
-// Things that are wrong with this code: 
-// 1) Use of window global variable (bad js, browser incompatible)
-// 2) Use of Rails AR model classes - should be done in the controller
-// 3) Form selects should be created with Rails form helpers - this will surely break one day
+  <%= javascript_tag "
+  // This is wrong ... the correct way to do dynamically create form content
+    // is in app/views/profiles/_general.html.haml
+    // Things that are wrong with this code: 
+    // 1) Use of window global variable (bad js, browser incompatible)
+    // 2) Use of Rails AR model classes - should be done in the controller
+    // 3) Form selects should be created with Rails form helpers - this will surely break one day
 
-window.types = new Array();
-window.types_relationship = new Array();
-"
-%>
+    window.types = new Array();
+    window.types_relationship = new Array();
+    "
+    %>
 
-<script type="text/javascript">
-//<![CDATA[
-<% Circle.find(:all, :order => {:name => " ASC"}).each do |type| -%>
-  <%= "window.types_relationship.push([#{type.id}, '#{escape_javascript(type.name)}']);\n" %>
-<% end %>
+    <script type="text/javascript">
+    //<![CDATA[
+    <% Circle.find(:all, :order => {:name => " ASC"}).each do |type| -%>
+    <%= "window.types_relationship.push([#{type.id}, '#{escape_javascript(type.name)}']);\n" %>
+    <% end %>
 
-<% Family::TYPES.each do |type| -%>
-  <%= "window.types.push(['#{type}', '#{escape_javascript(type)}']);\n" %>
-<% end %>
+    <% Family::TYPES.each do |type| -%>
+    <%= "window.types.push(['#{type}', '#{escape_javascript(type)}']);\n" %>
+    <% end %>
 
-//]]>
-</script>
+    //]]>
+    </script>
 
 

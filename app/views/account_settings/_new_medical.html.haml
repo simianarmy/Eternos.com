@@ -1,0 +1,43 @@
+#medical_notice.error-message
+#new_medical
+  - form_remote_for :medical, :url => {:controller => 'account_settings', :action => 'new_medical'} do |form|
+    #table-form-medical-wrapper
+      #table-form-medical
+        %table#add-new-medical.popup-newbox
+          %tr
+            %td{:colspan => "3"}
+              .title6
+                Add Medical Information
+                = link_to_function "Cancel", "$('new_medical').remove();", :class => "blue-btn3"
+          %tr
+            %td{:colspan => "3"}
+              %hr.line1
+          %tr
+            %td.coll-form1 Blood Type
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :company, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Disorder
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :title, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Physician Name
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :description, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Physician Phone
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :description, :class => 'textbox5'
+          
+          %tr
+            %td.coll-form1 Notes
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :notes, :class => 'textarea1'
+    
+    = submit_tag "Save", :id => "save-button-medical", :class => "submit-btn3"
+    %br
+.clear
+:javascript
+  // Required when rendering page via Ajax call
+  datePickerController.create();
+  resizeScrollbar();

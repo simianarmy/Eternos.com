@@ -869,7 +869,15 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 	margin:10px 20px 0 10px;
 }
 
-.coll-form1{width:100px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
+table.popup-newbox tr td {
+	text-align:left;
+	font-family:arial;
+	font-size:11px;
+	color:#393b3e;
+	vertical-align:center;
+}
+
+.coll-form1{width:100px;}
 .coll-form2{width:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
 
 .coll-form1b{width:100px; padding-top:5px; text-align:left;font-family:arial;font-size:11px;color:#393b3e;}
@@ -896,8 +904,10 @@ a.step6incomplete-btn:hover{background:url(/images/errors/step6-incomplete.png) 
 .textbox3{width:176px; height:20px ;margin:2px 0 2px 0;}
 .textbox4{width:90px; height:20px;border:1px solid #898989; margin:2px 0 2px 0;}
 
+/* this is all pretty f'd ... explicit styles for every form field??? */
+
 #address_book_timezone{width:240px; height:20px;margin:2px 0 2px 0;font-family:arial;font-size:10.5px}
-/* this is f'd
+/*
 #address_book_gender_male{margin:5px 3px 5px -1px;}
 #address_book_gender_female{margin:5px 3px 5px 28px;}
 #address_book_gender_transgender{margin:5px 3px 5px 28px;}

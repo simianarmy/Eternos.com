@@ -1,0 +1,52 @@
+#address_notice.error-message
+#new_job
+  - form_remote_for :job, :url => {:controller => 'account_settings', :action => 'new_job'} do |form|
+    #table-form-career-wrapper
+      #table-form-career
+        %table#add-new-career.popup-newbox
+          %tr
+            %td{:colspan => "3"}
+              .title6
+                Add New Job
+                = link_to_function "Cancel", "$('new_job').remove();", :class => "blue-btn3"
+          %tr
+            %td{:colspan => "3"}
+              %hr.line1
+          %tr
+            %td.coll-form1 Company
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :company, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Title
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :title, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Description
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :description, :class => 'textarea1'
+          %tr
+            %td.coll-form1 Start Date
+            %td.coll-form2 :
+            %td.coll-form3
+              = form.date_select_with_datepicker(:start_at, {:add_month_numbers => true, :order => [:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+          %tr
+            %td.coll-form1 End Date
+            %td.coll-form2 :
+            %td.coll-form3
+              #present-job
+                #date-present-job
+                  = form.date_select_with_datepicker(:end_at, {:add_month_numbers => true, :order => [:month,:year], :default => Date.today, :start_year => Date.today.year, :end_year => 100.years.ago.year})
+              = check_box_tag "job[current_job]"
+              %span#text-present-job Current Job
+          %tr
+            %td.coll-form1 Notes
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :notes, :class => 'textarea1'
+    
+    = submit_tag "Save", :id => "save-button-job", :class => "submit-btn3"
+    %br
+.clear
+:javascript
+  // Required when rendering page via Ajax call
+  datePickerController.create();
+  resizeScrollbar();

@@ -1,0 +1,65 @@
+#school_notice.error-message
+#new_school
+  - form_remote_for :school, :url => {:controller => 'account_settings', :action => 'new_school'} do |form|
+    #table-form-school-wrapper
+      #table-form-school
+        %table#add-new-school.popup-newbox
+          %tr
+            %td{:colspan => "3"}
+              .title6
+                Add New School
+                = link_to_function "Cancel", "$('new_school').remove();", :class => "blue-btn3"
+          %tr
+            %td{:colspan => "3"}
+              %hr.line1
+          %tr
+            %td.coll-form1 Name
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :name, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Degree
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :degree, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Fields
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :fields, :class => 'textarea1'
+          %tr
+            %td.coll-form1 Start Date
+            %td.coll-form2 :
+            %td.coll-form3
+              = form.date_select_with_datepicker(:start_at, {:add_month_numbers => true, :order => [:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+          %tr
+            %td.coll-form1 End Date
+            %td.coll-form2 :
+            %td.coll-form3
+              #present-school
+                #date-present-school
+                  = form.date_select_with_datepicker(:end_at, {:add_month_numbers => true, :order => [:month,:year], :default => Date.today, :start_year => Date.today.year, :end_year => 100.years.ago.year})
+              = check_box_tag "school[current_school]"
+              %span#text-present-school Currently Attending
+          %tr
+            %td.coll-form1 Activities / Societies
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :activities_societies, :class => 'textarea1'
+          %tr
+            %td.coll-form1 Awards
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :awards, :class => 'textarea1'
+          %tr
+            %td.coll-form1 Recognitions
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :recognitions, :class => 'textarea1'
+          %tr
+            %td.coll-form1 Notes
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :notes, :class => 'textarea1'
+      
+
+    = submit_tag "Save", :id => "save-button-school", :class => "submit-btn3"
+    %br
+.clear
+:javascript
+  // Required when rendering page via Ajax call
+  datePickerController.create();
+  resizeScrollbar();

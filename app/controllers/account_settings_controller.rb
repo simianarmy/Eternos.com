@@ -127,13 +127,13 @@ class AccountSettingsController < ApplicationController
     @address_book = current_user.address_book
     
     respond_to do |format|
-      if @address_book.update_attributes(params[:address_book]) && 
-        @address_book.valid?
+      if @address_book.update_attributes(params[:address_book]) && @address_book.valid?
         @address = @address_book.addresses.reload.last
         flash[:notice] = "Address Book succesfully updated"
         format.js
       else
         format.js {
+          @address = @address_book.addresses.last
           flash[:error] = @address_book.errors.full_messages.reject{|err| err == 'is invalid'}.join('<br/>')
         }
       end
@@ -151,33 +151,20 @@ class AccountSettingsController < ApplicationController
   end
 
   # TODO: Move to Jobs controller
-  def add_another_job
-    begin
-      params[:jobs].each_value do |val|
-        start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day]) unless val[:end_year].nil? 
-        val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
-        val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
-        @job = Job.new(val)
-        @job.save!
-      end
-
-      @settings.find_job
-      render :update do |page|
-        page.remove "table-form-job"
-        page.insert_html :bottom, "table-form-job-wrapper", "<div id=\"table-form-job\"></div>"
-        page.hide "save-button-job"
-        page.replace_html "table-jobs", :partial => 'new_job', :locals => {:jobs => @settings.jobs}
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-job", :inline => "<%= error_messages_for 'job' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                            
-        end
+  def new_job
+    @job = current_user.profile.careers.new(params[:job])
+    @job.save
+    
+    respond_to do |format|
+      if !@job.new_record?
+        flash[:notice] = "Job added"
+        format.html
+        format.js
+      else
+        format.js {
+          flash[:error] = @job.errors.full_messages.join('<br/>')
+        }
+        format.html
       end
     end
   end
@@ -193,34 +180,21 @@ class AccountSettingsController < ApplicationController
   end
   
   # TODO: Move to Schools/Education controller
-  def add_another_school
-    begin
-      params[:schools].each_value do |val|
-        start_at = Time.local(val[:start_year],val[:start_month],val[:start_day])
-        end_at = Time.local(val[:end_year],val[:end_month],val[:end_day])
-        val.merge!(:profile_id => current_user.profile.id, :start_at => start_at, :end_at => end_at)
-        val.delete_if{|k, v| ["start_year", "start_month", "start_day", "end_year", "end_month", "end_day"].include?(k)}
-        @school = School.new(val)
-        @school.save!
+  def new_school
+    @school = current_user.profile.schools.new(params[:school])
+    @school.save
+    
+    respond_to do |format|
+      if !@school.new_record?
+        flash[:notice] = "School added"
+        format.html
+        format.js
+      else
+        format.js {
+          flash[:error] = @school.errors.full_messages.join('<br/>')
+        }
+        format.html
       end
-
-      @settings.find_school
-      render :update do |page|
-        page.remove "table-form-school"
-        page.insert_html :bottom, "table-form-school-wrapper", "<div id=\"table-form-school\"></div>"
-        page.hide "save-button-school"
-        page.replace_html "table-schools", :partial => 'new_school', :locals => {:schools => @settings.schools}
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-school", :inline => "<%= error_messages_for 'school' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                             
-        end
-      end  
     end
   end
   
@@ -235,30 +209,21 @@ class AccountSettingsController < ApplicationController
   end
   
   # TODO: Move to appropriate controller
-  def add_another_medical
-    begin
-      params[:medicals].each_value do |val|
-        @medical = Medical.new(val.merge(:profile_id => current_user.profile.id))
-        @medical.save!
+  def new_medical
+    @medical = current_user.profile.medicals.new(params[:medical])
+    @medical.save
+    
+    respond_to do |format|
+      if !@medical.new_record?
+        flash[:notice] = "Medical Info added"
+        format.html
+        format.js
+      else
+        format.js {
+          flash[:error] = @medical.errors.full_messages.join('<br/>')
+        }
+        format.html
       end
-
-      @settings.find_medical
-      render :update do |page|
-        page.remove "table-form-medical"
-        page.insert_html :bottom, "table-form-medical-wrapper", "<div id=\"table-form-medical\"></div>"
-        page.hide "save-button-medical"
-        page.replace_html "table-medicals", :partial => 'new_medical', :locals => {:medicals => @settings.medicals}
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-medical", :inline => "<%= error_messages_for 'medical' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                             
-        end
-      end    
     end
   end
   
@@ -273,7 +238,7 @@ class AccountSettingsController < ApplicationController
   end
   
   # TODO: Move to appropriate controller
-  def add_another_medical_condition
+  def new_medical_condition
     begin
       params[:medical_conditions].each_value do |val|
         @medical_condition = MedicalCondition.new(val.merge(:profile_id => current_user.profile.id))
@@ -312,7 +277,7 @@ class AccountSettingsController < ApplicationController
   end
   
   # TODO: Move to appropriate controller
-  def add_another_family
+  def new_family
     begin
       params[:families].each_value do |val|
         birtdate = Time.local(val[:birtdate_year],val[:birtdate_month],val[:birtdate_day])
