@@ -467,7 +467,7 @@ a.event_list_inline_item:hover {
 	right: 0;
 	top: 0;
 	z-index:100;
-	background-color: white;
+	background-color: #ffc;
 }
 
 #tip-hover-menu-items {
@@ -480,6 +480,10 @@ a.event_list_inline_item:hover {
 	float:left;
 	margin:0px auto;
 	padding: 0 5px 0 0;
+}
+
+#tip-hover-menu-items li a:hover {
+	text-decoration: underline;
 }
 
 .tooltip_container:hover {

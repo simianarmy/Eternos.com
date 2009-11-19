@@ -5,6 +5,7 @@
 class ActivityStreamItem < ActiveRecord::Base
   belongs_to :activity_stream
   belongs_to :content
+  has_one :member, :through => :activity_stream
   
   acts_as_archivable :on => :published_at, :order => 'DESC'
   

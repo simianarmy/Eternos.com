@@ -1,0 +1,48 @@
+<% title "Twitter Activity Stream Item" %>
+
+<p>
+  <strong>Published At:</strong>
+  <%=h @twitter_activity_stream_item.published_at %>
+</p>
+<p>
+  <strong>Edited At:</strong>
+  <%=h @twitter_activity_stream_item.edited_at %>
+</p>
+<p>
+  <strong>Guid:</strong>
+  <%=h @twitter_activity_stream_item.guid %>
+</p>
+<p>
+  <strong>Message:</strong>
+  <%=h @twitter_activity_stream_item.message %>
+</p>
+<p>
+  <strong>Attachment Data:</strong>
+  <%=h @twitter_activity_stream_item.attachment_data %>
+</p>
+<p>
+  <strong>Attachment Type:</strong>
+  <%=h @twitter_activity_stream_item.attachment_type %>
+</p>
+<p>
+  <strong>Activity Type:</strong>
+  <%=h @twitter_activity_stream_item.activity_type %>
+</p>
+<p>
+  <strong>Type:</strong>
+  <%=h @twitter_activity_stream_item.type %>
+</p>
+<p>
+  <strong>Activity Stream:</strong>
+  <%=h @twitter_activity_stream_item.activity_stream_id %>
+</p>
+<p>
+  <strong>Author:</strong>
+  <%=h @twitter_activity_stream_item.author %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_twitter_activity_stream_item_path(@twitter_activity_stream_item) %> |
+  <%= link_to "Destroy", @twitter_activity_stream_item, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", twitter_activity_stream_items_path %>
+</p>

@@ -88,7 +88,7 @@ var ETemplates = {
 		} (),
 		eventItemTooltipItem: function() {
 			// Lightview popup on click
-			return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{event_edit_link}"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul><style="clear:both" /></div></div><br/>');
+			return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{event_edit_link}" class="lightview"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul><style="clear:both" /></div></div><br/>');
 			// Ajax populate div on click
 			//return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="new Ajax.Updater(\'item_details\', \'#{event_details_link}\', {asynchronous:true, evalScripts:true, method:\'get\'}); return false;" class="tooltip_item">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{edit_link}"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul><style="clear:both" /></div></div><br/>');
 		} (),
@@ -106,12 +106,6 @@ var ETemplates = {
 		} (),
 		detailsLink: function() {
 			return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');
-		} (),
-		editLink: function() {
-			return new Template('/#{eventType}/edit/#{eventId}');
-		} (),
-		deleteLink: function() {
-			return new Template('/#{eventType}/destroy/#{eventId}');
 		} (),
 		noEvents: function() {
 			return new Template('<div class="event_list_group_even">' + 'No events for this month.</div>');

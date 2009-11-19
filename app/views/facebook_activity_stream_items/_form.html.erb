@@ -1,0 +1,44 @@
+<%= error_messages_for :facebook_activity_stream_item %>
+<% form_for @facebook_activity_stream_item do |f| %>
+  <p>
+    <%= f.label :published_at %><br />
+    <%= f.datetime_select :published_at %>
+  </p>
+  <p>
+    <%= f.label :edited_at %><br />
+    <%= f.datetime_select :edited_at %>
+  </p>
+  <p>
+    <%= f.label :guid %><br />
+    <%= f.text_field :guid %>
+  </p>
+  <p>
+    <%= f.label :message %><br />
+    <%= f.text_area :message %>
+  </p>
+  <p>
+    <%= f.label :attachment_data %><br />
+    <%= f.text_area :attachment_data %>
+  </p>
+  <p>
+    <%= f.label :attachment_type %><br />
+    <%= f.text_field :attachment_type %>
+  </p>
+  <p>
+    <%= f.label :activity_type %><br />
+    <%= f.text_field :activity_type %>
+  </p>
+  <p>
+    <%= f.label :type %><br />
+    <%= f.text_field :type %>
+  </p>
+  <p>
+    <%= f.label :activity_stream_id %><br />
+    <%= f.text_field :activity_stream_id %>
+  </p>
+  <p>
+    <%= f.label :author %><br />
+    <%= f.text_field :author %>
+  </p>
+  <p><%= f.submit "Submit" %></p>
+<% end %>

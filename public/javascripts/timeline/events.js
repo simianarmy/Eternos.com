@@ -44,7 +44,14 @@ var ETLEventSource = Class.create({
 	},
 	getThumbnailURL: function() {
 		return this.attributes.thumbnail_url;
-	}, 
+	},
+	getEditURL: function() {
+		return [this.type.pluralize(), 'edit', this.getID()].join('/') +
+			'?dialog=1';
+	},
+	getDeleteURL: function() {
+		return [this.type.pluralize(), 'delete', this.getID()].join('/');
+	},
 	getTitle: function() {
 		return this.attributes.title;
 	},

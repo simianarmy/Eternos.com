@@ -1,6 +1,8 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :facebook_activity_stream_items
+
   map.resources :twitter_activity_stream_items
 
   # Singleton resources

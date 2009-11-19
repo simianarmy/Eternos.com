@@ -131,11 +131,13 @@ var ETDebug = function() {
 	};
 
 
+
 	function log(msg) {
 		if (DEBUG) {
 			console.log(msg);
 		}
 	};
+
 
 
 	function dump(msg) {
@@ -190,9 +192,11 @@ var tooltipGenerator = function() {
 	};
 
 
+
 	function value(data) {
 		return eventItemsMap[key(data)];
 	};
+
 
 
 	function generate(key) {
@@ -256,6 +260,7 @@ var ETUI = function() {
 		postprocessTooltip(element, tipContents.type);
 		return true;
 	};
+
 
 
 	function preprocessTooltip(el, tipType) {
@@ -444,30 +449,6 @@ var ETLEventItems = Class.create({
 			});
 		}
 	},
-	// edit url for individual item
-	_getItemEditUrl: function(item) {
-		if (item.isArtifact()) {
-			return item.getURL() + '/edit';
-		} else {
-			return ETemplates.eventListTemplates.editLink.evaluate({
-				memberId: this.options.memberID,
-				eventType: item.type,
-				eventId: item.getID()
-			});
-		}
-	},
-	// delete url for individual item
-	_getItemDeleteUrl: function(item) {
-		if (item.isArtifact()) {
-			return item.getURL() + '/delete';
-		} else {
-			return ETemplates.eventListTemplates.deleteLink.evaluate({
-				memberId: this.options.memberID,
-				eventType: item.type,
-				eventId: item.getID()
-			});
-		}
-	},
 	// Determine 'rel' attribute for Lightview link html
 	_getLinkRel: function() {
 		if (this.first.isArtifact()) {
@@ -512,16 +493,25 @@ var ETLEventItems = Class.create({
 	_getMediaItemsPlaylistHtml: function() {
 		var html = '';
 		this.items.each(function(i) {
-			html += ETemplates.eventListTemplates.mediaPlaylistItem.evaluate({
+			html += ETemplates.eventListTemplates.mediaPlaylistItem.evaluate(
+			Object.extend({
 				url: i.getURL(),
 				thumbnail_url: i.getThumbnailURL(),
 				title: i.getTitle(),
 				description: i.attributes.description,
 				time: i.getEventTimeHtml(),
 				duration: i.attributes.duration_to_s
-			});
+			}, {}))
+			//this._itemMenuLinks(item)));
 		});
 		return html;
+	},
+	_itemMenuLinks: function(item) {
+		return {
+			event_details_link: this._getItemDetailsUrl(item),
+			event_edit_link: item.getEditURL(),
+			event_delete_link: item.getDeleteURL()
+		};
 	},
 	getTooltipTitle: function() {
 		return ETemplates.eventListTemplates.tooltipTitle.evaluate({
@@ -557,13 +547,12 @@ var ETLEventItems = Class.create({
 			}
 			for (i = 0; i < count; i++) {
 				item = this.items[i];
-				html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate({
-					event_details_link: this._getItemDetailsUrl(item),
-					event_edit_link: this._getItemEditUrl(item),
-					event_delete_link: this._getItemDeleteUrl(item),
+				html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate(
+				Object.extend({
 					details_win_height: winHeight,
 					content: item.getPreviewHtml()
-				});
+				},
+				this._itemMenuLinks(item)));
 			}
 			// Add link to view all
 			if (count < this.num) {
