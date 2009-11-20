@@ -1,0 +1,2 @@
+module FacebookActivityStreamItemsHelper
+end

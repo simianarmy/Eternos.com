@@ -5,7 +5,7 @@ class ProfileRenderer < Renderer
   # RJS for new_ action
   def new_entry(object, options={})
     obj_name = object.to_str
-    page.call "unload_busy"
+    page.call "spinner.unload"
     unless object.new_record?
       page.flash_and_fade "#{obj_name}_notice"
       page.remove "new_#{obj_name}"

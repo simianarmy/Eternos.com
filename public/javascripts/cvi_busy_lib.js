@@ -40,6 +40,39 @@
  *
 **/
 
+/** $Id$
+ * Helper object to load/unload spinner on an element
+ *
+ * spinner.load('el'); spinner.unload();
+ *
+**/
+// For ajax busy spinner
+var spinner = function() {
+	var ctrl = null;
+	
+	function load(element) {
+		if (ctrl == null) {
+			if (typeof element === 'string') {
+				element = document.getElementById(element);
+			}
+			ctrl = getBusyOverlay(element);
+		}
+	}
+	function unload() {
+		try {
+			if (ctrl) {
+				ctrl.remove(); delete ctrl;
+			} 
+		} catch(e) {};
+		ctrl = null;
+	}
+	return {
+		load: load,
+		unload: unload
+	};
+}();
+
+
 function onIEWinResize(event) {
 	function parseWidth(val) {return (isNaN(parseInt(val,10))?0:parseInt(val,10));}
 	if(!event) {event=window.event;} var i,cs,parent=this, div=parent.getElementsByTagName("div");

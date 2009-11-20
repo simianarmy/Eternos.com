@@ -42,15 +42,6 @@ function toggle_show_select_display(field) {
 	$(field+'_select').toggle(); $(field+'_show').toggle();
 }
 
-// For ajax busy spinner
-var busy_ctrl;
-function load_busy(element) {
-	busy_ctrl = getBusyOverlay(element)
-}
-
-function unload_busy() {
-	try {busy_ctrl.remove(); delete busy_ctrl;} catch(e) {}
-}
 
 function show(target) {
   $(target).show();
@@ -84,7 +75,7 @@ function create_cookie(name, value, days) {
 	date.setTime(date.getTime()+(days*24*60*60*1000));
 	expires = "; expires="+date.toGMTString();
   }	
-  document.cookie = name + '=' + value + expires + '; path=/'
+  document.cookie = name + '=' + value + expires + '; path=/';
 }
 
 /**
@@ -97,9 +88,10 @@ function create_cookie(name, value, days) {
 * @param {radio group name} radioGroup
 */
 function $RF(el, radioGroup) {
-    if($(el).type && $(el).type.toLowerCase() == 'radio') {
-        var radioGroup = $(el).name;
-        var el = $(el).form;
+
+    if ($(el).type && $(el).type.toLowerCase() == 'radio') {
+     	radioGroup = $(el).name;
+      el = $(el).form;
     } else if ($(el).tagName.toLowerCase() != 'form') {
         return false;
     }

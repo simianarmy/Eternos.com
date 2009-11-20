@@ -57,6 +57,7 @@ class Address < ActiveRecord::Base
 ##													:if => :custom_region_required?
 		m.before_save :ensure_exclusive_references
 	end
+	validate :ensure_min_address_fields
 	
 	before_save :clear_moved_out_if_current_address
 	
@@ -179,7 +180,7 @@ class Address < ActiveRecord::Base
 			line << ', ' unless line.blank?
 			line << region_name
 		end
-		if postal_code?
+		if postal_code
 			line << '	 ' unless line.blank?
 			line << postal_code
 		end
@@ -194,7 +195,15 @@ class Address < ActiveRecord::Base
 	  @current_address = (val && val == '1')
 	end
 	
+	protected 
+	
+	def ensure_min_address_fields
+		errors.add_to_base("Street, City, or Country required") unless
+	    !street_1.blank? || !street_2.blank? || !city.blank? || country_id || region_id
+  end
+  
   private
+  
   # Does the current country have a list of regions to choose from?
   def known_region_required?
     validatible_location && country && country.regions.any?

@@ -1,6 +1,6 @@
 #relationship_notice.error-message
 #new_relationship
-  - form_remote_for :relationship, :url => new_relationship_account_settings_path do |junk|
+  - form_remote_for :relationship, :url => new_relationship_account_settings_path, :loading => "spinner.load('new_relationship');" do |junk|
     #table-form-relationship-wrapper
       #table-form-relationship
         %table#add-new-relationship.popup-newbox

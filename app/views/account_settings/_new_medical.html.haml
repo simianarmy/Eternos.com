@@ -1,6 +1,6 @@
 #medical_notice.error-message
 #new_medical
-  - form_remote_for :medical, :url => {:controller => 'account_settings', :action => 'new_medical'} do |form|
+  - form_remote_for :medical, :url => {:controller => 'account_settings', :action => 'new_medical'}, :loading => "spinner.load('new_medical');" do |form|
     #table-form-medical-wrapper
       #table-form-medical
         %table#add-new-medical.popup-newbox

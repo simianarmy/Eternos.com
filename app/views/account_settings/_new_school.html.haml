@@ -1,6 +1,6 @@
 #school_notice.error-message
 #new_school
-  - form_remote_for :school, :url => {:controller => 'account_settings', :action => 'new_school'} do |form|
+  - form_remote_for :school, :url => {:controller => 'account_settings', :action => 'new_school'}, :loading => "spinner.load('new_school');" do |form|
     #table-form-school-wrapper
       #table-form-school
         %table#add-new-school.popup-newbox

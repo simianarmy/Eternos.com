@@ -134,7 +134,7 @@ class AccountSettingsController < ApplicationController
       else
         format.js {
           @address = @address_book.addresses.last
-          flash[:error] = @address_book.errors.full_messages.reject{|err| err == 'is invalid'}.join('<br/>')
+          flash[:error] = @address_book.errors.full_messages.reject{|err| err == 'is invalid'}.uniq.join('<br/>')
         }
       end
     end
@@ -438,7 +438,8 @@ class AccountSettingsController < ApplicationController
      respond_to do |format|
        format.js do
          render :update do |page|
-           page.replace_html "#{obj.to_str}_#{obj.id}"
+           page["#{obj.to_str}_#{obj.id}"].highlight
+           page["#{obj.to_str}_#{obj.id}"].fade :duration => 1
          end
        end
      end

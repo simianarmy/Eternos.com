@@ -1,6 +1,6 @@
-#address_notice.error-message
+#job_notice.error-message
 #new_job
-  - form_remote_for :job, :url => {:controller => 'account_settings', :action => 'new_job'} do |form|
+  - form_remote_for :job, :url => {:controller => 'account_settings', :action => 'new_job'}, :loading => "spinner.load('new_job');" do |form|
     #table-form-career-wrapper
       #table-form-career
         %table#add-new-career.popup-newbox
