@@ -5,4 +5,7 @@ class Family < ActiveRecord::Base
   TYPES = ["Brother","Sister","Mother","Father","Aunt","Uncle","Other"]
 
   acts_as_archivable :on => :birthdate
+	
+	include TimelineEvents
+
 end   

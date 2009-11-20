@@ -11,7 +11,7 @@ class PhotoThumbnail < ActiveRecord::Base
   before_destroy :delete_from_cloud
   
   serialize_with_options do
-    methods :start_date, :url
+    methods :url
     only :size, :width, :height, :content_type
   end
   

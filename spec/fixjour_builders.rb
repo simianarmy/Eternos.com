@@ -40,10 +40,11 @@ Fixjour  do
     klass.new(
       :location_type => Address::DefaultLocationType,
       :street_1 => Faker::Address.street_address,
-      :street_2 => Faker::Address.street_address,
       :city => Faker::Address.city,
       :country_id => 4, # Afghanistan!
-      :postal_code => Faker::Address.zip_code)
+      :postal_code => Faker::Address.zip_code,
+      :moved_in_on => Date.today - rand(100)
+      )
   end
   
   define_builder(AddressBook) do |klass, overrides|
@@ -208,6 +209,17 @@ Fixjour  do
       :contact_method => 'email')
   end
   
+  define_builder(Job) do |klass, overrides|
+    start_date = Date.today - rand(100)
+    klass.new(
+      :profile => new_profile,
+      :company => Faker::Name.name + ', Inc.',
+      :title => Faker::Lorem.sentence,
+      :start_at => start_date,
+      :end_at => start_date + rand(100)
+      )
+  end
+  
   define_builder(Member) do |klass, overrides|
     passwords = {:password => 'shoe1str1ng', :password_confirmation => 'shoe1str1ng'}
     overrides.process(:password) do |pwd|
@@ -247,6 +259,15 @@ Fixjour  do
       :member => new_member, 
       :filename => "video_recording.flv", 
       :state => "pending")
+  end
+  
+  define_builder(School) do |klass, overrides|
+    klass.new(
+      :profile => new_profile,
+      :name => Faker::Name.name,
+      :start_at => Date.today-rand(100),
+      :end_at => Date.today-rand(50)
+    )
   end
   
   define_builder(Story) do |klass, overrides|

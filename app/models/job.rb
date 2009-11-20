@@ -5,15 +5,10 @@ class Job < ActiveRecord::Base
 
   acts_as_archivable :on => :start_at
   
-  include TimelineEvents
-  serialize_with_options do
-    methods :start_date
-  end
+  validates_presence_of :company, :message => "Please enter a company name"
+  validates_presence_of :title, :message => "Please enter a job title"
   
-  validate do |job|
-    job.errors.add("", "Please enter a company name") if job.company.blank?
-    job.errors.add("", "Please enter a title") if job.title.blank?
-  end
+  include TimelineEvents
   
   # TODO: use acts_as helper
   named_scope :in_dates, lambda { |start_date, end_date|

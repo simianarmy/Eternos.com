@@ -6,7 +6,4 @@ class MedicalCondition < ActiveRecord::Base
   end
   
   include TimelineEvents
-  serialize_with_options do
-    methods :start_date
-  end
 end

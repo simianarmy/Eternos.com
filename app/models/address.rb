@@ -31,9 +31,8 @@ class Address < ActiveRecord::Base
 	
 	include TimelineEvents
 	serialize_with_options do
-		methods :postal_address, :start_date, :end_date
+		methods :postal_address
 	end
-	def end_date; end_at end
 	
 	# For formatting postal addresses from over 60 countries.
 	# Problem: :country must return 2-letter country code for this plugin 
@@ -46,7 +45,7 @@ class Address < ActiveRecord::Base
 		:state => Proc.new {|address| address.region.try(:name) },
 		:country => Proc.new {|address| address.country.try(:name) }
 	
-	with_options :if => :validatible_location do |m|
+	with_options :if => :validatible_location? do |m|
 		m.validates_presence_of :street_1
 		m.validates_presence_of :city
 		m.validates_presence_of :country_id, :on => :create
@@ -97,7 +96,7 @@ class Address < ActiveRecord::Base
 			}
 		}
 	# Returns true if address location is one that needs validation
-	def validatible_location
+	def validatible_location?
 		location_type != Birth
 		#false
 	end
@@ -206,7 +205,7 @@ class Address < ActiveRecord::Base
   
   # Does the current country have a list of regions to choose from?
   def known_region_required?
-    validatible_location && country && country.regions.any?
+    validatible_location? && country && country.regions.any?
   end
 
   # A custom region name is required if a known region was not specified and

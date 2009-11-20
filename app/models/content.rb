@@ -37,7 +37,7 @@ class Content < ActiveRecord::Base
   searches_on 'contents.filename'
   
   serialize_with_options do
-    methods :start_date, :url, :thumbnail_url
+    methods :url, :thumbnail_url
     only :size, :type, :title, :filename, :width, :height, :taken_at, :description
   end
   # Define start_date = created_at for serializing.  Define in child classes if start_date

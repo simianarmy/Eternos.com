@@ -9,7 +9,7 @@ class FeedEntry < ActiveRecord::Base
   include TimelineEvents
   serialize :categories
   serialize_with_options do
-    methods :screencap_url, :screencap_thumb_url, :start_date
+    methods :screencap_url, :screencap_thumb_url
   end
   
   xss_terminate :except => [ :categories ]

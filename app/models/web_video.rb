@@ -10,8 +10,9 @@ class WebVideo < Content
   has_attachment attachment_opts
   # Class methods
   
+  include TimelineEvents
   serialize_with_options do
-    methods :start_date, :url, :thumbnail_url, :thumb_width, :thumb_height, :preview_url,
+    methods :url, :thumbnail_url, :thumb_width, :thumb_height, :preview_url,
       :duration_to_s
     only :id, :title, :width, :height, :description, :taken_at
   end

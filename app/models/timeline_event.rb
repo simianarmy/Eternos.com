@@ -18,8 +18,8 @@ class TimelineEvent
     @attributes = obj
     @type = obj.to_str
     @attachment_type = find_attachment_type(obj)
-    @start_date = obj.start_date
-    @end_date = obj.try(:end_date)
+    @start_date = obj.try(:start_date) || obj.try(:start_at)
+    @end_date = obj.try(:end_date) || obj.try(:end_at)
   end
   
   private

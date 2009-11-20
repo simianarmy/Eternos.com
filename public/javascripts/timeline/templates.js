@@ -88,7 +88,11 @@ var ETemplates = {
 		} (),
 		eventItemTooltipItem: function() {
 			// Lightview popup on click
-			return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{event_edit_link}" class="lightview"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul><style="clear:both" /></div></div><br/>');
+			return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a>' +
+				// Disable edit/delete links for now
+				'<div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</li><li><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</li></ul>' + 
+				//'<div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{event_edit_link}" class="lightview"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
+					'</div></div><br/>');
 			// Ajax populate div on click
 			//return new Template('<div class="event_preview_item_container tooltip_container"><a href="#{event_details_link}" onclick="new Ajax.Updater(\'item_details\', \'#{event_details_link}\', {asynchronous:true, evalScripts:true, method:\'get\'}); return false;" class="tooltip_item">#{content}</a><div class="tip-hover-menu"><ul id="tip-hover-menu-items"><li><a href="#{edit_link}"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul><style="clear:both" /></div></div><br/>');
 		} (),
@@ -126,6 +130,21 @@ var ETemplates = {
 		} (),
 		address: function() {
 			return new Template('<div class="tooltip_address">#{postal}<br/><span>Type: #{type}</span><br/><span>#{dates}</span></div>');
+		} (),
+		school: function() {
+			return new Template('<div class="tooltip_school">#{name}<br/><br/><span>#{dates}</span></div>');
+		} (),
+		job: function() {
+			return new Template('<div class="tooltip_job">#{company}<br/>#{title}<br/><span>#{dates}</span></div>');
+		} (),
+		family: function() {
+			return new Template('<div class="tooltip_family">#{name}<br/>#{relationship}</div>');
+		} (),
+		medical: function() {
+			return new Template('<div class="tooltip_medical">#{condition}<br/><span>#{dates}</span></div>');
+		} (),
+		medicalCondition: function() {
+			return new Template('<div class="tooltip_medical">#{condition}<br/><span>#{dates}</span></div>');
 		} (),
 		single_line_small: function() {
 			return new Template('<br/><span class="event_time">#{text}</span>');

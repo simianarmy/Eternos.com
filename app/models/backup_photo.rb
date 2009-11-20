@@ -15,9 +15,6 @@ class BackupPhoto < ActiveRecord::Base
   acts_as_state_machine :initial => :pending_download
   
   include TimelineEvents
-  serialize_with_options do
-    methods :start_date
-  end
   
   state :pending_download
   state :downloading, :enter => :download

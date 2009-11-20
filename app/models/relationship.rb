@@ -13,4 +13,6 @@ class Relationship < ActiveRecord::Base
   # A Relationship name what Circle class is used for.
   # Use Circle table to populate relationship options in forms.
   
+  include TimelineEvents
+
 end

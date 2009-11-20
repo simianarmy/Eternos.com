@@ -10,9 +10,6 @@ class School < ActiveRecord::Base
   end
   
   include TimelineEvents
-  serialize_with_options do
-    methods :start_date
-  end
   
   # TODO: use acts_as helper
   named_scope :in_dates, lambda { |start_date, end_date|

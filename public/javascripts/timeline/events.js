@@ -101,7 +101,7 @@ var ETLEventSource = Class.create({
 				this.end_date_obj.toLocaleDateString();
 		}
 		if (time !== '') { 
-			return this._getSmallTooltipLine(time)
+			return this._getSmallTooltipLine(time);
 		}
 		return '';
 	},
@@ -122,7 +122,7 @@ var ETLEventSource = Class.create({
 	_parseEventDateString: function(date) {
 		// TODO: Optimize - Date.parseExact is slow
 		// try to parse iso datetime
-		if (!date) { return; }
+		if (!date) { return null; }
 		return date.toISODate();
 	},
 	// Helper to generate 1-line tooltip contents
@@ -272,12 +272,12 @@ var ETLAudioEventSource = Class.create(ETLEventSource, {
 		}
 	}
 });
-// Job event
-var ETLJobEventSource = Class.create(ETLEventSource, {
-	getPreviewHtml: function() {
-		return this.attributes.company;
-	}
-});
+//////////////////////////////////////////////////////
+//
+// Profile events
+//
+//////////////////////////////////////////////////////
+
 // Address event
 var ETLAddressEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
@@ -292,6 +292,73 @@ var ETLAddressEventSource = Class.create(ETLEventSource, {
 		});
 	}
 });
+// Job event
+var ETLJobEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.job;
+		$super(s);
+	},
+	getPreviewHtml: function() {
+		return this.previewTemplate.evaluate({
+			company: this.attributes.company,
+			title: this.attributes.title,
+			dates: this.getEventTimeHtml({format: 'date'})
+		});
+	}
+});
+// School event
+var ETLSchoolEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.school;
+		$super(s);
+	},
+	getPreviewHtml: function() {
+		return this.previewTemplate.evaluate({
+			name: this.attributes.name,
+			dates: this.getEventTimeHtml({format: 'date'})
+		});
+	}
+});
+// Family event
+var ETLFamilyEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.family;
+		$super(s);
+	},
+	getPreviewHtml: function() {
+		return this.previewTemplate.evaluate({
+			name: this.attributes.name,
+			relationship: this.attributes.description
+		});
+	}
+});
+// Medical event
+var ETLMedicalEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.medical;
+		$super(s);
+	},
+	getPreviewHtml: function() {
+		return this.previewTemplate.evaluate({
+			condition: this.attributes.name,
+			dates: this.getEventTimeHtml({format: 'date'})
+		});
+	}
+});
+// Medical Condition event
+var ETLMedicalConditionEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.medicalCondition;
+		$super(s);
+	},
+	getPreviewHtml: function() {
+		return this.previewTemplate.evaluate({
+			condition: this.attributes.name,
+			dates: this.getEventTimeHtml({format: 'date'})
+		});
+	}
+});
+
 
 // ETEvent Namespace
 var ETEvent = {
@@ -310,7 +377,7 @@ var ETEvent = {
 		{type: "school", display_text: "School", display_text_plural: "Schools", icon: "school.png"},
 		{type: "family", display_text: "Family&nbsp;Member", display_text_plural: "Family&nbsp;Members", icon: "family-member.png"},
 		{type: "medical", display_text: "Medical&nbsp;Data", display_text_plural: "Medical&nbsp;Data", icon: "medic-data.png"},
-		{type: "medical_conditions", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
+		{type: "medical_condition", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
 		{type: "job", display_text: "Job", display_text_plural: "Jobs", icon: "job"}, 
 		{type: "address", display_text: "Address", display_text_plural: "Addresses", icon: "address.png"}
 	],
@@ -319,7 +386,7 @@ var ETEvent = {
 	createSource: function(data) {
 		var type = data.type; //(data.attachment_type == null) ? data.type : data.attachment_type;
 		var s = this.typeAttributes(type);
-		var data = Object.extend(data, s);
+		data = Object.extend(data, s);
 		
 		if (type === "facebook_activity_stream_item") {
 			return new ETLFacebookActivityStreamEventSource(data);
@@ -339,6 +406,14 @@ var ETEvent = {
 			return new ETLJobEventSource(data);
 		} else if (type === "address") {	
 			return new ETLAddressEventSource(data);
+		} else if (type === "school") {
+			return new ETLSchoolEventSource(data);
+		} else if (type === "family") {
+			return new ETLFamilyEventSource(data);
+		} else if (type === "medical") {
+			return new ETLMedicalEventSource(data);
+		} else if (type === "medical_condition") {
+			return new ETLMedicalConditionEventSource(data);
 		} else {
 			console.log("Unknown type from source: " + data.type);
 			return null;
@@ -354,10 +429,10 @@ var ETEvent = {
 		return (type === 'web_video');
 	},
 	getSourceIcon: function(type) {
-		return this.itemTypes.find(function(t) { return type === t.type}).icon;
+		return this.itemTypes.find(function(t) { return type === t.type; }).icon;
 	},
 	typeAttributes: function(type) {
-		return this.itemTypes.find(function(t) { return type === t.type});
+		return this.itemTypes.find(function(t) { return type === t.type; });
 	}
 };
 
@@ -369,5 +444,5 @@ if (String.prototype.urlToLink == null) {
 		t = t.replace('href="www', 'href="http://www');
 		t = t.replace(/((www\.|(http|https|ftp|news|file))+:\/\/[^ ]+)/g, '<div class="tooltip_link"><a href="$1" target="_new" rel="nofollow">$1</a></div>');
 		return t;
-	}
+	};
 }
