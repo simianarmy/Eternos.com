@@ -1,0 +1,3 @@
+render_with :profile do |p| 
+  p.new_entry(@medical_condition)
+end

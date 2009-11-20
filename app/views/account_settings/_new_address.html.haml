@@ -10,7 +10,7 @@
             %td{:colspan => "3"}
               .title6
                 Add New Address
-                = link_to_function "Cancel", "$('new_address').remove();", :class => "blue-btn3"
+                = link_to_function "Cancel", "$('address_notice').update(); $('new_address').remove();", :class => "blue-btn3"
           %tr
             %td{:colspan => "3"}
               %hr.line1

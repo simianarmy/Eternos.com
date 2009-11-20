@@ -8,7 +8,7 @@
             %td{:colspan => "3"}
               .title6
                 Add New Job
-                = link_to_function "Cancel", "$('new_job').remove();", :class => "blue-btn3"
+                = link_to_function "Cancel", "$('job_notice').update();$('new_job').remove();", :class => "blue-btn3"
           %tr
             %td{:colspan => "3"}
               %hr.line1

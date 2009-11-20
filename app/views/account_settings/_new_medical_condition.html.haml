@@ -1,0 +1,53 @@
+#medical_condition_notice.error-message
+#new_medical_condition
+  - form_remote_for :medical_condition, :url => {:controller => 'account_settings', :action => 'new_medical_condition'}, :loading => "spinner.load('new_medical_condition');" do |form|
+    #table-form-medical-cond-wrapper
+      #table-form-medical-cond
+        %table#add-new-medical-cond.popup-newbox
+          %tr
+            %td{:colspan => "3"}
+              .title6
+                Add Medical Condition
+                = link_to_function "Cancel", "$('medical_condition_notice').update();$('new_medical_condition').remove();", :class => "blue-btn3"
+          %tr
+            %td{:colspan => "3"}
+              %hr.line1
+          %tr
+            %td.coll-form1 Name
+            %td.coll-form2 :
+            %td.coll-form3= form.text_field :name, :class => 'textbox5'
+          %tr
+            %td.coll-form1 Diagnosis
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :diagnosis, :class => 'textarea1'
+          %tr
+            %td.coll-form1 Diagnosis Date
+            %td.coll-form2 :
+            %td.coll-form3
+              = form.date_select_with_datepicker(:diagnosis_date, {:add_month_numbers => true, :order => [:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+          %tr
+            %td.coll-form1 Treatment
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :treatment, :class => 'textarea1'
+          %tr
+            %td.coll-form1 Treatment Start Date
+            %td.coll-form2 :
+            %td.coll-form3
+              = form.date_select_with_datepicker(:treatment_start_on, {:add_month_numbers => true, :order => [:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+          %tr
+            %td.coll-form1 Treatment End Date
+            %td.coll-form2 :
+            %td.coll-form3
+              = form.date_select_with_datepicker(:treatment_end_on, {:add_month_numbers => true, :order => [:month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+          %tr
+            %td.coll-form1 Notes
+            %td.coll-form2 :
+            %td.coll-form3= form.text_area :notes, :class => 'textarea1'
+    
+    = submit_tag "Save", :id => "save-button-medical", :class => "submit-btn3"
+    %br
+.clear
+:javascript
+  // Required when rendering page via Ajax call
+  datePickerController.create();
+  resizeScrollbar();

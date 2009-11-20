@@ -153,10 +153,9 @@ class AccountSettingsController < ApplicationController
   # TODO: Move to Jobs controller
   def new_job
     @job = current_user.profile.careers.new(params[:job])
-    @job.save
     
     respond_to do |format|
-      if !@job.new_record?
+      if @job.save
         flash[:notice] = "Job added"
         format.html
         format.js
@@ -182,10 +181,9 @@ class AccountSettingsController < ApplicationController
   # TODO: Move to Schools/Education controller
   def new_school
     @school = current_user.profile.schools.new(params[:school])
-    @school.save
     
     respond_to do |format|
-      if !@school.new_record?
+      if @school.save
         flash[:notice] = "School added"
         format.html
         format.js
@@ -211,10 +209,9 @@ class AccountSettingsController < ApplicationController
   # TODO: Move to appropriate controller
   def new_medical
     @medical = current_user.profile.medicals.new(params[:medical])
-    @medical.save
     
     respond_to do |format|
-      if !@medical.new_record?
+      if @medical.save
         flash[:notice] = "Medical Info added"
         format.html
         format.js
@@ -239,30 +236,19 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def new_medical_condition
-    begin
-      params[:medical_conditions].each_value do |val|
-        @medical_condition = MedicalCondition.new(val.merge(:profile_id => current_user.profile.id))
-        @medical_condition.save!
+    @medical_condition = current_user.profile.medical_conditions.new(params[:medical_condition])
+    
+    respond_to do |format|
+      if @medical_condition.save
+        flash[:notice] = "Medical Condition added"
+        format.html
+        format.js
+      else
+        format.js {
+          flash[:error] = @medical_condition.errors.full_messages.join('<br/>')
+        }
+        format.html
       end
-
-      @settings.find_medical_condition
-      render :update do |page|
-        page.remove "table-form-medical-condition"
-        page.insert_html :bottom, "table-form-medical-condition-wrapper", "<div id=\"table-form-medical-condition\"></div>"
-        page.hide "save-button-medical-condition"
-        page.replace_html "table-medical-conditions", :partial => 'new_medical_condition', 
-          :locals => {:medical_conditions => @settings.medical_conditions}
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-medical-condition", :inline => "<%= error_messages_for 'medical_condition' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                            
-        end
-      end    
     end
   end
   
@@ -278,32 +264,19 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def new_family
-    begin
-      params[:families].each_value do |val|
-        birtdate = Time.local(val[:birtdate_year],val[:birtdate_month],val[:birtdate_day])
-        val.merge!(:profile_id => current_user.profile.id, :birthdate => birtdate)
-        val.delete_if{|k, v| ["birtdate_year", "birtdate_month", "birtdate_day"].include?(k)}
-        @family = Family.new(val)
-        @family.save!
+    @family = current_user.profile.families.new(params[:family])
+    
+    respond_to do |format|
+      if @family.save
+        flash[:notice] = "Family Member added"
+        format.html
+        format.js
+      else
+        format.js {
+          flash[:error] = @family.errors.full_messages.join('<br/>')
+        }
+        format.html
       end
-
-      @settings.find_family
-      render :update do |page|
-        page.remove "table-form-family"
-        page.insert_html :bottom, "table-form-family-wrapper", "<div id=\"table-form-family\"></div>"
-        page.hide "save-button-family"
-        page.replace_html "table-families", :partial => 'new_family', :locals => {:families => @settings.families}
-      end
-    rescue ActiveRecord::ActiveRecordError
-      render :update do |page|
-        page.replace_html "error-message-family", :inline => "<%= error_messages_for 'family' %>"
-        page[:errorExplanation].visual_effect :highlight,
-                                              :startcolor => "#ea8c8c",
-                                              :endcolor => "#cfe9fa"
-        page.delay(4) do
-          page[:errorExplanation].remove                            
-        end
-      end   
     end
   end
   

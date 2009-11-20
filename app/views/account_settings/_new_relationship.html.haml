@@ -8,7 +8,7 @@
             %td{:colspan => "3"}
               .title6
                 Add New Relationship
-                = link_to_function "Cancel", "$('new_relationship').remove();", :class => "blue-btn3"
+                = link_to_function "Cancel", "$('relationship_notice').update();$('new_relationship').remove();", :class => "blue-btn3"
           %tr
             %td{:colspan => "3"}
               %hr.line1

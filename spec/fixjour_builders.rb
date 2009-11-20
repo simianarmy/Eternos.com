@@ -153,6 +153,14 @@ Fixjour  do
       :friends => Faker::Lorem.paragraph)
   end
   
+  define_builder(Family) do |klass, overrides|
+    klass.new(
+      :profile => new_profile,
+      :name => Faker::Name.name,
+      :family_type => new_circle
+    )
+  end
+  
   define_builder(Element) do |klass, overrides|
     klass.new(
       :story => new_story,
@@ -218,6 +226,14 @@ Fixjour  do
       :start_at => start_date,
       :end_at => start_date + rand(100)
       )
+  end
+  
+  define_builder(MedicalCondition) do |klass, overrides|
+    klass.new(
+      :profile => new_profile,
+      :name => Faker::Lorem.sentence,
+      :diagnosis_date => Date.today - rand(100)
+    )
   end
   
   define_builder(Member) do |klass, overrides|

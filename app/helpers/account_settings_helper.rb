@@ -10,4 +10,10 @@ module AccountSettingsHelper
   def call_update_step_js(steps)
     "updateStep('#{completed_steps_account_setting_path(current_user)}', #{steps});"
   end
+  
+  def link_to_new_profile_entry(name, locals={})
+    link_to_function "+ Add New" do |page|
+      page.replace_html "#{name}_container", :partial => name, :locals => locals
+    end
+  end
 end

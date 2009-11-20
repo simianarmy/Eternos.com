@@ -415,6 +415,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "profile_id",                    :null => false
     t.string   "name"
     t.datetime "birthdate"
+    t.datetime "died_at"
     t.boolean  "living",      :default => true
     t.text     "notes"
     t.datetime "created_at"
@@ -509,8 +510,9 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.text     "diagnosis"
     t.text     "treatment"
     t.text     "notes"
-    t.datetime "diagnosis_date"
-    t.datetime "treatment_date"
+    t.date "diagnosis_date"
+    t.date "treatment_start_on"
+    t.date "treatment_end_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

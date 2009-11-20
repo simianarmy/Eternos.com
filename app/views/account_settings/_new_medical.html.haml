@@ -8,7 +8,7 @@
             %td{:colspan => "3"}
               .title6
                 Add Medical Information
-                = link_to_function "Cancel", "$('new_medical').remove();", :class => "blue-btn3"
+                = link_to_function "Cancel", "$('medical_notice').update();$('new_medical').remove();", :class => "blue-btn3"
           %tr
             %td{:colspan => "3"}
               %hr.line1
