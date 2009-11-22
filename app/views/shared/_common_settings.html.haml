@@ -1,22 +1,31 @@
-#time_period_show
-  %p
-    Time Period:
-    %span#time_period.editable_text{:onclick=>"toggle_show_select_display('time_period')"}= object.time_period.to_s
+.common_settings
+  - if object.respond_to?(:time_period)
+    #time_period_show
+      %p
+        Time Period:
+        %span#time_period.editable_text{:onclick=>"toggle_show_select_display('time_period')"}= object.time_period.to_s
 
-- fields_for object do |f|
-  - with_options :locals => {:f => f, :object => object} do |p|
-    #time_period_select{:style=>"display:none"}
-      = p.render :partial => 'shared/ajax_time_period_select_form', :locals => {:period => object.time_period}
-    %br
-    #taggings
-      = p.render :partial => 'shared/tags_ajax_field', :locals => {:url => url_for(object)}
-    %br
-    - if object.respond_to?(:category)
-      = p.render :partial => 'shared/ajax_category'
-      %br
-    #message_permissions
-      = p.render :partial => 'shared/authorizations'
-    %br
-    #time_lock
-      - form_for object, :html => {:class => 'remote_form', :rel => "{busy_id: 'time_lock'}"} do |tlf|
-        = p.render :partial => 'shared/timelock_select', :locals => {:f => tlf, :timelock => object.time_lock, :parent => object}
+  - fields_for object do |f|
+    - with_options :locals => {:f => f, :object => object} do |p|
+      - if object.respond_to?(:time_period)
+        #time_period_select{:style=>"display:none"}
+          = p.render :partial => 'shared/ajax_time_period_select_form', :locals => {:period => object.time_period}
+        %br
+      .clearboth
+      #taggings.setting
+        = p.render :partial => 'shared/tags_ajax_field', :locals => {:url => url_for(object)}
+        %br
+      .clearboth
+      - if object.respond_to?(:category)
+        = p.render :partial => 'shared/ajax_category'
+        %br
+      .clearboth
+      #message_permissions.setting
+        = p.render :partial => 'shared/authorizations'
+        %br
+      .clearboth
+      #time_lock.setting
+        - form_for object, :html => {:class => 'remote_form', :rel => "{busy_id: 'time_lock'}"} do |tlf|
+          = p.render :partial => 'shared/timelock_select', :locals => {:f => tlf, :timelock => object.time_lock, :parent => object}
+      .clearboth
+  %br

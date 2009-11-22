@@ -1,32 +1,33 @@
 = hidden_field_tag :privacy_update, '1' unless object.new_record?
 
 - class_field = object.to_str
-Privacy Settings
-= select_tag  "#{class_field}[privacy_settings][authorization]",  options_for_select(object.authorization_select_options, object.authorization.to_i), :id => "#{class_field}_privacy_settings_authorization", :class => "toggle_on_select submit_on_change", :rel => "{toggleValue: #{ContentAuthorization::AuthPartial}, toggleElement: 'auth_select_partial'}"
-- unless object.new_record?
-  %a#toggle_auth_select_partial.toggleable{:href=>'#', :style=>"#{style_hidden_if(!object.get_privacy_setting.partial?)}"} Edit 
-
-%br
-#auth_select_partial{:style=>"display:none;"}
-  %table
-    %tr
-      %th Relationship
-      %th Guests
-    %tr
-      %td{:valign=>"top",:align=>"left"}
-        - user.all_circles.each do |c|
-          = check_box_tag "#{class_field}[privacy_settings][circles][]", c.id, object.authorized_for_group?(c)
-          = c.name.pluralize
-          %br
-      %td{:valign=>"top",:align=>"left"}
-        - user.loved_ones.each do |g|
-          = check_box_tag "#{class_field}[privacy_settings][guests][]", g.id, object.authorized_for_user?(g)
-          = g.full_name
-          %br
-  %br
+.labelcol Privacy Settings:
+.inputcol
+  = select_tag  "#{class_field}[privacy_settings][authorization]",  options_for_select(object.authorization_select_options, object.authorization.to_i), :id => "#{class_field}_privacy_settings_authorization", :class => "toggle_on_select submit_on_change", :rel => "{toggleValue: #{ContentAuthorization::AuthPartial}, toggleElement: 'auth_select_partial'}"
   - unless object.new_record?
-    = f.submit "Update"
-    = link_to_function('hide') {|page| page.toggle :auth_select_partial}
+    %a#toggle_auth_select_partial.toggleable{:href=>'#', :style=>"#{style_hidden_if(!object.get_privacy_setting.partial?)}"} Edit 
+
+  %br
+  #auth_select_partial{:style=>"display:none;"}
+    %table
+      %tr
+        %th Relationship
+        %th Guests
+      %tr
+        %td{:valign=>"top",:align=>"left"}
+          - user.all_circles.each do |c|
+            = check_box_tag "#{class_field}[privacy_settings][circles][]", c.id, object.authorized_for_group?(c)
+            = c.name.pluralize
+            %br
+        %td{:valign=>"top",:align=>"left"}
+          - user.loved_ones.each do |g|
+            = check_box_tag "#{class_field}[privacy_settings][guests][]", g.id, object.authorized_for_user?(g)
+            = g.full_name
+            %br
+    %br
+    - unless object.new_record?
+      = f.submit "Update"
+      = link_to_function('hide') {|page| page.toggle :auth_select_partial}
 
 
 

@@ -29,11 +29,23 @@ class TwitterActivityStreamItemsController < ActivityStreamItemsController
   end
   
   def update
-    if @twitter_activity_stream_item.update_attributes(params[:twitter_activity_stream_item])
-      flash[:notice] = "Successfully updated twitter activity stream item."
-      redirect_to @twitter_activity_stream_item
-    else
-      render :action => 'edit'
+    respond_to do |format|
+      if @twitter_activity_stream_item.update_attributes(params[:twitter_activity_stream_item])
+        flash[:notice] = "Successfully updated twitter activity stream item."
+        format.html {
+          redirect_to @twitter_activity_stream_item
+        }
+        format.js {
+          render :nothing => true, :status => 200
+        }
+      else
+        format.html {
+          render :action => 'edit'
+        }
+        format.js {
+          render :nothing => true, :status => 500
+        }
+      end
     end
   end
   

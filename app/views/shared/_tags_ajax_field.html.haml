@@ -1,3 +1,4 @@
-Tags: 
-= restful_in_place_editor 'span', object, 'tag_list', :object => object.class.to_s.underscore, :url => url, :value => (object.tag_list.empty?) ? 'Add Tags' : object.tag_list
-= tags_field_description
+.labelcol Tags: 
+.inputcol
+  = restful_in_place_editor 'span', object, 'tag_list', :object => object.class.to_s.underscore, :url => url, :value => (object.tag_list.empty?) ? 'Add Tags' : object.tag_list
+  = tags_field_description

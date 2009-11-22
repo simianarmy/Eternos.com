@@ -8,7 +8,11 @@ class ActivityStreamItem < ActiveRecord::Base
   has_one :member, :through => :activity_stream
   
   acts_as_archivable :on => :published_at, :order => 'DESC'
-  
+  acts_as_taggable_on :tags
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
+
   serialize :attachment_data
   
   include TimelineEvents

@@ -4,13 +4,18 @@
   .image_post
     = image_tag 'twitter.png'
   .clearboth
-  %p.message Message:
+  %p.posted== On #{item.published_at.to_s(:long)}, #{item.author} tweeted: 
   .message_content
     - if item.thumbnail_url
       = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
     - elsif item.url
       = link_to item.url, item.url
-    %p= item.message
-    .clearboth
-    %p.posted
-      == Sent at: #{item.published_at}
+    %p== "#{item.message}"
+  %p.detail== Source: #{item.source}
+  .clearboth
+  
+  %p
+  %br
+  %a#toggle_common_settings.toggleable{:href=>'#'} Edit Settings
+  #common_settings{:style => "display:none"}
+    = render :partial => 'shared/common_settings', :locals => {:object => item}

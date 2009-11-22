@@ -6,10 +6,12 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}
     %title= "Eternos - " + h(yield(:title) || "Timeline Events")
     / bundle do
-    - stylesheet 'timeline_details.css'
+    - stylesheet 'screen', 'application', 'timeline_details.css'
     - load_prototype
     - use_busy
     - use_scrollbar
+    - use_lowpro
+    - use_prototip
     - javascript 'application'
     
     = yield(:head)
@@ -21,7 +23,7 @@
       .popuptop
       .popup-content
         .top-box2
-          .acc-title Details For Timeline Events
+          .acc-title Timeline Item Details
           .clearboth
         .clearboth
         #notice.flash_notice= show_flash_messages
