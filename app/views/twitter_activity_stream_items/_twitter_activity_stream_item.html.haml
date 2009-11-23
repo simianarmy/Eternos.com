@@ -17,5 +17,10 @@
   %p
   %br
   %a#toggle_common_settings.toggleable{:href=>'#'} Edit Settings
-  #common_settings{:style => "display:none"}
+  #common_settings
     = render :partial => 'shared/common_settings', :locals => {:object => item}
+:javascript
+  // Hide now so that Behavior is added on page load
+  document.observe('dom:loaded', function() {
+    //$('common_settings').hide();
+  });

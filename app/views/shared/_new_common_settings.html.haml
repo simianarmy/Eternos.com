@@ -3,8 +3,11 @@
     = common.render :partial => 'shared/timeline_picker', :locals => {:period => object.time_period}
     %br
     - if category
-      %p= display_category_select(object, :f => f, :categories => current_user.categories)
+      %p
+      = display_category_select(object, :f => f, :categories => current_user.categories)
       %br
-    %p= common.render :partial => 'shared/access_permissions_select', :locals => {:user => current_user}
+    %p
+    = common.render :partial => 'shared/access_permissions_select', :locals => {:user => current_user}
     %br
-    %p= common.render :partial => 'shared/timelock_select', :locals => {:parent => object, :timelock => TimeLock.new}
+    %p
+    = common.render :partial => 'shared/timelock_select', :locals => {:parent => object, :timelock => TimeLock.new}

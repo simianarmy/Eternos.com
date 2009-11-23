@@ -97,6 +97,10 @@ module FormsHelper
     remote_form_for(record_or_name_or_array, *args, &proc)
   end
   
+  def tags_field_description
+    render :partial => 'shared/tags_field_hint'
+  end
+  
   private
   
   def fields_for_association(name, object, parent, *args, &block)

@@ -14,10 +14,10 @@ var AJ = {
 	busy_options: function(id) {
 		var options = {
 			onLoading: function() {
-				load_busy($(id));
+				spinner.load(id);
 			},
 			onComplete: function() {
-				unload_busy();
+				spinner.unload();
 			}
 		};
 		return options;
@@ -99,12 +99,15 @@ Remote.Delete = Behavior.create(Remote.Base, {
 
 RemoteForm = Behavior.create(Remote.Form, {
 	initialize: function($super, options) {
+		var relopts;
+		options = Object.extend({}, options);
+		
 		// Check for spinner element id option
 		// Add ajax options to remote form submit if any
 		if ((rel = this.element.readAttribute('rel')) != null) {
-			var opts = rel.evalJSON();
-			if (opts.busy_id) {
-				options = Object.extend(options, AJ.busy_options(opts.busy_id));
+			relopts = rel.evalJSON();
+			if (relopts.busy_id) {
+				options = Object.extend(options, AJ.busy_options(relopts.busy_id));
 			}
 		}
 		// observe custom event that you fire elsewhere

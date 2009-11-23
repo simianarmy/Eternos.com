@@ -5,6 +5,8 @@
 / no_auto_submit => turn off ajax submit on change
 
 - @no_auto_submit = local_assigns.has_key?(:no_auto_submit)
+- @in_edit_mode = parent.new_record? || @no_auto_submit
+
 - unless parent.new_record?
   = hidden_field_tag :time_lock_update, '1'
   
@@ -18,9 +20,8 @@
   .inputcol
     = ff.select :type, parent.time_lock_select_options, {:selected => parent.time_lock_type}, :id => dom_id(parent, "timelock_type"), :class => @select_class, :rel => "{toggleValue: #{TimeLock.date_locked}, toggleElement: '#{@unlock_date_id}'}"
   
-    - unless parent.new_record? || @no_auto_submit
-      %a.toggleable{:id => "toggle_#{@unlock_date_id}", :href=>'#', :style=>"#{style_hidden_if(!parent.date_locked?)}"} Edit
-    
-    %span{:id => @unlock_date_id, :style => style_hidden_if(!parent.date_locked?)}
+    %a.toggleable{:id => "toggle_#{@unlock_date_id}", :href=>'#', :style=>"#{style_hidden_if(!parent.date_locked?)}"} Edit
+    %span{:id => @unlock_date_id, :style => style_hidden_if(true)}
       = ff.date_select_with_datepicker(:unlock_on, {:default => Date.today, :add_month_numbers => true, :order => [:year,:month,:day], :start_year => Date.today.year, :end_year => 100.years.from_now.year})
-      = ff.submit "Update" unless parent.new_record? || @no_auto_submit
+      = ff.submit "Update" 
+      = link_to_function "close", "$('#{@unlock_date_id}').hide()"

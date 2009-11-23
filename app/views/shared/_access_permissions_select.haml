@@ -9,25 +9,34 @@
 
   %br
   #auth_select_partial{:style=>"display:none;"}
-    %table
-      %tr
-        %th Relationship
-        %th Guests
-      %tr
-        %td{:valign=>"top",:align=>"left"}
-          - user.all_circles.each do |c|
+    #relationship_options
+      Select Relationships
+      %br
+      %ul
+        - user.all_circles.each do |c|
+          %li
             = check_box_tag "#{class_field}[privacy_settings][circles][]", c.id, object.authorized_for_group?(c)
             = c.name.pluralize
-            %br
-        %td{:valign=>"top",:align=>"left"}
-          - user.loved_ones.each do |g|
+        %li
+          = link_to 'Add new', '#'
+          /= check_box_tag "#{class_field}[privacy_settings][circles][]", "Other"
+          /Other
+          /= text_field_tag "#{class_field}[privacy_settings][circles][other]"
+    #guest_options
+      Select Guests
+      %br
+      %ul
+        - user.loved_ones.each do |g|
+          %li
             = check_box_tag "#{class_field}[privacy_settings][guests][]", g.id, object.authorized_for_user?(g)
             = g.full_name
-            %br
-    %br
+        %li
+          = link_to 'Add new', '#'
+    .clearboth
+    
     - unless object.new_record?
       = f.submit "Update"
-      = link_to_function('hide') {|page| page.toggle :auth_select_partial}
+      = link_to_function('close') {|page| page.toggle :auth_select_partial}
 
 
 
