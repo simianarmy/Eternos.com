@@ -25,7 +25,7 @@ module AjaxHelper
 
     options.merge!({
       :options => "
-      { onLoading: function(transport, element){load_busy($('#{domid}'))}, 
+      { onLoading: function(transport, element){spinner.load('#{domid}')}, 
         method: 'put'
       }",
       :with => "'domId=#{domid}&#{objname}[#{attr}]=' +escape($F(Form.findFirstElement(form)))",

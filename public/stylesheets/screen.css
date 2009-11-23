@@ -635,26 +635,26 @@ div.frontpage {
 	-webkit-box-shadow: 5px 5px 5px #ccc;
 }
 
-.common_settings {
+#common_settings {
 	width: 100%;
 	height: auto;
-	padding: 5px;
+	padding: 5px 5px;
 	background: #f2f7fe;
 	font-size: 14px;
 }
 
-.common_settings .setting {
+#common_settings .setting {
 	padding-top: 10px;
 }
 
-.common_settings .labelcol {
+#common_settings .labelcol {
 	float: left;
 	width: 20%;
 	text-align: right;
 	padding-right: 5px;
 }
 
-.common_settings .inputcol {
+#common_settings .inputcol {
 	float: right;
 	width: 70%;
 	text-align: left;

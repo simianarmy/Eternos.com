@@ -24,4 +24,5 @@
     %span{:id => @unlock_date_id, :style => style_hidden_if(true)}
       = ff.date_select_with_datepicker(:unlock_on, {:default => Date.today, :add_month_numbers => true, :order => [:year,:month,:day], :start_year => Date.today.year, :end_year => 100.years.from_now.year})
       = ff.submit "Update" 
-      = link_to_function "close", "$('#{@unlock_date_id}').hide()"
+      = link_to_function('close') {|page| page.toggle @unlock_date_id}
+      

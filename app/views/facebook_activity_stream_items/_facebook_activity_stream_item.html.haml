@@ -4,20 +4,25 @@
   .image_post
     = image_tag 'fb.png'
   .clearboth
-  %p.message Message:
+  %p.posted
+    - if item.author
+      == On #{item.published_at.to_s(:long)}, #{item.author} posted: 
+    - else
+      == Posted on #{item.published_at.to_s(:long)}
   .message_content
     - if item.thumbnail_url
       = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
     - elsif item.url
       = link_to item.url, item.url
 
-    %p= item.message
+    %p== #{h item.message}
     .clearboth
-    - if item.author
-      == Author: #{item.author}
-      %br
+    
     %p.posted
-      == Posted: #{item.published_at}
       - if item.published_at != item.edited_at
-        %br== Edited: #{item.edited_at}
-      
+        %br== Edited: #{item.edited_at.to_s(:long)}
+  
+  %p
+  %br
+  %a#toggle_common_settings.toggleable{:href=>'#'} Settings
+  = render :partial => 'shared/common_settings', :locals => {:object => item}

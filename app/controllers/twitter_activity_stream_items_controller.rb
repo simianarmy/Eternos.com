@@ -1,7 +1,6 @@
 # $Id$
 
 class TwitterActivityStreamItemsController < ActivityStreamItemsController
- 
   def index
     @twitter_activity_stream_items = TwitterActivityStreamItem.find(:all)
   end
@@ -35,16 +34,12 @@ class TwitterActivityStreamItemsController < ActivityStreamItemsController
         format.html {
           redirect_to @twitter_activity_stream_item
         }
-        format.js {
-          render :nothing => true, :status => 200
-        }
+        format.js
       else
         format.html {
           render :action => 'edit'
         }
-        format.js {
-          render :nothing => true, :status => 500
-        }
+        format.js
       end
     end
   end

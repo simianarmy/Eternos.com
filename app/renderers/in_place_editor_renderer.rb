@@ -16,7 +16,7 @@ class InPlaceEditorRenderer < Renderer
         page.replace_html(domId, object.send(attribute)) 
       end
       # Stop ajax spinner 
-      page.call 'unload_busy'
+      page.call 'spinner.unload'
     end
   end
 end
