@@ -463,11 +463,13 @@ a.event_list_inline_item:hover {
 
 .tip-hover-menu {
 	font-size: 10px;
+	background-color: #ffc;
+	/* For top-right hover 
 	position: absolute;
 	right: 0;
 	top: 0;
 	z-index:100;
-	background-color: #ffc;
+	*/
 }
 
 #tip-hover-menu-items {
@@ -487,9 +489,78 @@ a.event_list_inline_item:hover {
 }
 
 .tooltip_container:hover {
-	background-color:#ffc;		
+	background-color:#ffc;
+	font-size: larger;
 }
 
 .tooltip_container:hover #tip-hover-menu-items{
 	display:block;
+}
+
+/********************************************************************
+ * Item Details 
+ *
+ */
+
+#item_details_content {
+	width: 95%;
+	height: auto;
+	padding: 5px 5px;
+	background: #f2f7fe;
+	font-size: 14px;
+	box-shadow: 5px 5px 5px #ccc;
+	-moz-box-shadow: 5px 5px 5px #ccc;
+	-webkit-box-shadow: 5px 5px 5px #ccc;
+}
+
+#item_details_content .details_head {
+	float: left;
+}
+
+#item_details_content .image_post {
+	float: right;
+}
+
+#item_details_content .message_content {
+	width: 60%;
+	line-height:17px;
+	text-align:justify;
+/*	border-bottom:1px dashed #d4d4d4; */
+	padding: 10px;
+	font-size: 16px;
+	background: white;
+}
+
+#item_details_content .message_content p {
+	font-weight: bold;
+}
+
+#item_details_content .posted, 
+#item_details_content .detail {
+margin-top:10px;
+color:#3860AB;
+font-size:11px;
+}
+
+.title_post_rss {
+color:#ed6700;
+font-size:15px;
+font-weight:bolder;
+float:left;
+margin-top:10px;
+}
+
+.title_post_twitter {
+color:#24b9bf;
+font-size:15px;
+font-weight:bolder;
+float:left;
+margin-top:10px;
+}
+
+img.pic_message{
+clear:left;
+float:left;
+margin-right:15px;
+border:6px solid #F5F5F5;
 }

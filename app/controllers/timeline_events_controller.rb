@@ -3,7 +3,7 @@
 class TimelineEventsController < ApplicationController
   before_filter :login_required
   require_role ['Guest', 'Member']
-  layout 'timeline_details'
+  #layout 'timeline_details'
   before_filter :member_or_guests_only
   
   def index

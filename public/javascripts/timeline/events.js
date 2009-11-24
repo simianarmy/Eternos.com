@@ -108,7 +108,7 @@ var ETLEventSource = Class.create({
 	getEventAuthorHtml: function() {
 		var author 	= '';
 		if (this.attributes.author) {
-			author = '<br/><span class="event_author">Author: ' + this.attributes.author + '</span>';
+			author = this._getSmallTooltipLine('Author: ' + this.attributes.author);
 		}
 		return author;
 	},

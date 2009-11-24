@@ -14,7 +14,7 @@
     
     <div id="flash_notice" style="display: none"></div>
     <div id="flash_error" style="display: none"></div>
-    
+    <div id="item_details"><div class="clearboth"></div></div>
     <div class="alignleft">
       <div id="month-selector">
         <a id="month_selector_down" href="#" class="btn-left"></a><span id="display_month" class="subtitle6"></span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6"></span><a id="year_selector_up" href="#" class="btn-right"></a>
@@ -25,7 +25,6 @@
       <%= render :partial => 'helplink' %>
     </div>
     <div class="clearboth"></div>
-    
     <div class="timelinebox">
       <div id="my-timeline"></div>
       <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
@@ -46,7 +45,6 @@
       <a class="btn-left" href="#" id="prev_event_search"></a><%= link_to_function 'Present', "timeline.reload({today: true});", :class => 'subtitle6' %><a  class="btn-right" href="#" id="next_event_search"></a>
 		</div>
 		<div class="clearboth"></div>
-		<div id="item_details"><div class="clearboth"></div></div>
     <div id="story-area"></div>
     <div id="arti-area"></div>			            
 		<div class="clearboth"></div>

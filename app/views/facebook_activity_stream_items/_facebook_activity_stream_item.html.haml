@@ -1,14 +1,15 @@
 - item = facebook_activity_stream_item
-.content
-  .title_post Facebook Post
+#item_details_content.shadow
+  .details_head
+    %p.posted
+      - if item.author
+        == On #{item.published_at.to_s(:long)}, #{item.author} posted: 
+      - else
+        == Posted on #{item.published_at.to_s(:long)}
   .image_post
     = image_tag 'fb.png'
   .clearboth
-  %p.posted
-    - if item.author
-      == On #{item.published_at.to_s(:long)}, #{item.author} posted: 
-    - else
-      == Posted on #{item.published_at.to_s(:long)}
+  
   .message_content
     - if item.thumbnail_url
       = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
@@ -18,11 +19,13 @@
     %p== #{h item.message}
     .clearboth
     
-    %p.posted
-      - if item.published_at != item.edited_at
-        %br== Edited: #{item.edited_at.to_s(:long)}
-  
+  %p.detail
+    - if item.published_at != item.edited_at
+      %br== Edited: #{item.edited_at.to_s(:long)}
+ 
   %p
   %br
-  %a#toggle_common_settings.toggleable{:href=>'#'} Settings
   = render :partial => 'shared/common_settings', :locals => {:object => item}
+%p
+%br
+.clearboth

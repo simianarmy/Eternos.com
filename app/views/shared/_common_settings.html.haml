@@ -1,5 +1,6 @@
 / Common settings control for most objects.  Partials are included if the 
 / object has the appropriate attributes/methods
+%a#toggle_common_settings.toggleable{:href=>'#'} Settings
 #common_settings
   - fields_for object do |f|
     - with_options :locals => {:f => f, :object => object} do |p|
@@ -30,3 +31,6 @@
           = p.render :partial => 'shared/timelock_select', :locals => {:f => tlf, :timelock => object.time_lock, :parent => object}
         .clearboth
   %br
+  %span
+    %a#toggle_common_settings.toggleable{:href=>'#'} hide
+  .clearboth

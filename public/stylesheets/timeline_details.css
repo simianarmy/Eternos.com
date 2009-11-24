@@ -1,16 +1,6 @@
 @charset "utf-8";
 /* CSS Document */
 
-
-body{
-	margin:0;
-	padding:0;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:12px;
-}
-
-.clearboth { clear: both; }
-
 .data {
 width:616px;
 overflow-x:hidden;
@@ -19,20 +9,6 @@ overflow-y:scroll;
 
 p{
 margin:0px;
-}
-
-a {
-font-family:Arial, Helvetica, sans-serif;
-font-size:12px;
-text-decoration:none;
-color:#3860AB;
-}
-
-a:hover {
-font-family:Arial, Helvetica, sans-serif;
-font-size:12px;
-text-decoration:underline;
-color:#3860AB;
 }
 
 .popup-container{

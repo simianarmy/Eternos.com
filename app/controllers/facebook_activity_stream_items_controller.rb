@@ -27,11 +27,19 @@ class FacebookActivityStreamItemsController < ActivityStreamItemsController
   end
   
   def update
-    if @facebook_activity_stream_item.update_attributes(params[:facebook_activity_stream_item])
-      flash[:notice] = "Successfully updated facebook activity stream item."
-      redirect_to @facebook_activity_stream_item
-    else
-      render :action => 'edit'
+    respond_to do |format|
+      if @facebook_activity_stream_item.update_attributes(params[:facebook_activity_stream_item])
+        flash[:notice] = "Successfully updated facebook activity stream item."
+        format.html {
+          redirect_to @facebook_activity_stream_item
+        }
+        format.js
+      else
+        format.html {
+          render :action => 'edit'
+        }
+        format.js
+      end
     end
   end
   
