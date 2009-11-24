@@ -1,28 +1,27 @@
 - item = facebook_activity_stream_item
-#item_details_content.shadow
+#item_details_content
   .details_head
+    %p=link_to_function image_tag('delete-icon-16.png'), update_page {|page| page.hide :item_details_content}
     %p.posted
+      == Posted on #{item.published_at.to_s(:long)}
       - if item.author
-        == On #{item.published_at.to_s(:long)}, #{item.author} posted: 
-      - else
-        == Posted on #{item.published_at.to_s(:long)}
+        == by #{item.author}
+      \:
   .image_post
     = image_tag 'fb.png'
   .clearboth
-  
+  %br
   .message_content
     - if item.thumbnail_url
       = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
     - elsif item.url
       = link_to item.url, item.url
-
-    %p== #{h item.message}
     .clearboth
-    
+    %p== #{h item.message}
   %p.detail
     - if item.published_at != item.edited_at
-      %br== Edited: #{item.edited_at.to_s(:long)}
- 
+      == Edited: #{item.edited_at.to_s(:long)}
+  .clearboth
   %p
   %br
   = render :partial => 'shared/common_settings', :locals => {:object => item}

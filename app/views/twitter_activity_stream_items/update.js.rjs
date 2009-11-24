@@ -1,4 +1,4 @@
-page.flash_and_fade
+#page.flash_and_fade
 page.update_common_settings(@twitter_activity_stream_item, @common_settings) if @common_settings
 render_with :in_place_editor do |ip| 
   ip.update(@twitter_activity_stream_item, params)

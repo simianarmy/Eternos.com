@@ -656,7 +656,14 @@ div.frontpage {
 
 #common_settings .inputcol {
 	float: left;
-	width: 70%;
+	width: 60%
+	text-align: left;
+	padding-left: 5px;
+}
+
+#common_settings .tipcol {
+	float: left;
+	width: 20%
 	text-align: left;
 	padding-left: 5px;
 }

@@ -1,5 +1,7 @@
-.labelcol Tags: 
-.inputcol
+.labelcol.tooltip-target{:rel=>"{target: $('tags'), hook: {target: 'rightMiddle', tip: 'leftMiddle'}, stem: 'leftMiddle'}"} Tags: 
+.tooltip
+  Add descriptive tags for organizing and searching your items
+#tags.inputcol
   = restful_in_place_editor 'span', object, 'tag_list', :object => object.class.to_s.underscore, :url => url, :value => (object.tag_list.empty?) ? 'Add Tags' : object.tag_list
   %br
   = tags_field_description
