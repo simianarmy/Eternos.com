@@ -32,7 +32,7 @@ var ETemplates = function() {
 	var that = {};
 
 	var tooltipItemHoverHTML = '<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
-			'<li><a href="#{event_details_link}" onclick="ajaxDisplayTooltipItemDetails(\'item_details\', \'#{event_details_link}\'); return false;">' +
+			'<li><a href="#{event_edit_link}" onclick="ajaxDisplayTooltipItemDetails(\'item_details\', \'#{event_edit_link}\'); return false;">' +
 			'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
 			'<li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
 		'</div>';
@@ -137,7 +137,7 @@ var ETemplates = function() {
 		} (),
 		mediaPlaylistItem: function() {
 			return new Template('<div class="tooltip_container">' +
-				'<div class="playlist_item tooltip_item"><a href="#{url}"><img src="#{thumbnail_url}"/><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</a></div>' +
+				'<div class="playlist_item tooltip_item"><a href="#{url}" class="playlist_clip"><img src="#{thumbnail_url}"/></a><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</div>' +
 				tooltipItemHoverHTML + '</div>');
 		} (),
 		inlineEvents: function() {

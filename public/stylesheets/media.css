@@ -87,7 +87,7 @@ a.player img {
 	overflow-x:hidden;
 	border:1px solid #ccc;
 	padding:4px 10px 12px 10px;
-	background-color:#efefef;
+	background: #f2f7fe;
 	margin-top:5px;
 	float:left;
 }

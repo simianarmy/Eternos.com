@@ -501,15 +501,14 @@ var ETLEventItems = Class.create({
 				description: i.attributes.description,
 				time: i.getEventTimeHtml(),
 				duration: i.attributes.duration_to_s
-			}, {}))
-			//this._itemMenuLinks(item)));
-		});
+			}, this._itemMenuLinks(i)));
+		}.bind(this));
 		return html;
 	},
 	_itemMenuLinks: function(item) {
 		return {
 			event_details_link: this._getItemDetailsUrl(item),
-			event_edit_link: item.getEditURL(),
+			event_edit_link: this._getItemDetailsUrl(item), //item.getEditURL(),
 			event_delete_link: item.getDeleteURL()
 		};
 	},

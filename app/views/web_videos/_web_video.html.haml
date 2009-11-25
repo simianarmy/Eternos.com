@@ -1,8 +1,26 @@
-- use_lightview
 
-= render :partial => 'contents/show', :locals => { :content => web_video }
-
+#item_details_content
+  .details_head
+    %p= item_details_close_button
+    %p.posted== Created #{web_video.created_at.to_s(:long)}
+  .image_post
+    = image_tag 'video-small-icon.gif'
+  .clearboth 
+  .message_content
+    = restful_in_place_editor 'span', web_video, 'title', :object => 'content', :url => content_url(web_video)
+    %p
+    %br
+    = link_to_content(web_video)
+    %p
+    %strong Description: 
+    = restful_in_place_editor 'span', web_video, 'description', :object => 'content', :url => content_url(web_video), :value => (web_video.try(:description)) ? 'Add Description' : web_video.description, :rows => 4
+  .clearboth
+  %p
+  %br
+  = render :partial => 'shared/common_settings', :locals => {:object => web_video}
 %p
 %br
-= render :partial => 'contents/show_footer', :object => web_video
+.clearboth
+
+
 
