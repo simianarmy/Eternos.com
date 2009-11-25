@@ -419,14 +419,18 @@ a.event_list_inline_item:hover {
 	position: relative;
 }
 
+.tooltip_item:hover {
+	background-color:#ffc;
+}
+
 .tooltip_container a {
-	text-decoration:none;
+	/*text-decoration:none;*/
 	color:#494a4c;
 }
 
 .tooltip_container a:hover {
-	text-decoration:none;
-	background-color: #ffe;
+	/*text-decoration:none;*/
+	/*font-size: larger;*/
 }
 
 .tooltip_arti_container {
@@ -488,12 +492,7 @@ a.event_list_inline_item:hover {
 	text-decoration: underline;
 }
 
-.tooltip_container:hover {
-	background-color:#ffc;
-	font-size: larger;
-}
-
-.tooltip_container:hover #tip-hover-menu-items{
+.tooltip_container:hover #tip-hover-menu-items {
 	display:block;
 }
 

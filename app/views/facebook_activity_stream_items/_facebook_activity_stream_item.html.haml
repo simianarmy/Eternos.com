@@ -1,7 +1,7 @@
 - item = facebook_activity_stream_item
 #item_details_content
   .details_head
-    %p=link_to_function image_tag('delete-icon-16.png'), update_page {|page| page.hide :item_details_content}
+    %p=item_details_close_button
     %p.posted
       == Posted on #{item.published_at.to_s(:long)}
       - if item.author

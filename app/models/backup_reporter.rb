@@ -66,14 +66,16 @@ class BackupReporter
       BackupEmail.created_at_greater_than_or_equal_to(1.day.ago).sum(:size)
       latest[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:s3_cost])
 
-      nusers = Member.active.count
+      user_count = Member.active.size
+      user_with_data_count = Member.active.with_data.size      
       total.each_key do |k| 
-        total_avg[k] = total[k] / nusers
-        latest_avg[k] = latest[k] / nusers
+        total_avg[k] = total[k] / user_count
+        latest_avg[k] = latest[k] / user_count
       end
 
       BackupReportMailer.deliver_daily_storage_report(:total => total, :latest => latest, 
-      :total_avg => total_avg, :latest_avg => latest_avg, :num_users => nusers)
+      :total_avg => total_avg, :latest_avg => latest_avg, :num_users => user_count,
+      :num_users_with_data => user_with_data_count)
     end
 
 

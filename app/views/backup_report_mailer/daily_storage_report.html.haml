@@ -1,28 +1,27 @@
 %h2= @subject
 %br
-%h3 Totals
 %p
-.totals 
-  = total_count_and_size(@stats[:total])
-  %br Details
-  = count_and_size(@stats_keys, @stats[:total])
+.general
+  == #{@stats[:num_users]} Active members
+  %br
+  == #{@stats[:num_users_with_data]} Active members with backup data
 %p
-.yesterday 
-  Yesterday
-  = total_count_and_size(@stats[:latest])
-  %br Details
-  = count_and_size(@stats_keys, @stats[:latest])
+%h3 Total Size & Cost
+= summary_totals(@stats[:total])
+%br
+%h3 Size & Cost per User
+= summary_totals @stats[:total_avg]
+%p
+%h3 Details
+%br
+%table
+  %thead
+    %tr
+      %td Data
+      %td Yesterday
+      %td Total
+      %td Avg. Yesterday
+      %td Avg. Total
+  %tbody
+    = total_count_and_size(@stats_keys, [:latest, :total, :latest_avg, :total_avg], @stats)
 
-%h3= "Averages (#{@stats[:num_users]} active members)"
-%p
-.avg_total 
-  Avg Totals
-  = total_count_and_size(@stats[:total_avg])
-  %br Details
-  = count_and_size(@stats_keys, @stats[:total_avg])
-%p
-.avg_yesterday 
-  Avg Yesterday
-  = total_count_and_size(@stats[:latest_avg])
-  %br Details
-  = count_and_size(@stats_keys, @stats[:latest_avg])

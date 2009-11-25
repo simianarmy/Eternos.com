@@ -33,6 +33,11 @@ class Member < User
       '(backup_states.last_failed_backup_at > backup_states.last_successful_backup_at)))', 
       false, cutoff_date || Time.now]
   } }
+  named_scope :with_data, {
+    :joins => :backup_state,
+    :conditions => { 'backup_states.items_saved' => true }
+  }
+  
   
   def deliver_password_reset_instructions!
     reset_perishable_token!

@@ -23,6 +23,7 @@
   #timelock_sel.inputcol
     = ff.select :type, parent.time_lock_select_options, {:selected => parent.time_lock_type}, :id => dom_id(parent, "timelock_type"), :class => @select_class, :rel => "{toggleValue: #{TimeLock.date_locked}, toggleElement: '#{@unlock_date_id}'}"
   
+    /-= timelock.unlock_on.to_s if parent.date_locked?
     %a.toggleable{:id => "toggle_#{@unlock_date_id}", :href=>'#', :style=>"#{style_hidden_if(!parent.date_locked?)}"} Edit
     %span{:id => @unlock_date_id, :style => style_hidden_if(true)}
       = ff.date_select_with_datepicker(:unlock_on, {:default => Date.today, :add_month_numbers => true, :order => [:year,:month,:day], :start_year => Date.today.year, :end_year => 100.years.from_now.year})

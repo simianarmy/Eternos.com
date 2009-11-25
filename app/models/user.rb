@@ -88,6 +88,8 @@ class User < ActiveRecord::Base
   
   named_scope :active, :conditions => { :state => 'live' }
   
+  #Member.active.find_all(&:has_backup_data?).size
+  
   # Roles
   AdminRole         = 'Admin'
   MemberRole        = 'Member'

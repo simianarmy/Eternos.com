@@ -93,56 +93,61 @@ a.player img {
 }
 
 /* playlist entry */
-#playlist a {
+.playlist_item {
 	display:block;
+	overflow-x:hidden;
+	/*
 	width:280px;
+	*/
 	height:110px;
 	padding:7px;
 	background-color:#fff;
+	/*
 	border:1px solid #ccc;
 	font:11px "bitstream vera sans", "lucida grande",verdana;
+	*/
 	text-decoration:none;
 	margin-top:7px;
 	color:#666;
 }
 
 /* different states of a playlist entry */
-#playlist a:hover {
+.playlist_item a:hover {
 	background-color:#ffc;		
 }
 
-#playlist a.progress {
+.playlist_item a.progress {
 	background-color:#efefef;	
 }
 
-#playlist a.playing {
+.playlist_item a.playing {
 	border:1px solid #666;
 	background-color:#ffc;	
 }
 
-#playlist a.paused {
+.playlist_item a.paused {
 	border:1px solid #666;
 	background-color:#ffc;	
 }
 
 /* elements inside playlist entry */
-#playlist a img {
+#playlist .playlist_item a img {
 	border:0;	
 	float:left;
 	margin-right:10px;
 }
 
-#playlist a strong {
+.playlist_item a strong {
 	color:blue;		
 	padding-bottom:5px;
 }
 
-#playlist a span {
+.playlist_item a span {
 	float: left;
 	font-style:normal;
 }
 
-#playlist a em {
+.playlist_item a em {
 	border:0;	
 	float:left;
 	margin-right:10px;

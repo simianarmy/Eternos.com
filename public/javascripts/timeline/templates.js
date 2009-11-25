@@ -1,7 +1,43 @@
 // $Id$
-var ETemplates = {
-	// This should be in templates.js
-	utils: function() {
+
+function ajaxDisplayTooltipItemDetails(el, url) {
+	new Ajax.Updater(el, url, {
+		method: 'get',
+		onLoading: function() { spinner.load(el); },
+		onSuccess: function(transport) {
+			new Effect.Highlight(el);
+		},
+		onComplete: function() { spinner.unload(); }
+	});
+	/*
+	new Effect.SlideUp(el, {duration: 1.0});
+	new Ajax.Request(url, {
+		method: 'get',
+		evalJS: true,
+		onSuccess: function(transport){
+		    new Effect.SlideDown(el, {
+		      queue: 'end',
+					duration: 1.0,
+		      beforeSetup: function() {
+						// TODO: Need way to eval dom for behaviors, otherwise this is useless!
+		        $(el).innerHTML=transport.responseText;
+		      }
+		    });
+		 }
+	});
+	*/
+}
+
+var ETemplates = function() {
+	var that = {};
+
+	var tooltipItemHoverHTML = '<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
+			'<li><a href="#{event_details_link}" onclick="ajaxDisplayTooltipItemDetails(\'item_details\', \'#{event_details_link}\'); return false;">' +
+			'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
+			'<li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
+		'</div>';
+		
+	that.utils = function() {
 		return {
 			emptyResponse: "{\"results\": [], \"previousDataUri\": null, \"responseDetails\": null, \"request\": \"\", \"resultCount\": 0, \"status\": 200, \"futureDataUri\": null}",
 			assetUrl: "/javascripts/timeline/",
@@ -10,8 +46,8 @@ var ETemplates = {
 			blankArtifactImg: "<div style=\"padding-left:5px;margin-top:5px;\"><img src=\"/images/blank-arftifacts.gif\"></div>",
 			tlEffectiveWidth: 750
 		};
-	} (),
-	defaultTooltipWidth: function(type) {
+	}();
+	that.defaultTooltipWidth =function(type) {
 		if (type === 'photo') {
 			return '120px';
 		} else if (type === 'web_video') {
@@ -19,8 +55,8 @@ var ETemplates = {
 		} else {
 			return 'auto';
 		}
-	},
-	defaultTooltipOptions: function() {
+	};
+	that.defaultTooltipOptions = function() {
 		return {
 			border: 6,
 			borderColor: '#74C5FF',
@@ -33,8 +69,8 @@ var ETemplates = {
 				event: 'mouseout'
 			}
 		};
-	},
-	eventTooltipOptions: function() {
+	};
+	that.eventTooltipOptions = function() {
 		return {
 			hook: {
 				target: 'topMiddle',
@@ -42,8 +78,8 @@ var ETemplates = {
 			},
 			stem: 'bottomMiddle'
 		};
-	},
-	timelineTooltipOptions: function() {
+	};
+	that.timelineTooltipOptions = function() {
 		return {
 			hook: {
 				target: 'bottomRight',
@@ -51,8 +87,8 @@ var ETemplates = {
 			},
 			stem: 'topLeft'
 		};
-	},
-	timelineTooltipOptionsLeft: function() {
+	};
+	that.timelineTooltipOptionsLeft = function() {
 		return {
 			hook: {
 				target: 'bottomLeft',
@@ -60,17 +96,17 @@ var ETemplates = {
 			},
 			stem: 'topRight'
 		};
-	},
-	timelineDurationTooltipOptions: function() {
+	};
+	that.timelineDurationTooltipOptions = function() {
 		return {
 			hook: {
 				tip: 'topLeft',
 				mouse: true
 			}
 		};
-	},
+	};
 	// Events section templates
-	eventListTemplates: {
+	that.eventListTemplates = {
 		events: function() {
 			return new Template('<div id="events_header"><p class="details_box_title">#{title}</p></div>' + '<div id="events_list">#{events}</div>');
 		} (),
@@ -93,21 +129,16 @@ var ETemplates = {
 				//'<a href="#{event_details_link}" onclick="Tips.hideAll(); return true;" class="lightview tooltip_item" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}" rel="iframe">#{content}</a>' +
 				// Ajax-populate div on click
 				//'<a href="#{event_details_link}" onclick="new Ajax.Updater(\'item_details\', \'#{event_details_link}\', {asynchronous:true, evalScripts:true, method:\'get\'}); return false;" class="tooltip_item">#{content}</a>' +
-				'<span class="tooltip_item">#{content}</span>' +
-				'<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
-					'<li><a href="#{event_details_link}" onclick="new Ajax.Updater(\'item_details\', \'#{event_details_link}\', {asynchronous:true, evalScripts:true, method:\'get\'}); return false;" class="tooltip_item">' +
-				// Disable edit/delete links for now
-				// '<li><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</li><li><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</li></ul>' + 
-				//'<li><a href="#{event_edit_link}" class="lightview"><img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li><li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
-					'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
-					'<li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
-				'</div></div><br/>');
+				'<div class="tooltip_item">#{content}</div>' +
+				tooltipItemHoverHTML + '</div><br/>');
 		} (),
 		mediaTooltip: function() {
-			return new Template('<div class="event_preview_item_container tooltip_container"><div id="playlist">#{playlist}</div></div>');
+			return new Template('<div class="event_preview_item_container"><div id="playlist">#{playlist}</div></div>');
 		} (),
 		mediaPlaylistItem: function() {
-			return new Template('<a href="#{url}"><img src="#{thumbnail_url}"/><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</a>');
+			return new Template('<div class="tooltip_container">' +
+				'<div class="playlist_item tooltip_item"><a href="#{url}"><img src="#{thumbnail_url}"/><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</a></div>' +
+				tooltipItemHoverHTML + '</div>');
 		} (),
 		inlineEvents: function() {
 			return new Template('<div id="#{id}">#{content}</div>');
@@ -121,8 +152,8 @@ var ETemplates = {
 		noEvents: function() {
 			return new Template('<div class="event_list_group_even">' + 'No events for this month.</div>');
 		} ()
-	},
-	tooltipTemplates: {
+	};
+	that.tooltipTemplates = {
 		activity_stream_item: function() {
 			return new Template('<div class="tooltip_as">#{message}#{time}#{author}#{source}#{media}</div>');
 		} (),
@@ -156,28 +187,28 @@ var ETemplates = {
 		single_line_small: function() {
 			return new Template('<br/><span class="event_time">#{text}</span>');
 		} ()
-	},
+	};
 	// Artifacts section templates
-	artifactTemplates: {
+	that.artifactTemplates = {
 		artifacts: function() {
 			return new Template("<div class=\"artibox-top\"><p class=\"details_box_title\">#{title}</p></div>" + "<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" + "<img src=\"/images/artibox-bottom.gif\" /></div>");
 		} (),
 		artifactBox: function() {
 			return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="arti-thumb"/></a></li>');
 		} ()
-	},
-	eventSelectorTemplate: function() {
+	};
+	that.eventSelectorTemplate = function() {
 		return new Template('<a id="prev_event" href="" class="btn-left"></a><span class="subtitle7">&nbsp;Most&nbsp;Recent&nbsp;</span><a id="next_event" href="#" class="btn-right">');
-	} (),
-	loadingTemplate: function() {
+	} ();
+	that.loadingTemplate = function() {
 		return new Template("<div><span>Loading #{type}...</span></div>");
-	} (),
-	event_list_item: function(id) {
+	} ();
+	that.event_list_item = function(id) {
 		return $("evli:" + id);
-	} (),
+	} ();
 	// For Eternos custom event sizing based on frequency
 	// n = frequency of event
-	getIconSize: function(n) {
+	that.getIconSize = function(n) {
 		var r;
 		if (n <= 1) {
 			r = 20;
@@ -189,5 +220,6 @@ var ETemplates = {
 			r = 40;
 		}
 		return r;
-	}
-};
+	};
+	return that;
+}();
