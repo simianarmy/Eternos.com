@@ -28,10 +28,10 @@ class Member < User
   named_scope :needs_backup, lambda { |cutoff_date|
     {
     :joins => :backup_state,
-    :conditions => ['(backup_states.id IS NULL) OR (backup_states.in_progress = ? AND ' +
+    :conditions => ['(backup_states.id IS NULL) OR ' +
       '((backup_states.last_backup_finished_at <= ?) OR ' +
-      '(backup_states.last_failed_backup_at > backup_states.last_successful_backup_at)))', 
-      false, cutoff_date || Time.now]
+      '(backup_states.last_failed_backup_at > backup_states.last_successful_backup_at))', 
+      cutoff_date || Time.now]
   } }
   named_scope :with_data, {
     :joins => :backup_state,

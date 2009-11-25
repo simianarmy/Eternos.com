@@ -220,6 +220,15 @@ var tooltipGenerator = function() {
 
 // UI action event handlers
 var ETUI = function() {
+	var player;
+	var videoExpandDimensions = {
+		width: 406,
+		height: 303
+	};
+	var videoThumbDimensions = {
+		width: 100,
+		height: 100
+	};
 	// Private funcs
 	// fetch tooltip contents for an element
 	function getTooltip(id) {
@@ -268,39 +277,65 @@ var ETUI = function() {
 	};
 	// Perform any necessary post-processing for new tooltips
 	function postprocessTooltip(el, tipType) {
-		var player;
 		// Video contents need player initialized & playlist assigned
+		var flowsel;
 		if (ETEvent.isVideo(tipType)) {
 			//$('video_section').appear({ duration: 1.0 });
-			// create or fetch video player object		
-			if (! (player = $f('player'))) {
-				player = create_flowplayer('player', {
-					// show playlist buttons in controlbar 
-					plugins: {
-						controls: {
-							playlist: true
-						}
+			// create new video player object on new tooltips
+			flowsel = 'div#media_' + el.id + ' a.player';
+			if (jQuery(flowsel).flowplayer().size() === 0) {
+				player = create_flowplayer(flowsel, {
+					// perform custom stuff before default click action 
+					onBeforeClick: function() {
+
+						// unload previously loaded player 
+						$f().unload();
+
+						// get wrapper element as jQuery object 
+						var wrap = jQuery(this.getParent());
+
+						// hide nested play button 
+						wrap.find("img").fadeOut();
+
+						// start growing animation
+						// TODO: configurable start, end dimensions
+						wrap.animate(
+							videoExpandDimensions,
+							500, 
+							function() {
+								// when animation finishes we will load our player 
+								$f(this).load();
+						});
+
+						// disable default click behaviour (player loading) 
+						return false;
+					},
+
+					// unload action resumes to original state         
+					onUnload: function() {
+						jQuery(this.getParent()).animate(
+							videoThumbDimensions,
+							500, function() {
+							// make play button visible again 
+							jQuery(this).find("img").fadeIn();
+						});
+					},
+
+					// when playback finishes perform our custom unload action 
+					onFinish: function() {
+						this.unload();
 					}
 				});
 			}
 			// assign latest playlist
-			player.playlist('#playlist');
+			//player.playlist('#playlist');
 			// Assign click handler to each playlist item so that we can make player
 			// visible on click
-			jQuery('#playlist a').click(function() {
+			/*
+			jQuery('#playlist .playlist_item a').click(function() {
 				$('video_section').appear({
 					duration: 1.0
 				});
-			});
-
-			// Add action links on tooltip hover
-			/*
-			jQuery(".tooltip_container").hover(
-			function() {
-				$(this).addClass('tip-hover-menu');
-			},
-			function() {
-				$(this).removeClass('tip-hover-menu');
 			});
 			*/
 		} else {
@@ -327,7 +362,7 @@ var ETUI = function() {
 				return true;
 			}
 			// get the event id from the container div id
-			parts = element.id.split(':');
+			parts = element.id.split('_');
 			createTooltip(element, parts[1], ETemplates.eventTooltipOptions());
 		},
 		// Destroy tooltips and observers in order to prevent memory leaks
@@ -501,14 +536,16 @@ var ETLEventItems = Class.create({
 				description: i.attributes.description,
 				time: i.getEventTimeHtml(),
 				duration: i.attributes.duration_to_s
-			}, this._itemMenuLinks(i)));
+			},
+			this._itemMenuLinks(i)));
 		}.bind(this));
 		return html;
 	},
 	_itemMenuLinks: function(item) {
 		return {
 			event_details_link: this._getItemDetailsUrl(item),
-			event_edit_link: this._getItemDetailsUrl(item), //item.getEditURL(),
+			event_edit_link: this._getItemDetailsUrl(item),
+			//item.getEditURL(),
 			event_delete_link: item.getDeleteURL()
 		};
 	},

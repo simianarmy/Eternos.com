@@ -51,7 +51,7 @@ var ETemplates = function() {
 		if (type === 'photo') {
 			return '120px';
 		} else if (type === 'web_video') {
-			return '340px';
+			return '600px';
 		} else {
 			return 'auto';
 		}
@@ -117,10 +117,10 @@ var ETemplates = function() {
 			return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 		} (),
 		eventGroupItem: function() {
-			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>' + '</div><div style="clear:both"></div></li>');
+			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>' + '</div><div style="clear:both"></div></li>');
 		} (),
 		eventItemWithTooltip: function() {
-			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli:#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + '<div id="evlitt:#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clear"></div></li>');
+			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + '<div id="evlitt_#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clear"></div></li>');
 		} (),
 		eventItemTooltipItem: function() {
 			// Lightview popup on click
@@ -133,11 +133,11 @@ var ETemplates = function() {
 				tooltipItemHoverHTML + '</div><br/>');
 		} (),
 		mediaTooltip: function() {
-			return new Template('<div class="event_preview_item_container"><div id="playlist">#{playlist}</div></div>');
+			return new Template('<div id="media_evli_#{id}" class="event_preview_item_container"><div id="playlist">#{playlist}</div></div>');
 		} (),
 		mediaPlaylistItem: function() {
 			return new Template('<div class="tooltip_container">' +
-				'<div class="playlist_item tooltip_item"><a href="#{url}" class="playlist_clip"><img src="#{thumbnail_url}"/></a><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</div>' +
+				'<div class="tooltip_item tooltip_video"><a href="#{url}" class="player" style="background-image:url(#{thumbnail_url})"><img src="/images/play.png"></a><strong>#{title}</strong><br/><br/>#{description}<em>#{duration}</em><br/>#{time}</div>' +
 				tooltipItemHoverHTML + '</div>');
 		} (),
 		inlineEvents: function() {
@@ -204,7 +204,7 @@ var ETemplates = function() {
 		return new Template("<div><span>Loading #{type}...</span></div>");
 	} ();
 	that.event_list_item = function(id) {
-		return $("evli:" + id);
+		return $("evli_" + id);
 	} ();
 	// For Eternos custom event sizing based on frequency
 	// n = frequency of event

@@ -39,6 +39,30 @@ a.video_thumb:hover {
 	border:1px solid #000; 
 }
 
+/* Video splash styles */
+
+/* info area */
+.video_player div.info {
+	height:40px;
+	background:#000 url(/images/h80.png) repeat-x;
+	opacity:0.7;
+	color:#fff;
+	margin-top:45px;
+	text-align:left;
+	padding:5px 15px;	
+	font-family:"bitstream vera sans","trebuchet ms";
+	font-size:12px;
+	border-top:1px solid #ccc;
+	margin-top:40px;
+}
+
+/* duration data inside info area */
+.video_player div.info span {
+	color:#99FF99;
+	display:block;
+	font-weight:bold;
+}
+
 /*********************************************************************/
 /* Styles for standalone player */
 
@@ -76,12 +100,12 @@ a.player img {
 	height:240px
 }
 
+
 /*********************************************************************/
 /* playlist for video browsing - from http://flowplayer.org/demos/plugins/javascript/playlist/youtube.htm */
 
 /* playlist style */
 #playlist {
-	width:300px;
 	height:350px;
 	overflow-y:auto;
 	overflow-x:hidden;

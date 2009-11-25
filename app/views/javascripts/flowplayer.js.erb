@@ -7,7 +7,7 @@ var FLOWPLAYER_PRODUCT_KEY = "<%= FLOWPLAYER_PRODUCT_KEY %>";
 
 // returns new flowplayer instance
 function create_flowplayer(id, opts) {
-	return flowplayer(id, FlowplayerSwfUrl, 
+	return jQuery(id).flowplayer(FlowplayerSwfUrl, 
 		Object.extend({
 			key: FLOWPLAYER_PRODUCT_KEY,
 			logo: {

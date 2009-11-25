@@ -448,6 +448,34 @@ a.event_list_inline_item:hover {
 	padding-bottom: 5px;
 }
 
+.tooltip_video {
+	clear:both;	
+	overflow-x:hidden;
+	width: 550px;
+	border:1px solid #ddd;
+	margin-top:7px;
+	padding:7px;
+	font:12px "bitstream vera sans","lucida grande", verdana;
+	color:#666;
+	background-color:#fff;
+}
+	
+.tooltip_video a.player {
+	display:block;
+	width:100px;
+	height:100px;
+	padding:0;	
+	text-align:center;
+	float:left;
+	margin:0 10px 0 0;
+}
+
+/* splash image */
+.tooltip_video a.player img {
+	margin-top:35px;
+	border:0;	
+}
+
 .tooltip_link a {
 	color: blue;
 }
