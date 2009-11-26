@@ -51,7 +51,7 @@ var ETemplates = function() {
 		if (type === 'photo') {
 			return '120px';
 		} else if (type === 'web_video') {
-			return '600px';
+			return '480px';
 		} else {
 			return 'auto';
 		}
@@ -133,7 +133,7 @@ var ETemplates = function() {
 				tooltipItemHoverHTML + '</div><br/>');
 		} (),
 		mediaTooltip: function() {
-			return new Template('<div id="media_evli_#{id}" class="event_preview_item_container"><div id="playlist">#{playlist}</div></div>');
+			return new Template('<div id="#{id}" class="event_preview_item_container tooltip_media_container">#{playlist}</div>');
 		} (),
 		mediaPlaylistItem: function() {
 			return new Template('<div class="tooltip_container">' +
@@ -203,9 +203,12 @@ var ETemplates = function() {
 	that.loadingTemplate = function() {
 		return new Template("<div><span>Loading #{type}...</span></div>");
 	} ();
-	that.event_list_item = function(id) {
+	that.getEventListItemEl = function(id, type) {
 		return $("evli_" + id);
 	} ();
+	that.tooltipTemplateID = function(id, type) {
+		return type + '-evli_' + id;
+	};
 	// For Eternos custom event sizing based on frequency
 	// n = frequency of event
 	that.getIconSize = function(n) {

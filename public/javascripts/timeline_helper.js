@@ -266,7 +266,7 @@ var ETUI = function() {
 		new Tip(element, tipContents.body, tipOpts);
 		element.prototip.show();
 
-		postprocessTooltip(element, tipContents.type);
+		postprocessTooltip(element, id, tipContents.type);
 		return true;
 	};
 
@@ -276,14 +276,16 @@ var ETUI = function() {
 
 	};
 	// Perform any necessary post-processing for new tooltips
-	function postprocessTooltip(el, tipType) {
+	function postprocessTooltip(el, id, tipType) {
 		// Video contents need player initialized & playlist assigned
 		var flowsel;
 		if (ETEvent.isVideo(tipType)) {
 			//$('video_section').appear({ duration: 1.0 });
 			// create new video player object on new tooltips
-			flowsel = 'div#media_' + el.id + ' a.player';
+			flowsel = 'div#' + ETemplates.tooltipTemplateID(id, 'media') + ' a.player';
+			ETDebug.log("flowplayer selector = " + flowsel);
 			if (jQuery(flowsel).flowplayer().size() === 0) {
+				ETDebug.log("creating new flowplayer for " + flowsel);
 				player = create_flowplayer(flowsel, {
 					// perform custom stuff before default click action 
 					onBeforeClick: function() {
@@ -569,7 +571,7 @@ var ETLEventItems = Class.create({
 		if (this.first.isVideo()) {
 			// Builds tooltip html for media items - creates playlist & viewer
 			return ETemplates.eventListTemplates.mediaTooltip.evaluate({
-				id: listId,
+				id: ETemplates.tooltipTemplateID(listId, 'media'),
 				playlist: this._getMediaItemsPlaylistHtml()
 			});
 		} else {
@@ -1161,8 +1163,10 @@ var ETimeline = function(opts) {
 
 			// Make sure month selector is synched up
 			that.monthSelector.setDate(targetDate);
+			
 			that.artifactSection.populate(targetDate);
 			that.eventSection.populate(this.eventItems.populate(targetDate));
+			
 		},
 		empty: function() {
 			this.eventItems.empty();
@@ -1539,7 +1543,7 @@ var ETimeline = function(opts) {
 			// Setup click handler for timeline events
 			Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
 				// Should fire click() on matching event list target link
-				if ((li = ETemplates.event_list_item(evt.getEventID())) !== undefined) {
+				if ((li = ETemplates.getEventListItemEl(evt.getEventID())) !== undefined) {
 					if ((li !== null) && (a = li.down().down('a.event_list_inline_item')) !== undefined) {
 						Tips.hideAll();
 						Lightview.show({

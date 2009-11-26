@@ -415,6 +415,7 @@ a.event_list_inline_item:hover {
 
 .tooltip_container {
 	overflow-y:auto;
+	overflow-x:hidden;
 	font-size: 12px;
 	position: relative;
 }
@@ -439,6 +440,17 @@ a.event_list_inline_item:hover {
 	width: 120px;
 }
 
+.tooltip_media_container {
+	height:420px;
+	overflow-y:auto;
+	overflow-x:hidden;
+	border:1px solid #ccc;
+	padding:4px 10px 12px 10px;
+	background: #f2f7fe;
+	margin-top:5px;
+	float:left;	
+}
+
 .tooltip_as {
 	width: 300px;
 }
@@ -451,10 +463,10 @@ a.event_list_inline_item:hover {
 .tooltip_video {
 	clear:both;	
 	overflow-x:hidden;
-	width: 550px;
+	width: 420px;
 	border:1px solid #ddd;
 	margin-top:7px;
-	padding:7px;
+	padding:3px;
 	font:12px "bitstream vera sans","lucida grande", verdana;
 	color:#666;
 	background-color:#fff;

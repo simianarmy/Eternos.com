@@ -534,7 +534,7 @@ var Flowplayer = Behavior.create({
 				key: FLOWPLAYER_PRODUCT_KEY,
 				clip: {
 					url: url,
-					autoPlay: this.opts.autoPlay || false,
+					autoPlay: this.opts.autoPlay || true,
 					autoBuffering: true
 					//initialScale: this.opts.scale || 'scale'
 				},
