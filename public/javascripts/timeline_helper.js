@@ -220,7 +220,6 @@ var tooltipGenerator = function() {
 
 // UI action event handlers
 var ETUI = function() {
-	var player;
 	var videoExpandDimensions = {
 		width: 406,
 		height: 303
@@ -247,6 +246,7 @@ var ETUI = function() {
 
 		// Save offset coordinates from top left of screen
 		element.lastCumulativeOffset = element.cumulativeOffset();
+		element.tipType = tipContents.type;
 
 		// Determine tooltip position relative to icon (left or right) so that 
 		// it says in viewport
@@ -266,80 +266,18 @@ var ETUI = function() {
 		new Tip(element, tipContents.body, tipOpts);
 		element.prototip.show();
 
-		postprocessTooltip(element, id, tipContents.type);
+		postprocessTooltip(element, id);
 		return true;
 	};
-
-
-
+	// Perform any necessary pre-processing for new tooltips
 	function preprocessTooltip(el, tipType) {
 
 	};
 	// Perform any necessary post-processing for new tooltips
-	function postprocessTooltip(el, id, tipType) {
+	function postprocessTooltip(el, id) {
 		// Video contents need player initialized & playlist assigned
-		var flowsel;
-		if (ETEvent.isVideo(tipType)) {
-			//$('video_section').appear({ duration: 1.0 });
-			// create new video player object on new tooltips
-			flowsel = 'div#' + ETemplates.tooltipTemplateID(id, 'media') + ' a.player';
-			ETDebug.log("flowplayer selector = " + flowsel);
-			if (jQuery(flowsel).flowplayer().size() === 0) {
-				ETDebug.log("creating new flowplayer for " + flowsel);
-				player = create_flowplayer(flowsel, {
-					// perform custom stuff before default click action 
-					onBeforeClick: function() {
-
-						// unload previously loaded player 
-						$f().unload();
-
-						// get wrapper element as jQuery object 
-						var wrap = jQuery(this.getParent());
-
-						// hide nested play button 
-						wrap.find("img").fadeOut();
-
-						// start growing animation
-						// TODO: configurable start, end dimensions
-						wrap.animate(
-							videoExpandDimensions,
-							500, 
-							function() {
-								// when animation finishes we will load our player 
-								$f(this).load();
-						});
-
-						// disable default click behaviour (player loading) 
-						return false;
-					},
-
-					// unload action resumes to original state         
-					onUnload: function() {
-						jQuery(this.getParent()).animate(
-							videoThumbDimensions,
-							500, function() {
-							// make play button visible again 
-							jQuery(this).find("img").fadeIn();
-						});
-					},
-
-					// when playback finishes perform our custom unload action 
-					onFinish: function() {
-						this.unload();
-					}
-				});
-			}
-			// assign latest playlist
-			//player.playlist('#playlist');
-			// Assign click handler to each playlist item so that we can make player
-			// visible on click
-			/*
-			jQuery('#playlist .playlist_item a').click(function() {
-				$('video_section').appear({
-					duration: 1.0
-				});
-			});
-			*/
+		if (ETEvent.isVideo(el.tipType)) {
+			setupVideoPlayback(id);
 		} else {
 			// Add observer to hide it on click
 			el.observe('click', function(e) {
@@ -348,6 +286,71 @@ var ETUI = function() {
 			});
 		}
 	};
+	// create new video player objects for tooltip videos
+	function setupVideoPlayback(id) {
+		var flowsel = 'div#' + ETemplates.tooltipTemplateID(id, 'media') + ' a.player';
+		var fp;
+
+		ETDebug.log("flowplayer selector = " + flowsel);
+
+		// Check for existing players for this tooltip
+		// Players become useless if screen is lost, but no easy way to 
+		// recreate them.
+		// TODO: Right now we destroy entire tooltip & rebuild on every mouseover, 
+		// just to get around this Flowplayer issue...should figure it out some day.
+		ETDebug.log("creating new flowplayer for " + flowsel);
+		create_flowplayer(flowsel, {
+			clip: {
+				autoBuffering: true,
+				autoPlay: true,
+				bufferLength: 1 // For annoying loading spinner if recording < bufferLength
+			},
+			debug: false,
+
+			onBeforeClick: function() {
+				// unload previously loaded player 
+				$f().unload();
+
+				// get wrapper element as jQuery object 
+				var wrap = jQuery(this.getParent());
+
+				// hide nested play button 
+				wrap.find("img").fadeOut();
+
+				// start growing animation
+				// TODO: configurable start, end dimensions
+				wrap.animate(
+				videoExpandDimensions, 500, function() {
+					// when animation finishes we will load our player 
+					$f(this).load();
+				});
+
+				// disable default click behaviour (player loading) 
+				return false;
+			},
+
+			// unload action resumes to original state         
+			onUnload: function() {
+				jQuery(this.getParent()).animate(
+				videoThumbDimensions, 500, function() {
+					// make play button visible again 
+					jQuery(this).find("img").fadeIn();
+				});
+				return false;
+			},
+
+			// when playback finishes perform our custom unload action 
+			onFinish: function() {
+				this.unload();
+			}
+		});
+	};
+
+	// Finds event object associated with  element id
+	function getEventFromElementID(elID) {
+		return Timeline.EventUtils.decodeEventElID(elID).evt;
+	};
+
 	return {
 		createEventListItemObservers: function() {
 			$$('a.event_list_inline_item').each(function(el) {
@@ -357,15 +360,23 @@ var ETUI = function() {
 			});
 		},
 		onEventListItemMouseOver: function(element) {
-			var tipContents, parts, ttopts;
+			var tipContents, id, ttopts;
+			// get the event id from the container div id
+			id = (element.id.split('_'))[1];
 
 			if (element.prototip != null) {
 				ETDebug.log("event item already has prototip attribute");
-				return true;
+				// Flowplayer object sometimes unloads even when the tooltip does not, 
+				// so see if the video objects need to be recreated.  
+				if (ETEvent.isVideo(element.tipType)) {
+					ETDebug.log("destroying tooltip to kill flash players");
+					element.prototip.remove();
+					//setupVideoPlayback(id);
+				} else {
+					return true;
+				}
 			}
-			// get the event id from the container div id
-			parts = element.id.split('_');
-			createTooltip(element, parts[1], ETemplates.eventTooltipOptions());
+			createTooltip(element, id, ETemplates.eventTooltipOptions());
 		},
 		// Destroy tooltips and observers in order to prevent memory leaks
 		onEventSectionLoading: function() {
@@ -388,7 +399,7 @@ var ETUI = function() {
 			});
 		},
 		onEventIconMouseOver: function(element) {
-			var event;
+			var event = getEventFromElementID(element.id);
 
 			if (element.prototip != null) {
 				ETDebug.log("timeline icon already has prototip attribute");
@@ -396,12 +407,15 @@ var ETUI = function() {
 				if (element.cumulativeOffset().left !== element.lastCumulativeOffset.left) {
 					ETDebug.log("target position changed, recreating");
 					element.prototip.remove();
+				} else if (ETEvent.isVideo(element.tipType)) {
+					ETDebug.log("destroying tooltip to kill flash players");
+					element.prototip.remove();
+					//setupVideoPlayback(event.getEventID());
 				} else {
 					return true;
 				}
 			}
 			ETDebug.log('creating tooltip on ' + element.id);
-			event = Timeline.EventUtils.decodeEventElID(element.id).evt;
 
 			createTooltip(element, event.getEventID(), event.isInstant() ? ETemplates.timelineTooltipOptions() : ETemplates.timelineDurationTooltipOptions());
 		},
@@ -1163,10 +1177,10 @@ var ETimeline = function(opts) {
 
 			// Make sure month selector is synched up
 			that.monthSelector.setDate(targetDate);
-			
+
 			that.artifactSection.populate(targetDate);
 			that.eventSection.populate(this.eventItems.populate(targetDate));
-			
+
 		},
 		empty: function() {
 			this.eventItems.empty();
