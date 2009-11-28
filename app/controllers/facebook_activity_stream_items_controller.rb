@@ -26,23 +26,6 @@ class FacebookActivityStreamItemsController < ActivityStreamItemsController
 
   end
   
-  def update
-    respond_to do |format|
-      if @facebook_activity_stream_item.update_attributes(params[:facebook_activity_stream_item])
-        flash[:notice] = "Successfully updated facebook activity stream item."
-        format.html {
-          redirect_to @facebook_activity_stream_item
-        }
-        format.js
-      else
-        format.html {
-          render :action => 'edit'
-        }
-        format.js
-      end
-    end
-  end
-  
   def destroy
     @facebook_activity_stream_item.destroy
     flash[:notice] = "Successfully destroyed facebook activity stream item."
@@ -51,9 +34,5 @@ class FacebookActivityStreamItemsController < ActivityStreamItemsController
   
   protected
   
-  def load_item
-    @facebook_activity_stream_item = FacebookActivityStreamItem.find(params[:id])
-    raise ActionController::MethodNotAllowed unless @facebook_activity_stream_item.member == current_user
-  end
   
 end

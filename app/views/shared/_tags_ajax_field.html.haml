@@ -2,6 +2,6 @@
 .tooltip
   Add descriptive tags for organizing and searching your items
 #tags.inputcol
-  = restful_in_place_editor 'span', object, 'tag_list', :object => object.to_str, :url => url, :value => (object.tags.empty?) ? 'Add Tags' : object.tags.to_s
+  = restful_in_place_editor 'span', object, :tag_list, :object => object.to_str, :url => url, :value => (object.tags.empty?) ? 'Add Tags' : object.tag_list.to_s
   %br
   = tags_field_description

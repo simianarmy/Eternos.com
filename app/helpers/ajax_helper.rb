@@ -5,7 +5,7 @@ module AjaxHelper
   # Takes optional value string.  If not passed, we will try to get from object
   # Borrows some from editable_content_tag that I found after finishing this
   def restful_in_place_editor(elemtype, obj, attr, options={}, editOptions = {}, ajaxOptions = {})
-    objname = options.has_key?(:object) ? options[:object] : obj.class.to_s.downcase
+    objname = options.has_key?(:object) ? options[:object] : obj.to_str
     domid = dom_id(obj) + "_#{attr}"
     options[:url] = url_for(obj) unless options.has_key? :url
     options[:id] = domid unless options.has_key? :id

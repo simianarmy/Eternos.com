@@ -16,7 +16,7 @@
     %h3= item.feed.title
     %p= link_to item.feed.url, item.feed.url, :target => '_new'
     %br
-    = restful_in_place_editor 'span', item, :name
+    = restful_in_place_editor 'span', item, :name, :value => item.name.empty? ? 'Enter Title' : item.name
     %br
     - unless feed_entry.screencap_url.blank?
       = link_to image_tag(feed_entry.screencap_thumb_url), feed_entry.screencap_url, :class => 'lightview'

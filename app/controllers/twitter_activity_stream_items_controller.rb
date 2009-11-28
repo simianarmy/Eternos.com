@@ -27,23 +27,6 @@ class TwitterActivityStreamItemsController < ActivityStreamItemsController
     
   end
   
-  def update
-    respond_to do |format|
-      if @twitter_activity_stream_item.update_attributes(params[:twitter_activity_stream_item])
-        flash[:notice] = "Successfully updated twitter activity stream item."
-        format.html {
-          redirect_to @twitter_activity_stream_item
-        }
-        format.js
-      else
-        format.html {
-          render :action => 'edit'
-        }
-        format.js
-      end
-    end
-  end
-  
   def destroy
     @twitter_activity_stream_item.destroy
     flash[:notice] = "Successfully destroyed twitter activity stream item."
@@ -53,7 +36,7 @@ class TwitterActivityStreamItemsController < ActivityStreamItemsController
   protected
   
   def load_item
-    @twitter_activity_stream_item = TwitterActivityStreamItem.find(params[:id])
+    @item = @twitter_activity_stream_item = TwitterActivityStreamItem.find(params[:id])
     raise ActionController::MethodNotAllowed unless @twitter_activity_stream_item.member == current_user
   end
 end

@@ -4,6 +4,7 @@ class Content < ActiveRecord::Base
   has_many :decorations, :dependent => :destroy
   has_many :elements, :through => :decorations
   belongs_to :owner, :class_name => 'Member', :foreign_key => 'user_id'
+  belongs_to :member, :foreign_key => 'user_id'
   belongs_to :collection, :polymorphic => true
   
   class UnknownContentTypeException < Exception; end

@@ -161,6 +161,7 @@ Rails::Initializer.run do |config|
   end
 end
 
+
 # Load email config
 require 'load_email_configuration'
 # Load tagging methods

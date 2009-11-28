@@ -5,7 +5,6 @@ class ContentsController < ApplicationController
   require_role "Member"
   session :cookie_only => false, :only => :create
 
-  #in_place_edit_for :title, :tag_list
   include TagsAutoComplete
   include DecorationsHelper
   

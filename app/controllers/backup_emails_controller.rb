@@ -1,9 +1,7 @@
 # $Id$
 
-class BackupEmailsController < ApplicationController
-  before_filter :login_required
-  require_role "Member"
-  
+class BackupEmailsController < TimelineEventsController
+ 
   def body
     begin
       @email = BackupEmail.find(params[:id])

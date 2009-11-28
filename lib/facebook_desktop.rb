@@ -23,7 +23,7 @@ module FacebookDesktopApp
   end
   
   class Session < Facebooker::Session::Desktop
-    attr_reader :config
+    attr_reader :config, :errors
     
     def self.create(config=nil)
       conf = FacebookDesktopApp.load_config(config)
@@ -44,7 +44,8 @@ module FacebookDesktopApp
     def verify
       user.friends
       true
-    rescue
+    rescue 
+      @errors = $!
       false
     end
   end

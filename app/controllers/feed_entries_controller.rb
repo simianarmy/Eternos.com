@@ -1,2 +1,2 @@
-class FeedEntriesController < ApplicationController
+class FeedEntriesController < TimelineEventsController
 end
