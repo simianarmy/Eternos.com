@@ -220,16 +220,17 @@ var ETLFeedEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		var thumb, preview = '', source = '';
+		var thumb, preview_thumb_url = '', source = '';
 	
 		if (((thumb = this.attributes.screencap_thumb_url) != null) && !thumb.match('missing')) {
-			preview = '<img src="' + thumb + '" width="100" height="100" style="float: left">';
+			preview_thumb_url = thumb;
 		}
 		if (this.getURL() !== '') {
 			source = this._getSmallTooltipLine(this.getURL());
 		}
 		return this.previewTemplate.evaluate({
-			preview: preview,
+			screencap_url: this.attributes.screencap_url,
+			preview_thumb: preview_thumb_url,
 			message: this.attributes.name,
 			source: source,
 			time: this.getEventTimeHtml()

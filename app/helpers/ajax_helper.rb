@@ -36,7 +36,7 @@ module AjaxHelper
       })
     options.merge! editOptions
     
-    tg += in_place_editor(domid, options)
+    tg + in_place_editor(domid, options)
   end
   
   # link_to_remote helper that adds ajax busy spinner on load

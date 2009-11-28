@@ -63,7 +63,7 @@ module InPlaceMacrosHelper
     function << (', ' + options_for_javascript(js_options)) unless js_options.empty?
     
     function << ')'
-
+    
     javascript_tag(function)
   end
   

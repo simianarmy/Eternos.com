@@ -14,11 +14,15 @@ class FeedEntry < ActiveRecord::Base
   
   xss_terminate :except => [ :categories ]
   acts_as_archivable :on => :published_at
-
+  acts_as_taggable_on :tags
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
+  
   include CommonDateScopes
   after_create :save_contents
   
-  def to_s
+  def to_debug
     puts "Author: #{author}"
     puts "Title: #{name}"
     puts "URL: #{url}"
@@ -41,6 +45,10 @@ class FeedEntry < ActiveRecord::Base
   
   def screencap_thumb_url
     feed_content.try(:screencap_thumb_url)
+  end
+  
+  def member
+    feed.feed_url.member
   end
   
   protected

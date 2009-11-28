@@ -6,8 +6,8 @@ require 'singleton'
 
 class BackupEmail < ActiveRecord::Base
   class EncryptionError < Exception; end
-  
   belongs_to :backup_source
+  has_one :member, :through => :backup_source
   
   validates_presence_of :mailbox
   validates_presence_of :message_id
@@ -17,6 +17,12 @@ class BackupEmail < ActiveRecord::Base
   alias_attribute :bytes, :size
 
   encrypt_attributes :suffix => '_encrypted'
+  
+  acts_as_archivable :on => :received_at
+  acts_as_taggable_on :tags
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
   
   include TimelineEvents
   serialize :sender

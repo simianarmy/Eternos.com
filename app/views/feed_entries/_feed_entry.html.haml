@@ -1,14 +1,36 @@
-.content
-  .title_post_rss
-    = feed_entry.name
+
+- item = feed_entry
+#item_details_content
+  .details_head
+    %p=item_details_close_button
+    %p.posted
+      == Posted on #{item.published_at.to_s(:long)}
+      - if item.author
+        == by #{item.author}
+      \:
   .image_post
     = image_tag 'rss.png'
   .clearboth
+  %br
   .message_content
-    %p= feed_entry.preview
-    .clearboth
+    %h3= item.feed.title
+    %p= link_to item.feed.url, item.feed.url, :target => '_new'
+    %br
+    = restful_in_place_editor 'span', item, :name
+    %br
     - unless feed_entry.screencap_url.blank?
-      = link_to image_tag(feed_entry.screencap_thumb_url), feed_entry.screencap_url, :target => '_new'
+      = link_to image_tag(feed_entry.screencap_thumb_url), feed_entry.screencap_url, :class => 'lightview'
     .clearboth
-    .posted
-      = link_to 'Read post and comment', feed_entry.url
+    %p
+      .feed_entry_text_pane
+        = text_area_tag 'feed_text', feed_entry.preview, :rows => 20, :cols => 60
+    .clearboth
+    %p.detail
+      = link_to item.guid, item.guid, :target => '_new'
+    .clearboth
+  %p
+  %br
+  = render :partial => 'shared/common_settings', :locals => {:object => item}
+%p
+%br
+.clearboth

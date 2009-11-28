@@ -6,14 +6,16 @@
 module LayoutHelper
   @@js = []
   @@google_api_loaded = false
+  @@jquery_loaded = false
   @@layout = nil
-  mattr_accessor :js, :google_api_loaded, :layout
+  mattr_accessor :js, :google_api_loaded, :jquery_loaded, :layout
   
   class << self
     def clear_js_cache
       RAILS_DEFAULT_LOGGER.debug "Clearing js includes"
       LayoutHelper.js = []
       LayoutHelper.google_api_loaded = false
+      LayoutHelper.jquery_loaded = false
     end
   end
   
@@ -93,10 +95,12 @@ module LayoutHelper
   end
   
   def use_jquery(context=:javascript)
+    return if jquery_loaded
     load_google_api
     content_for(context) { 
       javascript_tag('google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");')
     }
+    @@jquery_loaded = true
     # Make sure jquery doesn't conflict with any loaded prototype libs
     javascript 'application_jquery'
   end
@@ -126,6 +130,7 @@ module LayoutHelper
   end
   
   def use_lowpro
+    load_prototype
     javascript 'lowpro', 'defaultvalueactsashint', 'behaviors'
   end
   
@@ -205,8 +210,8 @@ module LayoutHelper
   def use_timeline
     stylesheet 'timeline'
     
-    use_jquery
     use_prototip
+    use_jquery
     use_lightview
     use_busy
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 

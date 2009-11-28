@@ -1,0 +1,20 @@
+- item = family
+#item_details_content
+  .details_head
+    %p=item_details_close_button
+    %p.posted
+  .image_post
+    = image_tag 'family-member.png'
+  .clearboth
+  %br
+  .message_content
+    %p== #{h item.name}
+  %p.detail
+
+  .clearboth
+  %p
+  %br
+  /= render :partial => 'shared/common_settings', :locals => {:object => item}
+%p
+%br
+.clearboth

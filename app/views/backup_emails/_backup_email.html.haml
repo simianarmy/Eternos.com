@@ -1,22 +1,33 @@
-- div_for(backup_email, :class => 'content') do
-  %span.title_post_email{:style => "font-weight:bold"}= backup_email.subject
-  .clearboth
-  %p.title_posted
-    From:
-    %span{:style => "font-weight:bold"}= mail_to(backup_email.sender, nil, :subject => "Re: #{backup_email.subject}")
-    &nbsp; Date:
-    = backup_email.received_at.to_s(:time_period_date_with_time)
-    %br
-    To:
-    %span{:style => "font-weight:bold"}= mail_to(backup_email.recipient, nil)
+- item = backup_email
+#item_details_content
+  .details_head
+    %p=item_details_close_button
+    %p.posted
+      .email_header_label From:
+      .email_header_content= mail_to(backup_email.sender, nil, :subject => "Re: #{backup_email.subject}")
+      %br
+      .email_header_label To:
+      .email_header_content= mail_to(backup_email.recipient, nil)
+      %br
+      .email_header_label Received:
+      .email_header_content= backup_email.received_at.to_s(:time_period_date_with_time)
   .image_post
-    = image_tag 'email_accept.png', :style => "margin-top: -32px;"
+    = image_tag 'email_accept.png'
   .clearboth
-  .message_content
+  %br
+  .message_content{:id => @id = dom_id(backup_email)}
     - @div = dom_id(backup_email, 'decrypted')
     - @hide = dom_id(backup_email, 'hide')
     - @busyid = dom_id(backup_email)
-    = link_to_remote('View contents', :url => { :controller => 'backup_emails', :action => "body", :id => backup_email.id }, :loading => "load_busy($('#{@busyid}'))", :complete => "unload_busy(); setDinamycHeight('details_content'); Scroller.updateAll();")
+    = link_to 'View contents', body_backup_email_path(backup_email), :id => @id, :class => 'remote_form'
     %div{:id => @div}
     %div{:id => @hide, :style=>"display:none"}
       = link_to_function "Hide", "$('#{@div}').innerHTML = ''; $('#{@hide}').hide()"
+  .clearboth
+  %p
+  %br
+  = render :partial => 'shared/common_settings', :locals => {:object => item}
+%p
+%br
+.clearboth
+  

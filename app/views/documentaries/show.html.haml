@@ -19,8 +19,7 @@
   = render :partial => 'decorations/list', :locals => {:parent => @story}
   %p
   %br
-  %a#toggle_story_settings.toggleable{:href=>edit_story_path(@story)} Settings
-  #story_settings{:style=>"display:none;"}
+  #story_settings
     = render :partial => 'shared/common_settings', :locals => {:object => @story}
     
   %br

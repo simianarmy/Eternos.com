@@ -1,0 +1,24 @@
+- item = medical_condition
+#item_details_content
+  .details_head
+    %p=item_details_close_button
+    %p.posted
+  .image_post
+    = image_tag '/javascripts/timeline/icons/medic-cond.png'
+  .clearboth
+  %br
+  .message_content
+    %p= item.name
+    %br
+    %p= item.diagnosis
+    %br
+    %p= item.treatment
+  %p.detail
+
+  .clearboth
+  %p
+  %br
+  /= render :partial => 'shared/common_settings', :locals => {:object => item}
+%p
+%br
+.clearboth

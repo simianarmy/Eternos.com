@@ -19,12 +19,13 @@ module ActiveRecord::ConnectionAdapters
       # back to pool
       execute_without_retry(*args)
     rescue ActiveRecord::StatementInvalid
-      if $!.message =~ /server has gone away/i
-        warn "Server timed out, retrying"
+      if ($!.message =~ /server has gone away/i) ||
+        ($!.message =~ /Lost connection to MySQL server during query/i)
+        warn "Mysql error: " + $!.message + ", retrying"
         reconnect!
         retry
       end
-
+      
       raise
     end
   end

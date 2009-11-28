@@ -1,11 +1,13 @@
 // $Id$
 
-function ajaxDisplayTooltipItemDetails(el, url) {
+function ajaxDisplayTooltipItemDetails(parent, el, url) {
 	new Ajax.Updater(el, url, {
 		method: 'get',
-		onLoading: function() { spinner.load(el); },
+		evalScripts:true,
+		onLoading: function() { spinner.load(parent.up('.tooltip_container')); },
 		onSuccess: function(transport) {
-			new Effect.Highlight(el);
+			new Effect.ScrollTo(el);
+			new Effect.Highlight(el, { queue: 'end' });
 		},
 		onComplete: function() { spinner.unload(); }
 	});
@@ -32,7 +34,7 @@ var ETemplates = function() {
 	var that = {};
 
 	var tooltipItemHoverHTML = '<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
-			'<li><a href="#{event_edit_link}" onclick="ajaxDisplayTooltipItemDetails(\'item_details\', \'#{event_edit_link}\'); return false;">' +
+			'<li><a href="#{event_edit_link}" onclick="ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
 			'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
 			'<li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
 		'</div>';
@@ -161,7 +163,7 @@ var ETemplates = function() {
 			return new Template('<img src="#{img_url}"><br/>#{caption}<br/>');
 		} (),
 		feed: function() {
-			return new Template('<div class="tooltip_feed">#{preview}#{message}#{source}#{time}</div>');
+			return new Template('<div class="tooltip_feed"><a href="#{screencap_url}" class="lightview"><img src="#{preview_thumb}" width="100" height="100" style="float: left"/></a>#{message}#{source}#{time}</div>');
 		} (),
 		video: function() {
 			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clear"></div>');

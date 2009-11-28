@@ -12,8 +12,7 @@
     %br
     = link_to_content(web_video)
     %p
-    %strong Description: 
-    = restful_in_place_editor 'span', web_video, 'description', :object => 'content', :url => content_url(web_video), :value => (web_video.try(:description)) ? 'Add Description' : web_video.description, :rows => 4
+    = restful_in_place_editor 'span', web_video, 'description', :object => 'content', :url => content_url(web_video), :value => (web_video.description && !web_video.description.blank?) ? web_video.description : 'Add Description', :rows => 4
   .clearboth
   %p
   %br
