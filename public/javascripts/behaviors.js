@@ -98,9 +98,9 @@ Remote.Delete = Behavior.create(Remote.Base, {
 });
 
 RemoteForm = Behavior.create(Remote.Form, {
-	initialize: function($super, options) {
+	initialize: function($super, opts) {
 		var relopts;
-		options = Object.extend({}, options);
+		var options = Object.extend({busy_id: this.element.id}, opts||{});
 		
 		// Check for spinner element id option
 		// Add ajax options to remote form submit if any

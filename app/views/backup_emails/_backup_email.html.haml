@@ -1,8 +1,11 @@
+- use_busy
+
 - item = backup_email
 #item_details_content
   .details_head
     %p=item_details_close_button
-    %p.posted
+    %p
+    .posted
       .email_header_label From:
       .email_header_content= mail_to(backup_email.sender, nil, :subject => "Re: #{backup_email.subject}")
       %br
@@ -19,7 +22,7 @@
     - @div = dom_id(backup_email, 'decrypted')
     - @hide = dom_id(backup_email, 'hide')
     - @busyid = dom_id(backup_email)
-    = link_to 'View contents', body_backup_email_path(backup_email), :id => @id, :class => 'remote_form'
+    = link_to_remote 'View contents', :url => {:controller => 'backup_emails', :action => 'body', :id => backup_email.id, :method => 'get'}, :loading => "spinner.load('#{@busyid}')", :complete => "spinner.unload();", :html => {:id => @id, :class => 'remote_form', :rel => "'{busy_id: #{@busy_id}}'"}
     %div{:id => @div}
     %div{:id => @hide, :style=>"display:none"}
       = link_to_function "Hide", "$('#{@div}').innerHTML = ''; $('#{@hide}').hide()"

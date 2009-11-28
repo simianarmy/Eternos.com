@@ -53,7 +53,8 @@ ActionController::Routing::Routes.draw do |map|
   }
   #map.resources :email_accounts
   map.resources :gmail_accounts
-  map.resources :backup_emails, :member => { :body => :get }
+  map.resources :backup_emails
+  map.connect 'backup_emails/body/:id', :controller => 'backup_emails', :action => 'body'
   map.resources :feed_entries
   
   # Redirect requests to flashrecorder xml config file to proper location
