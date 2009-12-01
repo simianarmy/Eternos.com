@@ -163,10 +163,12 @@ class TimelineSearch
   end
   
   # Searches for event closest to start_date.  
+  # Returns as array
   def proximity_search(search, direction)
-    ((direction == 'past') ? 
+    (direction == 'past') ? 
       search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
-    ).first
+    #RAILS_DEFAULT_LOGGER.debug "proximity_search conditions: #{search.conditions.inspect}"
+    [search.first]
   end
 end
 
@@ -175,7 +177,7 @@ class TimelineSearchFaker < TimelineSearch
     require 'benchmark_helper'
     require 'random_data'
     require 'faker'
-require "date"
+    require "date"
     
     super(user_id, dates, options)
     @methods = search_methods.reject { |t| [:get_profile].include? t }
