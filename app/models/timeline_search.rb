@@ -149,6 +149,9 @@ class TimelineSearch
   # Takes Searchlogic Search object containing named scope chains & adds necessary
   # search filters
   def query(search)
+    # Filter out deleted items
+    search.deleted_at_null = true
+    
     if @options[:proximity]
       # closest events before or after a date
       proximity_search search, @options[:proximity]
@@ -161,8 +164,9 @@ class TimelineSearch
   
   # Searches for event closest to start_date.  
   def proximity_search(search, direction)
-    (direction == 'past') ? search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
-    [search.first]
+    ((direction == 'past') ? 
+      search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
+    ).first
   end
 end
 
@@ -171,6 +175,7 @@ class TimelineSearchFaker < TimelineSearch
     require 'benchmark_helper'
     require 'random_data'
     require 'faker'
+require "date"
     
     super(user_id, dates, options)
     @methods = search_methods.reject { |t| [:get_profile].include? t }

@@ -50,7 +50,7 @@ var ETLEventSource = Class.create({
 			'?dialog=1';
 	},
 	getDeleteURL: function() {
-		return [this.type.pluralize(), 'delete', this.getID()].join('/');
+		return [this.type.pluralize(), 'destroy', this.getID()].join('/');
 	},
 	getTitle: function() {
 		return this.attributes.title;

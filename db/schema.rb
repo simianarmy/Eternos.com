@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "activity_stream_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   add_index "activity_stream_items", ["activity_stream_id"], :name => "index_activity_stream_items_on_activity_stream_id"
@@ -121,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.datetime "received_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.string   "state"
   end
 
@@ -162,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.string   "location"
     t.string   "modified"
   end
@@ -175,6 +178,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "content_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.text     "source_url"
     t.string   "caption"
     t.string   "tags"
@@ -336,6 +340,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "height"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.integer  "user_id",                  :default => 0,          :null => false
     t.string   "content_type"
     t.datetime "taken_at"
@@ -447,6 +452,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "url"
     t.datetime "published_at"
     t.datetime "created_at"
+    t.datetime "deleted_at"
     t.string   "guid"
   end
 
@@ -728,6 +734,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "title", :null => true               
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.datetime "start_at"
     t.datetime "end_at"
     t.integer  "theme_id",           :default => 0, :null => false

@@ -1,5 +1,7 @@
 # $Id$
 
+# Mix-in for AR classes representing Timeline Event Items
+
 module TimelineEvents
   # Allows mix-in parent to use it's acts_as_archivable column as 
   # the start_date value for serialized results

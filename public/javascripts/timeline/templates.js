@@ -1,44 +1,82 @@
 // $Id$
 
-function ajaxDisplayTooltipItemDetails(parent, el, url) {
-	new Ajax.Updater(el, url, {
-		method: 'get',
-		evalScripts:true,
-		onLoading: function() { spinner.load(parent.up('.tooltip_container')); },
-		onSuccess: function(transport) {
-			new Effect.ScrollTo(el);
-			new Effect.Highlight(el, { queue: 'end' });
-		},
-		onComplete: function() { spinner.unload(); }
-	});
-	/*
-	new Effect.SlideUp(el, {duration: 1.0});
-	new Ajax.Request(url, {
-		method: 'get',
-		evalJS: true,
-		onSuccess: function(transport){
-		    new Effect.SlideDown(el, {
-		      queue: 'end',
-					duration: 1.0,
-		      beforeSetup: function() {
-						// TODO: Need way to eval dom for behaviors, otherwise this is useless!
-		        $(el).innerHTML=transport.responseText;
-		      }
-		    });
-		 }
-	});
-	*/
-}
 
 var ETemplates = function() {
 	var that = {};
 
 	var tooltipItemHoverHTML = '<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
-			'<li><a href="#{event_edit_link}" onclick="ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
+			'<li><a href="#{event_edit_link}" onclick="ETemplates.ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
 			'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
-			'<li><a href="#{event_delete_link}"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
+			'<li><a href="#{event_delete_link}" onclick="ETemplates.ajaxDeleteTooltipItem(this, \'#{event_delete_link}\'); return false;"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
 		'</div>';
-		
+
+	// Public functions
+	
+	that.ajaxDisplayTooltipItemDetails = function (parent, el, url) {
+		new Ajax.Updater(el, url, {
+			method: 'get',
+			evalScripts:true,
+			onLoading: function() { spinner.load(parent.up('.tooltip_container')); },
+			onSuccess: function(transport) {
+				new Effect.ScrollTo(el);
+				new Effect.Highlight(el, { queue: 'end' });
+			},
+			onComplete: function() { spinner.unload(); }
+		});
+		/*
+		new Effect.SlideUp(el, {duration: 1.0});
+		new Ajax.Request(url, {
+			method: 'get',
+			evalJS: true,
+			onSuccess: function(transport){
+			    new Effect.SlideDown(el, {
+			      queue: 'end',
+						duration: 1.0,
+			      beforeSetup: function() {
+							// TODO: Need way to eval dom for behaviors, otherwise this is useless!
+			        $(el).innerHTML=transport.responseText;
+			      }
+			    });
+			 }
+		});
+		*/
+	};
+	that.ajaxDeleteTooltipItem = function (parent, url) {
+		var container_el;
+		if (confirm('Permanently delete this item?')) {
+			container_el = parent.up('.tooltip_container');
+			
+			new Ajax.Request(url, {
+				method: 'get',
+				evalScripts:true,
+				onLoading: function() { spinner.load(container_el); },
+				onSuccess: function(transport) {
+					new Effect.Fade(container_el);
+					that.showNotice('Item successfully deleted', 5);
+					window.timeline.reload();
+				},
+				onComplete: function() {
+					spinner.unload();
+				}
+			});
+		}
+	};
+	
+	that.showNotice = function(msg, fade_delay) {
+		showFlash('flash_notice', msg, fade_delay);
+	};
+	that.showError = function(msg, fade_delay) {
+		showFlash('flash_error', msg, fade_delay);
+	};
+	
+	function showFlash(id, msg, fade_delay) {
+		$(id).innerHTML = msg;
+		$(id).appear();
+		if (fade_delay) {
+			setTimeout(function() { new Effect.Fade(id); }, fade_delay*1000);
+		}
+	};
+	
 	that.utils = function() {
 		return {
 			emptyResponse: "{\"results\": [], \"previousDataUri\": null, \"responseDetails\": null, \"request\": \"\", \"resultCount\": 0, \"status\": 200, \"futureDataUri\": null}",

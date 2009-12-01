@@ -34,3 +34,4 @@ module CommonDateScopes
     end
   end
 end
+

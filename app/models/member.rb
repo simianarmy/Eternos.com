@@ -38,7 +38,6 @@ class Member < User
     :conditions => { 'backup_states.items_saved' => true }
   }
   
-  
   def deliver_password_reset_instructions!
     reset_perishable_token!
     spawn do

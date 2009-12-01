@@ -262,6 +262,12 @@ var ETUI = function() {
 		tipOpts = Object.extend(ETemplates.defaultTooltipOptions(), tipOpts);
 		tipOpts.width = ETemplates.defaultTooltipWidth(tipContents.type);
 		tipOpts.title = tipContents.title;
+		// Disable close on mouseout for media tooltips
+		/*
+		if (ETEvent.isMedia(element.tipType)) {
+			tipOpts.hideOn.event = 'close';
+		}
+		*/
 		//ETDebug.dump(tipOpts);
 		new Tip(element, tipContents.body, tipOpts);
 		element.prototip.show();
@@ -1599,14 +1605,7 @@ var ETimeline = function(opts) {
 			that.artifactSection.showLoading();
 			that.eventSection.showLoading();
 		},
-		showNotice: function(msg) {
-			$('flash_notice').innerHTML = msg;
-			$('flash_notice').appear();
-		},
-		showError: function(msg) {
-			$('flash_error').innerHTML = msg;
-			$('flash_error').appear();
-		},
+		
 		// Required due to bug in timeline that kills tooltips after they go out of bounds
 		redraw: function() {
 			ETDebug.onpage('in redraw');
@@ -1640,7 +1639,7 @@ var ETimeline = function(opts) {
 		onSearchError: function() {
 			this.searchInProgress = false;
 			this.hideLoading();
-			this.showError("An error occurred fetching your timeline data.  Please refresh the page.");
+			ETemplates.showError("An error occurred fetching your timeline data.  Please refresh the page.");
 			this.rawEvents.populateResults(this.currentDate);
 			//TODO: display errors
 		},

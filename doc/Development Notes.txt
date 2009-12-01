@@ -150,7 +150,6 @@ Full-screen text editor: http://www.hogbaysoftware.com/products/writeroom
 
 Flash Players:
 	Flowplayer
-	Custom (Eric Fiscus)
 	
 Cameraphone/webcam Integration:
   Exiff extraction: http://exifr.rubyforge.org/
@@ -171,7 +170,6 @@ Story/Blog Inteface:
 	
 Photo Gallery: 
 	http://smoothgallery.jondesign.net/getting-started/
-	http://www.nickstakenburg.com/projects/lightview/ - Purchased
 	CoolIris.com Flash/Browser plugin
 	* Mac MobileMe Gallery UI Using css + jQuery:
 	  http://net.tutsplus.com/tutorials/javascript-ajax/recreating-the-mobileme-web-gallery-interface/
@@ -202,8 +200,6 @@ Flash Video Preview? http://eskimotube.com/show.php?search=shy%20love
 
 Useful Ajax Examples:
 	http://feeds.feedburner.com/~r/ajaxian/~3/441848210/groups-of-50-ajax-examples
-Tagging: http://agilewebdevelopment.com/plugins/acts_as_taggable_on_steroids
-	per-user tagging (not sure if needed): http://www.slashdotdash.net/articles/2006/04/29/acts_as_taggable-per-user-tagging
 
 Scrolling Elements w/ Ajax:
 	http://feeds.feedburner.com/~r/ajaxian/~3/442067279/a-better-scrollable-component-using-jquery

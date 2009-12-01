@@ -35,8 +35,4 @@ class TwitterActivityStreamItemsController < ActivityStreamItemsController
   
   protected
   
-  def load_item
-    @item = @twitter_activity_stream_item = TwitterActivityStreamItem.find(params[:id])
-    raise ActionController::MethodNotAllowed unless @twitter_activity_stream_item.member == current_user
-  end
 end

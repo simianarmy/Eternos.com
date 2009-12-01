@@ -44,6 +44,21 @@ class TimelineEventsController < ApplicationController
     end
   end
   
+  def destroy
+    # Don't destroy AR object - just mark as deleted so that backup daemons don't
+    # re-save
+    @item.touch(:deleted_at)
+    
+    respond_to do |format|
+      format.html {
+        flash[:notice] = "Successfully destroyed item!"
+      }
+      format.js {
+        render :nothing => true, :status => 200
+      }
+    end
+  end
+  
   private
   
   def load_item

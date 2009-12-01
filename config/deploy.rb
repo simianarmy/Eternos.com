@@ -139,6 +139,16 @@ namespace :deploy do
 CUTYCAPT
     sudo "cp /usr/local/src/cutycapt/CutyCapt/CutyCapt /usr/local/bin"
   end
+  
+  desc "list god status"
+  task :god_status, :roles => :app do
+    run "god status"
+  end
+  
+  desc "list running workling processes"
+  task :ps_worklings, :roles => :app do
+    run "ps auxw|grep workling"
+  end
 end
 
 #after "deploy:symlink", "deploy:google_analytics"
