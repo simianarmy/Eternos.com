@@ -84,4 +84,21 @@ describe AddressBook do
       @address_book.phone_numbers.first.should be_valid
     end
   end
+  
+  describe "synching from facebook" do
+    it "should not sync any empty attributes" do
+      @address_book.sync_with_facebook({})
+      @address_book.first_name.should_not be_blank
+    end
+    
+    it "should sync any non-empty attributes" do
+      @address_book.sync_with_facebook({:first_name => 'hooey'})
+      @address_book.reload.first_name.should == 'hooey'
+    end
+    
+    it "should sync birthdate from date string" do
+      @address_book.sync_with_facebook({:birthday_date => "05/11/1970"})
+      @address_book.reload.birthdate.year.should == 1970
+    end
+  end
 end

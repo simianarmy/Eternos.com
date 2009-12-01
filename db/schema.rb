@@ -64,10 +64,6 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "name_suffix"
     t.string   "gender"
     t.string   "timezone"
-    t.string   "photo_file_name"
-    t.string   "photo_content_type"
-    t.integer  "photo_file_size"
-    t.datetime "photo_updated_at"
     t.string   "name_title"
   end
 
@@ -627,6 +623,8 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "facebook_data"
+    t.string   "photo_file_name"
+    t.datetime "photo_updated_at"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"

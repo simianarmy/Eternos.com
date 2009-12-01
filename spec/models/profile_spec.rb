@@ -30,4 +30,12 @@ describe Profile do
       @profile.reload.facebook_data[:test][:test].should == @member
     end
   end
+  
+  describe "sync_with_facebook" do
+    it "should not raise error on save" do
+      lambda {
+        @profile.sync_with_facebook(:political => 'foo')
+      }.should_not raise_error
+    end
+  end
 end

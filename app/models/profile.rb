@@ -10,6 +10,7 @@ class Profile < ActiveRecord::Base
     m.has_many :medical_conditions
     m.has_many :families
     m.has_one :facebook_content
+    m.has_attached_file :photo
   end
   
   validates_existence_of :member, :message => 'Could not find the owner of this profile'
@@ -42,6 +43,29 @@ class Profile < ActiveRecord::Base
     Marshal.load(str.unpack("m")[0])
   end
 
+  FIELDS = [:status, :political, :pic_small, :name, :quotes, :is_app_user, :tv, :profile_update_time, 
+     :meeting_sex, :hs_info, :timezone, :relationship_status, :hometown_location, :about_me, :wall_count, 
+     :significant_other_id, :pic_big, :music, :work_history, :sex, :religion, :notes_count, :activities, 
+     :pic_square, :movies, :has_added_app, :education_history, :birthday, :birthday_date, :first_name, 
+     :meeting_for, :last_name, :interests, :current_location, :pic, :books, :affiliations, :locale, 
+     :profile_url, :proxied_email, :email_hashes, :allowed_restrictions, :pic_with_logo, :pic_big_with_logo, 
+     :pic_small_with_logo, :pic_square_with_logo]
+      
+  def sync_with_facebook(fb_info)
+    self.political_views  = fb_info[:political] unless fb_info[:political].blank?
+    self.religion         = fb_info[:religion] unless fb_info[:religion].blank?
+    self.facebook_data    = fb_info
+    
+    # if fb_info[:pic].any? && !self.photo
+    #       TempFile.new(File.basename(fb_info[:pic])) do |tmp|
+    #         rio(fb_info[:pic]).binmode > rio(tmp.path)
+    #         photo = tmp
+    #       end
+    #       tmp.close
+    #     end
+    save!
+  end
+    
   private
   
   def save_associations

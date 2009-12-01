@@ -136,7 +136,14 @@ class Member < User
   def authenticated_for_facebook_desktop?
     not (facebook_id.blank? || facebook_session_key.blank? || facebook_secret_key.blank?)
   end
-    
+  
+  # Populates member profile info from facebook profile data structure
+  # Returns success if both updates succeed
+  def sync_with_facebook_profile(fb_info)
+    address_book.sync_with_facebook(fb_info) && 
+    profile.sync_with_facebook(fb_info)
+  end
+  
   def has_backup_data?
     backup_state.items_saved rescue false
   end

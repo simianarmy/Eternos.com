@@ -3,7 +3,7 @@
 class AccountSettingsController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  before_filter :load_facebook
+  before_filter :set_facebook_connect_session
   before_filter :load_presenter
   before_filter :load_completed_steps
   layout 'account_settings'
@@ -105,20 +105,10 @@ class AccountSettingsController < ApplicationController
             @sync_message = "Can't sync with facebook"
             page.replace "sync-message", :partial => "sync_message"
             page.visual_effect  :highlight, "sync-message"
+            page.flash_and_fade
           end
         end
       end
-    end
-    
-  rescue
-     respond_to do|format|
-        format.js do
-          render :update do |page|
-            @sync_message = "Can't sync with facebook"
-            page.replace "sync-message", :partial => "sync_message"
-            page.visual_effect :highlight, "sync-message"
-          end
-        end
     end
   end
   
@@ -392,13 +382,14 @@ class AccountSettingsController < ApplicationController
   end
 
   def merge_with_facebook
-    saved = false
     if facebook_session && (fb_user = facebook_session.user)
-      facebook_profile = FacebookUserProfile.populate(fb_user)
-      @new_address_book, @new_profile = FacebookProfile.convert_fb_profile_to_sync_with_local_setup(facebook_profile)
-      saved = @settings.update_personal_info
+      begin
+        current_user.sync_with_facebook_profile FacebookUserProfile.populate(fb_user)
+      rescue
+        flash[:error] = "Unable to sync with Facebook profile!"
+        false
+      end
     end
-    return saved
   end
    
    # If account settings change causes timeline data to update, we need the timeline

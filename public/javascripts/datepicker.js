@@ -39,7 +39,10 @@ var datePickerController = (function datePickerController() {
             cellFormat          = "d-sp-F-sp-Y",
             titleFormat         = "F-sp-d-cc-sp-Y",
             formatParts         = ["placeholder", "sp-F-sp-Y"],
-            formatMasks         = ["Y-sl-m-sl-d","m-sl-d-sl-Y","d-sl-m-sl-Y","Y-ds-m-ds-d","m-ds-d-ds-Y","d-ds-m-ds-Y"];                
+            formatMasks         = ["Y-sl-m-sl-d","m-sl-d-sl-Y","d-sl-m-sl-Y","Y-ds-m-ds-d","m-ds-d-ds-Y","d-ds-m-ds-Y"],
+						// $Author$
+						// Added this because the path-calculation code fails if no js files included in <head> 
+						javascriptPath			= '/javascripts';
         
         void function() {
                 var scriptFiles = document.getElementsByTagName('head')[0].getElementsByTagName('script'),                    
@@ -51,7 +54,7 @@ var datePickerController = (function datePickerController() {
                 };
        
                 if(typeof(fdLocale) != "object") {
-                        var loc    = scriptFiles[scriptFiles.length - 1].src.substr(0, scriptFiles[scriptFiles.length - 1].src.lastIndexOf("/")) + "/lang/" + languageInfo + ".js",
+                        var loc    = javascriptPath + "/lang/" + languageInfo + ".js",
                             script = document.createElement('script');
                                                           
                         script.type = "text/javascript";                         

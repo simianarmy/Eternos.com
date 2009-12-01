@@ -5,5 +5,7 @@ class FacebookContent < ActiveRecord::Base
   
   serialize :friends
   serialize :groups
-  xss_terminate :except => [ :friends, :groups ] 
+  xss_terminate :except => [ :friends, :groups ]
+  
+  # TODO: Version (vestal_versions?) to keep track of changes by date
 end

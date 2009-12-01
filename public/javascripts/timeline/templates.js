@@ -68,7 +68,9 @@ var ETemplates = function() {
 	that.showError = function(msg, fade_delay) {
 		showFlash('flash_error', msg, fade_delay);
 	};
-	
+	that.hideError = function() {
+		$('flash_error').update();
+	};
 	function showFlash(id, msg, fade_delay) {
 		$(id).innerHTML = msg;
 		$(id).appear();

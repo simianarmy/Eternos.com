@@ -1646,6 +1646,7 @@ var ETimeline = function(opts) {
 		onEventSearchSuccess: function(results) {
 			this.searchInProgress = false;
 			this.hideLoading();
+			ETemplates.hideError();
 			// Add to timeline, events & artifacts
 			this.parseSearchResults(results);
 		},

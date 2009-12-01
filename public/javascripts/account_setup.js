@@ -129,35 +129,6 @@ function toggleCustomTextFamily(id){
   document.getElementById('select-family-type-'+id+'').selectedIndex=0;
 }
 
-function getRegion(val,elementId){
-  new Ajax.Request('/account_settings/select_region/'+val, {asynchronous:true, evalScripts:true, method:'get',parameters:'cols_id='+elementId+'',
-                   onLoading:function(request){$('loading-image-'+elementId).show();}, 
-                   onComplete:function(request){$('loading-image-'+elementId).hide();} });return false;
-}
-
-
-
-function deleteFormMedicalCondition(){
-  $('add-new-medical-condition').remove();   
-  if ($('form_medical_condition').value == "1"){
-    $('save-button-medical-condition').hide();
-    window.counter_medical_condition = 1;
-  }else{
-    val = $('form_medical_condition').value;
-    $('form_medical_condition').value =(val - 1);
-  }
-}
-
-function deleteFormFamily(){
-  $('add-new-family').remove();
-  if ($('form_family').value == "1"){
-    $('save-button-family').hide();
-    window.counter_family = 1;
-  }else{
-    val = $('form_family').value;
-    $('form_family').value =(val - 1);
-  }
-}
 
 function showOtherTextbox(val, id){
   if(val=='Other'){

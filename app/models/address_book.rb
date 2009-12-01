@@ -4,7 +4,6 @@ class AddressBook < ActiveRecord::Base
   belongs_to :user
   has_many  :addresses, :as => :addressable
   has_many :phone_numbers, :as => :phoneable, :dependent => :destroy
-  has_attached_file :photo
  
   validate :validate_name
   #validates_associated :addresses, :message => nil, :on => :update
@@ -71,6 +70,14 @@ class AddressBook < ActiveRecord::Base
     end
   end
   
+  def sync_with_facebook(fb_info)
+    self.first_name    = fb_info[:first_name]  unless fb_info[:first_name].blank?
+    self.last_name     = fb_info[:last_name]   unless fb_info[:last_name].blank?
+    self.gender        = fb_info[:sex]         unless fb_info[:sex].blank?
+    self.birthdate     = fb_info[:birthday_date].to_date unless fb_info[:birthday_date].blank?
+    save!
+  end
+    
   private
   
   def save_associations
