@@ -1,34 +1,26 @@
-<div class="content press">
-  <span class="subtitle1">Company:</span>
-  <span class="subtitle2">Press</span>
-  <br /><br />
-  <div class="textarea3">
-    Eternos believes in strong media relationships and is open to speaking with bloggers, traditional media, radio and television media.  Request a copy of <%= mail_to "press@eternos.com?subject=Press Kit Request", "our press kit",  :encode => "hex"  %> today.
-  </div>
-  <br /><br />
-  <div style="clear:both"></div>
-  <br />
-  <div class="subtitle3">Influential Blogs</div>
-  <div class="list1">
-    <div class="dot"><%= image_tag("dot.gif") %></div>
-    <div class="textarea4">Forthcoming</div>
-  </div>
+<div class="content what">
+  <fieldset>
+    <div class="what01">
+      <p>
+        Eternos believes in strong media relationships and is open to speaking with bloggers, traditional media, radio and television media.  Request a copy of <%= mail_to "press@eternos.com?subject=Press Kit Request", "our press kit",  :encode => "hex"  %> today.
+      </p>
 
-  <div style="clear:both"></div>
-  <br />
-  <div class="subtitle3">Traditional Media</div>
-  <div class="list1">
-    <div class="dot"><%= image_tag("dot.gif") %></div>
-    <div class="textarea4">Forthcoming</div>
-  </div>
+      <br />
+      <div class="">Influential Blogs</div>
+      <%= image_tag("dot.gif") %>
 
-  <div style="clear:both"></div>
-  <br />
-  <div class="subtitle3">Radio and Television</div>
-  <div class="list1">
-    <div class="dot"><%= image_tag("dot.gif") %></div>
-    <div class="textarea4">Forthcoming</div>
-  </div>
+      <div style="clear:both"></div>
+      <br />
+      <div class="">Traditional Media</div>
+      <%= image_tag("dot.gif") %>
 
-  <div style="clear:both"></div>
+      <div style="clear:both"></div>
+      <br />
+      <div class="">Radio and Television</div>
+      <%= image_tag("dot.gif") %>
+
+      <div style="clear:both"></div>
+    </div>
+  </div>
+</fieldset>
 </div>
