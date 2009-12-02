@@ -1,6 +1,9 @@
 class AboutController < ApplicationController
   def index
-    render :action => 'company'
+  end
+  
+  def show
+    render :action => params[:page]
   end
   
   def company

@@ -1,4 +1,4 @@
 - form_for_using_ssl(user_session, :url => {:controller => :user_sessions}) do |f|
   = f.text_field :login, {:id => "username", :class => 'withHint', :defaultValue => 'email address'}
-  = f.password_field :password, :value => "password", :id => "password"
-  = submit_tag 'submit', :value => 'login', :class => "login", :id => "login_button", :disable_with => "Signing in&hellip;"
+  = f.password_field :password, :value => "Password"
+  = submit_tag 'submit', :value => 'Login'
