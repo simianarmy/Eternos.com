@@ -8,6 +8,7 @@ common: &default_settings
   # Credit card gateway: One of brain_tree, authorize_net_cim, payment_express, or trust_commerce
   gateway: brain_tree
   google_api_key: ABQIAAAAZPXQb6LGyRfyadFTEMyJIRSBkZHnxytVLIqnmhvWs6MeAadaiRQtxqlrdL3Mp_y0DANZxt-5Npq0dA
+  base_domain: eternos.com
   
 development:
   <<: *default_settings

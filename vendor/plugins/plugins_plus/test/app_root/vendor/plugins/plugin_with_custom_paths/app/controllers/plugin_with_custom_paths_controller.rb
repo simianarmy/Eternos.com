@@ -1,2 +1,0 @@
-class PluginWithCustomPathsController < ActionController
-end

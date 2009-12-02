@@ -182,7 +182,7 @@ class AccountsController < ApplicationController
 
   def cancel
     if request.post? and !params[:confirm].blank?
-      current_account.destroy
+      current_account.touch(:deleted_at)
       reset_session
       redirect_to :action => "canceled"
     end

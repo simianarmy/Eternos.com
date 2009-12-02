@@ -6,7 +6,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -97,6 +97,8 @@ Rails::Initializer.run do |config|
   config.gem "markevans-block_helpers", :lib => "block_helpers", :source => "http://gems.github.com"
   config.gem 'right_aws'
   config.gem 'moomerman-twitter_oauth', :lib => 'twitter_oauth', :source => "http://gems.github.com"
+  config.gem "acts-as-taggable-on", :source => "http://gemcutter.org"
+  
   # Application Profiling plugin - only runs on dev env
   #config.gem 'fiveruns_tuneup'
   
@@ -158,6 +160,14 @@ Rails::Initializer.run do |config|
     Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
     Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
     Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
+    
+    # Set ActionMailer host for url_for
+    ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
+    
+    # Need this to prevent the following in Renderer classes:
+    # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
+    include ActionController::UrlWriter
+    default_url_options[:host] = AppConfig.base_domain
   end
 end
 
@@ -186,14 +196,6 @@ ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
   "<span class='field_error'>#{html_tag}</span>"
 end
-
-# Set ActionMailer host for url_for
-ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
-
-# Need this to prevent the following in Renderer classes:
-# ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
-include ActionController::UrlWriter
-default_url_options[:host] = AppConfig.base_domain
 
 # Disable email validator domain lookups
 EmailVeracity::Config[:lookup] = false

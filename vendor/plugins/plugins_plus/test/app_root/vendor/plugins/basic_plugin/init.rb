@@ -1,1 +1,0 @@
-require 'basic_plugin'

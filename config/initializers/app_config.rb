@@ -1,5 +1,5 @@
 # $Id$
-require 'app_config'
+require Rails.root.join('lib', 'app_config')
 
 class AppConfig
   def self.[](key)
