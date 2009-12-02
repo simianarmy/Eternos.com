@@ -32,7 +32,11 @@ ssh_options[:paranoid] = false
 default_run_options[:pty] = true
 set :user, "mmauger"            # defaults to the currently logged in user
 set :use_sudo, false
-set :deploy_via, :remote_cache
+# fast_remote_cache strategy - http://github.com/37signals/fast_remote_cache/tree 
+set :deploy_via, :fast_remote_cache
+set :copy_exclude, %w(features spec doc stories test tmp)
+set :group_writable, false
+
 set :keep_releases, 3
 set :dos2unix, "/usr/bin/dos2unix"
 

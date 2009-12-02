@@ -31,3 +31,11 @@ Gzip apache contents:
       # Make sure proxies don't deliver the wrong content
       Header append Vary User-Agent env=!dont-vary
   </Location>
+  
+Javascript/CSS compression/Asset management: Jammit http://documentcloud.github.com/jammit/
+
+Javascript deployment: Sprockets http://getsprockets.org/
+
+Fast Capistrano Deployment stragegies:
+  http://github.com/blog/470-deployment-script-spring-cleaning
+  http://github.com/37signals/fast_remote_cache/tree
