@@ -144,6 +144,13 @@ CUTYCAPT
     sudo "cp /usr/local/src/cutycapt/CutyCapt/CutyCapt /usr/local/bin"
   end
   
+  desc "Install appropriate robots.txt file"
+  task :publish_robots_file, :roles => :web do
+    if File.exist? "public/robots_#{stage}.txt"
+      top.upload "public/robots_#{stage}.txt", "#{current_path}/public/robots.txt"
+    end
+  end
+  
   desc "list god status"
   task :god_status, :roles => :app do
     run "god status"
@@ -155,6 +162,7 @@ CUTYCAPT
   end
 end
 
+after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:google_analytics"
 #after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons
 #after "deploy:symlink", "deploy:update_crontab"
