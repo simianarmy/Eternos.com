@@ -26,7 +26,7 @@
         = text_area_tag 'feed_text', feed_entry.preview, :rows => 20, :cols => 60
     .clearboth
     %p.detail
-      = link_to item.guid, item.guid, :target => '_new'
+      = link_to item.url, item.url, :target => '_new'
     .clearboth
   %p
   %br

@@ -17,6 +17,7 @@ gem 'eventmachine', '0.12.10'
 gem 'ezcrypto', '0.7.2'
 gem 'haml', '2.2.15'
 gem 'hirb', :only => :development
+gem 'hpricot', '0.8.2'
 gem 'httparty', '0.4.5'
 gem 'image_science', '1.2.1'
 gem 'javan-whenever', '0.3.7'
