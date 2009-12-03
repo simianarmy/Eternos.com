@@ -30,6 +30,7 @@ gem 'memcache-client', '1.7.7'
 gem 'mime-types', '1.16'
 gem 'moomerman-twitter_oauth', '0.2.1'
 gem 'mysqlplus', '0.1.1'
+gem 'newrelic_rpm', '2.9.8', :only => :production
 gem 'nokogiri', '1.4.0'
 gem 'oauth', '0.3.6'
 gem 'packr', '3.1.0'

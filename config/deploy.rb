@@ -162,14 +162,16 @@ CUTYCAPT
   end
 end
 
+before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:google_analytics"
 #after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons
 #after "deploy:symlink", "deploy:update_crontab"
-after "deploy:symlink", "deploy:symlink_shared"
-after "deploy:symlink", "deploy:start_daemons"
-after "deploy:symlink", "deploy:sendmail"
-before "deploy:update_code", "deploy:stop_daemons"
+
+#after "deploy:symlink", "deploy:symlink_shared"
+#after "deploy:symlink", "deploy:start_daemons"
+#after "deploy:symlink", "deploy:sendmail"
+
 
 
 
