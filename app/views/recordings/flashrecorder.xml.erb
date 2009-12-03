@@ -9,7 +9,7 @@
 		<PLAYER_SETTINGS Name="VideoHeight" Value="240"/>
 		<PLAYER_SETTINGS Name="VideoCompression" Value="0"/>
 		<PLAYER_SETTINGS Name="AudioGain" Value="70"/>
-		<PLAYER_SETTINGS Name="SaveScript" Value="/recordings/create/?_eternos.com_session=<%= u session.session_id %>&amp;authenticity_token=<%= u(form_authenticity_token) if protect_against_forgery? -%>&amp;recording_id_session_key=<%= @parent %>_last_recording&amp;parent_id=<%= ignore_nil { cookies[RECORDING_CONTENT_PARENT_COOKIE] } %>"/>
+		<PLAYER_SETTINGS Name="SaveScript" Value="/recordings/create/?_eternos.com_session=<%= u request.session_options[:id] %>&amp;authenticity_token=<%= u(form_authenticity_token) if protect_against_forgery? -%>&amp;recording_id_session_key=<%= @parent %>_last_recording&amp;parent_id=<%= ignore_nil { cookies[RECORDING_CONTENT_PARENT_COOKIE] } %>"/>
 		<PLAYER_SETTINGS Name="AudioActivity" Value="50"/>
 		<PLAYER_SETTINGS Name="VideoActivity" Value="50"/>	
 		<PLAYER_SETTINGS Name="MaxRecordingTime" Value="300"/>		

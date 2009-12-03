@@ -25,7 +25,7 @@ class TimelineEvent
   private
   
   def find_attachment_type(obj)
-    obj.try(:media_attachment?) ? obj.attachment_type.downcase : nil
+    (obj.respond_to?(:media_attachment?) && obj.media_attachment?) ? obj.attachment_type.downcase : nil
   end
   
 end

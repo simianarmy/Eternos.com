@@ -1,7 +1,6 @@
 class RecordingsController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  session :cookie_only => false, :only => :create
   
   def index
     @contents = current_user.contents.find_all_recordings
