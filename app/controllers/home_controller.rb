@@ -10,9 +10,11 @@ class HomeController < ApplicationController
   end
   
   def index
+    @hide_feedback = true
   end
   
   def show
+    @hide_feedback = true
     render :action => params[:page]
   end
   

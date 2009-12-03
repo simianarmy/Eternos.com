@@ -9,8 +9,7 @@
       %li= link_to 'privacy policy', '/about/privacy'
       %li= link_to 'contact us', '/about/contact'
       / %li= link_to 'Terms', '/about/terms'
-
-    /= render :partial => 'shared/mcafee_secure'
-    /= link_to(image_tag('firefox_80x15_square_blue.png',  :alt => 'Spread Firefox Affiliate Button'), 'http://www.mozilla.com/en-US/?from=sfx&amp;uid=0&amp;t=434', :target => "_new")
     %p
       &copy; 2008-2009, Eon Digital Preservation, Inc. All rights reserved.
+  %br
+  = render :partial => 'shared/mcafee_secure'

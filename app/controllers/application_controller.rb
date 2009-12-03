@@ -208,6 +208,10 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
       
+  def hide_feedback_tab
+    @hide_feedback = true
+  end
+  
   # From using helpers in controller
   # http://snippets.dzone.com/posts/show/1799
   # Need to call number_helper ActionView method from within
