@@ -62,47 +62,8 @@ Rails::Initializer.run do |config|
 
   # Specify gems that this application depends on. 
   # They can then be installed with "rake gems:install" on new installations.
-  # config.gem "bj"
-  # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
-  # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem 'ezcrypto'
-  config.gem 'aws-s3', :lib => "aws/s3", :version => ">= 0.5.1"
-  #config.gem 'rvideo', :version => ">= 0.9.3"
-  config.gem 'active_presenter', :version => ">= 0.0.5"
-  config.gem 'haml', :version => ">= 2.0.7"
-  config.gem 'lockfile', :version => ">= 1.4.3"
-  config.gem 'packr', :version => ">= 1.0.2"
-  config.gem 'mime-types', :lib => "mime/types", :version => '>= 1.16'
-  config.gem 'chronic', :version => '>= 0.2.3'
-  # Must be installed on system, not in vendor/gems!
-  config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
-  config.gem 'mash', :version => '>= 0.0.3'
-  config.gem 'oauth', :version => '>= 0.3.4'
-  config.gem 'crack', :version => '>= 0.1.2'
-  config.gem 'httparty', :version => '>= 0.4.3'
-  config.gem 'ruby-hmac', :lib => 'hmac'
-  config.gem 'rio', :version => '>= 0.4.2'
-  config.gem 'shared-mime-info'
-  config.gem 'simianarmy-facebooker', :lib => 'facebooker', :version => '>= 1.0.50'
-  # Needs libxslt, libxml2
-  config.gem 'nokogiri', :version => '>= 1.3.2'
-  # Needs libcurl
-  config.gem 'taf2-curb', :lib => 'curb', :source => 'http://gems.github.com'
-  config.gem 'searchlogic'
-  config.gem 'hpricot'
-  config.gem 'jnunemaker-columbus', :lib => 'columbus'
-  config.gem "markevans-block_helpers", :lib => "block_helpers", :source => "http://gems.github.com"
-  config.gem 'right_aws'
-  config.gem 'moomerman-twitter_oauth', :lib => 'twitter_oauth', :source => "http://gems.github.com"
-  
-  # Application Profiling plugin - only runs on dev env
-  #config.gem 'fiveruns_tuneup'
-  
-  # Rails can't find this gem even though it is in vendor/gems
-  #config.gem 'contacts'
-  #config.gem 'memcache-client', :version => ">= 1.7.1"
-  #config.gem 'flvtool2', :version => ">= 1.0.6"
-  
+  # WRONG: Use Bundler
+    
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named

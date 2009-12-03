@@ -1,0 +1,3 @@
+#!/opt/ruby-enterprise/bin/ruby
+require File.join(File.dirname(__FILE__), "../environment")
+load File.join(File.dirname(__FILE__), "../gems/haml-2.2.15/bin/html2haml")
