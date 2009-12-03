@@ -110,9 +110,8 @@ Rails::Initializer.run do |config|
   config.load_paths << "#{RAILS_ROOT}/app/renderers"
   
   config.after_initialize do
-    require "#{RAILS_ROOT}/vendor/gems/qusion/lib/qusion"
     Qusion.start
-    puts "=> Starting Workling client"
+    puts "=> Launching Workling"
     # Setup workling
     Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
     Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
