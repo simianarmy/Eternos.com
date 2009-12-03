@@ -9,13 +9,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091001214733) do
+ActiveRecord::Schema.define(:version => 20091202225829) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.string   "full_domain"
     t.integer  "subscription_discount_id"
     t.string   "state"
@@ -27,7 +26,6 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.datetime "published_at"
     t.datetime "edited_at"
     t.string   "guid"
-    t.string   "author"
     t.text     "message"
     t.text     "attachment_data"
     t.string   "attachment_type"
@@ -36,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "activity_stream_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "author"
     t.datetime "deleted_at"
   end
 
@@ -49,7 +48,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
   add_index "activity_streams", ["user_id"], :name => "index_activity_streams_on_user_id"
 
   create_table "address_books", :force => true do |t|
-    t.integer  "user_id",            :null => false
+    t.integer  "user_id",     :null => false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "website"
@@ -119,8 +118,8 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.datetime "received_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.string   "state"
+    t.datetime "deleted_at"
   end
 
   add_index "backup_emails", ["backup_source_id"], :name => "index_backup_emails_on_backup_source_id"
@@ -161,9 +160,9 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.string   "location"
     t.string   "modified"
+    t.datetime "deleted_at"
   end
 
   add_index "backup_photo_albums", ["backup_source_id"], :name => "index_backup_photo_albums_on_backup_source_id"
@@ -175,7 +174,6 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "content_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.text     "source_url"
     t.string   "caption"
     t.string   "tags"
@@ -183,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.text     "download_error"
     t.datetime "added_at"
     t.string   "title"
+    t.datetime "deleted_at"
   end
 
   add_index "backup_photos", ["backup_photo_album_id"], :name => "index_backup_photos_on_backup_photo_album_id"
@@ -235,7 +234,6 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.date     "latest_day_backed_up"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.integer  "user_id"
     t.integer  "backup_site_id"
     t.boolean  "disabled",               :default => false, :null => false
@@ -247,6 +245,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "auth_token"
     t.string   "auth_secret"
     t.string   "title"
+    t.datetime "deleted_at"
   end
 
   add_index "backup_sources", ["backup_site_id"], :name => "index_backup_sources_on_backup_site_id"
@@ -337,7 +336,6 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "height"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.integer  "user_id",                  :default => 0,          :null => false
     t.string   "content_type"
     t.datetime "taken_at"
@@ -349,9 +347,10 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "state"
     t.boolean  "is_recording",             :default => false,      :null => false
     t.string   "s3_key"
-    t.integer "collection_id"
-    t.string  "collection_type"
-    t.integer "parent_id"
+    t.string   "collection_type"
+    t.integer  "collection_id"
+    t.integer  "parent_id"
+    t.datetime "deleted_at"
   end
 
   create_table "countries", :force => true do |t|
@@ -417,12 +416,12 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "profile_id",                    :null => false
     t.string   "name"
     t.datetime "birthdate"
-    t.datetime "died_at"
     t.boolean  "living",      :default => true
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "family_type"
+    t.datetime "died_at"
   end
 
   add_index "families", ["profile_id"], :name => "index_families_on_profile_id"
@@ -449,8 +448,8 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "url"
     t.datetime "published_at"
     t.datetime "created_at"
-    t.datetime "deleted_at"
     t.string   "guid"
+    t.datetime "deleted_at"
   end
 
   add_index "feed_entries", ["feed_id", "guid"], :name => "feed_guid", :unique => true
@@ -508,16 +507,16 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
   add_index "jobs", ["profile_id"], :name => "index_jobs_on_profile_id"
 
   create_table "medical_conditions", :force => true do |t|
-    t.integer  "profile_id",     :null => false
+    t.integer  "profile_id",         :null => false
     t.string   "name"
     t.text     "diagnosis"
     t.text     "treatment"
     t.text     "notes"
-    t.date "diagnosis_date"
-    t.date "treatment_start_on"
-    t.date "treatment_end_on"
+    t.date     "diagnosis_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "treatment_end_on"
+    t.date     "treatment_start_on"
   end
 
   create_table "medicals", :force => true do |t|
@@ -608,6 +607,11 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.string   "s3_key"
   end
 
+  create_table "plugin_schema_info", :id => false, :force => true do |t|
+    t.string  "plugin_name"
+    t.integer "version"
+  end
+
   create_table "profiles", :force => true do |t|
     t.integer  "user_id",            :null => false
     t.string   "height"
@@ -643,8 +647,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
   add_index "recipients", ["user_id"], :name => "index_recipients_on_user_id"
 
   create_table "recordings", :force => true do |t|
-    t.integer  "user_id", :null => false
-    t.integer  "content_id"
+    t.integer  "user_id",          :null => false
     t.string   "filename",         :null => false
     t.string   "state",            :null => false
     t.string   "processing_error"
@@ -652,6 +655,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.datetime "updated_at"
     t.string   "command"
     t.string   "command_expanded"
+    t.integer  "content_id"
   end
 
   add_index "recordings", ["user_id"], :name => "index_recordings_on_user_id"
@@ -713,11 +717,11 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
   add_index "schools", ["profile_id"], :name => "index_schools_on_profile_id"
 
   create_table "security_questions", :force => true do |t|
-    t.integer  "user_id", :null => false
-    t.text  "question"
-    t.text  "answer"
+    t.integer "user_id",  :null => false
+    t.text    "question"
+    t.text    "answer"
   end
-  
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
@@ -730,10 +734,9 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
 
   create_table "stories", :force => true do |t|
     t.integer  "user_id",                           :null => false
-    t.string   "title", :null => true               
+    t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.datetime "start_at"
     t.datetime "end_at"
     t.integer  "theme_id",           :default => 0, :null => false
@@ -744,6 +747,7 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
     t.integer  "category_id"
     t.string   "type"
     t.text     "story"
+    t.datetime "deleted_at"
   end
 
   add_index "stories", ["user_id"], :name => "index_stories_on_user_id"
@@ -858,22 +862,22 @@ ActiveRecord::Schema.define(:version => 20091001214733) do
   end
 
   create_table "trustees", :force => true do |t|
-    t.integer  "user_id",                        :null => false
+    t.integer  "user_id",           :null => false
     t.text     "emails"
     t.string   "relationship"
     t.string   "name"
     t.string   "contact_method"
-    t.string   "state"
-    t.string   "security_code"
-    t.string   "security_question"
-    t.string   "security_answer"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "confirmed"
     t.datetime "confirmed_at"
-    t.datetime "last_inquiry_at"    
+    t.boolean  "confirmed"
+    t.datetime "last_inquiry_at"
+    t.string   "security_answer"
+    t.string   "security_code"
+    t.string   "security_question"
+    t.string   "state"
   end
-  
+
   create_table "users", :force => true do |t|
     t.string   "login",                                                          :null => false
     t.string   "email",                                                          :null => false

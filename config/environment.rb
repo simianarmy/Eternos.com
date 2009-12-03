@@ -6,7 +6,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -65,9 +65,7 @@ Rails::Initializer.run do |config|
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem "ruby-openid", :lib => "openid", :version => ">= 2.1.2"
   config.gem 'ezcrypto'
-  config.gem 'starling', :lib => "starling", :version => ">= 0.9.8"
   config.gem 'aws-s3', :lib => "aws/s3", :version => ">= 0.5.1"
   #config.gem 'rvideo', :version => ">= 0.9.3"
   config.gem 'active_presenter', :version => ">= 0.0.5"
@@ -75,7 +73,6 @@ Rails::Initializer.run do |config|
   config.gem 'lockfile', :version => ">= 1.4.3"
   config.gem 'packr', :version => ">= 1.0.2"
   config.gem 'mime-types', :lib => "mime/types", :version => '>= 1.16'
-  #config.gem 'authlogic'
   config.gem 'chronic', :version => '>= 0.2.3'
   # Must be installed on system, not in vendor/gems!
   config.gem 'javan-whenever', :lib => false, :source => 'http://gems.github.com'
@@ -97,7 +94,6 @@ Rails::Initializer.run do |config|
   config.gem "markevans-block_helpers", :lib => "block_helpers", :source => "http://gems.github.com"
   config.gem 'right_aws'
   config.gem 'moomerman-twitter_oauth', :lib => 'twitter_oauth', :source => "http://gems.github.com"
-  config.gem "acts-as-taggable-on", :source => "http://gemcutter.org"
   
   # Application Profiling plugin - only runs on dev env
   #config.gem 'fiveruns_tuneup'
@@ -174,8 +170,6 @@ end
 
 # Load email config
 require 'load_email_configuration'
-# Load tagging methods
-require 'tag_extensions'
 require 's3_helper'
 require 'timeline_events'
 require 'facebook_desktop'
@@ -212,5 +206,5 @@ Spawn::method :fork
 Spawn::method :yield, 'test' # Don't fork in tests
 #Spawn::method :thread, 'production'
 
-ActiveRecord::Base.include_root_in_json = false
+
 

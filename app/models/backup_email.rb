@@ -19,7 +19,7 @@ class BackupEmail < ActiveRecord::Base
   encrypt_attributes :suffix => '_encrypted'
   
   acts_as_archivable :on => :received_at
-  acts_as_taggable_on :tags
+  acts_as_taggable
   acts_as_restricted :owner_method => :member
   acts_as_commentable
   acts_as_time_locked
