@@ -4,7 +4,7 @@
 */
 
 /* @group Universal */
-
+/*
 * {
 	margin: 0;
 	padding: 0;
@@ -17,7 +17,7 @@ html {
 body {
 	font: medium Arial, Sans-Serif;
 }
-
+*/
 .clearboth { clear: both ; }
 .alignright { float: right; }
 .alignleft { float: left; }
