@@ -2,7 +2,7 @@
   = hidden_field_tag 'plan', plan
   %p
     %label full name:
-    = f.text_field :name
+    = f.text_field :full_name
   %p
     %label your email:
     = f.text_field :email
@@ -12,5 +12,8 @@
     %br
     %label &nbsp;
     %em 6 characters minimum
+  %p
+    %label confirm password:
+    = f.password_field :password_confirmation
   %p{:align=>"center"}
     = submit_tag "Sign Up"

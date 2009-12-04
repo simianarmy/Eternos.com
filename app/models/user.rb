@@ -26,12 +26,12 @@ class User < ActiveRecord::Base
   
   # Virtual attributes
   attr_accessor :invitation_required, :registration_required
-  
+
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :first_name, :last_name, :email, :facebook_id,
     :password, :password_confirmation, :identity_url, :invitation_token, 
-    :terms_of_service
+    :terms_of_service, :full_name
   
   # Validate first,last name
   validates_presence_of :first_name
@@ -160,6 +160,11 @@ class User < ActiveRecord::Base
   
   def name
     [first_name, last_name].join(' ')
+  end
+  
+  def full_name=(full)
+    self.first_name, *rest = full.split(' ')
+    self.last_name = rest.join(' ')
   end
   
   def full_name
