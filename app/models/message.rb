@@ -10,8 +10,7 @@ class Message < ActiveRecord::Base
   acts_as_restricted :owner_method => :member
   acts_as_time_period
   acts_as_commentable
-  #acts_as_taggable_custom :owner_method => :member
-  acts_as_taggable_on :tags
+  acts_as_taggable
   acts_as_time_locked
   
   delegate :recording, :to => :av_attachment
@@ -21,7 +20,6 @@ class Message < ActiveRecord::Base
   validates_presence_of :title, :message => "Please enter a title"
   validates_presence_of :message, :message => "Please enter a message"
   validates_as_time_period
-  validates_presence_of_tags
   
   searches_on :title, :message
   xss_terminate :except => [:message]

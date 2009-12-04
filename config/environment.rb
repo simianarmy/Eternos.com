@@ -47,9 +47,6 @@ MOD_PORTER_SECRET       = 'sh4mAlam4d1nGd0ng'
 RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID' # TODO: check if used
 SESSION_DURATION_SECONDS  = 86400 # 1 day before session times out
 
-# An enhanced MySQL database driver. With support for async operations and threaded database access.
-require 'mysqlplus' # Add 1st per mysqlplus instructions
-
 Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers

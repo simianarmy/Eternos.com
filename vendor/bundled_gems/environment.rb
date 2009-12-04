@@ -12,14 +12,14 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-2.0.16/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-gateway-1.0.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-gateway-1.0.1/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/ext/json/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/contacts-1.0.18/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/contacts-1.0.18/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/bin")
@@ -34,15 +34,19 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rio-0.4.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rio-0.4.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/taf2-curb-0.5.4.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/taf2-curb-0.5.4.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/taf2-curb-0.5.4.0/ext")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tzinfo-0.3.15/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tzinfo-0.3.15/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-sftp-2.0.4/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-sftp-2.0.4/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/columnize-0.3.1/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/columnize-0.3.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/bin")
@@ -86,10 +90,10 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/pauldix-sax-machine-0.0.14/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tmm1-amqp-0.6.4/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tmm1-amqp-0.6.4/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bundler-0.6.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bundler-0.6.0/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/diff-lcs-1.1.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/diff-lcs-1.1.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_aws-1.10.0/bin")
@@ -98,16 +102,16 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/xml-simple-1.0.12/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/aws-s3-0.6.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/aws-s3-0.6.2/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/moomerman-twitter_oauth-0.2.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/moomerman-twitter_oauth-0.2.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/haml-2.2.15/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/haml-2.2.15/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/chronic-0.2.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/chronic-0.2.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/javan-whenever-0.3.7/bin")
@@ -118,6 +122,8 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/memcache-client-1.7.7/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rack-1.0.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rack-1.0.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/webrat-0.6.0/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/webrat-0.6.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-hmac-0.3.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-hmac-0.3.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/capistrano-ext-1.2.1/bin")
@@ -128,6 +134,10 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/highline-1.5.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/capistrano-2.5.10/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/capistrano-2.5.10/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-debug-base-0.10.3/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-debug-base-0.10.3/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-debug-0.10.3/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-debug-0.10.3/cli")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/activesupport-2.3.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/activesupport-2.3.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/activerecord-2.3.2/bin")
@@ -166,12 +176,12 @@ module Bundler
   @bundled_specs["net-ssh"].loaded_from = "#{dir}/specifications/net-ssh-2.0.16.gemspec"
   @bundled_specs["net-ssh-gateway"] = eval(File.read("#{dir}/specifications/net-ssh-gateway-1.0.1.gemspec"))
   @bundled_specs["net-ssh-gateway"].loaded_from = "#{dir}/specifications/net-ssh-gateway-1.0.1.gemspec"
-  @bundled_specs["searchlogic"] = eval(File.read("#{dir}/specifications/searchlogic-2.3.2.gemspec"))
-  @bundled_specs["searchlogic"].loaded_from = "#{dir}/specifications/searchlogic-2.3.2.gemspec"
   @bundled_specs["json"] = eval(File.read("#{dir}/specifications/json-1.2.0.gemspec"))
   @bundled_specs["json"].loaded_from = "#{dir}/specifications/json-1.2.0.gemspec"
   @bundled_specs["contacts"] = eval(File.read("#{dir}/specifications/contacts-1.0.18.gemspec"))
   @bundled_specs["contacts"].loaded_from = "#{dir}/specifications/contacts-1.0.18.gemspec"
+  @bundled_specs["searchlogic"] = eval(File.read("#{dir}/specifications/searchlogic-2.3.2.gemspec"))
+  @bundled_specs["searchlogic"].loaded_from = "#{dir}/specifications/searchlogic-2.3.2.gemspec"
   @bundled_specs["json_pure"] = eval(File.read("#{dir}/specifications/json_pure-1.2.0.gemspec"))
   @bundled_specs["json_pure"].loaded_from = "#{dir}/specifications/json_pure-1.2.0.gemspec"
   @bundled_specs["SystemTimer"] = eval(File.read("#{dir}/specifications/SystemTimer-1.1.3.gemspec"))
@@ -186,14 +196,18 @@ module Bundler
   @bundled_specs["lockfile"].loaded_from = "#{dir}/specifications/lockfile-1.4.3.gemspec"
   @bundled_specs["rio"] = eval(File.read("#{dir}/specifications/rio-0.4.2.gemspec"))
   @bundled_specs["rio"].loaded_from = "#{dir}/specifications/rio-0.4.2.gemspec"
-  @bundled_specs["taf2-curb"] = eval(File.read("#{dir}/specifications/taf2-curb-0.5.4.0.gemspec"))
-  @bundled_specs["taf2-curb"].loaded_from = "#{dir}/specifications/taf2-curb-0.5.4.0.gemspec"
   @bundled_specs["right_http_connection"] = eval(File.read("#{dir}/specifications/right_http_connection-1.2.4.gemspec"))
   @bundled_specs["right_http_connection"].loaded_from = "#{dir}/specifications/right_http_connection-1.2.4.gemspec"
+  @bundled_specs["taf2-curb"] = eval(File.read("#{dir}/specifications/taf2-curb-0.5.4.0.gemspec"))
+  @bundled_specs["taf2-curb"].loaded_from = "#{dir}/specifications/taf2-curb-0.5.4.0.gemspec"
   @bundled_specs["tzinfo"] = eval(File.read("#{dir}/specifications/tzinfo-0.3.15.gemspec"))
   @bundled_specs["tzinfo"].loaded_from = "#{dir}/specifications/tzinfo-0.3.15.gemspec"
   @bundled_specs["net-sftp"] = eval(File.read("#{dir}/specifications/net-sftp-2.0.4.gemspec"))
   @bundled_specs["net-sftp"].loaded_from = "#{dir}/specifications/net-sftp-2.0.4.gemspec"
+  @bundled_specs["columnize"] = eval(File.read("#{dir}/specifications/columnize-0.3.1.gemspec"))
+  @bundled_specs["columnize"].loaded_from = "#{dir}/specifications/columnize-0.3.1.gemspec"
+  @bundled_specs["linecache"] = eval(File.read("#{dir}/specifications/linecache-0.43.gemspec"))
+  @bundled_specs["linecache"].loaded_from = "#{dir}/specifications/linecache-0.43.gemspec"
   @bundled_specs["shared-mime-info"] = eval(File.read("#{dir}/specifications/shared-mime-info-0.1.gemspec"))
   @bundled_specs["shared-mime-info"].loaded_from = "#{dir}/specifications/shared-mime-info-0.1.gemspec"
   @bundled_specs["hpricot"] = eval(File.read("#{dir}/specifications/hpricot-0.8.2.gemspec"))
@@ -236,10 +250,10 @@ module Bundler
   @bundled_specs["pauldix-sax-machine"].loaded_from = "#{dir}/specifications/pauldix-sax-machine-0.0.14.gemspec"
   @bundled_specs["tmm1-amqp"] = eval(File.read("#{dir}/specifications/tmm1-amqp-0.6.4.gemspec"))
   @bundled_specs["tmm1-amqp"].loaded_from = "#{dir}/specifications/tmm1-amqp-0.6.4.gemspec"
-  @bundled_specs["builder"] = eval(File.read("#{dir}/specifications/builder-2.1.2.gemspec"))
-  @bundled_specs["builder"].loaded_from = "#{dir}/specifications/builder-2.1.2.gemspec"
   @bundled_specs["bundler"] = eval(File.read("#{dir}/specifications/bundler-0.6.0.gemspec"))
   @bundled_specs["bundler"].loaded_from = "#{dir}/specifications/bundler-0.6.0.gemspec"
+  @bundled_specs["builder"] = eval(File.read("#{dir}/specifications/builder-2.1.2.gemspec"))
+  @bundled_specs["builder"].loaded_from = "#{dir}/specifications/builder-2.1.2.gemspec"
   @bundled_specs["diff-lcs"] = eval(File.read("#{dir}/specifications/diff-lcs-1.1.2.gemspec"))
   @bundled_specs["diff-lcs"].loaded_from = "#{dir}/specifications/diff-lcs-1.1.2.gemspec"
   @bundled_specs["right_aws"] = eval(File.read("#{dir}/specifications/right_aws-1.10.0.gemspec"))
@@ -248,16 +262,16 @@ module Bundler
   @bundled_specs["xml-simple"].loaded_from = "#{dir}/specifications/xml-simple-1.0.12.gemspec"
   @bundled_specs["aws-s3"] = eval(File.read("#{dir}/specifications/aws-s3-0.6.2.gemspec"))
   @bundled_specs["aws-s3"].loaded_from = "#{dir}/specifications/aws-s3-0.6.2.gemspec"
-  @bundled_specs["ezcrypto"] = eval(File.read("#{dir}/specifications/ezcrypto-0.7.2.gemspec"))
-  @bundled_specs["ezcrypto"].loaded_from = "#{dir}/specifications/ezcrypto-0.7.2.gemspec"
   @bundled_specs["moomerman-twitter_oauth"] = eval(File.read("#{dir}/specifications/moomerman-twitter_oauth-0.2.1.gemspec"))
   @bundled_specs["moomerman-twitter_oauth"].loaded_from = "#{dir}/specifications/moomerman-twitter_oauth-0.2.1.gemspec"
+  @bundled_specs["ezcrypto"] = eval(File.read("#{dir}/specifications/ezcrypto-0.7.2.gemspec"))
+  @bundled_specs["ezcrypto"].loaded_from = "#{dir}/specifications/ezcrypto-0.7.2.gemspec"
   @bundled_specs["haml"] = eval(File.read("#{dir}/specifications/haml-2.2.15.gemspec"))
   @bundled_specs["haml"].loaded_from = "#{dir}/specifications/haml-2.2.15.gemspec"
-  @bundled_specs["crack"] = eval(File.read("#{dir}/specifications/crack-0.1.4.gemspec"))
-  @bundled_specs["crack"].loaded_from = "#{dir}/specifications/crack-0.1.4.gemspec"
   @bundled_specs["active_presenter"] = eval(File.read("#{dir}/specifications/active_presenter-1.2.0.gemspec"))
   @bundled_specs["active_presenter"].loaded_from = "#{dir}/specifications/active_presenter-1.2.0.gemspec"
+  @bundled_specs["crack"] = eval(File.read("#{dir}/specifications/crack-0.1.4.gemspec"))
+  @bundled_specs["crack"].loaded_from = "#{dir}/specifications/crack-0.1.4.gemspec"
   @bundled_specs["chronic"] = eval(File.read("#{dir}/specifications/chronic-0.2.3.gemspec"))
   @bundled_specs["chronic"].loaded_from = "#{dir}/specifications/chronic-0.2.3.gemspec"
   @bundled_specs["javan-whenever"] = eval(File.read("#{dir}/specifications/javan-whenever-0.3.7.gemspec"))
@@ -268,6 +282,8 @@ module Bundler
   @bundled_specs["memcache-client"].loaded_from = "#{dir}/specifications/memcache-client-1.7.7.gemspec"
   @bundled_specs["rack"] = eval(File.read("#{dir}/specifications/rack-1.0.1.gemspec"))
   @bundled_specs["rack"].loaded_from = "#{dir}/specifications/rack-1.0.1.gemspec"
+  @bundled_specs["webrat"] = eval(File.read("#{dir}/specifications/webrat-0.6.0.gemspec"))
+  @bundled_specs["webrat"].loaded_from = "#{dir}/specifications/webrat-0.6.0.gemspec"
   @bundled_specs["ruby-hmac"] = eval(File.read("#{dir}/specifications/ruby-hmac-0.3.2.gemspec"))
   @bundled_specs["ruby-hmac"].loaded_from = "#{dir}/specifications/ruby-hmac-0.3.2.gemspec"
   @bundled_specs["capistrano-ext"] = eval(File.read("#{dir}/specifications/capistrano-ext-1.2.1.gemspec"))
@@ -278,6 +294,10 @@ module Bundler
   @bundled_specs["highline"].loaded_from = "#{dir}/specifications/highline-1.5.1.gemspec"
   @bundled_specs["capistrano"] = eval(File.read("#{dir}/specifications/capistrano-2.5.10.gemspec"))
   @bundled_specs["capistrano"].loaded_from = "#{dir}/specifications/capistrano-2.5.10.gemspec"
+  @bundled_specs["ruby-debug-base"] = eval(File.read("#{dir}/specifications/ruby-debug-base-0.10.3.gemspec"))
+  @bundled_specs["ruby-debug-base"].loaded_from = "#{dir}/specifications/ruby-debug-base-0.10.3.gemspec"
+  @bundled_specs["ruby-debug"] = eval(File.read("#{dir}/specifications/ruby-debug-0.10.3.gemspec"))
+  @bundled_specs["ruby-debug"].loaded_from = "#{dir}/specifications/ruby-debug-0.10.3.gemspec"
   @bundled_specs["activesupport"] = eval(File.read("#{dir}/specifications/activesupport-2.3.2.gemspec"))
   @bundled_specs["activesupport"].loaded_from = "#{dir}/specifications/activesupport-2.3.2.gemspec"
   @bundled_specs["activerecord"] = eval(File.read("#{dir}/specifications/activerecord-2.3.2.gemspec"))

@@ -23,7 +23,7 @@
           Do you have an OpenID account?  If so, 
           = link_to 'Signup with OpenID', login_path
 
-    - form_tag(:action => 'create', :class => 'form_with_terms', :id => "sign-up") do
+    - form_tag('/accounts/create', :class => 'form_with_terms', :id => "sign-up") do
       = hidden_field_tag 'plan', @plan.name
       = hidden_field_tag 'user[facebook_id]', @user.facebook_id
       .yui-u.first

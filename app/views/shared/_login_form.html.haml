@@ -1,5 +1,5 @@
 - use_form
-
+- @hide_login = true
 %p= authlogic_facebook_login_button
 
 - form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
@@ -16,8 +16,7 @@
 %br
 %p
   = check_box_tag 'user_session[remember_me]'
-  .text-left
-    Remember me
+  Remember me
 .clear
 %br
 %p= link_to 'forgot login?', new_password_reset_path

@@ -6,8 +6,10 @@ gem 'rails', '2.3.2'
 gem 'bundler', '0.6.0'
 gem 'capistrano', '2.5.10'
 gem 'capistrano-ext', '1.2.1'
-gem 'cucumber', '0.4.3', :except => :production
+gem 'webrat', '0.6.0', :only => :test
+gem 'cucumber', '0.4.3', :only => :test
 gem 'rspec-rails', '1.2.9', :only => :test
+gem 'ruby-debug', '0.10.3', :only => [:development, :test]
 
 gem 'active_presenter', '1.2.0'
 gem 'aws-s3', '0.6.2'

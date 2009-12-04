@@ -1,8 +1,8 @@
 # $Id$
 class HomeController < ApplicationController
-  ssl_allowed :index
   before_filter :set_facebook_connect_session
   before_filter :redirect_if_logged_in, :only => :index
+
   layout 'public'
   
   def new
@@ -11,6 +11,7 @@ class HomeController < ApplicationController
   
   def index
     @hide_feedback = true
+    render :action => 'new_home'
   end
   
   def show

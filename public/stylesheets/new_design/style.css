@@ -28,7 +28,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .footer P { margin: 0; padding: 0; color: #02419E;}
 
 /* content */
-.content { width: 988px; margin: 0 auto; padding: 25px 0;}
+.content { width: 988px; margin: 10px; padding: 25px 0;}
 
 /* home */
 .home, .what { color: #666666;}

@@ -27,7 +27,7 @@ module LayoutHelper
   def show_title?
     @show_title
   end
-  
+ 
   def using_layout?(layout)
     !(response.layout.match %r(layouts/#{layout.to_s}$)).nil?
   end
@@ -236,7 +236,7 @@ module LayoutHelper
   
   def style_hidden_if(expression)
      expression ? "display:none;" : ""
-   end
+  end
    
   private
   

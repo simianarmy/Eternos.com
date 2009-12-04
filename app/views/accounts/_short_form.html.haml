@@ -1,0 +1,16 @@
+- form_for_using_ssl :user, :url => {:controller => 'accounts', :action => 'create'} do |f|
+  = hidden_field_tag 'plan', plan
+  %p
+    %label full name:
+    = f.text_field :name
+  %p
+    %label your email:
+    = f.text_field :email
+  %p
+    %label password:
+    = f.password_field :password
+    %br
+    %label &nbsp;
+    %em 6 characters minimum
+  %p{:align=>"center"}
+    = submit_tag "Sign Up"

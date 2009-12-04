@@ -25,10 +25,9 @@ config.action_mailer.raise_delivery_errors = true
 # Use SMTP protocol to deliver emails
 config.action_mailer.delivery_method = :smtp
 
-# Performance monitor
-config.gem "newrelic_rpm"
-
 # Setup memcached connection
-puts "=> Connecting to memcached on #{MEMCACHED_HOST}"
-CACHE = MemCache.new MEMCACHED_OPTIONS
-CACHE.servers = MEMCACHED_HOST
+config.after_initialize do
+  puts "=> Connecting to memcached on #{MEMCACHED_HOST}"
+  CACHE = MemCache.new MEMCACHED_OPTIONS
+  CACHE.servers = MEMCACHED_HOST
+end

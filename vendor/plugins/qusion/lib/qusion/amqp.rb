@@ -20,6 +20,7 @@ module AMQP
     when :evented
       die_gracefully_on_signal
     when :none
+      puts "=> Qusion configured AMQP settings (vhost = #{@settings[:vhost]})"
     else
       raise ArgumentError, "AMQP#start_web_dispatcher requires an argument of [:standard|:evented|:passenger|:none]"
     end

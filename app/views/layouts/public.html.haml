@@ -11,9 +11,9 @@
     /[if lte IE 6]
       = stylesheet_link_tag "new_design/styleie6.css"
 
-    
-    - stylesheet 'new_design/style.css'
+    - stylesheet 'new_design/style.css', 'reset-fonts-grids'
     - load_prototype
+    - javascript 'facebook'
     
     = yield(:head)
     = yield(:js_libs)
@@ -21,25 +21,20 @@
     .header
       %div
         /= render :partial => 'shared/login_box' unless @hide_login_box
-        /= render :partial => 'shared/home_login_form'
-        :plain
-          <form>
-          <input type="text" value="Email" /> 
-          <input type="text" value="Password" />
-          <input type="submit" value="Login" />
-          </form>
+        = render :partial => 'shared/home_login_form' unless @hide_login
+        
         = link_to(image_tag('logo.png', :border => "0"),  root_path)
         %ul
-          %li.active
+          %li{:class => params[:action] == 'show' ? 'active' : 'inact'}
             = link_to 'Home', '/new_home'
             %span
-          %li.inact
+          %li{:class => params[:action] == 'what' ? 'active' : 'inact'}
             = link_to 'What is Eternos?', '/about/what'
             %span
-          %li.inact
+          %li{:class => params[:action] == 'blog' ? 'active' : 'inact'}
             = link_to 'Our Blog', '#'
             %span
-          %li.inact
+          %li{:class => params[:action] == 'index' ? 'active' : 'inact'}
             = link_to 'About', about_path
             %span
 
