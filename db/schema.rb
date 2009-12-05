@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.string   "full_domain"
     t.integer  "subscription_discount_id"
     t.string   "state"

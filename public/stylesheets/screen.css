@@ -166,7 +166,7 @@ form#sign-up {
 	
 }
 
-input {
+.custom input {
 	padding: 5px;
 	margin: 0 0 0 5px;
 	/*width: 245px;*/
@@ -175,8 +175,8 @@ input {
 	font-size: 16px;
 }
 
-input#username,
-input#password {
+.login input#username,
+.login input#password {
 	padding: 5px;
 	margin: 3px 10px 0 0;
 	font-size: 11px;
@@ -285,18 +285,18 @@ input#address {
 	margin-top: 5px;
 }
 
-input#password {
+.login input#password {
 	padding: 5px;
 	margin: 0 0 0 5px;
 	width: 235px;
 }
 
-input#password-created {
+.login input#password-created {
 	margin-top: 8px;
 	margin-left: 0;
 }
 
-input#password-created2 {
+.login input#password-created2 {
 	margin-top: 4px;
 	margin-left: 0;
 }
@@ -446,7 +446,7 @@ td.title-plans {
 	width: 300px;
 	float: left;
 }
-
+/*
 #login {
 	height: 70px;
 	width: 415px;
@@ -480,7 +480,7 @@ td.title-plans {
 #login input#password {
 	margin: 0 0 0 3px;
 }
-
+*/
 /* @end */
 
 /* @group Body */

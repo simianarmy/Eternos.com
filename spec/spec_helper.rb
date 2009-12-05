@@ -141,19 +141,22 @@ def skip_email_validation
   @emv_addr.stubs(:valid?).returns(true)
 end
 
+def login_as(user)
+  @controller.stubs(:current_user).returns(user)
+  @controller.stubs(:current_user_session).returns(@session = mock_model(UserSession, :user => user))
+end
+
 #module LoginSpecHelper
   describe "a user is signed in", :shared => true do
     before( :each ) do
-      @user = create_user
-      @controller.stubs(:current_user).returns(@user)
+      login_as @user = create_user
     end
   end
 
   describe "a member is signed in", :shared => true do
     include UserSpecHelper
     before( :each ) do
-      @user = @member = make_member
-      @controller.stubs(:current_user).returns(@user)
+      login_as @user = @member = make_member
     end
   end
 
@@ -161,15 +164,13 @@ end
   describe "a mocked member is signed in", :shared => true do
     include UserSpecHelper
     before( :each ) do
-      @user = @member = mock_model(Member, :has_role_requirement? => true)
-      @controller.stubs(:current_user).returns(@user)
+      login_as @user = @member = mock_model(Member, :has_role_requirement? => true)
     end
   end
 
   describe "an admin is signed in", :shared => true do
     before( :each ) do
-      @user = @admin = create_user(:admin => true)
-      @controller.stubs(:current_user).returns(@user)
+      login_as @user = @admin = create_user(:admin => true)
     end
   end
 #end
@@ -192,8 +193,8 @@ end
 module UserSpecHelper
   
    # Work around Fixjour shit not adding passwords
-  def valid_user_attributes_with_password
-    returning valid_user_attributes do |a|
+  def valid_user_attributes_with_password(attributes={})
+    returning valid_user_attributes(attributes) do |a|
       a[:password] = a[:password_confirmation] = 'fuckthisshit'
     end
   end

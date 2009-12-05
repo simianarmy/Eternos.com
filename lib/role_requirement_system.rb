@@ -66,10 +66,13 @@ module RoleRequirementSystem
     
     # This is the core of RoleRequirement.  Here is where it discerns if a user can access a controller or not./
     def user_authorized_for?(user, params = {}, binding = self.binding)
+      
+      
       return true unless Array===self.role_requirements
       self.role_requirements.each{| role_requirement|
         roles = role_requirement[:roles]
         options = role_requirement[:options]
+        
         # do the options match the params?
         
         # check the action
@@ -91,15 +94,17 @@ module RoleRequirementSystem
           next if ( String===options[:unless] ? eval(options[:unless], binding) : options[:unless].call(params) )
         end
         
+        RAILS_DEFAULT_LOGGER.debug "Checking if user_authorized_for roles: #{roles.inspect}"
+        RAILS_DEFAULT_LOGGER.debug "User role: #{user.role}" if user
         # check to see if they have one of the required roles
         passed = false
         roles.each { |role|
           passed = true if user.has_role_requirement?(role)
         } unless (! user || user==:false)
-        
+        RAILS_DEFAULT_LOGGER.debug "Passed? #{passed}"
         return false unless passed
       }
-      
+
       return true
     end
   end
@@ -110,6 +115,7 @@ module RoleRequirementSystem
     end
     
     def access_denied
+      RAILS_DEFAULT_LOGGER.debug '*' * 30 << "ACCESS DENIED!"
       if current_user
         render :nothing => true, :status => 401
         return false

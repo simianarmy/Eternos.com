@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :update]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
   
-  before_filter :require_no_user, :only => [:new, :create]
+  before_filter :require_no_user, :only => [:new, :create, :canceled]
   # Need more fine-grained control than redirect for all actions
   #before_filter :check_logged_in
   
@@ -70,6 +70,7 @@ class AccountsController < ApplicationController
     
     # Free subscriptions use Captcha in signup form
     @success = @plan.free? ? verify_recaptcha(:model => @account) : true
+    @account.name = @user.full_name
     
     if @success && @account.save
       @user.register!
@@ -182,10 +183,9 @@ class AccountsController < ApplicationController
 
   def cancel
     if request.post? and !params[:confirm].blank?
-      if acc = current_account
-        acc.touch(:deleted_at)
-      end
-      reset_session
+      current_account.cancel
+      # logout user
+      current_user_session.destroy
       redirect_to :action => "canceled"
     end
   end

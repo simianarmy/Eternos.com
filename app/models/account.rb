@@ -84,6 +84,11 @@ class Account < ActiveRecord::Base
     self.full_domain = "#{domain}.#{AppConfig.base_domain}"
   end
   
+  def cancel
+    touch(:deleted_at)
+    expired!
+  end
+  
   protected
   
     def valid_domain?

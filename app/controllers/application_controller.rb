@@ -269,19 +269,15 @@ class ApplicationController < ActionController::Base
   
   def login_required
     unless current_user
-      store_location
-      flash[:notice] = "You must be logged in to access this page"
-      redirect_away new_user_session_url
-      return false
+      flash_access_denied
     end
   end
   alias_method :require_user, :login_required
   
   def require_no_user
-    if current_user
-      store_location
-      flash[:notice] = "You must be logged out to access this page"
-      redirect_away account_url
+    if current_user.try(:member?)
+      RAILS_DEFAULT_LOGGER.debug "require_no_user invoked"
+      redirect_away root_url
       return false
     end
   end
@@ -308,6 +304,19 @@ class ApplicationController < ActionController::Base
   def invalid_method
     message = "Now, did your mom tell you to #{request.request_method.to_s.upcase} that ?"
     render :text => message, :status => :method_not_allowed
+  end
+  
+  # For role_requirement plugin
+  def access_denied
+    RAILS_DEFAULT_LOGGER.debug "access_denied sending to flash_access_denied"
+    flash_access_denied
+  end
+  
+  def flash_access_denied
+    store_location
+    flash[:notice] = "You must be logged in to access this page"
+    redirect_away login_url(:protocol => 'http')
+    return false
   end
   
   def dynamic_layout

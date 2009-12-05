@@ -2,12 +2,62 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include ActiveMerchant::Billing
 
 describe AccountsController do
-  fixtures :accounts, :subscriptions, :subscription_plans
+  fixtures :subscriptions, :subscription_plans
   #integrate_views
   include UserSpecHelper
+  include RoleRequirementTestHelper
+  
+  describe "on create" do
+    before(:each) do
+      @plan = subscription_plans(:basic)
+      @request.env['HTTPS'] = 'on'
+    end
+    
+    describe "using short form" do
+      before(:each) do
+        @user_attributes = valid_user_attributes_with_password(:first_name => nil, :last_name => nil).merge(:full_name => 'crow T. robot')
+      end
+      
+      it "should allow name in single field" do
+        lambda {
+          post :create, :user => @user_attributes, :plan => @plan.name
+        }.should change(User, :count).by(1)
+      end
+    end
+    
+    describe "on user info page submit" do
+      describe "with paying plan" do
+        before(:each) do
+          Account.stubs(:needs_payment_info?).returns(false)
+        end
+        
+        it "should render the billing page after user created" do
+          post :create, :user => valid_user_attributes_with_password, :plan => @plan.name
+          response.should render_template(:billing)
+        end
+        
+        describe "on billing info not complete" do
+          before(:each) do
+            post :create, :user => valid_user_attributes_with_password, :plan => @plan.name
+          end
+          
+          it "should not allow access to member-only action" do
+            @request.env['HTTPS'] = 'on'
+            assert_user_cant_access assigns[:user], :cancel
+          end
+
+          it "should bounce to login page on member-only page request" do
+            @request.env['HTTPS'] = 'on'
+            get :cancel # restricted page
+            response.should redirect_to(login_url)
+          end
+        end
+      end
+    end
+  end
   
   before(:each) do
-    controller.stubs(:current_account).returns(@account = accounts(:localhost))
+    controller.stubs(:current_account).returns(@account = create_account)
   end
   
   describe "after creating account" do
@@ -157,17 +207,19 @@ describe AccountsController do
       response.should render_template('cancel')
     end
     
-    it "should destroy the account" do
-      @account.expects(:destroy).returns(true)
+    it "should soft-delete the account" do
+      @account.expects(:destroy).never
+      @account.expects(:cancel)
+      @session.expects(:destroy)
       post :cancel, :confirm => 1
       response.should redirect_to(canceled_account_url(:protocol => 'https'))
     end
 
     it "should log out the user" do
-      @account.stubs(:destroy).returns(true)
+      @session.expects(:destroy)
       post :cancel, :confirm => 1
-      get member_home_path
-      response.should redirect_to(login_url)
+      @request.env['HTTPS'] = 'on'
+      assert_user_cant_access @user, 'cancel'
     end
   end
 end

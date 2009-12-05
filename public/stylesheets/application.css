@@ -122,7 +122,6 @@ textarea.input-error {
 }
 
 .hint {
-	font-size: x-small;
   color: #aaa;
   font-style: italic;
 }
@@ -143,7 +142,7 @@ textarea.input-error {
 	left: 0px;
 }
 
-input {
+.form input {
 	margin: 0 0 5px 5px;
 	font-size: 14px;
 /*	width:240px; */
@@ -151,20 +150,19 @@ input {
 	border:1px solid #898989;
 	color:#898989;
 }
-
-input[type=text] {
+.form input[type=text] {
 	width: 240px;
 }
 
-input[type=radio] {
+.form input[type=radio] {
   width: 20px;
 }
 
-input[type=checkbox] {
+.form input[type=checkbox] {
 	width: 20px;
 }
 
-input[type=submit] {
+.form input[type=submit] {
 	background: #02419e;
 	color: white;
 }
@@ -186,13 +184,13 @@ input[type=submit] {
 	color:#898989;
 }
 	
-input[type=text]:focus, input[type=password]:focus, textarea:focus {
+.form input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	border:1px solid #898989;
 	color:#898989;
 	background-color: lightyellow;
 }
 
-.fine-print {
+.form .fine-print {
 	width: 255px;
 	text-align: left;
 	margin: 3px 0 10px 90px;
@@ -201,13 +199,13 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 	display: block;
 }
 
-.form-helptext {
+.form .form-helptext {
 	display: block;
 	background-color: lightyellow;
 	margin-bottom: 5px;
 }
 
-.required-input {
+.form .required-input {
 	color: red;
 	font-size: 12px;
 }

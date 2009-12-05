@@ -9,6 +9,7 @@ class Mysql
 end
 
 # For catching 'server has gone away' & reconnecting
+# Do we need this now that Rails 2.3 supports retry flag??
 module ActiveRecord::ConnectionAdapters
   class MysqlAdapter
     alias_method :execute_without_retry, :execute unless
@@ -31,6 +32,7 @@ module ActiveRecord::ConnectionAdapters
   end
 end
  
+
 class << Thread
   alias orig_new new
   def new
