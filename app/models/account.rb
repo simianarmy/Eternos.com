@@ -112,7 +112,7 @@ class Account < ActiveRecord::Base
     
     # Validate credit card & address if necessary, but not until in proper state
     def valid_payment_info?
-      return if login?
+      return if  login?
       
       if needs_payment_info?
         unless @creditcard && @creditcard.valid?

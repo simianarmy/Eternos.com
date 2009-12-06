@@ -82,8 +82,7 @@ class AccountsController < ApplicationController
         session[:account_id] = @account.id
         render :action => 'billing'
       else
-        @user.activate! unless @user.email_registration_required?
-        flash_redirect "Your account has been created.", account_setup_url
+        activate_and_redirect_to account_setup_url
       end
     else
       @terms_accepted = params[:user][:terms_of_service] == "1"
@@ -126,13 +125,13 @@ class AccountsController < ApplicationController
     if request.post?
       @plan = @subscription.subscription_plan
       if params[:paypal].blank?
+        @address.first_name = @creditcard.first_name
+        @address.last_name = @creditcard.last_name
+        
         if @creditcard.valid? & @address.valid?
-          @address.first_name = @creditcard.first_name
-          @address.last_name = @creditcard.last_name
           if @subscription.store_card(@creditcard, :billing_address => @address.to_activemerchant, :ip => request.remote_ip)
             if admin_user_pending?
-              @user.activate! unless @user.email_registration_required?
-              redirect_to activate_path(@user.activation_code)
+              activate_and_redirect_to account_setup_url
             else
               flash[:notice] = "Your billing information has been updated."
               redirect_to :action => "billing"
@@ -235,8 +234,11 @@ class AccountsController < ApplicationController
       admin?
     end 
     
-  private
-
+    def activate_and_redirect_to(redirect_path)
+      @user.activate! unless @user.email_registration_required?
+      flash_redirect "Your account has been created.", redirect_path
+    end
+    
     # Override Application.rb current_account to handle newly created account
     # which has not been activated or logged in yet
     def current_account

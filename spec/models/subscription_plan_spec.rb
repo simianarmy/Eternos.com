@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include ActionView::Helpers::NumberHelper
 
 describe SubscriptionPlan do
-  fixtures :all
+  fixtures :subscription_plans
   include SaasSpecHelper
   
   before(:each) do

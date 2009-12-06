@@ -1,5 +1,6 @@
 - form_for_using_ssl :user, :url => {:controller => 'accounts', :action => 'create'} do |f|
   = hidden_field_tag 'plan', plan
+  = hidden_field_tag 'user_facebook_id'
   = f.hidden_field :terms_of_service, :value => "1"
   %p
     %label full name:

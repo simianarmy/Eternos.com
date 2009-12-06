@@ -3,7 +3,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe SubscriptionNotifier do
-  fixtures :all
+  fixtures :subscription_plans, :subscriptions
   include SaasSpecHelper
   
   before(:each) do

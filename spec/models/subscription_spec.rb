@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include ActiveMerchant::Billing
 
 describe Subscription do
-  fixtures :all
+  fixtures :subscription_plans, :subscriptions
   include SaasSpecHelper
   
   before(:each) do
