@@ -41,6 +41,8 @@ class BackupPhoto < ActiveRecord::Base
       :conditions => ['backup_photo_albums.backup_source_id = ?', id]
     }
   }
+  named_scope :include_content, :include => :photo
+  
   named_scope :with_photo, {
     :include => {:photo => :thumbnails}
   }

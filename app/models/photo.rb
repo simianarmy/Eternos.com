@@ -26,6 +26,7 @@ class Photo < Content
     only :width, :height, :title, :description
   end
   
+  
   # Alias start_date to taken_at attribute since we can't override acts_as_archivable in 
   # STI children
   # taken_at can be nil so make sure some date is returned

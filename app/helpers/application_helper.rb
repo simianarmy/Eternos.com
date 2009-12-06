@@ -44,10 +44,10 @@ module ApplicationHelper
   end
   
   # Add localization option arg to method call
-  def number_to_currency(number, options={})
-    options[:locale] ||= I18n.locale
-    ActionView::Helpers::NumberHelper::number_to_currency number, options
-  end
+  # def number_to_currency(number, options={})
+  #     options[:locale] ||= I18n.locale
+  #     ActionView::Helpers::NumberHelper::number_to_currency number, options
+  #   end
   
   def publish_date(date)
     I18n.l(date, :format => :long)

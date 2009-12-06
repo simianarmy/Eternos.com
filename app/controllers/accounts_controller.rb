@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   include ModelControllerMethods
+  
   require_role "Member", :except => [:new, :create, :billing, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
   

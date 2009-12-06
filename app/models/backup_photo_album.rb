@@ -7,6 +7,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
       create({:source_photo_id => photo.id.to_s}.merge(photo.to_h))
     end
   end
+  has_many :content_photos, :through => :backup_photos, :source => :photo
   
   validates_presence_of :backup_source
   validates_uniqueness_of :source_album_id, :scope => :backup_source_id
@@ -18,15 +19,12 @@ class BackupPhotoAlbum < ActiveRecord::Base
     except :id, :backup_source_id, :source_album_id, :cover_id
     # Because serialize_with_options only supports 1 level of nesting, we have 
     # to specify the attributes to exclude manually in the include hash - booo
-    includes :backup_photos => {
-      :except => [:id, :tags, :source_url, :backup_photo_album_id, :source_photo_id, :content_id, :created_at,
-        :updated_at, :state, :download_error, :added_at],
-      :include => { :photo => { 
+    includes :content_photos => { 
         :methods => [:url, :thumbnail],
         :except => [:id, :size, :type, :filename, :thumbnail, :bitrate, :created_at, 
           :updated_at, :user_id, :content_type, :duration, :version, :processing_error_message,
           :fps, :state, :is_recording, :s3_key] 
-      } } }
+      }
   end
   
   # Returns photo ids of photos in album within arg dates
@@ -38,6 +36,13 @@ class BackupPhotoAlbum < ActiveRecord::Base
       :select => 'backup_photos.id'
     }
   }
+  named_scope :by_user, lambda { |user_id|
+    { :joins => :backup_source,
+      :conditions => ['backup_sources.user_id = ?', user_id]
+    }
+  }
+  named_scope :include_content_photos, :include => :content_photos
+  
   EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
   
   def self.import(source, album)
@@ -49,11 +54,12 @@ class BackupPhotoAlbum < ActiveRecord::Base
   def self.db_attributes
     EditableAttributes
   end
-  
+
+  # Returns content Photo object for the album cover
   def cover_photo
     # Try to avoid using invalid photos if there are multiple backup photos with the 
     # same source photo id
-    BackupPhoto.find_all_by_source_photo_id(cover_id).map(&:photo).compact.first
+    BackupPhoto.source_photo_id_eq(cover_id).include_content.map(&:photo).compact.first
   end
   
   def cover_photo_url

@@ -13,6 +13,7 @@ gem 'ruby-debug', '0.10.3', :only => [:development, :test]
 
 gem 'active_presenter', '1.2.0'
 gem 'aws-s3', '0.6.2'
+gem 'bullet', :except => :production
 gem 'contacts', '1.0.18'
 gem 'crack', '0.1.4'
 gem 'eventmachine', '0.12.10'
@@ -39,6 +40,7 @@ gem 'packr', '3.1.0'
 gem 'pauldix-feedzirra', '0.0.18'
 gem 'right_aws', '1.10.0'
 gem 'rio', '0.4.2'
+gem 'ruby-growl', :except => :production
 gem 'ruby-hmac', '0.3.2'
 gem 'rvideo', '0.9.3'
 gem 'searchlogic', '2.3.2'

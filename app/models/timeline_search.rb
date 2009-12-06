@@ -109,11 +109,7 @@ class TimelineSearch
   end
   
   def get_feed_items
-    items = []
-    @member.backup_sources.blog.each do |feed|
-      items << query(feed.feed.entries.search)
-    end
-    items.flatten
+    query FeedEntry.belonging_to_user(@member.id).include_content.search
   end
   
   # Helper for searching by type (constant or string)

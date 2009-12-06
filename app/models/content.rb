@@ -55,6 +55,9 @@ class Content < ActiveRecord::Base
   named_scope :media, :conditions => {:type => ['WebVideo', 'Audio', 'Music']}
   #  :include => :thumbnails
   named_scope :collections, :group => 'collection_id', :include => :collection
+  named_scope :photo_albums, :group => 'collection_id', 
+    :conditions => {:collection_type => ['BackupPhotoAlbum', 'Album']},
+    :include => {:collection => :content_photos}
   
   # Class methods
   
@@ -155,7 +158,7 @@ class Content < ActiveRecord::Base
   end
   
   def has_thumbnail?
-    not thumbnails.empty?
+    thumbnails.any?
   end
   
   def thumbnail

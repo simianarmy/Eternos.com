@@ -20,6 +20,13 @@ class FeedEntry < ActiveRecord::Base
   acts_as_commentable
   acts_as_time_locked
   
+  named_scope :belonging_to_user, lambda {|member_id|
+    { :joins => {:feed => :feed_url},
+      :conditions => ['backup_sources.user_id = ?', member_id]
+    }
+  }
+  named_scope :include_content, :include => :feed_content
+
   include CommonDateScopes
   after_create :save_contents
   

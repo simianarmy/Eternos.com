@@ -109,13 +109,13 @@ function gridView() {
         var item = $j('<div class="grid_item">').click(function() {
             largeView(this, i);
         });
-        $j('<img/>').attr("src", this.photo.url)
+        $j('<img/>').attr("src", this.url)
                    //.css("width", this.photo.width / 100 + "em")
                    //.css("height", this.photo.height / 100 + "em")
 									 .css("width", 260 / 100 + "em")
                    .css("height", 192 / 100 + "em")
                    .appendTo(item);
-        $j("<strong/>").html(this.photo.description).appendTo(item);
+        $j("<strong/>").html(this.description).appendTo(item);
         item.appendTo("#content");
     });
 };
@@ -144,8 +144,8 @@ function mosaicView() {
     var detail = $j('<div id="mosaic_detail">').click(function(i) {
         largeView(this, current);
     });
-    $j("<img/>").attr("src", data[current].photo.url).appendTo(detail);
-    $j("<strong/>").html(data[current].photo.description).appendTo(detail);
+    $j("<img/>").attr("src", data[current].url).appendTo(detail);
+    $j("<strong/>").html(data[current].description).appendTo(detail);
     detail.appendTo("#content");
 
     //add the thubnail grid, with a click handler to animate the image change
@@ -155,7 +155,7 @@ function mosaicView() {
             .css({
                 backgroundPosition: "0px " + (-160 * i) + "px",
                 //backgroundImage: "url(" + sprite + ")"
-								backgroundImage: "url(" + data[i].photo.thumbnail.url + ")"
+								backgroundImage: "url(" + data[i].thumbnail.url + ")"
             })
             .data("num", i)
             .click(function() {
@@ -165,8 +165,8 @@ function mosaicView() {
                 $j(this).addClass("selected");
 
                 $j("#mosaic_detail").animate({ opacity: 0 }, "fast", function() {
-                    $j("#mosaic_detail img").attr("src", data[num].photo.url);
-                    $j("#mosaic_detail strong").html(data[num].photo.description);
+                    $j("#mosaic_detail img").attr("src", data[num].url);
+                    $j("#mosaic_detail strong").html(data[num].description);
                     $j(this).animate({ opacity: 1 }, "fast");
                 });
             }).appendTo(grid);
@@ -196,8 +196,8 @@ function largeView(photo, i) {
     }).appendTo("#content");
 
     var large = $j('<div id="main">');
-    $j("<img/>").attr("src", item.photo.url).appendTo(large);
-    $j("<strong/>").html(item.caption).appendTo(large);
+    $j("<img/>").attr("src", item.url).appendTo(large);
+    $j("<strong/>").html(item.description).appendTo(large);
     large.appendTo("#content");
 
     var wrapper = $j('<div id="hover_view_wrapper">');
@@ -215,8 +215,8 @@ function largeView(photo, i) {
 
         current--;
         $j(".large_view #main").animate({ opacity: 0 }, "fast", function() {
-            $j(".large_view img").attr("src", data[current].photo.url);
-            $j(".large_view strong").html(data[current].caption);
+            $j(".large_view img").attr("src", data[current].url);
+            $j(".large_view strong").html(data[current].description);
             $j(this).animate({ opacity: 1 }, "fast");
         });
     }).appendTo(hover);
@@ -229,8 +229,8 @@ function largeView(photo, i) {
 
         current++;
         $j(".large_view #main").animate({ opacity: 0 }, "fast", function() {
-            $j(".large_view img").attr("src", data[current].photo.url);
-            $j(".large_view strong").html(data[current].caption);
+            $j(".large_view img").attr("src", data[current].url);
+            $j(".large_view strong").html(data[current].description);
             $j(this).animate({ opacity: 1 }, "fast");
         });
     }).appendTo(hover);

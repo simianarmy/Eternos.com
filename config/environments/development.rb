@@ -26,15 +26,30 @@ config.action_controller.asset_host = Proc.new { |source, request|
 # Use SMTP protocol to deliver emails
 config.action_mailer.delivery_method = :smtp
 
-# For debugging with Passenger
-if File.exists?(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
-  require 'ruby-debug'
-  Debugger.wait_connection = true
-  Debugger.start_remote
-  File.delete(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
-end
+config.after_initialize do
+  Bullet.enable = true 
+  Bullet.alert = false
+  Bullet.bullet_logger = true  
+  Bullet.console = true
+  Bullet.growl = true
+  Bullet.rails_logger = true
+  Bullet.disable_browser_cache = true
 
-# For fancy activerecord table views in irb/console
-config.gem 'hirb'
-require 'hirb'
-Hirb::View.enable
+  begin
+    require 'ruby-growl'
+    Bullet.growl = true
+  rescue MissingSourceFile
+  end
+    
+  # For debugging with Passenger
+  if File.exists?(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
+    require 'ruby-debug'
+    Debugger.wait_connection = true
+    Debugger.start_remote
+    File.delete(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
+  end
+
+  # For fancy activerecord table views in irb/console
+  require 'hirb'
+  Hirb::View.enable
+end
