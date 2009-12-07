@@ -19,6 +19,9 @@ var EternosFB = function() {
 		    		$('first-name').value = response[0].first_name;
 		    		$('last-name').value = response[0].last_name;
 					}
+					if ($('new_account_form')) {
+						new Effect.Pulsate('new_account_form', { pulses: 3 });
+					}
 				}
 		  });
 			if ($('fb-name')) {	

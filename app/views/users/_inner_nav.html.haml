@@ -1,6 +1,7 @@
 #inner_menu.alignright
   %ul#navlist
     %li.home= link_to 'account setup', account_setup_path
+    %li= link_to 'account info', account_path
     - if @facebook_session
       %li.logout= fb_logout_link "log&nbsp;out", logout_path
     - else

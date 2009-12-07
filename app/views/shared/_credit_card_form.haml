@@ -1,8 +1,6 @@
 = custom_error_messages_for :subscription, :header_message => "Errors encountered with your payment:"
 %p
-.yui-u.first
-  = custom_error_messages_for :creditcard, :header_message => "Errors encountered with your payment information:", :full_messages => true
-  
+.yui-u.first  
   - if @subscription
     %h3 Payment Type
     
@@ -11,13 +9,14 @@
       Pay with a credit card 
       = image_tag 'credit-cards.jpg', :id => 'credit-cards'
     %p.input.checkbox-left
-      = radio_button_tag :paypal, "", @subscription.paypal?
+      = radio_button_tag :paypal, "1", @subscription.paypal?, :onclick => "$('cc_info').hide(); $('billing_address').hide();"
       Pay with PayPal
     .clear
   
   #cc_info
     %h3 Credit Card Information
     %br
+    = custom_error_messages_for :creditcard, :header_message => "Errors encountered with your payment information:", :full_messages => true
     %p.input 
       First name on card
       = text_field :creditcard, :first_name
@@ -44,11 +43,15 @@
     %p Paypal Form Input Here
     %br
       
-.yui-u
+#billing_address.yui-u
+  %h3 Billing Address
+  %br
   = custom_error_messages_for :address, :header_message => "Errors encountered with your address:", :full_messages => true
   %p.input 
-    Billing Address
+    Street Address
     = text_field :address, :address1
+    %br
+    %br
     = text_field :address, :address2
   %p.input 
     City

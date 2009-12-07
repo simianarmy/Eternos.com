@@ -94,8 +94,7 @@ class AccountsController < ApplicationController
   end
   
   def show
-    # Disabled for now
-    return redirect_to(member_home_path)
+    #return redirect_to(member_home_path)
     @plan = @subscription.subscription_plan
   end
   
