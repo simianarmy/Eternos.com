@@ -2,9 +2,9 @@
   <fieldset>
     <div class="what01">
       <h1>Welcome to eternos</h1>
-      <p>Eternos was founded in 2008 by some technology professionals after becoming dissatisfied with existing solutions for permanently preserving their own personal data. At that time, all solutions were very manual and laborious, and there was no guarantee for eternal preservation.</p>
-      <p>Eternos was founded in 2008 by some technology professionals after becoming dissatisfied with existing solutions for permanently preserving their own personal data. At that time, all solutions were very manual and laborious.</p>
-      <p>&quot;Eternos was founded in 2008 by some technology professionals after becoming dissatisfied.&quot;</p>		
+      <p>
+        Eternos is a service which enables you to easily / automatically chronicle your life for your benefit, and especially that of your descendants and loved ones. We are pleased to offer you a premium life logging service which automatically imports data from your Facebook, Twitter, Gmail, Blogs and RSS feeds. By logging the things you already do on the web, Eternos empowers you to effortlessly document your legacy for descendants which we preserve for future generations. Additionally, there is a simple and intuitive video diary for you to record whatever happens to be on your mind and in your heart. Is it secure? Yes. Eternos comes standard with the piece of mind of knowing the widely used and trusted “McAfee Secure” checks daily to ensure the security of your account. By preserving your legacy with Eternos.com, you do your descendants an incredible service while achieving some small measure of immortality. Other services allow you to bridge geographic distance to share experiences, Eternos gives you the means to bridge time.
+      </p>		
     </div>
 
     <h1>What are you waiting for? Sign up for your free trial today!</h1>
@@ -14,18 +14,20 @@
     <p class="home01"><em>*By proceeding, you confirm that your over 13 years of age and accpet the Privacy and Terms.</em></p>
     <hr />
     <fieldset>
-      <h2>Product 1</h2>
-      <img src="/images/image02.jpg" align="left" />
-      <p>Eternos was founded in 2008 by some technology professionals after becoming dissatisfied with existing solutions for permanently preserving their own personal data. At that time, all solutions were very manual and laborious, and there was no guarantee for eternal preservation.Eternos was founded in 2008 by some technology professionals after becoming dissatisfied with existing solutions for permanently preserving their own personal data. At that time, all solutions were very manual and laborious.</p>
-      <p>&quot;Eternos was founded in 2008 by some technology professionals after becoming dissatisfied.&quot;ntee for eternal preservation.Eternos was founded in 2008 by some technology professionals after becoming dissatisfied wit.</p>						
-      <p><a href="#">Learn More &gt;&gt;</a></p>
-      <hr />
-      <h2>Product 2</h2>
-      <img src="/images/image02.jpg" align="right" style="float:right" />
-      <p>Eternos was founded in 2008 by some technology professionals after becoming dissatisfied with existing solutions for permanently preserving their own personal data. At that time, all solutions were very manual and laborious, and there was no guarantee for eternal preservation.Eternos was founded in 2008 by some technology professionals after becoming dissatisfied with existing solutions for permanently preserving their own personal data. At that time, all solutions were very manual and laborious.</p>
-      <p>&quot;Eternos was founded in 2008 by some technology professionals after becoming dissatisfied.&quot;ntee for eternal preservation.Eternos was founded in 2008 by some technology professionals after becoming dissatisfied wit.</p>						
-      <p><a href="#">Learn More &gt;&gt;</a></p>
-
+      <%= render :partial => "feature", :locals => {:title => 'Life Key', :img => 'image02.jpg', :img_align => 'left', :text => 'With life key you appoint trustees that will notify us, and gain access to the memories you choose to share with them.'} %>
+      
+      <%= render :partial => "feature", :locals => {:title => 'Search', :img => 'image02.jpg', :img_align => 'right', :text => 'A quick and easy way to search your life.'} %>
+      
+      <%= render :partial => "feature", :locals => {:title => 'Video Diary', :img => 'image02.jpg', :img_align => 'left', :text => 'With life key you appoint trustees that will notify us, and gain access to the memories you choose to share with them.'} %>
+      
+      <%= render :partial => "feature", :locals => {:title => 'Automated / Continuous Import', :img => 'image02.jpg', :img_align => 'right', :text => 'Automatically back up all your social networking, emails, blogs, and even your RSS feeds. Go back in time to see what you were doing at a specific time!'} %>
+      
+      <%= render :partial => "feature", :locals => {:title => 'Timeline', :img => 'image02.jpg', :img_align => 'left', :text => 'A timeline that you can scroll by age, day, month, and year and view the items for that date.'} %>
+      
+      <%= render :partial => "feature", :locals => {:title => 'Easy Event / Artifact Editing', :img => 'image02.jpg', :img_align => 'right', :text => 'Tag, assign permissions, delete content.'} %>
+      
+      <%= render :partial => "feature", :locals => {:title => 'Eternos Momento Studio / Eternos Momento Player', :img => 'image02.jpg', :img_align => 'left', :text => 'Create slide presentations out of pic, video, and narration and share on your Facebook profile!'} %>
+      
     </fieldset>
   </fieldset>
 </div>

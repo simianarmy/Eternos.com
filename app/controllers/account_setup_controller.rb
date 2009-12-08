@@ -9,6 +9,8 @@ class AccountSetupController < ApplicationController
   before_filter :load_completed_steps
   layout 'account_setup'
   
+  ssl_required :show, :save_personal_info
+  
   def show
     session[:setup_account] = true
     

@@ -52,7 +52,7 @@ context "A UserMailer on activation" do
   end
   
   specify "should set @subject to [YOURSITE] Your account has been activated!" do
-    @user_notifier.subject.should eql( "[#{@site}] Your account has been activated!")
+    @user_notifier.subject.should eql( "Your #{AppConfig.app_name} account has been activated!")
   end
   
   specify "should set @from to from_email" do

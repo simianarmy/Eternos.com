@@ -42,6 +42,7 @@ gem 'right_aws', '1.10.0'
 gem 'rio', '0.4.2'
 gem 'ruby-growl', :except => :production
 gem 'ruby-hmac', '0.3.2'
+gem 'RubyInline', '3.8.3'
 gem 'rvideo', '0.9.3'
 gem 'searchlogic', '2.3.2'
 gem 'shared-mime-info', '0.1'
