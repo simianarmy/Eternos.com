@@ -3,7 +3,7 @@
 	<fieldset>
 	<img src="images/image01.jpg" />
 	<h1>Sign up below and start saving your life's moments for generations to come!</h1>
-	  <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Free'} %>
+	  <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Basic'} %>
 	<p><strong>Or sign up with your Facebook account</strong></p>
 	<p><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %></p>
 	<p class="home01"><em>*By proceeding, you confirm that your over 13 years of age and accept the Privacy and Terms.</em></p>

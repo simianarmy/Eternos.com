@@ -15,7 +15,7 @@ var EternosFB = function() {
 				} else if ( response[0] ) {
 					if ($('user_full_name')) {
 						$('user_full_name').value = [response[0].first_name, response[0].last_name].join(' ');
-					} else if ($('first_name')) {
+					} else if ($('first-name')) {
 		    		$('first-name').value = response[0].first_name;
 		    		$('last-name').value = response[0].last_name;
 					}

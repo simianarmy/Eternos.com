@@ -1,4 +1,4 @@
-- javascript 'CustomFormElements', 'facebook'
+- javascript 'facebook'
 - javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" if @use_captcha
 - use_form
 - hide_login_box
@@ -19,12 +19,13 @@
         Do you have an OpenID account?  If so, 
         = link_to 'Signup with OpenID', login_path
 
-  - form_tag('/accounts/create', :class => 'form_with_terms', :id => "sign-up") do
-    = hidden_field_tag 'plan', @plan.name
-    = hidden_field_tag 'user[facebook_id]', @user.facebook_id
-    .yui-u.first
-      %p
-      - if @plan.allow_subdomain
-        = render :partial => 'subdomain_form_fields', :locals => {}
-      - fields_for @user, :html => {:id => 'new_user_form'} do |f|
-        = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha, :checked_terms => @terms_accepted}
+  .what
+    - form_tag('/accounts/create', :class => 'form_with_terms', :id => "new_account_form") do
+      = hidden_field_tag 'plan', @plan.name
+      = hidden_field_tag 'user[facebook_id]', @user.facebook_id
+      .yui-u.first
+        %p
+        - if @plan.allow_subdomain
+          = render :partial => 'subdomain_form_fields', :locals => {}
+        - fields_for @user, :html => {:id => 'new_user_form'} do |f|
+          = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha, :checked_terms => @terms_accepted}

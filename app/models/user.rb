@@ -236,7 +236,11 @@ class User < ActiveRecord::Base
       create_member_associations
       # Must spawn as thread or will crash in Passenger
       spawn(:method => :thread) do
-        UserMailer.deliver_activation(self) 
+        begin
+          UserMailer.deliver_activation(self) 
+        rescue
+          logger.error "Unable to send member activation email! " + $!
+        end
       end
     end
   end

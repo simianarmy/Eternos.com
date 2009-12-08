@@ -20,7 +20,7 @@
   %br
 %p.input#password-input
   Password:
-  = f.password_field :password
+  = f.password_field :password, :style => "width: 184px"
   %span.fine-print Minimum 6 characters long
 %p.input#password-conf-input
   Confirm Password:
@@ -28,7 +28,8 @@
   %span.fine-print Confirm your password by entering it again
 - if user.new_record?
   %br
-  %p.checkbox_term
+  %p
+  .checkbox_term
     = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => checked_terms}
     .term_text
       &nbsp;I accept the 
@@ -42,4 +43,4 @@
     
   %p
     %br
-    = submit_tag 'continue', :value => 'Continue', :class => "submit continue2", :style => "width: 321px"
+    = submit_tag 'continue', :value => 'Continue', :class => "submit"

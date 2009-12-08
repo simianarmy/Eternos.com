@@ -3,13 +3,6 @@
 # ActiveRecord & MySQL monkey-patches to avoid deadlocks and other issues when using threads
 # All from http://coderrr.wordpress.com/2009/01/08/activerecord-threading-issues-and-resolutions/
 
-require 'mysqlplus'
-
-# For mysqlplus 
-class Mysql
-  alias_method :query, :c_async_query
-end
-
 # For catching 'server has gone away' & reconnecting
 # Do we need this now that Rails 2.3 supports retry flag??
 module ActiveRecord::ConnectionAdapters

@@ -142,7 +142,7 @@ module LayoutHelper
   
   def use_form
     use_lowpro
-    javascript 'CustomFormElements'
+    #javascript 'CustomFormElements'
     use_busy
   end
   
