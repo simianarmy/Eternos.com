@@ -2,22 +2,14 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include ActiveMerchant::Billing
 
 describe Subscription do
-  fixtures :subscription_plans, :subscriptions
-  include SaasSpecHelper
-  
+  fixtures :subscriptions, :subscription_affiliates, :subscription_discounts
   before(:each) do
-    @basic = subscription_plans(:basic)
+    @basic = create_subscription_plan(:name => 'Basic')
   end
   
   it "should be created as a trial by default" do
     s = Subscription.new(:plan => @basic)
     s.state.should == 'trial'
-  end
-  
-  it "should not be created as a trial by default if trial period nil" do
-    @basic.trial_period = nil
-    s = Subscription.new(:plan => @basic)
-    s.state.should_not == 'trial'
   end
   
   it "should be created as active with plans that are free" do
@@ -28,7 +20,7 @@ describe Subscription do
   
   it "should be created with a renewal date a month from now by default" do
     s = Subscription.create(:plan => @basic)
-    s.next_renewal_at.at_midnight.should == Time.now.utc.advance(:months => 1).at_midnight
+    s.next_renewal_at.at_midnight.should == Time.now.advance(:months => 1).at_midnight
   end
   
   it "should be created with a specified renewal date" do
@@ -84,6 +76,32 @@ describe Subscription do
     Subscription.find_due(2.days.ago)
   end
   
+  describe "when assigned a discounted plan" do
+    before(:each) do
+      @basic.discount.should be_nil
+      @basic_amount = @basic.amount
+      @basic.discount = SubscriptionDiscount.new(:code => 'foo', :amount => 2)
+    end
+    
+    it "should set the amount based on the discounted plan amount" do
+      s = Subscription.new(valid_subscription)
+      s.amount.should == @basic_amount - 2
+    end
+    
+    it "should set the amount based on the account discount, if present" do
+      s = Subscription.new(:discount => SubscriptionDiscount.new(:code => 'bar', :amount => 3))
+      s.plan = @basic
+      s.amount.should == @basic_amount - 3
+    end
+    
+    it "should set the amount based on the plan discount, if larger than the account discount" do
+      s = Subscription.new(:discount => SubscriptionDiscount.new(:code => 'bar', :amount => 1))
+      s.plan = @basic
+      s.amount.should == @basic_amount - 2
+    end
+    
+  end
+  
   describe "when being created" do
     before(:each) do
       @sub = Subscription.new(:plan => @basic)
@@ -116,8 +134,8 @@ describe Subscription do
       
       it "should not be valid if billing fails" do
         @sub.subscription_plan.trial_period = nil
-        @gw.expects(:store).returns(BogusResponse.new(true, 'Forced success'))
-        @gw.expects(:purchase).returns(BogusResponse.new(false, 'Purchase failure'))
+        @gw.expects(:store).returns(Response.new(true, 'Forced success'))
+        @gw.expects(:purchase).returns(Response.new(false, 'Purchase failure'))
         @sub.should_not be_valid
         @sub.errors.full_messages.should include('Purchase failure')
       end
@@ -149,6 +167,11 @@ describe Subscription do
           @sub.expects(:next_renewal_at=).with(@time.advance(:months => 2))
         end
         
+        it "should set the renewal date based on the discount" do
+          @sub.subscription_plan.discount = SubscriptionDiscount.new(:amount => 0, :code => 'foo', :trial_period_extension => 2)
+          @sub.expects(:next_renewal_at=).with(@time.advance(:months => 3))
+        end
+        
         it "should keep the renewal date when previously set" do
           @sub.next_renewal_at = 1.day.from_now
           @sub.expects(:next_renewal_at=).never
@@ -171,12 +194,12 @@ describe Subscription do
           
           it "should bill the setup amount, if any" do
             @sub.subscription_plan.setup_amount = 500
-            @gw.expects(:purchase).with(@sub.subscription_plan.setup_amount * 100, 'success').returns(@response)
+            @gw.expects(:purchase).with(@sub.subscription_plan.setup_amount * 100, BogusGateway::AUTHORIZATION).returns(@response)
           end
           
           it "should bill the plan amount, if no setup amount" do
             @sub.subscription_plan.setup_amount = nil
-            @gw.expects(:purchase).with(@sub.subscription_plan.amount * 100, 'success').returns(@response)
+            @gw.expects(:purchase).with(@sub.subscription_plan.amount * 100, BogusGateway::AUTHORIZATION).returns(@response)
           end
           
           it "should record the charge with the setup amount" do
@@ -198,22 +221,42 @@ describe Subscription do
   describe "" do
     before(:each) do
       @sub = subscriptions(:one)
-      Account.any_instance.stubs(:admin).returns(@user = stub('User', :name => 'foofoo'))
+    end
+    
+    it "should apply the discount to the amount when changing the discount" do
+      @sub.update_attribute(:discount, @discount = subscription_discounts(:sub))
+      @sub.amount.should == @sub.subscription_plan.amount(false) - @discount.calculate(@sub.subscription_plan.amount(false))
+    end
+
+    it "should reflect the assigned amount, not the amount from the plan" do
+      @sub.update_attribute(:amount, @sub.subscription_plan.amount - 1)
+      @sub.reload
+      @sub.amount.should == @sub.subscription_plan.amount - 1
     end
     
     describe "when destroyed" do
       before(:each) do
         @sub.stubs(:gateway).returns(@gw = Base.gateway(:bogus).new)
+        @sub.stubs(:paypal).returns(@pp = Base.gateway(:bogus).new)
       end
       
-      it "should delete the vault record at BrainTree" do
+      it "should delete the stored card info at the gateway" do
         @gw.expects(:unstore).with(@sub.billing_id).returns(true)
+        @pp.expects(:unstore).never
         @sub.destroy
       end
     
-      it "should not attempt to delete the BT vault record with no billing id" do
+      it "should not attempt to delete the stored card info with no billing id" do
         @sub.billing_id = nil
-        @gw.expects(:delete).never
+        @gw.expects(:unstore).never
+        @pp.expects(:unstore).never
+        @sub.destroy
+      end
+      
+      it "should destroy the PayPal record if it's a PayPal customer" do
+        @sub.expects(:paypal?).returns(true)
+        @pp.expects(:unstore).with(@sub.billing_id).returns(true)
+        @gw.expects(:unstore).never
         @sub.destroy
       end
     end
@@ -231,48 +274,48 @@ describe Subscription do
     
     describe "when storing the credit card" do
       describe "successfully" do
-      before(:each) do
-        @time = Time.now
-        @sub.stubs(:gateway).returns(@gw = Base.gateway(:bogus).new)
-        @response = BraintreeResponse.new(true, 'Forced success', { 'customer_vault_id' => '123' }, { 'authorization' => 'foo' })
-        @card = stub('CreditCard', :display_number => '1111', :expiry_date => CreditCard::ExpiryDate.new(5, 2012))
-        Time.stubs(:now).returns(@time)
-      end
-      
-      after(:each) do
-        @sub.expects(:card_number=).with('1111')
-        @sub.expects(:card_expiration=).with('05-2012')
-        @sub.expects(:state=).with('active')
-        @sub.expects(:save)
-        @sub.store_card(@card).should be_true
-      end
-
-      describe "for the first time" do
         before(:each) do
-          @sub.card_number = nil
-          @sub.billing_id = nil
-        end
-      
-        it "should store the card and store the billing id" do
-          @gw.expects(:store).with(@card, {}).returns(@response)
-          @sub.expects(:billing_id=).with('123')
-          @gw.stubs(:purchase).returns(@response)
+          @time = Time.now
+          @sub.stubs(:gateway).returns(@gw = Base.gateway(:bogus).new)
+          @response = BraintreeResponse.new(true, 'Forced success', { 'customer_vault_id' => '123' }, { 'authorization' => 'foo' })
+          @card = stub('CreditCard', :display_number => '1111', :expiry_date => CreditCard::ExpiryDate.new(5, 2012))
+          Time.stubs(:now).returns(@time)
         end
 
-        it "should bill the amount and set the renewal date a month hence with a renewal date in the past" do
-          @sub.next_renewal_at = 2.days.ago
-          @gw.stubs(:store).returns(@response)
-          @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
-          @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
+        after(:each) do
+          @sub.expects(:card_number=).with('1111')
+          @sub.expects(:card_expiration=).with('05-2012')
+          @sub.expects(:state=).with('active')
+          @sub.expects(:save)
+          @sub.store_card(@card).should be_true
         end
 
-        it "should bill the amount and set the renewal date a month hence and with no renewal date" do
-          @sub.next_renewal_at = nil
-          @gw.stubs(:store).returns(@response)
-          @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
-          @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
-        end
-      
+        describe "for the first time" do
+          before(:each) do
+            @sub.card_number = nil
+            @sub.billing_id = nil
+          end
+
+          it "should store the card and store the billing id" do
+            @gw.expects(:store).with(@card, {}).returns(@response)
+            @sub.expects(:billing_id=).with('123')
+            @gw.stubs(:purchase).returns(@response)
+          end
+
+          it "should bill the amount and set the renewal date a month hence with a renewal date in the past" do
+            @sub.next_renewal_at = 2.days.ago
+            @gw.stubs(:store).returns(@response)
+            @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
+            @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
+          end
+
+          it "should bill the amount and set the renewal date a month hence and with no renewal date" do
+            @sub.next_renewal_at = nil
+            @gw.stubs(:store).returns(@response)
+            @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
+            @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
+          end
+
           it "should not bill and not change the renewal date with a renewal date in the future" do
             @sub.next_renewal_at = @time.advance(:days => 2)
             @gw.stubs(:store).returns(@response)
@@ -281,41 +324,41 @@ describe Subscription do
           end
 
           it "should record the charge with no renewal date" do
-          @sub.next_renewal_at = nil
-          @gw.stubs(:store).returns(@response)
+            @sub.next_renewal_at = nil
+            @gw.stubs(:store).returns(@response)
             @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
-            @sub.subscription_payments.expects(:create).with(has_entry(:amount => @sub.amount))
-        end
-      
-          it "should not record a change with a renewal date in the future" do
-          @sub.next_renewal_at = @time.advance(:days => 2)
-          @gw.stubs(:store).returns(@response)
-          @gw.expects(:purchase).never
-            @sub.subscription_payments.expects(:create).never
-        end
-      end
+            @sub.subscription_payments.expects(:build).with(has_entry(:amount => @sub.amount))
+          end
 
-      describe "subsequent times" do
-        before(:each) do
-          @gw.stubs(:update).returns(@response)
-          @gw.stubs(:purchase).returns(@response)
-        end
-        
-        it "should update the vault when updating an existing card" do
-          @gw.expects(:update).with(@sub.billing_id, @card, {}).returns(@response)
+          it "should not record a charge with a renewal date in the future" do
+            @sub.next_renewal_at = @time.advance(:days => 2)
+            @gw.stubs(:store).returns(@response)
+            @gw.expects(:purchase).never
+            @sub.subscription_payments.expects(:build).never
+          end
         end
 
-        it "should make a purchase and set the renewal date a month hence with a renewal date in the past" do
-          @sub.next_renewal_at = 2.days.ago
-          @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
-          @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
-        end
+        describe "subsequent times" do
+          before(:each) do
+            @gw.stubs(:update).returns(@response)
+            @gw.stubs(:purchase).returns(@response)
+          end
 
-        it "should make a purchase and set the renewal date a month hence and with no renewal date" do
-          @sub.next_renewal_at = nil
-          @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
-          @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
-        end
+          it "should update the vault when updating an existing card" do
+            @gw.expects(:update).with(@sub.billing_id, @card, {}).returns(@response)
+          end
+
+          it "should make a purchase and set the renewal date a month hence with a renewal date in the past" do
+            @sub.next_renewal_at = 2.days.ago
+            @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
+            @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
+          end
+
+          it "should make a purchase and set the renewal date a month hence and with no renewal date" do
+            @sub.next_renewal_at = nil
+            @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
+            @sub.expects(:next_renewal_at=).with(@time.advance(:months => 1))
+          end
 
           it "should not call the gateway and not change the renewal date with a renewal date in the future" do
             @sub.next_renewal_at = @time.advance(:days => 2)
@@ -324,27 +367,57 @@ describe Subscription do
           end
 
           it "should record the charge with no renewal date" do
-          @sub.next_renewal_at = nil
+            @sub.next_renewal_at = nil
             @gw.expects(:purchase).with(@sub.amount_in_pennies, @response.token).returns(@response)
-            @sub.subscription_payments.expects(:create).with(has_entry(:amount => @sub.amount))
+            @sub.subscription_payments.expects(:build).with(has_entry(:amount => @sub.amount))
+          end
+
+          it "should not record a charge with a renewal date in the future" do
+            @sub.next_renewal_at = @time.advance(:days => 2)
+            @gw.expects(:purchase).never
+            @sub.subscription_payments.expects(:build).never
+          end
+
+          it "should clear out the payment info if switching from paypal" do
+            @sub.card_number = 'PayPal'
+            @sub.expects(:destroy_gateway_record)
+          end
+
+          it "should not clear out the payment info if not switching from paypal" do
+            @sub.expects(:destroy_gateway_record).never
+          end
         end
 
-          it "should not record a change with a renewal date in the future" do
-          @sub.next_renewal_at = @time.advance(:days => 2)
-          @gw.expects(:purchase).never
-            @sub.subscription_payments.expects(:create).never
-        end
-        
-        it "should clear out the payment info if switching from paypal" do
-          @sub.card_number = 'PayPal'
-          @sub.expects(:destroy_gateway_record)
-        end
-        
-        it "should not clear out the payment info if not switching from paypal" do
-          @sub.expects(:destroy_gateway_record).never
+        describe "sends receipt" do
+          before(:each) do
+            @time = Time.now
+            @sub.stubs(:gateway).returns(@gw = Base.gateway(:bogus).new)
+            @response = BraintreeResponse.new(true, 'Forced success', { 'customer_vault_id' => '123' }, { 'authorization' => 'foo' })
+            @card = stub('CreditCard', :display_number => '1111', :expiry_date => CreditCard::ExpiryDate.new(5, 2012))
+            Time.stubs(:now).returns(@time)
+
+            @gw.stubs(:update).returns(@response)
+            @gw.stubs(:purchase).returns(@response)
+
+            @emails = ActionMailer::Base.deliveries
+            @emails.clear
+          end
+
+          it "unless there was no charge" do
+            @sub.next_renewal_at = @time.advance(:days => 2)
+            lambda { @sub.store_card(@card).should be_true }.should change(SubscriptionPayment, :count).by(0)
+            @emails.count.should == 0
+          end
+
+          it "with an end date in the future if the renewal date was in the past" do
+            @sub.next_renewal_at = 2.days.ago
+            lambda { @sub.store_card(@card).should be_true }.should change(SubscriptionPayment, :count).by(1)
+            @emails.count.should == 1
+            email = @emails.first
+            email.body.should include("covers usage\nfrom #{Time.now.to_s(:short_day).strip} until #{Time.now.advance(:months => 1).to_s(:short_day).strip}")
+          end
         end
       end
-    end
     
       describe "unsuccessfully" do
         before(:each) do
@@ -374,7 +447,7 @@ describe Subscription do
     
     describe "when switching plans" do
       before(:each) do
-        @plan = subscription_plans(:advanced)
+        @plan = create_subscription_plan(:name => 'Advanced')
       end
       
       it "should refuse switching to a plan with a user limit less than the current number of users" do
@@ -396,6 +469,13 @@ describe Subscription do
         @plan.update_attribute(:user_limit, nil)
         @sub.plan = @plan
         @sub.valid?.should be_true
+      end
+      
+      it "should apply the subscription discount to the plan amount" do
+        # @sub.update_attribute(:discount, @discount = subscription_discounts(:sub))
+        # @sub.update_attribute(:plan, @plan)
+        @sub.update_attributes(:plan => @plan, :discount => @discount = subscription_discounts(:sub))
+        @sub.amount.should == @plan.amount(false) - @discount.calculate(@plan.amount(false))
       end
     end
     
@@ -437,60 +517,87 @@ describe Subscription do
         @sub.charge.should be_false
         @sub.errors.full_messages.should include('Oops')
       end
+      
+      describe "with affiliates" do
+        before(:each) do
+          @gw.expects(:purchase).with(@sub.amount * 100, @sub.billing_id).returns(@response)
+          @sub.affiliate = @affiliate = SubscriptionAffiliate.first
+        end
+        
+        it "should record the affiliate when charging a subscription linked to an affiliate" do
+          @sub.charge.should be_true
+          @sub.subscription_payments.last.affiliate.should == @affiliate
+        end
+
+        it "should calculate the affiliate fee when charging a subscription linked to an affiliate" do
+          @sub.charge.should be_true
+          @sub.subscription_payments.last.affiliate_amount.should == @sub.amount * @affiliate.rate
+        end
+
+        it "should record no affiliate when charging a subscription not linked to an affiliate" do
+          @sub.affiliate = nil
+          @sub.charge.should be_true
+          @sub.subscription_payments.last.affiliate.should be_nil
+        end
+      end
     end
 
     describe "when starting paypal" do
       before(:each) do
-        @gw = Base.gateway(:paypal_express_reference_nv).new(:login => 'login', :password => 'password', :signature => 'sig')
-        @response = PaypalExpressReferenceNvResponse.new(true, 'Forced success', { 'token' => 'start', 'billingagreementid' => '890' })
-        Base.gateway(:paypal_express_reference_nv).expects(:new).returns(@gw)
+        @gw = Base.gateway(:paypal_express_recurring).new(:login => 'login', :password => 'password', :signature => 'sig')
+        @response = PaypalExpressResponse.new(true, 'Forced success', { :token => 'start' })
+        Base.gateway(:paypal_express_recurring).expects(:new).returns(@gw)
       end
       
       it "should set up the authorization redirect to start the process" do
-        @gw.expects(:setup_authorization).with(:return_url => 'foo', :cancel_return_url => 'bar', :description => AppConfig['app_name']).returns(@response)
+        @gw.expects(:setup_agreement).with(:return_url => 'foo', :cancel_return_url => 'bar', :description => AppConfig['app_name']).returns(@response)
         @gw.expects(:redirect_url_for).with('start').returns('http://go')
         @sub.start_paypal('foo', 'bar').should == 'http://go'
       end
     
       it "should report errors with the authorization setup" do
-        @response = PaypalExpressReferenceNvResponse.new(false, 'Forced failure')
-        @gw.expects(:setup_authorization).returns(@response)
+        @response = PaypalExpressResponse.new(false, 'Forced failure')
+        @gw.expects(:setup_agreement).returns(@response)
         @gw.expects(:redirect_url_for).never
         @sub.start_paypal('foo', 'bar').should be_false
         @sub.errors.full_messages.should == ['PayPal Error: Forced failure']
       end
     end
     
-    describe "when returning from paypal" do
+    describe "when completing paypal" do
       before(:each) do
-        @gw = Base.gateway(:paypal_express_reference_nv).new(:login => 'login', :password => 'password', :signature => 'sig')
+        @time = Time.now
+        Time.stubs(:now).returns(@time)
+        @start_date = @sub.next_renewal_at < 1.day.from_now.at_beginning_of_day ? 1.day.from_now : @sub.next_renewal_at
+        @gw = Base.gateway(:paypal_express_recurring).new(:login => 'login', :password => 'password', :signature => 'sig')
         @bt = Base.gateway(:braintree).new(:login => 'login', :password => 'password')
-        @response = PaypalExpressReferenceNvResponse.new(true, 'Forced success', { 'token' => 'start', 'billingagreementid' => '890' })
-        Base.gateway(:paypal_express_reference_nv).stubs(:new).returns(@gw)
-        @gw.stubs(:purchase).returns(@response)
+        @response = PaypalExpressResponse.new(true, 'Forced success', { 'profile_id' => '890' })
+        @details_response = PaypalExpressResponse.new(true, 'Forced success', { 'profile_id' => '890', 'next_billing_date' => @start_date.to_s })
+        Base.gateway(:paypal_express_recurring).expects(:new).returns(@gw)
       end
       
       it "should update the billing info with a successful agreement creation" do
-        @gw.expects(:details_for).with('baz').returns(@response)
-        @gw.expects(:create_billing_agreement_for).with('baz').returns(@response)
+        @gw.expects(:create_profile).with('baz', paypal_profile_options).returns(@response)
+        @gw.expects(:get_profile_details).with('890').returns(@details_response)
         @sub.expects(:destroy_gateway_record)
         @sub.complete_paypal('baz').should be_true
         @sub.card_number.should == 'PayPal'
         @sub.card_expiration.should == 'N/A'
         @sub.billing_id.should == '890'
+        @sub.next_renewal_at.to_i.should == @start_date.to_i
       end
       
       it "should clear the card storage when switching from cc" do
-        @gw.expects(:details_for).with('baz').returns(@response)
-        @gw.expects(:create_billing_agreement_for).with('baz').returns(@response)
-        Base.gateway(:braintree).expects(:new).returns(@bt)
+        Base.gateway(AppConfig['gateway']).expects(:new).returns(@bt)
         @bt.expects(:unstore).with(@sub.billing_id)
+        @gw.expects(:create_profile).with('baz', paypal_profile_options).returns(@response)
+        @gw.expects(:get_profile_details).with('890').returns(@details_response)
         @sub.complete_paypal('baz').should be_true
       end
       
       it "should set errors and fail when failing to create agreement" do
-        @gw.expects(:details_for).with('baz').returns(@response)
-        @gw.expects(:create_billing_agreement_for).with('baz').returns(PaypalExpressReferenceNvResponse.new(false, 'Forced failure'))
+        @gw.expects(:create_profile).with('baz', paypal_profile_options).returns(PaypalExpressResponse.new(false, 'Forced failure'))
+        @gw.expects(:get_profile_details).never
         @sub.expects(:card_number=).never
         @sub.expects(:card_expiration=).never
         @sub.expects(:billing_id=).never
@@ -499,4 +606,8 @@ describe Subscription do
       end
     end
   end
+end
+
+def paypal_profile_options(opts = {})
+  { :description => AppConfig['app_name'], :start_date => @start_date, :frequency => 1, :amount => @sub.amount_in_pennies }.merge(opts)
 end

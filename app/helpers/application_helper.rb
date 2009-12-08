@@ -22,6 +22,10 @@ module ApplicationHelper
     mail_to(AppConfig.support_email, 'email&nbsp;support')
   end
   
+  def discount_label(discount)
+    (discount.percent? ? number_to_percentage(discount.amount * 100, :precision => 0) : number_to_currency(discount.amount)) + ' off'
+  end
+  
   # swf_object
   def swf_object(swf, id, width, height, flash_version, background_color, params = {}, vars = {}, create_div = false)
     # create div ?

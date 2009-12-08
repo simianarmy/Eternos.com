@@ -2,8 +2,11 @@ class Subscription < ActiveRecord::Base
   belongs_to :account
   belongs_to :subscription_plan
   has_many :subscription_payments
+  belongs_to :discount, :class_name => 'SubscriptionDiscount', :foreign_key => 'subscription_discount_id'
+  belongs_to :affiliate, :class_name => 'SubscriptionAffiliate', :foreign_key => 'subscription_affiliate_id'
   
   before_create :set_renewal_at
+  before_update :apply_discount
   before_destroy :destroy_gateway_record
   
   attr_accessor :creditcard, :address
@@ -12,19 +15,51 @@ class Subscription < ActiveRecord::Base
   # renewal_period is the number of months to bill at a time
   # default is 1
   validates_numericality_of :renewal_period, :only_integer => true, :greater_than => 0
+  validates_numericality_of :amount, :greater_than_or_equal_to => 0
   validate_on_create :card_storage
   
+  # This hash is used for validating the subscription when a plan
+  # is changed.  It includes both the validation rules and the error
+  # message for each limit to be checked.
   Limits = {
     Proc.new {|account, plan| !plan.user_limit || plan.user_limit >= Account::Limits['user_limit'].call(account) } => 
       'User limit for new plan would be exceeded.  Please delete some users and try again.'
   }
   
+  # Changes the subscription plan, and assigns various properties, 
+  # such as limits, etc., to the subscription from the assigned 
+  # plan.  When adding new limits that are specified in 
+  # SubscriptionPlan, don't forget to add those new fields to the 
+  # assignments in this method.
   def plan=(plan)
+    if plan.amount > 0
+      # Discount the plan with the existing discount (if any)
+      # if the plan doesn't already have a better discount
+      plan.discount = discount if discount && discount > plan.discount
+      # If the assigned plan has a better discount, though, then
+      # assign the discount to the subscription so it will stick
+      # through future plan changes
+      self.discount = plan.discount if plan.discount && plan.discount > discount
+    else
+      # Free account from the get-go?  No point in having a trial
+      self.state = 'active' if new_record?
+    end
+    
     [:amount, :user_limit, :renewal_period].each do |f|
       self.send("#{f}=", plan.send(f))
     end
+    
     self.subscription_plan = plan
-    self.state = 'active' unless (plan.amount && plan.amount > 0 && plan.trial_period)
+  end
+  
+  # The plan_id and plan_id= methods are convenience methods for the
+  # administration interface.
+  def plan_id
+    subscription_plan_id
+  end
+  
+  def plan_id=(a_plan_id)
+    self.plan = SubscriptionPlan.find(a_plan_id) if a_plan_id.to_i != subscription_plan_id
   end
   
   def trial_days
@@ -55,10 +90,47 @@ class Subscription < ActiveRecord::Base
     end
   end
   
+  # Charge the card on file the amount stored for the subscription
+  # record.  This is called by the daily_mailer script for each 
+  # subscription that is due to be charged.  A SubscriptionPayment
+  # record is created, and the subscription's next renewal date is 
+  # set forward when the charge is successful.
+  # 
+  # If this subscription is paid via paypal, check to see if paypal
+  # made the charge and set the billing date into the future.
   def charge
-    if amount == 0 || (@response = gateway.purchase(amount_in_pennies, self.billing_id)).success?
-      update_attributes(:next_renewal_at => self.next_renewal_at.advance(:months => self.renewal_period), :state => 'active')
-      subscription_payments.create(:account => account, :amount => amount, :transaction_id => @response.authorization) unless amount == 0
+    if paypal?
+      if (@response = paypal.get_profile_details(billing_id)).success?
+        next_billing_date = Time.parse(@response.params['next_billing_date'])
+        if next_billing_date > Time.now.utc
+          update_attributes(:next_renewal_at => next_billing_date, :state => 'active')
+          subscription_payments.create(:account => account, :amount => amount) unless amount == 0
+          true
+        else
+          false
+        end
+      else
+        errors.add_to_base(@response.message)
+        false
+      end
+    else
+      if amount == 0 || (@response = gateway.purchase(amount_in_pennies, billing_id)).success?
+        update_attributes(:next_renewal_at => self.next_renewal_at.advance(:months => self.renewal_period), :state => 'active')
+        subscription_payments.create(:account => account, :amount => amount, :transaction_id => @response.authorization) unless amount == 0
+        true
+      else
+        errors.add_to_base(@response.message)
+        false
+      end
+    end
+  end
+  
+  # Charge the card on file any amount you want.  Pass in a dollar
+  # amount (1.00 to charge $1).  A SubscriptionPayment record will
+  # be created, but the subscription itself is not modified.
+  def misc_charge(amount)
+    if amount == 0 || (@response = gateway.purchase((amount.to_f * 100).to_i, billing_id)).success?
+      subscription_payments.create(:account => account, :amount => amount, :transaction_id => @response.authorization, :misc => true)
       true
     else
       errors.add_to_base(@response.message)
@@ -67,7 +139,7 @@ class Subscription < ActiveRecord::Base
   end
   
   def start_paypal(return_url, cancel_url)
-    if (@response = paypal.setup_authorization(:return_url => return_url, :cancel_return_url => cancel_url, :description => AppConfig['app_name'])).success?
+    if (@response = paypal.setup_agreement(:return_url => return_url, :cancel_return_url => cancel_url, :description => AppConfig['app_name'])).success?
       paypal.redirect_url_for(@response.params['token'])
     else
       errors.add_to_base("PayPal Error: #{@response.message}")
@@ -76,18 +148,27 @@ class Subscription < ActiveRecord::Base
   end
   
   def complete_paypal(token)
-    if (@response = paypal.details_for(token)).success?
-      if (@response = paypal.create_billing_agreement_for(token)).success?
-        # Clear out payment info if switching to PayPal from CC
-        destroy_gateway_record(cc) unless paypal?
+    # Make sure the paypal subscription gets started tomorrow at the 
+    # earliest
+    start_date = next_renewal_at < 1.day.from_now.at_beginning_of_day ? 1.day.from_now : next_renewal_at
+    
+    if (@response = paypal.create_profile(token, :description => AppConfig['app_name'], :start_date => start_date, :frequency => renewal_period, :amount => amount_in_pennies)).success?
 
-        self.card_number = 'PayPal'
-        self.card_expiration = 'N/A'
-        set_billing
+      # Clear out payment info if changing the PayPal billing
+      # info or if switching from a CC
+      if paypal?
+        destroy_gateway_record(paypal)
       else
-        errors.add_to_base("PayPal Error: #{@response.message}")
-        false
+        destroy_gateway_record(cc)
       end
+
+      self.card_number = 'PayPal'
+      self.card_expiration = 'N/A'
+      self.state = 'active'
+      self.billing_id = @response.params['profile_id']
+      # Sync up our next renewal date with PayPal.
+      self.next_renewal_at = Time.parse(paypal.get_profile_details(@response.params['profile_id']).params['next_billing_date'])
+      save
     else
       errors.add_to_base("PayPal Error: #{@response.message}")
       false
@@ -95,7 +176,7 @@ class Subscription < ActiveRecord::Base
   end
   
   def needs_payment_info?
-    self.card_number.blank? && self.subscription_plan.amount && self.subscription_plan.amount > 0
+    self.card_number.blank? && self.subscription_plan.amount > 0
   end
   
   def self.find_expiring_trials(renew_at = 7.days.from_now)
@@ -112,6 +193,21 @@ class Subscription < ActiveRecord::Base
   
   def paypal?
     card_number == 'PayPal'
+  end
+  
+  def current?
+    next_renewal_at >= Time.now
+  end
+  
+  def purge_paypal
+    return true if billing_id.blank?
+    if (@response = paypal.unstore(billing_id)).success?
+      clear_billing_info
+      return save
+    else
+      errors.add_to_base(@response.message)
+      return false
+    end
   end
 
   protected
@@ -138,14 +234,14 @@ class Subscription < ActiveRecord::Base
       else
         if !next_renewal_at? || next_renewal_at < 1.day.from_now.at_midnight
           if (@response = gateway.purchase(amount_in_pennies, billing_id)).success?
-            subscription_payments.create(:account => account, :amount => amount, :transaction_id => @response.authorization)
+            subscription_payments.build(:account => account, :amount => amount, :transaction_id => @response.authorization)
             self.state = 'active'
             self.next_renewal_at = Time.now.advance(:months => renewal_period)
-        else
+          else
             errors.add_to_base(@response.message)
             return false
-        end
-      else
+          end
+        else
           self.state = 'active'
         end
         self.save
@@ -157,6 +253,15 @@ class Subscription < ActiveRecord::Base
     def set_renewal_at
       return if self.subscription_plan.nil? || self.next_renewal_at
       self.next_renewal_at = Time.now.advance(:months => self.renewal_period)
+    end
+    
+    # If the discount is changed, set the amount to the discounted
+    # plan amount with the new discount.
+    def apply_discount
+      if subscription_discount_id_changed?
+        subscription_plan.discount = discount
+        self.amount = subscription_plan.amount
+      end
     end
     
     def validate_on_update
@@ -173,16 +278,20 @@ class Subscription < ActiveRecord::Base
     end
     
     def paypal
-      @paypal ||=  ActiveMerchant::Billing::Base.gateway(:paypal_express_reference_nv).new(config_from_file('paypal.yml'))
+      @paypal ||=  ActiveMerchant::Billing::Base.gateway(:paypal_express_recurring).new(config_from_file('paypal.yml'))
     end
     
     def cc
       @cc ||= ActiveMerchant::Billing::Base.gateway(AppConfig['gateway']).new(config_from_file('gateway.yml'))
     end
 
-    def destroy_gateway_record(gw = gateway)
+    def destroy_gateway_record(gw = paypal? ? paypal : gateway)
       return if billing_id.blank?
       gw.unstore(billing_id)
+      clear_billing_info
+    end
+    
+    def clear_billing_info
       self.card_number = nil
       self.card_expiration = nil
       self.billing_id = nil

@@ -15,13 +15,12 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
     t.string   "full_domain"
-    t.integer  "subscription_discount_id"
     t.string   "state"
+    t.datetime "deleted_at"
   end
 
-  add_index "accounts", ["subscription_discount_id"], :name => "index_accounts_on_subscription_discount_id"
+  add_index "accounts", ["full_domain"], :name => "index_accounts_on_full_domain"
 
   create_table "activity_stream_items", :force => true do |t|
     t.datetime "published_at"
@@ -753,25 +752,41 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
 
   add_index "stories", ["user_id"], :name => "index_stories_on_user_id"
 
+  create_table "subscription_affiliates", :force => true do |t|
+    t.string   "name"
+    t.decimal  "rate",       :precision => 6, :scale => 4, :default => 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "token"
+  end
+
+  add_index "subscription_affiliates", ["token"], :name => "index_subscription_affiliates_on_token"
+
   create_table "subscription_discounts", :force => true do |t|
     t.string   "name"
     t.string   "code"
-    t.decimal  "amount",     :precision => 6, :scale => 2, :default => 0.0
+    t.decimal  "amount",                 :precision => 6, :scale => 2, :default => 0.0
     t.boolean  "percent"
     t.date     "start_on"
     t.date     "end_on"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "trial_period_extension",                               :default => 0
+    t.boolean  "apply_to_recurring",                                   :default => true
+    t.boolean  "apply_to_setup",                                       :default => true
   end
 
   create_table "subscription_payments", :force => true do |t|
     t.integer  "account_id"
     t.integer  "subscription_id"
-    t.decimal  "amount",          :precision => 10, :scale => 2, :default => 0.0
+    t.decimal  "amount",                    :precision => 10, :scale => 2, :default => 0.0
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "setup"
+    t.boolean  "misc"
+    t.integer  "subscription_affiliate_id"
+    t.decimal  "affiliate_amount",          :precision => 6,  :scale => 2, :default => 0.0
   end
 
   add_index "subscription_payments", ["account_id"], :name => "account_id"
@@ -790,18 +805,20 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
   end
 
   create_table "subscriptions", :force => true do |t|
-    t.decimal  "amount",               :precision => 10, :scale => 2
+    t.decimal  "amount",                    :precision => 10, :scale => 2
     t.datetime "next_renewal_at"
     t.string   "card_number"
     t.string   "card_expiration"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "state",                                               :default => "trial"
+    t.string   "state",                                                    :default => "trial"
     t.integer  "subscription_plan_id"
     t.integer  "account_id"
     t.integer  "user_limit"
-    t.integer  "renewal_period",                                      :default => 1
+    t.integer  "renewal_period",                                           :default => 1
     t.string   "billing_id"
+    t.integer  "subscription_discount_id"
+    t.integer  "subscription_affiliate_id"
   end
 
   add_index "subscriptions", ["account_id"], :name => "account_id"

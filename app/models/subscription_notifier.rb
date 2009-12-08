@@ -6,7 +6,6 @@ class SubscriptionNotifier < ActionMailer::Base
     @subject = subject
     @recipients = to.respond_to?(:email) ? to.email : to
     @from = from.respond_to?(:email) ? from.email : from
-    @content_type = "text/html"
   end
   
   def welcome(account)
@@ -29,6 +28,11 @@ class SubscriptionNotifier < ActionMailer::Base
     @body = { :subscription => subscription_payment.subscription, :amount => subscription_payment.amount }
   end
   
+  def misc_receipt(subscription_payment)
+    setup_email(subscription_payment.subscription.account.admin, "Your #{AppConfig['app_name']} invoice")
+    @body = { :subscription => subscription_payment.subscription, :amount => subscription_payment.amount }
+  end
+  
   def charge_failure(subscription)
     setup_email(subscription.account.admin, "Your #{AppConfig['app_name']} renewal failed")
     @bcc = AppConfig['from_email']
@@ -40,8 +44,8 @@ class SubscriptionNotifier < ActionMailer::Base
     @body = { :subscription => subscription }    
   end
   
-  def password_reset(user)
-    setup_email(user, 'Password Reset Request')
-    @body = { :edit_password_reset_url => edit_password_reset_url(user.perishable_token) }
+  def password_reset(reset)
+    setup_email(reset.user, 'Password Reset Request')
+    @body = { :reset => reset }
   end
 end

@@ -8,7 +8,8 @@ class AccountsController < ApplicationController
   before_filter :build_user, :only => [:new, :create]
   before_filter :build_plan, :only => [:new, :create]
   before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
-  before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :update]
+  before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update]
+  before_filter :load_discount, :only => [ :plans, :plan, :new, :create ]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
   
   before_filter :require_no_user, :only => [:new, :create, :canceled]
@@ -51,6 +52,7 @@ class AccountsController < ApplicationController
         return
       end
     end
+    @account.affiliate = SubscriptionAffiliate.find_by_token(cookies[:affiliate]) unless cookies[:affiliate].blank?
     
     # Taken from users controller to support email activation
     cookies.delete :auth_token
@@ -115,7 +117,7 @@ class AccountsController < ApplicationController
   end
   
   def plans
-    @plans = SubscriptionPlan.find(:all, :order => 'amount desc')
+    @plans = SubscriptionPlan.find(:all, :order => 'amount desc').collect {|p| p.discount = @discount; p }
 
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
   end
@@ -166,31 +168,74 @@ class AccountsController < ApplicationController
 
   def plan
     if request.post?
-      @old_plan = @subscription.subscription_plan
-      @plan = SubscriptionPlan.find(params[:plan_id])
-      if @subscription.update_attributes(:plan => @plan)
-        flash[:notice] = "Your subscription has been changed."
-        spawn do
-          SubscriptionNotifier.deliver_plan_changed(@subscription)
+      @subscription.plan = SubscriptionPlan.find(params[:plan_id])
+
+      # PayPal subscriptions must get redirected to PayPal when
+      # changing the plan because a new recurring profile needs
+      # to be set up with the new charge amount.
+      if @subscription.paypal?
+        # Purge the existing payment profile if the selected plan is free
+        if @subscription.amount == 0
+          logger.info "FREE"
+          if @subscription.purge_paypal
+            logger.info "PAYPAL"
+            flash[:notice] = "Your subscription has been changed."
+            SubscriptionNotifier.deliver_plan_changed(@subscription)
+          else
+            flash[:error] = "Error deleting PayPal profile: #{@subscription.errors.full_messages.to_sentence}"
+          end
+          redirect_to :action => "plan" and return
+        else
+          if redirect_url = @subscription.start_paypal(plan_paypal_account_url(:plan_id => params[:plan_id]), plan_account_url)
+            redirect_to redirect_url and return
+          else
+            flash[:error] = @subscription.errors.full_messages.to_sentence
+            redirect_to :action => "plan" and return
+          end
         end
-        redirect_to :action => "plan"
-      else
-        @subscription.plan = @old_plan
       end
+      
+      if @subscription.save
+        flash[:notice] = "Your subscription has been changed."
+        SubscriptionNotifier.deliver_plan_changed(@subscription)
+      else
+        flash[:error] = "Error updating your plan: #{@subscription.errors.full_messages.to_sentence}"
+      end
+      redirect_to :action => "plan"
+    else
+      @plans = SubscriptionPlan.find(:all, :conditions => ['id <> ?', @subscription.subscription_plan_id], :order => 'amount desc').collect {|p| p.discount = @subscription.discount; p }
     end
   end
 
+  # Handle the redirect return from PayPal when changing plans
+  def plan_paypal
+    if params[:token]
+      @subscription.plan = SubscriptionPlan.find(params[:plan_id])
+      if @subscription.complete_paypal(params[:token])
+        flash[:notice] = "Your subscription has been changed."
+        SubscriptionNotifier.deliver_plan_changed(@subscription)
+        redirect_to :action => "plan"
+      else
+        flash[:error] = "Error completing PayPal profile: #{@subscription.errors.full_messages.to_sentence}"
+        redirect_to :action => "plan"
+      end
+    else
+      redirect_to :action => "plan"
+    end
+  end
+  
+  
   def cancel
     if request.post? and !params[:confirm].blank?
       current_account.cancel
-      # logout user
       current_user_session.destroy
+      self.current_user = nil
       redirect_to :action => "canceled"
     end
   end
   
   def thanks
-    #redirect_to :action => "plans" and return unless flash[:domain]
+    redirect_to :action => "plans" and return unless flash[:domain]
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
   end
   
@@ -210,6 +255,8 @@ class AccountsController < ApplicationController
     
     def build_plan
       redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(params[:plan])
+      @plan.discount = @discount
+      @account.plan = @plan
       @use_captcha = @plan.free?
     end
     
@@ -225,6 +272,13 @@ class AccountsController < ApplicationController
     def load_subscription
       @subscription = current_account.subscription
       @plan = @subscription.subscription_plan
+    end
+    
+    # Load the discount by code, but not if it's not available
+    def load_discount
+      if params[:discount].blank? || !(@discount = SubscriptionDiscount.find_by_code(params[:discount])) || !@discount.available?
+        @discount = nil
+      end
     end
     
     # This never gets called by AuthenticatedSystem...why not?

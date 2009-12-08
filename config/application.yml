@@ -9,6 +9,10 @@ common: &default_settings
   gateway: brain_tree
   google_api_key: ABQIAAAAZPXQb6LGyRfyadFTEMyJIRSBkZHnxytVLIqnmhvWs6MeAadaiRQtxqlrdL3Mp_y0DANZxt-5Npq0dA
   base_domain: eternos.com
+  # Used for accessing the site admin controllers, to manage plans,
+  # discounts, etc.  This is prepended to base_domain, so 'admin'
+  # here will allow admin.example.com to serve the admin interface.
+  admin_subdomain: admin
   
 development:
   <<: *default_settings

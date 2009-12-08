@@ -3,6 +3,10 @@ class Account < ActiveRecord::Base
   has_many :users, :dependent => :destroy
   has_one :subscription, :dependent => :destroy
   has_many :subscription_payments
+
+  # From saas subscription project - not using subdomains yet
+  #validates_format_of :domain, :with => /\A[a-zA-Z][a-zA-Z0-9]*\Z/
+  #validates_exclusion_of :domain, :in => %W( support blog www billing help api #{AppConfig['admin_subdomain']} ), :message => "The domain <strong>{{value}}</strong> is not available."
   
   validate :valid_domain?
   validate_on_create :valid_user?
@@ -11,12 +15,13 @@ class Account < ActiveRecord::Base
   validate_on_create :valid_subscription?
   
   attr_accessible :name, :domain, :user, :plan, :plan_start, :creditcard, :address
-  attr_accessor :user, :plan, :plan_start, :creditcard, :address
+  attr_accessor :user, :plan, :plan_start, :creditcard, :address, :affiliate
   
   after_create :create_admin
   #after_create :send_welcome_email
   
-  # Need better solution that soft_deletable...look for using default_scope in Rails 2.3
+  # Need better solution that acts_as_paranoid...look for using default_scope in Rails 2.3
+  # Using soft-deletes for now
   
   acts_as_authorizable
   acts_as_state_machine :initial => :login
@@ -55,7 +60,7 @@ class Account < ActiveRecord::Base
   
   def needs_payment_info?
     if new_record?
-      AppConfig.require_payment_info_for_trials && @plan && @plan.amount && @plan.amount > 0
+      AppConfig.require_payment_info_for_trials && @plan && @plan.amount.to_f + @plan.setup_amount.to_f > 0
     else
       self.subscription.needs_payment_info?
     end
@@ -131,10 +136,7 @@ class Account < ActiveRecord::Base
     
     def valid_subscription?
       return if errors.any? # Don't bother with a subscription if there are errors already
-      @call_count ||= 0
-      @call_count += 1
-      logger.debug "account.build_subscription # #{@call_count} in valid_subscription?"
-      logger.debug "from #{caller(2).first}"
+      
       self.build_subscription(:plan => @plan, :next_renewal_at => @plan_start, :creditcard => @creditcard, :address => @address)
 
       if !subscription.valid?
@@ -144,9 +146,9 @@ class Account < ActiveRecord::Base
     end
     
     def create_admin
-      user.is_admin_for self
-      user.account = self
-      user.save
+      self.user.is_admin_for self
+      self.user.account = self
+      self.user.save
       join!
     end
     

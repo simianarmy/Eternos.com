@@ -148,14 +148,28 @@ ActionController::Routing::Routes.draw do |map|
   map.auto_complete ':controller/:action', :requirements => { :action => /auto_complete_for_\w+/ },
     :conditions => { :method => :get }
   
-  # From SaaS Kit
+  # Begin SaaS Kit routes
   map.plans '/signup', :controller => 'accounts', :action => 'plans', :requirements => { :method => :get }
+  map.connect '/signup/d/:discount', :controller => 'accounts', :action => 'plans'
   map.thanks '/signup/thanks', :controller => 'accounts', :action => 'thanks'
+  map.create '/signup/create/:discount', :controller => 'accounts', :action => 'create', :discount => nil
   map.resource :account, :collection => { :dashboard => :get, :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get }
-  map.new_account '/signup/:plan', :controller => 'accounts', :action => 'new', :plan => nil
+  map.new_account '/signup/:plan/:discount', :controller => 'accounts', :action => 'new', :plan => nil  
   map.forgot_password '/account/forgot', :controller => 'sessions', :action => 'forgot'
   map.reset_password '/account/reset/:token', :controller => 'sessions', :action => 'reset'
     
+  map.with_options(:conditions => {:subdomain => AppConfig['admin_subdomain']}) do |subdom|
+    subdom.root :controller => 'subscription_admin/subscriptions', :action => 'index'
+    subdom.with_options(:namespace => 'subscription_admin/', :name_prefix => 'admin_', :path_prefix => nil) do |admin|
+      admin.resources :subscriptions, :member => { :charge => :post }
+      admin.resources :accounts
+      admin.resources :subscription_plans, :as => 'plans'
+      admin.resources :subscription_discounts, :as => 'discounts'
+      admin.resources :subscription_affiliates, :as => 'affiliates'
+    end
+  end
+  # End SaaS Kit routes
+  
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home", :action => 'index'         
   map.home ':page', :controller => 'home', :action => 'show'
