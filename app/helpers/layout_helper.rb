@@ -6,9 +6,9 @@
 module LayoutHelper
   @@js = []
   @@google_api_loaded = false
-  @@jquery_loaded = false
+  @@prototype_loaded = @@jquery_loaded = false
   @@layout = nil
-  mattr_accessor :js, :google_api_loaded, :jquery_loaded, :layout
+  mattr_accessor :js, :google_api_loaded, :prototype_loaded, :jquery_loaded, :layout
   
   class << self
     def clear_js_cache
@@ -92,6 +92,14 @@ module LayoutHelper
     content_for(:js_libs) {      
       concat content
     }
+  end
+  
+  def load_prototype
+    return if prototype_loaded
+    load_google_api {
+      javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
+    }
+    @@prototype_loaded = true
   end
   
   def use_jquery(context=:javascript)
@@ -200,12 +208,6 @@ module LayoutHelper
     javascript "mootools-1.2-core-nc", "Swiff.Uploader", "Fx.ProgressBar", "FancyUpload2", "upload_form"
   end
 
-  def load_prototype
-    @no_prototype = true # Disable layout include
-    load_google_api {
-      javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
-    }
-  end
   
   def use_timeline
     stylesheet 'timeline'

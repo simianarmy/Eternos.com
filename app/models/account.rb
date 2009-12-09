@@ -5,10 +5,10 @@ class Account < ActiveRecord::Base
   has_many :subscription_payments
 
   # From saas subscription project - not using subdomains yet
-  validates_format_of :domain, :with => /\A[a-zA-Z][a-zA-Z0-9]*\Z/
-  validates_exclusion_of :domain, :in => %W( support blog www billing help api #{AppConfig['admin_subdomain']} ), :message => "The domain <strong>{{value}}</strong> is not available."
+  #validates_format_of :domain, :with => /\A[a-zA-Z][a-zA-Z0-9]*\Z/
+  #validates_exclusion_of :domain, :in => %W( support blog www billing help api #{AppConfig['admin_subdomain']} ), :message => "The domain <strong>{{value}}</strong> is not available."
   
-  validate :valid_domain?
+  #validate :valid_domain?
   validate_on_create :valid_user?
   validate_on_create :valid_plan?
   validate_on_create :valid_payment_info?

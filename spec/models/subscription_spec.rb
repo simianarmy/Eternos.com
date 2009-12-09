@@ -3,7 +3,8 @@ include ActiveMerchant::Billing
 
 describe Subscription do
   include SaasSpecHelper
-  fixtures :subscriptions, :subscription_affiliates, :subscription_discounts
+  fixtures :subscriptions, :subscription_affiliates, :subscription_discounts,
+    :subscription_plans, :accounts
   before(:each) do
     @basic = create_subscription_plan(:type => :basic)
   end
@@ -85,7 +86,7 @@ describe Subscription do
     end
     
     it "should set the amount based on the discounted plan amount" do
-      s = Subscription.new(valid_subscription)
+      s = Subscription.new(valid_subscription(:plan => @basic))
       s.amount.should == @basic_amount - 2
     end
     
@@ -219,11 +220,16 @@ describe Subscription do
     end
   end
   
-  describe "" do
+  describe "" do    
     before(:each) do
-      @sub = subscriptions(:one)
+      #@sub = subscriptions(:one)
+      @sub = create_subscription
     end
     
+    it "should have one admin user" do
+      @sub.account.admin.should be_a User
+    end
+      
     it "should apply the discount to the amount when changing the discount" do
       @sub.update_attribute(:discount, @discount = subscription_discounts(:sub))
       @sub.amount.should == @sub.subscription_plan.amount(false) - @discount.calculate(@sub.subscription_plan.amount(false))
@@ -413,7 +419,7 @@ describe Subscription do
           it "with an end date in the future if the renewal date was in the past" do
             @sub.next_renewal_at = 2.days.ago
             lambda { @sub.store_card(@card).should be_true }.should change(SubscriptionPayment, :count).by(1)
-            @emails.count.should == 1
+            @emails.size.should == 1
             email = @emails.first
             email.body.should include("covers usage\nfrom #{Time.now.to_s(:short_day).strip} until #{Time.now.advance(:months => 1).to_s(:short_day).strip}")
           end

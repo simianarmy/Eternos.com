@@ -295,6 +295,19 @@ Fixjour  do
       :tag_s => Faker::Lorem.words.join(','))
   end
   
+  define_builder(Subscription) do |klass, overrides|
+    klass.new(
+      :account => new_account,
+      :subscription_plan => new_subscription_plan(:type => :basic),
+      :user_limit => 3,
+      :next_renewal_at => 1.day.ago.to_s(:db),
+      :amount => 10,
+      :card_number => 'XXXX-XXXX-XXXX-1111',
+      :card_expiration => '05-2012',
+      :billing_id => 'foo'
+    )
+  end
+  
   define_builder(SubscriptionPlan) do |klass, overrides|
     overrides.process(:type) do |tp|
       if tp == :basic

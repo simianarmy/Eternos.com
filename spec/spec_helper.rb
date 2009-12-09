@@ -136,8 +136,8 @@ module SaasSpecHelper
   end
   
   def valid_subscription(attributes = {})
-    { :plan => create_subscription_plan(:type => :basic),
-      :account => create_account
+    { :plan => subscription_plans(:basic),
+      :account => accounts(:localhost)
     }.merge(attributes)
   end
 end

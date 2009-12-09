@@ -6,7 +6,7 @@ describe Account do
   fixtures :subscription_affiliates
   
   before(:each) do
-    @account = create_account(:localhost)
+    @account = create_account
     @plan = create_subscription_plan(:type => :basic)
     AppConfig['require_payment_info_for_trials'] = true
   end

@@ -3,7 +3,7 @@ include ActionView::Helpers::NumberHelper
 
 describe SubscriptionPlan do
   before(:each) do
-    @plan = create_subscription_plan(:name => 'Basic')
+    @plan = create_subscription_plan(:type => :basic)
   end
 
   it "should return a formatted name" do

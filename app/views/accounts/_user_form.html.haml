@@ -1,5 +1,8 @@
 = custom_error_messages_for :user, :full_messages => true
-
+= debug @account
+= debug @user
+= debug @account.errors
+= debug @user.errors
 - if AppConfig.invitation_required
   %p.input#invitation-token
     Invitation Code: 

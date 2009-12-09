@@ -19,7 +19,6 @@ class SubscriptionNotifier < ActionMailer::Base
   end
   
   def charge_receipt(subscription_payment)
-    debugger
     setup_email(subscription_payment.subscription.account.admin, "Your #{AppConfig['app_name']} invoice")
     @body = { :subscription => subscription_payment.subscription, :amount => subscription_payment.amount }
   end
