@@ -5,6 +5,9 @@
 # God config file for eternos support daemons
 
 RAILS_ROOT  = File.dirname(File.dirname(__FILE__))
+# sucks but no reliable way to get rails env from environment vars in God
+# determine rails env from rails root directory name
+RAILS_ENV = (RAILS_ROOT =~ /eternos.com(_\w+)/) || 'production'
 
 def generic_monitoring(w, options = {})
   w.start_if do |start|
