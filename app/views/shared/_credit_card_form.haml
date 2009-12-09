@@ -11,6 +11,7 @@
     %p.input.checkbox-left
       = radio_button_tag :paypal, "1", @subscription.paypal?, :onclick => "$('cc_info').hide(); $('billing_address').hide();"
       Pay with PayPal
+      = image_tag 'PayPal_mark_37x23.gif'
     .clear
   
   #cc_info

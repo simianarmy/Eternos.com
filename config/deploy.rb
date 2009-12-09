@@ -41,7 +41,7 @@ set :keep_releases, 3
 set :dos2unix, "/usr/bin/dos2unix"
 
 set :shared_configs, %w[ amazon_s3.yml amqp.yml database.yml email.yml facebooker.yml 
-  facebooker_desktop.yml gateway.yml key.yml twitter_oauth.yml ]
+  facebooker_desktop.yml gateway.yml key.yml paypal.yml twitter_oauth.yml ]
 
 namespace :deploy do
   task :start do
@@ -50,9 +50,7 @@ namespace :deploy do
 
   desc "Stops work daemons"
   task :stop_daemons, :roles => :app do
-    #run "god stop eternos-email-uploader"
     run "god stop eternos_#{stage}"
-    #run "god unmonitor eternos_#{stage}"
   end
 
   desc "Restarts any work daemons"

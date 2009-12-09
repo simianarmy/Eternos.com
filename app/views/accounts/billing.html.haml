@@ -30,6 +30,7 @@
           Your account will be billed $9.99 per month as a recurring charge.
         %br
         = render :partial => 'shared/mcafee_secure'
+        
       %br
       - if not @account.needs_payment_info?
         #plan-info
