@@ -1,4 +1,4 @@
-# $Id$
+# $Id: daemons.god.erb 503 2009-09-12 05:26:53Z marc $
 #
 # This is a configuration template for 'god' process monitoring.
 #
@@ -44,15 +44,18 @@ def generic_monitoring(w, options = {})
 end
 
 God.watch do |w|
-  script = "<%= RAILS_ROOT %>/script/workling_client"
-  w.name = "eternos-workling_<%= RAILS_ENV %>"
-  w.group = "eternos_<%= RAILS_ENV %>"
+  script = "#{RAILS_ROOT}/script/workling_client"
+  w.name = "eternos-workling_#{RAILS_ENV}"
+  w.group = "eternos_#{RAILS_ENV}"
   w.interval = 60.seconds
-  w.start = "RAILS_ENV='<%= RAILS_ENV %>' #{script} start"
-  w.restart = "RAILS_ENV='<%= RAILS_ENV %>' #{script} restart"
+  w.start = "RAILS_ENV=#{RAILS_ENV} #{script} start"
+  w.restart = "RAILS_ENV=#{RAILS_ENV} #{script} restart"
   w.stop = "#{script} stop"
   w.start_grace = 20.seconds
   w.restart_grace = 20.seconds
+  w.pid_file = "#{RAILS_ROOT}/log/workling.pid"
+  
+  w.behavior(:clean_pid_file)
   
   generic_monitoring(w, :cpu_limit => 80.percent, :memory_limit => 100.megabytes)
 end

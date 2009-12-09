@@ -5,13 +5,13 @@ class Account < ActiveRecord::Base
   has_many :subscription_payments
 
   # From saas subscription project - not using subdomains yet
-  #validates_format_of :domain, :with => /\A[a-zA-Z][a-zA-Z0-9]*\Z/
-  #validates_exclusion_of :domain, :in => %W( support blog www billing help api #{AppConfig['admin_subdomain']} ), :message => "The domain <strong>{{value}}</strong> is not available."
+  validates_format_of :domain, :with => /\A[a-zA-Z][a-zA-Z0-9]*\Z/
+  validates_exclusion_of :domain, :in => %W( support blog www billing help api #{AppConfig['admin_subdomain']} ), :message => "The domain <strong>{{value}}</strong> is not available."
   
   validate :valid_domain?
   validate_on_create :valid_user?
   validate_on_create :valid_plan?
-  validate_on_update :valid_payment_info?
+  validate_on_create :valid_payment_info?
   validate_on_create :valid_subscription?
   
   attr_accessible :name, :domain, :user, :plan, :plan_start, :creditcard, :address
@@ -53,7 +53,8 @@ class Account < ActiveRecord::Base
       self.subscription.send(name) && self.subscription.send(name) <= meth.call(self)
     end
   end
-  
+
+  # Returns admin user Member object
   def admin
     has_admins.first
   end
@@ -97,11 +98,8 @@ class Account < ActiveRecord::Base
   protected
   
     def valid_domain?
-      if using_domain?
-        self.errors.add(:domain, 'is an invalid format') unless domain =~ /\A[a-zA-Z0-9]+\Z/
-        conditions = new_record? ? ['full_domain = ?', self.full_domain] : ['full_domain = ? and id <> ?', self.full_domain, self.id]
-        self.errors.add(:domain, 'is not available') if self.full_domain.blank? || self.class.count(:conditions => conditions) > 0
-      end
+      conditions = new_record? ? ['full_domain = ?', self.full_domain] : ['full_domain = ? and id <> ?', self.full_domain, self.id]
+      self.errors.add(:domain, 'is not available') if self.full_domain.blank? || self.class.count(:conditions => conditions) > 0
     end
     
     # An account must have an associated user to be the administrator
@@ -115,9 +113,9 @@ class Account < ActiveRecord::Base
       end
     end
     
-    # Validate credit card & address if necessary, but not until in proper state
+    # Validate credit card & address if necessary, but not until after login state
     def valid_payment_info?
-      return if  login?
+      return if state.nil? || login?
       
       if needs_payment_info?
         unless @creditcard && @creditcard.valid?
@@ -136,9 +134,7 @@ class Account < ActiveRecord::Base
     
     def valid_subscription?
       return if errors.any? # Don't bother with a subscription if there are errors already
-      
-      self.build_subscription(:plan => @plan, :next_renewal_at => @plan_start, :creditcard => @creditcard, :address => @address)
-
+      self.build_subscription(:plan => @plan, :next_renewal_at => @plan_start, :creditcard => @creditcard, :address => @address, :affiliate => @affiliate)
       if !subscription.valid?
         errors.add_to_base("Error with payment: #{subscription.errors.full_messages.to_sentence}")
         return false

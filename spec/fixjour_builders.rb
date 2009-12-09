@@ -13,7 +13,7 @@ Fixjour  do
     klass.new(
       :plan => new_subscription_plan,
       :user => overrides[:user] || new_member,
-      :name => 'shit head',
+      :name => 'My first account',
       :full_domain => 'test.host')
   end
   
@@ -296,6 +296,18 @@ Fixjour  do
   end
   
   define_builder(SubscriptionPlan) do |klass, overrides|
+    overrides.process(:type) do |tp|
+      if tp == :basic
+        overrides[:amount] = 10
+        overrides[:name] = 'Basic'
+        overrides[:user_limit] = 3
+      elsif tp == :advanced
+        overrides[:amount] = 10
+        overrides[:name] = 'Advanced'
+        overrides[:user_limit] = 10
+      end
+    end
+    
     klass.new(
       :amount => 0,
       :name => 'Free',

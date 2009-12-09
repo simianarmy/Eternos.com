@@ -188,6 +188,11 @@ class User < ActiveRecord::Base
     has_role_requirement? GuestRole
   end
   
+  # Added to support saas subscription account-users model
+  def admin
+    self.is_admin_for?
+  end
+  
   # Upgrades user to Member role
   def make_member!
     make_role!(MemberRole)

@@ -2,9 +2,10 @@ require File.dirname(__FILE__) + '/../spec_helper'
 include ActiveMerchant::Billing
 
 describe Subscription do
+  include SaasSpecHelper
   fixtures :subscriptions, :subscription_affiliates, :subscription_discounts
   before(:each) do
-    @basic = create_subscription_plan(:name => 'Basic')
+    @basic = create_subscription_plan(:type => :basic)
   end
   
   it "should be created as a trial by default" do
@@ -406,7 +407,7 @@ describe Subscription do
           it "unless there was no charge" do
             @sub.next_renewal_at = @time.advance(:days => 2)
             lambda { @sub.store_card(@card).should be_true }.should change(SubscriptionPayment, :count).by(0)
-            @emails.count.should == 0
+            @emails.size.should == 0
           end
 
           it "with an end date in the future if the renewal date was in the past" do

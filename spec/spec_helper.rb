@@ -134,6 +134,12 @@ module SaasSpecHelper
       :last_name => "no"
     }.merge(attributes)
   end
+  
+  def valid_subscription(attributes = {})
+    { :plan => create_subscription_plan(:type => :basic),
+      :account => create_account
+    }.merge(attributes)
+  end
 end
 
 def skip_email_validation
