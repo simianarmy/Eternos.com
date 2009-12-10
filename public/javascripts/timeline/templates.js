@@ -4,6 +4,12 @@
 var ETemplates = function() {
 	var that = {};
 
+	// Template function helper
+	function tooltipItemViewLink(inner) {
+		return '<a href="#{event_details_link}" onclick="ETemplates.ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_details_link}\'); return false;">' + 
+			inner + '</a>';
+	};
+	
 	var tooltipItemHoverHTML = '<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
 			'<li><a href="#{event_edit_link}" onclick="ETemplates.ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
 			'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
@@ -197,16 +203,22 @@ var ETemplates = function() {
 	};
 	that.tooltipTemplates = {
 		activity_stream_item: function() {
-			return new Template('<div class="tooltip_as">#{message}#{time}#{author}#{source}#{media}</div>');
+			return new Template('<div class="tooltip_as">' + tooltipItemViewLink('#{message}') + 
+				'#{time}#{author}#{source}#{media}</div>');
 		} (),
 		image: function() {
-			return new Template('<img src="#{img_url}"><br/>#{caption}<br/>');
+			return new Template(tooltipItemViewLink('<img src="#{img_url}"><br/>#{caption}<br/>'));
 		} (),
 		feed: function() {
-			return new Template('<div class="tooltip_feed"><a href="#{screencap_url}" class="lightview"><img src="#{preview_thumb}" width="100" height="100" style="float: left"/></a>#{message}#{source}#{time}</div>');
+			return new Template('<div class="tooltip_feed"><a href="#{screencap_url}" class="lightview"><img src="#{preview_thumb}" width="100" height="100" style="float: left"/></a>' +
+				tooltipItemViewLink('#{message}') + '#{source}#{time}</div>');
 		} (),
 		video: function() {
 			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clear"></div>');
+		} (),
+		email: function() {
+			return new Template('<div class="tooltip_email">' + tooltipItemViewLink('#{subject}') +
+				'#{time}</div>');
 		} (),
 		address: function() {
 			return new Template('<div class="tooltip_address">#{postal}<br/><span>Type: #{type}</span><br/><span>#{dates}</span></div>');

@@ -1,5 +1,6 @@
 #page.flash_and_fade
-page.replace_html dom_id(@email, 'decrypted'), @email_body
+page.replace_html dom_id(@email, 'decrypted'), content_tag(:textarea, @email_body, :rows => 40, :cols => 60)
 page.visual_effect :highlight, dom_id(@email, 'decrypted'), :duration => 2
 page.show dom_id(@email, 'hide')
+page.hide 'view_link'
 

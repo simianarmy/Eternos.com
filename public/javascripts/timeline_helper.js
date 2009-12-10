@@ -605,6 +605,7 @@ var ETLEventItems = Class.create({
 			}
 			for (i = 0; i < count; i++) {
 				item = this.items[i];
+				item.menuLinks = this._itemMenuLinks(item);
 				html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate(
 				Object.extend({
 					details_win_height: winHeight,

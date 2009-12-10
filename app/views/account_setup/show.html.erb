@@ -1,0 +1,62 @@
+<!-- start content -->
+<div class="content login1">
+	<fieldset>
+		<div class="login1_left">
+			<h1>Inital Setup Process</h1>
+			<ul>
+				<li class="li-active">
+					<h2>Step 1</h2>
+					<h3>Account Info</h3>
+				</li>
+				<li>
+					<h2>Step 2</h2>
+					<h3>Online Accounts</h3>
+				</li>				
+			</ul>
+		</div>
+		
+		<div class="login1_right">
+			<h1>Backup Your Online Life for Generations to come!</h1>
+			<p>
+				Add the online accounts that you would like us to backup for you.<br />
+				Eternos currently provides backup services for:
+			</p>
+			<p>
+				<strong>Facebook:</strong> Wall posts &amp; photos<br />
+				<strong>Twitter:</strong> your tweets<br />
+				<strong>RSS Feeds:</strong> Feed entries &amp; screen captures<br />
+				<strong>Gmail Accounts:</strong> All archived emails
+			</p>
+			<p>
+				Once your data is saved to our secure storage, you will be able to<br />
+				browse all of your backup contents from your Timeline. Easily<br />
+				browse, tag, annotate, remove, and share any of your life's events.
+			</p>
+			<%= show_flash_messages :fade => 15 %>
+			<p class="icons">
+			  <%= render :partial => "account_setup/backup_source_icons", :locals => {:settings => @settings} %>
+			</p>
+			<%= render :partial => "account_setup/backup_source_forms", :locals => {:settings => @settings,  :completed_steps => @completed_steps } %>
+			
+       <%= render :partial => 'account_settings/security_blurb' %>
+       <div class="feedback-text">
+    		  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.
+    	  </div>
+    	  </di>
+			<p>&nbsp;</p>
+			<p>
+			<!-- START SCANALERT CODE -->
+			<a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=beta.eternos.com"><img width="115" height="32" border="0" src="http://images.scanalert.com/meter/beta.eternos.com/12.gif" alt="McAfee Secure sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;"></a>
+			<!-- END SCANALERT CODE -->
+			</p>
+			<p>
+				<small>
+					*If you have online account that you would like Eternos to backup but is not one of our<br />
+					supported accounts, please let us know! Use the FEEDBACK button on the right hand side of<br />
+					the page and add your suggestions.
+				</small>
+			</p>
+		</div>
+	</fieldset>
+</div>
+<!-- end content -->

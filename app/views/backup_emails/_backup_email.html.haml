@@ -19,13 +19,16 @@
   .clearboth
   %br
   .message_content{:id => @id = dom_id(backup_email)}
+    %h3= item.subject
+    %p
+    %br
     - @div = dom_id(backup_email, 'decrypted')
     - @hide = dom_id(backup_email, 'hide')
     - @busyid = dom_id(backup_email)
-    = link_to_remote 'View contents', :url => {:controller => 'backup_emails', :action => 'body', :id => backup_email.id, :method => 'get'}, :loading => "spinner.load('#{@busyid}')", :complete => "spinner.unload();", :html => {:id => @id, :class => 'remote_form', :rel => "'{busy_id: #{@busy_id}}'"}
+    = link_to_remote 'View contents', :url => {:controller => 'backup_emails', :action => 'body', :id => backup_email.id, :method => 'get'}, :loading => "spinner.load('#{@busyid}')", :complete => "spinner.unload();", :html => {:id => 'view_link', :class => 'remote_form', :rel => "'{busy_id: #{@busy_id}}'"}
     %div{:id => @div}
     %div{:id => @hide, :style=>"display:none"}
-      = link_to_function "Hide", "$('#{@div}').innerHTML = ''; $('#{@hide}').hide()"
+      = link_to_function "Hide", "$('#{@div}').update(); $('#{@hide}').hide(); $('view_link').show();"
   .clearboth
   %p
   %br

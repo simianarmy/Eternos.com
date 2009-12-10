@@ -128,6 +128,12 @@ var ETLEventSource = Class.create({
 	// Helper to generate 1-line tooltip contents
 	_getSmallTooltipLine: function(text) {
 		return ETemplates.tooltipTemplates.single_line_small.evaluate({text: text});
+	},
+	_templateOpts: function(opts) {
+		return Object.extend(opts, this.menuLinks || {});
+	},
+	_evalTemplate: function(opts) {
+		return this.previewTemplate.evaluate(this._templateOpts(opts));
 	}
 });
 
@@ -147,9 +153,10 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 		} else if (this.attributes.description !== undefined) {
 			caption = this.attributes.description;
 		}
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			img_url: this.attributes.thumbnail_url, 
-			caption: caption});
+			caption: caption
+		});
 	}
 });
 
@@ -183,7 +190,7 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 		return media;
 	},
 	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			message: this.attributes.message.urlToLink(),
 			author: this.getEventAuthorHtml(),
 			time: this.getEventTimeHtml(),
@@ -228,7 +235,7 @@ var ETLFeedEventSource = Class.create(ETLEventSource, {
 		if (this.getURL() !== '') {
 			source = this._getSmallTooltipLine(this.getURL());
 		}
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			screencap_url: this.attributes.screencap_url,
 			preview_thumb: preview_thumb_url,
 			message: this.attributes.name,
@@ -239,8 +246,15 @@ var ETLFeedEventSource = Class.create(ETLEventSource, {
 });
 // Email event
 var ETLEmailEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.email;
+		$super(s);
+	},
 	getPreviewHtml: function() {
-		return this.attributes.subject + this.getEventTimeHtml();
+		return this._evalTemplate({
+			subject: this.attributes.subject,
+			time: this.getEventTimeHtml()
+		});
 	}
 });
 // Video event
@@ -250,7 +264,7 @@ var ETLVideoEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function($super) {			
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			id: this.getID(),
 			video_url: this.attributes.url,
 			thumbnail_url: this.attributes.thumbnail_url,
@@ -286,7 +300,7 @@ var ETLAddressEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			postal: this.attributes.postal_address,
 			dates: this.getEventTimeHtml({format: 'date'}),
 			type: this.attributes.location_type
@@ -300,7 +314,7 @@ var ETLJobEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			company: this.attributes.company,
 			title: this.attributes.title,
 			dates: this.getEventTimeHtml({format: 'date'})
@@ -314,7 +328,7 @@ var ETLSchoolEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			name: this.attributes.name,
 			dates: this.getEventTimeHtml({format: 'date'})
 		});
@@ -327,7 +341,7 @@ var ETLFamilyEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			name: this.attributes.name,
 			relationship: this.attributes.description
 		});
@@ -340,7 +354,7 @@ var ETLMedicalEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			condition: this.attributes.name,
 			dates: this.getEventTimeHtml({format: 'date'})
 		});
@@ -353,7 +367,7 @@ var ETLMedicalConditionEventSource = Class.create(ETLEventSource, {
 		$super(s);
 	},
 	getPreviewHtml: function() {
-		return this.previewTemplate.evaluate({
+		return this._evalTemplate({
 			condition: this.attributes.name,
 			dates: this.getEventTimeHtml({format: 'date'})
 		});
