@@ -5,7 +5,11 @@
     | 
     = link_to('Logout', logout_path)
 - else
-  - form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
-    = text_field_tag :login, "Email"
-    = password_field_tag :password, "Password"
-    = submit_tag 'submit', :value => 'login'
+  - form_for user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
+    - unless hide
+      = submit_tag 'submit', :value => 'login'
+      -#
+        - form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
+          = text_field_tag :login, "Email"
+          = password_field_tag :password, "Password"
+          = submit_tag 'submit', :value => 'login'

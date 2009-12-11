@@ -24,10 +24,10 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-scp-1.0.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-scp-1.0.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/bin")
@@ -36,11 +36,11 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rio-0.4.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bullet-1.7.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bullet-1.7.2/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/taf2-curb-0.5.4.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/taf2-curb-0.5.4.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/taf2-curb-0.5.4.0/ext")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_http_connection-1.2.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tzinfo-0.3.15/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tzinfo-0.3.15/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-sftp-2.0.4/bin")
@@ -49,10 +49,10 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/columnize-0.3.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/eventmachine-0.12.10/bin")
@@ -69,8 +69,8 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/term-ansicolor-1.0.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rubyforge-2.0.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rubyforge-2.0.3/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hoe-2.3.3/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hoe-2.3.3/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hoe-2.4.0/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hoe-2.4.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/image_science-1.2.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/image_science-1.2.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/simianarmy-facebooker-1.0.51/bin")
@@ -116,14 +116,17 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/chronic-0.2.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/chronic-0.2.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/javan-whenever-0.3.7/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/javan-whenever-0.3.7/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rvideo-0.9.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rvideo-0.9.3/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ZenTest-4.1.4/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ZenTest-4.1.4/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ZenTest-4.2.1/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ZenTest-4.2.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/RubyInline-3.8.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/RubyInline-3.8.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/memcache-client-1.7.7/bin")
@@ -194,10 +197,10 @@ module Bundler
   @bundled_specs["json_pure"].loaded_from = "#{dir}/specifications/json_pure-1.2.0.gemspec"
   @bundled_specs["SystemTimer"] = eval(File.read("#{dir}/specifications/SystemTimer-1.1.3.gemspec"))
   @bundled_specs["SystemTimer"].loaded_from = "#{dir}/specifications/SystemTimer-1.1.3.gemspec"
-  @bundled_specs["rake"] = eval(File.read("#{dir}/specifications/rake-0.8.7.gemspec"))
-  @bundled_specs["rake"].loaded_from = "#{dir}/specifications/rake-0.8.7.gemspec"
   @bundled_specs["net-scp"] = eval(File.read("#{dir}/specifications/net-scp-1.0.2.gemspec"))
   @bundled_specs["net-scp"].loaded_from = "#{dir}/specifications/net-scp-1.0.2.gemspec"
+  @bundled_specs["rake"] = eval(File.read("#{dir}/specifications/rake-0.8.7.gemspec"))
+  @bundled_specs["rake"].loaded_from = "#{dir}/specifications/rake-0.8.7.gemspec"
   @bundled_specs["newrelic_rpm"] = eval(File.read("#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"))
   @bundled_specs["newrelic_rpm"].loaded_from = "#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"
   @bundled_specs["lockfile"] = eval(File.read("#{dir}/specifications/lockfile-1.4.3.gemspec"))
@@ -206,10 +209,10 @@ module Bundler
   @bundled_specs["rio"].loaded_from = "#{dir}/specifications/rio-0.4.2.gemspec"
   @bundled_specs["bullet"] = eval(File.read("#{dir}/specifications/bullet-1.7.2.gemspec"))
   @bundled_specs["bullet"].loaded_from = "#{dir}/specifications/bullet-1.7.2.gemspec"
-  @bundled_specs["right_http_connection"] = eval(File.read("#{dir}/specifications/right_http_connection-1.2.4.gemspec"))
-  @bundled_specs["right_http_connection"].loaded_from = "#{dir}/specifications/right_http_connection-1.2.4.gemspec"
   @bundled_specs["taf2-curb"] = eval(File.read("#{dir}/specifications/taf2-curb-0.5.4.0.gemspec"))
   @bundled_specs["taf2-curb"].loaded_from = "#{dir}/specifications/taf2-curb-0.5.4.0.gemspec"
+  @bundled_specs["right_http_connection"] = eval(File.read("#{dir}/specifications/right_http_connection-1.2.4.gemspec"))
+  @bundled_specs["right_http_connection"].loaded_from = "#{dir}/specifications/right_http_connection-1.2.4.gemspec"
   @bundled_specs["tzinfo"] = eval(File.read("#{dir}/specifications/tzinfo-0.3.15.gemspec"))
   @bundled_specs["tzinfo"].loaded_from = "#{dir}/specifications/tzinfo-0.3.15.gemspec"
   @bundled_specs["net-sftp"] = eval(File.read("#{dir}/specifications/net-sftp-2.0.4.gemspec"))
@@ -218,10 +221,10 @@ module Bundler
   @bundled_specs["columnize"].loaded_from = "#{dir}/specifications/columnize-0.3.1.gemspec"
   @bundled_specs["linecache"] = eval(File.read("#{dir}/specifications/linecache-0.43.gemspec"))
   @bundled_specs["linecache"].loaded_from = "#{dir}/specifications/linecache-0.43.gemspec"
-  @bundled_specs["shared-mime-info"] = eval(File.read("#{dir}/specifications/shared-mime-info-0.1.gemspec"))
-  @bundled_specs["shared-mime-info"].loaded_from = "#{dir}/specifications/shared-mime-info-0.1.gemspec"
   @bundled_specs["hpricot"] = eval(File.read("#{dir}/specifications/hpricot-0.8.2.gemspec"))
   @bundled_specs["hpricot"].loaded_from = "#{dir}/specifications/hpricot-0.8.2.gemspec"
+  @bundled_specs["shared-mime-info"] = eval(File.read("#{dir}/specifications/shared-mime-info-0.1.gemspec"))
+  @bundled_specs["shared-mime-info"].loaded_from = "#{dir}/specifications/shared-mime-info-0.1.gemspec"
   @bundled_specs["ruby-growl"] = eval(File.read("#{dir}/specifications/ruby-growl-1.0.1.gemspec"))
   @bundled_specs["ruby-growl"].loaded_from = "#{dir}/specifications/ruby-growl-1.0.1.gemspec"
   @bundled_specs["eventmachine"] = eval(File.read("#{dir}/specifications/eventmachine-0.12.10.gemspec"))
@@ -238,8 +241,8 @@ module Bundler
   @bundled_specs["term-ansicolor"].loaded_from = "#{dir}/specifications/term-ansicolor-1.0.4.gemspec"
   @bundled_specs["rubyforge"] = eval(File.read("#{dir}/specifications/rubyforge-2.0.3.gemspec"))
   @bundled_specs["rubyforge"].loaded_from = "#{dir}/specifications/rubyforge-2.0.3.gemspec"
-  @bundled_specs["hoe"] = eval(File.read("#{dir}/specifications/hoe-2.3.3.gemspec"))
-  @bundled_specs["hoe"].loaded_from = "#{dir}/specifications/hoe-2.3.3.gemspec"
+  @bundled_specs["hoe"] = eval(File.read("#{dir}/specifications/hoe-2.4.0.gemspec"))
+  @bundled_specs["hoe"].loaded_from = "#{dir}/specifications/hoe-2.4.0.gemspec"
   @bundled_specs["image_science"] = eval(File.read("#{dir}/specifications/image_science-1.2.1.gemspec"))
   @bundled_specs["image_science"].loaded_from = "#{dir}/specifications/image_science-1.2.1.gemspec"
   @bundled_specs["simianarmy-facebooker"] = eval(File.read("#{dir}/specifications/simianarmy-facebooker-1.0.51.gemspec"))
@@ -284,14 +287,16 @@ module Bundler
   @bundled_specs["crack"].loaded_from = "#{dir}/specifications/crack-0.1.4.gemspec"
   @bundled_specs["active_presenter"] = eval(File.read("#{dir}/specifications/active_presenter-1.2.0.gemspec"))
   @bundled_specs["active_presenter"].loaded_from = "#{dir}/specifications/active_presenter-1.2.0.gemspec"
+  @bundled_specs["rmagick"] = eval(File.read("#{dir}/specifications/rmagick-2.12.2.gemspec"))
+  @bundled_specs["rmagick"].loaded_from = "#{dir}/specifications/rmagick-2.12.2.gemspec"
   @bundled_specs["chronic"] = eval(File.read("#{dir}/specifications/chronic-0.2.3.gemspec"))
   @bundled_specs["chronic"].loaded_from = "#{dir}/specifications/chronic-0.2.3.gemspec"
   @bundled_specs["javan-whenever"] = eval(File.read("#{dir}/specifications/javan-whenever-0.3.7.gemspec"))
   @bundled_specs["javan-whenever"].loaded_from = "#{dir}/specifications/javan-whenever-0.3.7.gemspec"
   @bundled_specs["rvideo"] = eval(File.read("#{dir}/specifications/rvideo-0.9.3.gemspec"))
   @bundled_specs["rvideo"].loaded_from = "#{dir}/specifications/rvideo-0.9.3.gemspec"
-  @bundled_specs["ZenTest"] = eval(File.read("#{dir}/specifications/ZenTest-4.1.4.gemspec"))
-  @bundled_specs["ZenTest"].loaded_from = "#{dir}/specifications/ZenTest-4.1.4.gemspec"
+  @bundled_specs["ZenTest"] = eval(File.read("#{dir}/specifications/ZenTest-4.2.1.gemspec"))
+  @bundled_specs["ZenTest"].loaded_from = "#{dir}/specifications/ZenTest-4.2.1.gemspec"
   @bundled_specs["RubyInline"] = eval(File.read("#{dir}/specifications/RubyInline-3.8.3.gemspec"))
   @bundled_specs["RubyInline"].loaded_from = "#{dir}/specifications/RubyInline-3.8.3.gemspec"
   @bundled_specs["memcache-client"] = eval(File.read("#{dir}/specifications/memcache-client-1.7.7.gemspec"))

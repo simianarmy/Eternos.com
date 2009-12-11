@@ -21,8 +21,7 @@
   %body
     .header
       %div
-        /= render :partial => 'shared/login_box' unless @hide_login_box
-        = render :partial => 'shared/home_login_form' unless @hide_login
+        = render :partial => 'shared/home_login_form', :locals => {:hide => @hide_login}
         
         = link_to(image_tag('logo.png', :border => "0"),  root_path)
         %ul

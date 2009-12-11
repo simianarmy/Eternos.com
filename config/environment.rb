@@ -77,16 +77,6 @@ Rails::Initializer.run do |config|
   # in the database in UTC, and return them converted to the specified local zone.
   # Run "rake -D time" for a list of tasks for finding time zone names. Uncomment to use default local time.
   config.time_zone = ENV['TZ'] = 'UTC'
-  
-  # Your secret key for verifying cookie session data integrity.
-  # If you change this key, all old sessions will become invalid!
-  # Make sure the secret is at least 30 characters and all random, 
-  # no regular words or you'll be exposed to dictionary attacks.
-  config.action_controller.session = {
-    :session_key => '_eternos.com_session',
-    #:cookie_only => false,
-    :secret      => '8ad163840e42b6893ad5c8ed99f6ee90db2fedb729963dd19447a53c3edeb00546ecd06e4a4cf1803542a2fe6f467f63c8a785825ed87adfe64d696586f1d0a1'
-  }
 
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
@@ -105,6 +95,7 @@ Rails::Initializer.run do |config|
   config.load_paths << "#{RAILS_ROOT}/app/sweepers"
   config.load_paths << "#{RAILS_ROOT}/app/presenters"
   config.load_paths << "#{RAILS_ROOT}/app/renderers"
+  config.load_paths << "#{RAILS_ROOT}/app/middleware"
   
   config.after_initialize do
     Qusion.start

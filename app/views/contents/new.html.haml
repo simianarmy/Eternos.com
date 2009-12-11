@@ -1,5 +1,5 @@
 - @no_prototype = true
-- title "Upload New Content"
+- title "Upload Artifacts"
 
-%p= render :partial => 'shared/upload_form', :locals => {:object => @object, :form_url => @form_url}
+= render :partial => 'shared/upload_form', :locals => {:object => @object, :form_url => @form_url || create_content_path_with_session_information}
 

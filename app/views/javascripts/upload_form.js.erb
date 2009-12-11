@@ -9,9 +9,9 @@ window.addEvent('domready', function() {
  	// For testing, showing the user the current Flash version.
 	//document.getElement('h3 + p').appendText(' Detected Flash ' + Browser.Plugins.Flash.version);
 	var form_url = $('new_content').action;
-	form_url += (form_url.indexOf("?") == -1 ? "?" : "&") +
-		'_eternos.com_session=<%= u request.session_options[:id] %>&authenticity_token=<%= u form_authenticity_token -%>';
-
+	//form_url += (form_url.indexOf("?") == -1 ? "?" : "&") +
+	//	'<%= request.session_options[:key] %>=<%= u request.session_options[:id] -%>&authenticity_token=<%= u form_authenticity_token -%>';
+		
   //alert('upload form = ' + form_url)
 	var swiffy = new FancyUpload2($('content-status'), $('content-list'), {
 		url: form_url,

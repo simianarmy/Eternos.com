@@ -6,7 +6,7 @@
 class ApplicationController < ActionController::Base
   # For Apache mod_porter (file upload optimizer)
   # Must match PorterSharedSecret value in http config virtual host
-  mod_porter_secret = MOD_PORTER_SECRET
+  self.mod_porter_secret = MOD_PORTER_SECRET
   
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
   include RoleRequirementSystem
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   helper_method :facebook_session
   
   before_filter :set_time_zone
-  before_filter :set_locale
+  #before_filter :set_locale
   before_filter :check_enable_maintenaince_mode
   before_filter :clear_js_include_cache
   
@@ -349,8 +349,6 @@ class ApplicationController < ActionController::Base
     parsed_locale = request.host.split('.').last
     (available_locales.include? parsed_locale) ? parsed_locale  : nil
   end
-  
-  def available_locales; AVAILABLE_LOCALES; end
   
   # memcache handler: pass cache key and block
   def cache(key, clear=false)

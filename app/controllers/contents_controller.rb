@@ -3,8 +3,7 @@
 class ContentsController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  session :cookie_only => false, :only => :create
-
+  
   include TagsAutoComplete
   include DecorationsHelper
   
@@ -39,7 +38,6 @@ class ContentsController < ApplicationController
       @form_url = help.build_decoration_path(el)
       @object = :decoration
     else
-      @form_url = contents_path
       @object = @content
     end
   end
@@ -103,22 +101,28 @@ class ContentsController < ApplicationController
   
   def update_selection
     if params[:content] and !params[:content].empty?
-      global_tags = filter_hint_form_value('tags', params[:tag_list]) || ""
+      # TODO: Fix form hint parsing - this is too complicated!
+      #global_tags = params[:tag_list] ? filter_hint_form_value('tags', params[:tag_list]) : ""
+      global_tags = params[:tag_list] || ""
       auth_settings = params[:content].delete(:privacy_settings)
       
       params[:content].each_pair do |content_id, attributes|
         if content = current_user.contents.find_by_id(content_id)
           # Add global tags to content tags
-          content_tags = filter_hint_form_value('tags', attributes.delete(:tag_list)) || ""
-          content_tags += " " + global_tags
+          # TODO: Fix form hint parsing - this is too complicated!
+          #content_tags = filter_hint_form_value('tags', attributes.delete(:tag_list)) || ""
+          if content_tags = attributes[:tag_list] 
+            content_tags <<  " " << global_tags
+          end
           content.update_attributes(attributes.merge(:privacy_settings => auth_settings))
-          content.tag_with(content_tags.strip, current_user) unless content_tags.blank?
+          content.tag_list = content_tags.strip if content_tags
           content.save
         end
       end
     end
     respond_to do |format|
-      format.html { redirect_to contents_path }
+      flash[:notice] = "Successfully saved selection."
+      format.html { redirect_to new_content_path }
     end
   end
   

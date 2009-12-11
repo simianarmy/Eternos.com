@@ -1,5 +1,11 @@
 # $Id$
 module ContentHelper
+  # Helper for Flash+javascript file upload form urls
+  def create_content_path_with_session_information
+    session_key = ActionController::Base.session_options[:key]
+    contents_path(session_key => cookies[session_key], request_forgery_protection_token => form_authenticity_token)
+  end
+  
   # links to content object, using thumbnail image if available
   # unless thumbnail option explicitly turned off with :thumbnail => false
   

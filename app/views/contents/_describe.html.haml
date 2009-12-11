@@ -8,7 +8,8 @@
       %p
       %br
       = render :partial => 'shared/tags_form_field', :locals => {:fieldname => "content[#{describe.id}][tag_list]", :object => describe}
-      
+      %p
+      %br
       = f.label 'Description'
       %br
       = f.text_area 'description', :size => '50x3'

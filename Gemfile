@@ -40,6 +40,7 @@ gem 'packr', '3.1.0'
 gem 'pauldix-feedzirra', '0.0.18'
 gem 'right_aws', '1.10.0'
 gem 'rio', '0.4.2'
+gem 'rmagick', '2.12.2'
 gem 'ruby-growl', :except => :production
 gem 'ruby-hmac', '0.3.2'
 gem 'RubyInline', '3.8.3'
