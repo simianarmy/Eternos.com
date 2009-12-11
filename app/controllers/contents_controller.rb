@@ -123,6 +123,11 @@ class ContentsController < ApplicationController
     respond_to do |format|
       flash[:notice] = "Successfully saved selection."
       format.html { redirect_to new_content_path }
+      format.js {
+        render :update do |page|
+          page.flash_and_fade
+        end
+      }
     end
   end
   

@@ -62,6 +62,18 @@ describe Member, "once activated" do
       @member.backup_in_progress!
       @member.backup_state.in_progress.should be_true
     end
+    
+    describe "needs_backup named_scope" do
+      it "should need backup by default" do
+        Member.needs_backup(1.day.ago).should == [@member]
+      end
+
+      it "should need_backup if last good backup date < cutoff" do
+        @member.create_backup_state(:last_backup_finished_at => 3.days.ago, :in_progress => false)
+        Member.needs_backup(1.week.ago).should == []
+        Member.needs_backup(2.days.ago).should == [@member]
+      end
+    end
   
     describe "on backup_finished!" do
       before(:each) do
@@ -89,43 +101,18 @@ describe Member, "once activated" do
       end
     end
      
-    it "should need backup by default" do
-      Member.needs_backup(1.day.ago).should == [@member]
-    end
-
-    it "should need_backup if last good backup date < cutoff" do
-      @member.create_backup_state(:last_backup_finished_at => 3.days.ago, :in_progress => false)
-      Member.needs_backup(1.week.ago).should == []
-      Member.needs_backup(2.days.ago).should == [@member]
-    end
-   
      describe "without backup sites" do
        before(:each) do
          @member.create_backup_state(:last_backup_finished_at => 3.days.ago, :in_progress => false)
          Member.needs_backup(1.day.ago).should == [@member]
        end
      
-       it "should not have backup targets by default" do
-         Member.with_backup_targets.should == []
+       it "should not have backup data by default" do
+         Member.with_data.should == []
        end
    
-       it "chained backup scopes should be empty" do
-         Member.needs_backup(1.day.ago).with_backup_targets.should == []
-       end
-     end
-   
-     describe "with backup sites" do
-       before(:each) do
-         @member.backup_sources << create_backup_source(:member => @member)
-       end
-     
-       it "should be in results of backup sites named scope" do
-         Member.with_backup_targets.should == [@member]
-       end
-      
-       it "should be in results of chained backup scopes" do
-         @member.create_backup_state(:last_backup_finished_at => 3.days.ago, :in_progress => false)
-         Member.needs_backup(1.day.ago).with_backup_targets.should == [@member]
+       it "chained backup named scopes should be empty" do
+         Member.needs_backup(1.day.ago).with_data.should == []
        end
      end
    end
@@ -144,7 +131,7 @@ describe Member, "once activated" do
      it "should be able to create new relationships" do
        lambda {
          g = create_guest_with_host(@member)
-       }.should change(Relationship, :count).by(1)
+       }.should change(GuestRelationship, :count).by(1)
      end
    
      it "should add a loved one on new relationshiop" do

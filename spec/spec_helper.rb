@@ -17,6 +17,11 @@ require File.join(File.dirname(__FILE__), 'stub_chain_mocha')
 require File.expand_path(File.dirname(__FILE__) + "/fixjour_builders.rb")
 require File.expand_path(File.dirname(__FILE__) + "/content_spec_helper.rb")
 
+# for fixture_file_upload method
+class ActiveSupport::TestCase
+  include ActionController::TestProcess
+end
+
 Spork.prefork do
   # Loading more in this block will cause your tests to run faster. However, 
   # if you change any configuration or code from libraries loaded here, you'll

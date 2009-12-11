@@ -1,9 +1,10 @@
 = hidden_field_tag :privacy_update, '1' unless object.new_record?
 
-- class_field = object.to_str
+- class_field = local_assigns.has_key?(:object_name) ? object_name : object.to_str
 .labelcol.tooltip-target{:rel=>"{target: $('access_permissions'), hook: {target: 'rightMiddle', tip: 'leftMiddle'}, stem: 'leftMiddle', width: 100}"} Privacy:
 .tooltip
   Set view permissions for this item
+
 #access_permissions.inputcol
   = select_tag  "#{class_field}[privacy_settings][authorization]",  options_for_select(object.authorization_select_options, object.authorization.to_i), :id => "#{class_field}_privacy_settings_authorization", :class => "toggle_on_select submit_on_change", :rel => "{toggleValue: #{ContentAuthorization::AuthPartial}, toggleElement: 'auth_select_partial'}"
   - unless object.new_record?

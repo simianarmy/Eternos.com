@@ -1,4 +1,4 @@
-require 'permissions'
+# $Id$
 
 class ContentAuthorization < ActiveRecord::Base
   belongs_to :authorizable, :polymorphic => true
@@ -27,16 +27,19 @@ class ContentAuthorization < ActiveRecord::Base
   AuthPartial   = 3
   AuthInvisible = 4
   AuthDefault = AuthPrivate
-  
-  AuthorizationOptions    = {
-    AuthPublic    => I18n.t('models.content_authorization.options.public.select_option'),
-    AuthPrivate   => I18n.t('models.content_authorization.options.private.select_option'),
-    AuthPartial   => I18n.t('models.content_authorization.options.partial.select_option'),
-    AuthInvisible => I18n.t('models.content_authorization.options.invisible.select_option')
+
+  # Put translated options in Proc to be called at runtime due to i18n bug
+  AuthorizationOptions    = Proc.new {
+    {
+      AuthPublic    => I18n.t('models.content_authorization.options.public.select_option'),
+      AuthPrivate   => I18n.t('models.content_authorization.options.private.select_option'),
+      AuthPartial   => I18n.t('models.content_authorization.options.partial.select_option'),
+      AuthInvisible => I18n.t('models.content_authorization.options.invisible.select_option')
+    }
   }
   
   def self.select_options
-    AuthorizationOptions.invert
+    AuthorizationOptions.call.invert
   end
   
   def invisible?

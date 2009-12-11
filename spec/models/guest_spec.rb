@@ -91,7 +91,7 @@ describe Guest, "" do
       it "can belong to more than one host" do
         lambda {
           create_member.add_guest @guest, @circle
-        }.should change(Relationship, :count).by(1)
+        }.should change(GuestRelationship, :count).by(1)
       end
   
       it "should return relationship associated with host" do

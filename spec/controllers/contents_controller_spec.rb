@@ -3,14 +3,12 @@ require File.dirname(__FILE__) + '/../spec_helper'
 require File.expand_path(File.dirname(__FILE__) + '/contents_spec_helper')
 
 describe ContentsController do
-  #fixtures :all
   include ContentSpecHelper
   integrate_views
   
   it_should_behave_like "a member is signed in"
   
   before(:each) do
-    @controller.class.protect_from_forgery :secret => "mysecret"
     @content = create_content(:type => :photo, :owner => @member)
   end
   
@@ -69,7 +67,6 @@ describe ContentsController do
 end
 
 describe ContentsController, "on create from ajax/flash uploader component" do
-  fixtures :all
   integrate_views
   include ContentSpecHelper
   
@@ -178,9 +175,9 @@ describe ContentsController, "on update_selection" do
   it "save action should update all items and redirect to index" do
     @content1.expects(:update_attributes).with(content_attributes['1'], anything)
     @content2.expects(:update_attributes).with(content_attributes['2'], anything)
-    @content2.expects(:tag_with).with("fee pee", @member)
+    @content2.expects(:tag_list).with("fee pee", @member)
     @content3.expects(:update_attributes).with(content_attributes['3'], anything)
-    @content3.expects(:tag_with).with("foo shee", @member)
+    @content3.expects(:tag_list).with("foo shee", @member)
     content = content_attributes
     content['2']['tag_list'] = "fee pee"
     content['3']['tag_list'] = "foo shee"
@@ -190,9 +187,9 @@ describe ContentsController, "on update_selection" do
   
   it "should assign global tags to each content" do
     [@content1, @content2, @content3].each {|c| c.stubs(:update_attributes).returns(true)}
-    @content1.expects(:tag_with).with('foo fee fa', @member)
-    @content2.expects(:tag_with).with('foo fee fa', @member)
-    @content3.expects(:tag_with).with('foo fee fa', @member)
+    @content1.expects(:tag_list).with('foo fee fa', @member)
+    @content2.expects(:tag_list).with('foo fee fa', @member)
+    @content3.expects(:tag_list).with('foo fee fa', @member)
     do_save :tag_list => 'foo fee fa'
   end
     

@@ -3,9 +3,9 @@ class Member < User
   has_many :loved_ones, :through => :relationships, :source => :guest, :uniq => true
   has_many :invitations, :foreign_key => 'sender_id', :dependent => :destroy
   has_many :guest_invitations, :foreign_key => 'sender_id', :dependent => :destroy
- 
+  
   with_options :foreign_key => 'user_id' do |m|
-    m.has_many :relationships
+    m.has_many :relationships, :class_name => 'GuestRelationship'
     m.has_many :trustees
     m.has_many :stories, :order => 'updated_at DESC'
     m.has_many :messages, :order => :start_at
@@ -27,7 +27,7 @@ class Member < User
   
   named_scope :needs_backup, lambda { |cutoff_date|
     {
-    :joins => :backup_state,
+    :include => :backup_state, # DO NOT use :joins - need LEFT JOIN, not INNER JOIN!
     :conditions => ['(backup_states.id IS NULL) OR ' +
       '((backup_states.last_backup_finished_at <= ?) OR ' +
       '(backup_states.last_failed_backup_at > backup_states.last_successful_backup_at))', 

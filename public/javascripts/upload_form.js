@@ -9,9 +9,7 @@ window.addEvent('domready', function() {
  	// For testing, showing the user the current Flash version.
 	//document.getElement('h3 + p').appendText(' Detected Flash ' + Browser.Plugins.Flash.version);
 	var form_url = $('new_content').action;
-	//form_url += (form_url.indexOf("?") == -1 ? "?" : "&") +
-	//	'<%= request.session_options[:key] %>=<%= u request.session_options[:id] -%>&authenticity_token=<%= u form_authenticity_token -%>';
-		
+	
   //alert('upload form = ' + form_url)
 	var swiffy = new FancyUpload2($('content-status'), $('content-list'), {
 		url: form_url,
@@ -37,7 +35,7 @@ window.addEvent('domready', function() {
 		/**
 		 * Doesn't work anymore with Flash 10: swiffy.browse();
 		 * FancyUpload moves the Flash movie as overlay over the link.
-		 * (see opeion "target" above)
+		 * (see option "target" above)
 		 */
 		swiffy.browse();
 		return false;

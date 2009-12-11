@@ -9,6 +9,7 @@ class Profile < ActiveRecord::Base
     m.has_many :medicals
     m.has_many :medical_conditions
     m.has_many :families
+    m.has_many :relationships
     m.has_one :facebook_content
     m.has_attached_file :photo
   end

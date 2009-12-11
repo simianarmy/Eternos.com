@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   helper_method :facebook_session
   
   before_filter :set_time_zone
-  #before_filter :set_locale
+  before_filter :set_locale
   before_filter :check_enable_maintenaince_mode
   before_filter :clear_js_include_cache
   
@@ -336,7 +336,11 @@ class ApplicationController < ActionController::Base
   end
   
   def set_locale
-    I18n.locale = extract_locale_from_tld
+    #session[:locale] = locale = params[:locale] || extract_locale_from_tld || I18n.default_locale
+    #I18n.locale = locale.to_sym
+    #I18n.locale = :"en-US"
+    RAILS_DEFAULT_LOGGER.debug "I18n locale = #{I18n.locale}"
+    RAILS_DEFAULT_LOGGER.debug I18n.t('models.content_authorization.options.public.select_option')
   end
   
   # Get locale from top-level domain or return nil if such locale is not available
@@ -347,7 +351,7 @@ class ApplicationController < ActionController::Base
   # in your /etc/hosts file to try this out locally
   def extract_locale_from_tld
     parsed_locale = request.host.split('.').last
-    (available_locales.include? parsed_locale) ? parsed_locale  : nil
+    (I18n.available_locales.include? parsed_locale) ? parsed_locale  : nil
   end
   
   # memcache handler: pass cache key and block

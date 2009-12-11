@@ -210,7 +210,7 @@ module AWS
   module S3
     class S3Object
       class << self
-        def store_with_cache_control(key, data, bucket = nil, options = {})
+        def store_with_cache_controlzz(key, data, bucket = nil, options = {})
           if (options['Cache-Control'].blank?)
             options['Cache-Control'] = 'max-age=315360000'
           end
@@ -222,8 +222,48 @@ module AWS
           end
         end
 
-        alias_method_chain :store, :cache_control
+        #alias_method_chain :store, :cache_control
       end
+    end
+  end
+end
+
+# Fix for:
+# right_http_connection 1.2.4 (right_http_connection-1.2.4/lib/net_fix.rb)
+# Original version of send_request_with_body_stream takes 5 arguments, but rewritten one takes only 4.
+
+# Make Net::HTTPGenericRequest#send_request_with_body_stream match 
+# RightHttpConnection's implementation
+
+# When streaming data up, Net::HTTPGenericRequest hard codes a chunk size of 1k. For large files this
+# is an unfortunately low chunk size, so here we make it use a much larger default size and move it into a method
+# so that the implementation of send_request_with_body_stream doesn't need to be changed to change the chunk size (at least not anymore
+# than I've already had to...).
+module Net
+  class HTTPGenericRequest
+    def send_request_with_body_stream(sock, ver, path, f, send_only = nil)
+      raise ArgumentError, "Content-Length not given and Transfer-Encoding is not `chunked'" unless content_length() or chunked?
+      unless content_type()
+        warn 'net/http: warning: Content-Type did not set; using application/x-www-form-urlencoded' if $VERBOSE
+        set_content_type 'application/x-www-form-urlencoded'
+      end
+      write_header(sock, ver, path) unless send_only == :body
+      unless send_only == :header
+        if chunked?
+          while s = f.read(chunk_size)
+            sock.write(sprintf("%x\r\n", s.length) << s << "\r\n")
+          end
+          sock.write "0\r\n\r\n"
+        else
+          while s = f.read(chunk_size)
+            sock.write s
+          end
+        end
+      end
+    end
+    
+    def chunk_size
+      1048576 # 1 megabyte
     end
   end
 end

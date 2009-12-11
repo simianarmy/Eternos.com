@@ -6,6 +6,10 @@ module ContentHelper
     contents_path(session_key => cookies[session_key], request_forgery_protection_token => form_authenticity_token)
   end
   
+  def content_to_s(object)
+    "#{object.filename} (#{number_to_human_size(object.size)})"
+  end
+  
   # links to content object, using thumbnail image if available
   # unless thumbnail option explicitly turned off with :thumbnail => false
   

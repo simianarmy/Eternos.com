@@ -117,7 +117,8 @@ module Eternos
         end
         
         # For assignment from form
-        def privacy_settings=(attr)
+        def privacy_settings=(attributes)
+          attr = attributes.symbolize_keys
           if !attr[:authorization].blank?
             case attr[:authorization].to_i
             when ContentAuthorization::AuthPublic

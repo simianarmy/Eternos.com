@@ -483,6 +483,15 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
     t.string   "status"
   end
 
+  create_table "guest_relationships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "guest_id"
+    t.integer  "circle_id"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+  
   create_table "invitations", :force => true do |t|
     t.integer  "sender_id",       :null => false
     t.string   "recipient_email"
@@ -669,8 +678,6 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
 
   create_table "relationships", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "guest_id"
-    t.integer  "circle_id"
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"

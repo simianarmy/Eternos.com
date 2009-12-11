@@ -1,0 +1,15 @@
+#ft
+  %ul#footer-links
+    %li= link_to 'About Us', '/about'
+    %li= link_to 'Careers', '/about/careers'
+    %li= link_to 'Press', '/about/press'
+    %li= link_to 'Contact', '/about/contact'
+    %li= link_to 'Privacy', '/about/privacy'
+    %li= link_to 'Terms', '/about/terms'
+  %p#footer-info
+    %br
+    = render :partial => 'shared/mcafee_secure'
+    = link_to(image_tag('firefox_80x15_square_blue.png',  :alt => 'Spread Firefox Affiliate Button'), 'http://www.mozilla.com/enUS/?from=sfx&amp;uid=0&amp;t=434', :target => "_new")
+    %br
+    %br
+    Copyright (c) 20082009, Eon Digital Preservation, Inc. All rights reserved.

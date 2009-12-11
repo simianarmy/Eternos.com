@@ -1,6 +1,6 @@
 # $Id$
 class Guest < User
-  has_many :relationships
+  has_many :relationships, :class_name => 'GuestRelationship', :foreign_key => 'guest_id'
   has_many :hosts, :through => :relationships, :source => :member, :foreign_key => 'user_id', :uniq => true
   has_many :circles, :through => :relationships
   

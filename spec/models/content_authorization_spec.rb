@@ -12,10 +12,22 @@ module ContentAuthorizationSpecHelper
   end
 end
   
-describe ContentAuthorization, "a restricted object" do
+describe ContentAuthorization do
   include ContentAuthorizationSpecHelper
   include GuestSpecHelper
   
+  describe "select options" do
+    before(:each) do
+      @opts = ContentAuthorization.select_options
+    end
+    
+    it "should translate options from default locale" do
+      I18n.locale.should == I18n.default_locale
+      @opts.keys.should include("Private: all invited people can view (Default)")
+    end
+  end
+  
+  describe "a restricted object" do
   before(:each) do
     @object = create_story
     @owner = @object.get_owner
@@ -153,4 +165,5 @@ describe ContentAuthorization, "a restricted object" do
        @object.is_authorized_for?(@guest, @circle).should be_true
      end
    end
+end
 end

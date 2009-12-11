@@ -1,3 +1,5 @@
+# $Id$
+
 # Contains permission constants for object-level authorization
 # Constants used in bitfield, so should be powers of 2
 

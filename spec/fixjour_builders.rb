@@ -292,7 +292,7 @@ Fixjour  do
       :title => Faker::Lorem.sentence,
       :story => Faker::Lorem.sentence, 
       :category => new_category, 
-      :tag_s => Faker::Lorem.words.join(','))
+      :tag_list => Faker::Lorem.words.join(','))
   end
   
   define_builder(Subscription) do |klass, overrides|

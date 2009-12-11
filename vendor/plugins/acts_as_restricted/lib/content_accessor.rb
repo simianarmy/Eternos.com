@@ -1,3 +1,5 @@
+# $Id$
+
 class ContentAccessor < ActiveRecord::Base
   belongs_to :content_authorization
   belongs_to :user

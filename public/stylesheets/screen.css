@@ -10,14 +10,16 @@
 	padding: 0;
 }
 
-html {
-	background: url(/images/backgrounds/html-xrepeat.png) repeat-x 0 top;
-}
 
 body {
 	font: medium Arial, Sans-Serif;
 }
 */
+
+BODY {
+	font-family: Arial, Helvetica, sans-serif; font-size: 14px;
+}
+
 .clearboth { clear: both ; }
 .alignright { float: right; }
 .alignleft { float: left; }
