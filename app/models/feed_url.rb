@@ -21,7 +21,11 @@ class FeedUrl < BackupSource
     feed ? feed.entries.size : 0
   end
   
-  private
+  def name
+    feed.title
+  end
+  
+  protected
   
   def validate_feed
     unless self.rss_url.blank?

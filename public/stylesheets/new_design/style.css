@@ -93,10 +93,12 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .header .new_user_session { height: 35px;}
 .header .new_user_session {margin: 19px 10px 0 0; padding: 0; float: right;}
 .header .new_user_session #login, .header FORM #password {background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777; height: 15px; width: 150px;}
-.header .new_user_session #login { float: left;  vertical-align: middle;}
-.header .new_user_session #password { float: left;  vertical-align: middle;}  
-.header .new_user_session INPUT[type=submit] { background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer; vertical-align: middle; margin-top: -2px;}
+.header .new_user_session #login { float: left;  vertical-align: middle; margin-left: 2px;}
+.header .new_user_session #password { float: left;  vertical-align: middle; margin-left: 2px;}  
+.header .new_user_session INPUT[type=submit] { background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; margin-left: 2px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer; vertical-align: middle; margin-top: -2px;}
 .footer { clear: both;}
+
+/* Marc M */
 
 /* home */
 .what, .home { text-align: left;}

@@ -95,7 +95,7 @@ module LayoutHelper
   end
   
   def load_prototype
-    return if prototype_loaded
+    return if prototype_loaded || @no_prototype
     load_google_api {
       javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
     }

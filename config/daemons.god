@@ -47,16 +47,17 @@ def generic_monitoring(w, options = {})
 end
 
 God.watch do |w|
-  script = "#{RAILS_ROOT}/script/workling_client"
+  script = "cd #{RAILS_ROOT} && /usr/bin/env RAILS_ENV=#{RAILS_ENV} ./script/workling_client"
   w.name = "eternos-workling_#{RAILS_ENV}"
   w.group = "eternos_#{RAILS_ENV}"
   w.interval = 60.seconds
-  w.start = "RAILS_ENV=#{RAILS_ENV} #{script} start"
-  w.restart = "RAILS_ENV=#{RAILS_ENV} #{script} restart"
+  w.start = "#{script} start"
+  w.restart = "#{script} restart"
   w.stop = "#{script} stop"
   w.start_grace = 20.seconds
   w.restart_grace = 20.seconds
-  
+  w.pid_file = "#{RAILS_ROOT}/log/workling.pid"
+
   generic_monitoring(w, :cpu_limit => 80.percent, :memory_limit => 100.megabytes)
 end
 

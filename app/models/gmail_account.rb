@@ -14,4 +14,8 @@ class GmailAccount < BackupSource
   def num_items
     backup_emails.size
   end
+  
+  def name
+    email
+  end
 end

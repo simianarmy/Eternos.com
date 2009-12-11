@@ -8,12 +8,15 @@
       
       .backup_tip{:id => @tipid = dom_id(job, 'tip'), :style => "display: none;"}
         %span{:style=>"font-weight: bold"}
-          == #{job.backup_source.backup_site.name.capitalize} #{job.percent_complete}% Complete
+          = job.backup_source.description
+          
+          %br
+          == #{job.percent_complete}% Complete
           - if job.finished?
             - if !job.successful? 
-              Failed
+              (Failed)
           - else
-            Running
+            (Running)
         %br
         - if job.finished_at
           == Finished #{distance_of_time_in_words(job.finished_at, Time.now)} ago

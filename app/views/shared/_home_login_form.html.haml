@@ -1,4 +1,11 @@
-- form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
-  = text_field_tag :login, "Email"
-  = password_field_tag :password, "Password"
-  = submit_tag 'submit', :value => 'login'
+- if current_user
+  .new_user_session
+    Logged in as
+    = link_to(facebook_name_or_login(current_user), member_home_path)
+    | 
+    = link_to('Logout', logout_path)
+- else
+  - form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
+    = text_field_tag :login, "Email"
+    = password_field_tag :password, "Password"
+    = submit_tag 'submit', :value => 'login'

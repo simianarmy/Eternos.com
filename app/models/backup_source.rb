@@ -108,6 +108,18 @@ class BackupSource < ActiveRecord::Base
     backup_photo_albums.size
   end
     
+  # Descriptive title for source
+  def description
+    returning String.new do |d|
+      d << backup_site.name.capitalize 
+      if title && !title.blank?
+        d << " - " << title
+      elsif respond_to?(:name) && !name.blank?
+        d << " - " << name 
+      end
+    end
+  end
+  
   private
   
 end
