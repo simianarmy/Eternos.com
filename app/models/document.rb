@@ -5,4 +5,10 @@ class Document < Content
     
   has_attachment attachment_opts
   validates_as_attachment 
+  
+  include TimelineEvents
+  serialize_with_options do
+    methods :url
+    only :size, :type, :title, :filename, :taken_at, :description
+  end
 end

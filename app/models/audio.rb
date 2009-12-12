@@ -17,6 +17,12 @@ class Audio < Content
     end
   end
   
+  include TimelineEvents
+  serialize_with_options do
+    methods :url, :duration_to_s
+    only :size, :type, :title, :filename, :taken_at, :description
+  end
+  
   # Creates new instance from recording object info
   def self.create_from_recording(data)
     logger.info "Creating new audio from recording: #{data[:filename]}"

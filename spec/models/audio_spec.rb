@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../timeline_event_spec_helper')
 
 module AudioSpecHelper
   
@@ -63,3 +64,13 @@ describe Audio, "on create" do
     end
   end
 end
+
+describe Audio do
+  describe "" do
+    before(:each) do
+      @tl_event = create_content(:type => :audio)
+    end
+    it_should_behave_like "a timeline event"
+  end
+end
+

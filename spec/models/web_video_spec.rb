@@ -1,5 +1,6 @@
 # $Id$
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../timeline_event_spec_helper')
 
 module WebVideoSpecHelper
   def video_file_path
@@ -28,7 +29,7 @@ describe WebVideo do
     @video.temp_path = File.new(video_file_path)
     @video.expects(:after_attachment_saved).once
     @video.save.should be_true
-  end
+  end    
 end
 
 describe WebVideo, "on create" do
@@ -140,5 +141,14 @@ describe WebVideo, "create from recording" do
     it "should be found when querying contents for recordings" do
       @video.owner.contents.recordings.should include(@video)
     end
+  end
+end
+
+describe WebVideo do
+  describe "" do
+    before(:each) do
+      @tl_event = @video = create_content(:type => :web_video)
+    end
+    it_should_behave_like "a timeline event"
   end
 end

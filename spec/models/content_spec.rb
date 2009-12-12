@@ -243,3 +243,4 @@ describe Content, "on image destroy" do
     assert !File.exists?(thumb)
   end
 end
+

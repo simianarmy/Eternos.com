@@ -32,7 +32,7 @@ module PhotosHelper
   
   def thumb_image_tag(photo)
     thumb = photo.thumbnails.first
-    image_tag(photo.url(:thumb), :class => "photo", :alt => photo.title, 
+    image_tag(photo.thumbnail_url, :class => "photo", :alt => photo.title, 
         :size => thumb.image_size)
   end
 end
