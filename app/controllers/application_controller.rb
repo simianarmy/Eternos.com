@@ -336,11 +336,9 @@ class ApplicationController < ActionController::Base
   end
   
   def set_locale
-    #session[:locale] = locale = params[:locale] || extract_locale_from_tld || I18n.default_locale
-    #I18n.locale = locale.to_sym
-    #I18n.locale = :"en-US"
+    session[:locale] = locale = params[:locale] || extract_locale_from_tld || I18n.default_locale
+    I18n.locale = locale.to_sym
     RAILS_DEFAULT_LOGGER.debug "I18n locale = #{I18n.locale}"
-    RAILS_DEFAULT_LOGGER.debug I18n.t('models.content_authorization.options.public.select_option')
   end
   
   # Get locale from top-level domain or return nil if such locale is not available

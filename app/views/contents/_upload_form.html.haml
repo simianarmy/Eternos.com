@@ -10,23 +10,24 @@
   %input{:type=>"submit", :value=>"Upload"}
 
 %p.instructions
-  1. Select files by clicking the 
-  %b Browse 
-  link
+  #step1.highlight
+    1. Select files by clicking the 
+    %b Browse 
+    link
   %br
-  2. Upload files by clicking the 
-  %b Upload 
-  link
+  #step2
+    2. Upload files by clicking the 
+    %b Upload 
+    link
   
 #content-status.hide
   #action-links
-    %p
-      %a#content-browse-all{:href=>"#"}= "Browse"
-      |
-      %a#content-clear{:href=>"#"}= "Clear List"
-      |
-      %a#content-upload{:href=>"#"}= "Upload"
-    
+    %a#content-browse-all.active{:href=>"#"}= "Browse"
+    |
+    %a#content-clear{:href=>"#"}= "Clear List"
+    |
+    %a#content-upload{:href=>"#"}= "Upload"
+  %p
     
   #progress
     %strong.overall-title 
@@ -42,7 +43,7 @@
 		
   #upload-status.current-text
     Click 'Browse' to select file(s)
-    
+
   #upload-success{:style=>'display:none'}
     %br
     %span

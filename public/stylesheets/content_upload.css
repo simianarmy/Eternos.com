@@ -5,6 +5,10 @@ BODY { margin: 0; padding: 0; background: #fff url(/images/bg_header.gif) repeat
 	font-size: 14px;
 }
 
+.instructions .highlight {
+	border: 1px solid;
+}
+
 #content-status
 {
 	background-color:		#F9F7ED;
@@ -27,6 +31,11 @@ BODY { margin: 0; padding: 0; background: #fff url(/images/bg_header.gif) repeat
  
 #action-links a {
 	font-size: 14px;
+}
+
+#action-links a.active {
+	font-weight: bold;
+	font-size: x-larger;
 }
 
 #content-list
