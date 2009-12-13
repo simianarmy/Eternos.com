@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091202225829) do
+ActiveRecord::Schema.define(:version => 20091213005345) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -491,7 +491,7 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-  
+
   create_table "invitations", :force => true do |t|
     t.integer  "sender_id",       :null => false
     t.string   "recipient_email"
@@ -677,7 +677,6 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.integer  "user_id"
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -685,9 +684,10 @@ ActiveRecord::Schema.define(:version => 20091202225829) do
     t.datetime "end_at"
     t.text     "notes"
     t.datetime "start_at"
+    t.integer  "profile_id"
   end
 
-  add_index "relationships", ["user_id"], :name => "index_relationships_on_user_id"
+  add_index "relationships", ["profile_id"], :name => "index_relationships_on_profile_id"
 
   create_table "roles", :force => true do |t|
     t.string   "name",              :limit => 40

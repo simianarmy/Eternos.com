@@ -10,6 +10,18 @@ module ContentHelper
     "#{object.filename} (#{number_to_human_size(object.size)})"
   end
   
+  # Label name for content's 'taken_at' attribute
+  def content_creation_date_label(object)
+    case object
+    when Photo
+      'Taken at'
+    when Recording, Audio
+      'Recorded at'
+    else
+      'Created at'
+    end
+  end
+  
   # links to content object, using thumbnail image if available
   # unless thumbnail option explicitly turned off with :thumbnail => false
   

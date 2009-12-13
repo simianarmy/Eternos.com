@@ -55,7 +55,7 @@ class ProfilePresenter < AccountPresenter
   end
 
   def find_relationship
-    @relationships = @user.relationships
+    @relationships = profile.relationships
   end
 
   ### OLDER O.G. CODE

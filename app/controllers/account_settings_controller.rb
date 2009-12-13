@@ -282,7 +282,7 @@ class AccountSettingsController < ApplicationController
   
   # TODO: Move to appropriate controller
   def new_relationship
-    @relationship = current_user.relationships.new(params[:relationship])
+    @relationship = current_user.profile.relationships.new(params[:relationship])
     @relationship.end_at = nil if params[:current] == '1'
 
     begin
@@ -303,7 +303,7 @@ class AccountSettingsController < ApplicationController
   # TODO: Move to appropriate controller
   def remove_relationship
     begin
-      @relationship = current_user.relationships.find(params[:id])
+      @relationship = current_user.profile.relationships.find(params[:id])
       @relationship.destroy
     end
     
