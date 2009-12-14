@@ -3,6 +3,24 @@
 %br
 = debug @json
 %p
-%h2 Response Ruby object
+%h2 Result headers
 %br
+- @results = @response.delete('results')
 = debug @response
+%p
+%h2 Result details
+%p
+  %b= pluralize(@results.size, 'results')
+
+- @results.group_by{|r| r['type']}.each do |res|
+  %b= pluralize(res[1].size, res[0])
+  %br
+  
+- @results.group_by{|r| r['type']}.each do |res|
+  %p
+    %b= pluralize(res[1].size, res[0])
+  %br
+  - res[1].each do |r|
+    %p= debug r
+  %br
+  

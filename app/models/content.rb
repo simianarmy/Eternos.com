@@ -59,6 +59,20 @@ class Content < ActiveRecord::Base
     :conditions => {:collection_type => ['BackupPhotoAlbum', 'Album']},
     :include => {:collection => :content_photos}
   
+  # thinking_sphinx
+  define_index do
+    # fields
+    indexes title
+    indexes filename
+    indexes description
+    indexes tags(:name), :as => :tags
+    indexes comments(:title), :as => 'comment_title'
+    indexes comments(:comment), :as => :comment
+    # attributes
+    has :created_at, :updated_at, :taken_at, :size, :type, :duration
+    where "deleted_at IS NULL"
+  end
+  
   # Class methods
   
   # Class factory

@@ -16,7 +16,10 @@ var ETLEventSource = Class.create({
 		this.end_date_obj					= this._getEndDateObj();
 	},
 	isArtifact: function() {
-		return ETEvent.isArtifact(this.type); // || ETEvent.isArtifact(this.attachment_type);
+		return ETEvent.isArtifact(this.type); 
+	},
+	hasAttachedArtifact: function() {
+		return ETEvent.isArtifact(this.attachment_type);
 	},
 	isMedia: function() {
 		return ETEvent.isMedia(this.type) || ETEvent.isMedia(this.attachment_type);
@@ -347,6 +350,19 @@ var ETLFamilyEventSource = Class.create(ETLEventSource, {
 		});
 	}
 });
+// Relationship event
+var ETLRelationshipEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.family;
+		$super(s);
+	},
+	getPreviewHtml: function() {
+		return this._evalTemplate({
+			name: this.attributes.name,
+			relationship: this.attributes.description
+		});
+	}
+});
 // Medical event
 var ETLMedicalEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
@@ -391,6 +407,7 @@ var ETEvent = {
 		{type: "document", display_text: "Document", display_text_plural: "Documents", icon: "doc.png"},
 		{type: "school", display_text: "School", display_text_plural: "Schools", icon: "school.png"},
 		{type: "family", display_text: "Family&nbsp;Member", display_text_plural: "Family&nbsp;Members", icon: "family-member.png"},
+		{type: "relationship", display_text: "Relationship", display_text_plural: "Relationships", icon: "family-member.png"},
 		{type: "medical", display_text: "Medical&nbsp;Data", display_text_plural: "Medical&nbsp;Data", icon: "medic-data.png"},
 		{type: "medical_condition", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
 		{type: "job", display_text: "Job", display_text_plural: "Jobs", icon: "job"}, 
@@ -425,6 +442,8 @@ var ETEvent = {
 			return new ETLSchoolEventSource(data);
 		} else if (type === "family") {
 			return new ETLFamilyEventSource(data);
+		} else if (type === "relationship") {
+			return new ETLRelationshipEventSource(data);
 		} else if (type === "medical") {
 			return new ETLMedicalEventSource(data);
 		} else if (type === "medical_condition") {

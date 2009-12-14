@@ -12,6 +12,7 @@ gem 'rspec-rails', '1.2.9', :only => :test
 gem 'ruby-debug', '0.10.3', :only => [:development, :test]
 
 gem 'active_presenter', '1.2.0'
+gem 'after_commit', '1.0.5'
 gem 'aws-s3', '0.6.2'
 gem 'bullet', :except => :production
 gem 'contacts', '1.0.18'
@@ -50,6 +51,7 @@ gem 'shared-mime-info', '0.1'
 gem 'simianarmy-facebooker', '1.0.51'
 gem 'SystemTimer', '1.1.3'
 gem 'taf2-curb', '0.5.4.0'
+gem 'thinking-sphinx', '1.3.11'
 gem 'tmm1-amqp', '0.6.4'
 gem 'twitter', '0.7.9'
 gem 'tzinfo', '0.3.15'

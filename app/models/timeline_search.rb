@@ -67,7 +67,7 @@ class TimelineSearch
   
   def get_profile
     if p = @member.profile
-      [p.medicals, p.medical_conditions, p.families]
+      [p.medicals, p.medical_conditions, p.families, p.relationships]
     end
   end
   
@@ -85,31 +85,31 @@ class TimelineSearch
   end
   
   def get_facebook_items
-    query @member.activity_stream.items.facebook.search
+    query @member.activity_stream.items.facebook.searchlogic
   end
   
   def get_twitter_items
-    query @member.activity_stream.items.twitter.search
+    query @member.activity_stream.items.twitter.searchlogic
   end
   
   def get_stream_media
-    query @member.activity_stream.items.with_attachment.search
+    query @member.activity_stream.items.with_attachment.searchlogic
   end
   
   def get_media
-    query @member.contents.media.search
+    query @member.contents.media.searchlogic
   end
   
   def get_images
-    query @member.contents.photos.search
+    query @member.contents.photos.searchlogic
   end
   
   def get_emails
-    query BackupEmail.belonging_to_user(@member.id).search
+    query BackupEmail.belonging_to_user(@member.id).searchlogic
   end
   
   def get_feed_items
-    query FeedEntry.belonging_to_user(@member.id).include_content.search
+    query FeedEntry.belonging_to_user(@member.id).include_content.searchlogic
   end
   
   # Helper for searching by type (constant or string)

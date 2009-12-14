@@ -3,8 +3,9 @@ class ConvertRelationshipsTable < ActiveRecord::Migration
   def self.up
     add_column :relationships, :profile_id, :integer
     Relationship.all.each do |rel|
-      rel.update_attribute(:profile_id, rel.member.profile.id) if rel.member
-      rel.save
+      if m = Member.find(rel.user_id) rescue nil
+        rel.update_attribute(:profile_id, m.profile.id) if m.profile
+      end
     end
     remove_index :relationships, :name => "index_relationships_on_user_id"
     remove_column :relationships, :user_id

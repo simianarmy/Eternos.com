@@ -17,6 +17,22 @@ class ActivityStreamItem < ActiveRecord::Base
   
   include TimelineEvents
   
+  # thinking_sphinx
+  define_index do
+    # fields
+    indexes author
+    indexes message
+    indexes attachment_data, :as => :metadata
+    indexes tags(:name), :as => :tags
+    indexes comments(:title), :as => 'comment_title'
+    indexes comments(:comment), :as => :comment
+    
+    # attributes
+    has :published_at, :edited_at
+    
+    where "deleted_at IS NULL"
+  end
+  
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
     create!(

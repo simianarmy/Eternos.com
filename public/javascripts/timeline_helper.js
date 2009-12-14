@@ -382,7 +382,7 @@ var ETUI = function() {
 					return true;
 				}
 			}
-			createTooltip(element, id, ETemplates.eventTooltipOptions());
+			return createTooltip(element, id, ETemplates.eventTooltipOptions());
 		},
 		// Destroy tooltips and observers in order to prevent memory leaks
 		onEventSectionLoading: function() {
@@ -423,7 +423,7 @@ var ETUI = function() {
 			}
 			ETDebug.log('creating tooltip on ' + element.id);
 
-			createTooltip(element, event.getEventID(), event.isInstant() ? ETemplates.timelineTooltipOptions() : ETemplates.timelineDurationTooltipOptions());
+			return createTooltip(element, event.getEventID(), event.isInstant() ? ETemplates.timelineTooltipOptions() : ETemplates.timelineDurationTooltipOptions());
 		},
 		createSearchClickHandlers: function(timeline) {
 			// Setup previous, future events link click handlers when there are no events to display
@@ -793,6 +793,7 @@ var ETimeline = function(opts) {
 		_itemsInDate: function(date) {
 			var targetDate = date.startingMonth();
 
+			ETDebug.log("Looking for artifacts in collection of " + this.items.size() + " items matching date: " + targetDate);
 			return this.items.findAll(function(i) {
 				return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) && (i.getEventDateObj().startingMonth() === targetDate);
 			});
@@ -835,7 +836,45 @@ var ETimeline = function(opts) {
 				artifacts: c
 			});
 		},
-		randomize: function() {
+		// Adds artifact event object to internal collection, returns 
+		// true if added.
+		addItem: function(item) {
+			// Skip artifacts with missing source or if already added
+			ETDebug.log("add artifact: " + item.type);
+			if ((item.getURL() == null) || this.contains(item)) {
+				ETDebug.log("not added");
+				return false;
+			}
+			this.items.push(item);
+			return true;
+		},
+		addItems: function(items) {
+			this.items.concat(items);
+		},
+		empty: function() {
+			this.items.clear();
+		},
+		// Returns true if items list contains item with the same source url
+		contains: function(item) {
+			return this.items.detect(function(i) {
+				return item.getURL() === i.getURL();
+			});
+		},
+		populate: function(activeDate) {
+			this._write(this._itemsToS(activeDate));
+		},
+		showLoading: function() {
+			this._write(this.loadingTemplate.evaluate({
+				type: " Artifacts"
+			}));
+			//	load_busy(this.parent);
+		},
+		updateTitle: function(title) {
+			this.title = title;
+			this._write();
+		}
+		/*
+		, randomize: function() {
 			var i, j, tmp, tmp_title;
 			var v = $$('li.visible-artifact-item');
 			var h = $$('li.hidden-artifact-item');
@@ -873,45 +912,8 @@ var ETimeline = function(opts) {
 					}
 				}.bind(this), this.timeOut);
 			}
-		},
-		// Adds artifact event object to internal collection, returns 
-		// true if added.
-		addItem: function(item) {
-			// Skip artifacts with missing source or if already added
-			ETDebug.log("add artifact: " + item.type);
-			if ((item.getURL() == null) || this.contains(item)) {
-				ETDebug.log("not added");
-				return false;
-			}
-			this.items.push(item);
-			return true;
-		},
-		addItems: function(items) {
-			this.items.concat(items);
-		},
-		empty: function() {
-			this.items.clear();
-		},
-		// Returns true if items list contains item with the same source url
-		contains: function(item) {
-			return this.items.detect(function(i) {
-				return item.getURL() === i.getURL();
-			});
-		},
-		populate: function(activeDate) {
-			this._write(this._itemsToS(activeDate));
-			this.randomize();
-		},
-		showLoading: function() {
-			this._write(this.loadingTemplate.evaluate({
-				type: " Artifacts"
-			}));
-			//	load_busy(this.parent);
-		},
-		updateTitle: function(title) {
-			this.title = title;
-			this._write();
 		}
+		*/
 	});
 
 	//Eternos Timeline Event Section
@@ -1144,7 +1146,7 @@ var ETimeline = function(opts) {
 		addEvents: function(events) {
 			this.jsonEvents = events.evalJSON();
 			ETDebug.log("Adding " + this.jsonEvents.resultCount + " events");
-			this._populate();
+			this._parse();
 		},
 		// Returns latest parsed results objects array.
 		getEventGroups: function() {
@@ -1158,7 +1160,7 @@ var ETimeline = function(opts) {
 		getClosestEventDate: function(date, past_or_future) {
 			return this.eventItems.getClosestDate(date, past_or_future);
 		},
-		doParsing: function() {
+		_parse: function() {
 			var event;
 
 			this.eventItems.clearLatest();
@@ -1167,14 +1169,19 @@ var ETimeline = function(opts) {
 
 				// Tricky part here - we add artifacts to the artifacts collection 
 				// and to the events collection, but artifacts attached to events
-				// must only be added to the artifacts collection
+				// must only be added to the artifacts collection.  
+				// TODO: We need some attribute to easily determine event-attached artifacts
 				if (event.isArtifact()) {
+					ETDebug.log("adding event to artifacts");
 					that.artifactSection.addItem(event);
-					if (ETEvent.isArtifact(event.getDisplayType())) {
+					if (false || ETEvent.isArtifact(event.getDisplayType())) {
 						// Don't add to items list if artifact is attached to event
-						ETDebug.log("artifact not added");
+						ETDebug.log("event has attached artifact, not adding to events");
 						return;
 					}
+				} else if (event.hasAttachedArtifact()) {
+					ETDebug.log("adding event with attached image to artifacts");
+					that.artifactSection.addItem(event);
 				}
 				this.eventItems.addSource(event);
 			}.bind(this));
@@ -1183,6 +1190,7 @@ var ETimeline = function(opts) {
 			var targetDate = date || that.base.centerDate;
 
 			// Make sure month selector is synched up
+			// TODO: this should not be here, event parser should not know about month selector
 			that.monthSelector.setDate(targetDate);
 
 			that.artifactSection.populate(targetDate);
@@ -1192,9 +1200,6 @@ var ETimeline = function(opts) {
 		empty: function() {
 			this.eventItems.empty();
 			this.jsonEvents = {};
-		},
-		_populate: function() {
-			this.doParsing();
 		}
 	});
 
@@ -1724,6 +1729,7 @@ var ETimeline = function(opts) {
 			var groupedEvents;
 			var newDate;
 
+			ETDebug.log("Parsing search results: parseSearchResults");
 			// Parse json results & save
 			this.rawEvents.addEvents(results);
 			this.rawEvents.populateResults(this.currentDate);
