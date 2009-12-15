@@ -36,9 +36,15 @@ class BackupPhotoAlbum < ActiveRecord::Base
       :select => 'backup_photos.id'
     }
   }
-  scope_procedure :by_user, lambda { |user_id| 
-    backup_source_user_id_eq(user_id)
-  }
+  named_scope :by_user, lambda { |id| 
+      {
+        :joins => :backup_source,
+        :conditions => ['backup_sources.user_id = ?', id]
+      }
+    }
+#  scope_procedure :by_user, lambda { |user_id| 
+#    backup_source_user_id_eq(user_id)
+#  }
   named_scope :include_content_photos, :include => :content_photos
   
   # thinking_sphinx

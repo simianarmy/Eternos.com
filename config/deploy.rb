@@ -158,6 +158,21 @@ CUTYCAPT
   task :ps_worklings, :roles => :app do
     run "ps auxw|grep workling"
   end
+  
+  task :before_update_code, :roles => [:app] do
+    thinking_sphinx.stop
+  end
+
+  task :after_update_code, :roles => [:app] do
+    symlink_sphinx_indexes
+    thinking_sphinx.configure
+    thinking_sphinx.start
+  end
+
+  task :symlink_sphinx_indexes, :roles => [:app] do
+    run "ln -nfs #{shared_path}/db/sphinx #{current_path}/db/sphinx"
+  end
+  
 end
 
 before "deploy:update_code", "deploy:stop_daemons"

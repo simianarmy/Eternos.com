@@ -6,9 +6,7 @@
 <% header @member_name %>
 
 <div id="searchbar" style="float: right">
-  <%- form_tag user_search_path, :method => 'get' do |f| %>
-    <%= text_field_tag :terms, 'Search', :class => 'withHint', :defaultValue => 'Search' %> <%= submit_tag "Search" %>
-  <% end %>
+  <%= render :partial => 'shared/search_box', :locals => {:url => user_search_path} %>
 </div>
 <div class="clearboth"></div>
 <div id="content-container3">

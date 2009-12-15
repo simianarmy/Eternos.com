@@ -51,9 +51,16 @@ class BackupEmail < ActiveRecord::Base
   
   include CommonDateScopes
   
-  scope_procedure :belonging_to_user, lambda { |user_id| 
-    backup_source_user_id_eq(user_id)
+  named_scope :belonging_to_user, lambda { |id| 
+      {
+        :joins => :backup_source,
+        :conditions => ['backup_sources.user_id = ?', id]
+      }
   }
+  # don't use until searchlogic 2.3.2+
+  # scope_procedure :belonging_to_user, lambda { |user_id| 
+  #     backup_source_user_id_eq(user_id)
+  #   }
   
   # thinking_sphinx
   define_index do
