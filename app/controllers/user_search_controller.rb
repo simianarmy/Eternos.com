@@ -14,6 +14,7 @@ class UserSearchController < ApplicationController
     BenchmarkHelper.rails_log("sphinx search for #{params[:terms]}") do
       @results = UserSearch.new(current_user).execute params[:terms]
     end
+    RAILS_DEFAULT_LOGGER.debug "sphinx results: #{@results.inspect}"
     respond_to do |format|
       format.html
       format.js

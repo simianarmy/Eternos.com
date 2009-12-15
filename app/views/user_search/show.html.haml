@@ -1,2 +1,20 @@
-%h2 Search results
-%p= debug @results
+- form_tag user_search_path, :method => 'get' do |f|
+  = text_field_tag :terms, 'Search', :class => 'withHint', :defaultValue => 'Search'
+  = submit_tag "Search" 
+%p
+%br
+%h2== Search results for '#{h params[:terms]}'
+%p
+  %b= pluralize(@results.size, 'result')
+%p
+%br
+- @results.group_by{|r| r.class.to_s}.each do |res|
+  %b= pluralize(res[1].size, res[0])
+  %br
+  - res[1].each do |r|
+    #search_result
+      - if r.respond_to?(:thumbnail_url) && r.thumbnail_url
+        = image_tag r.thumbnail_url, :class => "alignleft"
+      = debug r
+    %br
+  %br
