@@ -1,10 +1,7 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
-  map.resources :facebook_activity_stream_items
-
-  map.resources :twitter_activity_stream_items
-
+  
   # Singleton resources
   map.resource :account_setup, :controller => 'account_setup', :member => {
     :personal_info => :get, :backup_sources => :get
@@ -18,6 +15,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { 
     :check_auth => :get, :permissions => :get, :authorized => :get, :cancel => :get }
   map.resource :image_gallery, :controller => 'image_gallery'
+  map.resource :user_search, :controller => 'user_search'
   
   # regular resources
   map.resources :timeline_events, :collection => {
@@ -32,6 +30,8 @@ ActionController::Routing::Routes.draw do |map|
     :add_twitter => :get,
     :twitter_auth => :get
   }
+  map.resources :facebook_activity_stream_items
+  map.resources :twitter_activity_stream_items
   
   map.resources :account_settings, :member => {
     :completed_steps => :get,

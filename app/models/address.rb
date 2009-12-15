@@ -22,29 +22,6 @@ class Address < ActiveRecord::Base
 	belongs_to	:region
 	belongs_to	:country
 	
-	alias_attribute :start_at, :moved_in_on
-	alias_attribute :end_at, :moved_out_on
-	
-	attr_accessor :current_address
-	
-	acts_as_archivable :on => :moved_in_on
-	
-	include TimelineEvents
-	serialize_with_options do
-		methods :postal_address
-	end
-	
-	# For formatting postal addresses from over 60 countries.
-	# Problem: :country must return 2-letter country code for this plugin 
-	# to do country-specific formatting. 
-	# TODO: monkey-patch plugin
-	biggs :postal_address,
-		:recipient => Proc.new {|address| address.addressable.try(:full_name) || ""},
-		:zip => :postal_code,
-		:street => [:street_1, :street_2],
-		:state => Proc.new {|address| address.region.try(:name) },
-		:country => Proc.new {|address| address.country.try(:name) }
-	
 	with_options :if => :validatible_location? do |m|
 		m.validates_presence_of :street_1
 		m.validates_presence_of :city
@@ -59,14 +36,43 @@ class Address < ActiveRecord::Base
 	validate :ensure_min_address_fields
 	
 	before_save :clear_moved_out_if_current_address
+  
+	alias_attribute :start_at, :moved_in_on
+	alias_attribute :end_at, :moved_out_on
 	
-	# Why was this added - duplicates above code??
-	# validate :if => :validatible_location do |address|
-	#			address.errors.add("", "Please enter a street address") if address.street_1.blank?
-	#			address.errors.add("", "Please select a country") if address.country_id.blank?
-	#			address.errors.add("", "Please enter a city name") if address.city.blank?
-	#			address.errors.add("", "Postal code not a number") unless address.postal_code.to_s =~ /\A[+-]?\d+\Z/
-	#		end
+	attr_accessor :current_address
+	
+	acts_as_archivable :on => :moved_in_on
+	
+	include TimelineEvents
+	serialize_with_options do
+		methods :postal_address
+	end
+	
+	# thinking_sphinx
+  define_index do
+    # fields
+    indexes [street_1, street_2] => :street
+    indexes city
+    indexes country(:name), :as => :country
+    indexes region(:name), :as => :region
+    
+    # attributes
+    has user_id, created_at, moved_in_on, moved_out_on
+    
+    group_by 'user_id'
+  end
+  
+	# For formatting postal addresses from over 60 countries.
+	# Problem: :country must return 2-letter country code for this plugin 
+	# to do country-specific formatting. 
+	# TODO: monkey-patch plugin
+	biggs :postal_address,
+		:recipient => Proc.new {|address| address.addressable.try(:full_name) || ""},
+		:zip => :postal_code,
+		:street => [:street_1, :street_2],
+		:state => Proc.new {|address| address.region.try(:name) },
+		:country => Proc.new {|address| address.country.try(:name) }
 	
 	LocationTypes = {
 		'Home' => 'home',

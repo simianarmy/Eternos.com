@@ -2,15 +2,16 @@
 
 class School < ActiveRecord::Base
   belongs_to :profile
+  belongs_to :country
   
   acts_as_archivable :on => :start_at
-  
+
   validate do |school|
     school.errors.add("", "Please enter a school name") if school.name.blank?
   end
-  
+
   include TimelineEvents
-  
+
   # TODO: use acts_as helper
   named_scope :in_dates, lambda { |start_date, end_date|
     {
@@ -20,4 +21,18 @@ class School < ActiveRecord::Base
         end_date, start_date]
       }
     }
+
+  # thinking_sphinx
+  define_index do
+    indexes :name
+    indexes degree
+    indexes fields
+    indexes activities_societies
+    indexes awards
+    indexes recognitions
+    indexes notes
+    indexes country(:name), :as => 'country'
+
+    has profile_id, start_at, end_at
+  end
 end

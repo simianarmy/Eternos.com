@@ -40,6 +40,7 @@ class Content < ActiveRecord::Base
     methods :url, :thumbnail_url
     only :size, :type, :title, :filename, :width, :height, :taken_at, :description
   end
+  
   # Define start_date = created_at for serializing.  Define in child classes if start_date
   # should return a different column value
   def start_date; created_at end
@@ -66,12 +67,19 @@ class Content < ActiveRecord::Base
     indexes filename
     indexes description
     indexes tags(:name), :as => :tags
-    indexes comments(:title), :as => 'comment_title'
-    indexes comments(:comment), :as => :comment
+    indexes comments.title, :as => 'comment_title'
+    indexes comments.comment, :as => :comment
+    
     # attributes
-    has :created_at, :updated_at, :taken_at, :size, :type, :duration
+    has user_id, created_at, updated_at, taken_at, :size, :type, duration
+    
     where "deleted_at IS NULL"
+    group_by "user_id"
   end
+  
+  sphinx_scope(:by_user) { |user_id|
+    {:with => {:user_id => user_id}}
+  }
   
   # Class methods
   

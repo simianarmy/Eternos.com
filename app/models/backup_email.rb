@@ -50,18 +50,24 @@ class BackupEmail < ActiveRecord::Base
   before_destroy :delete_s3_contents
   
   include CommonDateScopes
-  named_scope :belonging_to_user, lambda { |id| 
-    {
-      :joins => :backup_source,
-      :conditions => ['backup_sources.user_id = ?', id]
-    }
+  
+  scope_procedure :belonging_to_user, lambda { |user_id| 
+    backup_source_user_id_eq(user_id)
   }
   
-  # For Rails+Searchlogic 2.3.2
-  #scope_procedure :belonging_to_user, lambda { |id| 
-  #  backup_source_user_id_eq(id)
-  #}
-  
+  # thinking_sphinx
+  define_index do
+    # fields
+    indexes subject
+    indexes sender
+    indexes tags(:name), :as => :tags
+    
+    # attributes
+    has backup_source_id, received_at
+    
+    where "deleted_at IS NULL"
+  end
+
   # Parses raw email string to extract email attributes & contents
   # Catch exceptions from mail parsing or file saving io
   def email=(raw_email)

@@ -25,8 +25,29 @@ class FeedEntry < ActiveRecord::Base
       :conditions => ['backup_sources.user_id = ?', member_id]
     }
   }
+  # named_scope below fails on nil.call error
+  # scope_procedure :belonging_to_user, lambda { |user_id| 
+  #     feed_feed_url_user_id_eq(user_id)
+  #   }
   named_scope :include_content, :include => :feed_content
 
+  # thinking_sphinx
+  define_index do
+    indexes author
+    indexes :name
+    indexes summary
+    indexes feed_content.html_content, :as => :raw_content
+    indexes url
+    indexes categories
+    indexes tags(:name), :as => :tags
+    indexes comments(:title), :as => 'comment_title'
+    indexes comments(:comment), :as => :comment
+    
+    has feed_id, published_at, created_at, guid
+    
+    where 'deleted_at IS NULL'
+  end
+    
   include CommonDateScopes
   after_create :save_contents
   

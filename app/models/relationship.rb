@@ -9,4 +9,12 @@ class Relationship < ActiveRecord::Base
   
   include TimelineEvents
 
+  # thinking_sphinx
+  define_index do
+    indexes :name
+    indexes description
+    indexes notes
+    
+    has profile_id, start_at, end_at
+  end
 end

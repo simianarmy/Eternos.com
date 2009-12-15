@@ -19,4 +19,14 @@ class Job < ActiveRecord::Base
         end_date, start_date]
       }
     }
+  
+  # thinking_sphinx
+  define_index do
+    indexes company
+    indexes title
+    indexes description
+    indexes notes
+    
+    has profile_id, start_at, end_at
+  end
 end

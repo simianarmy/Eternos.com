@@ -12,6 +12,8 @@ require 'rspec_rails_mocha'
 require 'fixjour'
 require "tempfile"
 require "test/unit"
+require 'thinking_sphinx/test'
+ThinkingSphinx::Test.init
 
 require File.join(File.dirname(__FILE__), 'stub_chain_mocha')
 require File.expand_path(File.dirname(__FILE__) + "/fixjour_builders.rb")

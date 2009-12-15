@@ -17,6 +17,13 @@ class ActivityStreamItem < ActiveRecord::Base
   
   include TimelineEvents
   
+  include CommonDateScopes
+  named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
+  named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
+  named_scope :with_attachment, :conditions => ['attachment_data IS NOT ?', nil]
+  named_scope :with_photo, :conditions => {:attachment_type => 'photo'}
+  named_scope :with_video, :conditions => {:attachment_type => 'video'}
+  
   # thinking_sphinx
   define_index do
     # fields
@@ -28,11 +35,11 @@ class ActivityStreamItem < ActiveRecord::Base
     indexes comments(:comment), :as => :comment
     
     # attributes
-    has :published_at, :edited_at
+    has activity_stream_id, published_at, edited_at
     
     where "deleted_at IS NULL"
   end
-  
+
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
     create!(
@@ -45,13 +52,6 @@ class ActivityStreamItem < ActiveRecord::Base
       :attachment_data  => item.attachment_data,
       :attachment_type  => item.attachment_type)
   end
-  
-  include CommonDateScopes
-  named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
-  named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
-  named_scope :with_attachment, :conditions => ['attachment_data IS NOT ?', nil]
-  named_scope :with_photo, :conditions => {:attachment_type => 'photo'}
-  named_scope :with_video, :conditions => {:attachment_type => 'video'}
   
   def bytes
     message.length + (attachment_data ? attachment_data.length : 0)

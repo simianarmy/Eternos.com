@@ -9,4 +9,15 @@ class Family < ActiveRecord::Base
   acts_as_archivable :on => :birthdate
 	
 	include TimelineEvents
+	
+	# thinking_sphinx
+  define_index do
+    # fields
+    indexes :name
+    indexes family_type
+    indexes notes
+    
+    # attributes
+    has profile_id, birthdate, died_at
+  end
 end   

@@ -16,6 +16,16 @@ class Feed < ActiveRecord::Base
     end
   end
   
+  # thinking_sphinx
+  define_index do
+    # fields
+    indexes title
+    indexes url
+    
+    # attributes
+    has backup_source_id, created_at, last_modified
+  end
+  
   # Takes optional feed object
   def update_from_feed(auth_feed=nil)
     # If there are existing entries, then create a feed 

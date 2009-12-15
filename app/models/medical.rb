@@ -6,4 +6,15 @@ class Medical < ActiveRecord::Base
   end
   
   include TimelineEvents
+  
+  # thinking_sphinx
+  define_index do
+    indexes :name
+    indexes blood_type
+    indexes disorder
+    indexes physician_name
+    indexes notes
+    
+    has profile_id, created_at
+  end
 end

@@ -36,12 +36,23 @@ class BackupPhotoAlbum < ActiveRecord::Base
       :select => 'backup_photos.id'
     }
   }
-  named_scope :by_user, lambda { |user_id|
-    { :joins => :backup_source,
-      :conditions => ['backup_sources.user_id = ?', user_id]
-    }
+  scope_procedure :by_user, lambda { |user_id| 
+    backup_source_user_id_eq(user_id)
   }
   named_scope :include_content_photos, :include => :content_photos
+  
+  # thinking_sphinx
+  define_index do
+    # fields
+    indexes :name
+    indexes description
+    indexes location
+    
+    # attributes
+    has backup_source_id, created_at, updated_at
+    
+    where "deleted_at IS NULL"
+  end
   
   EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
   
