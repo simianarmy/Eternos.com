@@ -227,6 +227,8 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.string   "type"
     t.string   "auth_login"
     t.string   "auth_password"
+    t.binary   "auth_login_enc"
+    t.binary   "auth_password_enc"
     t.string   "rss_url"
     t.boolean  "auth_confirmed",         :default => false, :null => false
     t.string   "auth_error"
@@ -244,6 +246,7 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "last_login_at"
     t.string   "auth_token"
     t.string   "auth_secret"
+    t.binary   "auth_secret_enc"
     t.string   "title"
     t.datetime "deleted_at"
   end

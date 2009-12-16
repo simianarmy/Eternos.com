@@ -2,17 +2,23 @@
 <!-- start content -->
 <div class="content home">
 	<fieldset>
-	  <div id="intro_movie"></div>
-	<%= swf_object("/swf/eternos_mainflash02.swf", "intro_movie", :width => 493, :height => 288, 
-	  :params => {:play => "true", :loop => "false", :quality => "high", :menu => "true"}) 
+	  <div id="intro_movie">
+	<%= 
+	#swf_object("/swf/eternos_mainflash02.swf", "intro_movie", :width => 493, :height => 288, 
+	#  :params => {:play => "true", :loop => "false", :quality => "high", :menu => "true"}) 
 	%>
-	<h1>Leave a Lasting Legacy.</h1>
+	<object width="493" height="288"><param name="movie" value="http://www.youtube.com/v/ooG3gZuA7jo&hl=en_US&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ooG3gZuA7jo&hl=en_US&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="493" height="288"></embed></object>
+	</div>
+	
 	  <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Basic'} %>
 	<p><strong>Or sign up with your Facebook account</strong></p>
 	<p><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %></p>
 	<p class="home01"><em>*By proceeding, you confirm that your over 13 years of age and accept the Privacy and Terms.</em></p>
-	
+
+	  <div style="clear:both"></div>
+	  
 		<fieldset>
+		  <br/>
 			<div class="home02">
 				<h2>Video Diary</h2>
 				<p>Keep a record of your personal experiences and observations. Your video diary will be an invaluable treasure for your descendants. </p>
