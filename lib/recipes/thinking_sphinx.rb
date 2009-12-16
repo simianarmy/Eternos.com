@@ -1,3 +1,3 @@
 require File.join(
-  File.dirname(__FILE__), '../lib/thinking_sphinx/deploy/capistrano'
+  File.dirname(__FILE__), '../thinking_sphinx/deploy/capistrano'
 )

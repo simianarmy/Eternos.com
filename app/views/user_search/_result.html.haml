@@ -1,0 +1,18 @@
+.search_result[object]
+  .res_thumb
+    - if object.respond_to?(:thumbnail_url) && object.thumbnail_url
+      = image_tag object.thumbnail_url
+    - else
+      thumbnail
+  .res_text
+    .res_header
+    .res_title
+      /= object.search_title
+      lorem ipsum title
+    .res_body
+      /= object.search_body
+      lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body 
+    .res_link
+      link
+    .res_footer
+.result_sep

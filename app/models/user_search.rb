@@ -21,7 +21,8 @@ class UserSearch
       :user_id => @user.id,
       :profile_id => @user.profile.id,
       :activity_stream_id => @user.activity_stream.id,
-      :backup_source_id => @user.backup_sources.collect(&:id)
+      :backup_source_id => collect_sphinx_attributes(@user.backup_sources),
+      :feed_id => collect_sphinx_attributes(@user.backup_sources.blog)
     }
     RAILS_DEFAULT_LOGGER.debug "searching with attributes: #{attributes.inspect}"
     @results = ThinkingSphinx.search terms, :with => attributes
@@ -29,5 +30,11 @@ class UserSearch
 
   def reset
     @results.clear
+  end
+  
+  protected
+  
+  def collect_sphinx_attributes(collection)
+    collection.any? ? collection.collect(&:id) : [nil]
   end
 end

@@ -49,12 +49,13 @@ namespace :deploy do
   end
 
   desc "Stops work daemons"
-  task :stop_daemons, :roles => :app do
+  task :stop_daemons, :roles => [:app] do
+    thinking_sphinx.stop
     run "god stop eternos_#{stage}"
   end
 
   desc "Restarts any work daemons"
-  task :start_daemons, :roles => :app do
+  task :start_daemons, :roles => [:app] do
     #run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
     run "RAILS_ENV=#{stage} god load #{current_path}/config/daemons.god"
     run "RAILS_ENV=#{stage} god start eternos_#{stage}"
@@ -159,11 +160,7 @@ CUTYCAPT
     run "ps auxw|grep workling"
   end
   
-  task :before_update_code, :roles => [:app] do
-    thinking_sphinx.stop
-  end
-
-  task :after_update_code, :roles => [:app] do
+  task :build_sphinx_index, :roles => [:app] do
     symlink_sphinx_indexes
     thinking_sphinx.configure
     thinking_sphinx.start
@@ -182,6 +179,7 @@ after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:update_crontab"
 
 after "deploy:symlink", "deploy:symlink_shared"
+after "deploy:symlink_shared", "deploy:build_sphinx_index"
 after "deploy:symlink", "deploy:start_daemons"
 after "deploy:symlink", "deploy:sendmail"
 

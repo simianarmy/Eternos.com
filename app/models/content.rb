@@ -192,7 +192,7 @@ class Content < ActiveRecord::Base
   end
   
   def thumbnail_url(tp=:thumb)
-    thumbnail.url rescue thumbnail_path(tp)
+    thumbnail.url rescue thumbnail_path(:thumb => tp)
   end
   
   # Returns path to thumbnail if one exists, or generic icon for the type

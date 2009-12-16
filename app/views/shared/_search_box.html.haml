@@ -1,3 +1,4 @@
 - with_options :class => 'withHint', :defaultValue => 'Search' do |f|
-  - form_tag url, :method => 'get' do
-    %p= f.text_field_tag :terms, params[:terms]
+  - form_tag url, :method => 'get', :class => 'search-form' do
+    = f.text_field_tag :terms, params[:terms], :class => 'search-input'
+    = submit_tag("Search", :class => 'search-button') if local_assigns.has_key?(:show_search_button) && show_search_button

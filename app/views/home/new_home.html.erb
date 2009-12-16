@@ -1,9 +1,11 @@
+<% use_flash %>
 <!-- start content -->
 <div class="content home">
 	<fieldset>
-	<img src="images/image01.jpg" />
-	<h1>Leave a Lasting Legacy.
-  Record your life’s precious moments and share it with loved ones upon your passing.  Use our life recorder to build an online memorial with e-memory of your online persona.  Create a video diary, life log or life blog and start building memories for generations to come! Sign up now!</h1>
+	  <div id="intro"></div>
+	<%= swfobject_tag "/swf/eternos_mainflash02.swf", :div_id => "intro"  %>
+	
+	<h1>Leave a Lasting Legacy.</h1>
 	  <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Basic'} %>
 	<p><strong>Or sign up with your Facebook account</strong></p>
 	<p><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %></p>
