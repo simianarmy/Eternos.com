@@ -123,7 +123,11 @@ module LayoutHelper
     #content_for(:javascript) { 
     #  javascript_tag 'google.load("swfobject", "2.2");' 
     #}
-    javascript 'swfobject', 'backtothehtml'
+    # load swfobject.js in headers
+    content_for(:head) {
+      javascript_include_tag 'swfobject'
+    }
+    javascript 'backtothehtml'
   end
   
   def use_flashplayer

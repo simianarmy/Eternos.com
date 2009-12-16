@@ -2,9 +2,10 @@
 <!-- start content -->
 <div class="content home">
 	<fieldset>
-	  <div id="intro"></div>
-	<%= swfobject_tag "/swf/eternos_mainflash02.swf", :div_id => "intro"  %>
-	
+	  <div id="intro_movie"></div>
+	<%= swf_object("/swf/eternos_mainflash02.swf", "intro_movie", :width => 493, :height => 288, 
+	  :params => {:play => "true", :loop => "false", :quality => "high", :menu => "true"}) 
+	%>
 	<h1>Leave a Lasting Legacy.</h1>
 	  <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Basic'} %>
 	<p><strong>Or sign up with your Facebook account</strong></p>
