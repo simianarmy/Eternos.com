@@ -3,9 +3,8 @@
 module PhotosHelper
   def photo_link(photo, options={})
     returning String.new do |link|
-      link << content_to_s(photo)
+      link << content_to_s(photo) << '<br/>' unless options[:thumbnail_only]
       unless options[:thumbnail] == false
-        link << content_tag(:br)
         link << if photo.has_thumbnail?
           thumbnail_link(photo)
         else

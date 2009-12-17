@@ -17,15 +17,8 @@ class UserSearch
   # Rails search interface: thinking_sphinx
   def execute(terms, options={})
     reset
-    attributes = {
-      :user_id => @user.id,
-      :profile_id => @user.profile.id,
-      :activity_stream_id => @user.activity_stream.id,
-      :backup_source_id => collect_sphinx_attributes(@user.backup_sources),
-      :feed_id => collect_sphinx_attributes(@user.backup_sources.blog)
-    }
-    RAILS_DEFAULT_LOGGER.debug "searching with attributes: #{attributes.inspect}"
-    @results = ThinkingSphinx.search terms, :with => attributes
+    RAILS_DEFAULT_LOGGER.debug "searching with attributes: #{sphinx_attributes}"
+    @results = ThinkingSphinx.search terms, :with => sphinx_attributes
   end
 
   def reset
@@ -33,6 +26,16 @@ class UserSearch
   end
   
   protected
+  
+  def sphinx_attributes
+    @attributes ||= {
+      :user_id => @user.id,
+      :profile_id => @user.profile.id,
+      :activity_stream_id => @user.activity_stream.id,
+      :backup_source_id => collect_sphinx_attributes(@user.backup_sources),
+      :feed_id => collect_sphinx_attributes(@user.backup_sources.blog.map{|b| b.feed})
+    }
+  end
   
   def collect_sphinx_attributes(collection)
     collection.any? ? collection.collect(&:id) : [nil]

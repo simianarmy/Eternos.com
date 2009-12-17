@@ -29,7 +29,6 @@ module LightviewHelper
  # lightview_params: parameters (top-level arguments) for lightview, that differ from or add to defaults
  # lightview_options: options (2nd-level arguments) for lightview, that differ from or add to the defaults
  def link_to_lightview( name, options = {}, html_options = {}, lightview_params = {}, lightview_options = {} )
-
     # get hold of the js for showing the lightview
     show_lightview_js = show_lightview( options, lightview_params, lightview_options )
 

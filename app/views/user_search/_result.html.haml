@@ -1,18 +1,16 @@
 .search_result[object]
   .res_thumb
-    - if object.respond_to?(:thumbnail_url) && object.thumbnail_url
-      = image_tag object.thumbnail_url
-    - else
-      thumbnail
-  .res_text
-    .res_header
+    = search_thumbnail(object)
+  .res_text      
     .res_title
-      /= object.search_title
-      lorem ipsum title
+      = image_tag search_icon(object), :width => 20, :height => 20
+      = search_title(object)
     .res_body
-      /= object.search_body
-      lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body lorem impsum body 
+      = search_summary(object)
+      %br
+      %span.posted= search_date(object)
     .res_link
-      link
-    .res_footer
+      = search_link(object)
+    .res_tags
+      = search_tags(object)
 .result_sep

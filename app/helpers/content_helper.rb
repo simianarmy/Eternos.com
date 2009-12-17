@@ -22,9 +22,8 @@ module ContentHelper
     end
   end
   
-  # links to content object, using thumbnail image if available
-  # unless thumbnail option explicitly turned off with :thumbnail => false
-  
+  # links to content object displaying title, using thumbnail image if available
+  # thumbnail display can be turned off with :thumbnail => false
   def link_to_content(object, options={})
     case object
     when Photo
@@ -39,7 +38,7 @@ module ContentHelper
       link_to object.title, polymorphic_path(object)
     end
   end
-     
+  
   def link_to_audio(object, options={})
     render :partial => 'shared/audio_link', :locals => {:audio => object, :options => options}
   end 

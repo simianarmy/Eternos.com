@@ -29,6 +29,7 @@ input.search-input {
 }
 .res_thumb img {
 	margin: 0 5px 5px 0;
+	border: 1px solid black;
 }
 .search_result .res_text {
 	float: left;
@@ -46,8 +47,16 @@ input.search-input {
 .res_text .res_link {
 	
 }
-.search_result .res_footer {}
+.res_text .res_tags {
+	color: #cccccc;
+}
 
 .result_sep {
 	clear: both;
+	height: 10px;
+}
+
+.match {
+	font-weight: bold;
+	background-color: #f2f7fe;
 }

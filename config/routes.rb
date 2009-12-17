@@ -22,6 +22,7 @@ ActionController::Routing::Routes.draw do |map|
     :events => :get
   }
   map.connect 'tl_details/:id/:type/:events', :controller => 'timeline_events', :action => 'index'
+  map.item_details 'tl_details/:id/:type/:events', :controller => 'timeline_events', :action => 'index'
   
   map.resources :dev_staging_maps
   map.resources :backup_sites

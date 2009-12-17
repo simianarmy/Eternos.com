@@ -575,7 +575,8 @@ a.event_list_inline_item:hover {
 }
 
 #item_details_content .posted, 
-#item_details_content .detail {
+#item_details_content .detail,
+#search-results .posted {
 margin-top:10px;
 color:#3860AB;
 font-size:11px;

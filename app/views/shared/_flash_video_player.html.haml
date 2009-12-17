@@ -1,7 +1,7 @@
 - use_flashplayer
 
 - if (options[:thumbnail] != false) && object.has_thumbnail?
-  %a.video_player{:href => "#{object.url}", :id => dom_id(object), :style => "background-image:url(#{object.preview_url});width:320px;height:240px;"}
+  %a.video_player{:href => "#{object.url}", :id => dom_id(object), :style => "background-image:url(#{object.preview_url});width:#{options[:thumbnail_width]||320}px;height:#{options[:thumbnail_height]||240}px;"}
     = image_tag 'play_large.png', :alt => 'Play this video'
     .info
       = object.description
