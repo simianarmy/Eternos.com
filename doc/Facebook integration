@@ -2,10 +2,13 @@ Connect App: http://www.facebook.com/apps/application.php?id=82855842117
   SSL: http://wiki.developers.facebook.com/index.php/Facebook_Connect_Via_SSL
   
 Desktop App:
-http://www.facebook.com/apps/application.php?id=109701370954
+  http://www.facebook.com/apps/application.php?id=109701370954
 
+Eternos Facebook Page:
+  http://www.facebook.com/pages/Eternoscom/134291337425
+  
 Using BaseDomain to support multiple domains, single connect URL:
-http://wiki.developers.facebook.com/index.php/Supporting_Subdomains_In_Facebook_Connect
+  http://wiki.developers.facebook.com/index.php/Supporting_Subdomains_In_Facebook_Connect
 
 http://www.pathf.com/blogs/2008/07/getting-started-with-facebooker/
 

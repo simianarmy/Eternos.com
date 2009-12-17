@@ -15,7 +15,7 @@
     %label &nbsp;
     %em 6 characters minimum
   %p
-    %label confirm password:
+    %label{:style=>"padding-top: 0px"} confirm password:
     = f.password_field :password_confirmation
   %p{:align=>"center"}
-    = submit_tag "Sign Up"
+    = submit_tag "Sign Up", :style => "margin-left: 30px;"

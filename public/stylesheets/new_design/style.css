@@ -5,10 +5,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .header { width: 100%; height: 100px; border-bottom: 1px solid #CCCCCC; background: url(/images/clouds.gif) top right no-repeat;}
 .header DIV { width: 988px; margin: 0 auto;}
 .header IMG { float: left;}
-.header FORM { margin: 23px 10px 0 0; padding: 0; float: right;}
-.header INPUT[type=text] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777;}
-.header INPUT[type=submit] { background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer;}
-.header UL { margin: 15px 0 0 203px; padding: 0; float: left; width: 603px;}
+.header UL { margin: 15px 0 0 120px; padding: 0; float: left; width: 603px;}
 .header LI { display: inline;}
 .inact { margin: 0 0 0 13px; height: 32px; float: left;}
 .inact A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left01.png); display: block; height: 26px; padding: 6px 20px 0 30px; float: left; white-space: nowrap;}
@@ -88,10 +85,10 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .terms H1 { margin: 0 0 18px 0; padding: 0 0 20px 0; font-size: 26px; font-weight: normal; color: #000000;}
 
 /* Fixes by Japol */
-
+/* Login form top right */
 .header .new_user_session DIV { width: inherit;}
 .header .new_user_session { height: 35px;}
-.header .new_user_session {margin: 19px 10px 0 0; padding: 0; float: right;}
+.header .new_user_session {margin: 19px 90px 0 0; padding: 0; float: right;}
 .header .new_user_session #login, .header FORM #password {background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777; height: 15px; width: 150px;}
 .header .new_user_session #login { float: left;  vertical-align: middle; margin-left: 2px;}
 .header .new_user_session #password { float: left;  vertical-align: middle; margin-left: 2px;}  

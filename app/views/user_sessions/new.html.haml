@@ -3,7 +3,7 @@
 .content.what
   %fieldset
     .what01
-      = show_flash_messages
+      = show_flash_messages unless params[:home_login]
       = custom_error_messages_for :user
       = render :partial => 'shared/login_form', :locals => {:user_session => @user_session}
 
