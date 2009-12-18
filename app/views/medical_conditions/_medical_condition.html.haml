@@ -1,24 +1,23 @@
 - item = medical_condition
-#item_details_content
-  .details_head
-    %p=item_details_close_button
-    %p.posted
-  .image_post
-    = image_tag '/javascripts/timeline/icons/medic-cond.png'
-  .clearboth
-  %br
-  .message_content
-    %p= item.name
-    %br
-    %p= item.diagnosis
-    %br
-    %p= item.treatment
-  %p.detail
-
-  .clearboth
+- content_for :icon do
+  = image_tag '/javascripts/timeline/icons/medic-cond.png'
+- content_for :body do
   %p
+    %b Condition: 
+    = item.name
   %br
-  /= render :partial => 'shared/common_settings', :locals => {:object => item}
-%p
-%br
-.clearboth
+  %p
+    %b Diagnosis: 
+    = item.diagnosis
+    - if item.diagnosis_date
+      %br= item.diagnosis_date.to_s(:long)
+  %br
+  %p
+    %b Treatment: 
+    = item.treatment
+    - if item.treatment_start_on
+      %br== #{item.treatment_start_on} to #{item.treatment_end_on}
+  %p
+  %br= item.notes
+  
+= render :partial => 'shared/item_details', :locals => {:item => item}

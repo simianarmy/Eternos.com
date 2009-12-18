@@ -62,10 +62,9 @@ class BackupEmail < ActiveRecord::Base
   #     backup_source_user_id_eq(user_id)
   #   }
   
-  # thinking_sphinx
+  # thinking_sphinx - incomplete solution since we cannot index encrypted columns
   define_index do
     # fields
-    indexes subject
     indexes sender
     indexes tags(:name), :as => :tags
     

@@ -1,5 +1,6 @@
 class Family < ActiveRecord::Base
   belongs_to :profile
+  has_one :member, :through => :profile
   
   validates_presence_of :name, :message => "Please enter a name"
   validates_presence_of :family_type, :message => "Please specify a relationship"
@@ -7,7 +8,10 @@ class Family < ActiveRecord::Base
   TYPES = ["Brother","Sister","Mother","Father","Aunt","Uncle","Other"]
 
   acts_as_archivable :on => :birthdate
-	
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
+
 	include TimelineEvents
 	
 	# thinking_sphinx
@@ -20,4 +24,5 @@ class Family < ActiveRecord::Base
     # attributes
     has profile_id, birthdate, died_at
   end
+
 end   

@@ -2,10 +2,16 @@
 
 class MedicalCondition < ActiveRecord::Base
   belongs_to :profile
+  has_one :member, :through => :profile
   
   validates_presence_of :name, :message => "Please enter a name for the medical condition"
   
   acts_as_archivable :on => :diagnosis_date
+  acts_as_taggable
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
+  
   include TimelineEvents
   
   # thinking_sphinx

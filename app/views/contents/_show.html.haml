@@ -1,14 +1,21 @@
-- use_lowpro
-- use_busy
+- content_for :date_author do
+  = item.filename
+- content_for :icon do
+  = image_tag item.content_icon
+- content_for :body do
+  = restful_in_place_editor 'span', item, 'title', :object => 'content', :url => content_url(item)
+  %p
+  %br
+  = link_to_content(item)
+  %p
+  %br
+  #date_taken
+    = content_creation_date_label(item)
+    = content_date_select(item)
+    -#= observe_field :content_taken_at, :url => content_path(photo), :method => :put, :on => "blur", :with => "'content[taken_at]='+escape($('content_taken_at').value)"
+  %p
+  %br
+  = restful_in_place_editor 'span', item, 'description', :object => 'content', :url => content_url(item), :value => (item.description && !item.description.blank?) ? item.description : 'Add Description', :rows => 4
 
-%p
-%br
-= link_to_content(content)
-%p
-%strong Title: 
-= restful_in_place_editor 'span', content, 'title', :object => 'content', :url => content_url(content)
-%br
-= render :partial => 'shared/tags_ajax_field', :locals => {:object => content, :klass => 'content', :url => content_url(content)}
-%br
-%strong Description: 
-= restful_in_place_editor 'span', content, 'description', :object => 'content', :url => content_url(content), :value => (content.description.nil? or content.description.empty?) ? 'Add Description' : content.description, :rows => 4
+= render :partial => 'shared/item_details', :locals => {:item => item}
+

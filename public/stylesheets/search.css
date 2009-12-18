@@ -51,6 +51,11 @@ input.search-input {
 	color: #cccccc;
 }
 
+.res_full {
+	float: left;
+	width: 100%;
+}
+
 .result_sep {
 	clear: both;
 	height: 10px;

@@ -1,10 +1,11 @@
-#job[job]
-  %b Career
-  %p
-  %br
-  %br== Company: #{job.company}
+- item = job
+- content_for :icon do
+  = image_tag '/javascripts/timeline/icons/job.png'
+- content_for :body do
+  %b== Company: #{job.company}
   %br== Title: #{job.title}
   %br== #{job.description}
   %br== From #{job.start_at} to #{job.end_at ? job.end_at : 'present'}
   %br== #{job.notes}
   
+= render :partial => 'shared/item_details', :locals => {:item => item}

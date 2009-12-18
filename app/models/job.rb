@@ -2,8 +2,13 @@
 
 class Job < ActiveRecord::Base
   belongs_to :profile
-
+  has_one :member, :through => :profile
+  
   acts_as_archivable :on => :start_at
+  acts_as_taggable
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
   
   validates_presence_of :company, :message => "Please enter a company name"
   validates_presence_of :title, :message => "Please enter a job title"

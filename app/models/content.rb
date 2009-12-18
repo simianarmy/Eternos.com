@@ -233,19 +233,23 @@ class Content < ActiveRecord::Base
     d = duration ? (duration.to_i) / 1000 : 0
   end
   
+  def content_icon_path
+    "/javascripts/timeline/icons/"
+  end
+  
   # Returns image filename for content type
   def content_icon
-    case self.class.to_s
-    when "Audio"
-      "audio-small-icon.gif"
-    when "Music"
-      "audio-small-icon.gif"
-    when "Photo"
-      "picture-small-icon.gif"
-    when "Video"
-      "video-small-icon.gif"
-    when "WebVideo"
-      "video-small-icon.gif"
+    content_icon_path << case self
+    when Audio
+      "audio.png"
+    when Music
+      "music.png"
+    when Photo
+      "photo.png"
+    when Video, WebVideo
+      "movie.png"
+    else
+      'doc.png'
     end
   end
   

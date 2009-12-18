@@ -1,39 +1,23 @@
-- use_busy
-
 - item = backup_email
-#item_details_content
-  .details_head
-    %p=item_details_close_button
-    %p
-    .posted
-      .email_header_label From:
-      .email_header_content= mail_to(backup_email.sender, nil, :subject => "Re: #{backup_email.subject}")
-      %br
-      .email_header_label To:
-      .email_header_content= mail_to(backup_email.recipient, nil)
-      %br
-      .email_header_label Received:
-      .email_header_content= backup_email.received_at.to_s(:time_period_date_with_time)
-  .image_post
-    = image_tag 'email_accept.png'
-  .clearboth
+- content_for :date_author do
+  .email_header_label From:
+  .email_header_content= mail_to(backup_email.sender, nil, :subject => "Re: #{backup_email.subject}")
   %br
-  .message_content{:id => @id = dom_id(backup_email)}
-    %h3= item.subject
-    %p
-    %br
-    - @div = dom_id(backup_email, 'decrypted')
-    - @hide = dom_id(backup_email, 'hide')
-    - @busyid = dom_id(backup_email)
-    = link_to_remote 'View contents', :url => {:controller => 'backup_emails', :action => 'body', :id => backup_email.id, :method => 'get'}, :loading => "spinner.load('#{@busyid}')", :complete => "spinner.unload();", :html => {:id => 'view_link', :class => 'remote_form', :rel => "'{busy_id: #{@busy_id}}'"}
-    %div{:id => @div}
-    %div{:id => @hide, :style=>"display:none"}
-      = link_to_function "Hide", "$('#{@div}').update(); $('#{@hide}').hide(); $('view_link').show();"
-  .clearboth
+  .email_header_label To:
+  .email_header_content= mail_to(backup_email.recipient, nil)
+  %br
+  .email_header_label Received:
+  .email_header_content= backup_email.received_at.to_s(:time_period_date_with_time)
+- content_for :icon do
+  = image_tag 'email_accept.png'
+- content_for :body do
+  %h3= item.subject
   %p
   %br
-  = render :partial => 'shared/common_settings', :locals => {:object => item}
-%p
-%br
-.clearboth
-  
+  - @div = dom_id(backup_email, 'decrypted')
+  - @hide = dom_id(backup_email, 'hide')
+  - @busyid = dom_id(backup_email)
+  = link_to_remote 'View contents', :url => {:controller => 'backup_emails', :action => 'body', :id => backup_email.id, :method => 'get'}, :loading => "spinner.load('#{@busyid}')", :complete => "spinner.unload();", :html => {:id => 'view_link', :class => 'remote_form', :rel => "'{busy_id: #{@busy_id}}'"}
+  %div{:id => @div}
+  %div{:id => @hide, :style=>"display:none"}
+    = link_to_function "Hide", "$('#{@div}').update(); $('#{@hide}').hide(); $('view_link').show();"

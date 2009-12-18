@@ -1,7 +1,7 @@
-.search_result[object]
+#search-result.search_result[object]
   .res_thumb
     = search_thumbnail(object)
-  .res_text      
+  #result-main.res_text[object]
     .res_title
       = image_tag search_icon(object), :width => 20, :height => 20
       = search_title(object)
@@ -9,8 +9,10 @@
       = search_summary(object)
       %br
       %span.posted= search_date(object)
-    .res_link
-      = search_link(object)
     .res_tags
       = search_tags(object)
+    .res_link
+      = search_link(object)
+  .clearboth
+  #full_view.res_full[object]
 .result_sep

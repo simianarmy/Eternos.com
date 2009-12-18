@@ -1,20 +1,16 @@
 - item = family
-#item_details_content
-  .details_head
-    %p=item_details_close_button
-    %p.posted
-  .image_post
-    = image_tag 'family-member.png'
-  .clearboth
-  %br
-  .message_content
-    %p== #{h item.name}
-  %p.detail
-
-  .clearboth
+- content_for :icon do
+  = image_tag 'family-member.png'
+- content_for :body do
+  %b= family.name
   %p
   %br
-  /= render :partial => 'shared/common_settings', :locals => {:object => item}
-%p
-%br
-.clearboth
+  = family.family_type
+  %p
+  == Born on: #{family.birthdate.to_s(:long)}
+  - if family.died_at
+    %br== Died on: #{family.died_at.to_s(:long)}
+  %br== #{family.notes}
+
+= render :partial => 'shared/item_details', :locals => {:item => item}
+

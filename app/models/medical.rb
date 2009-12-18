@@ -1,9 +1,14 @@
 class Medical < ActiveRecord::Base
   belongs_to :profile
+  has_one :member, :through => :profile
   
-  validate do |medical|
-    medical.errors.add("", "Please enter a medical name") if medical.name.blank?
-  end
+  validates_presence_of :name, :message => "Please enter a name"
+  
+  acts_as_archivable :on => :created_at
+  acts_as_taggable
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
   
   include TimelineEvents
   

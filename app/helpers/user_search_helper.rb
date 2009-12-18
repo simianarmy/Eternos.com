@@ -7,7 +7,7 @@ module UserSearchHelper
     img = case obj
       # videos don't get clickable video - just thumb for now
     when WebVideo
-      image_tag obj.thumbnail_url, :width => 100, :height => 100
+      image_tag(obj.thumbnail_url, :width => 100, :height => 100) if obj.thumbnail_url
     when Content
       link_to_content(obj, :thumbnail_only => true, :thumbnail_width => 100, :thumbnail_height => 100)
     when FeedEntry
@@ -17,11 +17,11 @@ module UserSearchHelper
       end
     end  
 
-    img || 'icon thumbnail here'
+    img || '&nbsp;'
   end
 
   def search_icon(obj)
-    case obj
+    icon = case obj
     when FacebookActivityStreamItem
       'fb.png'
     when TwitterActivityStreamItem
@@ -32,9 +32,9 @@ module UserSearchHelper
       obj.content_icon
     when BackupEmail
       'email_accept.png'
-    else
-      'BROKEN'
     end
+    
+    icon || 'BROKEN'
   end
   
   def search_title(obj)
@@ -56,6 +56,8 @@ module UserSearchHelper
       obj.excerpts.preview
     when Content
       obj.excerpts.description
+    when ActivityStreamItem
+      obj.excerpts.message
     end
   end
   
@@ -68,7 +70,7 @@ module UserSearchHelper
     when Feed, FeedEntry
       link_to obj.url, obj.url, :target => '_new'
     else
-      search_details_link('Details', obj)
+      #search_details_link('Details', obj)
     end
   end
   
@@ -77,8 +79,11 @@ module UserSearchHelper
   end
   
   def search_details_link(name, obj)
-    link_to name, item_details_path(:id => current_user.id, :type => obj.class.to_s, 
-      :events => obj.id), :target => '_new'
+    spinner_dom = dom_id(obj, 'result-main')
+    link_to_remote name, :url => item_details_path(:id => current_user.id, :type => obj.class.to_s, 
+      :events => obj.id), :target => '_new', :update => dom_id(obj, 'full_view'), 
+      :loading => "spinner.load('#{spinner_dom}')", 
+      :complete => "spinner.unload()"
   end
 end
       

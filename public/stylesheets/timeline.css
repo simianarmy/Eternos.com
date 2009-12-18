@@ -541,7 +541,7 @@ a.event_list_inline_item:hover {
  *
  */
 
-#item_details_content {
+.item_details_content {
 	width: 95%;
 	height: auto;
 	padding: 5px 5px;
@@ -552,15 +552,15 @@ a.event_list_inline_item:hover {
 	-webkit-box-shadow: 5px 5px 5px #ccc;
 }
 
-#item_details_content .details_head {
+.item_details_content .details_head {
 	float: left;
 }
 
-#item_details_content .image_post {
+.item_details_content .image_post {
 	float: right;
 }
 
-#item_details_content .message_content {
+.item_details_content .message_content {
 	width: 60%;
 	line-height:17px;
 	text-align:justify;
@@ -570,12 +570,12 @@ a.event_list_inline_item:hover {
 	background: white;
 }
 
-#item_details_content .message_content p {
+.item_details_content .message_content p {
 	font-weight: bold;
 }
 
-#item_details_content .posted, 
-#item_details_content .detail,
+.item_details_content .posted, 
+.item_details_content .detail,
 #search-results .posted {
 margin-top:10px;
 color:#3860AB;

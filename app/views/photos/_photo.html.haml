@@ -1,14 +1,2 @@
-- use_lightview
-- use_calendar
+= render :partial => 'contents/show', :locals => {:item => photo}
 
-= render :partial => 'contents/show', :locals => { :content => photo }
-
-#date_taken
-  %strong Date Taken at:
-  = content_date_select(photo)
-
-= observe_field :content_taken_at, :url => content_path(photo), :method => :put, :on => "blur", :with => "'content[taken_at]='+escape($('content_taken_at').value)"
-
-= render :partial => 'contents/show_footer', :object => photo
-
-  

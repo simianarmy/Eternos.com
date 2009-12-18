@@ -1,23 +1,15 @@
 - item = twitter_activity_stream_item
-#item_details_content
-  .details_head
-    %p= item_details_close_button
-    %p.posted== On #{item.published_at.to_s(:long)}, #{item.author} tweeted: 
-  .image_post
-    = image_tag 'twitter.png'
-  .clearboth 
-  .message_content
-    - if item.thumbnail_url
-      = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
-    - elsif item.url
-      = link_to item.url, item.url
-    %p== "#{h item.message}"
-  %p.detail== Source: #{item.source}
-  .clearboth
-  %p
-  %br
-  = render :partial => 'shared/common_settings', :locals => {:object => item}
-%p
-%br
-.clearboth
+- content_for :date_author do
+  == On #{item.published_at.to_s(:long)}, #{item.author} tweeted: 
+- content_for :icon do
+  = image_tag 'twitter.png'
+- content_for :body do
+  - if item.thumbnail_url
+    = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
+  - elsif item.url
+    = link_to item.url, item.url
+  %p== "#{h item.message}"
+- content_for :details do
+  == Source: #{item.source}
 
+= render :partial => 'shared/item_details', :locals => {:item => item}

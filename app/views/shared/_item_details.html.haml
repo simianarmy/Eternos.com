@@ -1,0 +1,18 @@
+#item_details_content.item_details_content[item]
+  .details_head
+    %p=item_details_close_button(dom_id(item, 'item_details_content'))
+    %p.posted= yield :date_author
+  .image_post
+    = yield :icon
+  .clearboth
+  %br
+  .message_content
+    = yield :body
+  %p.detail= yield :details
+  .clearboth
+  %p
+  %br
+  = render :partial => 'shared/common_settings', :locals => {:object => item}
+%p
+%br
+.clearboth

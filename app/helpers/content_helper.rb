@@ -34,8 +34,10 @@ module ContentHelper
       link_to_video(object, options)
     when Recording
       link_to_video(object.content, options)
+    when Document
+      link_to object.filename + " (Right-click to download)", object.url unless options[:thumbnail_only]
     else
-      link_to object.title, polymorphic_path(object)
+      link_to object.title, polymorphic_path(object) unless options[:thumbnail_only]
     end
   end
   
@@ -79,7 +81,7 @@ module ContentHelper
   end
     
   def content_date_select(content)
-    calendar_date_select :content, :taken_at,
+    datetime_select_with_datepicker :content, :taken_at,
     	:after_close => remote_function(
     	  :url => content_path(content),
         :method => :put,
