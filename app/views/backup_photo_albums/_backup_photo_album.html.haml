@@ -1,0 +1,28 @@
+- item = backup_photo_album
+
+- content_for :date_author do
+  == Added on #{item.created_at.to_s(:long)}
+  - if item.created_at != item.updated_at
+    %br
+    == Last updated on #{item.updated_at.to_s(:long)}
+  %br
+  - if item.backup_source
+    == Source: #{item.backup_source.description}
+  - else
+    Source: Eternos Upload
+  %br
+  = pluralize(item.size, 'photo')
+  
+- content_for :icon do
+  = image_tag 'photo.png'
+- content_for :body do
+  = restful_in_place_editor 'span', item, :name, :value => item.name.empty? ? 'Enter Title' : item.name
+  %p
+  %br
+  = restful_in_place_editor 'span', item, 'description', :object => item.to_str, :url => backup_photo_album_url(item), :value => (item.description && !item.description.blank?) ? item.description : 'Add Description', :rows => 4
+  
+- content_for :details do
+  = "Location: #{item.location}" if item.location
+
+= render :partial => 'shared/item_details', :locals => {:item => item}
+

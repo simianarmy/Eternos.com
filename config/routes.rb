@@ -31,9 +31,6 @@ ActionController::Routing::Routes.draw do |map|
     :add_twitter => :get,
     :twitter_auth => :get
   }
-  map.resources :facebook_activity_stream_items
-  map.resources :twitter_activity_stream_items
-  
   map.resources :account_settings, :member => {
     :completed_steps => :get,
     },
@@ -57,6 +54,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :backup_emails
   map.connect 'backup_emails/body/:id', :controller => 'backup_emails', :action => 'body'
   map.resources :feed_entries
+  map.resources :backup_photo_albums
+  map.resources :facebook_activity_stream_items
+  map.resources :twitter_activity_stream_items
   
   # Redirect requests to flashrecorder xml config file to proper location
   map.connect ':anywhere/flashrecorder.xml', :controller => 'recordings', 

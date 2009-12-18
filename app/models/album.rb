@@ -7,4 +7,15 @@ class Album < ActiveRecord::Base
     }
   }
   named_scope :include_photos, :include => :photos
+  
+  # Returns content Photo object for the album cover
+  def cover_photo
+    # Try to avoid using invalid photos if there are multiple backup photos with the 
+    # same source photo id
+    photos.first
+  end
+  
+  def cover_photo_url
+    cover_photo.url rescue nil
+  end
 end

@@ -13,7 +13,12 @@ module UserSearchHelper
     when FeedEntry
       if obj.respond_to?(:screencap_url) && obj.screencap_thumb_url
         link_to image_tag(obj.screencap_thumb_url, :width => 100, :height => 100), 
-        obj.screencap_url, :class => 'lightview'
+        obj.screencap_url, :class => 'lightview', :rel => 'iframe'
+      end
+    when Album, BackupPhotoAlbum
+      if obj.cover_photo
+        link_to_lightview image_tag(obj.cover_photo.thumbnail_url), image_gallery_path(:album_id => obj.id), 
+          {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
       end
     end  
 

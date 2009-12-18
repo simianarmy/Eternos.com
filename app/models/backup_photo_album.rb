@@ -8,9 +8,16 @@ class BackupPhotoAlbum < ActiveRecord::Base
     end
   end
   has_many :content_photos, :through => :backup_photos, :source => :photo
+  has_one :owner, :through => :backup_source, :source => :member
   
   validates_presence_of :backup_source
   validates_uniqueness_of :source_album_id, :scope => :backup_source_id
+  
+  acts_as_restricted :owner_method => :owner
+  acts_as_archivable :on => :created_at
+  acts_as_time_locked
+  acts_as_taggable
+  acts_as_commentable
   
   alias_method :photos, :backup_photos
   
@@ -114,6 +121,11 @@ class BackupPhotoAlbum < ActiveRecord::Base
     end
   end
 
+  # Earliest photo's date or album create date
+  def start_date
+    backup_photos.any? ? backup_photos.oldest.added_at : created_at
+  end
+  
   def to_s
     "#{source_album_id} : #{name} : #{description}"
   end
