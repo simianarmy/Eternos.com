@@ -67,7 +67,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .what FIELDSET FIELDSET A:hover { text-decoration: underline;}
 
 /* about */
-.about01 { float: right; text-align: left; width: 546px; color: #02419E;}
+.about01 { float: right; text-align: left; width: 466px; padding-right: 90px; color: #02419E;}
 .about01 H1 { font-size: 26px; font-weight: normal; color: #000000;}
 
 
@@ -75,7 +75,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 
 .about03 H3 { font-size: 26px; font-weight: normal; color: #000000;}
-.about03 { width: 408px; color: #02419E; float: left;} 
+.about03 { width: 100%; color: #02419E; } 
 .about03 STRONG { font-size: 18px; font-weight: normal; display: block; margin-bottom: -10px;}
 .about03 IMG { float: left; margin: 0 22px 50px 0;}
 .about03 P { clear: both;}
@@ -102,7 +102,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 /* home */
 .what, .home { text-align: left;}
-.content { margin: 0 auto;}
+.content { margin: 0 auto; padding-left: 5px;}
 #user_full_name, #user_email, #user_password, #user_password_confirmation { width: 160px;}
 .home STRONG { font-weight: bold;}
 .home P { padding: 4px 0;}

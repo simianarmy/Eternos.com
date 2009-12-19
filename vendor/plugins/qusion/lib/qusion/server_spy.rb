@@ -4,7 +4,9 @@ module Qusion
   module ServerSpy
     extend self
     def server_type
-      if defined?(Mongrel) && defined?(Mongrel::MongrelProtocol)
+      if defined?(DaemonKit::Initializer)
+        :none
+      elsif defined?(Mongrel) && defined?(Mongrel::MongrelProtocol)
         :evented
       elsif defined?(Mongrel)
         :standard

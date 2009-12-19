@@ -3,7 +3,6 @@ class DecorationsController < ApplicationController
   require_role "Member"
   before_filter :login_required
   before_filter :load_parent
-  session :cookie_only => false, :only => :create
   
   def index
     @decorations = @parent.decorations

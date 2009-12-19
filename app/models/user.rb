@@ -95,6 +95,13 @@ class User < ActiveRecord::Base
   MemberRole        = 'Member'
   GuestRole         = 'Guest'
  
+  def deliver_password_reset_instructions!
+    reset_perishable_token!
+    spawn do
+      SubscriptionNotifier.deliver_password_reset(self)
+    end
+  end
+  
   # We are going to connect this user object with a facebook id. But only ever one account.
   def link_fb_connect(fb_user_id)
     unless fb_user_id.nil?

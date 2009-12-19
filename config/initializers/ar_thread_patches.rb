@@ -28,16 +28,3 @@ module ActiveRecord::ConnectionAdapters
 end
  
 
-class << Thread
-  alias orig_new new
-  def new
-    orig_new do
-      begin
-        yield
-      ensure
-        puts "Releasing db connection in thread: #{self}"
-        ActiveRecord::Base.connection_pool.release_connection
-      end
-    end
-  end
-end

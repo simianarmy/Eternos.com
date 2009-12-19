@@ -1,11 +1,10 @@
-- title 'Forgot Password'
-- stylesheet 'application'
+.content.what
+  %fieldset
+    .what01
+      %h1 Forgot Password
 
-%h1#page-header Forgot Password
-.yui-g
-  #forgot-password
-    = show_flash_messages
-    %p
-      - if @sent_email
-        If you do not receive the email within 1 hour, please
-      = link_to 'Contact Support', '/about/contact'
+      = show_flash_messages
+      %p
+        - if @sent_email
+          If you do not receive the email within 1 hour, please
+        = link_to 'Contact Support', '/about/contact'

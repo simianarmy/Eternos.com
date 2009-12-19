@@ -133,6 +133,7 @@ require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
+require 'message_queue'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 

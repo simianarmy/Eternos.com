@@ -8,18 +8,18 @@ module Bundler
   ENV["PATH"]     = "#{dir}/bin:#{ENV["PATH"]}"
   ENV["RUBYOPT"]  = "-r#{file} #{ENV["RUBYOPT"]}"
 
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-2.0.16/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-2.0.16/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-2.0.17/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-2.0.17/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-gateway-1.0.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-gateway-1.0.1/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/ext/json/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/contacts-1.0.18/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/contacts-1.0.18/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/bin")
@@ -51,14 +51,14 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/columnize-0.3.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/eventmachine-0.12.10/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/eventmachine-0.12.10/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/mysqlplus-0.1.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/mysqlplus-0.1.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/mash-0.1.1/bin")
@@ -189,16 +189,16 @@ module Bundler
   require "rubygems"
 
   @bundled_specs = {}
-  @bundled_specs["net-ssh"] = eval(File.read("#{dir}/specifications/net-ssh-2.0.16.gemspec"))
-  @bundled_specs["net-ssh"].loaded_from = "#{dir}/specifications/net-ssh-2.0.16.gemspec"
+  @bundled_specs["net-ssh"] = eval(File.read("#{dir}/specifications/net-ssh-2.0.17.gemspec"))
+  @bundled_specs["net-ssh"].loaded_from = "#{dir}/specifications/net-ssh-2.0.17.gemspec"
   @bundled_specs["net-ssh-gateway"] = eval(File.read("#{dir}/specifications/net-ssh-gateway-1.0.1.gemspec"))
   @bundled_specs["net-ssh-gateway"].loaded_from = "#{dir}/specifications/net-ssh-gateway-1.0.1.gemspec"
-  @bundled_specs["searchlogic"] = eval(File.read("#{dir}/specifications/searchlogic-2.3.2.gemspec"))
-  @bundled_specs["searchlogic"].loaded_from = "#{dir}/specifications/searchlogic-2.3.2.gemspec"
   @bundled_specs["json"] = eval(File.read("#{dir}/specifications/json-1.2.0.gemspec"))
   @bundled_specs["json"].loaded_from = "#{dir}/specifications/json-1.2.0.gemspec"
   @bundled_specs["contacts"] = eval(File.read("#{dir}/specifications/contacts-1.0.18.gemspec"))
   @bundled_specs["contacts"].loaded_from = "#{dir}/specifications/contacts-1.0.18.gemspec"
+  @bundled_specs["searchlogic"] = eval(File.read("#{dir}/specifications/searchlogic-2.3.2.gemspec"))
+  @bundled_specs["searchlogic"].loaded_from = "#{dir}/specifications/searchlogic-2.3.2.gemspec"
   @bundled_specs["json_pure"] = eval(File.read("#{dir}/specifications/json_pure-1.2.0.gemspec"))
   @bundled_specs["json_pure"].loaded_from = "#{dir}/specifications/json_pure-1.2.0.gemspec"
   @bundled_specs["SystemTimer"] = eval(File.read("#{dir}/specifications/SystemTimer-1.1.3.gemspec"))
@@ -229,14 +229,14 @@ module Bundler
   @bundled_specs["columnize"].loaded_from = "#{dir}/specifications/columnize-0.3.1.gemspec"
   @bundled_specs["linecache"] = eval(File.read("#{dir}/specifications/linecache-0.43.gemspec"))
   @bundled_specs["linecache"].loaded_from = "#{dir}/specifications/linecache-0.43.gemspec"
-  @bundled_specs["hpricot"] = eval(File.read("#{dir}/specifications/hpricot-0.8.2.gemspec"))
-  @bundled_specs["hpricot"].loaded_from = "#{dir}/specifications/hpricot-0.8.2.gemspec"
   @bundled_specs["shared-mime-info"] = eval(File.read("#{dir}/specifications/shared-mime-info-0.1.gemspec"))
   @bundled_specs["shared-mime-info"].loaded_from = "#{dir}/specifications/shared-mime-info-0.1.gemspec"
-  @bundled_specs["ruby-growl"] = eval(File.read("#{dir}/specifications/ruby-growl-1.0.1.gemspec"))
-  @bundled_specs["ruby-growl"].loaded_from = "#{dir}/specifications/ruby-growl-1.0.1.gemspec"
+  @bundled_specs["hpricot"] = eval(File.read("#{dir}/specifications/hpricot-0.8.2.gemspec"))
+  @bundled_specs["hpricot"].loaded_from = "#{dir}/specifications/hpricot-0.8.2.gemspec"
   @bundled_specs["eventmachine"] = eval(File.read("#{dir}/specifications/eventmachine-0.12.10.gemspec"))
   @bundled_specs["eventmachine"].loaded_from = "#{dir}/specifications/eventmachine-0.12.10.gemspec"
+  @bundled_specs["ruby-growl"] = eval(File.read("#{dir}/specifications/ruby-growl-1.0.1.gemspec"))
+  @bundled_specs["ruby-growl"].loaded_from = "#{dir}/specifications/ruby-growl-1.0.1.gemspec"
   @bundled_specs["mysqlplus"] = eval(File.read("#{dir}/specifications/mysqlplus-0.1.1.gemspec"))
   @bundled_specs["mysqlplus"].loaded_from = "#{dir}/specifications/mysqlplus-0.1.1.gemspec"
   @bundled_specs["mash"] = eval(File.read("#{dir}/specifications/mash-0.1.1.gemspec"))

@@ -38,13 +38,6 @@ class Member < User
     :conditions => { 'backup_states.items_saved' => true }
   }
   
-  def deliver_password_reset_instructions!
-    reset_perishable_token!
-    spawn do
-      SubscriptionNotifier.deliver_password_reset(self)
-    end
-  end
-  
   def backup_in_progress!
     (backup_state || build_backup_state).update_attribute(:in_progress, true)
   end

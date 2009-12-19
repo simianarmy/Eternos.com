@@ -9,4 +9,8 @@
         = show_flash_messages unless 
       = custom_error_messages_for :user
       = render :partial => 'shared/login_form', :locals => {:user_session => @user_session}
-
+      %p
+      %br
+      Not a member?  
+      = link_to "Signup now", new_account_path(:plan => 'Free'), {:id => "start_button", :class => "reg-btn"}
+      
