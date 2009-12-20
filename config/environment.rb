@@ -114,6 +114,9 @@ Rails::Initializer.run do |config|
     # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
     include ActionController::UrlWriter
     default_url_options[:host] = AppConfig.base_domain
+    
+    # This seems unnecessary if indexes are rebuilt by cron
+    ThinkingSphinx.updates_enabled = false
   end
 end
 
@@ -159,5 +162,6 @@ Spawn::method :yield, 'test' # Don't fork in tests
 # Switch from REXML to Nokogiri for XML parsing since we use Nokogiri for 
 # feed parsing already
 ActiveSupport::XmlMini.backend = 'Nokogiri'
+
 
 
