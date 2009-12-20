@@ -49,8 +49,6 @@ end
 
 module ActiveRecord
   class Base
-    extend Searchable
-    
     def to_str
       self.class.to_s.underscore
     end

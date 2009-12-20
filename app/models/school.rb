@@ -3,12 +3,15 @@
 class School < ActiveRecord::Base
   belongs_to :profile
   belongs_to :country
+  has_one :member, :through => :profile
   
   acts_as_archivable :on => :start_at
-
-  validate do |school|
-    school.errors.add("", "Please enter a school name") if school.name.blank?
-  end
+  acts_as_taggable
+  acts_as_restricted :owner_method => :member
+  acts_as_commentable
+  acts_as_time_locked
+  
+  validates_presence_of :name, :message => "Please enter a school name"
 
   include TimelineEvents
 

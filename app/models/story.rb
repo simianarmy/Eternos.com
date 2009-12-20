@@ -34,13 +34,7 @@ class Story < ActiveRecord::Base
     self.instance_of? Story
   end
   
-  #searches_on :title, :description
-  
   # Class methods
-  
-  def self.search_text(query)
-    search query
-  end
   
   # Returns all stories viewable by logged in user (or specified user param)
   def self.viewable_stories(user)

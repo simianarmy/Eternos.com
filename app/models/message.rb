@@ -21,14 +21,9 @@ class Message < ActiveRecord::Base
   validates_presence_of :message, :message => "Please enter a message"
   validates_as_time_period
   
-  searches_on :title, :message
   xss_terminate :except => [:message]
   
   # Class methods
-  
-  def self.search_text(query, user)
-    search(query) + Tagging.search(query, :user_id => user.id, :taggable_type => self.to_s).map(&:taggable)
-  end
   
   # Instance methods
   

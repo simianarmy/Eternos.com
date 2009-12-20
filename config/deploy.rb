@@ -91,11 +91,6 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/assets"
   end
   
-  task :build_native do
-    rake = fetch(:rake, 'rake')
-    run "cd #{current_path}; #{sudo} #{rake} gems:build"
-  end
-  
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
     run "cd #{current_path} && whenever -s environment=#{stage} --update-crontab #{application}"

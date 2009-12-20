@@ -34,7 +34,6 @@ class Content < ActiveRecord::Base
   acts_as_av_attachable
   
   validates_presence_of :title, :message => "Please Enter a Title"
-  searches_on 'contents.filename'
   
   serialize_with_options do
     methods :url, :thumbnail_url
@@ -118,21 +117,6 @@ class Content < ActiveRecord::Base
   # Defaults to Document if no matches
   def self.class_from_content_type(content_type='')
     types.detect {|t| t.constantize.content_types.include?(content_type) } || 'Document'
-  end
-  
-  def self.search_text(query, opts={})
-    res ||= []
-
-    with_options :order => opts[:order_by], :include => [:thumbnails] do |s|
-      if not query.blank?
-        res = s.search query
-      else
-        res = s.find(:all)
-      end
-    end
-    
-    # Strip out thumbnails and descriptive recordings
-    res.delete_if { |c| !c.recording? }
   end
   
   # Instance methods
