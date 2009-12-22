@@ -1,5 +1,5 @@
 %h2= title
-= image_tag(img, :align => img_align, :style => "float: #{cycle('left', 'right')};")
+= image_tag(img, :align => img_align, :style => "float: #{cycle('left', 'right')};") unless img.blank?
 %p= text
-%p= link_to 'Learn More &gt;&gt;', '#'
+/%p= link_to 'Learn More &gt;&gt;', '#'
 %hr
