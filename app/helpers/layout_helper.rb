@@ -15,6 +15,7 @@ module LayoutHelper
       RAILS_DEFAULT_LOGGER.debug "Clearing js includes"
       LayoutHelper.js = []
       LayoutHelper.google_api_loaded = false
+      LayoutHelper.prototype_loaded = false
       LayoutHelper.jquery_loaded = false
     end
   end

@@ -58,7 +58,7 @@ module ActiveRecord
       alias_method :connection_without_cleanup_connection_check, :connection
       def connection(*a)
         if ! Thread.current[:__AR__cleanup_connection]
-          puts "connection called outside of cleanup_connection block", caller, "\n"
+#          puts "connection called outside of cleanup_connection block", caller, "\n"
         end
         connection_without_cleanup_connection_check(*a)
       end

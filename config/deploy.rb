@@ -50,7 +50,7 @@ namespace :deploy do
 
   desc "Stops work daemons"
   task :stop_daemons, :roles => [:app] do
-    thinking_sphinx.stop
+    #thinking_sphinx.stop
     run "god stop eternos_#{stage}"
   end
 
@@ -174,8 +174,8 @@ after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:update_crontab"
 
 after "deploy:symlink", "deploy:symlink_shared"
-after "deploy:symlink_shared", "deploy:build_sphinx_index"
-after "deploy:symlink", "deploy:start_daemons"
+#after "deploy:symlink_shared", "deploy:build_sphinx_index"
+#after "deploy:symlink", "deploy:start_daemons"
 after "deploy:symlink", "deploy:sendmail"
 
 

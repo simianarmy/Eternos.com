@@ -13,6 +13,7 @@ common: &default_settings
   # discounts, etc.  This is prepended to base_domain, so 'admin'
   # here will allow admin.example.com to serve the admin interface.
   admin_subdomain: admin
+  default_plan: Free
   
 development:
   <<: *default_settings
