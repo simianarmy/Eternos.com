@@ -24,5 +24,5 @@
       /%span.alignright= link_to_function 'Hide', "$('recording_instructions').hide()"
     .clearboth
     
-#recorder= swfobject_tag "/swf/Recorder.swf?userid=#{current_user.id}", :div_id => "recorder", :size => "640x480", :flash_version => 7, :parameters => {:movie => "Recorder.swf?userid=#{current_user.id}", :quality => "high"}, :variables => {:quality => 'high'}
+#recorder= swf_object "/swf/Recorder.swf?userid=#{current_user.id}", "recorder", :version => "7", :width => 640, :height => 480, :params => {:movie => "Recorder.swf?userid=#{current_user.id}", :quality => "high", :size => "640x480"}, :flash_vars => {:quality => 'high'}
 

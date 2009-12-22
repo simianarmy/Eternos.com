@@ -2,6 +2,8 @@
 
 # Supports number of twitter gems 
 
+require 'twitter_oauth'
+
 module TwitterBackup
   # Uses TwitterOAuth::Client object from twitter_oauth gem
   class << self
