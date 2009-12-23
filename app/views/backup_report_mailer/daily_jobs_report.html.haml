@@ -4,29 +4,31 @@
 - @data.each_pair do |member, stats|
   %h3= "User #{member.name} (#{member.id})"
   %br
-  - stats.each do |data|
-    %span{:style=>"font-weight: bold"} 
-      Backing up: 
-      = data[:source_jobs].map{ |s| s.backup_source.backup_site.name rescue nil}.compact.uniq.join(', ')
+  - @sites = stats.map{|s| s[:source_jobs]}.flatten.map{ |j| j.backup_source.backup_site.name rescue nil}.compact.uniq
+  %span{:style=>"font-weight: bold"} 
+    Backing up: 
+    = @sites.join(', ')
+  %br
+  Latest backup job:
+  = render :partial => 'backup_job_status', :locals => {:job => stats.last[:job]}
+  - if (err = stats.select{|s| s[:job].has_errors?}).any?
     %br
-    - @job = data[:job]
-    = render :partial => 'backup_job_status', :locals => {:job => @job}
+    %span{:style=>"font-weight: bold"} Most recent errors:
+    %br
+    - data = err.last
     / Show each backup source job with errors
-    - if @job.has_errors?
+    - data[:source_jobs].reject{|j| !j.has_errors?}.each do |j|
+      %span{:style=>"font-weight: bold"} 
+        Backup Source: 
+        - if j.backup_source && j.backup_source.backup_site
+          = j.backup_source.backup_site.name
+        - else
+          Unknown backup source or site name!
       %br
-      - data[:source_jobs].reject{|j| !j.has_errors?}.each do |j|
-        %span{:style=>"font-weight: bold"} 
-          Backup Source: 
-          - if j.backup_source && j.backup_source.backup_site
-            = j.backup_source.backup_site.name
-          - else
-            Unknown backup source or site name!
-        %br
-        = render :partial => 'backup_job_status', :locals => {:job => j}
-        %br
-        %span{:style=>"font-weight: bold"}= j.error_messages.to_s
+      = render :partial => 'backup_job_status', :locals => {:job => j}
+      %br
+      %span{:style=>"font-weight: bold"}= j.error_messages.to_s
     %br
-    %p
   %br
   %h3 Backup State
   %br

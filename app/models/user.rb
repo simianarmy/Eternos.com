@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
     { :conditions => ["CONCAT_WS(' ', first_name, last_name) = ?", n] }
   }
   
-  named_scope :active, :conditions => { :state => 'live' }
+  named_scope :active, :conditions => { 'users.state' => 'live' }
   
   #Member.active.find_all(&:has_backup_data?).size
   

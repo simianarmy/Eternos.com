@@ -71,7 +71,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .about01 H1 { font-size: 26px; font-weight: normal; color: #000000;}
 
 
-.about02 H2 { color: #02419E; font-size: 21px; font-weight: normal;}
+.about02 H2 { color: #02419E; font-size: 24px; font-weight: normal;}
 
 
 .about03 H3 { font-size: 26px; font-weight: normal; color: #000000;}
@@ -115,6 +115,6 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .what STRONG { font-weight: bold; color: #5F5F5F;}
 
 /* about */
-.about02 { width: 390px; height: 248px; margin-bottom: 25px; padding: 15px 8px 0 8px; background: url(/images/about01.gif) no-repeat; text-align: center;}
+.about02 { width: 390px; height: 240px; margin-bottom: 25px; padding: 35px 8px 0 8px; background: url(/images/about01.gif) no-repeat; text-align: center;}
 .about03 P { color: #02419E;}
 
