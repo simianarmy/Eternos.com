@@ -1,8 +1,9 @@
 - if current_user
-  Logged in as
-  = link_to(facebook_name_or_login(current_user), member_home_path)
-  | 
-  = link_to('Logout', logout_path)
+  - form_for user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
+    Logged in as
+    = link_to(facebook_name_or_login(current_user), member_home_path)
+    | 
+    = link_to('Logout', logout_path)
 - else
   - form_for user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
     /= link_to 'Login', login_path

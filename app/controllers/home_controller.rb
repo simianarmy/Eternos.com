@@ -1,7 +1,7 @@
 # $Id$
 class HomeController < ApplicationController
   before_filter :set_facebook_connect_session
-  before_filter :redirect_if_logged_in, :only => :index
+  #before_filter :redirect_if_logged_in, :only => :index
 
   layout 'public'
   

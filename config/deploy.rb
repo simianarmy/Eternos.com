@@ -175,7 +175,7 @@ after "deploy:symlink", "deploy:publish_robots_file"
 
 after "deploy:symlink", "deploy:symlink_shared"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
-#after "deploy:symlink", "deploy:start_daemons"
+after "deploy:symlink", "deploy:start_daemons"
 after "deploy:symlink", "deploy:sendmail"
 
 
