@@ -24,10 +24,17 @@ module TimelinesHelper
     end
   end
 
-  # Displays backup job progress bar
+  # Displays backup job progress bar with ajax periodic executer code
   def backup_progress_bar(job)
+    bar_id = dom_id(job, 'complete')
+    bar_js_name = bar_id + 'PB'
+    opts = {}
+    unless job.finished?
+      opts[:periodic_update_url] = progress_backup_source_job_path(job) 
+      opts[:on_progress_tick] = "backupProgressBar.onProgressChange" 
+    end
     backup_progress_icon(job.backup_source.backup_site.name) + " " +
-    progress_bar(dom_id(job, 'complete'), (job.percent_complete.to_f/100), false, true)
+      progress_bar(bar_id, (job.percent_complete.to_f/100), false, true, opts)
   end
   
   def backup_progress_icon(name)

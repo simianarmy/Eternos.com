@@ -31,6 +31,7 @@ ActionController::Routing::Routes.draw do |map|
     :add_twitter => :get,
     :twitter_auth => :get
   }
+  map.resources :backup_source_jobs, :member => { :progress => :get }
   map.resources :account_settings, :member => {
     :completed_steps => :get,
     },

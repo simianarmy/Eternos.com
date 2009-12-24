@@ -164,7 +164,6 @@ CUTYCAPT
   task :symlink_sphinx_indexes, :roles => [:app] do
     run "ln -nfs #{shared_path}/db/sphinx #{current_path}/db/sphinx"
   end
-  
 end
 
 before "deploy:update_code", "deploy:stop_daemons"

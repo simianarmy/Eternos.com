@@ -7,22 +7,24 @@
       = backup_progress_bar(job)
       
       .backup_tip{:id => @tipid = dom_id(job, 'tip'), :style => "display: none;"}
-        %span{:style=>"font-weight: bold"}
+        %span.bold
           = job.backup_source.description
-          
-          %br
-          == #{job.percent_complete}% Complete
+        %br
+        %span.bold.job_percent_complete== #{job.percent_complete}
+        %span.bold % Complete
+        .job_status
           - if job.finished?
             - if !job.successful? 
               (Failed)
           - else
             (Running)
         %br
-        - if job.finished_at
-          == Finished #{distance_of_time_in_words(job.finished_at, Time.now)} ago
-          %br
-        - if sched = job.backup_source.next_backup_at
-          == Next backup in #{distance_of_time_in_words(Time.now, sched)}
+        .job_finish_time
+          - if job.finished_at
+            == Finished #{distance_of_time_in_words(job.finished_at, Time.now)} ago
+            %br
+          - if sched = job.backup_source.next_backup_at
+            == Next backup in #{distance_of_time_in_words(Time.now, sched)}
   #hideit{:style => "float: right;"}
     = link_to_function 'hide', "$('backups').hide();"
   .clear &nbsp;

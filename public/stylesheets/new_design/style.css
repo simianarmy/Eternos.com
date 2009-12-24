@@ -95,7 +95,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .header .new_user_session INPUT[type=submit] { background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; margin-left: 2px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer; vertical-align: middle; margin-top: -2px;}
 .footer { clear: both;}
 
-.home OBJECT { width: 493px; height: 288px; float: left; margin-right: 10px;}
+.home OBJECT { width: 493px; height: 358px; float: left; margin-right: 10px;}
 .footer UL { text-align: left; margin: 0 auto 20px auto; display: table}
 .footer { text-align: center;}
 .footer P { clear: both;}
