@@ -3,6 +3,7 @@
 require 'tmail'
 require 'ezcrypto'
 require 'singleton'
+require 'attr_encrypted'
 
 class BackupEmail < ActiveRecord::Base
   class EncryptionError < Exception; end

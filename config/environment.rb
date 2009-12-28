@@ -126,7 +126,6 @@ require 'load_email_configuration'
 require 's3_helper'
 require 'timeline_events'
 require 'facebook_desktop'
-require 'custom_encryptor'
 require 'facebook_user_profile'
 require 'message_queue'
 # For saas
@@ -140,7 +139,6 @@ require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
-require 'attr_encrypted'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 

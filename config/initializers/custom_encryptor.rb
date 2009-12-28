@@ -50,11 +50,11 @@ module Eternos
     end
 
     def self.key_encrypt(options)
-      options[:encode] && false ? secret_key.encrypt64(options[:value]) : secret_key.encrypt(options[:value])
+      options[:encode] ? secret_key.encrypt64(options[:value]) : secret_key.encrypt(options[:value])
     end
 
     def self.key_decrypt(options)
-      secret_key.decrypt(options[:value])
+      options[:encode] ? secret_key.decrypt64(options[:value]) : secret_key.decrypt(options[:value])
     rescue OpenSSL::CipherError
       RAILS_DEFAULT_LOGGER.exception "Exception in key_decrypt: " + $!
       return nil

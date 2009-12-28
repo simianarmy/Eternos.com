@@ -4,11 +4,12 @@
 - hide_login_box
 
 .content
-  %h1 Create Account
+  %h1 Create your account
   #share-your-life
     %h2 Begin sharing your life.
     %p Your story begins here. Sign up and begin using Eternos to chronicle your life for your beloved descendants.
-  
+  %p
+  %br
   #create-account-fb-connect
     = fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :long)
     %br

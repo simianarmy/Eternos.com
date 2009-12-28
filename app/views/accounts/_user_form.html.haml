@@ -41,6 +41,6 @@
       %p.captcha_box
         = recaptcha_tags :ssl => request.ssl?
     
-  %p
+  %p.input
     %br
     = submit_tag 'continue', :value => 'Continue', :class => "submit"

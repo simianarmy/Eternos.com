@@ -3,11 +3,13 @@
 <% use_timeline %>
 <% use_flashplayer %>
 
-<% header @member_name %>
+<% content_for(:header) do %>
+  <%= @member_name %>
+  <div id="searchbar" style="float: right">
+    <%= render :partial => 'shared/search_box', :locals => {:url => user_search_path} %>
+  </div>
+<% end %>
 
-<div id="searchbar" style="float: right">
-  <%= render :partial => 'shared/search_box', :locals => {:url => user_search_path} %>
-</div>
 <div class="clearboth"></div>
 <div id="content-container3">
   <div id="timeline-top">
