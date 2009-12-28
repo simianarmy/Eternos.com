@@ -47,28 +47,21 @@ class ContentsController < ApplicationController
     @content.owner = current_user
     
     respond_to do |format|
-      # If SwfUpload + Ajax upload
-      if params[:Filename]
-        result = AjaxFileUpload.save(@content)
-        format.html {
+      # Must use 'any' for compatibility with IE text/* accept headers
+      format.any {
+        if params[:Filename]
+          result = AjaxFileUpload.save(@content)
+
+          RAILS_DEFAULT_LOGGER.debug "RENDERING any #{result.to_json}"
           render :json => result.to_json
-        }
-        format.js {
-          render :json => result.to_json
-        }
-        format.xml {
-          render :xml => result.to_xml
-        }
-      elsif @content.save
-        format.html {
+
+        elsif @content.save
           flash_redirect "File succesfully uploaded", contents_path
-        }
-      else
-        flash[:error] = "Error uploading file!"
-        format.html {
+        else
+          flash[:error] = "Error uploading file!"
           render :action => :new
-        }
-      end
+        end
+      }
     end
   end
   
