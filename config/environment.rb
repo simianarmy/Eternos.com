@@ -122,21 +122,25 @@ end
 
 # Load email config
 require 'load_email_configuration'
+# custom libs
 require 's3_helper'
 require 'timeline_events'
 require 'facebook_desktop'
+require 'custom_encryptor'
+require 'facebook_user_profile'
+require 'message_queue'
 # For saas
 require 'association_proxy'
+# 3rd party libs 
 require 'rvideo'
 require 'mime/types'
 require 'shared-mime-info'
-require 'facebook_user_profile'
 require 'whenever' # For Capistrano requirement
 require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
-require 'message_queue'
+require 'attr_encrypted'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 

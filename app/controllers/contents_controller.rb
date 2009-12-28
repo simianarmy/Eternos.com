@@ -47,18 +47,28 @@ class ContentsController < ApplicationController
     @content.owner = current_user
     
     respond_to do |format|
-      format.html {
-        # If SwfUpload + Ajax upload
-        if params[:Filename]
-          result = AjaxFileUpload.save(@content)
+      # If SwfUpload + Ajax upload
+      if params[:Filename]
+        result = AjaxFileUpload.save(@content)
+        format.html {
           render :json => result.to_json
-        elsif @content.save
+        }
+        format.js {
+          render :json => result.to_json
+        }
+        format.xml {
+          render :xml => result.to_xml
+        }
+      elsif @content.save
+        format.html {
           flash_redirect "File succesfully uploaded", contents_path
-        else
-          flash[:error] = "Error uploading file!"
+        }
+      else
+        flash[:error] = "Error uploading file!"
+        format.html {
           render :action => :new
-        end
-      }
+        }
+      end
     end
   end
   

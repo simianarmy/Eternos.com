@@ -8,6 +8,8 @@ class BackupSource < ActiveRecord::Base
   has_many :backup_source_jobs
   
   #after_create :cb_after_create_init_backup
+  # The new hotness
+  attr_encrypted :auth_login, :auth_password, :key => 'peek a choo moo', :prefix => '', :suffix => '_enc'
   
   named_scope :by_site, lambda {|name|
     {

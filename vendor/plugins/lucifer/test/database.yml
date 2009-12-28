@@ -11,8 +11,8 @@ postgresql:
   :database: lucifer_plugin_test
   :min_messages: ERROR
 mysql:
-  :adapter: mysql
-  :host: localhost
-  :username: root
-  :password:
-  :database: lucifer_plugin_test
+  adapter: mysql
+  database: eternos_test
+  username: devel
+  password: devel0p
+  socket: /tmp/mysql.sock

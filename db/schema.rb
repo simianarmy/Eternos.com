@@ -110,7 +110,6 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.integer  "backup_source_id",  :null => false
     t.string   "message_id"
     t.string   "mailbox"
-    t.string   "subject"
     t.binary   "subject_encrypted"
     t.string   "sender"
     t.string   "s3_key"
@@ -227,8 +226,8 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.string   "type"
     t.string   "auth_login"
     t.string   "auth_password"
-    t.binary   "auth_login_enc"
-    t.binary   "auth_password_enc"
+    t.string   "auth_login2_enc"
+    t.string   "auth_password2_enc"
     t.string   "rss_url"
     t.boolean  "auth_confirmed",         :default => false, :null => false
     t.string   "auth_error"

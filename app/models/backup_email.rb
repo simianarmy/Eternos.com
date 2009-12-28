@@ -16,7 +16,12 @@ class BackupEmail < ActiveRecord::Base
   attr_reader :raw_email
   alias_attribute :bytes, :size
 
-  encrypt_attributes :suffix => '_encrypted'
+  # The new encryption with attr_encrypted gem
+  # Using suffix & encode options in order to decode existing Lucifer-encrypted values
+  attr_encrypted :subject, :prefix => '', :suffix => '_encrypted', :key => 'i am a key', 
+    :encryptor => Eternos::Encryptor, :encode => false
+  # The old encryption with lucifer plugin
+  #encrypt_attributes :suffix => '_encrypted'
   
   acts_as_archivable :on => :received_at
   acts_as_taggable
@@ -43,7 +48,6 @@ class BackupEmail < ActiveRecord::Base
   #     only :id, :sender
   #     methods :start_date, :subject
   #   end
-  
   acts_as_archivable :on => :received_at
   acts_as_saved_to_cloud
   
@@ -57,6 +61,8 @@ class BackupEmail < ActiveRecord::Base
         :conditions => ['backup_sources.user_id = ?', id]
       }
   }
+  named_scope :message_ids, :select => 'message_id'
+  
   # don't use until searchlogic 2.3.2+
   # scope_procedure :belonging_to_user, lambda { |user_id| 
   #     backup_source_user_id_eq(user_id)

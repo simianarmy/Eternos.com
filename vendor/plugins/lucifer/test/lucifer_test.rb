@@ -1,14 +1,4 @@
-require 'test/unit'
-require File.expand_path(File.join(File.dirname(__FILE__), '../../../../config/environment.rb'))
-require 'rubygems'
-
-config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
-ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + '/debug.log')
-ActiveRecord::Base.configurations = {'test' => config[ENV['DB'] || 'sqlite3']}
-ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
-
-load(File.dirname(__FILE__) + '/schema.rb')
-
+require File.join(File.dirname(__FILE__), 'test_helper')
 require File.join(File.dirname(__FILE__), 'person')
 
 class LuciferTest < Test::Unit::TestCase
@@ -34,10 +24,9 @@ class LuciferTest < Test::Unit::TestCase
     assert_not_equal '000-00-0000', person.ssn_b
   end
   
-  def test_decrypt_columns_on_load
+  def test_decrypt_column_on_attribute_access
     id = Person.create(:name=>'Bob', :ssn=>'999-99-9999').id
     person = Person.find id
     assert_equal '999-99-9999', person.ssn
   end
-  
 end

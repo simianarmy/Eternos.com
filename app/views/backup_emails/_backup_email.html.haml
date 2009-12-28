@@ -1,4 +1,5 @@
 - item = backup_email
+
 - content_for :date_author do
   .email_header_label From:
   .email_header_content= mail_to(backup_email.sender, nil, :subject => "Re: #{backup_email.subject}")
@@ -21,3 +22,5 @@
   %div{:id => @div}
   %div{:id => @hide, :style=>"display:none"}
     = link_to_function "Hide", "$('#{@div}').update(); $('#{@hide}').hide(); $('view_link').show();"
+
+= render :partial => 'shared/item_details', :locals => {:item => item}

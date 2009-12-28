@@ -79,6 +79,12 @@ describe BackupEmail do
       @email.email = raw_email
     end
     
+    it "subject should be encrypted" do
+      @email.subject.should_not be_blank 
+      @email.subject_encrypted.should_not be_blank
+      @email.subject.should_not == @email.subject_encrypted
+    end
+
     it "should create a file containing raw email" do
       File.exists?(@email.temp_filename).should be_true
     end

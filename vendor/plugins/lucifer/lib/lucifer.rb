@@ -6,7 +6,6 @@ module Lucifer
   module ClassMethods
     def encrypt_attributes(options = {})
       return if self.included_modules.include? Lucifer::InstanceMethods
-      __send__ :include, Lucifer::InstanceMethods
       
       cattr_accessor :encrypted_columns, :decrypted_columns, :key, :suffix, :key_file
       
@@ -15,7 +14,11 @@ module Lucifer
       
       self.encrypted_columns = columns.select{|col| col.type == :binary && col.name.ends_with?(suffix)}.collect(&:name)  
       self.decrypted_columns = encrypted_columns.collect{|col| col.chomp suffix }
-      decrypted_columns.each { |col| attr_accessor col }
+      decrypted_columns.each do |col| 
+        attr_accessor col
+      end
+      
+      include Lucifer::InstanceMethods
       
       before_save :encrypt_columns
       
