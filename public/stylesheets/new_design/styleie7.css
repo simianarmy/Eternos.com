@@ -1,1 +1,4 @@
 .header UL { margin: 14px 0 0 203px;}
+.header FORM { width: 76px; height: 30px; float: right; margin: 0; padding: 0;}
+#intro_movie { float:left; height:358px; margin-right:10px; width:493px;}
+#new_account_form LABEL { clear: left;}
