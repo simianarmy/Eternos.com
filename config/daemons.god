@@ -7,7 +7,8 @@
 RAILS_ROOT  = File.dirname(File.dirname(__FILE__))
 # sucks but no reliable way to get rails env from environment vars in God
 # determine rails env from rails root directory name
-RAILS_ENV = (RAILS_ROOT =~ /eternos.com(_\w+)/) || 'production'
+
+RAILS_ENV = (RAILS_ROOT =~ /eternos.com_(\w+)/) ? $1 : 'production'
 
 def generic_monitoring(w, options = {})
   w.start_if do |start|
@@ -47,13 +48,13 @@ def generic_monitoring(w, options = {})
 end
 
 God.watch do |w|
-  script = "cd #{RAILS_ROOT} && /usr/bin/env RAILS_ENV=#{RAILS_ENV} ./script/workling_client"
+  script = "workling_client"
   w.name = "eternos-workling_#{RAILS_ENV}"
   w.group = "eternos_#{RAILS_ENV}"
   w.interval = 60.seconds
-  w.start = "#{script} start"
-  w.restart = "#{script} restart"
-  w.stop = "#{script} stop"
+  w.start = "/usr/bin/env RAILS_ENV=#{RAILS_ENV} #{RAILS_ROOT}/script/#{script} start"
+  w.restart = "/usr/bin/env RAILS_ENV=#{RAILS_ENV} #{RAILS_ROOT}/script/#{script} restart"
+  w.stop = "/usr/bin/env RAILS_ENV=#{RAILS_ENV} #{RAILS_ROOT}/script/#{script} stop"
   w.start_grace = 20.seconds
   w.restart_grace = 20.seconds
   w.pid_file = "#{RAILS_ROOT}/log/workling.pid"
