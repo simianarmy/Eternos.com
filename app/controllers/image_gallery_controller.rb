@@ -26,7 +26,15 @@ class ImageGalleryController < ApplicationController
     @albums = s.all.
       compact.sort {|a,b| b.created_at <=> a.created_at}.
       # Convert each album to json in gallery format
-      map{|al| al.to_json(:gallery)}.join(',')
+      map do |al|
+        begin
+          al.to_json(:gallery) 
+        rescue Exception => e
+          RAILS_DEFAULT_LOGGER.error "Exception in to_json(:gallery) for album #{al.id}: #{e.to_s}"
+          # return empty hash?
+          {}
+        end
+      end.join(',')
     @albums.gsub!('"{', '{')
     @albums.gsub!('}"', '}')
     @albums.gsub!('content_photos', 'photos')

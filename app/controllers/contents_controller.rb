@@ -51,10 +51,7 @@ class ContentsController < ApplicationController
       format.any {
         if params[:Filename]
           result = AjaxFileUpload.save(@content)
-
-          RAILS_DEFAULT_LOGGER.debug "RENDERING any #{result.to_json}"
           render :json => result.to_json
-
         elsif @content.save
           flash_redirect "File succesfully uploaded", contents_path
         else

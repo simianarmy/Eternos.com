@@ -1,4 +1,5 @@
 # $Id$
+require 'attr_encrypted'
 
 class BackupSource < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
@@ -9,7 +10,7 @@ class BackupSource < ActiveRecord::Base
   
   #after_create :cb_after_create_init_backup
   # The new hotness
-  attr_encrypted :auth_login, :auth_password, :key => 'peek a choo moo', :prefix => '', :suffix => '_enc'
+  attr_encrypted :auth_login2, :auth_password2, :key => 'peek a choo moo', :prefix => '', :suffix => '_enc'
   
   named_scope :by_site, lambda {|name|
     {
