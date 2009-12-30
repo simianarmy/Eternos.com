@@ -16,9 +16,6 @@ class BackupPhoto < ActiveRecord::Base
   
   include TimelineEvents
   
-  # Virtual attributes
-  attr_accessor :owner
-  
   state :pending_download
   state :downloading, :enter => :download
   state :downloaded

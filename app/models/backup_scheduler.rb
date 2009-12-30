@@ -24,7 +24,8 @@ class BackupScheduler
     # Determines if a backup source can be scheduled for backup
     def source_scheduled_for_backup?(bs)
       return true unless latest_job = BackupSourceJob.backup_source_id_eq(bs.id).newest
-      return false unless latest_job.finished? 
+      # handle case where job crashes without saving error or finish time
+      return false unless latest_job.finished? || latest_job.expired?
       RAILS_DEFAULT_LOGGER.debug "latest backup job: #{latest_job.inspect}"
       
       latest_job.successful? ? (latest_job.finished_at < cutoff_time) : true

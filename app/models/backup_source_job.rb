@@ -7,6 +7,9 @@ class BackupSourceJob < ActiveRecord::Base
   validates_presence_of :backup_source_id
   validates_presence_of :backup_job_id
   
+  cattr_reader :time_to_expire
+  @@time_to_expire = 24.hours
+  
   serialize :error_messages
   serialize :messages
   xss_terminate :except => [ :error_messages, :messages ] # conflicts w/serialize
@@ -33,6 +36,10 @@ class BackupSourceJob < ActiveRecord::Base
   
   def finished?
     !!finished_at
+  end
+  
+  def expired?
+    !finished? && ((Time.now - created_at) > time_to_expire)
   end
   
   def time_remaining

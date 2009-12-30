@@ -12,6 +12,8 @@ class Family < ActiveRecord::Base
   acts_as_commentable
   acts_as_time_locked
 
+  alias_attribute :end_at, :died_at
+  
 	include TimelineEvents
 	
 	# thinking_sphinx
