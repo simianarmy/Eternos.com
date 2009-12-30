@@ -31,8 +31,8 @@ class BackupPhotoDownloader
   def self.rebuild_photos
     MessageQueue.start do
       Thread.new do
-        # Get all backup photos with content objects
-        BackupPhoto.state_equals('downloaded').each do |bp|
+        # Get all backup photos with content objects (using batch find)
+        BackupPhoto.state_equals('downloaded').find_each do |bp|
           # If photo downloaded but not uploaded to s3, start over
           if photo = bp.photo
             if photo.s3_key
@@ -53,19 +53,33 @@ class BackupPhotoDownloader
     end
   end
   
+  # Tries to re-download prior failed photo downloads
   def self.fix_photos
-    MessageQueue.start do
-      # Get all backup photos with content objects
-      BackupPhoto.find_all_by_state([:downloaded, :failed_download]).each do |bp|
+    MessageQueue.execute do
+      # Get all backup photos with content objects (using batch find)
+      BackupPhoto.find_all_by_state([:downloaded, :failed_download]).find_each do |bp|
         unless bp.photo
           bp.download_error!
           download_photo bp
         end
       end
-      MessageQueue.stop
     end
   end
   
+  # Fix for facebook activity stream items with photo attachments not downloaded
+  def self.download_photos_from_facebook_attachments 
+    MessageQueue.execute do
+      # (using batch find)
+      FacebookActivityStreamItem.with_attachment.with_photo.find_each do |as|
+        unless as.facebook_photo
+          RAILS_DEFAULT_LOGGER.debug "creating BackupPhoto for fb stream item #{as.id}"
+          as.send(:process_attachment_photo) 
+        end
+      end
+    end
+  end
+  
+  # starts the actual download job
   def self.download_photo(bp)
     bp.starting_download!
     if bp.photo

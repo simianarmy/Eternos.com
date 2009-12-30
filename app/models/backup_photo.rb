@@ -16,6 +16,9 @@ class BackupPhoto < ActiveRecord::Base
   
   include TimelineEvents
   
+  # Virtual attributes
+  attr_accessor :owner
+  
   state :pending_download
   state :downloading, :enter => :download
   state :downloaded
@@ -63,7 +66,7 @@ class BackupPhoto < ActiveRecord::Base
 
     begin
       # Sanity check
-      @member = backup_photo_album.backup_source.member
+      @member = backup_photo_album.backup_source.member 
       @filename = File.join(AppConfig.s3_staging_dir, URI::parse(source_url).path.split('/').last)
       logger.debug "Downloading #{source_url} to #{@filename}..."
 

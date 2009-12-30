@@ -38,18 +38,60 @@ describe ActivityStreamItem do
     end
     
     describe "with attachment data" do
-      describe "of type: photo" do
+      before(:each) do
+        @as = create_activity_stream
+        FacebookActivityStreamItem.any_instance.stubs(:member).returns(@member = mock_model(Member))
+        @member.stub_chain(:backup_sources, :facebook).returns([mock_model(BackupSource)])
+      end
+      
+      describe "photo on create" do
         before(:each) do
-          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('photo')
+          @item = FacebookActivityStreamItem.create_from_proxy(create_facebook_stream_proxy_item_with_attachment('photo'))
         end
         
-        it "should be a facebook photo" do
-          @item.should be_facebook_photo
+        with_transactional_fixtures(:off) do
+          it "should be execute after_commit_on_update without errors" do
+            lambda {
+              @as.items << @item
+            }.should_not raise_error
+          end
+
+          it "should create new BackupPhotoAlbum for the BackupPhoto" do
+            BackupPhotoAlbum.destroy_all
+            BackupPhoto.destroy_all
+            lambda {
+              @as.items << @item
+              }.should change(BackupPhotoAlbum, :count).by(1)
+          end
+
+          it "should save the photo as a BackupPhoto" do
+            BackupPhotoAlbum.destroy_all
+            BackupPhoto.destroy_all
+            lambda {
+              @as.items << @item
+            }.should change(BackupPhoto, :count).by(1)
+          end
+        end
+      end
+        
+      describe "being a facebook photo" do
+        before(:each) do
+          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('photo')
         end
         
         it "should parse photo attachment data" do
           @item.activity_type.should == 'post'
           @item.attachment_type.should == 'photo'
+        end
+
+        it "should be a facebook photo" do
+          @item.should be_facebook_photo
+        end
+        
+        it "should be return the facebook BackupPhoto object" do
+          BackupPhoto.expects(:find_by_source_photo_id).with(@item.attachment_data['photo']['pid']).returns(@bp = mock_model(BackupPhoto))
+          @bp.expects(:photo)
+          @item.facebook_photo
         end
         
         describe "url" do
@@ -71,22 +113,24 @@ describe ActivityStreamItem do
       end
 
       describe "of type: generic" do
-        before(:each) do
-          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('generic')
-        end
-        
-        it "should store parse generic attachment data" do
-          @item.activity_type.should == 'post'
-          @item.attachment_type.should == 'generic'
-        end
+        with_transactional_fixtures(:off) do
+          before(:each) do
+            @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('generic')
+          end
 
-        it "should return the attachment data source url" do
-          @item.url.should match(/^http/)
-          @item.thumbnail_url.should be_blank
-        end
-        
-        it "should set the message attribute from the attachment after create" do
-          @item.message.should match(/Description: /)
+          it "should store parse generic attachment data" do
+            @item.activity_type.should == 'post'
+            @item.attachment_type.should == 'generic'
+          end
+
+          it "should return the attachment data source url" do
+            @item.url.should match(/^http/)
+            @item.thumbnail_url.should be_blank
+          end
+
+          it "should set the message attribute from the attachment after update" do
+            @item.message.split("\n").size.should == 3
+          end
         end
       end
       
@@ -101,7 +145,7 @@ describe ActivityStreamItem do
         end
 
         it "should set the message attribute from the attachment after create" do
-          @item.message.should match(/Description: /)
+          @item.message.should_not be_blank
         end
       end
       

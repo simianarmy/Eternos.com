@@ -15,6 +15,11 @@ namespace :backup do
     BackupPhotoDownloader.fix_photos
   end
   
+  desc "Ensure facebook photo activity stream attachments downloaded"
+  task :download_fb_attachment_photos => :environment do
+    BackupPhotoDownloader.download_photos_from_facebook_attachments
+  end
+  
   desc "Make sure all blog entries have screencaps"
   task :ensure_feed_screencaps => :environment do
     FeedEntry.all.each do |fe|
