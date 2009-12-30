@@ -72,8 +72,16 @@ class BackupPhotoDownloader
       # (using batch find)
       FacebookActivityStreamItem.with_attachment.with_photo.find_each do |as|
         unless as.facebook_photo
-          RAILS_DEFAULT_LOGGER.debug "creating BackupPhoto for fb stream item #{as.id}"
-          as.send(:process_attachment_photo) 
+          # if backup photo is there but some errors, destroy it
+          if bp = as.backup_photo
+            unless bp.backup_photo_album
+              RAILS_DEFAULT_LOGGER.info "backup photo state: #{bp.state}"
+              RAILS_DEFAULT_LOGGER.warn "destroying BackupPhoto for fb stream item #{as.id} because photo album not found"
+              as.backup_photo.destroy
+            end
+          end
+          RAILS_DEFAULT_LOGGER.info "creating BackupPhoto for fb stream item #{as.id}"
+          as.send(:process_attachment_photo)
         end
       end
     end

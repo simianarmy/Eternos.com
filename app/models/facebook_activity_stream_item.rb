@@ -118,7 +118,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
           bs = member.backup_sources.facebook.first
           album = BackupPhotoAlbum.find_or_create_by_backup_source_id_and_source_album_id(bs.id, d['photo']['aid'])
 
-          BackupPhoto.find_or_create(:backup_photo_album => album,
+          BackupPhoto.create(:backup_photo_album => album,
             :source_photo_id => d['photo']['pid'],
             :source_url => d['src'],
             :caption => self.message)
