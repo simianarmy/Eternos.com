@@ -12,7 +12,7 @@ class BackupPhotoDownloader
     # Run in em loop since rake tasks do not start amqp
     # Run thread within EM loop, and sleep to pass control back 
     # to em to publish immediately
-    MessageQueue.start do
+    MessageQueue.execute do
       Thread.new do
         # Why is shuffle causing undefined method `shuffle' for named_scope
         # but not from command line...obviously env paths..
@@ -22,14 +22,13 @@ class BackupPhotoDownloader
           download_photo bp
           sleep(0.3) # Don't flood source with download requests, and allow em to publish
         end
-        MessageQueue.stop
       end
     end
   end
     
   # For development or in case we need to rebuild
   def self.rebuild_photos
-    MessageQueue.start do
+    MessageQueue.execute do
       Thread.new do
         # Get all backup photos with content objects (using batch find)
         BackupPhoto.state_equals('downloaded').find_each do |bp|
@@ -48,7 +47,6 @@ class BackupPhotoDownloader
           end
           sleep(0.3) # so em can publish upload job
         end
-        MessageQueue.stop
       end
     end
   end
@@ -57,10 +55,24 @@ class BackupPhotoDownloader
   def self.fix_photos
     MessageQueue.execute do
       # Get all backup photos with content objects (using batch find)
-      BackupPhoto.find_all_by_state([:downloaded, :failed_download]).find_each do |bp|
+      BackupPhoto.find_all_by_state([:downloaded, :failed_download]).each do |bp|
         unless bp.photo
           bp.download_error!
           download_photo bp
+        end
+      end
+    end
+  end
+  
+  # Tries to re-upload prior failed thumbnail downloads
+  def self.fix_thumbnails
+    MessageQueue.execute do
+      PhotoThumbnail.state_does_not_equal('complete').find_each do |thumb|
+        RAILS_DEFAULT_LOGGER.debug "Attempting to fix thumbnail #{thumb.id}"
+        if thumb.staging?
+          thumb.upload
+        else
+          thumb.stage!
         end
       end
     end

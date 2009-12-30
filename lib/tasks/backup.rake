@@ -15,6 +15,11 @@ namespace :backup do
     BackupPhotoDownloader.fix_photos
   end
   
+  desc "Ensure thumbnails properly created"
+  task :fix_thumbnails => :environment do
+    BackupPhotoDownloader.fix_thumbnails
+  end
+  
   desc "Ensure facebook photo activity stream attachments downloaded"
   task :download_fb_attachment_photos => :environment do
     BackupPhotoDownloader.download_photos_from_facebook_attachments

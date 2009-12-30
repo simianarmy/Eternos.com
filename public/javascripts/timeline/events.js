@@ -432,7 +432,7 @@ var ETEvent = {
 			return new ETLPhotoEventSource(data);
 		} else if (type === "video" || type === "web_video") {
 			return new ETLVideoEventSource(data);
-		} else if (type === "audio") {
+		} else if (type === "audio" || type === "music") {
 			return new ETLAudioEventSource(data);
 		} else if (type === "job") {
 			return new ETLJobEventSource(data);

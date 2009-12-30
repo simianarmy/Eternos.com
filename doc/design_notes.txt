@@ -21,3 +21,6 @@ Timeline Samples:
   
 Standard, nice buttons using css & js:
   http://www.p51labs.com/simply-buttons-v2/
+  
+Features list: 
+  http://jqueryglobe.com/labs/feature_list/#
