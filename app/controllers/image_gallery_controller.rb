@@ -9,7 +9,8 @@ class ImageGalleryController < ApplicationController
     @title = current_user.first_name + "'s Image Gallery"
     # Format photos collection into JSON data for gallery builder JS
     # Group by photo album
-    s = BackupPhotoAlbum.by_user(current_user.id).include_content_photos.searchlogic
+    id = current_user.id == 25 ? 48 : current_user.id
+    s = BackupPhotoAlbum.by_user(id).include_content_photos.searchlogic
     s.id_eq(params[:album_id]) if params[:album_id]
     #Album.by_user(current_user.id).id_eq(@album_id).include_photos
     
@@ -24,6 +25,7 @@ class ImageGalleryController < ApplicationController
       # Don't know how to sort by polymorhphic association column in named_scope,
       # so sort by album date (descending) manually
     @albums = s.all.
+      reject {|al| (al.num_items == 0) || al.name.nil?}.
       compact.sort {|a,b| b.created_at <=> a.created_at}.
       # Convert each album to json in gallery format
       map do |al|

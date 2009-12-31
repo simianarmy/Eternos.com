@@ -83,11 +83,20 @@ class BackupPhotoAlbum < ActiveRecord::Base
   def cover_photo
     # Try to avoid using invalid photos if there are multiple backup photos with the 
     # same source photo id
-    BackupPhoto.source_photo_id_eq(cover_id).include_content.map(&:photo).compact.first
+    begin
+      BackupPhoto.source_photo_id_eq(cover_id).include_content.map(&:photo).compact.first || 
+      content_photos.first
+    rescue 
+      nil
+    end
   end
   
   def cover_photo_url
-    cover_photo.url rescue nil
+    @cover.url if @cover ||= cover_photo
+  end
+  
+  def num_items
+    backup_photos.size
   end
   
   # Checks passed album object for differences with this instance

@@ -343,6 +343,9 @@ var ETLFamilyEventSource = Class.create(ETLEventSource, {
 		this.previewTemplate = ETemplates.tooltipTemplates.family;
 		$super(s);
 	},
+	isDuration: function() {
+		return false;
+	},
 	getPreviewHtml: function() {
 		return this._evalTemplate({
 			name: this.attributes.name,

@@ -78,8 +78,11 @@ function albumView() {
 
         //create the album title and the number of photos label
         $j('<strong/>').html(this.name).appendTo(item);
-        $j('<span/>').html(this.photos.length + (this.photos.length > 1 ? " Photos" : " Photo")).appendTo(item);
-
+				if (!this.photos) {
+					console.dir(this);
+				} else {
+        	$j('<span/>').html(this.photos.length + (this.photos.length > 1 ? " Photos" : " Photo")).appendTo(item);
+				}
         item.appendTo("#content"); //add the item to the content area
     });
 };
