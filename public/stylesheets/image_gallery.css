@@ -99,13 +99,13 @@ h1.view {
     right: 20px;
     width: 137px;
     height: 15px;
-    background: url(http://gallery.me.com/g/images/gallery/view_control/track_fill_left.png) no-repeat;
+    background: url(/images/track_fill_left.png) no-repeat;
     border: none;
     -webkit-border-radius: 0px;
 }
 
 #slider .ui-slider-handle {
-    background: url(http://gallery.me.com/g/images/gallery/view_control/knob.png) no-repeat;
+    background: url(/images/knob.png) no-repeat;
     width: 16px;
     height: 16px;
     outline: none;
@@ -136,7 +136,7 @@ h1.view {
     padding-left: 20px;
     display: inline-block;
     cursor: pointer;
-    background: url(http://gallery.me.com/g/images/gallery/view_control/view_sprite.png) no-repeat;
+    background: url(/images/view_sprite.png) no-repeat;
 }
 
 #views #mosaic {
@@ -175,8 +175,9 @@ h1.view {
 .album_view .item .skimmer {
     width: 160px;
     height: 160px;
-    -webkit-border-radius: 8px;
+    /*-webkit-border-radius: 8px;
     -moz-border-radius: 8px;
+*/
 }
 
 .album_view .item strong {

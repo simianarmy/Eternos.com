@@ -59,18 +59,19 @@ function albumView() {
         var item = $j('<div class="item">').click(function() {
             data = albums[i].photos;
             title = albums[i].name;
-            sprite = albums[i].cover_photo_url;
+            //sprite = albums[i].cover_photo_url;
             view(); //go to current view
         });
 
         //create the skimmer, and set the background image to the sprite for the album (in the data file)
         //then register the mousemove event
-        $j('<div class="skimmer">').css("background", "url("+this.cover_photo_url+")").mousemove(function(e) {
+        $j('<div class="skimmer">').css("background", "url("+this.cover_photo_url+") no-repeat").mousemove(function(e) {
             var x = e.pageX;
             var offset = $j(this).offset().left;
             var w = 160 / albums[i].photos.length;
             var image = Math.floor((x - offset) / w);
-            $j(this).css("background-position", "0px " + (-160 * image) + "px");
+            //$j(this).css("background-position", "0px " + (-160 * image) + "px");
+						$j(this).css("background", "url("+albums[i].photos[image].url+") no-repeat");
         }).mouseout(function() {
         	//when we mouseout, set the background position back to 0
             $j(this).css("background-position", "0px 0px");
@@ -156,9 +157,9 @@ function mosaicView() {
     $j.each(data, function(i) {
         $j('<div class="mosaic_item">')
             .css({
-                backgroundPosition: "0px " + (-160 * i) + "px",
+                //backgroundPosition: "0px " + (-160 * i) + "px",
                 //backgroundImage: "url(" + sprite + ")"
-								backgroundImage: "url(" + data[i].thumbnail.url + ")"
+								background: "url(" + data[i].thumbnail.url + ") no-repeat"
             })
             .data("num", i)
             .click(function() {
