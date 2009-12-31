@@ -9,8 +9,8 @@ class ImageGalleryController < ApplicationController
     @title = current_user.first_name + "'s Image Gallery"
     # Format photos collection into JSON data for gallery builder JS
     # Group by photo album
-    id = current_user.id == 25 ? 48 : current_user.id
-    s = BackupPhotoAlbum.by_user(id).include_content_photos.searchlogic
+    
+    s = BackupPhotoAlbum.by_user(current_user.id).include_content_photos.searchlogic
     s.id_eq(params[:album_id]) if params[:album_id]
     #Album.by_user(current_user.id).id_eq(@album_id).include_photos
     
