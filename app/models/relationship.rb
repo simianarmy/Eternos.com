@@ -8,7 +8,9 @@ class Relationship < ActiveRecord::Base
   acts_as_archivable :on => :start_at
   
   include TimelineEvents
-
+  include CommonDateScopes
+  include CommonDurationScopes
+    
   # thinking_sphinx
   define_index do
     indexes :name

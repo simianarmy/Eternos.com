@@ -1,3 +1,5 @@
+# $Id$
+
 class Family < ActiveRecord::Base
   belongs_to :profile
   has_one :member, :through => :profile
@@ -15,7 +17,10 @@ class Family < ActiveRecord::Base
   alias_attribute :end_at, :died_at
   
 	include TimelineEvents
-	
+	include CommonDateScopes
+	include CommonDurationScopes
+  self.end_archivable_attribute = :died_at
+  
 	# thinking_sphinx
   define_index do
     # fields

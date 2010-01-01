@@ -14,17 +14,9 @@ class School < ActiveRecord::Base
   validates_presence_of :name, :message => "Please enter a school name"
 
   include TimelineEvents
-
-  # TODO: use acts_as helper
-  named_scope :in_dates, lambda { |start_date, end_date|
-    {
-      :conditions => ["(start_at >= ? AND end_at <= ?) OR " +
-        "((end_at IS NULL) AND (start_at <= ?) AND (DATE(NOW()) > ?))",
-        start_date, end_date,
-        end_date, start_date]
-      }
-    }
-
+  include CommonDateScopes
+  include CommonDurationScopes
+  
   # thinking_sphinx
   define_index do
     indexes :name

@@ -3,7 +3,6 @@
 # Include this module in AR classes that use acts_as_archivable.
 # Adds helpful named_scopes for date searches.
 # If you don't care about time/date comparison mismatches in sql, use standard acts_as_archivable methods.
-
 module CommonDateScopes
   def self.included(base)
     base.class_eval do
@@ -35,3 +34,27 @@ module CommonDateScopes
   end
 end
 
+# Adds named_scopes for duration records (with start & end dates where end date can be null)
+module CommonDurationScopes
+  def self.included(base)
+    base.class_eval do
+      raise "Unknown archivable attribute - you must call acts_as_archivable in this model!" unless self.respond_to?(:archivable_attribute)
+      cattr_accessor :end_archivable_attribute
+      self.end_archivable_attribute = 'end_at'
+
+      named_scope :before_duration, lambda { |end_date|
+        {
+          :conditions => ["(#{self.end_archivable_attribute.to_s} IS NULL) AND (DATE(#{self.archivable_attribute.to_s}) <= ?)", end_date]
+        }
+      }
+      named_scope :in_dates, lambda { |start_date, end_date|
+        {
+          :conditions => ["(#{self.archivable_attribute.to_s} >= ? AND #{self.end_archivable_attribute.to_s} <= ?) OR " +
+            "((#{self.end_archivable_attribute.to_s} IS NULL) AND (#{self.archivable_attribute.to_s} <= ?) AND (DATE(NOW()) > ?))",
+            start_date, end_date,
+            end_date, start_date]
+          }
+        }
+    end
+  end
+end

@@ -11,6 +11,7 @@ class Medical < ActiveRecord::Base
   acts_as_time_locked
   
   include TimelineEvents
+  include CommonDateScopes
   
   # thinking_sphinx
   define_index do

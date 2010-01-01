@@ -12,7 +12,7 @@ class TimelineSearch
     :photos     => :get_images,
     :media      => :get_media,
     :blog       => :get_feed_items,
-    :profile    => [:get_profile, :get_durations]
+    :profile    => [:get_durations]
   }
   @@filter_action_map = {
     :artifact   =>  [:get_images, :get_stream_media], 
@@ -65,23 +65,15 @@ class TimelineSearch
     @options[:empty] ? 0 : (@options[:max_results] || max_results).to_i
   end
   
-  def get_profile
-    if p = @member.profile
-      [p.medicals, p.medical_conditions, p.families, p.relationships]
-    end
-  end
-  
+  # Searchs items that have durations, like jobs & people
   def get_durations
-    # TODO: Proximity search support
-    # returning Array.new do ... not working out for me
-    durations = []
-    if p = @member.profile
-      durations = p.timeline(@start_date, @end_date).values
+    assocs = []
+    assocs += @member.profile.duration_associations if @member.profile
+    durations = assocs.compact.map {|ass| duration_query ass.searchlogic }
+    if @member.address_book
+      durations += duration_query @member.address_book.addresses.searchlogic
     end
-    if @member.address_book.addresses.any?
-      durations << @member.address_book.addresses.in_dates(@start_date, @end_date)
-    end
-    durations.flatten
+    durations.flatten.compact
   end
   
   def get_facebook_items
@@ -138,6 +130,7 @@ class TimelineSearch
   
   def add_events(*evts)
     evts.compact.flatten.each do |res|
+      debugger
       @events << TimelineEvent.new(res)
     end
   end
@@ -158,13 +151,30 @@ class TimelineSearch
     end
   end
   
-  # Searches for event closest to start_date.  
+  # Similar to query method but for duration objects
+  def duration_query(search)
+    if @options[:proximity]
+      # closest events before or after a date
+      proximity_search search, @options[:proximity]
+    else
+      # Duplicates in_dates named_scope since we can't do 2+ variable named_scopes with searchlogic objects
+      # Copy search params object in case we need to join results
+      s2 = search.clone
+      # standard date range query
+      res = search.after(@start_date).before(@end_date).all
+      # Simulate OR by doing separate query with different conditons & joining the results
+      if Date.today > @start_date.to_date
+        res += s2.before_duration(@end_date).all
+      end
+      res.uniq # avoid duplicates
+    end
+  end
+  
+  # Searches for event closest to start_date either before or after the date
   # Returns as array
   def proximity_search(search, direction)
-    (direction == 'past') ? 
-      search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
-    #RAILS_DEFAULT_LOGGER.debug "proximity_search conditions: #{search.conditions.inspect}"
-    [search.first]
+    (direction == 'past') ? search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
+    [search.first].compact
   end
 end
 

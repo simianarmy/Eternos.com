@@ -14,16 +14,8 @@ class Job < ActiveRecord::Base
   validates_presence_of :title, :message => "Please enter a job title"
   
   include TimelineEvents
-  
-  # TODO: use acts_as helper
-  named_scope :in_dates, lambda { |start_date, end_date|
-    {
-      :conditions => ["(start_at >= ? AND end_at <= ?) OR " +
-        "(end_at IS NULL AND start_at <= ? AND DATE(NOW()) > ?)",
-        start_date, end_date,
-        end_date, start_date]
-      }
-    }
+  include CommonDateScopes
+  include CommonDurationScopes
   
   # thinking_sphinx
   define_index do

@@ -13,6 +13,9 @@ class MedicalCondition < ActiveRecord::Base
   acts_as_time_locked
   
   include TimelineEvents
+  include CommonDateScopes
+  include CommonDurationScopes
+  self.end_archivable_attribute = :treatment_end_on
   
   # thinking_sphinx
   define_index do

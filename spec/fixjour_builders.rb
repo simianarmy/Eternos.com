@@ -157,7 +157,8 @@ Fixjour  do
     klass.new(
       :profile => new_profile,
       :name => Faker::Name.name,
-      :family_type => new_circle
+      :family_type => new_circle,
+      :birthdate => Date.today
     )
   end
   
@@ -192,7 +193,7 @@ Fixjour  do
   
   define_builder(FeedUrl) do |klass, overrides|
     klass.new(
-      :rss_url => 'http://feeds.feedburner.com/railscasts',
+      :rss_url => 'http://simian187.vox.com',
       :member => new_member,
       :backup_site => new_backup_site(:name => 'blog'))
   end

@@ -12,7 +12,7 @@ class BackupEmail < ActiveRecord::Base
   
   validates_presence_of :mailbox
   validates_presence_of :message_id
-  validates_uniqueness_of :message_id, :scope => [:backup_source_id, :mailbox]
+  validates_uniqueness_of :message_id, :scope => [:backup_source_id, :mailbox], :message => "message id already saved"
   
   attr_reader :raw_email
   alias_attribute :bytes, :size

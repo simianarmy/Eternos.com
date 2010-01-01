@@ -50,6 +50,7 @@ class FeedEntry < ActiveRecord::Base
     
   include CommonDateScopes
   after_create :save_contents
+  before_destroy :soft_delete
   
   def to_debug
     puts "Author: #{author}"
@@ -85,5 +86,10 @@ class FeedEntry < ActiveRecord::Base
   def save_contents
     create_feed_content if self.url
     true
+  end
+  
+  def soft_delete
+    self.update_attribute(:deleted_at, Time.now)
+    false # prevent activerecord from deleting from table
   end
 end

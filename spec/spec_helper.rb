@@ -278,6 +278,7 @@ module AddressBookSpecHelper
   
   def create_address_book_address(user)
     user.address_book.update_attributes(create_address_attrs)
+    user.address_book.addresses.last
   end
 end
 
@@ -478,6 +479,27 @@ module EmailSpecHelper
     email.email = raw_email
     email.save
     email
+  end
+end
+
+module FeedHelper
+  def stub_feed_info
+    stub(:title => stub(:sanitize => 'title'),
+      :url => 'url',
+      :feed_url => 'feed_url',
+      :etag => 'etag',
+      :last_modified => Date.today,
+      :entries => [mock]
+      )
+  end
+  
+  def make_feed(opts={})
+    Feedzirra::Feed.stubs(:fetch_and_parse).returns(stub_feed_info)
+    @feed = create_feed_url(opts)
+  end
+  
+  def make_feed_entry(opts={})
+    create_feed_entry(:feed => make_feed.feed)
   end
 end
 

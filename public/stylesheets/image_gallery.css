@@ -175,9 +175,8 @@ h1.view {
 .album_view .item .skimmer {
     width: 160px;
     height: 160px;
-    /*-webkit-border-radius: 8px;
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
-*/
 }
 
 .album_view .item strong {

@@ -24,6 +24,10 @@ class Profile < ActiveRecord::Base
   include Addressable
   after_update :save_associations
   
+  def duration_associations
+    [careers, families, medical_conditions, relationships, schools].compact
+  end
+  
   # Returns associations in hash that fall within specified date range  
   def timeline(starting, ending)
     {

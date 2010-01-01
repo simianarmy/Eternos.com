@@ -45,6 +45,10 @@ class Address < ActiveRecord::Base
 	acts_as_archivable :on => :moved_in_on
 	
 	include TimelineEvents
+	include CommonDateScopes
+  include CommonDurationScopes
+  self.end_archivable_attribute = :moved_out_on
+  
 	serialize_with_options do
 		methods :postal_address
 	end

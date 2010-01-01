@@ -28,6 +28,7 @@ class FeedUrl < BackupSource
   protected
   
   def validate_feed
+    return if @feed_info
     unless self.rss_url.blank?
       begin
         # feed:// should be converted to http://
@@ -49,6 +50,9 @@ class FeedUrl < BackupSource
   end
   
   def save_feed
+    # Make sure validation method called to populate @feed_info
+    # validation skipped when testing with rspec??!
+    valid? unless @feed_info
     create_feed(:title  => @feed_info.title.sanitize, 
       :url              => @feed_info.url,
       :feed_url_s       => @feed_info.feed_url,
