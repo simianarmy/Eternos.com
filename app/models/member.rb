@@ -144,7 +144,8 @@ class Member < User
   def timeline_span   
     # Look for earliest timeline event
     p = profile
-    start = [
+    start_dates = [
+      # TODO: Default timeline year span should be configurable 
       10.years.ago.to_date,
       address_book.birthdate, 
       (t = address_book.addresses.oldest) ? t.moved_in_on : nil,
@@ -153,8 +154,9 @@ class Member < User
       (t = p.schools.oldest) ? t.start_at : nil,
       (t = contents.ascend_by_taken_at.first) ? t.taken_at : nil,
       (t = contents.oldest) ? t.created_at : nil
-      ].compact.min
-    [start.to_date, Date.today]
+      ]
+    s = start_dates.compact.map(&:to_datetime).min
+    [s.to_date, Date.today]
   end
   
   def completed_setup_step(step)

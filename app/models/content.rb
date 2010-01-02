@@ -58,7 +58,7 @@ class Content < ActiveRecord::Base
   named_scope :photo_albums, :group => 'collection_id', 
     :conditions => {:collection_type => ['BackupPhotoAlbum', 'Album']},
     :include => {:collection => :content_photos}
-  
+
   # thinking_sphinx
   define_index do
     # fields

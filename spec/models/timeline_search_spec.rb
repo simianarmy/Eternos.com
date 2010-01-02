@@ -100,6 +100,10 @@ describe TimelineSearch do
       item
     end
       
+    def create_photo_item(member, attrs={})
+      create_content({:type => :photo, :owner => member}.merge(attrs))
+    end
+    
     describe "with date range" do
       before(:each) do
         @search = make_search
@@ -121,6 +125,18 @@ describe TimelineSearch do
         fb = create_facebook_item(@member)
         fb.update_attribute(:published_at, @after_start_date)
         @search.get_facebook_items.should == [fb]
+      end
+      
+      it "should not return photo if created date in range but not shot date" do
+        photo = create_photo_item(@member)
+        photo.update_attributes(:created_at => @after_start_date, :taken_at => @before_start_date)
+        @search.get_images.should be_empty
+      end
+      
+      it "should return photo if shot date in range" do
+        photo = create_photo_item(@member)
+        photo.update_attributes(:created_at => 5.years.ago, :taken_at => @after_start_date)
+        @search.get_images.should == [photo]
       end
     end
     

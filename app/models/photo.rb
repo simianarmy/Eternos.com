@@ -10,7 +10,21 @@ class Photo < Content
   
   has_attachment attachment_opts
   validates_as_attachment
- 
+  
+  # added to override content's named_scopes that use a different archivable_attribute value
+  named_scope :before, lambda {|date|
+    { 
+      :conditions => ["taken_at <= ?", date] 
+    }
+  }
+  named_scope :after, lambda {|date|
+    { 
+      :conditions => ["taken_at >= ?", date] 
+    }
+  }
+  # workaround for shitty searchlogic code
+  named_scope :not_deleted, :conditions => {:deleted_at => nil}
+  
   @@exif_date_format = '%Y:%m:%d %H:%M:%S'
   cattr_accessor :exif_date_format
 

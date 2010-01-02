@@ -40,7 +40,7 @@ module Shooter #:nodoc:
         
         def acts_as_archivable(options = {})
           unless archivable?
-            cattr_accessor :archivable_attribute, :sort_order
+            class_inheritable_accessor :archivable_attribute, :sort_order
             self.archivable_attribute = options[:on] || :created_at
             self.sort_order = options[:order] || "ASC"
           end

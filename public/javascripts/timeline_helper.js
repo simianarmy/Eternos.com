@@ -1174,11 +1174,13 @@ var ETimeline = function(opts) {
 				if (event.isArtifact()) {
 					ETDebug.log("adding event to artifacts");
 					that.artifactSection.addItem(event);
-					if (false || ETEvent.isArtifact(event.getDisplayType())) {
+					/*
+					if (event.hasAttachedArtifact()) {
 						// Don't add to items list if artifact is attached to event
 						ETDebug.log("event has attached artifact, not adding to events");
 						return;
 					}
+					*/
 				} else if (event.hasAttachedArtifact()) {
 					ETDebug.log("adding event with attached image to artifacts");
 					that.artifactSection.addItem(event);

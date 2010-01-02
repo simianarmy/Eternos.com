@@ -26,8 +26,10 @@ class TimelineSearch
     @events = []
   end
   
+  # Determines which search actions to execute
+  # returns corresponding type_action_map keys in array
   def search_types
-    types = if @options[:type]
+    @types ||= if @options[:type]
       @options[:type].split('|').map! {|t| t.to_sym}
     else
       type_action_map.keys
@@ -38,14 +40,14 @@ class TimelineSearch
   # If no filter actions specified, uses @@type_action_map methods
   def search_methods
     # apply additional optional filters
-    methods = []
+    @methods = []
     filter_action_map.each_key do |k|
-      methods += filter_action_map[k] if @options[k]
+      @methods += filter_action_map[k] if @options[k]
     end
-    unless methods.any?
-      methods = search_types.map {|t| type_action_map[t]}.flatten.uniq
+    unless @methods.any?
+      @methods = search_types.map {|t| type_action_map[t]}.flatten.uniq
     end
-    methods
+    @methods
   end
   
   def results
@@ -58,7 +60,7 @@ class TimelineSearch
       end
     end
     RAILS_DEFAULT_LOGGER.debug "Done fetching items."
-    @events
+    remove_duplicates
   end
   
   def num_results
@@ -93,7 +95,11 @@ class TimelineSearch
   end
   
   def get_images
-    query @member.contents.photos.searchlogic
+    # workaround for seriously buggy searchlogic errors that crash when trying to 
+    # use query method on searchlogic object.
+    # Note that Photo needs a special not_deleted named_scope since using
+    # deleted_at_null in the chain crashes
+    date_query Photo.user_id_eq(@member.id).not_deleted.searchlogic
   end
   
   def get_emails
@@ -130,7 +136,6 @@ class TimelineSearch
   
   def add_events(*evts)
     evts.compact.flatten.each do |res|
-      debugger
       @events << TimelineEvent.new(res)
     end
   end
@@ -140,7 +145,10 @@ class TimelineSearch
   def query(search)
     # Filter out deleted items
     search.deleted_at_null = true
-    
+    date_query search
+  end
+  
+  def date_query(search)
     if @options[:proximity]
       # closest events before or after a date
       proximity_search search, @options[:proximity]
@@ -175,6 +183,28 @@ class TimelineSearch
   def proximity_search(search, direction)
     (direction == 'past') ? search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
     [search.first].compact
+  end
+  
+  # Removes potential duplicate media by checking which actions were executed 
+  # and using media urls as unique keys
+  # Returns updated @events array
+  def remove_duplicates
+    # Check for dups in facebook attachments & photo objects
+    if search_types.include?(:facebook) && search_types.include?(:photos)
+      fb_photo_urls = collect_facebook_attachment_urls
+      RAILS_DEFAULT_LOGGER.debug "fb photo url hash: #{fb_photo_urls.keys.inspect}"
+      RAILS_DEFAULT_LOGGER.debug "events before rejecting: #{@events.size}"
+      @events.reject!{|e| (e.type == 'photo') && fb_photo_urls[e.attributes.url]}
+      RAILS_DEFAULT_LOGGER.debug "events after rejecting: #{@events.size}"
+    end
+    @events
+  end
+  
+  private
+  
+  # Returns hash of facebook attachment photo urls as keys
+  def collect_facebook_attachment_urls
+    @events.select{|e| (e.type == 'facebook_activity_stream_item') && (e.attachment_type == 'photo')}.inject(Hash.new){|h,e| h[e.attributes.url] = 1; h}
   end
 end
 
