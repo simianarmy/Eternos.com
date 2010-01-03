@@ -132,9 +132,10 @@ class Member < User
   
   # Populates member profile info from facebook profile data structure
   # Returns success if both updates succeed
-  def sync_with_facebook_profile(fb_info)
-    address_book.sync_with_facebook(fb_info) && 
-    profile.sync_with_facebook(fb_info)
+  def sync_with_facebook_profile(fb_user)
+    fb_info = FacebookUserProfile.populate(fb_user)
+    address_book.sync_with_facebook(fb_user, fb_info) && 
+    profile.sync_with_facebook(fb_user, fb_info)
   end
   
   def has_backup_data?

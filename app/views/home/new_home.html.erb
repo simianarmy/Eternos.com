@@ -1,4 +1,6 @@
 <% use_flash %>
+<% use_lightview %>
+
 <!-- start content -->
 <div class="content home">
 	<fieldset>
@@ -20,19 +22,19 @@
 		<fieldset>
 		  <br/>
 			<div class="home02">
-				<h2>Video Diary</h2>
-				<p>Keep a record of your personal experiences and observations. Your video diary will be an invaluable treasure for your descendants. </p>
-				<p><a href="#">View Sample</a></p>
+				<h2>Your Life Timeline</h2>
+				<p> All your treasured memories and life events are set to your own easy to use timeline. </p>
+				<p><%= link_to 'View Sample', image_path('timeline_sample.png'), :class => 'lightview' %></p>
 			</div>
 			<div class="home03">
 				<h2>Automated Backup</h2>
 				<p>Automatically back up all your social networking, emails, blogs, and even your RSS feeds.</p>
-				<p><a href="#">View Sample</a></p>
+				<p><%= link_to 'View Sample', image_path('backup_sample.png'), :class => 'lightview' %></p>
 			</div>
 			<div class="home04">
 				<h2>Life Key</h2>
 				<p>Enables you to designate trustees that will notify Eternos of your passing. Trustees gain access to your account upon confirmation you have passed on.</p>
-				<p><a href="#">View Sample</a></p>
+				<p><%= link_to 'View Sample', image_path('lifekey_sample.png'), :class => 'lightview' %></p>
 			</div>			
 		</fieldset>
 		

@@ -7,7 +7,9 @@
           <td>
             <div class="title5">Addresses</div>
             <div class="add-btn-box">
-              <%= link_to_new_profile_entry "new_address", {:address_book => settings.address_book, :addressable => 'address_book', :location => '', :address => (settings.address || settings.address_book.build_address)}
+              <%= link_to_new_profile_entry "new_address", {:address_book => settings.address_book, 
+                :addressable => 'address_book', :location => '', 
+                :address => (settings.address || settings.address_book.addresses.new)}
               %> 
               </div>
               <div style="clear:both"></div>

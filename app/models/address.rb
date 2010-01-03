@@ -40,7 +40,8 @@ class Address < ActiveRecord::Base
 	alias_attribute :start_at, :moved_in_on
 	alias_attribute :end_at, :moved_out_on
 	
-	attr_accessor :current_address
+	# Virtual attributes
+	attr_accessor :current_address, :no_street
 	
 	acts_as_archivable :on => :moved_in_on
 	
@@ -82,7 +83,8 @@ class Address < ActiveRecord::Base
 		'Home' => 'home',
 		'Birth' => 'birth',
 		'Business' => 'business',
-		'Billing' => 'billing'
+		'Billing' => 'billing',
+		'FB' => 'facebook'
 		}.freeze
 	
 	Home = LocationTypes['Home']
@@ -90,6 +92,8 @@ class Address < ActiveRecord::Base
 	Business = LocationTypes['Business']
 	Billing = LocationTypes['Billing']
 	DefaultLocationType = Home
+	
+	EmtpyZip = "00000"
 	
 	named_scope :home, :conditions			=> {:location_type => Home}
 	named_scope :business, :conditions	=> {:location_type => Business}
@@ -107,8 +111,7 @@ class Address < ActiveRecord::Base
 		}
 	# Returns true if address location is one that needs validation
 	def validatible_location?
-		location_type != Birth
-		#false
+		!([Birth].include?(location_type) || no_street)
 	end
 	
 	# Returns the country, which may be determined from the

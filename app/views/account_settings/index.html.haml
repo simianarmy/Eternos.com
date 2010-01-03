@@ -11,7 +11,7 @@
         #account-setting-title.acc-title
           Profile
         .top-rightbox
-          = render :partial => 'fb_sync_button', :locals => { :active_step => @active_step, :checked => @checked_always_sync }
+          = render :partial => 'fb_sync_button', :locals => { :active_step => @active_step, :checked => @always_sync_account_info_with_facebook }
         .clear
     .popup-content-left
       = render :partial => "setting_nav", :locals => { :active_link => "step" + (@completed_steps+1).to_s }

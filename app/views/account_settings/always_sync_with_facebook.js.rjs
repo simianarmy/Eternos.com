@@ -1,0 +1,11 @@
+page.flash_and_fade :fb_sync_status
+if @synched
+  page.visual_effect :fade, :'fb_sync_button'
+  page.replace_html :sync_text, 'Synched with Facebook'
+  # Nested renders in an ajax update with locals using complex object variables = FAIL
+  # Much simpler to just redirect
+  page.redirect_to(account_settings_path) if @content_page == 'your_history'
+else
+  page.show :'fb_sync_button'
+  page.replace_html :sync_text, 'Always sync'
+end

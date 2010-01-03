@@ -1,6 +1,5 @@
 module AccountSettingsHelper
-  
-  def update_account_settings_layout(page, partial_content)
+  def update_account_settings_layout(page, partial_content, settings=@settings)
     page.replace "account-setting-content", :partial => partial_content, :locals => {:settings => @settings},
       :layout => false
     page.call 'setDinamycHeight', 'account-setting-content'

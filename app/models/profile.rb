@@ -56,11 +56,11 @@ class Profile < ActiveRecord::Base
      :profile_url, :proxied_email, :email_hashes, :allowed_restrictions, :pic_with_logo, :pic_big_with_logo, 
      :pic_small_with_logo, :pic_square_with_logo]
       
-  def sync_with_facebook(fb_info)
+  def sync_with_facebook(fb_user, fb_info)
     self.political_views  = fb_info[:political] unless fb_info[:political].blank?
     self.religion         = fb_info[:religion] unless fb_info[:religion].blank?
     self.facebook_data    = fb_info
-    
+
     # if fb_info[:pic].any? && !self.photo
     #       TempFile.new(File.basename(fb_info[:pic])) do |tmp|
     #         rio(fb_info[:pic]).binmode > rio(tmp.path)

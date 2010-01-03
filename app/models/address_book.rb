@@ -70,16 +70,27 @@ class AddressBook < ActiveRecord::Base
     end
   end
   
-  def sync_with_facebook(fb_info)
+  def sync_with_facebook(fb_user, fb_info)
+    # fb_info hash data 
     self.first_name    = fb_info[:first_name]  unless fb_info[:first_name].blank?
     self.last_name     = fb_info[:last_name]   unless fb_info[:last_name].blank?
     self.gender        = fb_info[:sex]         unless fb_info[:sex].blank?
     self.birthdate     = fb_info[:birthday_date].to_date unless fb_info[:birthday_date].blank?
+    # Facebooker fb_user object data
+    if loc = fb_user.current_location
+      logger.debug "FacebookUser.current_location = #{loc.inspect}"
+      sync_with_facebook_location(Address::Home, loc)
+    end
+    if loc = fb_user.hometown_location
+      logger.debug "FacebookUser.hometown_location = #{loc.inspect}"
+      sync_with_facebook_location(Address::Birth, loc)
+    end
     save!
   end
     
   private
   
+  # after_update callback for associations
   def save_associations
     phone_numbers.each do |pn|
       pn.save
@@ -91,6 +102,37 @@ class AddressBook < ActiveRecord::Base
       rescue
         self.errors.add('address', "Invalid address")
       end
+    end
+  end
+  
+  # sync_with_facebook helper takes Facebooker::Location object
+  def sync_with_facebook_location(location, fb_location)
+    # Always create - ignore errors if already exists
+    attrs = {:location_type => location, :city => fb_location.city, :postal_code => fb_location.zip.to_s}
+    begin
+      # Lookup country & state by full-name 
+      if fb_location.state && region = Region.find_by_name(fb_location.state)
+        attrs[:region_id] = region.id
+        attrs[:country_id] = region.country.id
+      elsif fb_location.country && country = Country.find_by_name(fb_location.country)
+        attrs[:country_id] = country.id
+      end
+      # If we could not lookup the state or country from the facebook hash, we need to 
+      # use a default
+      attrs[:country_id] ||= default_region.country.id
+      # Find by location object attributes first otherwise we will end up with duplicates
+      addresses.build(attrs.merge(:no_street => true)) unless addresses.find(:first, :conditions => attrs)
+    rescue Exception => e
+      logger.warn "AddressBook.sync_with_facebook_location address create error: #{e}"
+    end
+  end
+
+  # Default region for user.  Ideally it would be the user's country by Geolocation
+  def default_region
+    if home = addresses.home.first
+      home.region
+    else
+      Region.find_by_name('Washington')
     end
   end
 end

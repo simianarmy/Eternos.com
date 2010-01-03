@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.string   "custom_region"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "street_1",         :null => false
+    t.string   "street_1",        :null => true
     t.string   "city",             :null => false
     t.string   "postal_code",      :null => false
     t.integer  "user_id"
@@ -639,6 +639,7 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "facebook_data"
+    t.boolean  "always_sync_with_facebook"
     t.string   "photo_file_name"
     t.datetime "photo_updated_at"
   end

@@ -1,9 +1,12 @@
 #sync-message
-  = link_to_remote "", { :url => facebook_sync_account_settings_path, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();"} , :class => "fb-btn"
+  #fb_sync_status
+  #fb_sync_button{:style => style_hidden_if(checked)}
+    = link_to_remote "", { :url => facebook_sync_account_settings_path, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();"} , :class => "fb-btn"
   .clear
-  .top-text1
-    &nbsp;Always do this
-  - form_remote_tag :url => always_sync_with_facebook_account_settings_path do
+  #sync_text.top-text1
+    &nbsp;
+    = checked ? 'Synched with Facebook' : 'Always sync'
+  - form_remote_tag :url => always_sync_with_facebook_account_settings_path, :loading => "$('progress-bar').show();", :complete => "$('progress-bar').hide();" do
     = check_box_submit_on_click "facebook_sync", "submit_form_sync", 1, checked
     = hidden_submit("submit_form_sync")
   .clear

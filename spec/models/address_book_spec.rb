@@ -86,19 +86,78 @@ describe AddressBook do
   end
   
   describe "synching from facebook" do
-    it "should not sync any empty attributes" do
-      @address_book.sync_with_facebook({})
-      @address_book.first_name.should_not be_blank
+    before(:each) do
+      @address_book.save
+      @fb_user = mock('FacebookUser')
     end
     
-    it "should sync any non-empty attributes" do
-      @address_book.sync_with_facebook({:first_name => 'hooey'})
-      @address_book.reload.first_name.should == 'hooey'
+    describe "without locations" do
+      before(:each) do
+        @fb_user.expects(:current_location).returns(nil)
+        @fb_user.expects(:hometown_location).returns(nil)
+      end
+      
+      it "should not sync any empty attributes" do
+        @address_book.sync_with_facebook(@fb_user, {})
+        @address_book.first_name.should_not be_blank
+      end
+
+      it "should sync any non-empty attributes" do
+        @address_book.sync_with_facebook(@fb_user, {:first_name => 'hooey'})
+        @address_book.reload.first_name.should == 'hooey'
+      end
+
+      it "should sync birthdate from date string" do
+        @address_book.sync_with_facebook(@fb_user, {:birthday_date => "05/11/1970"})
+        @address_book.reload.birthdate.year.should == 1970
+      end
     end
     
-    it "should sync birthdate from date string" do
-      @address_book.sync_with_facebook({:birthday_date => "05/11/1970"})
-      @address_book.reload.birthdate.year.should == 1970
+    describe "with location(s)" do
+      def create_location
+        stub('Location', :city => 'seattle', :zip => {}, :state => "Oregon", :country => "Foostan")
+      end
+      
+      def create_region
+        mock_model(Region, :country => @country = mock_model(Country))
+      end
+      
+      before(:each) do
+        @fb_user.expects(:current_location).returns(@loc = create_location)
+        @fb_user.expects(:hometown_location).returns(nil)
+      end
+      
+      describe "with valid region value" do
+        before(:each) do
+          Region.expects(:find_by_name).with(@loc.state).returns(@region = create_region)
+        end
+
+        it "should add current location if nonempty" do
+          lambda {
+            @address_book.sync_with_facebook(@fb_user, {})
+            }.should change(@address_book.addresses, :count).by(1)
+        end
+        
+        it "should not add address if duplicate address already exists" do
+          @address_book.addresses << create_address(:city => @loc.city, :postal_code => @loc.zip.to_s, :country_id => @country.id, :region_id => @region.id)
+          @address_book.save
+          lambda {
+            @address_book.sync_with_facebook(@fb_user, {})
+          }.should_not change(@address_book.addresses, :count)
+        end
+      end
+      
+      describe "with unknown region" do
+        before(:each) do
+          Region.expects(:find_by_name).with(@loc.state).returns(nil)
+        end
+        
+        it "should add location using default region" do
+          @address_book.expects(:default_region).returns(@region = create_region)
+          @address_book.sync_with_facebook(@fb_user, {})
+          @address_book.addresses.last.country_id.should == @country.id
+        end
+      end
     end
   end
 end

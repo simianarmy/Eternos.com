@@ -9,7 +9,7 @@ class AccountSettingsController < ApplicationController
   layout 'account_settings'
   
   def index
-#    check_facebook_sync
+    check_account_facebook_sync
     clear_timeline_cache
     session[:setup_account] = true
     
@@ -33,11 +33,12 @@ class AccountSettingsController < ApplicationController
   
   def personal_info
     @settings.load_personal_info
+    @content_page = 'personal_info'
     
     respond_to do |format|
       format.js do
         render :update do |page|
-          update_account_settings_layout(page, "personal_info")
+          update_account_settings_layout(page, "personal_info", @settings)
         end
       end
     end
@@ -45,11 +46,12 @@ class AccountSettingsController < ApplicationController
   
   def your_history
     @settings.load_history
+    @content_page = 'your_history'
     
     respond_to do |format|
       format.js do
         render :update do |page|
-          update_account_settings_layout(page, "your_history")
+          update_account_settings_layout(page, "your_history", @settings)
         end
       end
     end  
@@ -66,49 +68,18 @@ class AccountSettingsController < ApplicationController
 
   # TODO: Move to FacebookProfiles controller
   def always_sync_with_facebook
-    if params[:facebook_sync]
-      save = current_user.update_attribute(:always_sync_with_facebook, true)
-    else
-      save = current_user.update_attribute(:always_sync_with_facebook, false)
-    end
-    respond_to do |format|
-      format.js do
-        if save
-          render :nothing => true
-        else
-          render :update do |page|
-             @sync_message = "Can't set reminder for facebook sync"
-             page.replace "sync-message", :partial => "account_settings/sync_message"
-             page.visual_effect :highlight, "sync-message"
-          end
-        end
-      end
-    end
-  end
-
-  # TODO: Move to FacebookProfiles controller
-  def facebook_sync
-    saved = merge_with_facebook
-    respond_to do|format|
-      if saved
-        format.js do
-          render :update do |page|
-            @sync_message = "Sync Successfull"
-            update_account_settings_layout(page, "personal_info")
-            page.replace "sync-message", :partial => "sync_message"
-            page.visual_effect :highlight, "sync-message"
-          end
-        end  
+    @synched = params[:facebook_sync]
+    current_user.update_attribute(:always_sync_with_facebook, @synched)
+    if @synched
+      if merge_with_facebook
+        flash[:notice] = "Synched with Facebook Successfully"
       else
-        format.js do
-          render :update do |page|
-            @sync_message = "Can't sync with facebook"
-            page.replace "sync-message", :partial => "sync_message"
-            page.visual_effect  :highlight, "sync-message"
-            page.flash_and_fade
-          end
-        end
+        flash[:error] = "Error Synching with Facebook!  Please try again or notify support."
       end
+    end
+
+    respond_to do |format|
+      format.js
     end
   end
   
@@ -374,9 +345,8 @@ class AccountSettingsController < ApplicationController
     @settings = ProfilePresenter.new(current_user, Facebooker::Session.current, params)
   end
 
-  def check_facebook_sync
-    if current_user.always_sync_with_facebook
-      @checked_always_sync = true
+  def check_account_facebook_sync
+    if @always_sync_account_info_with_facebook = current_user.always_sync_with_facebook
       merge_with_facebook
     end
   end
@@ -384,7 +354,7 @@ class AccountSettingsController < ApplicationController
   def merge_with_facebook
     if facebook_session && (fb_user = facebook_session.user)
       begin
-        current_user.sync_with_facebook_profile FacebookUserProfile.populate(fb_user)
+        current_user.sync_with_facebook_profile(fb_user)
       rescue
         flash[:error] = "Unable to sync with Facebook profile!"
         false

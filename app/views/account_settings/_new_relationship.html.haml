@@ -26,12 +26,12 @@
             %td.coll-form1 Started
             %td.coll-form2 :
             %td.coll-form3
-              = date_select_with_datepicker('relationship', :start_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => relationship.start_at, :start_year => Date.today.year, :end_year => 100.years.ago.year})
+              = date_select_with_datepicker('relationship', :start_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => (relationship ? relationship.start_at : Date.today), :start_year => Date.today.year, :end_year => 100.years.ago.year})
           %tr
             %td.coll-form1 Ended
             %td.coll-form2 :
             %td.coll-form3
-              = date_select_with_datepicker('relationship', :end_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => relationship.end_at, :start_year => Date.today.year, :end_year => 100.years.ago.year})
+              = date_select_with_datepicker('relationship', :end_at, {:add_month_numbers => true, :order => [:day, :month,:year], :default => (relationship ? relationship.end_at : Date.today), :start_year => Date.today.year, :end_year => 100.years.ago.year})
               %br
               = check_box_tag :current
               %span#text-present-addresses Current / Ongoing
