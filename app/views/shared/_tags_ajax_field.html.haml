@@ -2,6 +2,8 @@
 .tooltip
   Add descriptive tags for organizing and searching your items
 #tags.inputcol
-  = restful_in_place_editor 'span', object, :tag_list, :object => object.to_str, :url => url, :value => (object.tags.empty?) ? 'Add Tags' : object.tag_list.to_s
+  -# STI child classes must use base class name as object name
+  - param_name = (object.class.base_class != object.class) ? object.class.base_class.to_s.underscore : object.to_str
+  = restful_in_place_editor 'span', object, :tag_list, :object => param_name, :url => url, :value => (object.tags.empty?) ? 'Add Tags' : object.tag_list.to_s
   %br
   = tags_field_description

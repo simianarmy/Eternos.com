@@ -1,5 +1,13 @@
 page.flash_and_fade
-render_with :in_place_editor do |editor|
-  editor.update(@content, params)
+# if in-place-editor form
+if params[:domId]
+  render_with :in_place_editor do |editor|
+    editor.update(@content, params)
+  end
+# if date select form
+elsif params[:date_select]
+  render_with :date_select do |editor|
+    editor.update(@content.reload.taken_at.to_s(:long), 'date_taken')
+  end
 end
 flash.discard

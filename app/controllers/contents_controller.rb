@@ -85,7 +85,10 @@ class ContentsController < ApplicationController
           redirect_to content_path(@content) 
         }
         format.xml { head :ok }
-        format.js
+        format.js {
+          # Required for STI children to use this method
+          render :template => 'contents/update'
+        }
       else
         format.html { render :action => "show" }
         format.xml { render :xml => @content.errors,
@@ -94,6 +97,8 @@ class ContentsController < ApplicationController
         format.js {
           flash[:error] = @content.errors.full_messages
           @content.reload
+          # Required for STI children to use this method
+          render :template => 'contents/update'
         }
       end
     end

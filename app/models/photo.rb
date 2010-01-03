@@ -50,14 +50,16 @@ class Photo < Content
   
   # Use RMagik & EXIF to get date a photo was taken
   after_attachment_saved do |attach|
-    if image = ::Magick::Image.read(attach.full_filename).first
-      logger.debug "ImageMagick photo info: #{image.inspect}"
-      # the get_exif_by_entry method returns in the format: [["Make", "Canon"]]
-      date  = image.get_exif_by_entry('DateTime')[0][1]
+    unless attach.taken_at # don't do this on every update
+      if image = ::Magick::Image.read(attach.full_filename).first
+        logger.debug "ImageMagick photo info: #{image.inspect}"
+        # the get_exif_by_entry method returns in the format: [["Make", "Canon"]]
+        date  = image.get_exif_by_entry('DateTime')[0][1]
 
-      if not date.nil?
-        attach.taken_at = DateTime.strptime(date, exif_date_format)
-        attach.save!
+        if not date.nil?
+          attach.taken_at = DateTime.strptime(date, exif_date_format)
+          attach.save!
+        end
       end
     end
   end

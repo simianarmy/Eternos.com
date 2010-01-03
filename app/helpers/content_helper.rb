@@ -79,14 +79,6 @@ module ContentHelper
   def video_player_swf_url
     '/swf/flowplayer.commercial-3.1.5.swf'
   end
-    
-  def content_date_select(content)
-    datetime_select_with_datepicker :content, :taken_at,
-    	:after_close => remote_function(
-    	  :url => content_path(content),
-        :method => :put,
-        :with => "'content[taken_at]='+escape($('content_taken_at').value)")
-  end
   
   # General purpose view helper for content lists.  Takes thumbnail and link options (required)
   # to determine output style

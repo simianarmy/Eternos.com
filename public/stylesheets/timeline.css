@@ -420,6 +420,10 @@ a.event_list_inline_item:hover {
 	position: relative;
 }
 
+.tooltip_item {
+
+}
+
 .tooltip_item:hover {
 	background-color:#ffc;
 }
@@ -437,7 +441,6 @@ a.event_list_inline_item:hover {
 .tooltip_arti_container {
 	overflow-y:auto;
 	font-size: 12px;
-	width: 120px;
 }
 
 .tooltip_media_container {
@@ -449,6 +452,10 @@ a.event_list_inline_item:hover {
 	background: #f2f7fe;
 	margin-top:5px;
 	float:left;	
+}
+
+.tooltip_img {
+	width: 160px;
 }
 
 .tooltip_as {
@@ -572,6 +579,20 @@ a.event_list_inline_item:hover {
 
 .item_details_content .message_content p {
 	font-weight: bold;
+}
+
+#content_date .date_label {
+	float: left;
+	width: ;
+}
+
+#date_taken {
+	padding-left: 5px; 
+	padding-right: 10px;
+	float: left
+}
+#date_taken:hover {
+	background-color: #ffc;
 }
 
 .item_details_content .posted, 

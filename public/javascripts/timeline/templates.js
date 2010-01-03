@@ -69,13 +69,13 @@ var ETemplates = function() {
 	};
 	
 	that.showNotice = function(msg, fade_delay) {
-		showFlash('flash_notice', msg, fade_delay);
+		showFlash('tl_flash_notice', msg, fade_delay);
 	};
 	that.showError = function(msg, fade_delay) {
-		showFlash('flash_error', msg, fade_delay);
+		showFlash('tl_flash_error', msg, fade_delay);
 	};
 	that.hideError = function() {
-		$('flash_error').update();
+		$('tl_flash_error').update();
 	};
 	function showFlash(id, msg, fade_delay) {
 		$(id).innerHTML = msg;
@@ -207,7 +207,7 @@ var ETemplates = function() {
 				'#{time}#{author}#{source}#{media}</div>');
 		} (),
 		image: function() {
-			return new Template(tooltipItemViewLink('<img src="#{img_url}"><br/>#{caption}<br/>'));
+			return new Template('<div class="tooltip_img"><a href="#{img_url}" class="lightview"><img src="#{thumbnail_url}"></a><br/>#{caption}</div>');
 		} (),
 		feed: function() {
 			return new Template('<div class="tooltip_feed"><a href="#{screencap_url}" class="lightview"><img src="#{preview_thumb}" width="100" height="100" style="float: left"/></a>' +

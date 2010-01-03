@@ -1,8 +1,14 @@
-/ Locals:
-/ parent => time lockable object
-/ timelock => parent's TimeLock object
-/ text => Select label
-/ no_auto_submit => turn off ajax submit on change
+-# $Id$
+
+-# Timelocked object form partial
+-# Locals:
+-# Required:
+-# => f: parent form
+-# => parent: time lockable object
+-# => timelock: parent's TimeLock object
+-# Optional:
+-# => text: Select label (default: Post)
+-# => no_auto_submit: turn off ajax submit on change (default: false)
 
 - @no_auto_submit = local_assigns.has_key?(:no_auto_submit)
 - @in_edit_mode = parent.new_record? || @no_auto_submit

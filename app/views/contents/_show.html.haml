@@ -1,3 +1,6 @@
+- stylesheet 'timeline'
+- use_busy
+
 - content_for :date_author do
   = item.filename
 - content_for :icon do
@@ -9,13 +12,20 @@
   = link_to_content(item)
   %p
   %br
-  #date_taken
-    = content_creation_date_label(item)
-    = content_date_select(item)
-    -#= observe_field :content_taken_at, :url => content_path(photo), :method => :put, :on => "blur", :with => "'content[taken_at]='+escape($('content_taken_at').value)"
-  %p
-  %br
-  = restful_in_place_editor 'span', item, 'description', :object => 'content', :url => content_url(item), :value => (item.description && !item.description.blank?) ? item.description : 'Add Description', :rows => 4
+  = restful_in_place_editor 'span', item, 'description', :object => 'content', :url => content_url(item), :value => (item.description && !item.description.blank?) ? item.description : link_to('Add Description', '#'), :rows => 4
+  
+- content_for :details do
+  #content_date
+    .date_label
+      = content_creation_date_label(item) + ':'
+    #date_taken= item.taken_at.to_s(:long)
+    #date_taken_form{:style => style_hidden_if(true)}
+      - remote_form_for :content, item, :url => content_path(item), :html => {:method => :put, :class => "submit_on_change", :id => "content_date_form"} do |f|
+        = hidden_field_tag 'date_select', true
+        = f.datetime_select_with_datepicker :taken_at, {:start_year => 1900, :end_year => Date.today.year}
+        = submit_tag 'Update'
+        = link_to_function 'close', "$('date_taken_form').hide(); $('date_taken').show();"
 
 = render :partial => 'shared/item_details', :locals => {:item => item}
 
+= javascript_tag "$('date_taken').observe('click', function() { $('date_taken').hide(); $('date_taken_form').show()});"

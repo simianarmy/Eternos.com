@@ -496,6 +496,7 @@ var ETLEventItems = Class.create({
 	},
 	// show url for 1+ item
 	_getItemDetailsUrl: function(item) {
+		/*
 		if (item.isArtifact()) {
 			return item.getURL();
 		} else {
@@ -505,6 +506,12 @@ var ETLEventItems = Class.create({
 				eventIds: item.getID()
 			});
 		}
+		*/
+		return ETemplates.eventListTemplates.detailsLink.evaluate({
+			memberId: this.options.memberID,
+			eventType: item.type,
+			eventIds: item.getID()
+		});
 	},
 	// Determine 'rel' attribute for Lightview link html
 	_getLinkRel: function() {

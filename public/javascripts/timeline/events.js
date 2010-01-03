@@ -157,7 +157,8 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 			caption = this.attributes.description;
 		}
 		return this._evalTemplate({
-			img_url: this.attributes.thumbnail_url, 
+			thumbnail_url: this.attributes.thumbnail_url, 
+			img_url: this.attributes.url,
 			caption: caption
 		});
 	}
@@ -192,9 +193,18 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 		// media += print_r(this.attributes); //'';
 		return media;
 	},
+	getMessage: function() {
+		var msg = '';
+		if (this.attributes.message !== '') {
+			msg = this.attributes.message
+		} else if (this.attributes.url !== '') {
+			msg = this.attributes.url;
+		}
+		return msg.urlToLink();
+	},
 	getPreviewHtml: function() {
 		return this._evalTemplate({
-			message: this.attributes.message.urlToLink(),
+			message: this.getMessage(),
 			author: this.getEventAuthorHtml(),
 			time: this.getEventTimeHtml(),
 			source: this.getSource(),

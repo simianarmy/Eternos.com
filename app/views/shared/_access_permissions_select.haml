@@ -1,3 +1,11 @@
+-# $Id$
+
+-# Partial for displaying access permissions form for any object that responds to 
+-# acts_as_restricted
+-# 
+-# Required:
+-# Options:
+
 = hidden_field_tag :privacy_update, '1' unless object.new_record?
 
 - class_field = local_assigns.has_key?(:object_name) ? object_name : object.to_str
