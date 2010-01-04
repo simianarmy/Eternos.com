@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../facebook_spec_helper')
 
 module ProfileSpecHelper
   def valid_attributes(options={})
@@ -19,6 +20,8 @@ describe Profile do
   end
   
   describe "with facebook data" do
+    include FacebookSpecHelper
+    
     before(:each) do
       @profile = create_profile(:member => @member)
       @fb_profile = {:test => {:test => @member}}
@@ -29,13 +32,30 @@ describe Profile do
       @profile.save
       @profile.reload.facebook_data[:test][:test].should == @member
     end
-  end
   
-  describe "sync_with_facebook" do
-    it "should not raise error on save" do
-      lambda {
-        @profile.sync_with_facebook(:political => 'foo')
-      }.should_not raise_error
+    describe "synching data" do  
+      before(:each) do
+        @fb_user = create_facebook_user
+      end
+      
+      it "should not raise error on sync" do
+        lambda {
+          @profile.sync_with_facebook(@fb_user, :political => 'foo')
+        }.should_not raise_error
+      end
+      
+      it "should sync work history" do
+        lambda {
+          @profile.sync_with_facebook(@fb_user, {})
+        }.should change(@profile.careers, :count).by(@fb_user.work_history.size)
+      end
+      
+      it "should not duplicate existing work history" do
+        @profile.sync_with_facebook(@fb_user, {})
+        lambda {
+          @profile.sync_with_facebook(@fb_user, {})
+        }.should_not change(@profile.careers, :count)
+      end
     end
   end
 end

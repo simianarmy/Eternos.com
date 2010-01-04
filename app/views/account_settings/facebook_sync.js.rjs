@@ -1,0 +1,6 @@
+page.flash_and_fade :fb_sync_status
+if @synched
+  # Nested renders in an ajax update with locals using complex object variables = FAIL
+  # Much simpler to just redirect
+  page.redirect_to(account_settings_path) if @content_page == 'your_history'
+end

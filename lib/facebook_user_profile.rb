@@ -17,4 +17,9 @@ module FacebookUserProfile
     Fields.each {|f| profile[f] = facebook_user.send(f)}
     profile
   end
+  
+  # Parses facebook models' date attribute strings into date objects
+  def self.parse_model_date(dt)
+    Date.parse(dt) rescue nil
+  end
 end

@@ -14,7 +14,7 @@ class AccountSettingsController < ApplicationController
     session[:setup_account] = true
     
     # Dynamic action view based on current setup step
-    @content_page = case @completed_steps
+    session[:account_settings_page] = @content_page = case @completed_steps
     when 0
       @settings.load_personal_info
       'personal_info'
@@ -33,7 +33,7 @@ class AccountSettingsController < ApplicationController
   
   def personal_info
     @settings.load_personal_info
-    @content_page = 'personal_info'
+    session[:account_settings_page] = @content_page = 'personal_info'
     
     respond_to do |format|
       format.js do
@@ -46,7 +46,7 @@ class AccountSettingsController < ApplicationController
   
   def your_history
     @settings.load_history
-    @content_page = 'your_history'
+    session[:account_settings_page] = @content_page = 'your_history'
     
     respond_to do |format|
       format.js do
@@ -66,7 +66,19 @@ class AccountSettingsController < ApplicationController
     end  
   end
 
-  # TODO: Move to FacebookProfiles controller
+  def facebook_sync
+    if @synched = merge_with_facebook
+      flash[:notice] = "Synched with Facebook Successfully"
+    else
+      flash[:error] = "Error Synching with Facebook!  Please try again or notify support."
+    end
+    # Required for rjs to know whether or not to redirect 
+    @content_page = session[:account_settings_page]
+    respond_to do |format|
+      format.js
+    end
+  end
+  
   def always_sync_with_facebook
     @synched = params[:facebook_sync]
     current_user.update_attribute(:always_sync_with_facebook, @synched)
@@ -78,6 +90,8 @@ class AccountSettingsController < ApplicationController
       end
     end
 
+    # Required for rjs to know whether or not to redirect 
+    @content_page = session[:account_settings_page]
     respond_to do |format|
       format.js
     end

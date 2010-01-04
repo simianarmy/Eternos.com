@@ -36,7 +36,6 @@ namespace :backup do
   task :run_scheduled => :environment do
     cutoff = ENV['FORCE'] ? Time.now : nil
     BackupScheduler.run :cutoff => cutoff
-    system "/usr/local/bin/god restart memcached"
   end
   
   desc "Run backup on a single source by id" 

@@ -20,7 +20,7 @@ class Address < ActiveRecord::Base
 	belongs_to	:addressable,
 								:polymorphic => true
 	belongs_to	:region
-	belongs_to	:country
+	belongs_to	:country, :include => [:region]
 	
 	with_options :if => :validatible_location? do |m|
 		m.validates_presence_of :street_1

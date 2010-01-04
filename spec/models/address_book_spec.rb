@@ -1,5 +1,6 @@
 # $Id$
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../facebook_spec_helper')
 
 describe AddressBook do
   include AddressBookSpecHelper
@@ -86,9 +87,11 @@ describe AddressBook do
   end
   
   describe "synching from facebook" do
+    include FacebookSpecHelper
+    
     before(:each) do
       @address_book.save
-      @fb_user = mock('FacebookUser')
+      @fb_user = create_facebook_user
     end
     
     describe "without locations" do

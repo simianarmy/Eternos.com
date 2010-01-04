@@ -60,7 +60,9 @@ class Profile < ActiveRecord::Base
     self.political_views  = fb_info[:political] unless fb_info[:political].blank?
     self.religion         = fb_info[:religion] unless fb_info[:religion].blank?
     self.facebook_data    = fb_info
-
+    
+    sync_career_from_facebook(fb_user.work_history) if fb_user.work_history.any?
+    sync_education_from_facebook(fb_user.education_history) if fb_user.education_history.any?
     # if fb_info[:pic].any? && !self.photo
     #       TempFile.new(File.basename(fb_info[:pic])) do |tmp|
     #         rio(fb_info[:pic]).binmode > rio(tmp.path)
@@ -68,17 +70,18 @@ class Profile < ActiveRecord::Base
     #       end
     #       tmp.close
     #     end
-    save!
+    save
   end
     
-  private
-  
+  protected
+    
   def save_associations
     (careers+schools).each do |ass|
       begin
         ass.save!
       rescue
         self.errors.add_to_base(ass.errors.full_messages)
+        false
       end
     end
   end
@@ -101,8 +104,6 @@ class Profile < ActiveRecord::Base
     existing_association_attributes_helper(school_attributes, schools)
   end
   
-  private
-  
   def new_association_attributes_helper(attributes, association)
     attributes.each_value do |attr|
       association.build(attr)
@@ -119,4 +120,31 @@ class Profile < ActiveRecord::Base
       end
     end
   end
+  
+  # Takes Facebooker::WorkInfo array
+  def sync_career_from_facebook(fb_work_info)
+    begin
+      logger.debug "Importing #{fb_work_info.size} facebook jobs: #{fb_work_info.inspect}"    
+      fb_work_info.each do |wi|
+        attrs = Job.attributes_from_fb(wi).symbolize_keys
+        careers.build(attrs) unless careers.find_by_company_and_title(attrs[:company], attrs[:title])  
+      end
+    rescue Exception => e
+      logger.error "Exception synching career from Facebook: " + e.backtrace.to_s
+    end
+  end
+  
+  # Takes Facebooker::EducationInfo array
+  def sync_education_from_facebook(education_info)
+    begin
+      logger.debug "Importing #{education_info.size} facebook education: #{education_info.inspect}"    
+      education_info.each do |wi|
+        attrs = School.attributes_from_fb(wi).symbolize_keys
+        schools.build(attrs) unless schools.find_by_name(attrs[:name])
+      end
+    rescue Exception => e
+      logger.error "Exception synching education from Facebook: " + e.backtrace.to_s
+    end
+  end
+  
 end
