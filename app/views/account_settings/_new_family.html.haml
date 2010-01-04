@@ -1,43 +1,52 @@
 #family_notice.error-message
 #new_family
-  - form_remote_for :family, :url => new_family_account_settings_path, :loading => "spinner.load('new_family');" do |form|
-    #table-form-family-wrapper
-      #table-form-family
-        %table#add-new-family.popup-newbox
-          %tr
-            %td{:colspan => "3"}
-              .title6
-                Add Family Member
-                = link_to_function "Cancel", "$('family_notice').update();$('new_family').remove();", :class => "blue-btn3"
-          %tr
-            %td{:colspan => "3"}
-              %hr.line1
-          %tr
-            %td.coll-form1 Name
-            %td.coll-form2 :
-            %td.coll-form3
-              = form.text_field :name, :class => 'textbox5'
-          %tr
-            %td.coll-form1 Relation
-            %td.coll-form2 :
-            %td.coll-form3
-              = form.text_field :family_type, :class => 'textbox5'
-          %tr
-            %td.coll-form1 Birth
-            %td.coll-form2 :
-            %td.coll-form3
-              = form.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day, :month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
-          %tr
-            %td.coll-form1 Death
-            %td.coll-form2 :
-            %td.coll-form3
-              = form.date_select_with_datepicker(:died_at, {:add_month_numbers => true, :order => [:day, :month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
-              %br
-              = form.check_box :living
-              %span Alive
+  - form_for :family, :html => { :target => 'new-family-parent', :multipart => true }, :url => new_family_account_settings_path(:format => 'js') do |form|
+    - form.fields_for :person_attributes do |person_form|
+      #table-form-family-wrapper
+        #table-form-family
+          %table#add-new-family.popup-newbox
+            %tr
+              %td{:colspan => "3"}
+                .title6
+                  Add Family Member
+                  = link_to_function "Cancel", "$('family_notice').update();$('new_family').remove();", :class => "blue-btn3"
+            %tr
+              %td{:colspan => "3"}
+                %hr.line1
+            %tr
+              %td.coll-form1 Name
+              %td.coll-form2 :
+              %td.coll-form3
+                = person_form.text_field :name, :class => 'textbox5'
+            %tr
+              %td.coll-form1 Relation
+              %td.coll-form2 :
+              %td.coll-form3
+                = form.text_field :family_type, :class => 'textbox5'
+            %tr
+              %td.coll-form1 Birth
+              %td.coll-form2 :
+              %td.coll-form3
+                = person_form.date_select_with_datepicker(:birthdate, {:add_month_numbers => true, :order => [:day, :month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+            %tr
+              %td.coll-form1 Death
+              %td.coll-form2 :
+              %td.coll-form3
+                = person_form.date_select_with_datepicker(:died_at, {:add_month_numbers => true, :order => [:day, :month,:year], :start_year => Date.today.year, :end_year => 100.years.ago.year})
+                %br
+                = form.check_box :living
+                %span Alive
+            %tr
+              %td.coll-form1 Photo
+              %td.coll-form2 :
+              %td.coll-form3
+                = person_form.file_field :photo
+    %br       
+    = submit_tag 'Save', :id => 'save-button-family', :class => 'submit-btn3', :onclick => "spinner.load('new_family');"
     
-    = submit_tag 'Save', :id => 'save-button-family', :disable_with => "Saving...", :class => 'submit-btn3'
-    %br
+  -# IFRAME for Ajax file upload support
+  = ajax_file_upload_iframe 'new-family-parent'
+  
 .clear
 :javascript
   // Required when rendering page via Ajax call

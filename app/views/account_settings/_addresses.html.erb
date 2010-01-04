@@ -42,13 +42,13 @@
 			<tr>
         <td class="coll-form6" valign="center">Moved In</td>
 	    	<td class="coll-form2" valign="center">:</td>
-	    	<td class="coll-form3" valign="center"><%= address.moved_in_on.to_date if address.moved_in_on %></td>
+	    	<td class="coll-form3" valign="center"><%= profile_view_date(address.moved_in_on) if address.moved_in_on %></td>
       </tr>
 			<tr>
         <td class="coll-form6" valign="center">Moved Out</td>
 	    	<td class="coll-form2" valign="center">:</td>
         <td class="coll-form3" valign="center">
-        <%= address.moved_out_on ? address.moved_out_on.to_date : "Current Address" %>
+        <%= address.moved_out_on ? profile_view_date(address.moved_out_on) : "Current Address" %>
         </td>
       </tr>
 			<tr>

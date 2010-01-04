@@ -1,14 +1,16 @@
 # $Id$
 
+# Bad class name - should be FamilyMember
 class Family < ActiveRecord::Base
   belongs_to :profile
+  belongs_to :person
   has_one :member, :through => :profile
   
-  validates_presence_of :name, :message => "Please enter a name"
   validates_presence_of :family_type, :message => "Please specify a relationship"
   
   TYPES = ["Brother","Sister","Mother","Father","Aunt","Uncle","Other"]
-
+  
+  accepts_nested_attributes_for :person
   acts_as_archivable :on => :birthdate
   acts_as_restricted :owner_method => :member
   acts_as_commentable
@@ -27,6 +29,7 @@ class Family < ActiveRecord::Base
     indexes :name
     indexes family_type
     indexes notes
+    indexes person(:name), :as => :person_name
     
     # attributes
     has profile_id, birthdate, died_at

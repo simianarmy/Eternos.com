@@ -7,7 +7,7 @@
 					<tr>
 		        <td class="coll-form6" valign="top">Name</td>
 			    	<td class="coll-form2" valign="top">:</td>
-			    	<td class="coll-form3" valign="top"><%= relationship.name %></td>
+			    	<td class="coll-form3" valign="top"><%= relationship.person.name rescue relationship.name %></td>
 		      </tr>
 					<tr>
 		        <td class="coll-form6" valign="top">Description</td>
@@ -17,21 +17,29 @@
 					<tr>
 		        <td class="coll-form6" valign="top">Start at</td>
 			    	<td class="coll-form2" valign="top">:</td>
-			    	<td class="coll-form3" valign="top"><%= relationship.start_at.to_date %></td>
+			    	<td class="coll-form3" valign="top"><%= profile_view_date(relationship.start_at) %></td>
 		      </tr>
 					<tr>
 		        <td class="coll-form6" valign="top">End at</td>
 			    	<td class="coll-form2" valign="top">:</td>
-			    	<td class="coll-form3" valign="top"><%= if(relationship.end_at) 
-                                                                          relationship.end_at.to_date
-                                                                         else
-                                                                          "To Present"
-                                                                         end%></td>
-		      </tr>
+			    	<td class="coll-form3" valign="top">
+            <%= if relationship.end_at
+              profile_view_date(relationship.end_at)
+            else
+              "To Present"
+            end%>
+            </td>
+            </tr>
 					<tr>
 		        <td class="coll-form6" valign="top">Notes</td>
 			    	<td class="coll-form2" valign="top">:</td>
 			    	<td class="coll-form3" valign="top"><%= relationship.notes %></td>
+		      </tr>
+		      <tr>
+		        <td class="coll-form6" valign="top">Photo</td>
+			    	<td class="coll-form2" valign="top">:</td>
+			    	<td class="coll-form3" valign="top">
+			    	<%= image_tag(relationship.person.photo(:thumb)) if relationship.try(:person) && relationship.person.photo_file_name %>
 		      </tr>
 					<tr>
 		        <td class="coll-form6" valign="top"></td>

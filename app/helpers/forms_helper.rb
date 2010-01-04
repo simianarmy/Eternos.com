@@ -46,6 +46,10 @@ module FormsHelper
     fields_for_association('school', school, owner, *args, &block)
   end
   
+  def ajax_file_upload_iframe(id)
+    "<iframe id='#{id}' style='width:1px;height:1px;border:0px' src='about:blank' name='#{id}'></iframe>"
+  end
+  
   def check_box_submit_on_click(method, button_target, value, default, option={})
     action = { :onclick => "$('#{button_target}').click();" }
     option.update(action)
@@ -70,7 +74,7 @@ module FormsHelper
     end
     object.radio_button(method, value, :onClick => "$('#{button_target}').click();", :checked => checked, :class => className)
   end
-
+  
   def date_select_onchange(object, method, button_target)
     object.calendar_date_select(method, :embedded => true, 
       :onchange => "$('#{button_target}').click();", :year_range => 100.years.ago..10.years.ago)

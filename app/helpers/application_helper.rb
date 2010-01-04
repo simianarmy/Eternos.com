@@ -43,7 +43,11 @@ module ApplicationHelper
   #   end
   
   def publish_date(date)
-    I18n.l(date, :format => :long)
+    I18n.l(date, :format => :long) if date
+  end
+  
+  def profile_view_date(date)
+    I18n.l(date, :format => :long) if date
   end
   
   def session_timeout_seconds

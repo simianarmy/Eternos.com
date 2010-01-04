@@ -240,18 +240,22 @@ class AccountSettingsController < ApplicationController
   # TODO: Move to appropriate controller
   def new_family
     @family = current_user.profile.families.new(params[:family])
+    if saved = @family.save
+      flash[:notice] = "Family Member added"
+    end
     
     respond_to do |format|
-      if @family.save
-        flash[:notice] = "Family Member added"
-        format.html
-        format.js
-      else
-        format.js {
-          flash[:error] = @family.errors.full_messages.join('<br/>')
-        }
-        format.html
-      end
+      format.html {
+        redirect_to account_settings_path if saved
+      }
+      format.js {
+        flash[:error] = @family.errors.full_messages.join('<br/>')
+        
+        # For Ajax file upload support
+        responds_to_parent do 
+          render :action => 'new_family'
+        end
+      }
     end
   end
   
@@ -281,7 +285,15 @@ class AccountSettingsController < ApplicationController
     end
 
     respond_to do |format|
-      format.js # why isn't his working???
+      format.html {
+        redirect_to account_settings_path
+      }
+      format.js {
+        # For Ajax file upload support
+        responds_to_parent do 
+          render :action => 'new_relationship'
+        end
+      }
     end
   end
   

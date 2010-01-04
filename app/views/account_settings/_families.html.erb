@@ -7,7 +7,7 @@
 					<tr>
 		        <td class="coll-form6" valign="top">Name</td>
 			    	<td class="coll-form2" valign="top">:</td>
-			    	<td class="coll-form3" valign="top"><%= family.name %></td>
+			    	<td class="coll-form3" valign="top"><%= family.person.name rescue family.name %></td>
 		      </tr>
 					<tr>
 		        <td class="coll-form6" valign="top">Relationship</td>
@@ -17,23 +17,35 @@
 					<tr>
 		        <td class="coll-form6" valign="top">Birthdate</td>
 			    	<td class="coll-form2" valign="top">:</td>
-			    	<td class="coll-form3" valign="top"><%= family.birthdate.to_date %></td>
+			    	<td class="coll-form3" valign="top">
+			    	<% if (family.try(:person) && family.person.birthdate) %>
+			    	  <%= profile_view_date(family.person.birthdate) %>
+			    	<% elsif family.birthdate %>
+			    	  <%= profile_view_date(family.birthdate) %>
+			    	<% end %>
+			    	</td>
 		      </tr>
 					<tr>
-		        <td class="coll-form6" valign="top">Living</td>
+		        <td class="coll-form6" valign="top">
+		        <%= ((family.try(:person) && family.person.died_at) || family.died_at) ? 'Died' : 'Living' %>
+            </td>
 			    	<td class="coll-form2" valign="top">:</td>
 			    	<td class="coll-form3" valign="top">
-                                <% if family.living %>
-                                    Yes
-                                <% else %>
-                                    No
-                                <% end %>
-                                </td>
+            <% if (family.try(:person) && family.person.died_at) || family.died_at %>
+              <%= profile_view_date(family.person.died_at) rescue profile_view_date(family.died_at) %>
+            <% end %>
+            </td>
 		      </tr>
 					<tr>
 		        <td class="coll-form6" valign="top">Notes</td>
 			    	<td class="coll-form2" valign="top">:</td>
 			    	<td class="coll-form3" valign="top"><%= family.notes %></td>
+		      </tr>
+		      <tr>
+		        <td class="coll-form6" valign="top">Photo</td>
+			    	<td class="coll-form2" valign="top">:</td>
+			    	<td class="coll-form3" valign="top">
+			    	<%= image_tag(family.person.photo(:thumb)) if family.try(:person) && family.person.photo_file_name %>
 		      </tr>
 					<tr>
 		        <td class="coll-form6" valign="top"></td>

@@ -590,6 +590,17 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "created_at"
   end
 
+  create_table "people", :force => true do |t|
+    t.string   "name"
+    t.datetime "birthdate"
+    t.datetime "died_at"
+    t.boolean  "living",      :default => true
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "photo_file_name"
+  end
+  
   add_index "password_resets", ["user_id"], :name => "index_password_resets_on_user_id"
 
   create_table "phone_numbers", :force => true do |t|
@@ -680,14 +691,15 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
   end
 
   create_table "relationships", :force => true do |t|
+    t.integer  "person_id"
     t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "name"
+    t.datetime "start_at"
     t.datetime "end_at"
     t.text     "notes"
-    t.datetime "start_at"
     t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "relationships", ["profile_id"], :name => "index_relationships_on_profile_id"

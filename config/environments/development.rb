@@ -52,4 +52,7 @@ config.after_initialize do
   # For fancy activerecord table views in irb/console
   require 'hirb'
   Hirb::View.enable
+  
+  # So that Passenger can find the identify command
+  Paperclip.options[:command_path] = "/opt/local/bin"
 end
