@@ -471,9 +471,19 @@ var DraggableObject = Behavior.create({
 });
 
 // Wrapper for Accordion library
-var Accordion = Behavior.create({
+var VerticalAccordion = Behavior.create({
 	initialize: function() {
-		new Accordion(this.element);
+		var verticalAccordion = new accordion(this.element.id);
+		var verticalAccordions = $$('.accordion_toggle');
+		// Close the rest
+		// Special thanks go out to Will Shaver @ http://primedigit.com/
+		verticalAccordions.each(function(accordion) {
+		    $(accordion.next(0)).setStyle({
+		        height: '0px'
+		    });
+		});
+		// Now lets open the first slide
+		//verticalAccordion.activate(verticalAccordions[0]);
 	}
 });
 
@@ -564,7 +574,7 @@ Event.addBehavior({
 	'#item_list': Remote.Delete,
 	'.tooltip-target': PrototipBehavior,
 	'.withHint': DefaultValueAsHint,
-	'.accordion': Accordion,
+	'.vertical-accordion': VerticalAccordion,
 	'#slideshow': Slideshow({
 		with_track: false
 	}),

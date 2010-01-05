@@ -31,3 +31,6 @@ CACHE = MemCache.new MEMCACHED_OPTIONS
 CACHE.servers = MEMCACHED_HOST
 
 config.log_level = :debug
+
+# So that Passenger can find the identify command
+Paperclip.options[:command_path] = "/opt/local/bin"

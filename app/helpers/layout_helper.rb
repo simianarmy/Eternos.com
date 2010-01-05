@@ -37,11 +37,19 @@ module LayoutHelper
     content_for(:head) { stylesheet_link_tag(*args) }
   end
   
-  def javascript(*args)
+  def js_include(place, *args)
     js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
     js.flatten!
-    #RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
-    content_for(:javascript) { javascript_include_tag(*args) }
+    RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
+    content_for(place.to_sym) { javascript_include_tag(*args) }
+  end
+  
+  def javascript(*args)
+    js_include(:javascript, *args)
+  end
+  
+  def javascript_place(position, *args)
+    js_include(position, *args)
   end
   
   def header(text)

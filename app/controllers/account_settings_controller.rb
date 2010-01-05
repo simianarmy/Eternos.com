@@ -249,7 +249,7 @@ class AccountSettingsController < ApplicationController
         redirect_to account_settings_path if saved
       }
       format.js {
-        flash[:error] = @family.errors.full_messages.join('<br/>')
+        flash[:error] = @family.errors.full_messages.join('<br/>') unless saved
         
         # For Ajax file upload support
         responds_to_parent do 

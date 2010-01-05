@@ -416,6 +416,7 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
 
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
+    t.integer  "person_id"
     t.string   "name"
     t.datetime "birthdate"
     t.boolean  "living",      :default => true

@@ -1,8 +1,10 @@
-<!-- Forgive the mess, this changed hands a few times.. -->
-<div id="account-setting-content" class="makeScroll">
-  <div id="address_book">
+
+<div id="account-setting-content" class="makeScroll vertical-accordion-FIXME">
+  
+  <div class="clear"></div>
+  <div id="address_book" class="accordion_content">
     <table id="table-history-addresses" class="table-form4" border="0" cellspacing="0" cellpadding="0">
-      <thead class="scrollContent">
+      <thead>
         <tr>
           <td>
             <div class="title5">Addresses</div>
@@ -19,7 +21,7 @@
         <tbody>
           <tr><td>
             <div id="new_address_container"></div>
-            <div id="table-addresses">
+            <div id="table-addresses" >
               <%= render :partial => 'addresses', :locals => {:addresses => settings.addresses} %>
             </div>
           </td></tr>
@@ -28,10 +30,11 @@
   </div>
   <br/>
   <div class="line3"></div>
-  
-  <div id="careers">
+<!--  <h2 class="accordion_toggle title5">Career</h2>-->
+  <div class="clear"></div>
+  <div id="careers" class="accordion_content">
     <table id="table-history-jobs" class="table-form4" border="0" cellspacing="0" cellpadding="0">
-      <thead class="scrollContent">
+      <thead>
         <tr>
           <td>
             <div class="title5">Jobs</div>
@@ -54,10 +57,11 @@
   </div>
   <br/>
   <div class="line3"></div>
-  
-  <div id="education">
+<!--  <h2 class="accordion_toggle title5">Education</h2>-->
+  <div class="clear"></div>
+  <div id="education" class="accordion_content">
     <table class="table-form4" id="table-history-schools" border="0" cellspacing="0" cellpadding="0">
-      <thead class="scrollContent">
+      <thead>
         <tr>
           <td>
             <div class="title5">Education</div>
@@ -112,7 +116,7 @@
 -->
   <div id="medical_conditions">
     <table class="table-form4" id="table-history-medical-conditions" border="0" cellspacing="0" cellpadding="0">
-      <thead class="scrollContent">
+      <thead>
         <tr>
           <td>
             <div class="title5">Medical Condition</div>
@@ -135,10 +139,12 @@
   </div>
   <br/>
   <div class="line3"></div>
-
-  <div id="family">
+  
+<!--  <h2 class="accordion_toggle title5">Family Members</h2>-->
+  <div class="clear"></div>
+  <div id="family" class="accordion_content">
     <table class="table-form4" id="table-history-families" border="0" cellspacing="0" cellpadding="0">
-      <thead class="scrollContent">
+      <thead>
         <tr>
           <td>
             <div class="title5">Family Members</div>
@@ -161,60 +167,37 @@
   </div>
   <br/>
   <div class="line3"></div>
-    
-    <div id="relationships">
-      <table class="table-form4" id="table-history-relationships" border="0" cellspacing="0" cellpadding="0">
-        <thead class="scrollContent">
-          <tr>
-            <td>
-              <div class="title5">Personal Relationships</div>
-              <div class="add-btn-box">
-                <%= link_to_new_profile_entry 'new_relationship', :relationship => settings.relationship %>
-              </div>
-              <div style="clear:both"></div>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>
-            <div id="new_relationship_container"></div>
-            <div id="table-relationships">
-              <%= render :partial => 'relationships', :locals => {:relationships => settings.relationships} %>
+  
+  <!--<h2 class="accordion_toggle title5">Personal Relationships</h2>-->
+  <div class="clear"></div>
+  <div id="relationships" class="accordion_content">
+    <table class="table-form4" id="table-history-relationships" border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <td>
+            <div class="title5">Personal Relationships</div>
+            <div class="add-btn-box">
+              <%= link_to_new_profile_entry 'new_relationship', :relationship => settings.relationship %>
             </div>
-          </td></tr>
-        </tbody>
-      </table>
-    </div>
-    <br/>
+            <div style="clear:both"></div>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>
+          <div id="new_relationship_container"></div>
+          <div id="table-relationships">
+            <%= render :partial => 'relationships', :locals => {:relationships => settings.relationships} %>
+          </div>
+        </td></tr>
+      </tbody>
+    </table>
+  </div>
+  <br/>
     
-    <div class="line3"></div>
+  <div class="line3"></div>
 
 </div>
 
-  <%= javascript_tag "
-  // This is wrong ... the correct way to do dynamically create form content
-    // is in app/views/profiles/_general.html.haml
-    // Things that are wrong with this code: 
-    // 1) Use of window global variable (bad js, browser incompatible)
-    // 2) Use of Rails AR model classes - should be done in the controller
-    // 3) Form selects should be created with Rails form helpers - this will surely break one day
-
-    window.types = new Array();
-    window.types_relationship = new Array();
-    "
-    %>
-
-    <script type="text/javascript">
-    //<![CDATA[
-    <% Circle.find(:all, :order => {:name => " ASC"}).each do |type| -%>
-    <%= "window.types_relationship.push([#{type.id}, '#{escape_javascript(type.name)}']);\n" %>
-    <% end %>
-
-    <% Family::TYPES.each do |type| -%>
-    <%= "window.types.push(['#{type}', '#{escape_javascript(type)}']);\n" %>
-    <% end %>
-
-    //]]>
-    </script>
 
 

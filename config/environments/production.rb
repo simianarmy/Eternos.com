@@ -31,4 +31,7 @@ config.after_initialize do
   CACHE = MemCache.new MEMCACHED_OPTIONS
   CACHE.servers = MEMCACHED_HOST
   puts "=> connected."
+  
+  # So that Passenger can find the identify command
+  Paperclip.options[:command_path] = "/usr/local/bin"
 end

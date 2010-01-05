@@ -1,34 +1,16 @@
-/* $Id$
- *
- * Derived from http://net.tutsplus.com/javascript-ajax/create-a-simple-intelligent-accordion-effect-using-prototype-and-scriptaculous/
- */
 
-div#vertical-accordion{
-    margin: 10px;
-}
-
-div.accordion {
-    position: relative; /* required for bounding--works around a "peculiarity" in Prototype */
-}
-
-div.accordion-toggle{
-    position: relative; /* required for effect */
-    z-index: 10;		/* required for effect */
+.accordion_toggle{
+    display: block;
     background: #eee;   /* required for effect--can be anything except "transparent" */
     cursor: pointer;
-		margin-bottom: 1px;  
-		padding: 9px 14px 6px 14px;
-		/*border-top: 1px solid #5d5852;  */
 }
 
-div.accordion-toggle:hover, div.accordion-toggle-active{  
+.accordion_toggle:hover, div.accordion_toggle_active{  
 		/* border-top: 1px solid #a06b55;   */
 		background: url(/images/backgrounds/html-xrepeat.png) repeat-x;
 		color: #12419e;
 }
 
-div.accordion-content{
+.accordion_content {
     overflow: hidden;	/* required for effect */
-		/* border-bottom: 1px solid #000; */
-		margin: 9px 24px 6px 24px;  
 }
