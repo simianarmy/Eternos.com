@@ -42,47 +42,50 @@ class ActivityStreamItem < ActiveRecord::Base
     where "deleted_at IS NULL"
   end
 
-  # If called with block, checks for existing item based on block call.  If not found, calls 
-  # class create method
-  # IMPORTANT:
-  #   Can chain from named_scopes to scope the block query
+  # Takes proxy object & block, checks for existing item using on block call.  
+  # Returns:
+  #  (updated) found item if block yields result,
+  #  nil if not found
+  # Note: Can chain from named_scopes to scope the block query
   #
   # Example: 
-  #   member.activity_stream.items.facebook.sync_from_proxy(proxy) do |scope|
+  #   member.activity_stream.items.facebook.sync_from_proxy!(proxy) do |scope|
   #     scope.find_by_this_and_that(proxy.this, proxy.that)
   #   end    
   #
-  def self.sync_from_proxy(p)
+  def self.sync_from_proxy!(p)
     # Uniqueness based on optional passed find query
-    if f = block_given? ? yield(self) : nil
-      puts "FOUND EXISTING ITEM updating: #{f.inspect}"
-      f.update_attributes(
+    if f = yield(self)
+      f.update_attributes!(
         :author         => p.author,
         :source_url     => p.source_url,
         :attribution    => p.attribution,
         :comment_thread => p.comments,
         :liked_by       => p.likers)
-    else
-      create_from_proxy(p) 
+      f
     end
   end
   
-  # Creates object from a ActivityStreamProxy instance
-  def self.create_from_proxy(item)
-    create!(
-      :guid             => item.id,
-      :author           => item.author,
-      :edited_at        => item.updated ? Time.at(item.updated) : nil,
-      :published_at     => item.created ? Time.at(item.created) : nil,
-      :message          => item.message,
-      :source_url       => item.source_url,
-      :attribution      => item.attribution,
-      :activity_type    => item.activity_type,
-      :attachment_data  => item.attachment_data,
-      :attachment_type  => item.attachment_type,
-      :comment_thread   => item.comments,
-      :liked_by         => item.likers
-      )
+  def self.create_from_proxy!(activity_stream_id, item)
+    create!({:activity_stream_id => activity_stream_id}.merge(proxy_to_attributes(item)))
+  end
+  
+  # Converts proxy object to hash containing table column to value pairs
+  def self.proxy_to_attributes(item)
+    {
+    :guid             => item.id,
+    :author           => item.author,
+    :edited_at        => item.updated ? Time.at(item.updated) : nil,
+    :published_at     => item.created ? Time.at(item.created) : nil,
+    :message          => item.message,
+    :source_url       => item.source_url,
+    :attribution      => item.attribution,
+    :activity_type    => item.activity_type,
+    :attachment_data  => item.attachment_data,
+    :attachment_type  => item.attachment_type,
+    :comment_thread   => item.comments,
+    :liked_by         => item.likers
+    }
   end
   
   def bytes

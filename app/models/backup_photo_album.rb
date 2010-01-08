@@ -10,7 +10,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
   has_many :content_photos, :through => :backup_photos, :source => :photo
   has_one :owner, :through => :backup_source, :source => :member
   
-  validates_presence_of :backup_source
+  validates_presence_of :backup_source_id
   validates_uniqueness_of :source_album_id, :scope => :backup_source_id
   
   acts_as_restricted :owner_method => :owner
@@ -67,7 +67,10 @@ class BackupPhotoAlbum < ActiveRecord::Base
     where "deleted_at IS NULL"
   end
   
-  EditableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
+  @@editableAttributes = [:cover_id, :size, :name, :description, :location, :modified]
+  @@facebookFriendsAlbumName = 'Photos From Facebook Friends'
+  @@facebookFriendsAlbumID = '11111'
+  cattr_reader :editableAttributes, :facebookFriendsAlbumName, :facebookFriendsAlbumID
   
   def self.import(source, album)
     self.create!(
@@ -76,9 +79,18 @@ class BackupPhotoAlbum < ActiveRecord::Base
   end
   
   def self.db_attributes
-    EditableAttributes
+    editableAttributes
   end
 
+  # Helper to find or create an album for all 3rd party facebook images
+  def self.find_or_create_facebook_friends_album(backup_source_id)
+    BackupPhotoAlbum.find_or_initialize_by_backup_source_id_and_source_album_id(backup_source_id,
+      facebookFriendsAlbumID) do |album|
+      album.name = facebookFriendsAlbumName
+      album.save
+    end
+  end
+  
   # Returns content Photo object for the album cover
   def cover_photo
     # Try to avoid using invalid photos if there are multiple backup photos with the 

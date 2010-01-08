@@ -9,6 +9,7 @@
 class ActivityStreamProxy < Hashie::Mash
 #  attr_accessor :id, :author, :created, :updated, :message, :source_url, :attribution, :type, :attachment_type
   
+  # All this is overkill now that we are using Hashie...
   class Attachment
     attr_reader :data
     

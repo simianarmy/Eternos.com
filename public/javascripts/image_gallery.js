@@ -65,7 +65,7 @@ function albumView() {
 
         //create the skimmer, and set the background image to the sprite for the album (in the data file)
         //then register the mousemove event
-        $j('<div class="skimmer">').css("background", "url("+this.cover_photo_url+") no-repeat").mousemove(function(e) {
+        $j('<div class="skimmer">').css("background", "url("+this.cover_photo_url+") no-repeat center").mousemove(function(e) {
             var x = e.pageX;
             var offset = $j(this).offset().left;
             var w = 160 / albums[i].photos.length;

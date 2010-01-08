@@ -11,6 +11,15 @@ describe BackupPhotoAlbum do
     @album = new_album
   end
   
+  it "should return editable attributes array" do
+    BackupPhotoAlbum.db_attributes.should be_a Array
+    BackupPhotoAlbum.db_attributes.should == BackupPhotoAlbum.editableAttributes
+  end
+  
+  it "should have a constant name for facebook friends' photos" do
+    BackupPhotoAlbum.facebookFriendPhotos.should_not be_blank
+  end
+  
   it "should create object on import" do
     lambda {
       BackupPhotoAlbum.import @source, @album

@@ -3,21 +3,14 @@
 # ActivityStreamItem STI class child
 
 class FacebookActivityStreamItem < ActivityStreamItem
-  include AfterCommit::ActiveRecord
+  #include AfterCommit::ActiveRecord
   
-  after_commit_on_create :process_attachment_message
-  # Must be on_update, not on_create because we need to be able to fetch the 
-  # item's member attribute, which is sometimes not set until after the object
-  # is committed.
-  # Ex:
-  # @activity_stream.items << FacebookActivityStreamItem.create(...)
-  after_commit_on_update :process_attachment_photo
+  after_create :process_attachment # Override in children
   
   serialize_with_options do
     methods :url, :thumbnail_url
     except :guid, :attachment_data
   end
-  
   
   def url
     return unless d = parsed_attachment_data
@@ -87,9 +80,11 @@ class FacebookActivityStreamItem < ActivityStreamItem
   
   protected
 
-  def process_attachment_message
-    return unless d = parsed_attachment_data
-    
+  # Do additional parsing of facebook attachment data structure in order 
+  # to extract additional information & download required media
+  def process_attachment
+    return true unless d = parsed_attachment_data
+
     case self.attachment_type
     when 'generic'
       # Parse generic attachment attributes into string for the message attribute
@@ -99,14 +94,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
       message << "#{d['description']}\n" unless d['description'].blank?
 
       self.update_attribute(:message, message) unless message.blank?
-    end
-    true
-  end
-  
-  def process_attachment_photo
-    return unless d = parsed_attachment_data
-    
-    case self.attachment_type
+
     when 'photo'
       # Add photo to be downloaded if it is a photo from a facebook album.
       # requires the backup_source object, which means this object must be created AND
@@ -116,8 +104,15 @@ class FacebookActivityStreamItem < ActivityStreamItem
         # add to album (create one if necessary)
         # need to retrieve our facebook backup source object for album creation
         begin
+          # If photo doesn't belong to this user, use a catch-all photo album 
+          # to store them
           bs = member.backup_sources.facebook.first
-          album = BackupPhotoAlbum.find_or_create_by_backup_source_id_and_source_album_id(bs.id, d['photo']['aid'])
+          album = if d['photo']['owner'] != member.facebook_id.to_s
+            # This sucks...why doesn't find_or_create work with extra attributes?
+            BackupPhotoAlbum.find_or_create_facebook_friends_album(bs.id)
+          else
+            BackupPhotoAlbum.find_or_create_by_backup_source_id_and_source_album_id(bs.id, d['photo']['aid'])
+          end
 
           BackupPhoto.create(:backup_photo_album => album,
             :source_photo_id => d['photo']['pid'],
@@ -131,5 +126,4 @@ class FacebookActivityStreamItem < ActivityStreamItem
     end
     true
   end
-  
 end
