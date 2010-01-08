@@ -71,7 +71,9 @@ function albumView() {
             var w = 160 / albums[i].photos.length;
             var image = Math.floor((x - offset) / w);
             //$j(this).css("background-position", "0px " + (-160 * image) + "px");
-						$j(this).css("background", "url("+albums[i].photos[image].url+") no-repeat");
+						// Must use full-size image here even though it will be cutoff b/c thumbnails are 
+						// smaller than the cover size.  Maybe we can set the size in the css?
+						$j(this).css("background", "url("+albums[i].photos[image].url+") no-repeat center");
         }).mouseout(function() {
         	//when we mouseout, set the background position back to 0
             $j(this).css("background-position", "0px 0px");

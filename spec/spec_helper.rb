@@ -433,7 +433,7 @@ module ActivityStreamProxySpecHelper
     item = ActivityStreamProxy.new
     item.updated = item.created = Time.now.to_i
     item.message = 'blah blah'
-    item.type = 'status'
+    item.activity_type = 'status'
     item.attachment = nil
     item
   end
@@ -444,7 +444,7 @@ module ActivityStreamProxySpecHelper
     item.updated = item.created = Time.now.to_i
     item.message = 'blah blah'
     item.attachment_type = type
-    item.type = 'post'
+    item.activity_type = 'post'
     item
   end
   
@@ -464,6 +464,18 @@ module ActivityStreamProxySpecHelper
     when 'link'
       item.attachment = "--- \nhref: http://www.facebook.com/ext/share.php?sid=123275557061&amp;h=AS8HB&amp;u=zFAlt\ntype: link\nsrc: http://external.ak.fbcdn.net/safe_image.php?d=bfbd14a77a70e85673eb9cd537214304&amp;url=http%3A%2F%2Ffarm4.static.flickr.com%2F3456%2F3829703647_8276334e5d_o.jpg&amp;w=130&amp;h=130\n"
     end
+    item
+  end
+  
+  def create_facebook_stream_proxy_item_with_comments
+    item = ActivityStreamProxy.new
+    item.comments = [{"author" => "dr no", "time" => Time.now.to_i, "text" => "foo fee fi"}]
+    item
+  end
+  
+  def create_facebook_stream_proxy_item_with_likes
+    item = ActivityStreamProxy.new
+    item.likers = ["john brown", "karl malone"]
     item
   end
 end

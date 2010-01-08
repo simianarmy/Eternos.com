@@ -18,6 +18,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
     except :guid, :attachment_data
   end
   
+  
   def url
     return unless d = parsed_attachment_data
     

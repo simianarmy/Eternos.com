@@ -5,15 +5,15 @@
 
 # See facebook_activity.rb for usage example
 
-
-class ActivityStreamProxy
-  attr_accessor :id, :author, :created, :updated, :message, :type, :attachment_type
+# TODO: use Mash/Hashie?
+class ActivityStreamProxy < Hashie::Mash
+#  attr_accessor :id, :author, :created, :updated, :message, :source_url, :attribution, :type, :attachment_type
   
   class Attachment
     attr_reader :data
     
     def initialize(data)
-      @data = data
+      @data = data 
     end
   end
   

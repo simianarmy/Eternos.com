@@ -35,11 +35,16 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "author"
+    t.string   "source_url"
+    t.string   "attribution"
+    t.text     "liked_by"
+    t.text     "comment_thread"
     t.datetime "deleted_at"
   end
-
   add_index "activity_stream_items", ["activity_stream_id"], :name => "index_activity_stream_items_on_activity_stream_id"
-
+  add_index "activity_stream_items", ["type"], :name => "index_activity_stream_items_on_type"
+  add_index "activity_stream_items", ["published_at"], :name => "index_activity_stream_items_on_published_at"
+  
   create_table "activity_streams", :force => true do |t|
     t.integer  "user_id",          :null => false
     t.datetime "last_activity_at"

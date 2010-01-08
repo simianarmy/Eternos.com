@@ -14,6 +14,8 @@ class ActivityStreamItem < ActiveRecord::Base
   acts_as_time_locked
 
   serialize :attachment_data
+  serialize :comment_thread
+  serialize :liked_by
   
   include TimelineEvents
   
@@ -40,6 +42,31 @@ class ActivityStreamItem < ActiveRecord::Base
     where "deleted_at IS NULL"
   end
 
+  # If called with block, checks for existing item based on block call.  If not found, calls 
+  # class create method
+  # IMPORTANT:
+  #   Can chain from named_scopes to scope the block query
+  #
+  # Example: 
+  #   member.activity_stream.items.facebook.sync_from_proxy(proxy) do |scope|
+  #     scope.find_by_this_and_that(proxy.this, proxy.that)
+  #   end    
+  #
+  def self.sync_from_proxy(p)
+    # Uniqueness based on optional passed find query
+    if f = block_given? ? yield(self) : nil
+      puts "FOUND EXISTING ITEM updating: #{f.inspect}"
+      f.update_attributes(
+        :author         => p.author,
+        :source_url     => p.source_url,
+        :attribution    => p.attribution,
+        :comment_thread => p.comments,
+        :liked_by       => p.likers)
+    else
+      create_from_proxy(p) 
+    end
+  end
+  
   # Creates object from a ActivityStreamProxy instance
   def self.create_from_proxy(item)
     create!(
@@ -48,9 +75,14 @@ class ActivityStreamItem < ActiveRecord::Base
       :edited_at        => item.updated ? Time.at(item.updated) : nil,
       :published_at     => item.created ? Time.at(item.created) : nil,
       :message          => item.message,
-      :activity_type    => item.type,
+      :source_url       => item.source_url,
+      :attribution      => item.attribution,
+      :activity_type    => item.activity_type,
       :attachment_data  => item.attachment_data,
-      :attachment_type  => item.attachment_type)
+      :attachment_type  => item.attachment_type,
+      :comment_thread   => item.comments,
+      :liked_by         => item.likers
+      )
   end
   
   def bytes

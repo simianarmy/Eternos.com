@@ -181,6 +181,9 @@ Top Photo-Sharing Sites to allow importing from:
 	SmugMug
 	Picasa
 	Photobucket
+
+Backed up data Presentation:
+	For PDFs: www.princexml.com - Expensive but high quality
 	
 Emailed content support: 
   MMS2R

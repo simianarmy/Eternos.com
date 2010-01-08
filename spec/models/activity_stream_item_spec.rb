@@ -20,10 +20,45 @@ describe ActivityStreamItem do
     end
     
     it "should create a new instance from a proxy object" do
-      @item = FacebookActivityStreamItem.create_from_proxy @proxy
+      @item = FacebookActivityStreamItem.sync_from_proxy @proxy
       @item.activity_type.should == 'status'
       @item.message.should == @proxy.message
       @item.attachment_data.should be_nil
+    end
+    
+    it "should return nil for unset serialized columns" do
+      @item.comment_thread.should be_nil
+      @item.liked_by.should be_nil
+    end
+
+    describe "with sync_from_proxy" do
+      it "should create a new object if unique" do
+        lambda {
+          FacebookActivityStreamItem.sync_from_proxy @proxy
+          }.should change(FacebookActivityStreamItem, :count).by(1)
+      end
+
+      it "should not create duplicate records" do
+        lambda {
+            2.times { 
+              FacebookActivityStreamItem.sync_from_proxy @proxy do |scope|
+                scope.find_by_guid(@proxy.id.to_s)
+              end
+            }
+        }.should change(FacebookActivityStreamItem, :count).by(1)
+      end
+      
+      it "should scope find query to member's activity stream" do
+        @item1 = create_activity_stream_item :type => 'FacebookActivityStreamItem'
+        @item1_guid = @item1.guid
+        
+        @item2 = create_activity_stream_item :type => 'FacebookActivityStreamItem'
+        lambda {
+          @item2.member.activity_stream.items.facebook.sync_from_proxy @proxy do |scope|
+            scope.find_by_guid(@item1_guid.to_s)
+          end
+        }.should change(FacebookActivityStreamItem, :count).by(1)
+      end
     end
     
     describe "JSON" do
@@ -34,7 +69,28 @@ describe ActivityStreamItem do
       it "should support to_json" do
         ActiveSupport::JSON.decode(@json).should be_a Hash
       end
+    end
+    
+    describe "with comments" do
+      before(:each) do
+        @item = FacebookActivityStreamItem.sync_from_proxy(create_facebook_stream_proxy_item_with_comments)
+      end
       
+      it "should return comment thread as array of hashes" do
+        @item.comment_thread.should_not be_empty
+        @item.comment_thread.all?{|c| !c['text'].blank?}.should be_true
+      end
+    end
+    
+    describe "with 'likes'" do
+      before(:each) do
+        @item = FacebookActivityStreamItem.sync_from_proxy(create_facebook_stream_proxy_item_with_likes)
+      end
+    
+      it "should return likes as array of names" do
+        @item.liked_by.should_not be_empty
+        @item.liked_by.all?{|l| !l.blank?}.should be_true
+      end
     end
     
     describe "with attachment data" do
@@ -46,7 +102,7 @@ describe ActivityStreamItem do
       
       describe "photo on create" do
         before(:each) do
-          @item = FacebookActivityStreamItem.create_from_proxy(create_facebook_stream_proxy_item_with_attachment('photo'))
+          @item = FacebookActivityStreamItem.sync_from_proxy(create_facebook_stream_proxy_item_with_attachment('photo'))
         end
         
         with_transactional_fixtures(:off) do
@@ -76,7 +132,7 @@ describe ActivityStreamItem do
         
       describe "being a facebook photo" do
         before(:each) do
-          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('photo')
+          @item = FacebookActivityStreamItem.sync_from_proxy create_facebook_stream_proxy_item_with_attachment('photo')
         end
         
         it "should parse photo attachment data" do
@@ -115,7 +171,7 @@ describe ActivityStreamItem do
       describe "of type: generic" do
         with_transactional_fixtures(:off) do
           before(:each) do
-            @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('generic')
+            @item = FacebookActivityStreamItem.sync_from_proxy create_facebook_stream_proxy_item_with_attachment('generic')
           end
 
           it "should store parse generic attachment data" do
@@ -136,7 +192,7 @@ describe ActivityStreamItem do
       
       describe "of type: friendfeed" do
         before(:each) do
-          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('friendfeed')
+          @item = FacebookActivityStreamItem.sync_from_proxy create_facebook_stream_proxy_item_with_attachment('friendfeed')
         end
         
         it "should store parse generic attachment data" do
@@ -151,7 +207,7 @@ describe ActivityStreamItem do
       
       describe "of type: link" do
         before(:each) do
-          @item = FacebookActivityStreamItem.create_from_proxy create_facebook_stream_proxy_item_with_attachment('link')
+          @item = FacebookActivityStreamItem.sync_from_proxy create_facebook_stream_proxy_item_with_attachment('link')
         end
         
         it "should store parse generic attachment data" do
@@ -183,7 +239,7 @@ describe ActivityStreamItem do
     end
     
     it "should create a new instance from a proxy object" do
-      @item = TwitterActivityStreamItem.create_from_proxy @proxy
+      @item = TwitterActivityStreamItem.sync_from_proxy @proxy
       @item.activity_type.should == 'status'
       @item.message.should == @proxy.message
     end
