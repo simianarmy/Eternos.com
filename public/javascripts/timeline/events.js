@@ -229,9 +229,10 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 		return comments;
 	},
 	getLikes: function() {
-		var likes = '';
+		var likes = '', count = 0;
 		if (this.attributes.liked_by != null) {
-			likes = this._getSmallTooltipLine('Liked By: ' + this.attributes.liked_by.join(', '));
+			count = this.attributes.liked_by.size();
+			likes = this._getSmallTooltipLine('Liked By ' + count + ' ' + ((count == 1) ? 'Person' : 'People'));
 		}
 		return likes;
 	},
