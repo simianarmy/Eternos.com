@@ -220,11 +220,24 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 		this.source = 'Facebook';
 		$super(s);
 	},
-	getComments: function() {
+	getCommentsCount: function() {
 		var comments = '', count = 0;
 		if (this.attributes.comment_thread != null) {
 			count = this.attributes.comment_thread.size();
 			comments = this._getSmallTooltipLine(count + " " + ((count == 1) ? 'Comment' : 'Comments'));
+		}
+		return comments;
+	},
+	getComments: function() {
+		var comments = '';
+		if (this.attributes.comment_thread != null) {
+			this.attributes.comment_thread.each(function(c) {
+				comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
+					author: (c.username ? c.username : 'You'),
+					thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
+					comment: c.text});
+				});
+			comments = this._getSmallTooltipLine('Comments: ' + comments);
 		}
 		return comments;
 	},

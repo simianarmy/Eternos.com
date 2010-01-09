@@ -21,7 +21,7 @@
     .clearboth
     %p== #{h item.message}
     - if item.comment_thread
-      #comment_thread
+      .comment_thread[item]
         %span.detail Comments:
         %br
         = render :partial => 'facebook_activity_stream_items/comment_thread_item', :collection => item.comment_thread

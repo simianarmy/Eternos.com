@@ -159,16 +159,16 @@ var ETemplates = function() {
 			return new Template('<div id="events_header"><p class="details_box_title">#{title}</p></div>' + '<div id="events_list">#{events}</div>');
 		} (),
 		eventGroup: function() {
-			return new Template('<div class="event_list_group_#{odd_or_even}"><div class="event_list_date">#{date}</div>' + '<ul class="event_list_group">#{body}</ul><div style="clear:both"></div></div>');
+			return new Template('<div class="event_list_group_#{odd_or_even}"><div class="event_list_date">#{date}</div>' + '<ul class="event_list_group">#{body}</ul><div class="clearboth"></div></div>');
 		} (),
 		hiddenItem: function() {
 			return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 		} (),
 		eventGroupItem: function() {
-			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>' + '</div><div style="clear:both"></div></li>');
+			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>' + '</div><div class="clearboth"></div></li>');
 		} (),
 		eventItemWithTooltip: function() {
-			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + '<div id="evlitt_#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clear"></div></li>');
+			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + '<div id="evlitt_#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clearboth"></div></li>');
 		} (),
 		eventItemTooltipItem: function() {
 			// Lightview popup on click
@@ -204,7 +204,10 @@ var ETemplates = function() {
 	that.tooltipTemplates = {
 		activity_stream_item: function() {
 			return new Template('<div class="tooltip_as">' + tooltipItemViewLink('#{message}') + 
-				'#{time}#{author}#{source}#{comments}#{likes}#{media}</div>');
+				'#{time}#{author}#{source}<div class="comment_thread">#{comments}</div>#{likes}#{media}</div>');
+		} (),
+		facebook_comment: function() {
+			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}#{author} said: #{comment}</div><div class="clearboth"></div></div>');
 		} (),
 		image: function() {
 			return new Template('<div class="tooltip_img"><a href="#{img_url}" class="lightview"><img src="#{thumbnail_url}"></a><br/>#{caption}</div>');
@@ -214,7 +217,7 @@ var ETemplates = function() {
 				tooltipItemViewLink('#{message}') + '#{source}#{time}</div>');
 		} (),
 		video: function() {
-			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clear"></div>');
+			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clearboth"></div>');
 		} (),
 		email: function() {
 			return new Template('<div class="tooltip_email">' + tooltipItemViewLink('#{subject}') +
