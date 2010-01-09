@@ -118,6 +118,8 @@ describe ActivityStreamItem do
         describe "on create with photo" do
           before(:each) do
             @proxy_item = create_facebook_stream_proxy_item_with_attachment('photo')
+            BackupPhotoAlbum.destroy_all
+            BackupPhoto.destroy_all
           end
         
           it "proxy item should have an attachment attribute" do
@@ -131,18 +133,34 @@ describe ActivityStreamItem do
           end
       
           it "should create new BackupPhotoAlbum for the BackupPhoto" do
-            @as.items.facebook.destroy_all
-            BackupPhotoAlbum.destroy_all
-            BackupPhoto.destroy_all
             lambda {
               @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @proxy_item
               @item.should be_a FacebookActivityStreamItem
             }.should change(BackupPhotoAlbum, :count).by(1)
           end
 
+          it "should create photo album for facebook friends if photo not user's" do
+            @proxy_item.attachment_data['photo']['owner'] = '123'
+            lambda {
+              @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @proxy_item
+            }.should change(BackupPhotoAlbum.source_album_id_eq(BackupPhotoAlbum.facebookFriendsAlbumID), :size).by(1)
+          end
+          
+          it "should create photo album for photo if photo is user's" do
+            @proxy_item.attachment_data['photo']['owner'] = @as.member.facebook_id.to_s
+            lambda {
+              @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @proxy_item
+            }.should change(BackupPhotoAlbum.source_album_id_eq(@proxy_item.attachment_data['photo']['aid']), :size).by(1)
+          end
+          
+          it "should not create duplicate photo albums on multiple saves" do
+            @proxy_item.attachment_data['photo']['owner'] = @as.member.facebook_id.to_s
+            lambda {
+              2.times { FacebookActivityStreamItem.create_from_proxy! @as.id, @proxy_item }
+            }.should change(BackupPhotoAlbum.source_album_id_eq(@proxy_item.attachment_data['photo']['aid']), :size).by(1)
+          end
+          
           it "should save the photo as a BackupPhoto" do
-            BackupPhotoAlbum.destroy_all
-            BackupPhoto.destroy_all
             lambda {
               @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @proxy_item
               @item.send(:process_attachment)

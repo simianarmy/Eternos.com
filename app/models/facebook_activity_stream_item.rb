@@ -3,9 +3,7 @@
 # ActivityStreamItem STI class child
 
 class FacebookActivityStreamItem < ActivityStreamItem
-  #include AfterCommit::ActiveRecord
-  
-  after_create :process_attachment # Override in children
+  after_create :process_attachment 
   
   serialize_with_options do
     methods :url, :thumbnail_url
