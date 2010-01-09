@@ -1,0 +1,14 @@
+.comment_thread_item[comment_thread_item]
+  .comment_text
+    = image_tag(comment_thread_item.user_pic, :align=>'left') if comment_thread_item.user_pic
+    == On #{Time.at(comment_thread_item.time.to_i).to_s(:short)}, 
+    - if comment_thread_item.username.any?
+      = link_to comment_thread_item.username, comment_thread_item['profile_url'], :target => '_new'
+    - else
+      You
+    said:
+    %br
+    %span.bold= comment_thread_item.text
+  .clearboth
+
+

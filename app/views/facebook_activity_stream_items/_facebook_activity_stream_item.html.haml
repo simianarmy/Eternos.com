@@ -1,3 +1,5 @@
+- stylesheet 'timeline'
+
 - item = facebook_activity_stream_item
 #item_details_content.item_details_content[item]
   .details_head
@@ -18,9 +20,19 @@
       = link_to item.url, item.url
     .clearboth
     %p== #{h item.message}
+    - if item.comment_thread
+      #comment_thread
+        %span.detail Comments:
+        %br
+        = render :partial => 'facebook_activity_stream_items/comment_thread_item', :collection => item.comment_thread
   %p.detail
+    - if item.liked_by
+      == Liked by: #{item.liked_by.join(', ')}
+      %br
     - if item.published_at != item.edited_at
-      == Edited: #{item.edited_at.to_s(:long)}
+      == Updated: #{item.edited_at.to_s(:long)}
+      %br
+    = link_to item.source_url, item.source_url, :target => '_new' if item.source_url
   .clearboth
   %p
   %br

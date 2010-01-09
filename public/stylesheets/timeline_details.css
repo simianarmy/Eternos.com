@@ -125,10 +125,8 @@ border:6px solid #F5F5F5;
 }
 
 .message_content{
-width:575px;
 line-height:17px;
 text-align:justify;
-border-bottom:1px dashed #d4d4d4;
 margin-top:15px;
 padding: 10px;
 font-size: 14px;
@@ -139,4 +137,5 @@ margin-top:10px;
 color:#3860AB;
 font-size:11px;
 }
+
 

@@ -49,7 +49,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
   end
     
   def media_attachment?
-    attachment_data && ["photo", "video"].include?(attachment_type.downcase)
+    attachment_type && attachment_data &&  ["photo", "video"].include?(attachment_type.downcase)
   end
   
   def parse_link(link)

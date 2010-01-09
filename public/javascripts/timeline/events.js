@@ -173,6 +173,8 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 		var source = '';
 		if (this.isMedia()) {
 			source = this._getSmallTooltipLine('Source: ' + this.source);
+		} else if (this.attributes.attribution != null) {
+			source = this._getSmallTooltipLine('Source: ' + this.attributes.attribution);
 		}
 		return source;
 	},
@@ -195,21 +197,21 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 	},
 	getMessage: function() {
 		var msg = '';
-		if (this.attributes.message !== '') {
-			msg = this.attributes.message
-		} else if (this.attributes.url !== '') {
-			msg = this.attributes.url;
+		if (this.attributes.message != null) {
+			msg = this.attributes.message.urlToLink();
+		} else if (this.attributes.url != null) {
+			msg = this.attributes.url.urlToLink();
 		}
-		return msg.urlToLink();
+		return msg;
 	},
 	getPreviewHtml: function() {
-		return this._evalTemplate({
+		return this._evalTemplate(Object.extend({
 			message: this.getMessage(),
 			author: this.getEventAuthorHtml(),
 			time: this.getEventTimeHtml(),
 			source: this.getSource(),
 			media: this.getEventMediaHtml()
-		});
+		}, this.getPreviewExtras() || {}));
 	}
 });
 // Facebook event
@@ -217,6 +219,27 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 	initialize: function($super, s) {
 		this.source = 'Facebook';
 		$super(s);
+	},
+	getComments: function() {
+		var comments = '', count = 0;
+		if (this.attributes.comment_thread != null) {
+			count = this.attributes.comment_thread.size();
+			comments = this._getSmallTooltipLine(count + " " + ((count == 1) ? 'Comment' : 'Comments'));
+		}
+		return comments;
+	},
+	getLikes: function() {
+		var likes = '';
+		if (this.attributes.liked_by != null) {
+			likes = this._getSmallTooltipLine('Liked By: ' + this.attributes.liked_by.join(', '));
+		}
+		return likes;
+	},
+	getPreviewExtras: function() {
+		return {
+			comments: this.getComments(),
+			likes: this.getLikes()
+		};
 	}
 });
 // Twitter event
@@ -231,6 +254,9 @@ var ETLTwitterActivityStreamEventSource = Class.create(ETLActivityStreamEventSou
 			source = this._getSmallTooltipLine('Source: ' + this.attributes.source);
 		}
 		return source;
+	},
+	getPreviewExtras: function() {
+		return {};
 	}
 });
 // RSS event

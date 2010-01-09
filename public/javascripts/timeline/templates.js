@@ -204,7 +204,7 @@ var ETemplates = function() {
 	that.tooltipTemplates = {
 		activity_stream_item: function() {
 			return new Template('<div class="tooltip_as">' + tooltipItemViewLink('#{message}') + 
-				'#{time}#{author}#{source}#{media}</div>');
+				'#{time}#{author}#{source}#{comments}#{likes}#{media}</div>');
 		} (),
 		image: function() {
 			return new Template('<div class="tooltip_img"><a href="#{img_url}" class="lightview"><img src="#{thumbnail_url}"></a><br/>#{caption}</div>');
