@@ -1,0 +1,28 @@
+- stylesheet 'featureList'
+- use_jquery
+- javascript 'jQuery/jquery.featureList-1.0.0'
+
+- @features = [ {:title => 'Life Key', :img => 'whatis/lifekey.jpg', :img_align => 'left', :text => 'Using Life Key, you can appoint trustees who can notify us upon your passing and we will provide them access to the memories you chose to leave them.'}, {:title => 'Search', :img => 'whatis/search.jpg', :img_align => 'right', :text => 'Look up moments in your life quickly using our easy to use search feature.'}, {:title => 'Video Diary', :img => 'whatis/videodiary.jpg', :img_align => 'left', :text => 'Keep a video record of your life experiences and observations.  Your video diary will be an invaluable treasure for your descendents.'}, {:title => 'Automated / Continuous Import', :img => 'whatis/automated.jpg', :img_align => 'right', :text => 'Backup all your social networking data, emails, blogs and RSS feeds automatically.  Store everything that you do online so that you can go back and see what you were doing at any specific point in time.'}, {:title => 'Timeline', :img => 'whatis/timeline.jpg', :img_align => 'left', :text => 'Create a timeline that you can scroll through by age, day, month or year.  View specific items at any point of your timeline.'}, {:title => 'Easy Event / Artifact Editing', :img => 'whatis/easyevent.jpg', :img_align => 'right', :text => 'Use this feature to tag events for easy reference, assign permissions to view events and to delete any content.'} ]
+  
+- @disabled_feature = {:title => 'Eternos Momento Studio / Eternos Momento Player', :img => 'broken.jpg', :img_align => 'left', :text => 'Create beautiful slide presentations using pictures, videos and narrations.'}
+  
+%fieldset
+  #feature_list
+    %ul#tabs
+      - @features.each do |f|
+        %li
+          %a{:href=>"javascript:;"}
+            %h2= f[:title]
+            %span= f[:text]
+        
+    %ul#output
+      - @features.each do |f|
+        %li= image_tag(f[:img])
+
+:javascript
+  $j(document).ready(function() {
+    $j('#tabs li a').featureList({
+    	output		: '#output li',
+    	start_item	: 1
+    });
+  });
