@@ -23,15 +23,15 @@
         Our unique services allow you to share your experiences effortlessly, bridging geographic distance and time.
       </p>		
     </div>
-
-    <h1>What are you waiting for? Sign up for your free trial today!</h1>
-    <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Basic'} %>
-    <p><strong>Or sign up with your Facebook account</strong></p>
-    <p><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %></a></p>
-
+    <% unless current_user %>
+      <h1>What are you waiting for? Sign up for your free trial today!</h1>
+      <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Basic'} %>
+      <p><strong>Or sign up with your Facebook account</strong></p>
+      <p><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %></a></p>
+    <% end %>
     <hr />
-    <%= render :partial => 'features' %>
-    
-  </fieldset>
+  
+  <%= render :partial => 'features' %>
+    </fieldset>
 </div>
 <!-- end content -->
