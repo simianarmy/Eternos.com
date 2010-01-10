@@ -84,15 +84,15 @@ class FacebookActivityStreamItem < ActivityStreamItem
     return true unless d = parsed_attachment_data
 
     case self.attachment_type
-    when 'generic'
+    when 'link', 'generic'
       # Parse generic attachment attributes into string for the message attribute
-      message = ''
-      message << "#{d['name']}\n" unless d['name'].blank?
-      message << "#{d['caption']}\n" unless d['caption'].blank?
-      message << "#{d['description']}\n" unless d['description'].blank?
-
-      self.update_attribute(:message, message) unless message.blank?
-
+      if self.message.blank?
+        message = ''
+        message << "#{d['name']}\n" unless d['name'].blank?
+        message << "#{d['caption']}\n" unless d['caption'].blank?
+        message << "#{d['description']}\n" unless d['description'].blank?
+        self.update_attribute(:message, message) unless message.blank?
+      end
     when 'photo'
       # Add photo to be downloaded if it is a photo from a facebook album.
       # requires the backup_source object, which means this object must be created AND

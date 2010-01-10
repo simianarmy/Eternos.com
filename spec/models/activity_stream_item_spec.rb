@@ -210,7 +210,7 @@ describe ActivityStreamItem do
       describe "of type: generic" do
         with_transactional_fixtures(:off) do
           before(:each) do
-            @item = FacebookActivityStreamItem.create_from_proxy! @as.id, create_facebook_stream_proxy_item_with_attachment('generic')
+            @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @raw = create_facebook_stream_proxy_item_with_attachment('generic')
           end
 
           it "should store parse generic attachment data" do
@@ -223,8 +223,16 @@ describe ActivityStreamItem do
             @item.thumbnail_url.should be_blank
           end
 
-          it "should set the message attribute from the attachment after update" do
-            @item.message.split("\n").size.should == 3
+          it "should not set the message attribute from the attachment on create if a message is present" do
+            @raw['message'].should_not be_blank
+            @item.message.should == @raw['message']
+          end
+          
+          it "should set the message attribute from the attachment on create if a message is not present" do
+            @raw = create_facebook_stream_proxy_item_with_attachment('generic')
+            @raw['message'] = ''
+            @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @raw
+            @item.message.should_not be_blank
           end
         end
       end
@@ -257,6 +265,26 @@ describe ActivityStreamItem do
         it "should return the attachment data source url" do
           @item.url.should match(/^http/)
           @item.thumbnail_url.should be_blank
+        end
+        
+        describe "with description attributes" do
+          before(:each) do
+            @raw = create_facebook_stream_proxy_item_with_attachment('link_with_description')
+            @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @raw
+          end
+          
+          it "should save descriptions as attachment attributes" do  
+            %w( name description caption ).each do |attr|
+              @item.parsed_attachment_data[attr].should == @raw.attachment[attr]
+            end
+          end
+          
+          it "should include description attributes when converting to JSON" do
+            @json = @item.to_json
+            %w( name description caption ).each do |attr|
+              @json['message'].should match(/.*#{@raw[attr]}.*/)
+            end
+          end
         end
       end
     end

@@ -463,6 +463,8 @@ module ActivityStreamProxySpecHelper
       item.attachment = "--- \nhref: http://www.facebook.com/\nfb_object_type: {}\n\nfb_object_id: {}\n\nicon: http://photos-f.ak.fbcdn.net/photos-ak-sf2p/v43/209/2795223269/app_2_2795223269_1202.gif\nmedia: {}\n\ndescription: \"&lt;div class=&quot;CopyTitle&quot;&gt;Marc posted &lt;a rel=&quot;nofollow&quot; href=&quot;http://www.amazon.com/dp/0887307280/&quot; onclick=&quot;(new Image()).src = &amp;#039;/ajax/ct.php?app_id=2795223269&amp;amp;action_type=3&amp;amp;post_form_id=6657946eb0d4e5ad7a77b966f4e0a040&amp;amp;position=14&amp;amp;&amp;#039; + Math.random();return true;&quot;&gt;The E-Myth Revisited: Why Most Small Businesses Don't Work and What to Do About It&lt;/a&gt; via &lt;a href=&quot;http://apps.facebook.com/friendfeed/&quot; onclick=&quot;(new Image()).src = &amp;#039;/ajax/ct.php?app_id=2795223269&amp;amp;action_type=3&amp;amp;post_form_id=6657946eb0d4e5ad7a77b966f4e0a040&amp;amp;position=14&amp;amp;&amp;#039; + Math.random();return true;&quot;&gt;FriendFeed&lt;/a&gt;&lt;/div&gt;\"\nproperties: {}\n\n"
     when 'link'
       item.attachment = "--- \nhref: http://www.facebook.com/ext/share.php?sid=123275557061&amp;h=AS8HB&amp;u=zFAlt\ntype: link\nsrc: http://external.ak.fbcdn.net/safe_image.php?d=bfbd14a77a70e85673eb9cd537214304&amp;url=http%3A%2F%2Ffarm4.static.flickr.com%2F3456%2F3829703647_8276334e5d_o.jpg&amp;w=130&amp;h=130\n"
+    when 'link_with_description'
+      item.attachment = {'name' => 'name', 'description' => 'description', 'caption' => 'caption'}
     end
     item
   end
