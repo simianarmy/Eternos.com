@@ -21,7 +21,6 @@ ul#tabs {
 
 ul#tabs li {
 	font-size: 12px;
-	padding-bottom: 20px;
 	/* font-family: Arial; */
 }
 
@@ -33,7 +32,7 @@ ul#tabs li img {
 }
 
 ul#tabs li a {
-	color: #222;
+	color: green;
 	text-decoration: none;	
 	display: block;
 	padding: 10px;
@@ -41,24 +40,21 @@ ul#tabs li a {
 	outline: none;
 }
 
+ul#tabs h2 {
+	color: #02419E;
+	margin: 0;	
+	padding: 7px 0 0 0;
+	font-size: 16px;
+	text-transform: uppercase;
+}
+
 ul#tabs li a:hover {
 	text-decoration: underline;
 }
 
-ul#tabs h2 {
-	font-size: 22px; color: #000000; font-weight: normal;
-}
-
-ul#tabs a span {
-	color: #02419E;
-	width: 200px;
-}
-
 ul#tabs li a.current {
-	
 	background:  url('/images/feature-tab-current.png');
 	color: #FFF;
-	
 }
 
 ul#tabs li a.current:hover {
