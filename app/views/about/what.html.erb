@@ -2,32 +2,19 @@
   <fieldset>
     <div class="what01">
       <h1>What is Eternos?</h1>
-      <p>
-        Eternos is a service that enables you to chronicle your life and leave a lasting memory to your descendants and loved ones. 
+        You can think of Eternos as a family photo album, scrapbook, video vault, digital safe deposit box, and diary, kept secure at one site.
+        <p/>
         <br/>
+        <h1>Why?</h1>
+        All to often the memories and personal artifacts we spend a lifetime accumulating are lost to natural disasters (fires, floods, earthquakes, hurricanes, etc.), discarded for lack of context, or simply misplaced. Important family histories are completely and needlessly lost. No more, Eternos is a 21st century solution to this age-old problem.
+        <p/>
         <br/>
-        We are pleased to offer a premium life logging service that allows you to automatically import data from Facebook, Twitter, Gmail, Blogs and RSS feeds. 
-        <br/>
-        <br/>
-        By logging the things you are already doing on the web, Eternos empowers you to effortlessly document your legacy for descendants and preserve it for future generations. 
-        <br/>
-        <br/>
-        In addition, we offer a simple and intuitive video diary software for you to record whatever that happens to be on your mind and in your heart, at any time.
-        </p>
-        <p> Eternos is secure.  All Eternos accounts are scanned daily using the widely popular and trusted “McAfee Secure” to ensure the security of your account and provide you peace of mind.  
-        <br/>
-        <br/>
-        By preserving your legacy with Eternos.com, you will achieve some small measure of immortality by leaving your descendants a priceless gift.  
-        <br/>
-        <br/>
-        Our unique services allow you to share your experiences effortlessly, bridging geographic distance and time.
-      </p>		
+        <h1>How It Works</h1>
+        Eternos allows you to automatically and continuously import data from Facebook, Twitter, Gmail, Blogs, and RSS feeds. If you're not into social networking you can upload video, important documents, and photos via our direct file upload. We offer a simple and intuitive video diary for you to record whatever happens to be on your mind and in your heart. Eternos is a completely private and secure life chronicle where you can save life's precious and important interactions, files, memories, and moments for the future.
+        </p>		
     </div>
     <% unless current_user %>
-      <h1>What are you waiting for? Sign up for your free trial today!</h1>
-      <%= render :partial => 'accounts/short_form', :locals => {:plan => 'Basic'} %>
-      <p><strong>Or sign up with your Facebook account</strong></p>
-      <p><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %></a></p>
+      <%= submit_tag "Sign Up" %>
     <% end %>
     <hr />
   

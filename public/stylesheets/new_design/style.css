@@ -30,7 +30,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 /* home */
 .home, .what { color: #666666;}
 .what IMG, .home IMG { float: left; margin:0 15px 23px 0;}
-.what H1, .home H1 { margin: 0 0 18px 0; padding: 0 0 20px 0; font-size: 26px; font-weight: normal; border-bottom: 1px dashed #CCCCCC; width: 470px; float: left;}
+.what H1, .home H1 { margin: 0 0 18px 0; padding: 0; font-size: 26px; font-weight: normal; width: 470px; float: left;}
 .what FORM, .home FORM { margin: 0; padding: 0; width: 275px; float: left; color: #666666;}
 .what FORM P, .home FORM P { margin: 0; padding: 5px 0;}
 .what P IMG, .home P IMG { float: none; margin-bottom: 0;}
@@ -56,11 +56,11 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 /* what */
 .what H1 { font-size: 22px; color: #000000; width: 480px;}
-.what01 {width: 493px; padding-right: 8px; float: left; color: #02419E; margin-bottom: 10px;}
+.what01 {width: 493px; padding-right: 8px; float: left; color: #02419E; margin-bottom: 20px;}
 .what01 H1 { color: #000000; border-bottom: none;}
 .what01 P { clear: both; width: 470px;}
 
-.what HR, .about HR { clear: both;  margin: 10px 0; padding: 0; border: none; border-top: 1px dashed #cccccc; height: 1px;}
+.what HR, .about HR { clear: both;  margin: 10px 0; padding: 0; border: none; height: 1px;}
 .what FIELDSET FIELDSET { clear: both; color: #02419E;}
 .what FIELDSET FIELDSET H2 { font-size: 22px; color: #000000;  font-weight: normal;}
 .what FIELDSET FIELDSET A{ color: #339933; font-weight: bold; font-size: 12px; text-decoration: none;}
