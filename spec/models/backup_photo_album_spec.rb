@@ -16,8 +16,9 @@ describe BackupPhotoAlbum do
     BackupPhotoAlbum.db_attributes.should == BackupPhotoAlbum.editableAttributes
   end
   
-  it "should have a constant name for facebook friends' photos" do
-    BackupPhotoAlbum.facebookFriendPhotos.should_not be_blank
+  it "should have a constants for facebook friends' photo albums" do
+    BackupPhotoAlbum.facebookFriendsAlbumName.should_not be_blank
+    BackupPhotoAlbum.facebookFriendsAlbumID.should_not be_blank
   end
   
   it "should create object on import" do
@@ -109,6 +110,19 @@ describe BackupPhotoAlbum do
           @photo.tags = @tags = %w[foo, foo shoo]
           @backup.save_photos([@photo])
           @backup.backup_photos.first.tags.should == @tags
+        end
+      end
+      
+      describe "with photos" do
+        before(:each) do
+          fb_photo = new_facebooker_photo
+          fb_photo.created = Time.now - 100.years
+          @photo = new_photo(fb_photo)
+          @backup.save_photos([new_photo, @photo])
+        end
+        
+        it "start_date should return oldest photo's date" do
+          @backup.start_date.should == @photo.added_at
         end
       end
     end

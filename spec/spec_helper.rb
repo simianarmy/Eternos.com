@@ -414,7 +414,8 @@ module FacebookerSpecHelper
   def new_facebooker_photo
     Facebooker::Photo.new(:aid => "100", :pid => rand(Time.now), 
       :caption => Faker::Lorem.sentence, :populated => true,
-      :src_big => "http://#{Faker::Internet.domain_name}/pic.jpg", :tags => Faker::Lorem.words)
+      :src_big => "http://#{Faker::Internet.domain_name}/pic.jpg", :tags => Faker::Lorem.words,
+      :created => Time.now)
   end
 end
     

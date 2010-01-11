@@ -26,7 +26,7 @@ class ImageGalleryController < ApplicationController
       # so sort by album date (descending) manually
     @albums = s.all.
       reject {|al| (al.num_items == 0) || al.name.nil?}.
-      compact.sort {|a,b| b.created_at <=> a.created_at}.
+      compact.sort {|a,b| b.start_date <=> a.start_date}.
       # Convert each album to json in gallery format
       map do |al|
         begin
