@@ -52,15 +52,14 @@ ul#tabs li a:hover {
 	text-decoration: underline;
 }
 
-ul#tabs li a.current {
-	background:  url('/images/feature-tab-current.png');
-	color: #FFF;
-}
+ul#tabs li a.current { background:  url('/images/feature-tab-current.png'); }
+ul#tabs .current H2 { color: #FFFFFF;}
 
 ul#tabs li a.current:hover {
 	text-decoration: none;
 	cursor: default;
 }
+
 
 ul#output {
 	right: 0;

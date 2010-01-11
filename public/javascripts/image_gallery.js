@@ -284,4 +284,4 @@ var albums_orig = [
         ]
     }
     //Add more albums here...
-];
+]
