@@ -7,6 +7,7 @@ class SetupPresenter < AccountPresenter
   attr_accessor :active_step, :completed_steps, 
     :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, :fb_login_url,
     :twitter_accounts, :twitter_account, :twitter_confirmed,
+    :picasa_accounts, :picasa_account, :picasa_confirmed,
     :feed_urls, :feed_url, :rss_url, :rss_confirmed,
     :email_accounts, :current_gmail, :gmail_confirmed
    
@@ -36,13 +37,19 @@ class SetupPresenter < AccountPresenter
       else
         @facebook_confirmed = false
       end
-      @twitter_accounts = backup_sources.twitter.paginate :page => params[:page], :per_page => 10
-      @twitter_account   = backup_sources.twitter.first
+      @twitter_accounts = backup_sources.twitter
+      @twitter_account   = @twitter_accounts.first
       @twitter_confirmed = @twitter_accounts && @twitter_accounts.any? {|t| t.confirmed?}
-      @feed_urls = backup_sources.blog.paginate :page => params[:page], :per_page => 10
+      
+      @picasa_accounts = backup_sources.picasa
+      @picasa_account   = @picasa_accounts.first
+      @picasa_confirmed = @picasa_accounts && @picasa_accounts.any? {|t| t.confirmed?}
+      
+      @feed_urls = backup_sources.blog
       @feed_url = FeedUrl.new
       @rss_confirmed = @feed_urls && @feed_urls.any? {|t| t.confirmed?}
-      @email_accounts = @user.backup_sources.gmail.paginate :page => params[:page], :per_page => 10
+      
+      @email_accounts = @user.backup_sources.gmail
       @current_gmail = @email_accounts.first
       @gmail_confirmed = @email_accounts && @email_accounts.any? {|t| t.confirmed?}
     end

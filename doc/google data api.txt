@@ -1,0 +1,11 @@
+Register Site with Google for added security: 
+  http://code.google.com/apis/accounts/docs/RegistrationForWebAppsAuto.html
+  
+Manage Registered domains:
+https://www.google.com/accounts/ManageDomains
+
+Google AuthSub API:
+  http://code.google.com/apis/accounts/docs/AuthSub.html
+  
+Ruby GData API:
+  http://code.google.com/apis/gdata/articles/gdata_on_rails.html

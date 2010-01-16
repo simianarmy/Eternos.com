@@ -4,6 +4,7 @@
 # Child classes used by ActiveRecord classes to create/update info in a consistent way
 
 # See facebook_activity.rb for usage example
+require 'hashie'
 
 class ActivityStreamProxy < Hashie::Mash
   # TODO: For backwards compat - update client code

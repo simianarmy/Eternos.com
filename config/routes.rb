@@ -29,7 +29,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :backup_sources, :collection => {
     :add_feed_url => :post,
     :add_twitter => :get,
-    :twitter_auth => :get
+    :add_picasa => :get,
+    :twitter_auth => :get,
+    :picasa_auth => :get
   }
   map.resources :backup_source_jobs, :member => { :progress => :get }
   map.resources :account_settings, :member => {

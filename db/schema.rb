@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091213005345) do
+ActiveRecord::Schema.define(:version => 20100116030626) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -35,16 +35,17 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "author"
-    t.string   "source_url"
-    t.string   "attribution"
-    t.text     "liked_by"
-    t.text     "comment_thread"
     t.datetime "deleted_at"
+    t.text     "comment_thread"
+    t.string   "source_url"
+    t.text     "liked_by"
+    t.string   "attribution"
   end
+
   add_index "activity_stream_items", ["activity_stream_id"], :name => "index_activity_stream_items_on_activity_stream_id"
-  add_index "activity_stream_items", ["type"], :name => "index_activity_stream_items_on_type"
   add_index "activity_stream_items", ["published_at"], :name => "index_activity_stream_items_on_published_at"
-  
+  add_index "activity_stream_items", ["type"], :name => "index_activity_stream_items_on_type"
+
   create_table "activity_streams", :force => true do |t|
     t.integer  "user_id",          :null => false
     t.datetime "last_activity_at"
@@ -84,7 +85,7 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.string   "custom_region"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "street_1",        :null => true
+    t.string   "street_1"
     t.string   "city",             :null => false
     t.string   "postal_code",      :null => false
     t.integer  "user_id"
@@ -231,8 +232,6 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.string   "type"
     t.string   "auth_login"
     t.string   "auth_password"
-    t.string   "auth_login2_enc"
-    t.string   "auth_password2_enc"
     t.string   "rss_url"
     t.boolean  "auth_confirmed",         :default => false, :null => false
     t.string   "auth_error"
@@ -250,9 +249,11 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "last_login_at"
     t.string   "auth_token"
     t.string   "auth_secret"
-    t.binary   "auth_secret_enc"
     t.string   "title"
     t.datetime "deleted_at"
+    t.binary   "auth_secret_enc"
+    t.string   "auth_password2_enc"
+    t.string   "auth_login2_enc"
   end
 
   add_index "backup_sources", ["backup_site_id"], :name => "index_backup_sources_on_backup_site_id"
@@ -421,7 +422,6 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
 
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
-    t.integer  "person_id"
     t.string   "name"
     t.datetime "birthdate"
     t.boolean  "living",      :default => true
@@ -430,6 +430,7 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "updated_at"
     t.string   "family_type"
     t.datetime "died_at"
+    t.integer  "person_id"
   end
 
   add_index "families", ["profile_id"], :name => "index_families_on_profile_id"
@@ -596,18 +597,18 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "created_at"
   end
 
+  add_index "password_resets", ["user_id"], :name => "index_password_resets_on_user_id"
+
   create_table "people", :force => true do |t|
     t.string   "name"
     t.datetime "birthdate"
     t.datetime "died_at"
-    t.boolean  "living",      :default => true
+    t.boolean  "living",          :default => true
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "photo_file_name"
   end
-  
-  add_index "password_resets", ["user_id"], :name => "index_password_resets_on_user_id"
 
   create_table "phone_numbers", :force => true do |t|
     t.integer  "phoneable_id",   :null => false
@@ -641,7 +642,7 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
   end
 
   create_table "profiles", :force => true do |t|
-    t.integer  "user_id",            :null => false
+    t.integer  "user_id",                   :null => false
     t.string   "height"
     t.string   "weight"
     t.string   "race"
@@ -656,9 +657,9 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "facebook_data"
-    t.boolean  "always_sync_with_facebook"
     t.string   "photo_file_name"
     t.datetime "photo_updated_at"
+    t.boolean  "always_sync_with_facebook"
   end
 
   add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
@@ -697,15 +698,15 @@ ActiveRecord::Schema.define(:version => 20091213005345) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.integer  "person_id"
     t.string   "description"
-    t.string   "name"
-    t.datetime "start_at"
-    t.datetime "end_at"
-    t.text     "notes"
-    t.integer  "profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
+    t.datetime "end_at"
+    t.text     "notes"
+    t.datetime "start_at"
+    t.integer  "profile_id"
+    t.integer  "person_id"
   end
 
   add_index "relationships", ["profile_id"], :name => "index_relationships_on_profile_id"

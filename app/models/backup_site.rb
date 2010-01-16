@@ -7,8 +7,8 @@ class BackupSite < ActiveRecord::Base
   Facebook  = 'facebook'
   Twitter   = 'twitter'
   Gmail     = 'gmail'
-  Flickr    = 'flickr'
   Blog      = 'blog'
+  Picasa    = 'picasa'
   
   TypeMap  = {
     Gmail => 'email', 
@@ -17,7 +17,7 @@ class BackupSite < ActiveRecord::Base
   validates_presence_of :name
   
   def self.names
-    [Facebook, Twitter, Gmail, Blog]
+    [Facebook, Twitter, Gmail, Blog, Picasa]
   end
   
   def type_name

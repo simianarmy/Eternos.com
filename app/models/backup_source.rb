@@ -10,6 +10,7 @@ class BackupSource < ActiveRecord::Base
   
   #after_create :cb_after_create_init_backup
   # The new hotness
+  # TODO: migrate unencrypted values to these columns, then rename columns & drop these
   attr_encrypted :auth_login2, :auth_password2, :key => 'peek a choo moo', :prefix => '', :suffix => '_enc'
   
   named_scope :by_site, lambda {|name|
@@ -41,7 +42,13 @@ class BackupSource < ActiveRecord::Base
       :joins => :backup_site,
       :conditions => {'backup_sites.name' => BackupSite::Gmail}
     }
-  }  
+  } 
+  named_scope :picasa, lambda {
+    {
+      :joins => :backup_site,
+      :conditions => {'backup_sites.name' => BackupSite::Picasa}
+    }
+  }
   named_scope :active, :conditions => {:auth_confirmed => true, :disabled => false, :deleted_at => nil}
   named_scope :needs_scan, :conditions => {:needs_initial_scan => true}
   named_scope :photo_album, lambda {|id| 

@@ -19,6 +19,7 @@ gem 'contacts', '1.0.18'
 gem 'crack', '0.1.4'
 gem 'eventmachine', '0.12.10'
 gem 'ezcrypto', '0.7.2'
+gem 'gdata', '1.1.1'
 gem 'haml', '2.2.15'
 gem 'hashie', '0.1.5'
 gem 'hirb', :only => :development

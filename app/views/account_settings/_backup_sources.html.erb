@@ -116,6 +116,23 @@
         </div>
     </div>
    </div>
+   <div class="clearboth"></div>
+   <div class="network-login-box" id="form-box">
+     <div id="picasaweb-box" >
+       <div id="picasaweb_blurb">
+       <p>
+         PicasaWeb blurb here
+        </p>
+        <br/>
+       </div>
+       <%= link_to 'Add PicasaWeb Account', add_picasa_backup_sources_path %>
+
+       <div style="clear:both"></div>
+       <div id="result-picasa-accounts">
+         <%= render :partial => 'backup_sources/picasa_list', :locals => { :list => settings.picasa_accounts } %>
+       </div>
+     </div>
+   </div>
    
    <%= render :partial => 'account_settings/gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => settings.current_gmail, :email_accounts => settings.email_accounts} %>
    <br/>

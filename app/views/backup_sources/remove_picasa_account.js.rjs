@@ -1,0 +1,4 @@
+page.flash_and_fade :notice
+
+page.visual_effect :fade, "picasa-list-#{@id}"
+page.call 'updateSourceActivationIcon', 'twitter', (@picasa_accounts.try(:any?)) ? 'true' : 'false'
