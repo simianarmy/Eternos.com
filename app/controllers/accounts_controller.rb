@@ -44,7 +44,7 @@ class AccountsController < ApplicationController
   
   def create
     # If this user has already registered via facebook, redirect to member page
-    if params[:user][:facebook_id]
+    if params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
       if User.find_by_facebook_uid(params[:user][:facebook_id])
         # Login manually & redirect to member home
         UserSession.create

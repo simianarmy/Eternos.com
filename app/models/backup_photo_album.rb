@@ -132,13 +132,12 @@ class BackupPhotoAlbum < ActiveRecord::Base
     
     # Delete old photos
     backup_photos.each do |p|
-      p.destroy unless new_photo_ids.include? p.source_photo_id
+      p.destroy unless new_photo_ids.include?(p.source_photo_id)
     end
     
     # Add all new photos
     new_photos.each do |p|
-      next if existing_photo_ids.include? p.id
-      backup_photos.import p
+      backup_photos.import(p) unless existing_photo_ids.include?(p.id)
     end
   end
 

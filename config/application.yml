@@ -23,6 +23,7 @@ development:
   base_domain: dev.eternos.com
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg
   
 test:
   <<: *default_settings
@@ -32,6 +33,7 @@ test:
   from_email: test@eternos.com
   base_domain: localhost
   s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg
   
 production:
   <<: *default_settings
@@ -41,6 +43,7 @@ production:
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
   s3_staging_dir: /usr/local/eternos/cloud_staging
   invitation_required: false
+  ffmpeg_path: /usr/local/bin/ffmpeg
     
 staging:
   <<: *default_settings
@@ -50,6 +53,7 @@ staging:
   base_domain: staging.eternos.com
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
   s3_staging_dir: /usr/local/eternos/cloud_staging
+  ffmpeg_path: /usr/local/bin/ffmpeg
 
 local_production:
   <<: *default_settings
@@ -59,3 +63,4 @@ local_production:
   base_domain: dev.eternos.com
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg

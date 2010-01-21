@@ -94,6 +94,7 @@ class BackupSourcesController < ApplicationController
     gdata_client = picasa_client.client
     
     begin
+      # Upgrade single-use token to permanent token
       if session[:token] = gdata_client.auth_handler.upgrade()
         gdata_client.authsub_token = auth_token = session[:token] 
         RAILS_DEFAULT_LOGGER.debug "AuthSub token upgraded to #{auth_token}"
@@ -110,7 +111,8 @@ class BackupSourcesController < ApplicationController
             :title => title
           )
           if backup_source.save
-            #backup_source.confirmed!
+            # This triggers backup job
+            backup_source.confirmed!
             current_user.completed_setup_step(2)            
             flash[:notice] = "#{PicasaWebAccount.display_title} account successfully saved"
           end
@@ -121,12 +123,7 @@ class BackupSourcesController < ApplicationController
         flash[:error] = "Invalid #{PicasaWebAccount.display_title} account credentials"
       end
     rescue 
-      err = 'Unknown error'
-      doc = Nokogiri::HTML($!)
-      doc.xpath('//title').each do |title|
-        err = title.text
-      end
-      flash[:error] = "Unexpected error adding the #{PicasaWebAccount.display_title} account: #{err}"
+      flash[:error] = "Unexpected error adding the #{PicasaWebAccount.display_title} account"
       RAILS_DEFAULT_LOGGER.error "Exception in picasa_auth: " + $!
     end
     

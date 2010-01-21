@@ -53,7 +53,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
   end
   
   def parse_link(link)
-    if link.match(/.+url=([^&]+).*$/)
+    if link && link.match(/.+url=([^&]+).*$/)
       CGI::unescape $1
     else
       link

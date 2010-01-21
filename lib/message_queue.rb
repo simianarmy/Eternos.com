@@ -85,12 +85,13 @@ module MessageQueue
     # or not.
     def execute(&block)
       if EM.reactor_running?
+        RAILS_DEFAULT_LOGGER.debug "MessageQueue: EM reactor already running"
         yield
       else
-        start do
-          block.call
-          stop
-        end
+        RAILS_DEFAULT_LOGGER.debug "MessageQueue: Starting EM reactor"
+        start
+        yield
+        stop
       end
     end
     
@@ -107,7 +108,7 @@ module MessageQueue
       @@topic_ex ||= MQ.topic(WorkerTopicExchange)
     end
     
-    def backup_worker_subscriber_queue(site, queue=WorkerTopicQueue)
+    def backup_worker_subscriber_queue(site)
       MQ.queue(site).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
     end
     

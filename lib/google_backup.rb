@@ -38,7 +38,4 @@ module GoogleBackup
       end
     end
   end
-  
-  module Data
-  end
 end

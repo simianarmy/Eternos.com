@@ -180,12 +180,13 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "source_url"
+    t.string   "title"
     t.string   "caption"
     t.string   "tags"
     t.string   "state"
     t.text     "download_error"
     t.datetime "added_at"
-    t.string   "title"
+    t.datetime "modified_at"
     t.datetime "deleted_at"
   end
 

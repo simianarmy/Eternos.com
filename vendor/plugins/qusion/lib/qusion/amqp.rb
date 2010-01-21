@@ -5,7 +5,7 @@ module AMQP
     @settings = settings.merge(amqp_settings)
     case Qusion::ServerSpy.server_type
     when :passenger
-      puts "=> Qusion running AMQP for Passenger"
+      RAILS_DEFAULT_LOGGER.info "=> Qusion running AMQP for Passenger"
       PhusionPassenger.on_event(:starting_worker_process) do |forked| 
         if forked
           EM.kill_reactor

@@ -8,7 +8,8 @@ gem 'capistrano', '2.5.10'
 gem 'capistrano-ext', '1.2.1'
 gem 'webrat', '0.6.0', :only => :test
 gem 'cucumber', '0.4.3', :only => :test
-gem 'rspec-rails', '1.2.9', :only => :test
+gem 'rspec', '1.3.0', :lib => false, :only => :test
+gem 'rspec-rails', '1.3.2', :lib => false, :only => :test
 gem 'ruby-debug', '0.10.3', :only => [:development, :test]
 
 gem 'active_presenter', '1.2.0'

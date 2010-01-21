@@ -17,7 +17,7 @@ class Video < Content
     # Don't repeat this if creators have already done this
     unless attach.width
       begin
-        if info = RVideo::Inspector.new(:file => attach.full_filename)
+        if info = RVideo::Inspector.new(:file => attach.full_filename, :ffmpeg_binary => AppConfig.ffmpeg_path)
           attach.save_metadata(info)
         end
       end
