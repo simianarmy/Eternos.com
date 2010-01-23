@@ -89,9 +89,10 @@ module MessageQueue
         yield
       else
         RAILS_DEFAULT_LOGGER.debug "MessageQueue: Starting EM reactor"
-        start
-        yield
-        stop
+        start do
+          block.call
+          stop
+        end
       end
     end
     

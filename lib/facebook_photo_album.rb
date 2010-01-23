@@ -27,6 +27,9 @@ class FacebookPhoto < BackupPhotoProxy
   attr_reader :photo
   attr_accessor :tags
   
+  alias_attribute :id, :pid
+  alias_attribute :source_url, :src_big
+  
   def initialize(p)
     raise InvalidPhotoClassError unless p.class == Facebooker::Photo
     @photo = p
@@ -41,6 +44,10 @@ class FacebookPhoto < BackupPhotoProxy
   end
   
   def added_at
-    Time.at @photo.created.to_i unless @photo.created.blank?
+    Time.at(@photo.created.to_i) unless @photo.created.blank?
+  end
+  
+  def modified_at
+    nil # not supported by facebook
   end
 end

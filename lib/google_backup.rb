@@ -25,15 +25,15 @@ module GoogleBackup
     end
     
     class Picasa < Base
-      FeedListRequestUrl = 'http://picasaweb.google.com/data/feed/api/user/default'
-      
       def initialize(options={})
         @client = GData::Client::Photos.new
         super(options)
       end
       
+      # Convenience method to fetch account title - should be in PicasaReader class but that 
+      # code is in backupd repo for now.  Move to Gem?
       def account_title
-        xml = client.get(FeedListRequestUrl).to_xml
+        xml = client.get('http://picasaweb.google.com/data/feed/api/user/default').to_xml
         title = xml.elements['author'].elements['uri'].text
       end
     end
