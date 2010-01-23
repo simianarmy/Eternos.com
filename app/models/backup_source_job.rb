@@ -8,7 +8,7 @@ class BackupSourceJob < ActiveRecord::Base
   validates_presence_of :backup_job_id
   
   cattr_reader :time_to_expire
-  @@time_to_expire = 24.hours
+  @@time_to_expire = 4.hours
   
   serialize :error_messages
   serialize :messages

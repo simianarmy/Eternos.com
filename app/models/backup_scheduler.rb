@@ -1,7 +1,7 @@
 # $Id$
 
 class BackupScheduler
-  @@run_interval = 4.hours
+  @@run_interval = 1.hours
   cattr_accessor :run_interval
   cattr_writer :cutoff
   cattr_reader :cutoff_time
@@ -11,13 +11,14 @@ class BackupScheduler
       @@cutoff = options[:cutoff] || cutoff_time
       
       # Get members that qualify for backup
-      MessageQueue.execute do
+      MessageQueue.start do
         Member.needs_backup(@@cutoff).each do |member|
           # Get all backup sources that should be backed up
           sources = member.backup_sources.active.select {|bs| source_scheduled_for_backup?(bs)}
           # Send sources to job publisher
           BackupJobPublisher.run(member, sources) if sources.any?
         end
+        MessageQueue.stop
       end
     end
 
