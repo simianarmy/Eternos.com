@@ -87,9 +87,9 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/polyglot-0.2.9/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/treetop-1.4.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/treetop-1.4.2/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/nokogiri-1.4.0/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/nokogiri-1.4.0/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/nokogiri-1.4.0/ext")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/nokogiri-1.4.1/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/nokogiri-1.4.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/nokogiri-1.4.1/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/mdalessio-dryopteris-0.1.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/mdalessio-dryopteris-0.1.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/mime-types-1.16/bin")
@@ -273,8 +273,8 @@ module Bundler
   @bundled_specs["polyglot"].loaded_from = "#{dir}/specifications/polyglot-0.2.9.gemspec"
   @bundled_specs["treetop"] = eval(File.read("#{dir}/specifications/treetop-1.4.2.gemspec"))
   @bundled_specs["treetop"].loaded_from = "#{dir}/specifications/treetop-1.4.2.gemspec"
-  @bundled_specs["nokogiri"] = eval(File.read("#{dir}/specifications/nokogiri-1.4.0.gemspec"))
-  @bundled_specs["nokogiri"].loaded_from = "#{dir}/specifications/nokogiri-1.4.0.gemspec"
+  @bundled_specs["nokogiri"] = eval(File.read("#{dir}/specifications/nokogiri-1.4.1.gemspec"))
+  @bundled_specs["nokogiri"].loaded_from = "#{dir}/specifications/nokogiri-1.4.1.gemspec"
   @bundled_specs["mdalessio-dryopteris"] = eval(File.read("#{dir}/specifications/mdalessio-dryopteris-0.1.2.gemspec"))
   @bundled_specs["mdalessio-dryopteris"].loaded_from = "#{dir}/specifications/mdalessio-dryopteris-0.1.2.gemspec"
   @bundled_specs["mime-types"] = eval(File.read("#{dir}/specifications/mime-types-1.16.gemspec"))
