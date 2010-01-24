@@ -141,9 +141,17 @@ class BackupPhotoAlbum < ActiveRecord::Base
     end
   end
 
-  # Earliest photo's date or album create date
+  # Earliest photo's date or album create date or some reasonable default
   def start_date
-    backup_photos.any? ? backup_photos.oldest.added_at : created_at
+    if backup_photos.any?
+      backup_photos.oldest.added_at
+    elsif created_at
+      created_at
+    elsif modified
+      Time.at(modified.to_i)
+    else
+      Date.today
+    end
   end
   
   def to_s

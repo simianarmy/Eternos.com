@@ -30,7 +30,10 @@ class ImageGalleryController < ApplicationController
       # Convert each album to json in gallery format
       map do |al|
         begin
-          al.to_json(:gallery) 
+          # This is weird but directly calling to_json on the record raises NoMethodError exception
+          # from active record serialization module.
+          # Workaround is to reload the object
+          al.reload.to_json(:gallery) 
         rescue Exception => e
           RAILS_DEFAULT_LOGGER.error "Exception in to_json(:gallery) for album #{al.id}: #{e.to_s}"
           # return empty hash?
