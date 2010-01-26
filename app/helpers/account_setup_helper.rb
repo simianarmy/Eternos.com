@@ -5,9 +5,9 @@ module AccountSetupHelper
   end
   
   def link_to_backup_source_icon(id, name = "", options = {})
-    icons = ["facebook-box", "twitter-box", "rss-box", "gmail-box"]
+    icons = ["facebook-box", "twitter-box", "rss-box", "gmail-box", "picasa-box"]
     icons.delete(id)
-    link_to_show_hide_online(id, name, icons, options)
+    link_to_show_hide_online(id, name, icons, options) # in ajax_helper.rb
   end
   
   def gen_step_class(step, active_step)

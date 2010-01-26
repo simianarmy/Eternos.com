@@ -13,6 +13,8 @@
       <b>RSS Feeds</b>: Feed entries &amp; screen captures
       <br/>
       <b>Gmail Accounts</b>: All archived emails
+      <br/>
+      <b>Picasa Web Albums</b>: All your Picasa Web Accounts photos
       <p/>
       <br/>
       Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your  Timeline.  Easily browse, tag, annotate, remove, and share any of your life's events.
@@ -26,6 +28,8 @@
     <%= link_to_backup_source_icon('rss-box', "", {:class => "#{settings.rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"})  %>
     
     <%= link_to_backup_source_icon('gmail-box', "", {:class => "#{settings.gmail_confirmed ? 'gmail-active' : 'gmail-btn'}", :id => "gmail-button"})  %>
+    
+    <%= link_to_backup_source_icon('picasa-box', "", {:class => "#{settings.picasa_confirmed ? 'picasa-active' : 'picasa-btn'}", :id => "picasa-button"}) %>
   </div>
 
   <div style="clear:both"></div>
@@ -118,14 +122,14 @@
    </div>
    <div class="clearboth"></div>
    <div class="network-login-box" id="form-box">
-     <div id="picasaweb-box" >
-       <div id="picasaweb_blurb">
-       <p>
-         PicasaWeb blurb here
-        </p>
-        <br/>
+     <div id="picasa-box" style="display:none;">
+       <div id="picasa_blurb">
+         <p>
+         
+         </p>
+         <br/>
        </div>
-       <%= link_to 'Add PicasaWeb Account', add_picasa_backup_sources_path %>
+       <%= link_to 'Click Here', add_picasa_backup_sources_path %> to add a new Picasa Web Albums account
 
        <div style="clear:both"></div>
        <div id="result-picasa-accounts">

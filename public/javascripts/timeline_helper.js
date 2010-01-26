@@ -1360,14 +1360,16 @@ var ETimeline = function(opts) {
 		},
 		_setupBands: function() {
 			//var date = new Date();
-			this.bandInfos = [Timeline.createBandInfo({
+			this.bandInfos = [
+				Timeline.createBandInfo({
 				width: "8%",
 				intervalUnit: Timeline.DateTime.DECADE,
 				intervalPixels: this.firstBandPixels,
 				date: this.centerDate,
 				showEventText: false,
 				theme: this.theme
-			}), Timeline.createBandInfo({
+			}), 
+			Timeline.createBandInfo({
 				width: "76%",
 				intervalUnit: Timeline.DateTime.DAY,
 				intervalPixels: 70,
@@ -1375,14 +1377,16 @@ var ETimeline = function(opts) {
 				date: this.centerDate,
 				eventSource: this.eventSource,
 				theme: this.theme
-			}), Timeline.createBandInfo({
+			}), 
+			Timeline.createBandInfo({
 				width: "8%",
 				intervalUnit: Timeline.DateTime.MONTH,
 				intervalPixels: 250,
 				date: this.centerDate,
 				overview: true,
 				theme: this.theme
-			}), Timeline.createBandInfo({
+			}), 
+			Timeline.createBandInfo({
 				width: "8%",
 				intervalUnit: Timeline.DateTime.YEAR,
 				intervalPixels: 100,
@@ -1390,11 +1394,12 @@ var ETimeline = function(opts) {
 				date: this.centerDate,
 				theme: this.theme
 			})];
-
+			// Sync with Day band
 			this.bandInfos[0].syncWith = 1;
 			this.bandInfos[2].syncWith = 1;
 			this.bandInfos[3].syncWith = 1;
 
+			// Highlight month & year bands
 			this.bandInfos[0].highlight = false;
 			this.bandInfos[1].highlight = false;
 			this.bandInfos[2].highlight = true;
