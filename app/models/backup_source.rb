@@ -61,11 +61,12 @@ class BackupSource < ActiveRecord::Base
   }
   
   acts_as_state_machine :initial => :pending, :column => 'backup_state'
+  state :pending
   state :backed_up
   state :disabled
   
   event :backup_complete do
-    transitions :from => [:pending, :backed_up, :disabled], :to => :backed_up
+    transitions :from => [:pending, :disabled], :to => :backed_up
   end
   
   event :backup_error_max_reached do
