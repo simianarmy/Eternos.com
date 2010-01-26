@@ -24,10 +24,12 @@
           = j.backup_source.backup_site.name
         - else
           Unknown backup source or site name!
+        %br
+        == Num. consecutive failed backups: #{j.backup_source.consecutive_failed_backup_jobs}
       %br
       = render :partial => 'backup_job_status', :locals => {:job => j}
       %br
-      %span{:style=>"font-weight: bold"}= j.error_messages.to_s
+      %span{:style=>"font-weight: bold"}= truncate(j.error_messages.to_s, :length => 100, :omission => '(clipped)')
     %br
   %br
   %h3 Backup State

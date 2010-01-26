@@ -8,6 +8,9 @@ class BackupSource < ActiveRecord::Base
   has_many :backup_photo_albums
   has_many :backup_source_jobs
   
+  @@max_consecutive_failed_backups  = 25 # Should be about 1 day's worth
+  cattr_reader :max_consecutive_failed_backups
+  
   #after_create :cb_after_create_init_backup
   # The new hotness
   # TODO: migrate unencrypted values to these columns, then rename columns & drop these
@@ -49,11 +52,25 @@ class BackupSource < ActiveRecord::Base
       :conditions => {'backup_sites.name' => BackupSite::Picasa}
     }
   }
-  named_scope :active, :conditions => {:auth_confirmed => true, :disabled => false, :deleted_at => nil}
+  named_scope :active, :conditions => {
+    :auth_confirmed => true, :backup_state => [:pending, :backed_up], :deleted_at => nil
+  }
   named_scope :needs_scan, :conditions => {:needs_initial_scan => true}
   named_scope :photo_album, lambda {|id| 
     { :joins => :backup_photo_albums, :conditions => {'backup_photo_albums.source_album_id' => id} }
   }
+  
+  acts_as_state_machine :initial => :pending, :column => 'backup_state'
+  state :backed_up
+  state :disabled
+  
+  event :backup_complete do
+    transitions :from => [:pending, :backed_up, :disabled], :to => :backed_up
+  end
+  
+  event :backup_error_max_reached do
+    transitions :from => [:pending, :backed_up], :to => :disabled
+  end
   
   def latest_backup
     backup_source_jobs.newest
@@ -90,7 +107,7 @@ class BackupSource < ActiveRecord::Base
   end
   
   def active?
-    !self.disabled && !self.deleted_at
+    !self.disabled? && !self.deleted_at
   end
   
   # add this backup source to backup queue
@@ -101,7 +118,23 @@ class BackupSource < ActiveRecord::Base
   def next_backup_at
     BackupScheduler.next_source_backup_at(self)
   end
-      
+  
+  # Counts how many times most recent backup jobs have failed in a row, 
+  # Stopping after 1st successful backup
+  def consecutive_failed_backup_jobs
+    count = 0
+    backup_source_jobs.descend_by_created_at.each do |job|
+      break if job.successful?
+      count += 1
+    end
+    count
+  end
+  
+  def backup_broken?
+    consecutive_failed_backup_jobs >= self.max_consecutive_failed_backups
+  end
+  
+  # These photo methods should not be here
   def photo_album(id)
     backup_photo_albums.find_by_source_album_id(id)
   end

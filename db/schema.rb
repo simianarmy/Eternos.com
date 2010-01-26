@@ -242,7 +242,6 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "backup_site_id"
-    t.boolean  "disabled",               :default => false, :null => false
     t.boolean  "skip_video",             :default => false, :null => false
     t.date     "earliest_day_backed_up"
     t.boolean  "needs_initial_scan",     :default => true,  :null => false
@@ -255,6 +254,7 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
     t.binary   "auth_secret_enc"
     t.string   "auth_password2_enc"
     t.string   "auth_login2_enc"
+    t.string  "backup_state", :default => 'pending', :null => false
   end
 
   add_index "backup_sources", ["backup_site_id"], :name => "index_backup_sources_on_backup_site_id"

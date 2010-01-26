@@ -72,4 +72,11 @@ namespace :backup do
       bp.photo.update_attribute(:collection, bp.backup_photo_album) unless bp.photo.collection
     end
   end 
+  
+  desc "Disables backup sources with too many backup errors"
+  task :disable_failed_backup_sources => :environment do
+    BackupSource.find_each do |bs|
+      bs.backup_error_max_reached! if bs.backup_broken?
+    end
+  end
 end
