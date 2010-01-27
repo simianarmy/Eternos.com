@@ -10,7 +10,9 @@
         <p/>
         <br/>
         <h1>How It Works</h1>
-        Eternos allows you to automatically and continuously import data from Facebook, Twitter, Gmail, Blogs, and RSS feeds. If you're not into social networking you can upload video, important documents, and photos via our direct file upload. We offer a simple and intuitive video diary for you to record whatever happens to be on your mind and in your heart. Eternos is a completely private and secure life chronicle where you can save life's precious and important interactions, files, memories, and moments for the future.
+        Eternos allows you to automatically and continuously import data from 
+        <%= render :partial => 'backup_sources' %>
+        . If you're not into social networking you can upload video, important documents, and photos via our direct file upload. We offer a simple and intuitive video diary for you to record whatever happens to be on your mind and in your heart. Eternos is a completely private and secure life chronicle where you can save life's precious and important interactions, files, memories, and moments for the future.
         </p>		
     </div>
     <% unless current_user %>
