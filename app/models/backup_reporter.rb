@@ -67,7 +67,8 @@ class BackupReporter
       latest[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:s3_cost])
 
       user_count = Member.active.size
-      user_with_data_count = Member.active.with_data.size      
+      user_with_data_count = Member.active.with_data.size
+      
       total.each_key do |k| 
         total_avg[k] = total[k] / user_count
         latest_avg[k] = latest[k] / user_count

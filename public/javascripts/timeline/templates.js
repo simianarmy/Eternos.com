@@ -263,6 +263,9 @@ var ETemplates = function() {
 	that.getEventListItemEl = function(id, type) {
 		return $("evli_" + id);
 	} ();
+	that.albumViewLinkTemplate = function(url) {
+		return new Template('<br/><a href="#{url}" class="lightview" rel="iframe" title=":: Photo Album :: topclose: true, width: 650, height: 650">View All</a>');
+	} ();
 	that.tooltipTemplateID = function(id, type) {
 		return type + '-evli_' + id;
 	};

@@ -11,7 +11,7 @@ class ImageGalleryController < ApplicationController
     # Group by photo album
     
     s = BackupPhotoAlbum.by_user(current_user.id).include_content_photos.searchlogic
-    s.id_eq(params[:album_id]) if params[:album_id]
+    s.id_eq(params[:album_id].split(',')) if params[:album_id]
     #Album.by_user(current_user.id).id_eq(@album_id).include_photos
     
     # work-around for goddamn json bug (yes here it is again I f'ing hate it)
@@ -25,7 +25,7 @@ class ImageGalleryController < ApplicationController
       # Don't know how to sort by polymorhphic association column in named_scope,
       # so sort by album date (descending) manually
     @albums = s.all.
-      reject {|al| (al.num_items == 0) || al.name.nil?}.
+      reject {|al| (al.owner != current_user) || (al.num_items == 0) || al.name.nil?}.
       compact.sort {|a,b| b.start_date <=> a.start_date}.
       # Convert each album to json in gallery format
       map do |al|

@@ -30,8 +30,10 @@ class SetupPresenter < AccountPresenter
             @fb_session.user.populate(:pic_small, :name) if @fb_session.verify
             @facebook_user = @fb_session.user.name
             @facebook_pic = @fb_session.user.pic_small
-          rescue Facebooker::Session::SessionExpired
-            # What to do ??
+          rescue Facebooker::Session::SessionExpired => e
+            RAILS_DEFAULT_LOGGER.error "load_backup_sources: #{e.class} #{e.message}"
+          rescue Curl::Err::RecvError => e
+            RAILS_DEFAULT_LOGGER.error "load_backup_sources: #{e.class} #{e.message}"
           end
         end
       else

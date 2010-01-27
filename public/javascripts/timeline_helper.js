@@ -587,7 +587,8 @@ var ETLEventItems = Class.create({
 	// Generates tooltip html for all types.  Used by both event list & timeline icons
 	getTooltipContents: function() {
 		var i, count, item, listId = this._getItemID(),
-			html = '';
+			view_all_url, html = '';
+		var collectionIds = new Array();
 		var winHeight = getWinHeight();
 
 		if (this.num == 0) {
@@ -612,6 +613,9 @@ var ETLEventItems = Class.create({
 			}
 			for (i = 0; i < count; i++) {
 				item = this.items[i];
+				if (item.attributes.collection_id) {
+					collectionIds.push(item.attributes.collection_id);
+				}
 				item.menuLinks = this._itemMenuLinks(item);
 				html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate(
 				Object.extend({
@@ -622,7 +626,14 @@ var ETLEventItems = Class.create({
 			}
 			// Add link to view all
 			if (count < this.num) {
-				html += '<br/><a href="#">View All</a>';
+				// Collect all album ids for gallery url
+				if (this.first.isArtifact() && (collectionIds.size() > 0)) {
+					html += ETemplates.albumViewLinkTemplate.evaluate({
+						url: '/image_gallery?album_id=' + encodeURIComponent(collectionIds.uniq().join(','))
+					});
+				} else {
+					html += '<br/><a href="' + this._getLinkUrl() + '">View All</a>';
+				}
 			}
 		}
 		html += '</div>';
