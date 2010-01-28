@@ -11,9 +11,9 @@ var ETemplates = function() {
 	};
 	
 	var tooltipItemHoverHTML = '<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
-			'<li><a href="#{event_edit_link}" onclick="ETemplates.ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
+			'<li><a href="#{event_edit_link}" onclick="Tips.hideAll(); ETemplates.ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
 			'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
-			'<li><a href="#{event_delete_link}" onclick="ETemplates.ajaxDeleteTooltipItem(this, \'#{event_delete_link}\'); return false;"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
+			'<li><a href="#{event_delete_link}" onclick="Tips.hideAll(); ETemplates.ajaxDeleteTooltipItem(this, \'#{event_delete_link}\'); return false;"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
 		'</div>';
 
 	// Public functions
@@ -204,7 +204,7 @@ var ETemplates = function() {
 			return new Template('<div class="tooltip_img"><a href="#{img_url}" class="lightview"><img src="#{thumbnail_url}"></a><br/>#{caption}</div>');
 		} (),
 		feed: function() {
-			return new Template('<div class="tooltip_feed"><a href="#{screencap_url}" class="lightview"><img src="#{preview_thumb}" width="100" height="100" style="float: left"/></a>' +
+			return new Template('<div class="tooltip_feed"><a href="#{screencap_url}" class="lightview" onclick="Tips.hideAll(); return true;"><img src="#{preview_thumb}" width="100" height="100" style="float: left"/></a>' +
 				tooltipItemViewLink('#{message}') + '#{source}#{time}</div>');
 		} (),
 		video: function() {
