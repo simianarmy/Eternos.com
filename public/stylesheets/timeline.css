@@ -414,10 +414,10 @@ a.event_list_inline_item:hover {
 }
 
 .tooltip_container {
-	overflow-y:auto;
 	overflow-x:hidden;
 	font-size: 12px;
 	position: relative;
+	margin-right: 5px;
 }
 
 .tooltip_item {

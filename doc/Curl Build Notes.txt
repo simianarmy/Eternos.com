@@ -18,4 +18,6 @@ git clone git://github.com/taf2/curb.git
 cd curb
 sudo rake install
 
-
+ON SNOW LEOPARD, YOU CAN SIMPLY DO THIS:
+  sudo port install curl
+  sudo env ARCHFLAGS="-arch x86_64" gem install taf2-curb

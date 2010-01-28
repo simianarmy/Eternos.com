@@ -101,21 +101,12 @@ var ETemplates = function() {
 		} else if (type === 'web_video') {
 			return '480px';
 		} else {
-			return 'auto';
+			return '350px';
 		}
 	};
 	that.defaultTooltipOptions = function() {
 		return {
-			border: 6,
-			borderColor: '#74C5FF',
-			hideOthers: true,
-			viewport: true,
-			closeButton: true,
-			fixed: true,
-			hideOn: {
-				element: 'tip',
-				event: 'mouseout'
-			}
+			style: 'timeline_preview_default'
 		};
 	};
 	that.eventTooltipOptions = function() {

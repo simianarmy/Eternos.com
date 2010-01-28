@@ -16,7 +16,7 @@ describe ActivityStream do
    
     describe "adding items" do
       before(:each) do
-        @items = [ActivityStreamItem.create_from_proxy(create_stream_proxy_item)]
+        @items = [ActivityStreamItem.create_from_proxy!(@stream.id, create_stream_proxy_item)]
       end
       
       it "should add single item" do
@@ -25,8 +25,7 @@ describe ActivityStream do
       end
       
       it "should add multiple items at once" do
-        @items << ActivityStreamItem.create_from_proxy(create_stream_proxy_item_with_attachment('photo'))
-        @stream.items << @items
+        ActivityStreamItem.create_from_proxy!(@stream.id, create_stream_proxy_item_with_attachment('photo'))
         @stream.items.size.should == 2
       end
       
@@ -37,8 +36,8 @@ describe ActivityStream do
       
       it "should allow mix of item sti types" do
         lambda {
-          @items << FacebookActivityStreamItem.create_from_proxy(create_stream_proxy_item)
-          @stream.items << @items
+          @item = FacebookActivityStreamItem.create_from_proxy!(@stream.id, create_stream_proxy_item)
+          @stream.items << @item
         }.should change(@stream.items, :count).by(2)
       end
     end 

@@ -97,6 +97,7 @@ describe ActivityStreamItem do
       end
       
       it "should return comment thread as array of hashes" do
+        debugger
         @item.comment_thread.should_not be_empty
         @item.comment_thread.all?{|c| !c['text'].blank?}.should be_true
       end

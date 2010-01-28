@@ -30,10 +30,10 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-scp-1.0.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rio-0.4.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rio-0.4.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bullet-1.7.4/bin")
@@ -57,6 +57,8 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/deadweight-0.1.3/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/deadweight-0.1.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/eventmachine-0.12.10/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/eventmachine-0.12.10/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/bin")
@@ -102,10 +104,10 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shuber-eigenclass-1.0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tmm1-amqp-0.6.4/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/tmm1-amqp-0.6.4/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bundler-0.6.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bundler-0.6.0/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/builder-2.1.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/diff-lcs-1.1.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/diff-lcs-1.1.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/right_aws-1.10.0/bin")
@@ -114,18 +116,18 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/xml-simple-1.0.12/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/aws-s3-0.6.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/aws-s3-0.6.2/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/moomerman-twitter_oauth-0.2.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/moomerman-twitter_oauth-0.2.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ezcrypto-0.7.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/haml-2.2.15/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/haml-2.2.15/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shuber-attr_encrypted-1.0.8/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shuber-attr_encrypted-1.0.8/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/ext")
@@ -217,10 +219,10 @@ module Bundler
   @bundled_specs["net-scp"].loaded_from = "#{dir}/specifications/net-scp-1.0.2.gemspec"
   @bundled_specs["rake"] = eval(File.read("#{dir}/specifications/rake-0.8.7.gemspec"))
   @bundled_specs["rake"].loaded_from = "#{dir}/specifications/rake-0.8.7.gemspec"
-  @bundled_specs["lockfile"] = eval(File.read("#{dir}/specifications/lockfile-1.4.3.gemspec"))
-  @bundled_specs["lockfile"].loaded_from = "#{dir}/specifications/lockfile-1.4.3.gemspec"
   @bundled_specs["newrelic_rpm"] = eval(File.read("#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"))
   @bundled_specs["newrelic_rpm"].loaded_from = "#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"
+  @bundled_specs["lockfile"] = eval(File.read("#{dir}/specifications/lockfile-1.4.3.gemspec"))
+  @bundled_specs["lockfile"].loaded_from = "#{dir}/specifications/lockfile-1.4.3.gemspec"
   @bundled_specs["rio"] = eval(File.read("#{dir}/specifications/rio-0.4.2.gemspec"))
   @bundled_specs["rio"].loaded_from = "#{dir}/specifications/rio-0.4.2.gemspec"
   @bundled_specs["bullet"] = eval(File.read("#{dir}/specifications/bullet-1.7.4.gemspec"))
@@ -243,6 +245,8 @@ module Bundler
   @bundled_specs["shared-mime-info"].loaded_from = "#{dir}/specifications/shared-mime-info-0.1.gemspec"
   @bundled_specs["hpricot"] = eval(File.read("#{dir}/specifications/hpricot-0.8.2.gemspec"))
   @bundled_specs["hpricot"].loaded_from = "#{dir}/specifications/hpricot-0.8.2.gemspec"
+  @bundled_specs["deadweight"] = eval(File.read("#{dir}/specifications/deadweight-0.1.3.gemspec"))
+  @bundled_specs["deadweight"].loaded_from = "#{dir}/specifications/deadweight-0.1.3.gemspec"
   @bundled_specs["eventmachine"] = eval(File.read("#{dir}/specifications/eventmachine-0.12.10.gemspec"))
   @bundled_specs["eventmachine"].loaded_from = "#{dir}/specifications/eventmachine-0.12.10.gemspec"
   @bundled_specs["ruby-growl"] = eval(File.read("#{dir}/specifications/ruby-growl-1.0.1.gemspec"))
@@ -287,10 +291,10 @@ module Bundler
   @bundled_specs["shuber-eigenclass"].loaded_from = "#{dir}/specifications/shuber-eigenclass-1.0.1.gemspec"
   @bundled_specs["tmm1-amqp"] = eval(File.read("#{dir}/specifications/tmm1-amqp-0.6.4.gemspec"))
   @bundled_specs["tmm1-amqp"].loaded_from = "#{dir}/specifications/tmm1-amqp-0.6.4.gemspec"
-  @bundled_specs["builder"] = eval(File.read("#{dir}/specifications/builder-2.1.2.gemspec"))
-  @bundled_specs["builder"].loaded_from = "#{dir}/specifications/builder-2.1.2.gemspec"
   @bundled_specs["bundler"] = eval(File.read("#{dir}/specifications/bundler-0.6.0.gemspec"))
   @bundled_specs["bundler"].loaded_from = "#{dir}/specifications/bundler-0.6.0.gemspec"
+  @bundled_specs["builder"] = eval(File.read("#{dir}/specifications/builder-2.1.2.gemspec"))
+  @bundled_specs["builder"].loaded_from = "#{dir}/specifications/builder-2.1.2.gemspec"
   @bundled_specs["diff-lcs"] = eval(File.read("#{dir}/specifications/diff-lcs-1.1.2.gemspec"))
   @bundled_specs["diff-lcs"].loaded_from = "#{dir}/specifications/diff-lcs-1.1.2.gemspec"
   @bundled_specs["right_aws"] = eval(File.read("#{dir}/specifications/right_aws-1.10.0.gemspec"))
@@ -299,18 +303,18 @@ module Bundler
   @bundled_specs["xml-simple"].loaded_from = "#{dir}/specifications/xml-simple-1.0.12.gemspec"
   @bundled_specs["aws-s3"] = eval(File.read("#{dir}/specifications/aws-s3-0.6.2.gemspec"))
   @bundled_specs["aws-s3"].loaded_from = "#{dir}/specifications/aws-s3-0.6.2.gemspec"
-  @bundled_specs["ezcrypto"] = eval(File.read("#{dir}/specifications/ezcrypto-0.7.2.gemspec"))
-  @bundled_specs["ezcrypto"].loaded_from = "#{dir}/specifications/ezcrypto-0.7.2.gemspec"
   @bundled_specs["moomerman-twitter_oauth"] = eval(File.read("#{dir}/specifications/moomerman-twitter_oauth-0.2.1.gemspec"))
   @bundled_specs["moomerman-twitter_oauth"].loaded_from = "#{dir}/specifications/moomerman-twitter_oauth-0.2.1.gemspec"
+  @bundled_specs["ezcrypto"] = eval(File.read("#{dir}/specifications/ezcrypto-0.7.2.gemspec"))
+  @bundled_specs["ezcrypto"].loaded_from = "#{dir}/specifications/ezcrypto-0.7.2.gemspec"
   @bundled_specs["haml"] = eval(File.read("#{dir}/specifications/haml-2.2.15.gemspec"))
   @bundled_specs["haml"].loaded_from = "#{dir}/specifications/haml-2.2.15.gemspec"
   @bundled_specs["shuber-attr_encrypted"] = eval(File.read("#{dir}/specifications/shuber-attr_encrypted-1.0.8.gemspec"))
   @bundled_specs["shuber-attr_encrypted"].loaded_from = "#{dir}/specifications/shuber-attr_encrypted-1.0.8.gemspec"
-  @bundled_specs["active_presenter"] = eval(File.read("#{dir}/specifications/active_presenter-1.2.0.gemspec"))
-  @bundled_specs["active_presenter"].loaded_from = "#{dir}/specifications/active_presenter-1.2.0.gemspec"
   @bundled_specs["crack"] = eval(File.read("#{dir}/specifications/crack-0.1.4.gemspec"))
   @bundled_specs["crack"].loaded_from = "#{dir}/specifications/crack-0.1.4.gemspec"
+  @bundled_specs["active_presenter"] = eval(File.read("#{dir}/specifications/active_presenter-1.2.0.gemspec"))
+  @bundled_specs["active_presenter"].loaded_from = "#{dir}/specifications/active_presenter-1.2.0.gemspec"
   @bundled_specs["rmagick"] = eval(File.read("#{dir}/specifications/rmagick-2.12.2.gemspec"))
   @bundled_specs["rmagick"].loaded_from = "#{dir}/specifications/rmagick-2.12.2.gemspec"
   @bundled_specs["chronic"] = eval(File.read("#{dir}/specifications/chronic-0.2.3.gemspec"))

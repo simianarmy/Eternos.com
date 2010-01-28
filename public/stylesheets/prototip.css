@@ -113,6 +113,30 @@
 	height: 14px;
 }
 
+/* I guess Prototip wants us to define styles in this file... */
+/* I don't get the whole images/prototip/styles thing */
+
+/* timeline_preview_default */
+.prototip .timeline_preview_default {
+	width: 350px;
+	color: #808080;
+}
+
+.prototip .timeline_preview_default .toolbar {
+	background: #D4EDFF;
+	font-weight: bold;
+}
+
+.prototip .timeline_preview_default .title {
+	padding: 5px;
+}
+
+.prototip .timeline_preview_default .content {
+	height: 400px; /* does this fix the height to be only 400? */
+	overflow-y:auto; /* Want scrollbar */
+	padding: 10px;
+	background: #fff;
+}
 
 /* loader gif */
 .prototipLoader {
