@@ -12,7 +12,9 @@ namespace :admin do
   end
   
   desc "run Deadweight CSS check (requires script/server)"
-  Deadweight::RakeTask.new do |dw|
+  
+  task :deadweight do
+    dw = Deadweight.new
     dw.mechanize = true
     dw.root = 'http://dev.eternos.com'
     dw.stylesheets = %w( /stylesheets/application.css /stylesheets/screen.css /stylesheets/new_design/style.css 
