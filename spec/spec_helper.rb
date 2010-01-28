@@ -472,7 +472,7 @@ module ActivityStreamProxySpecHelper
   
   def create_facebook_stream_proxy_item_with_comments
     item = ActivityStreamProxy.new
-    item.comments = [{"author" => "dr no", "time" => Time.now.to_i, "text" => "foo fee fi"}]
+    item.comments = [Hashie::Mash.new({"author" => "dr no", "time" => Time.now.to_i, "text" => "foo fee fi"})]
     item
   end
   

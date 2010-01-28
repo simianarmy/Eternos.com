@@ -444,8 +444,8 @@ var ETUI = function() {
 // Eternos Timeline Event Items html generator
 var ETLEventItems = Class.create({
 	initialize: function(items, opts) {
-		this.MaxArtifactTooltipItems = 5;
-		this.MaxTooltipItems = 10;
+		this.MaxArtifactTooltipItems = 10;
+		this.MaxTooltipItems = 50;
 
 		// Sort items by datetime
 		// OPTIMIZE! Too slow!
@@ -585,6 +585,7 @@ var ETLEventItems = Class.create({
 		});
 	},
 	// Generates tooltip html for all types.  Used by both event list & timeline icons
+	// TODO:  create a Tooltip module / classes
 	getTooltipContents: function() {
 		var i, count, item, listId = this._getItemID(),
 			view_all_url, html = '';
@@ -632,7 +633,7 @@ var ETLEventItems = Class.create({
 						url: '/image_gallery?album_id=' + encodeURIComponent(collectionIds.uniq().join(','))
 					});
 				} else {
-					html += '<br/><a href="' + this._getLinkUrl() + '">View All</a>';
+					html += '<br/><a href="' + this._getLinkUrl() + '" class="lightview" rel="iframe">View All</a>';
 				}
 			}
 		}

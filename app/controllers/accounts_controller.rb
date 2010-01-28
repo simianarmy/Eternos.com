@@ -44,7 +44,7 @@ class AccountsController < ApplicationController
   
   def create
     # If this user has already registered via facebook, redirect to member page
-    if params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
+    if params[:user] && params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
       if User.find_by_facebook_uid(params[:user][:facebook_id])
         # Login manually & redirect to member home
         UserSession.create
@@ -254,7 +254,8 @@ class AccountsController < ApplicationController
     end
     
     def build_plan
-      redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(params[:plan])
+      return redirect_to root_url unless plan = params[:plan]
+      redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(plan)
       @plan.discount = @discount
       @account.plan = @plan
       @use_captcha = @plan.free?
