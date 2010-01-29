@@ -19,8 +19,8 @@ class Audio < Content
   
   include TimelineEvents
   serialize_with_options do
-    methods :url, :duration_to_s
-    only :size, :type, :title, :filename, :taken_at, :description
+    methods :streaming_url, :duration_to_s
+    only :id, :size, :type, :title, :filename, :taken_at, :description, :duration
   end
   
   # Creates new instance from recording object info
@@ -42,6 +42,11 @@ class Audio < Content
   
   def playable?
     true
+  end
+  
+  # url to be used by web apps for streaming
+  def streaming_url
+    audio_url(self, :format => :mp3)
   end
   
   def to_s

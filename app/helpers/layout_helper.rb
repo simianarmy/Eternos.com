@@ -229,9 +229,10 @@ module LayoutHelper
     use_jquery
     use_lightview
     use_busy
+    
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
     javascript "timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js"
-    javascript "timeline/events", "timeline/templates", "timeline_helper", "date", "inflection"
+    javascript "timeline/events", "timeline/templates", "timeline/media", "timeline_helper", "date", "inflection"
   end
   
   def use_scrollbar

@@ -9,6 +9,39 @@ if (!("console" in window)) {
  	window.console = {log: function() {}, dir: function() {}};
 }
 
+// Possible needs its own file if it grows too large.
+// WARNING: UNTESTED
+var AssetManager = function() {
+	var that = {};
+	var loaded = {};
+	
+	// Public methods
+	function createScriptElement(url) {
+	    var script = document.createElement("script");
+	    script.type = "text/javascript";
+	    script.language = "JavaScript";
+	    script.src = url;
+	    document.getElementsByTagName("head")[0].appendChild(script);
+	};
+	// Use this function to load js files dynamically during script execution
+	that.loadJSFile = function(file) {
+		if (document.body == null) {
+	    try {
+	        document.write("<script src='" + file + "' type='text/javascript'></script>");
+	    } catch (e) {
+	        createScriptElement(file);
+	    }
+		} else {
+	    createScriptElement(file);
+		}
+	};
+	// Use this to load CSS files dynamically
+	that.loadCSSFile = function(file) {
+		document.write("<link href='" + file + "' media='screen' rel='stylesheet' type='text/css'/>");
+	};
+	return that;
+}();
+
 function win_dimension() {
 	if (window.innerHeight !==undefined) {
 		A = [window.innerWidth,window.innerHeight]; // most browsers

@@ -210,6 +210,9 @@ var ETemplates = function() {
 		video: function() {
 			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clearboth"></div>');
 		} (),
+		audio: function() {
+			return new Template('<div class="tooltip_audio"><ul class="flat"><li><a href="#{url}" class="sm2_link timing" duration="#{duration}" id="#{id}">#{title} (#{duration_s})</a><br/>#{filename}<br/>#{description}</li></ul></div>');
+		} (),
 		email: function() {
 			return new Template('<div class="tooltip_email">' + tooltipItemViewLink('#{subject}') +
 				'#{time}</div>');

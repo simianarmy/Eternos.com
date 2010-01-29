@@ -332,12 +332,20 @@ var ETLVideoEventSource = Class.create(ETLEventSource, {
 });
 // Audio event
 var ETLAudioEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.audio;
+		$super(s);
+	},
 	getPreviewHtml: function($super) {
-		if (this.attributes.message !== null) {
-			return this.attributes.message;
-		} else {
-			return $super.getPreviewHtml();
-		}
+		return this._evalTemplate({
+			id: this.getID(),
+			url: this.attributes.streaming_url,
+			title: this.getTitle(),
+			filename: this.attributes.filename,
+			description: this.attributes.description,
+			duration: this.attributes.duration,
+			duration_s: this.attributes.duration_to_s
+		});
 	}
 });
 //////////////////////////////////////////////////////
@@ -486,6 +494,10 @@ var ETEvent = {
 		} else if (type === "video" || type === "web_video") {
 			return new ETLVideoEventSource(data);
 		} else if (type === "audio" || type === "music") {
+			// Load soundmanager js & css files dynamically - heavy & use flash
+			SimileAjax.includeCssFiles(document, '/stylesheets/', ['soundmanager2.css', 'inlineplayer.css']);
+			SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['soundmanager2.js', 'inlineplayer.js']);
+
 			return new ETLAudioEventSource(data);
 		} else if (type === "job") {
 			return new ETLJobEventSource(data);
@@ -508,6 +520,9 @@ var ETEvent = {
 	},
 	isMedia: function(type) {
 		return (type === 'photo' || type === 'video' || type === 'web_video' || type === 'audio');
+	},
+	isAudio: function(type) {
+		return (type === 'audio' || type === 'music');
 	},
 	isArtifact: function(type) {
 		return (type === 'photo');
