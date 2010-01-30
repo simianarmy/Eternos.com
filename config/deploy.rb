@@ -145,16 +145,6 @@ CUTYCAPT
     end
   end
   
-  desc "list god status"
-  task :god_status, :roles => :app do
-    run "god status"
-  end
-  
-  desc "list running workling processes"
-  task :ps_worklings, :roles => :app do
-    run "ps auxw|grep workling"
-  end
-  
   task :build_sphinx_index, :roles => [:app] do
     symlink_sphinx_indexes
     thinking_sphinx.configure

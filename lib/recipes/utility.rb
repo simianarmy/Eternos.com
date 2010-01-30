@@ -21,4 +21,14 @@ namespace :util do
       channel.send_data(input = $stdin.gets) if data =~ /^(>|\?)>/
     end
   end
+  
+  desc "list god status"
+  task :god_status, :roles => :app do
+    run "god status"
+  end
+  
+  desc "list running workling processes"
+  task :ps_worklings, :roles => :app do
+    run "ps auxw|grep workling"
+  end
 end

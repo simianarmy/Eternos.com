@@ -12,7 +12,7 @@
 		<PLAYER_SETTINGS Name="SaveScript" Value="/recordings/create/?_eternos.com_session=<%= u request.session_options[:id] %>&amp;authenticity_token=<%= u(form_authenticity_token) if protect_against_forgery? -%>&amp;recording_id_session_key=<%= @parent %>_last_recording&amp;parent_id=<%= ignore_nil { cookies[RECORDING_CONTENT_PARENT_COOKIE] } %>"/>
 		<PLAYER_SETTINGS Name="AudioActivity" Value="50"/>
 		<PLAYER_SETTINGS Name="VideoActivity" Value="50"/>	
-		<PLAYER_SETTINGS Name="MaxRecordingTime" Value="300"/>		
+		<PLAYER_SETTINGS Name="MaxRecordingTime" Value="1800"/>		
 		<PLAYER_SETTINGS Name="Color" Value="0x000077"/>
 		<PLAYER_SETTINGS Name="EmbedURL" Value="<%= video_player_swf_url %>"/>	
 		<PLAYER_SETTINGS Name="ShareURL" Value=""/>	
