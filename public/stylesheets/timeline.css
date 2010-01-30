@@ -439,13 +439,13 @@ a.event_list_inline_item:hover {
 }
 
 .tooltip_arti_container {
-	overflow-y:auto;
 	font-size: 12px;
 }
 
 .tooltip_media_container {
+	/*
 	height:420px;
-	overflow-y:auto;
+	*/
 	overflow-x:hidden;
 	border:1px solid #ccc;
 	padding:4px 10px 12px 10px;

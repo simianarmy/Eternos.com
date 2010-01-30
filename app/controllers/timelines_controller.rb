@@ -77,14 +77,17 @@ class TimelinesController < ApplicationController
       proxy_search(dev_map)
       @response = ActiveSupport::JSON.decode(@json) if @json
     else
-      md5 = Digest::MD5.hexdigest(request.url)
-      # Disable memcache by forcing refresh for now...
-      refresh = true || session[:refresh_timeline] #|| current_user.refresh_timeline?
+      filters = parse_search_filters params[:filters]
+      RAILS_DEFAULT_LOGGER.debug "searching with filters => #{filters.inspect}"
+      refresh = filters[:no_cache] || session[:refresh_timeline] #|| current_user.refresh_timeline?
       uid = current_user ? current_user.id : 0
+      md5 = Digest::MD5.hexdigest(request.url)
       
-      BenchmarkHelper.rails_log("Timeline search #{request.url}") do
-        @response = cache(md5, refresh) { TimelineRequestResponse.new(uid, request.url, params).to_json }
-      end
+      BenchmarkHelper.rails_log("Timeline search #{request.url}") {
+        @response = cache(md5, refresh) { 
+          TimelineRequestResponse.new(uid, request.url, params, filters).to_json 
+        }
+      }
       session[:refresh_timeline] = nil
     end
     respond_to do |format|
@@ -121,4 +124,13 @@ class TimelinesController < ApplicationController
     end
   end
   
+  def parse_search_filters(args)
+    (args || []).inject({}) do |res, el| 
+      el.split('&').each do |kv|
+        k,v = kv.to_s.split('=')
+        res[k.to_sym] = v.nil? ? "1" : v
+      end
+      res
+    end
+  end
 end

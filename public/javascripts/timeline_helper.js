@@ -214,14 +214,7 @@ var tooltipGenerator = function() {
 
 // UI action event handlers
 var ETUI = function() {
-	var videoExpandDimensions = {
-		width: 406,
-		height: 303
-	};
-	var videoThumbDimensions = {
-		width: 100,
-		height: 100
-	};
+	
 	// Private funcs
 	// fetch tooltip contents for an element
 	function getTooltip(id) {
@@ -231,13 +224,11 @@ var ETUI = function() {
 	function createTooltip(element, id, tipOptions) {
 		var tipContents, player, leftOffset, width;
 		// Deep copy options for modifications
-		var tipOpts = Object.extend({},
-		tipOptions);
+		var tipOpts = Object.extend({}, tipOptions);
 
 		if ((tipContents = getTooltip(id)) == null) {
 			return false;
 		}
-
 		// Save offset coordinates from top left of screen
 		element.lastCumulativeOffset = element.cumulativeOffset();
 		element.tipType = tipContents.type;
@@ -253,9 +244,13 @@ var ETUI = function() {
 				Object.extend(tipOpts, ETemplates.timelineTooltipOptionsLeft());
 			}
 		}
-		tipOpts = Object.extend(ETemplates.defaultTooltipOptions(), tipOpts);
 		tipOpts.width = ETemplates.defaultTooltipWidth(tipContents.type);
 		tipOpts.title = tipContents.title;
+		// Add tootip options based on element type
+		tipOpts = Object.extend(
+			(ETEvent.isVideo(element.tipType) ? ETemplates.videoTooltipOptions() : ETemplates.defaultTooltipOptions()),
+			tipOpts);
+		
 		
 		new Tip(element, tipContents.body, tipOpts);
 		element.prototip.show();
@@ -298,7 +293,7 @@ var ETUI = function() {
 			});
 		},
 		onEventListItemMouseOver: function(element) {
-			var tipContents, id, ttopts;
+			var tipContents, id, ttOpts = ETemplates.eventTooltipOptions();
 			// get the event id from the container div id
 			id = (element.id.split('_'))[1];
 
@@ -309,12 +304,11 @@ var ETUI = function() {
 				if (ETEvent.isVideo(element.tipType)) {
 					ETDebug.log("destroying tooltip to kill flash players");
 					element.prototip.remove();
-					//setupVideoPlayback(id);
 				} else {
 					return true;
 				}
 			}
-			return createTooltip(element, id, ETemplates.eventTooltipOptions());
+			return createTooltip(element, id, ttOpts);
 		},
 		// Destroy tooltips and observers in order to prevent memory leaks
 		onEventSectionLoading: function() {
@@ -1756,16 +1750,15 @@ var ETimeline = function(opts) {
 			this.inScrollTo = false;
 		},
 		reload: function(opts) {
-			var options = Object.extend({},
-			opts);
+			opts = opts || {};
 			searchCache.empty();
 			that.artifactSection.empty();
 			this.rawEvents.empty();
 			this.eventSource.clear();
-			if (options.today) {
+			if (opts.today) {
 				this.onNewDate(new Date());
 			} else {
-				this.searchEvents();
+				this.searchEvents({options: opts});
 			}
 		}
 	});
@@ -1777,6 +1770,7 @@ var ETimeline = function(opts) {
 		that.base = new ETLBase(options.timeline_section_id, options.timeline);
 	};
 	var reload = function(opts) {
+		opts = Object.extend({no_cache: true}, opts||{});
 		that.base.reload(opts);
 	};
 	// Set public methods now

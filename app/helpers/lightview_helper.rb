@@ -82,7 +82,7 @@ module LightviewHelper
   
   # returns js to hide a lightview
   def close_lightview_js(iframe=false)
-    iframe ? "Lightview.hide();" : "parent.Lightview.hide();"
+    iframe ? "parent.Lightview.hide();" : "Lightview.hide();"
   end
 
   # appends javsascript to hide a lightview to the page

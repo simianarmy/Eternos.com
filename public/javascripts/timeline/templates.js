@@ -11,9 +11,9 @@ var ETemplates = function() {
 	};
 	
 	var tooltipItemHoverHTML = '<div class="tip-hover-menu"><ul id="tip-hover-menu-items">' +
-			'<li><a href="#{event_edit_link}" onclick="Tips.hideAll(); ETemplates.ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
+			'<li><a href="#{event_edit_link}" onclick="ETemplates.ajaxDisplayTooltipItemDetails(this, \'item_details\', \'#{event_edit_link}\'); return false;">' +
 			'<img src="/images/page-edit-icon-16.png" border="0" alt="Edit Item">Edit</a></li>' + 
-			'<li><a href="#{event_delete_link}" onclick="Tips.hideAll(); ETemplates.ajaxDeleteTooltipItem(this, \'#{event_delete_link}\'); return false;"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
+			'<li><a href="#{event_delete_link}" onclick="ETemplates.ajaxDeleteTooltipItem(this, \'#{event_delete_link}\'); return false;"><img src="/images/delete-icon-16.png" alt="Delete Item" border="0">Delete</a></li></ul>' + 
 		'</div>';
 
 	// Public functions
@@ -27,7 +27,10 @@ var ETemplates = function() {
 				new Effect.ScrollTo(el);
 				new Effect.Highlight(el, { queue: 'end' });
 			},
-			onComplete: function() { spinner.unload(); }
+			onComplete: function() { 
+				spinner.unload();
+				Tips.hideAll();  
+			}
 		});
 		/*
 		new Effect.SlideUp(el, {duration: 1.0});
@@ -105,6 +108,11 @@ var ETemplates = function() {
 		}
 	};
 	that.defaultTooltipOptions = function() {
+		return {
+			style: 'timeline_preview_default'
+		};
+	};
+	that.videoTooltipOptions = function() {
 		return {
 			style: 'timeline_preview_default'
 		};
@@ -211,7 +219,7 @@ var ETemplates = function() {
 			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clearboth"></div>');
 		} (),
 		audio: function() {
-			return new Template('<div class="tooltip_audio"><ul class="flat"><li><a href="#{url}" class="sm2_link timing" duration="#{duration}" id="#{id}">#{title} (#{duration_s})</a><br/>#{filename}<br/>#{description}</li></ul></div>');
+			return new Template('<div class="tooltip_audio"><ul class="flat"><li><a href="#{url}" class="sm2_link timing sm2_paused" duration="#{duration}" id="#{id}">#{title} (#{duration_s})</a><br/>#{filename}<br/>#{description}</li></ul></div>');
 		} (),
 		email: function() {
 			return new Template('<div class="tooltip_email">' + tooltipItemViewLink('#{subject}') +

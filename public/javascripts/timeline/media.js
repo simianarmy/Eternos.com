@@ -5,8 +5,16 @@
 var TooltipMedia = function() {
 	var that = {};
 	
+	var videoExpandDimensions = {
+		width: 406,
+		height: 303
+	};
+	var videoThumbDimensions = {
+		width: 100,
+		height: 100
+	};
 	// create new video player objects for tooltip videos
-	that.setupVideoPlayback = function(id) {
+	that.setupVideoPlayback = function(id, ui) {
 		var flowsel = 'div#' + ETemplates.tooltipTemplateID(id, 'media') + ' a.player';
 		var fp;
 
@@ -39,7 +47,7 @@ var TooltipMedia = function() {
 				// start growing animation
 				// TODO: configurable start, end dimensions
 				wrap.animate(
-				videoExpandDimensions, 500, function() {
+					videoExpandDimensions, 500, function() {
 					// when animation finishes we will load our player 
 					$f(this).load();
 				});
@@ -51,7 +59,7 @@ var TooltipMedia = function() {
 			// unload action resumes to original state         
 			onUnload: function() {
 				jQuery(this.getParent()).animate(
-				videoThumbDimensions, 500, function() {
+					videoThumbDimensions, 500, function() {
 					// make play button visible again 
 					jQuery(this).find("img").fadeIn();
 				});
@@ -66,9 +74,11 @@ var TooltipMedia = function() {
 	};
 	// Using SoundManager & inline player javascript
 	that.setupAudioPlayback = function(id) {
-		if (soundManager !== null) {
+		if (soundManager !== null && inlinePlayer === null) {
+			// Fire it up
 			soundManager.reboot();
-		} else {
+		} 
+		if (soundManager === null) {
 			alert('Sorry there was an error playing the audio file!  Please use Feedback if this is not fixed in a few hours.');
 			ETDebug.log("ERROR no soundmanager object!");
 		}

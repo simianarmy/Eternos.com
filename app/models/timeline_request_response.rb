@@ -8,11 +8,11 @@ class TimelineRequestResponse
   # events: collection of TimelineEvent objects
   attr_writer :results
   
-  def initialize(user_id, uri, params={})
+  def initialize(user_id, uri, params, options)
     @id         = user_id
     @uri        = uri
     @params     = params
-    @options    = parse_search_filters(params[:filters])
+    @options    = options
     @results    = nil
     @status     = 200
     @details    = nil
@@ -53,15 +53,5 @@ private
     return unless id
     
     klass.new(id, [@params[:start_date], @params[:end_date]], @options).results
-  end
-  
-  def parse_search_filters(args)
-    (args || []).inject({}) do |res, el| 
-      el.split('&').each do |kv|
-        k,v = kv.to_s.split('=')
-        res[k.to_sym] = v.nil? ? "1" : v
-      end
-      res
-    end
   end
 end

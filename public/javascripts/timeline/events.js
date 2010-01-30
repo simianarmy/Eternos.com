@@ -492,12 +492,18 @@ var ETEvent = {
 		} else if (type === "photo") {
 			return new ETLPhotoEventSource(data);
 		} else if (type === "video" || type === "web_video") {
+			// Load flowplayer libraries as needed
+			if (SimileAjax.findScript(document, 'flowplayer') === null) {
+				SimileAjax.includeCssFiles(document, '/stylesheets/', ['media.css']);
+				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['flowplayer-3.1.4.min.js', 'flowplayer.playlist-3.0.7.js', 'flowplayer.js'])
+			}
 			return new ETLVideoEventSource(data);
 		} else if (type === "audio" || type === "music") {
 			// Load soundmanager js & css files dynamically - heavy & use flash
-			SimileAjax.includeCssFiles(document, '/stylesheets/', ['soundmanager2.css', 'inlineplayer.css']);
-			SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['soundmanager2.js', 'inlineplayer.js']);
-
+			if (SimileAjax.findScript(document, 'soundmanager2') === null) {
+				SimileAjax.includeCssFiles(document, '/stylesheets/', ['soundmanager2.css', 'inlineplayer.css']);
+				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['soundmanager2.js', 'inlineplayer.js']);
+			}
 			return new ETLAudioEventSource(data);
 		} else if (type === "job") {
 			return new ETLJobEventSource(data);
