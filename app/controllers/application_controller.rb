@@ -58,6 +58,7 @@ class ApplicationController < ActionController::Base
   def send_protected_content(path, type)
     # send_file with :x_sendfile => true option FAILS
     response.headers['X-Sendfile'] = path
+    RAILS_DEFAULT_LOGGER.debug "Streaming url #{path} with type #{type}"
     send_file path, :type => type, :disposition => 'inline'
   end
   

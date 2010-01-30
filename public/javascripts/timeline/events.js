@@ -319,7 +319,7 @@ var ETLVideoEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function($super) {			
 		return this._evalTemplate({
 			id: this.getID(),
-			video_url: this.attributes.url,
+			video_url: this.getURL(),
 			thumbnail_url: this.attributes.thumbnail_url,
 			thumb_width: this.attributes.thumb_width,
 			thumb_height: this.attributes.thumb_height,
@@ -339,7 +339,7 @@ var ETLAudioEventSource = Class.create(ETLEventSource, {
 	getPreviewHtml: function($super) {
 		return this._evalTemplate({
 			id: this.getID(),
-			url: this.attributes.streaming_url,
+			url: this.getURL(),
 			title: this.getTitle(),
 			filename: this.attributes.filename,
 			description: this.attributes.description,
@@ -502,7 +502,7 @@ var ETEvent = {
 			// Load soundmanager js & css files dynamically - heavy & use flash
 			if (SimileAjax.findScript(document, 'soundmanager2') === null) {
 				SimileAjax.includeCssFiles(document, '/stylesheets/', ['soundmanager2.css', 'inlineplayer.css']);
-				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['soundmanager2.js', 'inlineplayer.js']);
+				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['soundmanager2-nodebug-jsmin.js', 'inlineplayer.js']);
 			}
 			return new ETLAudioEventSource(data);
 		} else if (type === "job") {

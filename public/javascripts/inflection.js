@@ -166,7 +166,7 @@ if(!String.prototype.singularize)
 */
 if(!String.prototype._uncountable_words)String.prototype._uncountable_words=[
   'equipment','information','rice','money','species','series','fish','sheep',
-  'moose','deer','news'
+  'moose','deer','news', 'music'
 ];
 
 /*

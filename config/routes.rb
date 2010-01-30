@@ -66,10 +66,10 @@ ActionController::Routing::Routes.draw do |map|
     :action => 'flashrecorder', :format => 'xml'
   
   map.resources :user_sessions, :comments, :content_authorizations, :documents, 
-    :audio, :videos, :web_videos, :photos, :invitations, :address_books, 
+    :audio, :musics, :videos, :web_videos, :photos, :invitations, :address_books, 
     :guests, :recordings, :guest_invitations, :password_resets,
     :jobs, :families, :medicals, :medical_conditions, :relationships
-  map.resources :musics, :controller => 'music'
+
   map.resources :users , :member => { :suspend   => :put,
                                      :unsuspend => :put,
                                      :purge     => :delete },

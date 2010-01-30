@@ -74,11 +74,15 @@ var TooltipMedia = function() {
 	};
 	// Using SoundManager & inline player javascript
 	that.setupAudioPlayback = function(id) {
-		if (soundManager !== null && inlinePlayer === null) {
-			// Fire it up
-			soundManager.reboot();
-		} 
-		if (soundManager === null) {
+		if (soundManager !== null) {
+			if (inlinePlayer === null) {
+				// Fire it up
+				soundManager.reboot();
+			} else {
+				// May need to do this only once...
+				inlinePlayer.init();
+			}
+		} else {
 			alert('Sorry there was an error playing the audio file!  Please use Feedback if this is not fixed in a few hours.');
 			ETDebug.log("ERROR no soundmanager object!");
 		}

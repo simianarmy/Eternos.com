@@ -18,7 +18,7 @@
   #content_date
     .date_label
       = content_creation_date_label(item) + ':'
-    #date_taken= item.taken_at.to_s(:long)
+    #date_taken= item.start_date.to_s(:long)
     #date_taken_form{:style => style_hidden_if(true)}
       - remote_form_for :content, item, :url => content_path(item), :html => {:method => :put, :class => "submit_on_change", :id => "content_date_form"} do |f|
         = hidden_field_tag 'date_select', true

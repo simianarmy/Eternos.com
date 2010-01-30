@@ -59,7 +59,7 @@ class TimelineEventsController < ApplicationController
     end
   end
   
-  private
+  protected
   
   def load_item
     obj = params[:controller].classify.constantize

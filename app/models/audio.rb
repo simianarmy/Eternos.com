@@ -8,9 +8,9 @@ class Audio < Content
   # Use RVideo to get attributes
   after_attachment_saved do |attach|
     # Don't repeat this if creators have already done this
-    unless attach.width
+    unless attach.duration
       begin
-        if info = RVideo::Inspector.new(:file => attach.full_filename)
+        if info = RVideo::Inspector.new(:file => attach.full_filename, :ffmpeg_binary => AppConfig.ffmpeg_path)
           attach.save_metadata(info)
         end
       end
@@ -19,7 +19,7 @@ class Audio < Content
   
   include TimelineEvents
   serialize_with_options do
-    methods :streaming_url, :duration_to_s
+    methods :url, :duration_to_s
     only :id, :size, :type, :title, :filename, :taken_at, :description, :duration
   end
   

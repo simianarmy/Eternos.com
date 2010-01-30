@@ -40,9 +40,11 @@ class Content < ActiveRecord::Base
     only :size, :type, :title, :filename, :width, :height, :taken_at, :description
   end
   
-  # Define start_date = created_at for serializing.  Define in child classes if start_date
-  # should return a different column value
-  def start_date; created_at end
+  # Define start_date for serializing.  Define in child classes if start_date
+  # should return a different column value than the ones shown
+  def start_date
+    taken_at || created_at 
+  end
   
   before_create :set_title
   # TODO: Make this work w/ attachment_fu

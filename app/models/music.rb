@@ -5,7 +5,7 @@ class Music < Audio
   
   include TimelineEvents
   serialize_with_options do
-    methods :streaming_url, :duration_to_s
+    methods :url, :duration_to_s
     only :id, :size, :type, :title, :filename, :taken_at, :description, :duration
   end
 end
