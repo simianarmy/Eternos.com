@@ -75,14 +75,14 @@ module LightviewHelper
   end
 
   # returns link to hide a lightview
-  def link_to_close_lightview(name=nil, option={})
+  def link_to_close_lightview(name=nil, options={})
     name ||= 'Close'
-    link_to_function name, close_lightview_js, option
+    link_to_function name, close_lightview_js(options[:iframe]), options
   end
   
   # returns js to hide a lightview
-  def close_lightview_js
-    "Lightview.hide();"
+  def close_lightview_js(iframe=false)
+    iframe ? "Lightview.hide();" : "parent.Lightview.hide();"
   end
 
   # appends javsascript to hide a lightview to the page

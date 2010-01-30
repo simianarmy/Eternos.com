@@ -1,4 +1,5 @@
 - use_form
+- use_prototip
 - use_jquery
 /- javascript :defaults
 
@@ -6,27 +7,25 @@
 %br
 #story[@story]
   = custom_error_messages_for :story
-
-  %p= restful_in_place_editor 'span', @story, 'title', :class => 'message_title'
   -#
     %p.input
     Description:
     = restful_in_place_editor 'span', @story, 'description', :rows => 5, :value => !@story.description.blank? ? @story.description : 'Add description'
-    
-  #recording= show_recording(@recording)
-  /= render :partial => 'shared/audio_controls'
   
-  = render :partial => 'decorations/list', :locals => {:parent => @story}
-  %p
+  #recording= show_recording(@recording)
+  
+  %p= restful_in_place_editor 'span', @story, 'title', :class => 'message_title'
+  -# = render :partial => 'shared/audio_controls'
+  -# = render :partial => 'decorations/list', :locals => {:parent => @story}
   %br
-  #story_settings
-    = render :partial => 'shared/common_settings', :locals => {:object => @story}
+  = render :partial => 'shared/common_settings', :locals => {:object => @story, :hide_time_period => true, :hide_category => true}  
     
   %br
-    
   - if @quick_view
     = link_to_function "Done", "$('story_view_#{dom_id(@story)}').update('')"
+  - elsif params[:dialog]
+    = link_to_close_lightview 'Close', :iframe => true
   - else
     = view_comments_link(@story)
-  %p
+
  

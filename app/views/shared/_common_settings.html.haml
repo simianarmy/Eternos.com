@@ -4,7 +4,7 @@
 #common_settings
   - fields_for object do |f|
     - with_options :locals => {:f => f, :object => object} do |p|
-      - if object.respond_to?(:time_period)
+      - if object.respond_to?(:time_period) && !local_assigns.has_key?(:hide_time_period)
         #time_period_show.setting
           .labelcol Time Period:
           .inputcol
@@ -17,7 +17,7 @@
           = p.render :partial => 'shared/tags_ajax_field', :locals => {:url => url_for(object)}
           %br
           .clearboth
-      - if object.respond_to?(:category)
+      - if object.respond_to?(:category) && !local_assigns.has_key?(:hide_category)
         #category.setting
           = p.render :partial => 'shared/ajax_category'
           %br

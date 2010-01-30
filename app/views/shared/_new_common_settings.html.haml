@@ -1,13 +1,21 @@
-.common_settings
+#common_settings
   - with_options :locals => {:object => object, :f => f} do |common|
-    = common.render :partial => 'shared/timeline_picker', :locals => {:period => object.time_period}
-    %br
-    - if category
-      %p
-      = display_category_select(object, :f => f, :categories => current_user.categories)
+    -# Hide time period option for now
+      - if object.respond_to?(:time_period) && !local_assigns.has_key?(:hide_time_period)
+        #time_period_show.setting
+          = common.render :partial => 'shared/timeline_picker', :locals => {:period => object.time_period}
+          %br
+          .clearboth
+    -# Hide category option for now
+      - if object.respond_to?(:category) && !local_assigns.has_key?(:hide_category)
+        #category.setting
+          = display_category_select(object, :f => f, :categories => current_user.categories)
+          %br
+          .clearboth
+    #message_permissions.setting
+      = common.render :partial => 'shared/access_permissions_select', :locals => {:user => current_user}
       %br
-    %p
-    = common.render :partial => 'shared/access_permissions_select', :locals => {:user => current_user}
-    %br
-    %p
-    = common.render :partial => 'shared/timelock_select', :locals => {:parent => object, :timelock => TimeLock.new}
+      .clearboth
+    #time_lock.setting
+      = common.render :partial => 'shared/timelock_select', :locals => {:parent => object, :timelock => TimeLock.new}
+      .clearboth

@@ -1,15 +1,17 @@
 - title "Recording - Additional Info"
 
-%p Lorem Ipsum
-%br
 = render :partial => 'shared/av_attachment', :locals => {:parent => @documentary, :recording => @recording, :dialog => true}
 %br
-%p Lorem lorem ipsum here
+You can add additional information about your recording here:
+%p
 = custom_error_messages_for :documentary
 - form_for @documentary do |f|
   = f.hidden_field 'recording_id', :value => @recording.id
   = hidden_field_tag 'dialog', true
   %p
   %br
-  = render :partial => 'stories/form', :locals => {:f => f, :story => @documentary}
+  = render :partial => 'form', :locals => {:f => f, :story => @documentary}
   %p= f.submit :Save
+%p
+%br
+= link_to_close_lightview "No Thanks, I'm Finished.", :iframe => true

@@ -1,0 +1,13 @@
+- use_prototip
+- use_form
+
+#input_fields
+  %p#title
+    %label Title
+    %br
+    = f.text_field :title, :value => story.title, :class => 'withHint', :defaultValue => 'ENTER A TITLE'
+  %br
+  = render :partial => 'shared/tags_form_field', :locals => {:object => story, :f => f}
+  %br  
+  = render :partial => 'shared/new_common_settings', :locals => {:f => f, :object => story, :hide_time_period => true, :hide_category => true}  
+  %br
