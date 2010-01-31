@@ -11,7 +11,6 @@ class HomeController < ApplicationController
   
   def index
     @hide_feedback = true
-    render :action => 'new_home'
   end
   
   def show

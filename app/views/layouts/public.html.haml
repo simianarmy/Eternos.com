@@ -28,7 +28,7 @@
         = link_to(image_tag('logo.png', :border => "0"),  root_path)
         %ul
           %li{:class => params[:action] == 'show' ? 'active' : 'inact'}
-            = link_to 'Home', '/new_home'
+            = link_to 'Home', '/'
             %span
           %li{:class => params[:action] == 'what' ? 'active' : 'inact'}
             = link_to 'What is Eternos?', '/about/what'
