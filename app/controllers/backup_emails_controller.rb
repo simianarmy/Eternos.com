@@ -6,7 +6,7 @@ class BackupEmailsController < TimelineEventsController
     begin
       @email = BackupEmail.find(params[:id])
       # Ensure proper ownership
-      if @email.backup_source.member == current_user
+      if @email.member == current_user
         @email_body = @email.body
       else
         flash[:error] = 'Unauthorized Access' 
@@ -17,7 +17,10 @@ class BackupEmailsController < TimelineEventsController
     end
     
     respond_to do |format|
-      format.js 
+      format.js # rjs
+      format.html {
+        render :inline => @email_body
+      }
     end
   end
   

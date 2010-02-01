@@ -54,8 +54,7 @@ ActionController::Routing::Routes.draw do |map|
   }
   #map.resources :email_accounts
   map.resources :gmail_accounts
-  map.resources :backup_emails
-  map.connect 'backup_emails/body/:id', :controller => 'backup_emails', :action => 'body'
+  map.resources :backup_emails, :member => {:body => :get}
   map.resources :feed_entries
   map.resources :backup_photo_albums
   map.resources :facebook_activity_stream_items

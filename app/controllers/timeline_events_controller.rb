@@ -15,7 +15,7 @@ class TimelineEventsController < ApplicationController
     
     begin
       # TODO: Create class to restrict results to user = id
-      @events ||= type.camelize.constantize.find(ids.split(','))
+      @events ||= type.camelize.constantize.find(ids.split(',')).reject {|ev| ev.get_owner != current_user}
     rescue
       flash[:error] = "An unexpected error occurred while retrieving your details: " + $!
       @events = []

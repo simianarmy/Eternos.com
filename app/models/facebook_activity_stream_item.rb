@@ -61,7 +61,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
   end
   
   def facebook_photo?
-    (d = parsed_attachment_data['photo']) && !d['pid'].empty?
+    (d = parsed_attachment_data['photo']) && d['pid'] && !d['pid'].empty?
   end
   
   # Returns Photo object created from attached BackupPhoto object

@@ -121,6 +121,18 @@ namespace :deploy do
     end
   end
   
+  desc "Updates sitemap files"
+  task :update_sitemaps, :roles => :app do
+    run "mkdir -p #{shared_path}/public"
+    run "cd #{current_path}; RAILS_ENV=#{stage} rake sitemap:generate"
+    run "cp #{current_path}/tmp/*.xml #{shared_path}/public/"
+  end
+  
+  desc "Copy sitemap files to public directory"
+  task :install_sitemaps, :roles => :app do
+    run "cp #{shared_path}/public/*.xml #{current_path}/public"
+  end
+  
   desc "Installs CutyCapt"
   task :install_cutycapt, :roles => :app do
     sudo "yum -y install Xorg xorg-x11-server-Xvfb xorg-x11-fonts* gperf flex gtk-doc glib2-devel gstreamer-devel gstreamer-plugins-base-devel dbus-devel"
@@ -166,6 +178,7 @@ after "deploy:symlink", "deploy:symlink_shared"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
 after "deploy:symlink", "deploy:start_daemons"
 after "deploy:symlink", "deploy:sendmail"
+after "deploy:symlink", "deploy:install_sitemaps"
 
 
 
