@@ -12,28 +12,28 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-2.0.19/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-gateway-1.0.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-ssh-gateway-1.0.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/ext/json/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/ext")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/contacts-1.0.18/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/contacts-1.0.18/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/searchlogic-2.3.2/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/after_commit-1.0.5/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/after_commit-1.0.5/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-scp-1.0.2/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-scp-1.0.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rake-0.8.7/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-scp-1.0.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/net-scp-1.0.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/after_commit-1.0.5/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/after_commit-1.0.5/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/SystemTimer-1.1.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/lockfile-1.4.3/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/newrelic_rpm-2.9.8/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rio-0.4.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rio-0.4.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/bullet-1.7.4/bin")
@@ -53,12 +53,12 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/columnize-0.3.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/linecache-0.43/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hpricot-0.8.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/deadweight-0.1.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/deadweight-0.1.3/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shared-mime-info-0.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/eventmachine-0.12.10/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/eventmachine-0.12.10/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-growl-1.0.1/bin")
@@ -79,8 +79,8 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hoe-2.4.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/image_science-1.2.1/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/image_science-1.2.1/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/simianarmy-facebooker-1.0.51/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/simianarmy-facebooker-1.0.51/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/facebooker-1.0.61/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/facebooker-1.0.61/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/oyster-0.9.3/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/oyster-0.9.3/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/packr-3.1.0/bin")
@@ -124,10 +124,10 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/haml-2.2.15/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shuber-attr_encrypted-1.0.8/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/shuber-attr_encrypted-1.0.8/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/active_presenter-1.2.0/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rmagick-2.12.2/ext")
@@ -155,8 +155,8 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/capistrano-ext-1.2.1/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/actionmailer-2.3.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/actionmailer-2.3.2/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/highline-1.5.1/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/highline-1.5.1/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/highline-1.5.2/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/highline-1.5.2/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/capistrano-2.5.10/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/capistrano-2.5.10/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-debug-base-0.10.3/bin")
@@ -185,8 +185,8 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rspec-1.3.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rspec-rails-1.3.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/rspec-rails-1.3.2/lib")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/riddle-1.0.8/bin")
-  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/riddle-1.0.8/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/riddle-1.0.9/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/riddle-1.0.9/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hashie-0.1.5/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/hashie-0.1.5/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/httparty-0.4.5/bin")
@@ -203,26 +203,26 @@ module Bundler
   @bundled_specs["net-ssh"].loaded_from = "#{dir}/specifications/net-ssh-2.0.19.gemspec"
   @bundled_specs["net-ssh-gateway"] = eval(File.read("#{dir}/specifications/net-ssh-gateway-1.0.1.gemspec"))
   @bundled_specs["net-ssh-gateway"].loaded_from = "#{dir}/specifications/net-ssh-gateway-1.0.1.gemspec"
+  @bundled_specs["searchlogic"] = eval(File.read("#{dir}/specifications/searchlogic-2.3.2.gemspec"))
+  @bundled_specs["searchlogic"].loaded_from = "#{dir}/specifications/searchlogic-2.3.2.gemspec"
+  @bundled_specs["json_pure"] = eval(File.read("#{dir}/specifications/json_pure-1.2.0.gemspec"))
+  @bundled_specs["json_pure"].loaded_from = "#{dir}/specifications/json_pure-1.2.0.gemspec"
   @bundled_specs["json"] = eval(File.read("#{dir}/specifications/json-1.2.0.gemspec"))
   @bundled_specs["json"].loaded_from = "#{dir}/specifications/json-1.2.0.gemspec"
   @bundled_specs["contacts"] = eval(File.read("#{dir}/specifications/contacts-1.0.18.gemspec"))
   @bundled_specs["contacts"].loaded_from = "#{dir}/specifications/contacts-1.0.18.gemspec"
-  @bundled_specs["json_pure"] = eval(File.read("#{dir}/specifications/json_pure-1.2.0.gemspec"))
-  @bundled_specs["json_pure"].loaded_from = "#{dir}/specifications/json_pure-1.2.0.gemspec"
-  @bundled_specs["searchlogic"] = eval(File.read("#{dir}/specifications/searchlogic-2.3.2.gemspec"))
-  @bundled_specs["searchlogic"].loaded_from = "#{dir}/specifications/searchlogic-2.3.2.gemspec"
-  @bundled_specs["SystemTimer"] = eval(File.read("#{dir}/specifications/SystemTimer-1.1.3.gemspec"))
-  @bundled_specs["SystemTimer"].loaded_from = "#{dir}/specifications/SystemTimer-1.1.3.gemspec"
-  @bundled_specs["after_commit"] = eval(File.read("#{dir}/specifications/after_commit-1.0.5.gemspec"))
-  @bundled_specs["after_commit"].loaded_from = "#{dir}/specifications/after_commit-1.0.5.gemspec"
-  @bundled_specs["net-scp"] = eval(File.read("#{dir}/specifications/net-scp-1.0.2.gemspec"))
-  @bundled_specs["net-scp"].loaded_from = "#{dir}/specifications/net-scp-1.0.2.gemspec"
   @bundled_specs["rake"] = eval(File.read("#{dir}/specifications/rake-0.8.7.gemspec"))
   @bundled_specs["rake"].loaded_from = "#{dir}/specifications/rake-0.8.7.gemspec"
-  @bundled_specs["newrelic_rpm"] = eval(File.read("#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"))
-  @bundled_specs["newrelic_rpm"].loaded_from = "#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"
+  @bundled_specs["net-scp"] = eval(File.read("#{dir}/specifications/net-scp-1.0.2.gemspec"))
+  @bundled_specs["net-scp"].loaded_from = "#{dir}/specifications/net-scp-1.0.2.gemspec"
+  @bundled_specs["after_commit"] = eval(File.read("#{dir}/specifications/after_commit-1.0.5.gemspec"))
+  @bundled_specs["after_commit"].loaded_from = "#{dir}/specifications/after_commit-1.0.5.gemspec"
+  @bundled_specs["SystemTimer"] = eval(File.read("#{dir}/specifications/SystemTimer-1.1.3.gemspec"))
+  @bundled_specs["SystemTimer"].loaded_from = "#{dir}/specifications/SystemTimer-1.1.3.gemspec"
   @bundled_specs["lockfile"] = eval(File.read("#{dir}/specifications/lockfile-1.4.3.gemspec"))
   @bundled_specs["lockfile"].loaded_from = "#{dir}/specifications/lockfile-1.4.3.gemspec"
+  @bundled_specs["newrelic_rpm"] = eval(File.read("#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"))
+  @bundled_specs["newrelic_rpm"].loaded_from = "#{dir}/specifications/newrelic_rpm-2.9.8.gemspec"
   @bundled_specs["rio"] = eval(File.read("#{dir}/specifications/rio-0.4.2.gemspec"))
   @bundled_specs["rio"].loaded_from = "#{dir}/specifications/rio-0.4.2.gemspec"
   @bundled_specs["bullet"] = eval(File.read("#{dir}/specifications/bullet-1.7.4.gemspec"))
@@ -241,12 +241,12 @@ module Bundler
   @bundled_specs["columnize"].loaded_from = "#{dir}/specifications/columnize-0.3.1.gemspec"
   @bundled_specs["linecache"] = eval(File.read("#{dir}/specifications/linecache-0.43.gemspec"))
   @bundled_specs["linecache"].loaded_from = "#{dir}/specifications/linecache-0.43.gemspec"
-  @bundled_specs["shared-mime-info"] = eval(File.read("#{dir}/specifications/shared-mime-info-0.1.gemspec"))
-  @bundled_specs["shared-mime-info"].loaded_from = "#{dir}/specifications/shared-mime-info-0.1.gemspec"
   @bundled_specs["hpricot"] = eval(File.read("#{dir}/specifications/hpricot-0.8.2.gemspec"))
   @bundled_specs["hpricot"].loaded_from = "#{dir}/specifications/hpricot-0.8.2.gemspec"
   @bundled_specs["deadweight"] = eval(File.read("#{dir}/specifications/deadweight-0.1.3.gemspec"))
   @bundled_specs["deadweight"].loaded_from = "#{dir}/specifications/deadweight-0.1.3.gemspec"
+  @bundled_specs["shared-mime-info"] = eval(File.read("#{dir}/specifications/shared-mime-info-0.1.gemspec"))
+  @bundled_specs["shared-mime-info"].loaded_from = "#{dir}/specifications/shared-mime-info-0.1.gemspec"
   @bundled_specs["eventmachine"] = eval(File.read("#{dir}/specifications/eventmachine-0.12.10.gemspec"))
   @bundled_specs["eventmachine"].loaded_from = "#{dir}/specifications/eventmachine-0.12.10.gemspec"
   @bundled_specs["ruby-growl"] = eval(File.read("#{dir}/specifications/ruby-growl-1.0.1.gemspec"))
@@ -267,8 +267,8 @@ module Bundler
   @bundled_specs["hoe"].loaded_from = "#{dir}/specifications/hoe-2.4.0.gemspec"
   @bundled_specs["image_science"] = eval(File.read("#{dir}/specifications/image_science-1.2.1.gemspec"))
   @bundled_specs["image_science"].loaded_from = "#{dir}/specifications/image_science-1.2.1.gemspec"
-  @bundled_specs["simianarmy-facebooker"] = eval(File.read("#{dir}/specifications/simianarmy-facebooker-1.0.51.gemspec"))
-  @bundled_specs["simianarmy-facebooker"].loaded_from = "#{dir}/specifications/simianarmy-facebooker-1.0.51.gemspec"
+  @bundled_specs["facebooker"] = eval(File.read("#{dir}/specifications/facebooker-1.0.61.gemspec"))
+  @bundled_specs["facebooker"].loaded_from = "#{dir}/specifications/facebooker-1.0.61.gemspec"
   @bundled_specs["oyster"] = eval(File.read("#{dir}/specifications/oyster-0.9.3.gemspec"))
   @bundled_specs["oyster"].loaded_from = "#{dir}/specifications/oyster-0.9.3.gemspec"
   @bundled_specs["packr"] = eval(File.read("#{dir}/specifications/packr-3.1.0.gemspec"))
@@ -311,10 +311,10 @@ module Bundler
   @bundled_specs["haml"].loaded_from = "#{dir}/specifications/haml-2.2.15.gemspec"
   @bundled_specs["shuber-attr_encrypted"] = eval(File.read("#{dir}/specifications/shuber-attr_encrypted-1.0.8.gemspec"))
   @bundled_specs["shuber-attr_encrypted"].loaded_from = "#{dir}/specifications/shuber-attr_encrypted-1.0.8.gemspec"
-  @bundled_specs["crack"] = eval(File.read("#{dir}/specifications/crack-0.1.4.gemspec"))
-  @bundled_specs["crack"].loaded_from = "#{dir}/specifications/crack-0.1.4.gemspec"
   @bundled_specs["active_presenter"] = eval(File.read("#{dir}/specifications/active_presenter-1.2.0.gemspec"))
   @bundled_specs["active_presenter"].loaded_from = "#{dir}/specifications/active_presenter-1.2.0.gemspec"
+  @bundled_specs["crack"] = eval(File.read("#{dir}/specifications/crack-0.1.4.gemspec"))
+  @bundled_specs["crack"].loaded_from = "#{dir}/specifications/crack-0.1.4.gemspec"
   @bundled_specs["rmagick"] = eval(File.read("#{dir}/specifications/rmagick-2.12.2.gemspec"))
   @bundled_specs["rmagick"].loaded_from = "#{dir}/specifications/rmagick-2.12.2.gemspec"
   @bundled_specs["chronic"] = eval(File.read("#{dir}/specifications/chronic-0.2.3.gemspec"))
@@ -341,8 +341,8 @@ module Bundler
   @bundled_specs["capistrano-ext"].loaded_from = "#{dir}/specifications/capistrano-ext-1.2.1.gemspec"
   @bundled_specs["actionmailer"] = eval(File.read("#{dir}/specifications/actionmailer-2.3.2.gemspec"))
   @bundled_specs["actionmailer"].loaded_from = "#{dir}/specifications/actionmailer-2.3.2.gemspec"
-  @bundled_specs["highline"] = eval(File.read("#{dir}/specifications/highline-1.5.1.gemspec"))
-  @bundled_specs["highline"].loaded_from = "#{dir}/specifications/highline-1.5.1.gemspec"
+  @bundled_specs["highline"] = eval(File.read("#{dir}/specifications/highline-1.5.2.gemspec"))
+  @bundled_specs["highline"].loaded_from = "#{dir}/specifications/highline-1.5.2.gemspec"
   @bundled_specs["capistrano"] = eval(File.read("#{dir}/specifications/capistrano-2.5.10.gemspec"))
   @bundled_specs["capistrano"].loaded_from = "#{dir}/specifications/capistrano-2.5.10.gemspec"
   @bundled_specs["ruby-debug-base"] = eval(File.read("#{dir}/specifications/ruby-debug-base-0.10.3.gemspec"))
@@ -371,8 +371,8 @@ module Bundler
   @bundled_specs["rspec"].loaded_from = "#{dir}/specifications/rspec-1.3.0.gemspec"
   @bundled_specs["rspec-rails"] = eval(File.read("#{dir}/specifications/rspec-rails-1.3.2.gemspec"))
   @bundled_specs["rspec-rails"].loaded_from = "#{dir}/specifications/rspec-rails-1.3.2.gemspec"
-  @bundled_specs["riddle"] = eval(File.read("#{dir}/specifications/riddle-1.0.8.gemspec"))
-  @bundled_specs["riddle"].loaded_from = "#{dir}/specifications/riddle-1.0.8.gemspec"
+  @bundled_specs["riddle"] = eval(File.read("#{dir}/specifications/riddle-1.0.9.gemspec"))
+  @bundled_specs["riddle"].loaded_from = "#{dir}/specifications/riddle-1.0.9.gemspec"
   @bundled_specs["hashie"] = eval(File.read("#{dir}/specifications/hashie-0.1.5.gemspec"))
   @bundled_specs["hashie"].loaded_from = "#{dir}/specifications/hashie-0.1.5.gemspec"
   @bundled_specs["httparty"] = eval(File.read("#{dir}/specifications/httparty-0.4.5.gemspec"))

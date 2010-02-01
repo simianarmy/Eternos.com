@@ -30,6 +30,14 @@ module FacebookDesktopApp
       super(conf['api_key'], conf['secret_key'])
     end
     
+    # IMPORTANT - We need to override post to always use the session_key!
+    def post(method, params = {}, use_session=false)
+      if method == 'facebook.profile.getFBML' || method == 'facebook.profile.setFBML'
+        raise NonSessionUser.new("User #{@uid} is not the logged in user.") unless @uid == params[:uid]
+      end
+      super(method, params, true)
+    end
+    
     def connect(session, uid, timeout, secret)
       secure_with!(session, uid, timeout, secret)
     end
