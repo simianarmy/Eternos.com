@@ -130,6 +130,7 @@ namespace :deploy do
   
   desc "Copy sitemap files to public directory"
   task :install_sitemaps, :roles => :app do
+    deploy.update_sitemaps
     run "cp #{shared_path}/public/*.xml #{current_path}/public"
   end
   
@@ -178,7 +179,7 @@ after "deploy:symlink", "deploy:symlink_shared"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
 after "deploy:symlink", "deploy:start_daemons"
 after "deploy:symlink", "deploy:sendmail"
-after "deploy:symlink", "deploy:install_sitemaps"
+#after "deploy:symlink", "deploy:install_sitemaps"
 
 
 

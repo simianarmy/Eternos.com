@@ -77,26 +77,26 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :contents, :collection => { :edit_selection => :post, 
       :gallery => :get }
       
-  map.resources :stories do |stories|  
-    stories.resources :elements
-  end
-    
-  map.resources :messages do |messages|
-    messages.resources :decorations, :collection => { :sort => :post, 
-        :create_from_selection => :post }
-  end    
-  
-  map.resources :elements do |elements|
-    elements.resources :decorations, :collection => { :sort => :post, 
-      :create_from_selection => :post }
-  end
-  
+  # map.resources :stories do |stories|  
+  #     stories.resources :elements
+  #   end
+  #     
+  #   map.resources :messages do |messages|
+  #     messages.resources :decorations, :collection => { :sort => :post, 
+  #         :create_from_selection => :post }
+  #   end    
+  #   
+  #   map.resources :elements do |elements|
+  #     elements.resources :decorations, :collection => { :sort => :post, 
+  #       :create_from_selection => :post }
+  #   end
+  #   
   map.resources :documentaries, :collection => { :post_recording => :get } do |docs|
     docs.resources :decorations, :collection => { 
       :sort => :post, :create_from_selection => :post 
     }
   end
-    
+  map.resources :mementos
   map.resources :addresses, :collection => { :country_regions => :get }
   map.resources :trustees, :collection => { :confirmation => [:get, :post] }
   

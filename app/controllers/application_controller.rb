@@ -62,10 +62,6 @@ class ApplicationController < ActionController::Base
     send_file path, :type => type, :disposition => 'inline'
   end
   
-  def load_artifacts
-    @artifacts = current_user.contents
-  end
-
   # Removes form field 'hint' value from submitted value, returns 
   # modified value
   def filter_hint_form_value(field, value="")
@@ -353,22 +349,7 @@ class ApplicationController < ActionController::Base
     (I18n.available_locales.include? parsed_locale) ? parsed_locale  : nil
   end
   
-  # memcache handler: pass cache key and block
-  def cache(key, clear=false)
-    begin
-      if clear
-        RAILS_DEFAULT_LOGGER.info "Deleting cache key: #{key}"
-        CACHE.delete(key)
-      end
-      
-      unless output = CACHE.get(key)
-        output = yield
-        CACHE.set(key, output, 1.hour) unless RAILS_ENV == 'development'
-      end
-      output
-    rescue
-      yield
-    end
+  def log_exception(msg, e)
+    RAILS_DEFAULT_LOGGER.error "#{msg}: #{e.class.name} #{e.message}"
   end
-  
 end

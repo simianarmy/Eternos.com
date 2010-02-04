@@ -54,6 +54,9 @@ class Content < ActiveRecord::Base
   include CommonDateScopes
   named_scope :recordings, :conditions => {:is_recording => true}
   named_scope :photos, :conditions => {:type => 'Photo'}
+  named_scope :web_videos, :conditions => {:type => 'WebVideo'}
+  named_scope :audio, :conditions => {:type => 'Audio'}
+  named_scope :music, :conditions => {:type => 'Music'}
   named_scope :media, :conditions => {:type => ['WebVideo', 'Audio', 'Music']}
   #  :include => :thumbnails
   named_scope :collections, :group => 'collection_id', :include => :collection

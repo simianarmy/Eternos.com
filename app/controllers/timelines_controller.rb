@@ -84,7 +84,7 @@ class TimelinesController < ApplicationController
       md5 = Digest::MD5.hexdigest(request.url)
       
       BenchmarkHelper.rails_log("Timeline search #{request.url}") {
-        @response = cache(md5, refresh) { 
+        @response = Rails.cache.fetch(md5, :force => refresh, :expires_in => 10.minutes) { 
           TimelineRequestResponse.new(uid, request.url, params, filters).to_json 
         }
       }

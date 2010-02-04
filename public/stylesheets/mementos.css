@@ -1,0 +1,35 @@
+
+#artifact_picker {
+	border: 1px solid;
+	height: 150px;
+}
+
+#type_list {
+	float: left;
+	border: 1px solid;
+	width : 10™£0px;
+	color : #000000;
+	padding : 3px;
+}
+
+#artifact_view {
+	border: 1px solid;
+  float: left;
+	width: 600px;
+  padding-left : 10px;
+  color : #ff0000;
+  padding : 3px;
+}
+
+#slideshow_droptarget {
+	border: 1px solid;
+	padding: 10px;
+	height: 200px;
+}
+
+#preview_pane {
+	border: 1px solid;
+	padding: 10px;
+	height: 200px;
+	color: #0000ff;
+}

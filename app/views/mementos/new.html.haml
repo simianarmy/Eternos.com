@@ -1,0 +1,29 @@
+- stylesheet 'mementos'
+- use_jquery
+- use_scrollable
+
+#artifact_picker
+  #type_list
+    %ul
+      %li= link_to_remote 'Photos icon here', :url => contents_url(:type => 'albums'), :method => 'get', :loading => "", :complete => ""
+      %li= link_to_remote 'Videos icon', :url => contents_url(:type => 'web_videos'), :method => 'get'
+      %li= link_to_remote 'Audio icon', :url => contents_url(:type => 'audio'), :method => 'get'
+      %li= link_to_remote 'Music icon', :url => contents_url(:type => 'music'), :method => 'get'
+  #artifact_view
+    Expanded artifacts list here
+.clear
+#slideshow_droptarget
+  Where artifacts are dragged to make slideshow
+  
+  #scrollable_decorations
+    /.navi
+    %a.prevPage
+    #scroller.scrollable
+      #item_list.items
+        .decoration_item
+          Drag & Drop 1st Artifact Here
+    %a.nextPage
+    
+.clear
+#preview_pane
+  Preview slideshow here?

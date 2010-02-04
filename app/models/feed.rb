@@ -54,7 +54,7 @@ class Feed < ActiveRecord::Base
   end
   
   def valid_parse_result(feed)
-    !(feed.nil? || feed.kind_of?(Fixnum))
+    !(feed.nil? || feed.is_a?(Fixnum))
   end
   
   private

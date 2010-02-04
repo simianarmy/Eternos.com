@@ -38,7 +38,7 @@ MEMCACHED_OPTIONS       = {
   :readonly => false,
   :urlencode => false
 }
-MEMCACHED_HOST          = 'localhost'
+MEMCACHED_HOST          = '127.0.0.1'
 
 FLOWPLAYER_PRODUCT_KEY  = '#$c7beeb5fc7f67acac4d'
 YAHOO_APP_ID            = 'YxNApcLV34EgbS7EoRCAgGY4hJvSX_fQeW9uayDJ0yUbtxH8dhZXKjOSI7k8Gic7'
@@ -94,6 +94,8 @@ Rails::Initializer.run do |config|
   # config.active_record.observers = :cacher, :garbage_collector
   config.active_record.observers = :user_observer, :guest_observer
   
+  config.cache_store = :mem_cache_store, MEMCACHED_HOST
+  
   config.load_paths << "#{RAILS_ROOT}/app/sweepers"
   config.load_paths << "#{RAILS_ROOT}/app/presenters"
   config.load_paths << "#{RAILS_ROOT}/app/renderers"
@@ -108,6 +110,7 @@ Rails::Initializer.run do |config|
     Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
     Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
     RAILS_DEFAULT_LOGGER.info "=> done"
+    
     # Set ActionMailer host for url_for
     ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
     

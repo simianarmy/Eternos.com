@@ -1,0 +1,63 @@
+Site CSS Files per page
+
+Public pages:
+  Home, about, account signup, login page, password reminder
+  
+  stylesheets/new_design/styleie7.css
+  stylesheets/new_design/styleie6.css
+  javascripts/lightview2.5/css/lightview.css 
+  stylesheets/screen.css
+  stylesheets/application.css
+  stylesheets/new_design/style.css
+  stylesheets/featureList.css
+  
+Member pages:
+  Account Setup
+    stylesheets/datepicker.css
+    stylesheets/screen.css
+    stylesheets/account_settings.css
+    stylesheets/application.css
+    javascripts/lightview2.5/css/lightview.css
+    stylesheets/prototip.css
+    
+  Timeline (home)
+    stylesheets/timeline.css
+    stylesheets/prototip.css
+    javascripts/lightview2.5/css/lightview.css
+    stylesheets/member.css
+    stylesheets/screen.css
+    stylesheets/application.css
+    stylesheets/media.css
+    javascripts/timeline/timeline_ajax/styles/graphics.css
+    javascripts/timeline/timeline_js/styles/timeline.css
+    javascripts/timeline/timeline_js/styles/ethers.css
+    javascripts/timeline/timeline_js/styles/events.css
+  
+  Life key
+    stylesheets/trustees.css
+    stylesheets/prototip.css
+    javascripts/lightview2.5/css/lightview.css
+    stylesheets/member.css
+    stylesheets/screen.css
+    stylesheets/application.css
+
+  Profile
+    stylesheets/datepicker.css
+    stylesheets/screen.css
+    stylesheets/account_settings.css
+    stylesheets/application.css
+    javascripts/lightview2.5/css/lightview.css
+    stylesheets/scrollbar.css
+
+  Upload
+    stylesheets/content_upload.css
+    stylesheets/member.css
+    stylesheets/screen.css
+    stylesheets/application.css
+    
+  Images
+    stylesheets/image_gallery.css
+    
+    
+  
+    

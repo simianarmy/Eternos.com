@@ -16,7 +16,13 @@
         </p>		
     </div>
     <% unless current_user %>
-      <%= submit_tag "Sign Up" %>
+      <% form_for_using_ssl :user, :url => {:controller => 'accounts', :action => 'create'}, :html => {:id => 'new_account_form'} do |f| %>
+        <%= hidden_field_tag 'hide_errors', true %>
+        <%= hidden_field_tag 'plan', AppConfig.default_plan %>
+        <%= hidden_field_tag 'user_facebook_id' %>
+        <%= f.hidden_field :terms_of_service, :value => "1" %>
+        <%= submit_tag "Sign Up" %>
+      <% end %>
     <% end %>
     <hr />
   

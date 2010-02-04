@@ -8,8 +8,29 @@ class ContentsController < ApplicationController
   include DecorationsHelper
   
   def index
-    @search = query = params[:content][:filename] rescue nil
-    @contents = current_user.contents.search_text(query, params)
+    key = Digest::MD5.hexdigest("content:#{current_user.id}:#{params[:type]}")
+    @res = Rails.cache.fetch(key, :expires_in => 10.minutes) {
+      contents = case params[:type]
+      when 'albums'
+        current_user.contents.photo_albums
+      when 'web_videos'
+        current_user.contents.web_videos
+      when 'audio'
+        current_user.contents.audio
+      when 'music'
+        current_user.contents.music
+      else
+        current_user.contents
+      end
+      contents.to_json
+    }
+    RAILS_DEFAULT_LOGGER.debug "Got #{@res}"
+    respond_to do |format|
+      format.js {
+        render :inline => @res
+      }
+      format.html
+    end
   end
   
   def gallery
@@ -146,4 +167,7 @@ class ContentsController < ApplicationController
     end
   end
 
+  protected
+  
+    
 end
