@@ -1,2 +1,4 @@
 .decoration_item[item]
-  = image_tag item.cover_photo.thumbnail_url
+  = link_to_remote image_tag(item.cover_photo.thumbnail_url, :height => 75), :url => backup_photo_album_url(item, :view => 'memento_editor'), :method => 'get', :update => 'artifact_view', :loading => "spinner.load('artifact_view');", :complete => "spinner.unload();"
+  %br
+  %span{:style => "font-size: x-small;"}= truncate(item.name, :length => 20)

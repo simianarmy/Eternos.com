@@ -32,7 +32,8 @@
   
 :javascript
   window._token = '#{form_authenticity_token}';
-  var editor;
+  var editor, artifactPicker;
+  
   document.observe('dom:loaded', function() {
     editor = MementoEditor.init();
   });

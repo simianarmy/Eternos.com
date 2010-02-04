@@ -7,8 +7,6 @@
 #type_list {
 	float: left;
 	border: 1px solid;
-	width : 10™£0px;
-	color : #000000;
 	padding : 3px;
 }
 
@@ -17,7 +15,6 @@
   float: left;
 	width: 600px;
   padding-left : 10px;
-  color : #ff0000;
   padding : 3px;
 }
 
@@ -31,5 +28,4 @@
 	border: 1px solid;
 	padding: 10px;
 	height: 200px;
-	color: #0000ff;
 }

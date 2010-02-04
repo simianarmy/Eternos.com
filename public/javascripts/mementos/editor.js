@@ -5,8 +5,9 @@
 var MementoEditor = function() {
 	var that = {};
 	
-	var contentCache = {};
-
+	var contentCache = {},
+		artifactPicker = null;
+		
 	// Private functions
 	
 	// Handles artifact type picker link click
@@ -41,6 +42,30 @@ var MementoEditor = function() {
 		$$('#type_list li a').each(function(link) {
 			link.observe('click', function(e) { onArtifactTypeLinkClick(e.element().href); e.stop(); });
 		});
+		artifactPicker = ArtifactSelector.init('artifact_view');
+		return this;
+	};
+	that.refreshSelector = function() {
+		artifactPicker.refresh();
+	}
+	return that;
+} ();
+
+// Artifact picker object
+var ArtifactSelector = function() {
+	var that = {};
+	
+	var parent_el,
+		scroller_el,
+		scroller;
+		
+	that.init = function(parent) {
+		parent_el = parent;
+		scroller_css = '#' + parent_el + ' .scrollable';
+		return this;
+	};
+	that.refresh = function() {
+		scroller = jQuery(scroller_css).scrollable({size: 5});
 	};
 	return that;
 } ();
