@@ -8,11 +8,12 @@ class ContentsController < ApplicationController
   include DecorationsHelper
   
   def index
-    key = Digest::MD5.hexdigest("content:#{current_user.id}:#{params[:type]}")
-    @res = Rails.cache.fetch(key, :expires_in => 10.minutes) {
-      contents = case params[:type]
+    @content_type = params[:type]
+    key = Digest::MD5.hexdigest("content:#{current_user.id}:#{@content_type}")
+    @contents = Rails.cache.fetch(key, :expires_in => 10.minutes) {
+      case @content_type
       when 'albums'
-        current_user.contents.photo_albums
+        current_user.contents.photo_albums.map(&:collection)
       when 'web_videos'
         current_user.contents.web_videos
       when 'audio'
@@ -22,14 +23,17 @@ class ContentsController < ApplicationController
       else
         current_user.contents
       end
-      contents.to_json
     }
-    RAILS_DEFAULT_LOGGER.debug "Got #{@res}"
     respond_to do |format|
-      format.js {
-        render :inline => @res
+      format.html {
+        case params[:view]
+        when 'memento_editor'
+          # content list view for memento editor
+          render 'mementos/artifact_picker'
+        else
+          render :action => :index
+        end
       }
-      format.html
     end
   end
   

@@ -1,0 +1,10 @@
+- if @contents.any?
+  #artifacts_list
+    /.navi
+    %a.prevPage
+    #scroller.scrollable
+      #item_list.items
+        = render :partial => "mementos/#{@contents.first.to_str}", :collection => @contents, :as => :item
+    %a.nextPage
+- else
+  #artifacts_list_empty= Empty
