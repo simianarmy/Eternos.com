@@ -1,14 +1,15 @@
 - if @contents.any?
   #artifacts_list
+    -# Scroller makes dragging impossible - bounds draggable object to scroller div!!?
     /.navi
-    %a.prevPage
-    #scroller.scrollable
-      #item_list.items
+    %a.prevPage.browse.left
+    #arti-scroller.scrollable
+      #artifact_list.items
         = render :partial => "mementos/#{@contents.first.to_str}", :collection => @contents, :as => :item
-    %a.nextPage
+    %a.nextPage.browse.right
 - else
-  #artifacts_list_empty 
-    Empty
+  #artifacts_list_empty
+    No Files
 :javascript
   editor.refreshSelector();
   

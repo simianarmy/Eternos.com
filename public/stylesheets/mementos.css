@@ -1,7 +1,7 @@
 
+
 #artifact_picker {
 	border: 1px solid;
-	height: 150px;
 }
 
 #type_list {
@@ -13,7 +13,6 @@
 #artifact_view {
 	border: 1px solid;
   float: left;
-	width: 600px;
   padding-left : 10px;
   padding : 3px;
 }
@@ -28,4 +27,32 @@
 	border: 1px solid;
 	padding: 10px;
 	height: 200px;
+}
+
+.hoverActive {
+   background-color: #ffffcc;
+}
+
+#arti-scroller .scrollable {
+	width: 550px;
+}
+
+/* For scrollers */
+.scrollable .items .decoration_itemZZ { 
+    float:left;
+		margin:20px 5px 20px 21px;
+		/* custom decoration */
+		text-align:center;
+		width:110px;
+		height: 90px;
+		padding:25px 0px;
+		font-size:12px;
+		font: medium Arial, Sans-Serif;
+		border:1px outset #ccc;
+		cursor:pointer;
+		background: #fff url(/images/bg.gif) top repeat-x;
+	
+		margin-right: 20px;	
+		-moz-border-radius:4px;
+		-webkit-border-radius:4px;
 }

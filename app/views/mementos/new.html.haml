@@ -1,16 +1,15 @@
 - stylesheet 'mementos'
 - javascript 'mementos/editor'
 - use_busy
-- use_jquery
 - use_scrollable
 
 #artifact_picker
   #type_list
     %ul
-      %li= link_to 'Photos icon here', contents_url(:type => 'albums')
-      %li= link_to 'Videos icon', contents_url(:type => 'web_videos')
-      %li= link_to 'Audio icon', contents_url(:type => 'audio')
-      %li= link_to 'Music icon', contents_url(:type => 'music')
+      %li.artitype= link_to 'Photos icon here', contents_url(:type => 'albums')
+      %li.artitype= link_to 'Videos icon', contents_url(:type => 'web_videos')
+      %li.artitype= link_to 'Audio icon', contents_url(:type => 'audio')
+      %li.artitype= link_to 'Music icon', contents_url(:type => 'music')
   #artifact_view
     Expanded artifacts list here
 .clear
@@ -19,17 +18,18 @@
   
   #scrollable_decorations
     /.navi
-    %a.prevPage
-    #scroller.scrollable
+    %a.prevPage.browse.left
+    #selection-scroller.scrollable
       #item_list.items
-        .decoration_item
+        .decoration_item.artifact
           Drag & Drop 1st Artifact Here
-    %a.nextPage
+    %a.nextPage.browse.right
     
 .clear
 #preview_pane
   Preview slideshow here?
   
+
 :javascript
   window._token = '#{form_authenticity_token}';
   var editor, artifactPicker;

@@ -1,7 +1,5 @@
-.decoration_item[item]
+.decoration_item.tooltip-target[item]
   - if item.thumbnail_url
     = image_tag item.thumbnail_url, :height => 75
   - else
     = image_tag item.content_icon, :width => 100, :height => 75
-  %br
-  %span{:style => "font-size: x-small;"}= truncate(item.title, :length => 20)

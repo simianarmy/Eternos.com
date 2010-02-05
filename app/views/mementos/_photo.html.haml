@@ -2,4 +2,4 @@
   .decoration_item[item]
     = image_tag item.thumbnail_url, :height => 75, :alt => item.title
     %br
-    %span{:style => "font-size: x-small;"}= truncate(item.title, :length => 20)
+    %span{:style => "font-size: x-small;"}= truncate(item.description||item.title, :length => 20)
