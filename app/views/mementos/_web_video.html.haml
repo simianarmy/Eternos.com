@@ -1,5 +1,14 @@
-.decoration_item.tooltip-target[item]
+.decoration_item[item]
   - if item.thumbnail_url
-    = image_tag item.thumbnail_url, :height => 75
+    = image_tag item.thumbnail_url
   - else
-    = image_tag item.content_icon, :width => 100, :height => 75
+    = image_tag item.content_icon
+  %br
+  %span.title.tooltip-target= truncate(item.title, :length => 20)
+  .tooltip
+    = item.to_s
+    %br
+    = item.filename
+    %br
+    = item.description
+    

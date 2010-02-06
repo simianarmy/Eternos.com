@@ -5,13 +5,17 @@
 
 #artifact_picker
   #type_list
-    %ul
-      %li.artitype= link_to 'Photos icon here', contents_url(:type => 'albums')
-      %li.artitype= link_to 'Videos icon', contents_url(:type => 'web_videos')
-      %li.artitype= link_to 'Audio icon', contents_url(:type => 'audio')
-      %li.artitype= link_to 'Music icon', contents_url(:type => 'music')
+    %ul.tabs
+      %li.artitype
+        = link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums')
+      %li.artitype= link_to image_tag(content_icon_path + 'movie.png'), contents_path(:type => 'web_videos')
+      %li.artitype= link_to image_tag(content_icon_path + 'audio.png'), contents_path(:type => 'all_audio')
+      
   #artifact_view
-    Expanded artifacts list here
+    .panes
+      #content_pane{:style => "display: block"}
+        Expanded artifacts here
+  #artifacts_expanded_view
 .clear
 #slideshow_droptarget
   Where artifacts are dragged to make slideshow

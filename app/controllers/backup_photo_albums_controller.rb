@@ -12,7 +12,7 @@ class BackupPhotoAlbumsController < ApplicationController
         when 'memento_editor'
           @contents = @photos
           # content list view for memento editor
-          render 'mementos/artifact_picker'
+          render 'mementos/photo_grid'
         else
           render :action => :show
         end

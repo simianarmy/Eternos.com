@@ -20,6 +20,8 @@ class ContentsController < ApplicationController
         current_user.contents.audio
       when 'music'
         current_user.contents.music
+      when 'all_audio'
+        current_user.contents.all_audio
       else
         current_user.contents
       end

@@ -10,6 +10,10 @@ module ContentHelper
     "#{object.filename} (#{number_to_human_size(object.size)})"
   end
   
+  def content_icon_path
+    "/javascripts/timeline/icons/"
+  end
+  
   # Label name for content's 'taken_at' attribute
   def content_creation_date_label(object)
     case object

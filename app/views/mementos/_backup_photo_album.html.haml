@@ -1,4 +1,14 @@
 .decoration_item[item]
-  = link_to_remote image_tag(item.cover_photo.thumbnail_url, :height => 75), :url => backup_photo_album_url(item, :view => 'memento_editor'), :method => 'get', :update => 'artifact_view', :loading => "spinner.load('artifact_view');", :complete => "spinner.unload();"
+  = link_to_remote image_tag(item.cover_photo.thumbnail_url), :url => backup_photo_album_url(item, :view => 'memento_editor'), :method => 'get', :update => 'artifacts_expanded_view', :loading => "spinner.load('artifact_view');", :complete => "spinner.unload();"
   %br
-  %span{:style => "font-size: x-small;"}= truncate(item.name, :length => 20)
+  %span.tooltip-target.title= truncate(item.name, :length => 20)
+  .tooltip
+    = item.name
+    - if item.description && !item.description.blank?
+      == : #{item.description}
+    %br
+    == Photos: #{item.size}
+    %br
+    == Created: #{item.created_at.to_s(:short)}
+    
+  

@@ -1,20 +1,26 @@
-
+/* Page structure */
 
 #artifact_picker {
 	border: 1px solid;
 }
 
 #type_list {
-	float: left;
-	border: 1px solid;
 	padding : 3px;
+}
+
+#type_list .tabs img {
+	width: 24px;
+	height: 24px;
 }
 
 #artifact_view {
 	border: 1px solid;
-  float: left;
   padding-left : 10px;
   padding : 3px;
+}
+
+#artifact_view .panes {
+	height: 120px;
 }
 
 #slideshow_droptarget {
@@ -33,26 +39,135 @@
    background-color: #ffffcc;
 }
 
-#arti-scroller .scrollable {
-	width: 550px;
+.scrollable {
+	width: 740px;
+	height: 120px;
+	
+	border:1px solid #ccc;
+	background:url(/images/h300.png) repeat-x;
 }
 
-/* For scrollers */
-.scrollable .items .decoration_itemZZ { 
+#selection-scroller .decoration_item, #arti-scroller .decoration_item { 
     float:left;
-		margin:20px 5px 20px 21px;
+		margin:5px 5px;
 		/* custom decoration */
 		text-align:center;
-		width:110px;
-		height: 90px;
-		padding:25px 0px;
+		width:120px;
+		height: 100px;
+		padding:5px 0px;
 		font-size:12px;
 		font: medium Arial, Sans-Serif;
 		border:1px outset #ccc;
 		cursor:pointer;
 		background: #fff url(/images/bg.gif) top repeat-x;
-	
-		margin-right: 20px;	
 		-moz-border-radius:4px;
 		-webkit-border-radius:4px;
+}
+
+/* single scrollable item */
+.scrollable img, .scrollable a img {
+	margin: 0px;
+	background-color:#fff;
+	padding:2px;
+	border:1px solid #ccc;
+	cursor:pointer;
+	width:100px;
+	height:75px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+}
+
+.decoration_item .title, .gallery_item .title {
+	font-size: x-small;
+}
+
+/* For image grid */
+#gallery .gallery_item {
+	border:1px solid #ccc;
+	cursor:pointer;
+	width:100px;
+	height:75px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+}
+
+/* Tabs */
+
+/* root element for tabs  */
+ul.tabs {  
+	list-style:none; 
+	margin:0 !important; 
+	padding:0;
+	height:30px;
+	border-bottom:1px solid #666;	 	
+}
+
+/* single tab */
+ul.tabs li {  
+	float:left;	 
+	padding:0; 
+	margin:0 !important;
+	list-style-image:none !important; 
+	text-indent:0;
+}
+
+/* link inside the tab. uses a background image */
+ul.tabs a { 
+	float:left;
+	font-size:13px;
+	display:block;
+	padding:5px 30px;	
+	text-decoration:none;
+	border:1px solid #666;	
+	border-bottom:0px;
+	height:18px;
+	background-color:#efefef;
+	color:#777;
+	margin-right:2px;
+	-moz-border-radius-topleft: 4px;
+	-moz-border-radius-topright:4px;
+	position:relative;
+	top:1px;	
+}
+
+ul.tabs a:active {
+	outline:none;		
+}
+
+/* when mouse enters the tab move the background image */
+ul.tabs a:hover {
+	background-position: -420px -31px;	
+	color:#fff;	
+}
+
+/* active tab uses a class name "current". it's highlight is also done by moving the background image. */
+ul.tabs a.current, ul.tabs a.current:hover, ul.tabs li.current a {
+	background-position: -420px -62px;		
+	cursor:default !important; 
+	color:#000 !important;
+}
+
+/* Different widths for tabs: use a class name: w1, w2, w3 or w2 */
+
+
+/* width 1 */
+ul.tabs a.s 			{ background-position: -553px 0; width:81px; }
+ul.tabs a.s:hover 	{ background-position: -553px -31px; }
+ul.tabs a.s.current  { background-position: -553px -62px; }
+
+/* width 2 */
+ul.tabs a.l 			{ background-position: -248px -0px; width:174px; }
+ul.tabs a.l:hover 	{ background-position: -248px -31px; }
+ul.tabs a.l.current  { background-position: -248px -62px; }
+
+
+/* width 3 */
+ul.tabs a.xl 			{ background-position: 0 -0px; width:248px; }
+ul.tabs a.xl:hover 	{ background-position: 0 -31px; }
+ul.tabs a.xl.current { background-position: 0 -62px; }
+
+
+/* initially all panes are hidden */ 
+div.panes div.pane {
+	display:none;		
 }

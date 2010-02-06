@@ -8,15 +8,17 @@ var MementoEditor = function() {
 	var contentCache = {},
 		artifactPicker 		= null,
 		artifactSeletion	= null,
-		artifactViewerId 	= 'artifact_view',
+		artifactViewerId 	= 'content_pane',
 		artifactTypesId	 	= 'type_list',
-		droppablesId		 	= 'scrollable_decorations';
+		droppablesId		 	= 'scrollable_decorations',
+		artifactDetailsId	= 'artifacts_expanded_view';
 		
 	// Private functions
 	
 	// Handles artifact type picker link click
 	function onArtifactTypeLinkClick(url) {
 		// Check cache for results
+		that.hideArtifactDetailsView();
 		if (contentCache[url]) {
 			populateArtifactView(contentCache[url]);
 		} else {
@@ -37,16 +39,16 @@ var MementoEditor = function() {
 	
 	function populateArtifactView(data) {
 		$(artifactViewerId).update(data);
-		//that.refreshSelector();
 	};
 	
 	// Public functions
 	
 	that.init = function() {
+		// Observe tab link clicks
 		$$('#' + artifactTypesId + ' li.artitype a').each(function(link) {
 			link.observe('click', function(e) { 
 				e.stop(); 
-				onArtifactTypeLinkClick(e.element().href); 
+				onArtifactTypeLinkClick(this.href); 
 				return false; 
 			});
 		});
@@ -57,6 +59,9 @@ var MementoEditor = function() {
 	};
 	that.refreshSelector = function() {
 		artifactPicker.refresh();
+	}
+	that.hideArtifactDetailsView = function() {
+		$(artifactDetailsId).update();
 	}
 	return that;
 } ();
@@ -77,7 +82,7 @@ var ArtifactSelector = function() {
 	};
 	// Update
 	that.refresh = function() {
-		jQuery('#' + parent_el + ' .scrollable').scrollable({size: 5});
+		jQuery('#' + parent_el + ' .scrollable').scrollable({size: 5, item: 'div'});
 		$$(scroller_css).each(function(i) {
 			new Draggable( i, {
 				revert: true,
@@ -103,13 +108,16 @@ var ArtifactSelection = function() {
 		selectionId = droppablesId;
 		
 		// Make selection a drop target
-		Droppables.add(selectionId, {
+		Droppables.add('selection-scroller', {
 			hoverclass: 'hoverActive',
 			onDrop: onArtifactAdded
 		});
 		
 		// initialize scrollable widget
-		jQuery('#' + selectionId + ' .scrollable').scrollable();
+		jQuery('#' + selectionId + ' .scrollable').scrollable({
+			item: 'div',
+			loop: false,
+		});
 		
 		// Make selection items sortable
 					/*

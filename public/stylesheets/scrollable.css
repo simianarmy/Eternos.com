@@ -16,16 +16,9 @@ a:active {
 	when scrolling occurs this element stays still.
 */
 .scrollable {
-
 	/* required settings */
 	position:relative;
 	overflow:hidden;
-	width: 680px;
-	height:120px;
-
-	/* custom decorations */
-	border:1px solid #ccc;
-	background:url(/img/global/gradient/h300.png) repeat-x;
 }
 
 /*
@@ -41,7 +34,7 @@ a:active {
 	clear:both;
 }
 
-/* single scrollable item */
+/* single scrollable item 
 .scrollable img {
 	float:left;
 	margin:20px 5px 20px 21px;
@@ -55,13 +48,14 @@ a:active {
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
 }
+*/
 
-/* active item */
+/* active item 
 .scrollable .active {
 	border:2px solid #000;
 	z-index:9999;
 	position:relative;
 }
-
+*/
 
 

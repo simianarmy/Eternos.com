@@ -1,9 +1,9 @@
 - if @contents.any?
   #artifacts_list
-    -# Scroller makes dragging impossible - bounds draggable object to scroller div!!?
-    /.navi
+    -# Render grid for photos or scroller for everything else
     %a.prevPage.browse.left
     #arti-scroller.scrollable
+      / root element for the items
       #artifact_list.items
         = render :partial => "mementos/#{@contents.first.to_str}", :collection => @contents, :as => :item
     %a.nextPage.browse.right

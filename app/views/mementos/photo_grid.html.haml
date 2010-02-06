@@ -1,0 +1,7 @@
+#gallery
+  %ul
+    - @photos.each do |p|
+      %li.gallery_item[p]
+        = image_tag p.thumbnail_url, :alt => p.title, :class => 'item draggable'
+        %br
+        %span.title= truncate(p.title, :length => 20)
