@@ -124,7 +124,7 @@ module LayoutHelper
   
   def use_scrollable
     # fault set of jQuery Tools + jQuery 1.3.2
-    javascript 'http://cdn.jquerytools.org/1.1.2/jquery.tools.min.js'
+    javascript 'http://cdn.jquerytools.org/1.1.2/full/jquery.tools.min.js'
     @@jquery_loaded = true
     javascript 'application_jquery', 'slideshow'
     stylesheet 'scrollable', 'scrollable-navig'

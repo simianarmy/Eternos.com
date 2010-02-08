@@ -1,6 +1,6 @@
 .decoration_item[item]
   = image_tag item.content_icon
   %br
-  %span.title.tooltip-target= truncate(item.title, :length => 20)
-  .tooltip
+  %span.title= truncate(item.title, :length => 20)
+  .info.title.hidden
     = item.to_s

@@ -24,3 +24,6 @@ Standard, nice buttons using css & js:
   
 Features list: 
   http://jqueryglobe.com/labs/feature_list/#
+  
+Google Timeline screenshot:
+  http://skitch.com/simianarmy/nwr1y/10th-birthday

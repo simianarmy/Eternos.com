@@ -34,7 +34,7 @@ a:active {
 	clear:both;
 }
 
-/* single scrollable item 
+/* single scrollable item  
 .scrollable img {
 	float:left;
 	margin:20px 5px 20px 21px;
@@ -50,12 +50,40 @@ a:active {
 }
 */
 
-/* active item 
+/* active item */
 .scrollable .active {
 	border:2px solid #000;
 	z-index:9999;
 	position:relative;
 }
-*/
 
+/* Navi plugin styles */
+/* position and dimensions of the navigator */ 
+.navi { 
+    margin-left:328px; 
+    width:200px; 
+    height:20px; 
+} 
+ 
+ 
+/* items inside navigator */ 
+.navi a { 
+    width:8px; 
+    height:8px; 
+    float:left; 
+    margin:3px; 
+    background:url(/images/navigator.png) 0 0 no-repeat; 
+    display:block; 
+    font-size:1px; 
+} 
+ 
+/* mouseover state */ 
+.navi a:hover { 
+    background-position:0 -8px;       
+} 
+ 
+/* active state (current page state) */ 
+.navi a.active { 
+    background-position:0 -16px;      
+}
 

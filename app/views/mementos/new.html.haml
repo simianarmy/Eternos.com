@@ -1,5 +1,5 @@
 - stylesheet 'mementos'
-- javascript 'mementos/editor'
+- javascript 'mementos/editor', 'dragdrop-patched'
 - use_busy
 - use_scrollable
 
@@ -14,21 +14,27 @@
   #artifact_view
     .panes
       #content_pane{:style => "display: block"}
-        Expanded artifacts here
+        Select artifacts by clicking the tabs above.
   #artifacts_expanded_view
 .clear
 #slideshow_droptarget
-  Where artifacts are dragged to make slideshow
+  Drag selected artifacts from above to the box below to create your movie.
+  %br
+  You can change the order of the selected artifacts by dragging them around.
   
   #scrollable_decorations
-    /.navi
+    .navi
     %a.prevPage.browse.left
     #selection-scroller.scrollable
       #item_list.items
-        .decoration_item.artifact
-          Drag & Drop 1st Artifact Here
+        .decoration_item{:style => "border: 3px dashed #aaa; height: 95px"}
+          Drag & Drop An Artifact Here
     %a.nextPage.browse.right
-    
+  .clear
+  %br
+  = link_to 'Start over', '#', :id => 'clear_selection'
+  | 
+  = link_to 'Preview movie', '#'
 .clear
 #preview_pane
   Preview slideshow here?

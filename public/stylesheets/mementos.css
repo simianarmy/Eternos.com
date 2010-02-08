@@ -14,13 +14,20 @@
 }
 
 #artifact_view {
-	border: 1px solid;
   padding-left : 10px;
   padding : 3px;
 }
 
 #artifact_view .panes {
-	height: 120px;
+	height: 160px;
+}
+
+#artifact_info {
+	font-size: x-small;
+}
+
+#artifacts_expanded_view {
+	overflow-y: auto;
 }
 
 #slideshow_droptarget {
@@ -33,10 +40,6 @@
 	border: 1px solid;
 	padding: 10px;
 	height: 200px;
-}
-
-.hoverActive {
-   background-color: #ffffcc;
 }
 
 .scrollable {
@@ -77,6 +80,14 @@
 	-webkit-border-radius:4px;
 }
 
+.hoverActive {
+  border: 2px solid;
+}
+
+div.decoration_item img:hover {
+	border: 1px solid black;
+}
+
 .decoration_item .title, .gallery_item .title {
 	font-size: x-small;
 }
@@ -86,9 +97,14 @@
 	border:1px solid #ccc;
 	cursor:pointer;
 	width:100px;
-	height:75px;
+	height:100px;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
+}
+
+.gallery_item img {
+	width:100px;
+	height: 75px;
 }
 
 /* Tabs */

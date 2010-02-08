@@ -7,7 +7,7 @@ class BackupEmailsController < TimelineEventsController
       @email = BackupEmail.find(params[:id])
       # Ensure proper ownership
       if @email.member == current_user
-        @email_body = @email.body
+        @email_body = Rails.cache.fetch(@email.to_str, @email.body, :expires_in => 10.minutes)
       else
         flash[:error] = 'Unauthorized Access' 
         @email_body = ''
