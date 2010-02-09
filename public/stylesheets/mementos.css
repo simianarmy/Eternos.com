@@ -31,15 +31,13 @@
 }
 
 #slideshow_droptarget {
-	border: 1px solid;
 	padding: 10px;
-	height: 200px;
+	 /* height: 200px; */
 }
 
 #preview_pane {
-	border: 1px solid;
+	height: 10px;
 	padding: 10px;
-	height: 200px;
 }
 
 .scrollable {
@@ -67,6 +65,55 @@
 		-webkit-border-radius:4px;
 }
 
+/* For proper image layout */
+#selection-scroller .gallery_item {
+	float:left;
+	margin:5px 5px;
+	/* custom decoration */
+	text-align:center;
+	width:120px;
+	height: 100px;
+	padding:5px 0px;
+	font-size:12px;
+	font: medium Arial, Sans-Serif;
+	border:1px outset #ccc;
+	cursor:pointer;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+}
+
+.selectorHover {
+	border: solid 2px #73A6FF;
+	background:#EFF5FF;
+}
+
+/* This bullshit needed to override .decoration_item properties */
+#selection-scroller .hoverActive, #arti-scroller .hoverActive  {
+	background-color: #fff;
+  border: 2px solid black;
+}
+
+/* Action links for scroller items */
+#artifact-hover-menu-items {
+	display:none;
+	list-style:none;
+	margin:0px auto;
+}
+
+#artifact-hover-menu-items li {
+	float:left;
+	margin:0px auto;
+	padding: 0 5px 0 0;
+}
+
+#artifact-hover-menu-items li a:hover {
+	text-decoration: underline;
+}
+
+#selection-scroller .decoration_item:hover #tip-hover-menu-items {
+	display:block;
+}
+
 /* single scrollable item */
 .scrollable img, .scrollable a img {
 	margin: 0px;
@@ -78,14 +125,6 @@
 	height:75px;
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
-}
-
-.hoverActive {
-  border: 2px solid;
-}
-
-div.decoration_item img:hover {
-	border: 1px solid black;
 }
 
 .decoration_item .title, .gallery_item .title {
@@ -106,6 +145,53 @@ div.decoration_item img:hover {
 	width:100px;
 	height: 75px;
 }
+
+#artifact_editor {
+	position: relative;
+	height: 200px;
+}
+
+#artifact_editor form {
+	float: left;
+	width: 75%;
+}
+
+/* Artifact description input form */
+#artifact_description
+{
+	width: 100%;
+	padding: 10px;
+	outline: none;
+	font: 20px "Lucida Grande", Arial, sans-serif;
+}
+
+#arti_preview {
+	width: 120px;
+	margin-left: 5px;
+	border: 2px solid black;
+	float: right;
+}
+
+.instructions {
+	border: solid 1px #73A6FF;
+	background:#EFF5FF;
+	color:#000;
+	padding: 5px;
+	font-size: 14px;
+}
+
+.focusField {
+	border: solid 2px #73A6FF;
+	background:#EFF5FF;
+	color:#000;
+}
+
+.idleField{
+/*	background:#EEE; */
+	color: #6F6F6F;
+	background: #fff url(/images/bg.gif) top repeat-x;
+	border: solid 6px #DFDFDF;
+}		
 
 /* Tabs */
 

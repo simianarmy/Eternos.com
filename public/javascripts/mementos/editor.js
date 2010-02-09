@@ -109,8 +109,7 @@ var ArtifactSelector = function() {
 		$$(selector).each(function(i) {	
 			new Draggable( i, {
 				revert: true,
-				ghosting: false,
-				zindex: 100000
+				ghosting: true
 			});
 		});
 	};
@@ -121,7 +120,7 @@ var ArtifactSelector = function() {
 		// Create scrollable object
 		jQuery('#' + parent_el + ' .scrollable').scrollable({
 			size: 5, 
-			item: 'div'
+			hoverClass: 'hoverActive'
 		}).navigator().mousewheel();
 		// Observe scrollable parent container for mouseover to handle all artifact mouseovers
 		if ((infoDiv = $('artifact_info')) !== null) {
@@ -137,19 +136,52 @@ var ArtifactSelection = function() {
 	
 	var selectionId,
 		cleared = false,
-		selectionScroller = null;
+		selectionScroller = null,
+		selectedArtifact = null;
 	
+	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) { 
 		var drophere = $A(selectionScroller.getItems()).last();
+		var items = selectionScroller.getItemWrap();
 		
 		console.log("added artifact to droppable target: " + droparea.id);
-
+		// Save artifact for other actions 
+		selectedArtifact = draggable;
+		jQuery(selectedArtifact).hover(function() {
+			// Need to add class for remove icon
+		});
+		jQuery(selectedArtifact).click(function() {
+			showArtifactEditForm(this);
+		});
 		// Move 'drop-here' box to the end
 		drophere.remove();
-		selectionScroller.getItemWrap().append(draggable);
-		selectionScroller.reload();
-		selectionScroller.getItemWrap().append(drophere);
+		items.append(draggable);
+		items.append(drophere);
 		selectionScroller.reload().end();
+		
+		showArtifactEditForm(draggable);
+	};
+	
+	// Displays form for adding text description to an artifact
+	function showArtifactEditForm(artifact) {
+		$('artifact_editor').removeClassName('hidden');
+		// Populate with existing text description
+		if (artifact.text_description !== undefined) {
+			$('artifact_description').value = artifact.text_description;
+		} else {
+			$('artifact_description').value = $('artifact_description').defaultValue;
+		}
+		$('arti_preview').update(artifact.innerHTML);
+	};
+	function hideArtifactEditForm() {
+		$('artifact_editor').addClassName('hidden');
+	};
+	// Saves user-inputed text 
+	function saveArtifactDescription() {
+		if (selectedArtifact !== null) {
+			selectedArtifact.text_description = $('artifact_description').value;
+		}
+		hideArtifactEditForm();
 	};
 	// Removes all but the drophere div
 	function clearItems() {
@@ -160,13 +192,14 @@ var ArtifactSelection = function() {
 		}
 		selectionScroller.reload();
 	};
+	
 	// Init function - takes artifact selection dom id
 	that.init = function(droppablesId) {
 		selectionId = '#' + droppablesId + ' .scrollable';
 		
 		// Make selection a drop target
 		Droppables.add('selection-scroller', {
-			hoverclass: 'hoverActive',
+			hoverclass: 'selectorHover',
 			onDrop: onArtifactAdded,
 			accept: ['decoration_item', 'gallery_item']
 			//containment: 'artifact_picker'
@@ -178,32 +211,36 @@ var ArtifactSelection = function() {
 			overlap: 'horizontal',
 			constraint: 'horizontal',
 			dropOnEmpty: true,
-			hoverclass: 'hoverActive',
+			hoverclass: 'hoverActive ',
 			only: ['decoration_item', 'gallery_item']
 		});
 		
 		// initialize scrollable widget
-		jQuery(selectionId).scrollable({item: 'div', hoverClass: 'hover'}).navigator();
+		jQuery(selectionId).scrollable({item: 'div', clickable: true, activeClass: 'active', hoverClass: 'hoverActive'}).navigator();
 		// Save handle to plugin
 		selectionScroller = jQuery(selectionId).scrollable();
 		
 		$('clear_selection').observe('click', clearItems);
-		// Make selection items sortable
-					/*
-		jQuery('#' + selectionId).sortable({
-			items: '.artifact',
-			opacity: 0.6
-			update: function(event, ui) {
-				jQuery.ajax({
-					type: "POST",
-					url: this.readAttribute('target'),
-					processData: true,
-					dataType: 'script',
-					data: jQuery(selectionId).sortable('serialize') + '&' + window._token
-				});
+		
+		// Setup description input
+		jQuery('#artifact_description').addClass("idleField");
+		jQuery('#artifact_description').focus(function() {
+			jQuery(this).removeClass("idleField").addClass("focusField");
+			if (this.value == this.defaultValue){ 
+				this.value = '';
+			}
+			if(this.value != this.defaultValue){
+				this.select();
 			}
 		});
-					*/
+		jQuery('#artifact_description').blur(function() {
+			jQuery(this).removeClass("focusField").addClass("idleField");
+			if (jQuery.trim(this.value) == ''){
+				this.value = (this.defaultValue ? this.defaultValue : '');
+			}
+		});			
+		// Setup description save button click handler
+		$('save_desc').observe('click', function(e) { e.stop(); saveArtifactDescription(); });
 		return this;
 	};
 	return that;

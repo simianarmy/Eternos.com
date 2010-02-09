@@ -14,13 +14,12 @@
   #artifact_view
     .panes
       #content_pane{:style => "display: block"}
-        Select artifacts by clicking the tabs above.
+        .instructions Select artifacts by clicking the tabs above.
   #artifacts_expanded_view
 .clear
 #slideshow_droptarget
-  Drag selected artifacts from above to the box below to create your movie.
-  %br
-  You can change the order of the selected artifacts by dragging them around.
+  .instructions 
+    Drag selected artifacts from above to the box below to create your movie.
   
   #scrollable_decorations
     .navi
@@ -32,13 +31,22 @@
     %a.nextPage.browse.right
   .clear
   %br
+  .instructions You can change the order of the selected artifacts by dragging them left or right.
+  %br
   = link_to 'Start over', '#', :id => 'clear_selection'
   | 
   = link_to 'Preview movie', '#'
 .clear
-#preview_pane
-  Preview slideshow here?
+
+#artifact_editor.hidden
+  %br
+  %form
+    = text_area_tag :description, "Write about this artifact here.  When you are finished, click Save.", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+    %br
+    %input#save_desc{:type => 'submit', :value => 'Save'}
+  #arti_preview
   
+#preview_pane
 
 :javascript
   window._token = '#{form_authenticity_token}';

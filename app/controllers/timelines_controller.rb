@@ -23,7 +23,7 @@ class TimelinesController < ApplicationController
   def show
     @member = current_user
     @member_name = @member.full_name
-    @tl_start_date, @tl_end_date = cache("tl_date_range:#{@member.id}", session[:refresh_timeline]) { 
+    @tl_start_date, @tl_end_date = Rails.cache.fetch("tl_date_range:#{@member.id}", :force => session[:refresh_timeline]) { 
       @member.timeline_span 
     }
     @fake = 'fake' if params[:fake]
