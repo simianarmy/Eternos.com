@@ -1,4 +1,4 @@
-.decoration_item[item]
+.decoration_item{:id=> dom_id(item), :src => item.url, :duration => item.duration_seconds}
   = image_tag item.content_icon
   %br
   %span.title= truncate(item.title, :length => 20)

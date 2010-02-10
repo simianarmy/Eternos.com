@@ -1,4 +1,4 @@
-.decoration_item[item]
+.decoration_item{:id=> dom_id(item), :src => item.url}
   - if item.thumbnail_url
     = image_tag item.thumbnail_url
   - else

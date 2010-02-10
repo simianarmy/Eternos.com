@@ -1,7 +1,8 @@
 %ul#submenu.alignright
-  %li#nav-record= recording_popup_link 'Video Diary'
+  %li= link_to 'Home', member_home_path
+  %li#nav-record= recording_popup_link 'Video Journal'
   %li= link_to_lightview 'Upload', new_content_path(:dialog=>true), {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '600'}
   %li#nav-lifekey= link_to 'Life Key', trustees_path
-  %li#nav-profile= link_to_lightview 'Profile', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
+  %li#nav-profile= link_to_lightview 'Bio', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
   %li#gallery= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
   /%li#gallery= link_to 'Images', image_gallery_path

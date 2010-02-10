@@ -139,6 +139,11 @@ var ArtifactSelection = function() {
 		selectionScroller = null,
 		selectedArtifact = null;
 	
+	function showNotice(msg, options) {
+		$('editor_notice').update(msg);
+		//$('editor_notice').removeClassName('hidden');
+		$('editor_notice').fade({ duration: 3.0, from: 1, to: 0 });
+	};
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) { 
 		var drophere = $A(selectionScroller.getItems()).last();
@@ -159,9 +164,16 @@ var ArtifactSelection = function() {
 		items.append(drophere);
 		selectionScroller.reload().end();
 		
+		showActionLinks();
 		showArtifactEditForm(draggable);
 	};
 	
+	function showActionLinks() {
+		$('selection_links').removeClassName('hidden');
+	};
+	function hideActionLinks() {
+		$('selection_links').addClassName('hidden');
+	};
 	// Displays form for adding text description to an artifact
 	function showArtifactEditForm(artifact) {
 		$('artifact_editor').removeClassName('hidden');
@@ -181,7 +193,7 @@ var ArtifactSelection = function() {
 		if (selectedArtifact !== null) {
 			selectedArtifact.text_description = $('artifact_description').value;
 		}
-		hideArtifactEditForm();
+		showNotice('saved', {fade: true});
 	};
 	// Removes all but the drophere div
 	function clearItems() {
@@ -191,8 +203,92 @@ var ArtifactSelection = function() {
 			items[i].remove();
 		}
 		selectionScroller.reload();
+		hideActionLinks();
+		hideArtifactEditForm();
 	};
-	
+	// Creates playlist array for Flowplayer from selected artifacts
+	function generatePlaylist() {
+		var src, playlist = [];
+		
+		if (selectionScroller.getSize() <= 1) {
+			return playlist;
+		}
+		$A(selectionScroller.getItems()).each(function(item) {
+			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
+				if ((item.id.match('photo|^video') !== null)) {
+					playlist.push(src);
+				} else if (item.id.match('web_video') !== null) {
+					playlist.push({url: src, scaling: 'fit'});
+				} else if (item.id.match('music|audio') !== null) {
+					playlist.push({url: src, duration: item.readAttribute('duration')});
+				}
+			}
+		});
+		return playlist;
+	};
+	function togglePreview(link) {
+		if (link.hasClassName('hide')) {		
+			$('do_preview').innerHTML = 'Show preview';
+			link.removeClassName('hide');
+			$('preview_pane').hide();
+		} else {
+			$('do_preview').innerHTML = 'Hide preview';
+			link.addClassName('hide');
+			$('preview_pane').show();
+			showPreview();
+		}
+	};
+	// Generates preview slideshow
+	function showPreview() {
+		var playlist = generatePlaylist();
+		if (playlist.size() === 0) { return; }
+		console.dir(playlist);
+		
+		hideArtifactEditForm();
+		
+		flowplayer('preview_pane', FlowplayerSwfUrl, {
+			key: FLOWPLAYER_PRODUCT_KEY,
+			clip: {  
+			 	// by default clip lasts 5 seconds 
+			 	duration: 5         
+			},
+			// first entry in a playlist work as a splash image
+			playlist: playlist,
+			
+			logo: {
+				url: '/images/favico.png',
+				fullscreenOnly: false
+			},
+			plugins: {
+				// content plugin settings
+				content: {
+					url: 'flowplayer.content-3.1.0.swf',
+					
+					// some display properties 
+					width: "50%",
+					height: 220,
+					padding:30, 
+					backgroundColor: '#112233', 
+					opacity: 0.7, 
+
+					// one styling property  
+					backgroundGradient: [0.1, 0.1, 1.0], 
+
+					// content plugin specific properties 
+					html: '<p>This big overlay is a content plugin</p>', 
+					style: {p: {fontSize: 40}}
+				},
+
+				// and a bit of controlbar skinning   
+				controls: { 
+					playlist: true, 
+					backgroundColor:'#002200', 
+					height: 30, 
+					stop: true 
+				}
+			}
+		});
+	};
 	// Init function - takes artifact selection dom id
 	that.init = function(droppablesId) {
 		selectionId = '#' + droppablesId + ' .scrollable';
@@ -232,15 +328,24 @@ var ArtifactSelection = function() {
 			if(this.value != this.defaultValue){
 				this.select();
 			}
+		}, function() {
+			jQuery(this).removeClass("focusField").addClass("idleField");
+			if (jQuery.trim(this.value) == ''){
+				this.value = (this.defaultValue ? this.defaultValue : '');
+			}
 		});
+		/*
 		jQuery('#artifact_description').blur(function() {
 			jQuery(this).removeClass("focusField").addClass("idleField");
 			if (jQuery.trim(this.value) == ''){
 				this.value = (this.defaultValue ? this.defaultValue : '');
 			}
-		});			
+		});
+		*/			
 		// Setup description save button click handler
 		$('save_desc').observe('click', function(e) { e.stop(); saveArtifactDescription(); });
+		$('do_preview').observe('click', function(e) { e.stop(); togglePreview(this); });
+		
 		return this;
 	};
 	return that;

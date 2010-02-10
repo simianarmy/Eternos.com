@@ -2,6 +2,7 @@
 - javascript 'mementos/editor', 'dragdrop-patched'
 - use_busy
 - use_scrollable
+- use_flashplayer
 
 #artifact_picker
   #type_list
@@ -33,23 +34,26 @@
   %br
   .instructions You can change the order of the selected artifacts by dragging them left or right.
   %br
-  = link_to 'Start over', '#', :id => 'clear_selection'
-  | 
-  = link_to 'Preview movie', '#'
+  #selection_links.hidden
+    = link_to 'Start over', '#', :id => 'clear_selection' 
+    |
+    = link_to 'Preview movie', '#', :id => 'do_preview'
 .clear
 
+#editor_notice.success_notice.hidden
 #artifact_editor.hidden
   %br
   %form
     = text_area_tag :description, "Write about this artifact here.  When you are finished, click Save.", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
     %br
-    %input#save_desc{:type => 'submit', :value => 'Save'}
+    %input#save_desc{:type => 'button', :value => 'Save'}
   #arti_preview
   
-#preview_pane
+#preview_pane{:style => "display: none;"}
 
 :javascript
   window._token = '#{form_authenticity_token}';
+  var FlowplayerSwfUrl = '#{video_player_swf_url}';
   var editor, artifactPicker;
   
   document.observe('dom:loaded', function() {
