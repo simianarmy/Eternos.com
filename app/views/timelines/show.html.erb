@@ -26,6 +26,7 @@
       </div>
     </div>
     <div id="timeline_links" class="alignright">
+      <%= link_to_function "Today", "timeline.reload({today: true});" %>&nbsp;|&nbsp;
       <%= link_to_function "Refresh", 'timeline.reload()' %>&nbsp;|&nbsp;
       <%= render :partial => 'helplink' %>
     </div>
@@ -46,9 +47,11 @@
   </div>
   <div class="clearboth"></div>
   <div id="timeline-detail">
+    <!--
     <div id="proximity_search">
       <a class="btn-left" href="#" id="prev_event_search"></a><%= link_to_function 'Present', "timeline.reload({today: true});", :class => 'subtitle6' %><a  class="btn-right" href="#" id="next_event_search"></a>
 		</div>
+		-->
 		<div class="clearboth"></div>
     <div id="story-area"></div>
     <div id="arti-area"></div>			            

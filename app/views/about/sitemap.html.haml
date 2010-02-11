@@ -1,0 +1,24 @@
+.content.sitemap
+  %fieldset
+    .what01 Site Map
+    #links
+      %p Public
+      %li= link_to 'Home', '/'
+      %li= link_to 'What is Eternos?', '/about/what'
+      %li= link_to 'About', about_path
+      %li= link_to 'Press center', '/about/press'
+      %li= link_to 'Terms of service', '/about/terms'
+      %li= link_to 'Careers', '/about/careers'
+      %li= link_to 'Privacy policy', '/about/privacy'
+      %li= link_to 'Contact us', '/about/contact'
+      %br
+      %p Private
+      %li= link_to 'Member Home', member_home_path
+      %li= link_to 'Account setup', account_setup_path
+      %li= link_to 'Account info', account_path
+      %li= recording_popup_link 'Video Journal'
+      %li= link_to 'Upload files', new_content_path
+      %li= link_to 'Life Key', trustees_path
+      %li= link_to 'Bio', account_settings_path
+      %li= link_to 'Images', image_gallery_path
+      

@@ -35,6 +35,13 @@
 	 /* height: 200px; */
 }
 
+#soundtrack-selection {
+	border:1px solid #ccc;
+	background:url(/images/h300.png) repeat-x;
+	padding: 5px;
+	font-size: 14px;
+}
+
 #preview_pane {
 	padding: 10px;
 	display:block;
@@ -66,24 +73,12 @@
 		-webkit-border-radius:4px;
 }
 
-/* For proper image layout 
-#selection-scroller .gallery_item {
-	float:left;
-	margin:5px 5px;
-	text-align:center;
-	width:120px;
-	height: 100px;
-	padding:5px 0px;
-	font-size:12px;
-	font: medium Arial, Sans-Serif;
-	border:1px outset #ccc;
-	cursor:pointer;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-}
-*/
-
 .selectorHover {
+	border: solid 2px #73A6FF;
+	background:#EFF5FF;
+}
+
+#soundtrack-selection .soundtrackHover {
 	border: solid 2px #73A6FF;
 	background:#EFF5FF;
 }
@@ -167,9 +162,8 @@
 }
 
 #arti_preview {
-	width: 120px;
+	width: 100px;
 	margin-left: 5px;
-	border: 2px solid black;
 	float: right;
 }
 

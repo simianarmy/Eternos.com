@@ -31,24 +31,30 @@
           Drag & Drop An Artifact Here
     %a.nextPage.browse.right
   .clear
-  %br
   .instructions You can change the order of the selected artifacts by dragging them left or right.
   %br
+  .soundtrack
+    #soundtrack-selection
+      Drag audio track(s) here to create your movie soundtrack.
+  %br  
   #selection_links.hidden
     = link_to 'Start over', '#', :id => 'clear_selection' 
     |
     = link_to 'Preview movie', '#', :id => 'do_preview'
 .clear
+    
+#arti_preview_details.instructions.hidden
 
-#editor_notice.success_notice.hidden
 #artifact_editor.hidden
   %br
   %form
     = text_area_tag :description, "Write about this artifact here.  When you are finished, click Save.", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
     %br
-    %input#save_desc{:type => 'button', :value => 'Save'}
+    %input#save_desc{:type => 'button', :value => 'Save'} 
+    #editor_notice.success_notice.hidden
   #arti_preview
-  
+    #arti_preview_img
+    
 #preview_pane{:style => "display: none;"}
 
 :javascript

@@ -77,17 +77,21 @@ var ArtifactSelector = function() {
 		scroller_el,
 		scroller;
 		
+	// Helper to return div containing artifact
+	function getArtifactContainer(arti) {
+		// Look for artifact container element
+		if (arti.hasClassName('decoration_item')) { 
+			return arti;
+		} else {
+			return arti.up('.decoration_item');
+		}
+	};
 	// info div element is bound to the function's scope
 	function onArtifactMouseover(event) {
 		var target = event.findElement();
-		var div, info;
+		var div = getArtifactContainer(target), 
+			info = null;
 
-		// Look for artifact container element
-		if (target.hasClassName('decoration_item')) { 
-			div = target;
-		} else {
-			div = target.up('.decoration_item');
-		}
 		if (div) {
 			info = div.down('div.info');
 		}
@@ -137,12 +141,18 @@ var ArtifactSelection = function() {
 	var selectionId,
 		cleared = false,
 		selectionScroller = null,
-		selectedArtifact = null;
+		selectedArtifact = null,
+		audioSelection = null,
+		playlistGenerator = null;
+		soundtrackId = 'soundtrack-selection';
 	
 	function showNotice(msg, options) {
-		$('editor_notice').update(msg);
-		//$('editor_notice').removeClassName('hidden');
-		$('editor_notice').fade({ duration: 3.0, from: 1, to: 0 });
+		var notice = $('editor_notice');
+		
+		notice.removeClassName('hidden');
+		notice.update(msg);
+		notice.show(); // required after fade
+		notice.fade({ duration: 3.0, from: 1, to: 0 });
 	};
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) { 
@@ -153,19 +163,18 @@ var ArtifactSelection = function() {
 		// Save artifact for other actions 
 		selectedArtifact = draggable;
 		jQuery(selectedArtifact).hover(function() {
-			// Need to add class for remove icon
-		});
-		jQuery(selectedArtifact).click(function() {
 			showArtifactEditForm(this);
+		}, function() {
+			// On hover out
 		});
 		// Move 'drop-here' box to the end
 		drophere.remove();
-		items.append(draggable);
+		items.append(selectedArtifact);
 		items.append(drophere);
 		selectionScroller.reload().end();
 		
 		showActionLinks();
-		showArtifactEditForm(draggable);
+		showArtifactEditForm(selectedArtifact);
 	};
 	
 	function showActionLinks() {
@@ -176,17 +185,26 @@ var ArtifactSelection = function() {
 	};
 	// Displays form for adding text description to an artifact
 	function showArtifactEditForm(artifact) {
+		var node;
 		$('artifact_editor').removeClassName('hidden');
+		
 		// Populate with existing text description
 		if (artifact.text_description !== undefined) {
 			$('artifact_description').value = artifact.text_description;
 		} else {
 			$('artifact_description').value = $('artifact_description').defaultValue;
 		}
-		$('arti_preview').update(artifact.innerHTML);
+		if ((node = artifact.down('img')) !== null) {
+			$('arti_preview_img').innerHTML = '<img src="' + node.src + '"/>';
+		}
+		if ((node = artifact.down('div.info')) !== null) {
+			$('arti_preview_details').removeClassName('hidden');
+			$('arti_preview_details').innerHTML = node.innerHTML;
+		}
 	};
 	function hideArtifactEditForm() {
 		$('artifact_editor').addClassName('hidden');
+		$('arti_preview_details').addClassName('hidden');
 	};
 	// Saves user-inputed text 
 	function saveArtifactDescription() {
@@ -297,7 +315,7 @@ var ArtifactSelection = function() {
 		Droppables.add('selection-scroller', {
 			hoverclass: 'selectorHover',
 			onDrop: onArtifactAdded,
-			accept: ['decoration_item', 'gallery_item']
+			accept: ['video', 'photo']
 			//containment: 'artifact_picker'
 		});
 		// Make sortables container
@@ -308,14 +326,17 @@ var ArtifactSelection = function() {
 			constraint: 'horizontal',
 			dropOnEmpty: true,
 			hoverclass: 'hoverActive ',
-			only: ['decoration_item', 'gallery_item']
+			accept: ['video', 'photo']
 		});
 		
-		// initialize scrollable widget
+		// initialize scrollable widget & save object
 		jQuery(selectionId).scrollable({item: 'div', clickable: true, activeClass: 'active', hoverClass: 'hoverActive'}).navigator();
-		// Save handle to plugin
 		selectionScroller = jQuery(selectionId).scrollable();
+
+		// initialize audio soundtrack container
+		audioSelection = AudioSelection.init(soundtrackId);
 		
+		// Setup click handlers
 		$('clear_selection').observe('click', clearItems);
 		
 		// Setup description input
@@ -348,5 +369,46 @@ var ArtifactSelection = function() {
 		
 		return this;
 	};
+
 	return that;
 } ();
+
+var AudioSelection = function() {
+	var that = {};
+	
+	var selection = new Array();
+	var audioIcon = '<img src="/javascripts/timeline/icons/audio.png" width="15" height="15"/>';
+	
+	// Returns total duration of sountrack in seconds
+	function getDuration() {
+		var duration;
+		return selection.inject(0, function(acc, audio) {
+			if ((duration = audio.readAttribute('duration')) !== null) {
+				return acc + parseInt(duration, 10);
+			} else {
+				return acc;
+			}
+		});
+	};
+	function onAudioAdded(draggable, droparea) {
+		var text;
+		
+		console.log("audio added: " + draggable.id + " to " + droparea.id);
+		selection.push(draggable);
+		text =  "Soundtrack files: " + selection.map(function(audio) { 
+			return audioIcon + audio.down('div.info').innerHTML;
+		});
+		droparea.innerHTML = text;
+		console.log("total duration: " + getDuration());
+	};
+
+	that.init = function(soundtrackId) {
+		// Make selection a drop target
+		Droppables.add(soundtrackId, {
+			hoverclass: 'soundtrackHover',
+			onDrop: onAudioAdded,
+			accept: ['audio']
+		});
+	};
+	return that;
+}();
