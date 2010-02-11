@@ -52,6 +52,8 @@ namespace :deploy do
   task :stop_daemons, :roles => [:app] do
     #thinking_sphinx.stop
     run "god stop eternos_#{stage}"
+    # Try to prevent too many worklings god/deploy bug
+    run "god unmonitor eternos-workling_#{stage}"
   end
 
   desc "Restarts any work daemons"

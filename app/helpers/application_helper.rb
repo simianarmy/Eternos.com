@@ -18,6 +18,14 @@ module ApplicationHelper
   
   alias_method :show_flash_messages, :flash_notices
   
+  def meta_keywords
+    "lifelogging, life logging, video journal, legacy preservation, time capsule, ethical will, genealogy research storage, genealogical storage, scrapbook, scrapbooking, memorial,online persona,blog backup,facebook backup,twitter backup,picasa backup,gmail backup,life timeline"
+  end
+  
+  def meta_descriptions
+    meta_keywords
+  end
+  
   def link_to_support_email
     mail_to(AppConfig.support_email, 'email&nbsp;support')
   end

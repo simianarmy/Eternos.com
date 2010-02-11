@@ -2,6 +2,8 @@
 %html{html_attrs('en')}
   %head
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=utf-8"}/
+    %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
+    %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
     - stylesheet 'member', 'screen', 'application'

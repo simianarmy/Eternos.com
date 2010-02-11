@@ -5,7 +5,8 @@
     %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
     %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=iso-8859-1"}
-    %meta{:name=>"google-site-verification", :content=>"tDhZ6nU0vekm0r7573tiRflAjtvcx7aupY4T2n9LVhA"}
+    %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
+    %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos - " + h(yield(:title) || "Home")
     /[if lte IE 7]
       = stylesheet_link_tag "new_design/styleie7.css"
