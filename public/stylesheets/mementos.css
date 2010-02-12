@@ -1,7 +1,6 @@
 /* Page structure */
 
 #artifact_picker {
-	border: 1px solid;
 }
 
 #type_list {
@@ -14,7 +13,6 @@
 }
 
 #artifact_view {
-  padding-left : 10px;
   padding : 3px;
 }
 
@@ -31,8 +29,6 @@
 }
 
 #slideshow_droptarget {
-	padding: 10px;
-	 /* height: 200px; */
 }
 
 #soundtrack-selection {
@@ -43,16 +39,40 @@
 }
 
 #preview_pane {
-	padding: 10px;
+	display:block;
+}
+
+#movie_pane {
+	width: 90%;
+	background:#000 url(/images/h300.png) 0 0 repeat-x;
+	padding: 20px;
+}
+
+#movie_player {
 	display:block;
 	width:600px;
 	height:453px;
+	text-align:center;
+	margin: 10px auto;
+}
+
+#slide_caption {
+	height: auto;
+	width: 80%;
+	text-align: center;
+	display: block;
+	font: 20px "Lucida Grande", Arial, sans-serif;
+	margin: 10px auto;
+	padding: 5px;
+	border:1px solid #ccc;
+	background: #fff;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
 }
 
 .scrollable {
 	width: 740px;
 	height: 120px;
-	
 	border:1px solid #ccc;
 	background:url(/images/h300.png) repeat-x;
 }

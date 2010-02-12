@@ -164,6 +164,7 @@ var ArtifactSelection = function() {
 		selectedArtifact = draggable;
 		jQuery(selectedArtifact).hover(function() {
 			showArtifactEditForm(this);
+			selectedArtifact = this; // Make it the selected item
 		}, function() {
 			// On hover out
 		});
@@ -224,26 +225,7 @@ var ArtifactSelection = function() {
 		hideActionLinks();
 		hideArtifactEditForm();
 	};
-	// Creates playlist array for Flowplayer from selected artifacts
-	function generatePlaylist() {
-		var src, playlist = [];
-		
-		if (selectionScroller.getSize() <= 1) {
-			return playlist;
-		}
-		$A(selectionScroller.getItems()).each(function(item) {
-			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
-				if ((item.id.match('photo|^video') !== null)) {
-					playlist.push(src);
-				} else if (item.id.match('web_video') !== null) {
-					playlist.push({url: src, scaling: 'fit'});
-				} else if (item.id.match('music|audio') !== null) {
-					playlist.push({url: src, duration: item.readAttribute('duration')});
-				}
-			}
-		});
-		return playlist;
-	};
+	
 	function togglePreview(link) {
 		if (link.hasClassName('hide')) {		
 			$('do_preview').innerHTML = 'Show preview';
@@ -258,54 +240,8 @@ var ArtifactSelection = function() {
 	};
 	// Generates preview slideshow
 	function showPreview() {
-		var playlist = generatePlaylist();
-		if (playlist.size() === 0) { return; }
-		console.dir(playlist);
-		
 		hideArtifactEditForm();
-		
-		flowplayer('preview_pane', FlowplayerSwfUrl, {
-			key: FLOWPLAYER_PRODUCT_KEY,
-			clip: {  
-			 	// by default clip lasts 5 seconds 
-			 	duration: 5         
-			},
-			// first entry in a playlist work as a splash image
-			playlist: playlist,
-			
-			logo: {
-				url: '/images/favico.png',
-				fullscreenOnly: false
-			},
-			plugins: {
-				// content plugin settings
-				content: {
-					url: 'flowplayer.content-3.1.0.swf',
-					
-					// some display properties 
-					width: "50%",
-					height: 220,
-					padding:30, 
-					backgroundColor: '#112233', 
-					opacity: 0.7, 
-
-					// one styling property  
-					backgroundGradient: [0.1, 0.1, 1.0], 
-
-					// content plugin specific properties 
-					html: '<p>This big overlay is a content plugin</p>', 
-					style: {p: {fontSize: 40}}
-				},
-
-				// and a bit of controlbar skinning   
-				controls: { 
-					playlist: true, 
-					backgroundColor:'#002200', 
-					height: 30, 
-					stop: true 
-				}
-			}
-		});
+		movieGenerator.preview();
 	};
 	// Init function - takes artifact selection dom id
 	that.init = function(droppablesId) {
@@ -335,6 +271,9 @@ var ArtifactSelection = function() {
 
 		// initialize audio soundtrack container
 		audioSelection = AudioSelection.init(soundtrackId);
+		
+		// create movie generator
+		movieGenerator = MovieGenerator.init(selectionScroller, audioSelection);
 		
 		// Setup click handlers
 		$('clear_selection').observe('click', clearItems);
@@ -409,6 +348,137 @@ var AudioSelection = function() {
 			onDrop: onAudioAdded,
 			accept: ['audio']
 		});
+		return this;
 	};
+	return that;
+}();
+
+var MovieGenerator = function() {
+	var that = {};
+
+	var artifacts,
+	soundtrack,
+	duration,
+	seconds_per_frame,
+	DefaultSecondsPerFrame = 5,
+	slideInfoMap = new Hash();
+
+	// Creates playlist array for Flowplayer from selected artifacts
+	function generatePlaylist() {
+		var src, info, playlist = [];
+
+		if (artifacts.getSize() <= 1) {
+			return playlist;
+		}
+		$A(artifacts.getItems()).each(function(item) {
+			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
+				if ((item.id.match('photo|^video') !== null)) {
+					playlist.push(src);
+				} else if (item.id.match('web_video') !== null) {
+					playlist.push({url: src, scaling: 'fit'});
+				} else if (item.id.match('music|audio') !== null) {
+					playlist.push({url: src, duration: item.readAttribute('duration')});
+				}
+				// Save each clip's metadata for playblack event handlers
+				if (item.text_description !== undefined) {
+					slideInfoMap[src] = item.text_description;
+				}
+			}
+		});
+		return playlist;
+	};
+	
+	// Calculates default clip duration in seconds
+	function getDefaultClipDuration() {
+		// If soundtrack is empty,
+		return DefaultSecondsPerFrame;
+	};
+	// Create movie preview using existing selection
+	that.preview = function() {
+		var playlist = generatePlaylist();
+		if (playlist.size() === 0) { return; }
+
+		flowplayer('movie_player', FlowplayerSwfUrl, {
+			key: FLOWPLAYER_PRODUCT_KEY,
+			clip: {  
+				// by default clip lasts 5 seconds 
+				duration: getDefaultClipDuration(),
+				// accessing current clip's properties 
+				onStart: function(clip) { 
+					// get access to a configured plugin
+					if (slideInfoMap[clip.url]) {
+						console.log("playing clip with text: " + slideInfoMap[clip.url]);
+						$('slide_caption').innerHTML = slideInfoMap[clip.url];
+						//$('slide_caption').show();
+					} else {
+						$('slide_caption').innerHTML = '';
+						//$('slide_caption').hide();
+					}
+				},
+				// content specific event listeners and methods 
+				onMouseOver: function() { 
+					this.getPlugin("content").setHtml('Mouse over'); 
+				}, 
+
+				onMouseOut: function() { 
+					this.getPlugin("content").setHtml('Mouse moved away. Please visit Finland someday.'); 
+				}
+			},
+			// our playlist
+			playlist: playlist,
+
+			logo: {
+				url: '/images/favico.png',
+				fullscreenOnly: false
+			},
+			plugins: {
+				// content plugin settings
+				/*
+				content: {
+					url: 'flowplayer.content-3.1.0.swf',
+
+					// some display properties 
+					width: "50%",
+					top: 0,
+					left: 10,
+					height: 220,
+					padding:30, 
+					backgroundColor: '#112233', 
+					opacity: 0.7, 
+					textDecoration: 'outline',
+					
+					// one styling property  
+					backgroundGradient: [0.1, 0.1, 1.0], 
+
+					// linked stylesheet 
+					//stylesheet: 'content-plugin.css',
+					
+					// content plugin specific properties 
+					html: '<p>This big overlay is a content plugin</p>', 
+					style: {p: {fontSize: 40}}
+				},
+				*/
+				
+				// Uncomment for production
+				/*
+				gatracker: { 
+					url: "flowplayer.analytics-3.1.5.swf", 
+					trackingMode: "Bridge"
+				}
+				*/
+			}
+		});
+		// Add expose effect to movie area
+		jQuery('#movie_pane').expose({api: true}).load();
+	};
+	
+	that.init = function(selection, audio) {
+		artifacts = selection;
+		soundtrack = audio;
+		duration = 0;
+		seconds_per_frame = 0;
+
+		return this;
+	}
 	return that;
 }();

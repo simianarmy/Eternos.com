@@ -3,7 +3,11 @@
 - use_busy
 - use_scrollable
 - use_flashplayer
+- title 'Memento Creator'
 
+- content_for(:header) do
+  Step 1 - Add & Annotate
+  
 #artifact_picker
   #type_list
     %ul.tabs
@@ -36,11 +40,16 @@
   .soundtrack
     #soundtrack-selection
       Drag audio track(s) here to create your movie soundtrack.
-  %br  
-  #selection_links.hidden
-    = link_to 'Start over', '#', :id => 'clear_selection' 
-    |
-    = link_to 'Preview movie', '#', :id => 'do_preview'
+.clear
+#slideshow_info
+  #duration
+  #frames
+  #frame_seconds
+%br
+#selection_links.hidden
+  = link_to 'Start over', '#', :id => 'clear_selection' 
+  |
+  = link_to 'Preview movie', '#', :id => 'do_preview'
 .clear
     
 #arti_preview_details.instructions.hidden
@@ -54,9 +63,13 @@
     #editor_notice.success_notice.hidden
   #arti_preview
     #arti_preview_img
-    
+.clear
 #preview_pane{:style => "display: none;"}
-
+  #movie_pane
+    #movie_player
+    .clear
+    #slide_caption
+  
 :javascript
   window._token = '#{form_authenticity_token}';
   var FlowplayerSwfUrl = '#{video_player_swf_url}';
