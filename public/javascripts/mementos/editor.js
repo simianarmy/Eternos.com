@@ -41,6 +41,9 @@ var MementoEditor = function() {
 		$(artifactViewerId).update(data);
 	};
 	
+	function showWysiwygEditor() {
+		$('wysiwig').removeClassName('hidden');
+	};
 	// Public functions
 	
 	that.init = function() {
@@ -52,6 +55,9 @@ var MementoEditor = function() {
 				return false; 
 			});
 		});
+		// Observe text slide tab separately
+		$('next_text_slide').observe('click', function(e) { e.stop(); showWysiwygEditor(); });
+		
 		artifactPicker = ArtifactSelector.init(artifactViewerId);
 		artifactSelection = ArtifactSelection.init(droppablesId);
 		
@@ -359,6 +365,7 @@ var MovieGenerator = function() {
 	var artifacts,
 	soundtrack,
 	duration,
+	expose,
 	seconds_per_frame,
 	DefaultSecondsPerFrame = 5,
 	slideInfoMap = new Hash();
@@ -406,22 +413,18 @@ var MovieGenerator = function() {
 				// accessing current clip's properties 
 				onStart: function(clip) { 
 					// get access to a configured plugin
+					var plugin = this.getPlugin("content");
+					
 					if (slideInfoMap[clip.url]) {
 						console.log("playing clip with text: " + slideInfoMap[clip.url]);
-						$('slide_caption').innerHTML = slideInfoMap[clip.url];
+						plugin.setHtml(slideInfoMap[clip.url]);
+						//$('slide_caption').innerHTML = slideInfoMap[clip.url];
 						//$('slide_caption').show();
 					} else {
-						$('slide_caption').innerHTML = '';
+						plugin.setHtml('');
+						//$('slide_caption').innerHTML = '';
 						//$('slide_caption').hide();
 					}
-				},
-				// content specific event listeners and methods 
-				onMouseOver: function() { 
-					this.getPlugin("content").setHtml('Mouse over'); 
-				}, 
-
-				onMouseOut: function() { 
-					this.getPlugin("content").setHtml('Mouse moved away. Please visit Finland someday.'); 
 				}
 			},
 			// our playlist
@@ -431,19 +434,45 @@ var MovieGenerator = function() {
 				url: '/images/favico.png',
 				fullscreenOnly: false
 			},
+			// canvas background
+			canvas: {
+				background: '#fff'
+			},
+			
+			// screen positioning inside background screen.
+			screen: {		
+				height:380, bottom: 0, left: 100
+			},
+
+			onStart: function() {
+				expose.load(); 
+			}, 
+
+			// when playback finishes, close the expose 
+			onFinish: function() { 
+				expose.close(); 
+			},
+			// content specific event listeners and methods 
+			onMouseOver: function() { 
+				this.getPlugin("content").setHtml('Mouse over'); 
+			}, 
+
+			onMouseOut: function() { 
+				this.getPlugin("content").setHtml('Mouse moved away. Please visit Finland someday.'); 
+			},
+					
 			plugins: {
+				controls: null,
+				
 				// content plugin settings
-				/*
 				content: {
 					url: 'flowplayer.content-3.1.0.swf',
 
 					// some display properties 
-					width: "50%",
-					top: 0,
-					left: 10,
-					height: 220,
-					padding:30, 
-					backgroundColor: '#112233', 
+					width:260, height: 370, top:10, left: 10,
+					borderRadius:30,
+					padding: 15,			
+					body: {fontSize:20},
 					opacity: 0.7, 
 					textDecoration: 'outline',
 					
@@ -454,10 +483,8 @@ var MovieGenerator = function() {
 					//stylesheet: 'content-plugin.css',
 					
 					// content plugin specific properties 
-					html: '<p>This big overlay is a content plugin</p>', 
-					style: {p: {fontSize: 40}}
-				},
-				*/
+					html: ''
+				}
 				
 				// Uncomment for production
 				/*
@@ -468,8 +495,6 @@ var MovieGenerator = function() {
 				*/
 			}
 		});
-		// Add expose effect to movie area
-		jQuery('#movie_pane').expose({api: true}).load();
 	};
 	
 	that.init = function(selection, audio) {
@@ -477,8 +502,13 @@ var MovieGenerator = function() {
 		soundtrack = audio;
 		duration = 0;
 		seconds_per_frame = 0;
-
+		/* here is the exposing part of this demo */
+		expose = jQuery("#preview_pane").expose({ 
+			// return exposing API 
+		  api: true
+		});
+		
 		return this;
-	}
+	};
 	return that;
 }();

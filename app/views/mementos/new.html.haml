@@ -3,6 +3,7 @@
 - use_busy
 - use_scrollable
 - use_flashplayer
+- use_wysiwyg
 - title 'Memento Creator'
 
 - content_for(:header) do
@@ -11,16 +12,19 @@
 #artifact_picker
   #type_list
     %ul.tabs
-      %li.artitype
-        = link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums')
+      %li.artitype= link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums')
       %li.artitype= link_to image_tag(content_icon_path + 'movie.png'), contents_path(:type => 'web_videos')
       %li.artitype= link_to image_tag(content_icon_path + 'audio.png'), contents_path(:type => 'all_audio')
+      %li= link_to image_tag(content_icon_path + 'doc.png'), '#', :id => 'new_text_slide'
       
   #artifact_view
     .panes
       #content_pane{:style => "display: block"}
         .instructions Select artifacts by clicking the tabs above.
   #artifacts_expanded_view
+    #wysiwig.hidden
+      = fckeditor_textarea(Memento.new, "html_slide", fckeditor_options.merge(:ajax => true, :value => '', :defaultValue => 'Write anything you want here!', :class => 'withHint'))
+  %br
 .clear
 #slideshow_droptarget
   .instructions 
@@ -33,6 +37,9 @@
       #item_list.items
         .decoration_item{:style => "border: 3px dashed #aaa; height: 95px"}
           Drag & Drop An Artifact Here
+          /.new-frame-links
+          /= link_to 'Add a Text Slide', '#', :id => 'add_text_slide'
+          
     %a.nextPage.browse.right
   .clear
   .instructions You can change the order of the selected artifacts by dragging them left or right.
@@ -64,11 +71,9 @@
   #arti_preview
     #arti_preview_img
 .clear
-#preview_pane{:style => "display: none;"}
+#preview_pane.overlay
   #movie_pane
     #movie_player
-    .clear
-    #slide_caption
   
 :javascript
   window._token = '#{form_authenticity_token}';
