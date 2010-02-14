@@ -10,16 +10,24 @@ var MementoEditor = function() {
 		artifactSeletion	= null,
 		artifactViewerId 	= 'content_pane',
 		artifactTypesId	 	= 'type_list',
+		wysiwygId					= 'slide_text_editor'
+		wysiwygEditor			= null,
 		droppablesId		 	= 'scrollable_decorations',
 		artifactDetailsId	= 'artifacts_expanded_view';
 		
 	// Private functions
 	
 	// Handles artifact type picker link click
-	function onArtifactTypeLinkClick(url) {
+	function onArtifactTypeLinkClick(link) {
+		var url = link.href;
+		
 		// Check cache for results
 		that.hideArtifactDetailsView();
-		if (contentCache[url]) {
+		if (link.id === 'new_text_slide') {
+			// wysiwyg editor tab handled differently than other content types
+			showWysiwygEditor();
+		} else if (contentCache[url]) {
+			// Load from cache
 			populateArtifactView(contentCache[url]);
 		} else {
 			new Ajax.Updater({success: artifactViewerId, failure: 'flash_notice'}, url, {
@@ -31,7 +39,7 @@ var MementoEditor = function() {
 				onComplete: function(request) { 
 					spinner.unload(); 
 					contentCache[url] = request.responseText;
-					//populateArtifactView(contentCache[url]); 
+					artifactViewPopulated();
 				}
 			});
 		}
@@ -39,11 +47,23 @@ var MementoEditor = function() {
 	
 	function populateArtifactView(data) {
 		$(artifactViewerId).update(data);
+		artifactViewPopulated();
+	};
+	
+	function artifactViewPopulated() {
+		$('drag_instructions').removeClassName('hidden');
 	};
 	
 	function showWysiwygEditor() {
-		$('wysiwig').removeClassName('hidden');
+		// Setup wysiwyg editor
+		$('wyisiwyg_editor_pane').removeClassName('hidden');
+		wysiwygEditor = jQuery('#' + artifactViewerId + ' .editor').ckeditor(mementosCKEditorConfig);
 	};
+	
+	function closeWysiwygEditor() {
+		wysiwygEditor.destroy();
+	};
+	
 	// Public functions
 	
 	that.init = function() {
@@ -51,13 +71,10 @@ var MementoEditor = function() {
 		$$('#' + artifactTypesId + ' li.artitype a').each(function(link) {
 			link.observe('click', function(e) { 
 				e.stop(); 
-				onArtifactTypeLinkClick(this.href); 
+				onArtifactTypeLinkClick(this); 
 				return false; 
 			});
-		});
-		// Observe text slide tab separately
-		$('next_text_slide').observe('click', function(e) { e.stop(); showWysiwygEditor(); });
-		
+		});		
 		artifactPicker = ArtifactSelector.init(artifactViewerId);
 		artifactSelection = ArtifactSelection.init(droppablesId);
 		
@@ -71,6 +88,7 @@ var MementoEditor = function() {
 	};
 	that.hideArtifactDetailsView = function() {
 		$(artifactDetailsId).update();
+		$('drag_instructions').addClassName('hidden');
 	};
 	return that;
 } ();

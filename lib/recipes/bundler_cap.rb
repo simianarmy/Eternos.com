@@ -6,7 +6,7 @@ set :bundler_path, "vendor/bundled_gems"
 
 namespace :bundler do
   task :install do
-    sudo "gem install bundler --source=http://gemcutter.org"
+    sudo "bundle install"
   end
 
   task :symlink_vendor do
@@ -21,7 +21,7 @@ namespace :bundler do
 
   task :bundle_new_release do
     bundler.symlink_vendor
-    run("cd #{release_path} && gem bundle --only #{stage}")
+    run("cd #{release_path} && bundle install --only #{stage}")
   end
 end
 

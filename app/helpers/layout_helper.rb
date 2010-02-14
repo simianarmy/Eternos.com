@@ -180,9 +180,8 @@ module LayoutHelper
   end
   
   def use_wysiwyg
-    javascript 'fckeditor/fckeditor', 'wysiwyg'
-#      'http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js',
-#      'http://yui.yahooapis.com/2.7.0/build/get/get-min.js'
+    use_jquery
+    javascript 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'wysiwyg'
   end
   
   def use_accordion

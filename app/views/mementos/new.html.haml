@@ -15,21 +15,26 @@
       %li.artitype= link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums')
       %li.artitype= link_to image_tag(content_icon_path + 'movie.png'), contents_path(:type => 'web_videos')
       %li.artitype= link_to image_tag(content_icon_path + 'audio.png'), contents_path(:type => 'all_audio')
-      %li= link_to image_tag(content_icon_path + 'doc.png'), '#', :id => 'new_text_slide'
+      %li.artitype= link_to image_tag(content_icon_path + 'doc.png'), 'editor', :id => 'new_text_slide'
       
   #artifact_view
     .panes
       #content_pane{:style => "display: block"}
         .instructions Select artifacts by clicking the tabs above.
+        #wyisiwyg_editor_pane.hidden
+          %br
+          #wysiwyg_instructions.instructions
+            Create a text-only movie slide using the the editor below.
+          .editor
+          %input#save_wysiwyg{:type => 'button', :value => 'Save & Add to Movie'} 
+          %input#cancel_wysiwyg{:type => 'button', :value => 'Cancel'} 
+          
   #artifacts_expanded_view
-    #wysiwig.hidden
-      = fckeditor_textarea(Memento.new, "html_slide", fckeditor_options.merge(:ajax => true, :value => '', :defaultValue => 'Write anything you want here!', :class => 'withHint'))
+  #drag_instructions.instructions.hidden
+    Drag selected artifacts from above to the box below to create your movie.
   %br
 .clear
 #slideshow_droptarget
-  .instructions 
-    Drag selected artifacts from above to the box below to create your movie.
-  
   #scrollable_decorations
     .navi
     %a.prevPage.browse.left

@@ -17,7 +17,7 @@
 }
 
 #artifact_view .panes {
-	height: 160px;
+	height: auto;
 }
 
 #artifact_info {

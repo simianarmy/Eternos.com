@@ -3,6 +3,20 @@
 // Library for displaying wysiwig editor contents on a page 
 // formatted for proper display of multimedia content.  
 
+// CKEDITOR configurations:
+
+// Mementos Editor CKEDITOR configuration
+var mementosCKEditorConfig =
+{
+	skin : 'kama',
+	uiColor : "#EFF5FF",
+	toolbar : [
+		['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
+		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+		['Styles','Format','Font','FontSize', '-', 'TextColor','BGColor']
+	]
+};
+
 // wysiwyg object
 //
 var wysiwyg = function() {
@@ -49,4 +63,4 @@ var wysiwyg = function() {
 	that.get_xhtml = get_xhtml;
 	
 	return that;
-}
+};
