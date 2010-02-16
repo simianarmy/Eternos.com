@@ -1,8 +1,9 @@
-- stylesheet 'mementos'
+- stylesheet 'mementos', 'soundmanager-ui'
 - javascript 'mementos/editor', 'dragdrop-patched'
 - use_busy
 - use_scrollable
 - use_flashplayer
+- use_soundmanager
 - use_wysiwyg
 - title 'Memento Creator'
 
@@ -12,35 +13,36 @@
 #artifact_picker
   #type_list
     %ul.tabs
-      %li.artitype= link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums')
-      %li.artitype= link_to image_tag(content_icon_path + 'movie.png'), contents_path(:type => 'web_videos')
-      %li.artitype= link_to image_tag(content_icon_path + 'audio.png'), contents_path(:type => 'all_audio')
+      %li.artitype= link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums', :view => 'memento_editor')
+      %li.artitype= link_to image_tag(content_icon_path + 'movie.png'), contents_path(:type => 'web_videos', :view => 'memento_editor')
+      %li.artitype= link_to image_tag(content_icon_path + 'audio.png'), contents_path(:type => 'all_audio', :view => 'memento_editor')
       %li.artitype= link_to image_tag(content_icon_path + 'doc.png'), 'editor', :id => 'new_text_slide'
       
+  .instructions Select artifacts by clicking the tabs above.
   #artifact_view
     .panes
-      #content_pane{:style => "display: block"}
-        .instructions Select artifacts by clicking the tabs above.
-        #wyisiwyg_editor_pane.hidden
-          %br
-          #wysiwyg_instructions.instructions
-            Create a text-only movie slide using the the editor below.
-          .editor
-          %input#save_wysiwyg{:type => 'button', :value => 'Save & Add to Movie'} 
-          %input#cancel_wysiwyg{:type => 'button', :value => 'Cancel'} 
-          
-  #artifacts_expanded_view
-  #drag_instructions.instructions.hidden
-    Drag selected artifacts from above to the box below to create your movie.
-  %br
+      #pane1{:style => "display: block"}
+      #pane2
+      #pane3
+      #pane4
+        #wysiwyg_instructions.instructions
+          Create a text-only movie slide using the the editor below.
+        .editor
+        %input#save_wysiwyg{:type => 'button', :value => 'Save & Add to Movie'} 
+        %input#cancel_wysiwyg{:type => 'button', :value => 'Cancel'} 
 .clear
+/- required for pageplayer.js
+= render :partial => 'shared/audio_controls'
 #slideshow_droptarget
   #scrollable_decorations
     .navi
     %a.prevPage.browse.left
     #selection-scroller.scrollable
       #item_list.items
-        .decoration_item{:style => "border: 3px dashed #aaa; height: 95px"}
+        .decoration_item.dragdrop{:style => "border: 3px dashed #aaa; height: 95px"}
+          = image_tag(content_icon_path + 'photo.png')
+          = image_tag(content_icon_path + 'movie.png')
+          %br
           Drag & Drop An Artifact Here
           /.new-frame-links
           /= link_to 'Add a Text Slide', '#', :id => 'add_text_slide'
@@ -51,6 +53,7 @@
   %br
   .soundtrack
     #soundtrack-selection
+      = image_tag content_icon_path + 'audio.png', :size => '20x20'
       Drag audio track(s) here to create your movie soundtrack.
 .clear
 #slideshow_info
@@ -77,13 +80,16 @@
     #arti_preview_img
 .clear
 #preview_pane.overlay
-  #movie_pane
+  #movie_pane.hidden
     #movie_player
-  
+
 :javascript
-  window._token = '#{form_authenticity_token}';
   var FlowplayerSwfUrl = '#{video_player_swf_url}';
   var editor, artifactPicker;
+  
+  window._token = '#{form_authenticity_token}';
+  soundManager.debugMode = true;
+  soundManager.consoleOnly = true;
   
   document.observe('dom:loaded', function() {
     editor = MementoEditor.init();

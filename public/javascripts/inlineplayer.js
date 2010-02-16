@@ -226,7 +226,6 @@ function InlinePlayer() {
 
 var inlinePlayer = null;
 
-soundManager.debugMode = true; // disable or enable debug output
 soundManager.waitForWindowLoad = true;
 soundManager.url = '/swf/'; // path to directory containing SM2 SWF
 

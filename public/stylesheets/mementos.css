@@ -25,7 +25,7 @@
 }
 
 #artifacts_expanded_view {
-	overflow-y: auto;
+	height: 200px;
 }
 
 #slideshow_droptarget {
@@ -77,7 +77,7 @@
 	background:url(/images/h300.png) repeat-x;
 }
 
-#selection-scroller .decoration_item, #selection-scroller .gallery_item, #arti-scroller .decoration_item { 
+#selection-scroller .decoration_item, #selection-scroller .gallery_item, .arti-scroller .decoration_item { 
     float:left;
 		margin:5px 5px;
 		text-align:center;
@@ -98,45 +98,21 @@
 	font-size: 12px;
 }
 
-#add_text_slide a:hover {
-	color: #73A6FF;
-}
-
 .selectorHover {
 	border: solid 2px #73A6FF;
 	background:#EFF5FF;
 }
 
+/* Not working */
 #soundtrack-selection .soundtrackHover {
 	border: solid 2px #73A6FF;
 	background:#EFF5FF;
 }
 
 /* This bullshit needed to override .decoration_item properties */
-#selection-scroller .hoverActive, #arti-scroller .hoverActive  {
+#selection-scroller .hoverActive, .arti-scroller .hoverActive  {
 	background-color: #fff;
   border: 2px solid black;
-}
-
-/* Action links for scroller items */
-#artifact-hover-menu-items {
-	display:none;
-	list-style:none;
-	margin:0px auto;
-}
-
-#artifact-hover-menu-items li {
-	float:left;
-	margin:0px auto;
-	padding: 0 5px 0 0;
-}
-
-#artifact-hover-menu-items li a:hover {
-	text-decoration: underline;
-}
-
-#selection-scroller .decoration_item:hover #tip-hover-menu-items {
-	display:block;
 }
 
 /* single scrollable item */
@@ -152,7 +128,16 @@
 	-webkit-border-radius:4px;
 }
 
-.decoration_item .title, .gallery_item .title {
+.scrollable .dragdrop img {
+	width: 20px;
+	height: 20px;
+}
+
+.decoration_item .title, .artifact .title {
+	font-size: x-small;
+}
+
+.artifact_list .audio  {
 	font-size: x-small;
 }
 
@@ -220,6 +205,27 @@
 .success_notice {
 	background-color: #CFC;
   border: solid 1px #6C6;
+}
+
+/* Action links for scroller items */
+#artifact-hover-menu-items {
+	display:none;
+	list-style:none;
+	margin:0px auto;
+}
+
+#artifact-hover-menu-items li {
+	float:left;
+	margin:0px auto;
+	padding: 0 5px 0 0;
+}
+
+#artifact-hover-menu-items li a:hover {
+	text-decoration: underline;
+}
+
+#selection-scroller .decoration_item:hover #tip-hover-menu-items {
+	display:block;
 }
 
 /* Tabs */

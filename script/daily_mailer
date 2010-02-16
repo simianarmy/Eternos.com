@@ -7,6 +7,7 @@
 # Charges the credit cards for accounts that need
 # to be charged and sends emails to owners of trial accounts a
 # week before the trial is set to expire.
+#
 
 require 'rubygems'
 require 'lockfile'
@@ -15,6 +16,7 @@ Lockfile('lock', :retries => 0) do
   require File.dirname(__FILE__) + '/../config/boot'
   require File.dirname(__FILE__) + '/../config/environment'
 
+  # Expiring Trials
   Subscription.find_expiring_trials.each do |sub|
     if admin = sub.account.admin
       SubscriptionNotifier.deliver_trial_expiring(admin, sub)
@@ -29,7 +31,7 @@ Lockfile('lock', :retries => 0) do
       SubscriptionNotifier.deliver_charge_failure(sub)
     end
   end
-
+  
   Subscription.find_due.each do |sub|
     if !sub.charge
       SubscriptionNotifier.deliver_charge_failure(sub)

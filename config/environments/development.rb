@@ -27,6 +27,7 @@ config.action_controller.asset_host = Proc.new { |source, request|
 config.action_mailer.delivery_method = :smtp
 
 config.after_initialize do
+  require 'bullet'
   Bullet.enable = true 
   Bullet.alert = false
   Bullet.bullet_logger = true  

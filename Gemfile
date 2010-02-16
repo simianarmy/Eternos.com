@@ -1,17 +1,19 @@
-source :gemcutter
-source 'http://gems.github.com'
-# DEPRECATED
+clear_sources
+
+# DEPRECATED in 0.9 BUT 0.9 IS FUCKED
 # You can specify this setting when installing via bundle install /path/to/bundle
-#bundle_path 'vendor/bundled_gems'
-# DEPRECATED
-#bin_path 'vendor/bundled_gems/bin'
+bundle_path "vendor/bundled_gems"
+
+source "http://gemcutter.org"
+source "http://gems.github.com"
+
+#source :gemcutter
 
 gem 'rails', '2.3.2'
-gem 'bundler', '0.9.5'
 gem 'capistrano', '2.5.10'
 gem 'capistrano-ext', '1.2.1'
 
-group :development do
+only :development do
   # bundler requires these gems in development
   gem 'bullet'
   gem 'deadweight'
@@ -19,12 +21,12 @@ group :development do
   gem 'ruby-growl'
 end
 
-group :test do
+only :test do
   # bundler requires these gems while running tests
   gem 'webrat', '0.6.0'
   gem 'cucumber', '0.4.3'
-  gem 'rspec', '1.3.0', :lib => false
-  gem 'rspec-rails', '1.3.2', :lib => false
+  gem 'rspec', '1.3.0'
+  gem 'rspec-rails', '1.3.2'
   gem 'ruby-debug', '0.10.3'
 end
 
@@ -35,6 +37,7 @@ gem 'contacts', '1.0.18'
 gem 'crack', '0.1.4'
 gem 'eventmachine', '0.12.10'
 gem 'ezcrypto', '0.7.2'
+gem 'facebooker', '1.0.62'
 gem 'gdata', '1.1.1'
 gem 'haml', '2.2.15'
 gem 'hashie', '0.1.5'
@@ -52,7 +55,7 @@ gem 'memcache-client', '1.7.7'
 gem 'mime-types', '1.16'
 gem 'moomerman-twitter_oauth', '0.2.1'
 gem 'mysqlplus', '0.1.1'
-gem 'newrelic_rpm', '2.9.8', :group => :production
+gem 'newrelic_rpm', '2.9.8', :only => :production
 gem 'nokogiri', '1.4.1'
 gem 'oauth', '0.3.6'
 gem 'packr', '3.1.0'
@@ -66,7 +69,6 @@ gem 'rvideo', '0.9.3'
 gem 'searchlogic', '2.3.2'
 gem 'shared-mime-info', '0.1'
 gem 'shuber-attr_encrypted'
-gem 'facebooker'
 gem 'SystemTimer', '1.1.3'
 gem 'taf2-curb', '0.5.4.0'
 gem 'thinking-sphinx', '1.3.11'

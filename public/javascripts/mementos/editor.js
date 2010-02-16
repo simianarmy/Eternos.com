@@ -8,12 +8,18 @@ var MementoEditor = function() {
 	var contentCache = {},
 		artifactPicker 		= null,
 		artifactSeletion	= null,
-		artifactViewerId 	= 'content_pane',
+		artifactViewerId 	= 'artifacts_list',
 		artifactTypesId	 	= 'type_list',
-		wysiwygId					= 'slide_text_editor'
+		wysiwygId					= 'slide_text_editor',
 		wysiwygEditor			= null,
 		droppablesId		 	= 'scrollable_decorations',
-		artifactDetailsId	= 'artifacts_expanded_view';
+		artifactDetailsId	= 'artifacts_expanded_view',
+		tabs							= null,
+		currentPane				= null,
+		AlbumPaneId				= 'pane1',
+		VideoPaneId				= 'pane2',
+		AudioPaneId				= 'pane3',
+		TextPaneId				= 'pane4';
 		
 	// Private functions
 	
@@ -44,20 +50,23 @@ var MementoEditor = function() {
 			});
 		}
 	};
-	
-	function populateArtifactView(data) {
-		$(artifactViewerId).update(data);
-		artifactViewPopulated();
-	};
-	
+		
 	function artifactViewPopulated() {
-		$('drag_instructions').removeClassName('hidden');
+		var paneId = currentPane[0].id;
+		
+		// If audio pane loaded
+		if (paneId === AudioPaneId) {
+			// Setup inline audio players
+			if (inlinePlayer) {
+				inlinePlayer.init();
+			} else {
+				inlinePlayer = new InlinePlayer();
+			}
+		}
 	};
 	
 	function showWysiwygEditor() {
-		// Setup wysiwyg editor
-		$('wyisiwyg_editor_pane').removeClassName('hidden');
-		wysiwygEditor = jQuery('#' + artifactViewerId + ' .editor').ckeditor(mementosCKEditorConfig);
+		
 	};
 	
 	function closeWysiwygEditor() {
@@ -67,24 +76,46 @@ var MementoEditor = function() {
 	// Public functions
 	
 	that.init = function() {
-		// Observe tab link clicks
-		$$('#' + artifactTypesId + ' li.artitype a').each(function(link) {
-			link.observe('click', function(e) { 
-				e.stop(); 
-				onArtifactTypeLinkClick(this); 
-				return false; 
-			});
-		});		
+		// Create artifact tabs & click handlers
+		jQuery('ul.tabs').tabs('div.panes > div', {
+			effect: 'fade',
+			onBeforeClick: function(event, i) {
+				// get the pane to be opened
+				currentPane = this.getPanes().eq(i);
+				if (currentPane.is(":empty")) {
+					// load it with a page specified in the tab's href attribute
+					spinner.load('type_list'); 
+					currentPane.load(this.getTabs().eq(i).attr("href"));
+				} else {
+					if (currentPane && (currentPane[0].id === TextPaneId)) {
+						showWysiwygEditor();
+					}
+				}
+			}
+		}	);	
+		tabs = jQuery('ul.tabs').tabs('div.panes > div');
+		currentPane = tabs.getPanes().eq(0);
 		artifactPicker = ArtifactSelector.init(artifactViewerId);
 		artifactSelection = ArtifactSelection.init(droppablesId);
+		// Setup wysiwyg editor
+		wysiwygEditor = jQuery('div.editor').ckeditor(mementosCKEditorConfig());
 		
+		soundManager.onready(function(oStatus) {
+		  if (oStatus.success) {
+		    
+		  } else {
+		    alert('Oh snap, SM2 could not start.');
+		  }
+		});
 		return this;
 	};
 	that.getArtifactPicker = function() {
 		return artifactPicker;
 	};
 	that.refreshSelector = function() {
-		artifactPicker.refresh();
+		spinner.unload();
+		artifactViewPopulated();
+		artifactPicker.refresh(currentPane);
 	};
 	that.hideArtifactDetailsView = function() {
 		$(artifactDetailsId).update();
@@ -97,17 +128,16 @@ var MementoEditor = function() {
 var ArtifactSelector = function() {
 	var that = {};
 	
-	var parent_el,
-		scroller_el,
+	var scroller_el,
 		scroller;
 		
 	// Helper to return div containing artifact
 	function getArtifactContainer(arti) {
 		// Look for artifact container element
-		if (arti.hasClassName('decoration_item')) { 
+		if (arti.hasClassName('artifact')) { 
 			return arti;
 		} else {
-			return arti.up('.decoration_item');
+			return arti.up('.artifact');
 		}
 	};
 	// info div element is bound to the function's scope
@@ -126,10 +156,7 @@ var ArtifactSelector = function() {
 		}
 	};
 	// Init function - takes artifact view parent dom id
-	that.init = function(parent) {
-		parent_el = parent;
-		scroller_css = '#' + parent_el + ' .decoration_item';
-		
+	that.init = function() {	
 		return this;
 	};
 	// Create draggable objects
@@ -142,17 +169,18 @@ var ArtifactSelector = function() {
 		});
 	};
 	// Update selector pane
-	that.refresh = function() {
+	that.refresh = function(pane) {
 		// Make all artifacts draggable
-		this.createDraggables(scroller_css);
+		this.createDraggables(jQuery(pane).find('.artifact'));
 		// Create scrollable object
-		jQuery('#' + parent_el + ' .scrollable').scrollable({
+		// Is this how you select from the pane object?
+		jQuery(jQuery(pane).find('.scrollable')).scrollable({
 			size: 5, 
 			hoverClass: 'hoverActive'
 		}).navigator().mousewheel();
 		// Observe scrollable parent container for mouseover to handle all artifact mouseovers
-		if ((infoDiv = $('artifact_info')) !== null) {
-			$(parent_el).observe('mouseover', onArtifactMouseover.bindAsEventListener(infoDiv));
+		if ((infoDiv = pane.find('.artifact_info')) !== null) {
+			pane.hover(function() { onArtifactMouseover.bindAsEventListener(infoDiv[0]); });
 		}
 	};
 	return that;

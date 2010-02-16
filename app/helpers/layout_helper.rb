@@ -194,15 +194,21 @@ module LayoutHelper
     stylesheet 'datepicker'
   end
   
-  def use_soundmanager
+  def use_soundmanager(options={})
+    options.reverse_merge!({:style => 'inline'})
+    
     content_for(:javascript) { "\n<!-- SM2 JS START -->\n"}
     javascript (RAILS_ENV == 'development') ? 'soundmanager2' : 'soundmanager2-nodebug-jsmin'
-    #javascript 'page-player'
-    javascript 'inlineplayer'
     #content_for(:javascript) { javascript_tag "soundManager.url = '/swf'" }
     content_for(:javascript) { "\n<!-- SM2 JS END -->\n"}
-    stylesheet 'soundmanager2', 'inlineplayer'
-    #stylesheet 'page-player'
+    
+    if options[:style] == 'pageplayer'
+      javascript 'page-player'
+      stylesheet 'soundmanager2', 'pageplayer'
+    else
+      javascript 'inlineplayer'
+      stylesheet 'inlineplayer'
+    end
   end
   
   def use_media

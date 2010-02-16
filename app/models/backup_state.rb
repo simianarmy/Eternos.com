@@ -38,6 +38,19 @@ class BackupState < ActiveRecord::Base
     !!@first_time_backup_data_available
   end
   
+  # Tries to determine if a user has disabled backups.  Takes a # of days to use as 
+  # threshold for inactivity
+  def inactive?(day_threshold)
+    # WARNING:
+    # These must not be re-ordered without knowing why - we are using boolean cutoffs that 
+    # could result in nil errors otherwise!
+    disabled || 
+    last_backup_finished_at.nil? || 
+    ((Time.now - last_backup_finished_at) > day_threshold) ||
+    last_successful_backup_at.nil? ||
+    ((Time.now - last_successful_backup_at) > day_threshold)
+  end
+  
   protected
   
   # true if last backup job has any saved backup records, or activity stream not empty

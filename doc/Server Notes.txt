@@ -25,7 +25,9 @@ Enterprise Ruby:
   Make default Ruby: http://www.rubyenterpriseedition.com/documentation.html#_how_ree_installs_itself_into_the_system
   
 Passenger
-	gem install passenger
+  Download patched passenger from github
+  Patch: http://github.com/FooBarWidget/passenger/commit/ba31fda3f203a462a0d9b0784030aee3bd160a64#diff-0
+	#gem install passenger
 	passenger-install-apache2-module (enterprise ruby version)
 	  set PassengerRuby var to point to gc patch wrapper
 	  Use REE GC Patch wrapper script for Passenger:

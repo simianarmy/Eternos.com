@@ -6,15 +6,16 @@
 // CKEDITOR configurations:
 
 // Mementos Editor CKEDITOR configuration
-var mementosCKEditorConfig =
-{
-	skin : 'kama',
-	uiColor : "#EFF5FF",
-	toolbar : [
+var mementosCKEditorConfig = function() {
+	return {
+		skin : 'kama',
+		uiColor : "#EFF5FF",
+		toolbar : [
 		['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
 		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 		['Styles','Format','Font','FontSize', '-', 'TextColor','BGColor']
-	]
+		]
+	};
 };
 
 // wysiwyg object

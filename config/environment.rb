@@ -118,9 +118,6 @@ Rails::Initializer.run do |config|
     # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
     include ActionController::UrlWriter
     default_url_options[:host] = AppConfig.base_domain
-    
-    # This seems unnecessary if indexes are rebuilt by cron
-    ThinkingSphinx.updates_enabled = false
   end
 end
 
@@ -143,6 +140,7 @@ require 'contacts'
 require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
+require 'thinking_sphinx'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 

@@ -6,7 +6,7 @@ set :bundler_path, "vendor/bundled_gems"
 
 namespace :bundler do
   task :install do
-    sudo "bundle install"
+    sudo "gem bundle"
   end
 
   task :symlink_vendor do
@@ -21,7 +21,7 @@ namespace :bundler do
 
   task :bundle_new_release do
     bundler.symlink_vendor
-    run("cd #{release_path} && bundle install --only #{stage}")
+    run("cd #{release_path} && gem bundle --only #{stage}")
   end
 end
 

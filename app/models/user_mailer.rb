@@ -25,6 +25,14 @@ class UserMailer < ActionMailer::Base
     invitation.update_attribute(:sent_at, Time.now)
   end
   
+  def inactive_notification(user)
+    setup_email(user)
+    @recipients   = 'marc@eternos.com'
+    @subject      += "Your Account"
+    @body[:name]  = user.full_name || 'Eternos user'
+    @body[:link]  = account_setup_url
+  end
+  
   protected
     def setup_email(user)
       @recipients  = "#{user.email}"

@@ -2,12 +2,14 @@
   %ul
     - @photos.each do |p|
       %li
-        .gallery_item.photo{:id=> dom_id(p), :src => p.url}
+        .gallery_item.photo.artifact{:id=> dom_id(p), :src => p.url}
           = image_tag p.thumbnail_url, :alt => p.title
           %br
           %span.title= truncate(p.title, :length => 20)
           .info.title.hidden
             = p.title
             = p.description
+  .instructions
+    Drag photos from above to the box below to create your movie.
 :javascript
   editor.getArtifactPicker().createDraggables('.gallery_item');
