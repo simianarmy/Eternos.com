@@ -7,6 +7,10 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .header IMG { float: left;}
 .header UL { margin: 15px 0 0 120px; padding: 0; float: left; width: 603px;}
 .header LI { display: inline;}
+.header FORM LABEL { margin:0 17px 0 0; font-size:12px; }
+.header FORM LABEL.login { color:#02419e; }
+.header FORM LABEL.login a { font-weight:bold; border-bottom:1px solid #02419e; padding:0; color:#02419e; }
+
 .inact { margin: 0 0 0 13px; height: 32px; float: left;}
 .inact A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left01.png); display: block; height: 26px; padding: 6px 20px 0 30px; float: left; white-space: nowrap;}
 .inact SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right01.png); height: 32px;}

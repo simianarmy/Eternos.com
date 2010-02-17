@@ -3,19 +3,19 @@
   = hidden_field_tag 'user_facebook_id'
   = f.hidden_field :terms_of_service, :value => "1"
   %p
-    %label full name:
+    %label Full name:
     = f.text_field :full_name
   %p
-    %label your email:
+    %label Email:
     = f.text_field :email
   %p
-    %label password:
+    %label Password:
     = f.password_field :password
     %br
     %label &nbsp;
     %em 6 characters minimum
   %p
-    %label{:style=>"padding-top: 0px"} confirm password:
+    %label{:style=>"padding-top: 0px"} Confirm password:
     = f.password_field :password_confirmation
   %p.home01
     %em *By proceeding, you confirm that your over 13 years of age and accept the Privacy and Terms.
