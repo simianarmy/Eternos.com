@@ -7,14 +7,14 @@
     %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=iso-8859-1"}
     %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
-    %title= "Eternos | Start Saving Your Life's Moments for Generations to Come! " + h(yield(:title) || "Home")
+    %title= "Eternos - " + h(yield(:title) || "Home")
     /[if lte IE 7]
       = stylesheet_link_tag "new_design/styleie7.css"
     /[if lte IE 6]
       = stylesheet_link_tag "new_design/styleie6.css"
 
-    - stylesheet 'screen', 'application' 
-    - stylesheet 'new_design/stylev2.css'
+    /- stylesheet 'reset-fonts-grids'
+    - stylesheet 'screen', 'application', 'new_design/style.css'
     - load_prototype
     - javascript 'facebook'
     
@@ -26,25 +26,24 @@
       %div
         = render :partial => 'shared/home_login_form', :locals => {:hide => @hide_login}
         
-        = link_to(image_tag('logo.png', :border => "0", :alt => "Start Saving Your Life's Moments for Generations to Come!"),  root_path)
+        = link_to(image_tag('logo.png', :border => "0"),  root_path)
         %ul
-          %li{:class => params[:action] == 'index' ? 'active' : 'inact'}
+          %li{:class => params[:action] == 'show' ? 'active' : 'inact'}
             = link_to 'Home', '/'
             %span
           %li{:class => params[:action] == 'what' ? 'active' : 'inact'}
             = link_to 'What is Eternos?', '/about/what'
             %span
-          %li{:class => params[:action] == 'about' ? 'active' : 'inact'}
-            = link_to 'About', about_path
-            %span
           %li{:class => params[:action] == 'blog' ? 'active' : 'inact'}
             = link_to 'Our Blog', 'http://blog.eternos.com'
             %span
-    / start content
+          %li{:class => params[:action] == 'index' ? 'active' : 'inact'}
+            = link_to 'About', about_path
+            %span
+
     = yield
-    / end content
     
-    = render :partial => 'shared/global_footerv2' unless @hide_footer
+    = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
 
     = fb_connect_javascript_tag
