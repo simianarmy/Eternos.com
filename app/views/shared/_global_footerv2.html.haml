@@ -1,0 +1,26 @@
+.footer
+  %p
+    %strong Home
+    = link_to 'Home Page', root_url
+  %p
+    %strong Contact Us
+    = link_to 'Contact Us', '/about/contact'
+  %p
+    %strong About Us
+    = link_to 'Follow us on Twitter', 'http://twitter.com/TeamEternos', :target => '_new'
+    = link_to 'About Us', '/about'
+    = link_to 'Press Center', '/about/press'
+    = link_to 'Careers', '/about/careers'
+  %p
+    %strong Eternos Info
+    = link_to 'Terms of Service', '/about/terms'
+    = link_to 'Privacy policy', '/about/privacy'
+  %p
+    %strong Help/FAQ
+    = link_to 'Help/FAQ', '#'
+    = link_to 'Support', '#'
+    
+  %p.clear-both
+    &copy; 2008-2010, Eon Digital Preservation, Inc. All rights reserved.
+    %br
+    = render :partial => 'shared/mcafee_secure'

@@ -1,43 +1,49 @@
-
 <% use_lightview %>
 
-<!-- start content -->
 <div class="content home">
-	<fieldset>
-	  <div id="intro_movie">
-	<%= 
-	#swf_object("/swf/eternos_mainflash02.swf", "intro_movie", :width => 493, :height => 288, 
-	#  :params => {:play => "true", :loop => "false", :quality => "high", :menu => "true"}) 
-	%>
-	<object width="445" height="364"><param name="movie" value="http://www.youtube.com/v/ooG3gZuA7jo&hl=en_US&fs=1&rel=0&color1=0x006699&color2=0x54abd6&border=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ooG3gZuA7jo&hl=en_US&fs=1&rel=0&color1=0x006699&color2=0x54abd6&border=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="445" height="364"></embed></object>
-	  </div>
-	
-	  <%= render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan} %>
-	  
-	<p><strong>Or sign up with your Facebook account</strong></p>
-	<p><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %></p>
-	  
-	  <div style="clear:both"></div>
-	  
-		<fieldset>
-		  <br/>
-			<div class="home02">
-				<h2>Your Life Timeline</h2>
-				<p> All your treasured memories and life events are set to your own easy to use timeline </p>
-				<p><%= link_to 'View Sample', image_path('timeline_sample.png'), :class => 'lightview' %></p>
-			</div>
-			<div class="home03">
-				<h2>Automated Logging</h2>
-				<p>Automatically log <%= render :partial => 'about/backup_sources' %></p>
-				<p><%= link_to 'View Sample', image_path('backup_sample.png'), :class => 'lightview' %></p>
-			</div>
-			<div class="home04">
-				<h2>Life Key</h2>
-				<p>Enables you to designate trustees that will notify Eternos of your passing. Trustees gain access to your account upon confirmation you have passed on</p>
-				<p><%= link_to 'View Sample', image_path('lifekey_sample.png'), :class => 'lightview' %></p>
-			</div>			
-		</fieldset>
-		
-	</fieldset>
+  <fieldset>
+    <div class="tube">
+      <%= 
+      #swf_object("/swf/eternos_mainflash02.swf", "intro_movie", :width => 493, :height => 288, 
+      #  :params => {:play => "true", :loop => "false", :quality => "high", :menu => "true"}) 
+      %>
+      <!--
+      <object width="445" height="364"><param name="movie" value="http://www.youtube.com/v/ooG3gZuA7jo&hl=en_US&fs=1&rel=0&color1=0x006699&color2=0x54abd6&border=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ooG3gZuA7jo&hl=en_US&fs=1&rel=0&color1=0x006699&color2=0x54abd6&border=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="445" height="364"></embed></object>
+      -->
+      <img src="images/image01.jpg" alt="Start Saving Your Life's Moments for Generations to Come!" />
+      <!-- AddThis Button BEGIN -->
+      <a class="addthis_button" href="http://addthis.com/bookmark.php?v=250&amp;username=xa-4b70086d35777907"><img src="images/button-addthis.gif" border="0" alt="Bookmark and Share" /></a><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4b70086d35777907"></script>
+      <!-- AddThis Button END -->
+    </div>
+    <div class="home-form">
+      <h1>Start Saving Your Life's Moments for <br />Generations to Come!</h1>
+      <%= render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan} %>
+      <div class="home-facebook-connect">
+        <p>Connect to your friends<br /> and family through your <br />Facebook account.</p>
+        <p style="margin:18px 0 0;"><%= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium) %>
+        </p>
+      </div>
+    </div>
+
+
+    <fieldset>
+      <div class="home02">
+        <h2>Your Life Timeline</h2>
+        <p> All your treasured memories and life events are set to your own easy to use timeline </p>
+        <p><%= link_to 'View Sample', image_path('timeline_sample.png'), :class => 'lightview' %></p>
+      </div>
+      <div class="home03">
+        <h2>Automated Logging</h2>
+        <p>Automatically log <%= render :partial => 'about/backup_sources' %></p>
+        <p><%= link_to 'View Sample', image_path('backup_sample.png'), :class => 'lightview' %></p>
+      </div>
+      <div class="home04">
+        <h2>Life Key</h2>
+        <p>Enables you to designate trustees that will notify Eternos of your passing. Trustees gain access to your account upon confirmation you have passed on</p>
+        <p><%= link_to 'View Sample', image_path('lifekey_sample.png'), :class => 'lightview' %></p>
+      </div>			
+    </fieldset>
+
+  </fieldset>
 </div>
 <!-- end content -->

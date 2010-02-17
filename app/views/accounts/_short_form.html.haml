@@ -3,22 +3,25 @@
   = hidden_field_tag 'user_facebook_id'
   = f.hidden_field :terms_of_service, :value => "1"
   %p
-    %label full name:
-    = f.text_field :full_name
+    %label First Name:
+    = f.text_field :first_name, :size => "20"
   %p
-    %label your email:
-    = f.text_field :email
+    %label Last Name:
+    = f.text_field :last_name, :size => "20"
   %p
-    %label password:
-    = f.password_field :password
+    %label Email:
+    = f.text_field :email, :size => "20"
+  %p
+    %label Password:
+    = f.password_field :password, :size => "20"
     %br
     %label &nbsp;
     %em 6 characters minimum
-  %p
-    %label{:style=>"padding-top: 0px"} confirm password:
-    = f.password_field :password_confirmation
+  
   %p.home01
-    %em *By proceeding, you confirm that your over 13 years of age and accept the Privacy and Terms.
+    %label 
+      = check_box_tag 'terms'
+    <em>I confirm that I am over 13 years of age and accept the <a href="/about/terms">Terms</a> &amp; <a href="/about/privacy">Privacy Policy</a></em>
   %p{:align=>"center"}
-    = submit_tag "Sign Up", :style => "margin-left: 30px;"
+    = submit_tag "Sign Up", :style => "margin: 7px 0 0 100px;float:left;", :class => "submit"
   
