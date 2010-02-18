@@ -971,4 +971,12 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
   add_index "users", ["email"], :name => "users_email_index"
   add_index "users", ["facebook_uid"], :name => "users_facebook_uid_index"
 
+  create_table "user_mailings", :force => true do |t|
+    t.string "recipients", :null => false
+    t.string "mailer", :null => false
+    t.string "subject", :null => false
+    t.datetime "sent_at", :null => false
+  end
+  
+    
 end

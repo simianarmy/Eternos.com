@@ -2,6 +2,7 @@
 
 class BackupReportMailer < ActionMailer::Base
   layout 'email'
+  include MailHistory
   
   def daily_storage_report(stats)
     setup

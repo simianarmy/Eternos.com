@@ -2,6 +2,7 @@
 
 class TrusteeMailer < ActionMailer::Base
   layout 'email'
+  include MailHistory
   
   def confirmation_request(user, trustee)
     setup_email(user, trustee)

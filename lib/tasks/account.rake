@@ -14,6 +14,7 @@ DESC
         ((Time.now - user.activated_at) > cutoff)
         RAILS_DEFAULT_LOGGER.info "#{user.id} is inactive...sending email"
         UserMailer.deliver_inactive_notification(user)
+        break
       end
     end
   end

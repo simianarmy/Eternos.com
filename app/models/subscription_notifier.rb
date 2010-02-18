@@ -1,5 +1,6 @@
 class SubscriptionNotifier < ActionMailer::Base
   include ActionView::Helpers::NumberHelper
+  include MailHistory
   
   def setup_email(to, subject, from = AppConfig['from_email'])
     @sent_on = Time.now

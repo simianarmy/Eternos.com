@@ -129,6 +129,7 @@ require 'timeline_events'
 require 'facebook_desktop'
 require 'facebook_user_profile'
 require 'message_queue'
+require 'mail_history'
 # For saas
 require 'association_proxy'
 # 3rd party libs 

@@ -11,10 +11,10 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .header FORM LABEL.login { color:#02419e; }
 .header FORM LABEL.login a { font-weight:bold; border-bottom:1px solid #02419e; padding:0; color:#02419e; }
 
-.inact { margin: 0 0 0 13px; height: 32px; float: left;}
+.inact { margin: 0 0 0 4px; height: 32px; float: left;}
 .inact A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left01.png); display: block; height: 26px; padding: 6px 20px 0 30px; float: left; white-space: nowrap;}
 .inact SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right01.png); height: 32px;}
-.active { margin: 0 0 0 16px; height: 32px; float: left;}
+.active { margin: 0 0 0 4px; height: 32px; float: left;}
 .active A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left02.png); display: block; height: 27px; padding: 6px 20px 0 30px; float: left; white-space: nowrap;}
 .active SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right02.png); height: 33px;}
 .active A:hover, .inact A:hover { text-decoration: underline;}
