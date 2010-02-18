@@ -4,20 +4,31 @@ class UserMailer < ActionMailer::Base
   layout 'email'
   include MailHistory
   
+  @@Subjects = {
+    :signup_notification    => 'Please activate your new account',
+    :activation             => 'Your account has been activated!',
+    :invitation             => 'Invitation From Eternos.com',
+    :inactive_notification  => 'Inactive Account Notice'
+  }
+  
+  def self.subject(action)
+    @@Subjects[action.to_sym]
+  end
+  
   def signup_notification(user)
     setup_email(user)
-    @subject    += 'Please activate your new account'
+    @subject    += @@Subjects[:signup_notification]
     @body[:url]  = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
   end
   
   def activation(user)
     setup_email(user)
-    @subject    = "Your #{AppConfig.app_name} account has been activated!"
+    @subject    += @@Subjects[:activation]
     base_domain = "http://" + AppConfig.base_domain
   end
   
   def invitation(invitation, signup_url)
-    @subject    = 'Invitation From Eternos.com'
+    @subject    = @@Subjects[:invitation]
     @recipients = invitation.recipient_email
     @from       = "#{AppConfig.from_email}"
     @reply_to   = "#{AppConfig.support_email}"
@@ -30,7 +41,7 @@ class UserMailer < ActionMailer::Base
   def inactive_notification(user)
     setup_email(user)
     @recipients   = 'marc@eternos.com'
-    @subject      += "Your Account"
+    @subject      += @@Subjects[:inactive_notification]
     @body[:name]  = user.full_name || 'Eternos user'
     @body[:link]  = account_setup_url
   end
