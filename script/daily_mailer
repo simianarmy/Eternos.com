@@ -19,8 +19,7 @@ Lockfile('lock', :retries => 0) do
   # Expiring Trials
   Subscription.find_expiring_trials.each do |sub|
     if admin = sub.account.admin
-      SubscriptionNotifier.deliver_trial_expiring(admin, sub)
-    end
+      ∑
   end
   
   # Trial subscriptions for which we have payment info.

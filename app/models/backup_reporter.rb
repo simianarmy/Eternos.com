@@ -43,15 +43,19 @@ class BackupReporter
 
         total[key.to_s + '_size']   ||= 0
         latest[key.to_s + '_size']  ||= 0
-
-        size = klass.first.respond_to?(:bytes) ? klass.all.collect(&:bytes).compact.sum : 0
+        
+        # Use batch iterator to prevent massive memory consumption
+        size = klass.first.respond_to?(:bytes) ? sum_with_method(klass, :bytes) : 0
+          
         total[key]   = klass.count
         total[key.to_s + '_size'] += size
         total[:backup_items] += total[key]
         total[:backup_size] += size
 
+        # Use batch iterator to prevent massive memory consumption
         last_day = klass.created_at_greater_than_or_equal_to(1.day.ago)
-        size = last_day.first.respond_to?(:bytes) ? last_day.collect(&:bytes).compact.sum : 0
+        size = last_day.first.respond_to?(:bytes) ? sum_with_method(last_day, :bytes) : 0
+
         latest[key]  = last_day.count
         latest[key.to_s + '_size'] += size
         latest[:backup_items] += latest[key]
@@ -59,7 +63,10 @@ class BackupReporter
       end
 
       # Calculate s3 costs
-      total[:backup_s3_size] = BackupPhoto.all.collect(&:bytes).compact.sum + BackupEmail.sum(:size)
+      
+      # Use batch iterator to prevent massive memory consumption
+      size = sum_with_method(BackupPhoto, :bytes)
+      total[:backup_s3_size] = size + BackupEmail.sum(:size)
       total[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:backup_s3_size])
 
       latest[:backup_s3_size] = BackupPhoto.created_at_greater_than_or_equal_to(1.day.ago).collect(&:bytes).compact.sum +
@@ -90,6 +97,17 @@ class BackupReporter
         (data[job.member] ||= []) << {:job => job, :source_jobs => job.backup_source_jobs}
       end
       BackupReportMailer.deliver_daily_jobs_report(data)
+    end
+
+    protected
+
+    # With find_in_batches 
+    def sum_with_method(klass, method)
+      sum = 0
+      klass.find_in_batches do |ks|
+        ks.each {|k| sum += k.send(method) rescue 0}
+      end
+      sum
     end
   end
 end

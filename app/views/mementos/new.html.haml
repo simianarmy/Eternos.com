@@ -1,5 +1,5 @@
 - stylesheet 'mementos', 'soundmanager-ui'
-- javascript 'mementos/editor', 'dragdrop-patched'
+- javascript 'mementos/editor', 'dragdropextra'
 - use_busy
 - use_scrollable
 - use_flashplayer
@@ -10,6 +10,8 @@
 - content_for(:header) do
   Step 1 - Add & Annotate
   
+#notice_notice.notice
+#notice_error.notice
 #artifact_picker
   #type_list
     %ul.tabs
@@ -27,9 +29,11 @@
       #pane4
         #wysiwyg_instructions.instructions
           Create a text-only movie slide using the the editor below.
-        .editor
-        %input#save_wysiwyg{:type => 'button', :value => 'Save & Add to Movie'} 
-        %input#cancel_wysiwyg{:type => 'button', :value => 'Cancel'} 
+        <form id="wysiwyg_form" method="POST">
+        %textarea.editor{:name => "slidecontent"}
+        %input{:type => 'submit', :value => 'Save & Add to Movie'} 
+        %input#clear_wysiwyg{:type => 'button', :value => 'Clear'} 
+        </form>
 .clear
 /- required for pageplayer.js
 = render :partial => 'shared/audio_controls'
@@ -62,7 +66,9 @@
   #frame_seconds
 %br
 #selection_links.hidden
-  = link_to 'Start over', '#', :id => 'clear_selection' 
+  = link_to 'Clear Slides', '#', :id => 'clear_selection' 
+  |
+  = link_to 'Clear Sountrack', '#', :id => 'clear_sounds'
   |
   = link_to 'Preview movie', '#', :id => 'do_preview'
 .clear

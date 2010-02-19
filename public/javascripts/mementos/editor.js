@@ -2,6 +2,13 @@
 //
 // Memento editor object
 
+// Helper functions
+
+var flash_and_fade = function(id, message) {
+	$(id).innerHTML = message;
+	setTimeout(function() { new Effect.Fade(id); }, 15000);
+};
+
 var MementoEditor = function() {
 	var that = {};
 	
@@ -22,6 +29,14 @@ var MementoEditor = function() {
 		TextPaneId				= 'pane4';
 		
 	// Private functions
+	
+	function showMessage(message) {
+		flash_and_fade('notice_notice', message);
+	};
+	
+	function showError(message) {
+		flash_and_fade('notice_error', message);
+	};
 	
 	// Handles artifact type picker link click
 	function onArtifactTypeLinkClick(link) {
@@ -46,6 +61,9 @@ var MementoEditor = function() {
 					spinner.unload(); 
 					contentCache[url] = request.responseText;
 					artifactViewPopulated();
+				},
+				onFailure: function() {
+					showError("Unexpected error loading content...please try again");
 				}
 			});
 		}
@@ -65,14 +83,16 @@ var MementoEditor = function() {
 		}
 	};
 	
-	function showWysiwygEditor() {
-		
-	};
-	
-	function closeWysiwygEditor() {
-		wysiwygEditor.destroy();
-	};
-	
+	function onTextEditorSave() {
+		var val = textSlideEditor.getContents();
+		if (val && (val !== '')) {
+			if (artifactSelection.addSlide(val)) {
+				showMessage('Text slide added');
+			}
+		} else {
+			showError('You must enter some text before it can be added your movie!');
+		}
+	}
 	// Public functions
 	
 	that.init = function() {
@@ -86,25 +106,22 @@ var MementoEditor = function() {
 					// load it with a page specified in the tab's href attribute
 					spinner.load('type_list'); 
 					currentPane.load(this.getTabs().eq(i).attr("href"));
-				} else {
-					if (currentPane && (currentPane[0].id === TextPaneId)) {
-						showWysiwygEditor();
-					}
-				}
+				} 
 			}
 		}	);	
 		tabs = jQuery('ul.tabs').tabs('div.panes > div');
 		currentPane = tabs.getPanes().eq(0);
 		artifactPicker = ArtifactSelector.init(artifactViewerId);
 		artifactSelection = ArtifactSelection.init(droppablesId);
-		// Setup wysiwyg editor
-		wysiwygEditor = jQuery('div.editor').ckeditor(mementosCKEditorConfig());
+		textSlideEditor = TextEditor.init();
 		
+		jQuery('#wysiwyg_form').submit(function() {
+			onTextEditorSave();
+			return false;
+		});
 		soundManager.onready(function(oStatus) {
-		  if (oStatus.success) {
-		    
-		  } else {
-		    alert('Oh snap, SM2 could not start.');
+		  if (!oStatus.success) {
+		    showError('Error initializing sound...please reload the page.');
 		  }
 		});
 		return this;
@@ -120,6 +137,42 @@ var MementoEditor = function() {
 	that.hideArtifactDetailsView = function() {
 		$(artifactDetailsId).update();
 		$('drag_instructions').addClassName('hidden');
+	};
+	return that;
+} ();
+
+// WysiwygEditor handler
+var TextEditor = function() {
+	var that = {};
+	
+	var editor = null,
+		selector = 'textarea.editor';
+	
+	function show(contents) {
+		editor.setData(contents);
+	};
+	
+	function hide() {
+		editor.destroy();
+	};
+	
+	function clear() {
+		editor.setData('');
+	};
+	
+	function getContents() {
+		return editor.getData();
+	};
+	that.getContents = getContents;
+	
+	that.init = function() {
+			// Setup wysiwyg editor
+		jQuery('textarea.editor').ckeditor(function() { 
+			/* callback code */
+			editor = this; 
+		}, mementosCKEditorConfig());
+		jQuery('#clear_wysiwyg').click(function() { clear(); });
+		return this;
 	};
 	return that;
 } ();
@@ -160,27 +213,36 @@ var ArtifactSelector = function() {
 		return this;
 	};
 	// Create draggable objects
-	that.createDraggables = function(selector) {
-		$$(selector).each(function(i) {	
-			new Draggable( i, {
-				revert: true,
-				ghosting: true
-			});
+	that.createDraggables = function(items) {
+		var opts = {revert: true};
+		
+		// Use dragdroppatch.js option 'superghosting' for non-audio divs in order to 
+		// fix the dragging visibility bug & clone dragged object 
+		if (items.size() && !items[0].hasClassName('audio')) {
+			opts.superghosting = true;
+		}
+		items.each(function(i) {	
+			new Draggable( i, opts );
 		});
 	};
 	// Update selector pane
 	that.refresh = function(pane) {
+		var scroller;
+		
 		// Make all artifacts draggable
-		this.createDraggables(jQuery(pane).find('.artifact'));
-		// Create scrollable object
-		// Is this how you select from the pane object?
-		jQuery(jQuery(pane).find('.scrollable')).scrollable({
-			size: 5, 
-			hoverClass: 'hoverActive'
-		}).navigator().mousewheel();
-		// Observe scrollable parent container for mouseover to handle all artifact mouseovers
-		if ((infoDiv = pane.find('.artifact_info')) !== null) {
-			pane.hover(function() { onArtifactMouseover.bindAsEventListener(infoDiv[0]); });
+		this.createDraggables($A(jQuery(pane).find('.artifact')));
+		
+		// Create scrollable object for draggables if found on page
+		scroller = jQuery(pane).find('.scrollable');
+		if (scroller) {
+			jQuery(scroller).scrollable({
+				size: 5, 
+				hoverClass: 'hoverActive'
+			}).navigator().mousewheel();
+			// Observe scrollable parent container for mouseover to handle all artifact mouseovers
+			if ((infoDiv = pane.find('.artifact_info')) !== null) {
+				pane.hover(function() { onArtifactMouseover.bindAsEventListener(infoDiv[0]); });
+			}
 		}
 	};
 	return that;
@@ -199,19 +261,13 @@ var ArtifactSelection = function() {
 		soundtrackId = 'soundtrack-selection';
 	
 	function showNotice(msg, options) {
-		var notice = $('editor_notice');
-		
-		notice.removeClassName('hidden');
-		notice.update(msg);
-		notice.show(); // required after fade
-		notice.fade({ duration: 3.0, from: 1, to: 0 });
+		flash_and_fade('editor_notice', msg);
 	};
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) { 
 		var drophere = $A(selectionScroller.getItems()).last();
 		var items = selectionScroller.getItemWrap();
 		
-		console.log("added artifact to droppable target: " + droparea.id);
 		// Save artifact for other actions 
 		selectedArtifact = draggable;
 		jQuery(selectedArtifact).hover(function() {
@@ -264,7 +320,7 @@ var ArtifactSelection = function() {
 		if (selectedArtifact !== null) {
 			selectedArtifact.text_description = $('artifact_description').value;
 		}
-		showNotice('saved', {fade: true});
+		showNotice('saved');
 	};
 	// Removes all but the drophere div
 	function clearItems() {
@@ -303,7 +359,7 @@ var ArtifactSelection = function() {
 		Droppables.add('selection-scroller', {
 			hoverclass: 'selectorHover',
 			onDrop: onArtifactAdded,
-			accept: ['video', 'photo']
+			accept: ['video', 'photo', 'video_thumb']
 			//containment: 'artifact_picker'
 		});
 		// Make sortables container

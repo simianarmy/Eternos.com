@@ -181,7 +181,7 @@ module LayoutHelper
   
   def use_wysiwyg
     use_jquery
-    javascript 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'wysiwyg'
+    javascript 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'jQuery/jquery.form.js', 'wysiwyg'
   end
   
   def use_accordion
