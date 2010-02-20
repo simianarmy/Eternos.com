@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+# 
+# $Id$
+# Munin plugin
+# Counts users (active & total)
+
+REQUEST_URI = 'http://beta.eternos.com/admin/munin/users?api=FL1mFl4mAlamB'
+
+def output_config
+  puts <<-END
+graph_category Eternos.com
+graph_title user stats
+graph_vlabel count
+
+sessions.label active sessions
+total.label total users
+active.label active users
+closed.label closed accounts
+END
+  exit 0
+end
+
+def output_values
+  status = `curl -s #{REQUEST_URI}`
+  
+  unless $?.success?
+    $stderr.puts "failed executing eternos-users"
+    exit 1
+  end
+  status =~ /active_sessions\s+=\s+(\d+)/
+  puts "sessions.value #{$1}"
+
+  status =~ /total\s+=\s+(\d+)/
+  puts "total.value #{$1}"
+
+  status =~ /active\s+=\s+(\d+)/
+  puts "active.value #{$1}"
+
+  status =~ /closed\s+=\s+(\d+)/
+  puts "closed.value #{$1}"
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end

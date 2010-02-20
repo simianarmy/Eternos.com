@@ -87,6 +87,7 @@ class User < ActiveRecord::Base
   }
   
   named_scope :active, :conditions => { 'users.state' => 'live' }
+  named_scope :closed, :conditions => { 'users.state' => 'deleted' }
   
   #Member.active.find_all(&:has_backup_data?).size
   
