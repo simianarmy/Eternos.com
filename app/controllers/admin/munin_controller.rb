@@ -16,7 +16,7 @@ class Admin::MuninController < ApplicationController
     closed = Member.closed.size
     
     response =<<RESP
-active_sessions = #{active_sessions}
+sessions = #{active_sessions}
 total = #{user_count}
 active = #{user_with_data_count}
 closed = #{closed}
@@ -73,7 +73,24 @@ RESP
     render :inline => response, :status => :ok
   end
   
+  def backup_sites
+    facebook = BackupSource.facebook.count
+    twitter = BackupSource.twitter.count
+    rss = BackupSource.blog.count
+    gmail = BackupSource.gmail.count
+    picasa = BackupSource.picasa.count
+    
+    response =<<RESP
+facebook = #{facebook}
+twitter = #{twitter}
+rss = #{rss}
+gmail = #{gmail}
+picasa = #{picasa}
+RESP
   
+    render :inline => response, :status => :ok
+  end
+   
   protected
   
   def check_api_key

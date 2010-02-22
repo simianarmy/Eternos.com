@@ -218,7 +218,7 @@ var ArtifactSelector = function() {
 		
 		// Use dragdroppatch.js option 'superghosting' for non-audio divs in order to 
 		// fix the dragging visibility bug & clone dragged object 
-		if (items.size() && !items[0].hasClassName('audio')) {
+		if (items.size() && items[0].hasClassName('video')) {
 			opts.superghosting = true;
 		}
 		items.each(function(i) {	
@@ -267,21 +267,32 @@ var ArtifactSelection = function() {
 	function onArtifactAdded(draggable, droparea) { 
 		var drophere = $A(selectionScroller.getItems()).last();
 		var items = selectionScroller.getItemWrap();
+		var newSlide;
 		
 		// Save artifact for other actions 
 		selectedArtifact = draggable;
-		jQuery(selectedArtifact).hover(function() {
-			showArtifactEditForm(this);
-			selectedArtifact = this; // Make it the selected item
-		}, function() {
-			// On hover out
-		});
+		
+		// superghosting: draggable fix causes a new bug...try to workaround by creating a new slide 
+		// from the dragged element
+		if (jQuery(selectedArtifact).css('position') == 'absolute') {
+			newSlide = jQuery('<div class="decoration_item artifact video"></div>').append(selectedArtifact.innerHTML);
+			draggable.hide();
+			selectedArtifact = newSlide[0];
+		}
 		// Move 'drop-here' box to the end
 		drophere.remove();
 		items.append(selectedArtifact);
+		selectionScroller.reload().end();
 		items.append(drophere);
 		selectionScroller.reload().end();
 		
+			jQuery(selectedArtifact).hover(function() {
+				showArtifactEditForm(this);
+				selectedArtifact = this; // Make it the selected item
+			}, function() {
+				// On hover out
+			});
+			
 		showActionLinks();
 		showArtifactEditForm(selectedArtifact);
 	};

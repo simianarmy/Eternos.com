@@ -5,6 +5,7 @@
 # Counts users (active & total)
 
 REQUEST_URI = 'http://beta.eternos.com/admin/munin/users?api=FL1mFl4mAlamB'
+DATA_LABELS = %w( sessions total active closed )
 
 def output_config
   puts <<-END
@@ -27,17 +28,10 @@ def output_values
     $stderr.puts "failed executing eternos-users"
     exit 1
   end
-  status =~ /active_sessions\s+=\s+(\d+)/
-  puts "sessions.value #{$1}"
-
-  status =~ /total\s+=\s+(\d+)/
-  puts "total.value #{$1}"
-
-  status =~ /active\s+=\s+(\d+)/
-  puts "active.value #{$1}"
-
-  status =~ /closed\s+=\s+(\d+)/
-  puts "closed.value #{$1}"
+  DATA_LABELS.each do |site|
+    status =~ /#{site}\s+=\s+(\d+)/
+    puts "#{site}.value #{$1}"
+  end
 end
 
 if ARGV[0] == "config"
