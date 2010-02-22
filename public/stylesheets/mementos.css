@@ -115,6 +115,11 @@
   border: 2px solid black;
 }
 
+/* Displays slide option links on hover */
+#selection-scroller .hoverActive:hover #artifact-hover-menu-items {
+	display:block;
+}
+
 /* single scrollable item */
 .scrollable img, .scrollable a img {
 	margin: 0px;
@@ -212,6 +217,8 @@
 	display:none;
 	list-style:none;
 	margin:0px auto;
+	position: relative;
+	bottom: 6px;
 }
 
 #artifact-hover-menu-items li {
@@ -224,9 +231,7 @@
 	text-decoration: underline;
 }
 
-#selection-scroller .decoration_item:hover #tip-hover-menu-items {
-	display:block;
-}
+
 
 /* Tabs */
 
