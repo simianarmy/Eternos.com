@@ -4,11 +4,29 @@
 // Helper functions
 var flash_and_fade = function(id, message) {
 	$(id).innerHTML = message;
+	$(id).show();
+
 	setTimeout(function() {
 		new Effect.Fade(id);
 	},
-	15000);
+	5000);
 };
+
+var mementoFlash = function() {
+	// Private functions
+	function showMessage(message) {
+		flash_and_fade('flash_notice', message);
+	};
+
+	function showError(message) {
+		flash_and_fade('flash_error', message);
+	};
+	
+	return {
+		message: showMessage,
+		error: showError
+	};
+} ();
 
 var MementoEditor = function() {
 	var that = {};
@@ -29,16 +47,7 @@ var MementoEditor = function() {
 		AudioPaneId = 'pane3',
 		TextPaneId = 'pane4';
 
-	// Private functions
-	function showMessage(message) {
-		flash_and_fade('notice_notice', message);
-	};
-
-
-
-	function showError(message) {
-		flash_and_fade('notice_error', message);
-	};
+	
 
 	// Handles artifact type picker link click
 	function onArtifactTypeLinkClick(link) {
@@ -71,14 +80,13 @@ var MementoEditor = function() {
 					artifactViewPopulated();
 				},
 				onFailure: function() {
-					showError("Unexpected error loading content...please try again");
+					mementoFlash.error("Unexpected error loading content...please try again");
 				}
 			});
 		}
 	};
 
-
-
+	// Called when an artifacts tab pane dom is loaded
 	function artifactViewPopulated() {
 		var paneId = currentPane[0].id;
 
@@ -93,20 +101,25 @@ var MementoEditor = function() {
 		}
 	};
 
-
-
+	// Called when wysiwyg save button clicked
 	function onTextEditorSave() {
 		var val = textSlideEditor.getContents();
-		if (val && (val !== '')) {
+		
+		if (textSlideEditor.isEditMode()) {
+			artifactSelection.saveHtmlSlide(val);
+		} else if (val && (val !== '')) {
 			if (artifactSelection.addHtmlSlide(val)) {
-				showMessage('Text slide added');
+				mementoFlash.message('Text slide added');
 			}
 		} else {
-			showError('You must enter some text before it can be added your movie!');
+			mementoFlash.error('You must enter some text before it can be added your movie!');
 		}
 	}
 	// Public functions
 	that.init = function() {
+		// Create wysiwyg widget 1st
+		textSlideEditor = TextEditor.init();
+		
 		// Create artifact tabs & click handlers
 		jQuery('ul.tabs').tabs('div.panes > div', {
 			effect: 'fade',
@@ -117,22 +130,24 @@ var MementoEditor = function() {
 					// load it with a page specified in the tab's href attribute
 					spinner.load('type_list');
 					currentPane.load(this.getTabs().eq(i).attr("href"));
+				} else if (jQuery(currentPane).attr('id') === TextPaneId) {
+					//textSlideEditor.load();
 				}
 			}
-		});
+		}).history();
 		tabs = jQuery('ul.tabs').tabs('div.panes > div');
 		currentPane = tabs.getPanes().eq(0);
+		
 		artifactPicker = ArtifactSelector.init(artifactViewerId);
-		artifactSelection = ArtifactSelection.init(droppablesId);
-		textSlideEditor = TextEditor.init();
-
+		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
+		
 		jQuery('#wysiwyg_form').submit(function() {
 			onTextEditorSave();
 			return false;
 		});
 		soundManager.onready(function(oStatus) {
 			if (!oStatus.success) {
-				showError('Error initializing sound...please reload the page.');
+				mementoFlash.error('Error initializing sound...please reload the page.');
 			}
 		});
 		return this;
@@ -157,32 +172,47 @@ var TextEditor = function() {
 	var that = {};
 
 	var editor = null,
-		selector = 'textarea.editor';
+		selector = 'textarea.editor',
+		editMode = false,
+		initSaveButtonValue;
 
-
-
-	function show(contents) {
+	function load() {
+		editor.setData(jQuery('#wysiwyg_instructions').html());
+		editMode = false;
+		jQuery('#save_wysiwyg').attr('value', initSaveButtonValue);
+	};
+	that.load = load;
+	
+	function edit(contents) {
 		editor.setData(contents);
-	};
-
-
-
-	function hide() {
-		editor.destroy();
-	};
-
-
-
+		editMode = true;
+		jQuery('#save_wysiwyg').attr('value', 'Save');
+	}
+	that.edit = edit;
+	
 	function clear() {
 		editor.setData('');
 	};
-
-
-
+	that.clear = clear;
+	
 	function getContents() {
 		return editor.getData();
 	};
 	that.getContents = getContents;
+	
+	function hide() {
+		editor.clear();
+	};
+	that.hide = hide;
+
+	function saveButtonText() {
+		
+	};
+	
+	// Returns editMode boolean
+	that.isEditMode = function() {
+		return editMode;
+	};
 
 	that.init = function() {
 		// Setup wysiwyg editor
@@ -191,6 +221,8 @@ var TextEditor = function() {
 			editor = this;
 		},
 		mementosCKEditorConfig());
+		
+		initSaveButtonValue = jQuery('#save_wysiwyg').attr('value');
 		jQuery('#clear_wysiwyg').click(function() {
 			clear();
 		});
@@ -278,17 +310,15 @@ var ArtifactSelection = function() {
 	var that = {};
 
 	var selectionId, cleared = false,
+		parent = null,
 		selectionScroller = null,
 		selectedArtifact = null,
 		audioSelection = null,
-		playlistGenerator = null;
-	soundtrackId = 'soundtrack-selection';
+		playlistGenerator = null,
+		textEditor = null,
+		editingArtifact = null,
+		soundtrackId = 'soundtrack-selection';
 
-
-
-	function showNotice(msg, options) {
-		flash_and_fade('editor_notice', msg);
-	};
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) {
 		var newSlide;
@@ -321,26 +351,42 @@ var ArtifactSelection = function() {
 		// Add slide action links code & click handlers
 		jQuery(artifact).append(
 			jQuery('<div id="artifact-hover-menu-items"></div>').append(
-				'<a href="#" class="remove_slide">Remove</a>')
+				'<a href="#" class="remove_slide">remove</a>').append(
+					artifact.userHtml ? ' | <a href="#editor.html" class="edit_slide">edit</a>' : '')
 			);
+	
 		// Move 'drop-here' box to the end
 		drophere.remove();
 		items.append(artifact);
 		selectionScroller.reload().end();
 		items.append(drophere);
 		selectionScroller.reload().end();
-		
-		jQuery(artifact).hover(function() {
-			showArtifactEditForm(this);
-			selectedArtifact = this; // Make it the selected item
-		},
-		function() {
-			// On hover out
-		});
+
+		if (!artifact.userHtml) {
+			jQuery(artifact).hover(function() {
+				showArtifactEditForm(this);
+				selectedArtifact = this; // Make it the selected item
+			},
+			function() {
+				// On hover out
+			});
+		}
 		jQuery('.remove_slide').click(function() {
 			removeArtifact(this.up('.artifact'));
 		});
+		
+		jQuery('.edit_slide').click(function() {
+			editSlideHtml(this.up('.artifact'));
+		});
+		
 	};
+	// Edit html slide action
+	function editSlideHtml(artifact) {
+		// Load artifact's text html into editor for editing
+		editingArtifact = artifact;
+		textEditor.edit(artifact.userHtml);
+	};
+	
 	// Removes artifact from movie
 	function removeArtifact(artifact) {
 		getArtifacts().each(function(i) {
@@ -349,25 +395,29 @@ var ArtifactSelection = function() {
 					afterFinish: function() { i.remove(); }
 				});
 			}
-		})
+		});
 	};
+	
 	// Returns slide items in Array
 	function getArtifacts() {
 		return $A(selectionScroller.getItems());
 	};
+	
 	// Returns div html for a new slide
 	function newSlideDiv() {
-		return '<div class="decoration_item artifact text video"></div>';
+		return '<div class="decoration_item artifact text"></div>';
 	}
 
+	// Show slide links
 	function showActionLinks() {
 		$('selection_links').removeClassName('hidden');
 	};
 
-
+	// Hide slide links
 	function hideActionLinks() {
 		$('selection_links').addClassName('hidden');
 	};
+	
 	// Displays form for adding text description to an artifact
 	function showArtifactEditForm(artifact) {
 		var node;
@@ -388,18 +438,20 @@ var ArtifactSelection = function() {
 		}
 	};
 
-
+	// Hides artifact caption editor
 	function hideArtifactEditForm() {
 		$('artifact_editor').addClassName('hidden');
 		$('arti_preview_details').addClassName('hidden');
 	};
-	// Saves user-inputed text 
+	
+	// Saves artifact caption editor contents
 	function saveArtifactDescription() {
 		if (selectedArtifact !== null) {
 			selectedArtifact.text_description = $('artifact_description').value;
 		}
-		showNotice('saved');
+		mementoFlash.message('saved');
 	};
+	
 	// Removes all but the drophere div
 	function clearItems() {
 		var items = selectionScroller.getItems();
@@ -425,7 +477,8 @@ var ArtifactSelection = function() {
 			showPreview();
 		}
 	};
-	// Generates preview slideshow
+	
+	// Generates movie preview
 	function showPreview() {
 		hideArtifactEditForm();
 		movieGenerator.preview();
@@ -440,11 +493,25 @@ var ArtifactSelection = function() {
 		
 		addArtifact(slide[0]);
 		showActionLinks();
+		return true;
 	};
-	// Init function - takes artifact selection dom id
-	that.init = function(droppablesId) {
-		selectionId = '#' + droppablesId + ' .scrollable';
 
+	// Updates existing slide's wysiwyg html
+	that.saveHtmlSlide = function(html) {
+		if (editingArtifact !== null) {
+			editingArtifact.userHtml = html;
+			// Done editing, set editor back to create mode
+			textEditor.load();
+		} else {
+			mementoFlash.error("Error saving slide: don't know which slide to update");
+		}
+	};
+	
+	// Init function - takes artifact selection dom id
+	that.init = function(droppablesId, editor) {
+		selectionId = '#' + droppablesId + ' .scrollable';
+		textEditor = editor;
+		
 		// Make selection a drop target
 		Droppables.add('selection-scroller', {
 			hoverclass: 'selectorHover',
@@ -543,13 +610,11 @@ var AudioSelection = function() {
 	function onAudioAdded(draggable, droparea) {
 		var text;
 
-		console.log("audio added: " + draggable.id + " to " + droparea.id);
 		selection.push(draggable);
 		text = "Soundtrack files: " + selection.map(function(audio) {
 			return audioIcon + audio.down('div.info').innerHTML;
 		});
 		droparea.innerHTML = text;
-		console.log("total duration: " + getDuration());
 	};
 
 	that.init = function(soundtrackId) {
@@ -624,7 +689,6 @@ var MovieGenerator = function() {
 					var plugin = this.getPlugin("content");
 
 					if (slideInfoMap[clip.url]) {
-						console.log("playing clip with text: " + slideInfoMap[clip.url]);
 						plugin.setHtml(slideInfoMap[clip.url]);
 						//$('slide_caption').innerHTML = slideInfoMap[clip.url];
 						//$('slide_caption').show();

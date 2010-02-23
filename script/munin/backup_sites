@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+# 
+# $Id$
+# Munin plugin
+# Counts total backup items by type
+
+REQUEST_URI = 'http://beta.eternos.com/admin/munin/backup_sites?api=FL1mFl4mAlamB'
+DATA_LABELS = %w( facebook twitter gmail rss picasa )
+
+def output_config
+  puts <<-END
+graph_category Eternos.com
+graph_title backup site counts
+graph_vlabel count
+
+facebook.label Facebook
+twitter.label Twitter
+gmail.label Gmail
+rss.label RSS
+picasa.label Picasa
+END
+  exit 0
+end
+
+def output_values
+  status = `curl -s #{REQUEST_URI}`
+  
+  unless $?.success?
+    $stderr.puts "failed executing live_backups"
+    exit 1
+  end
+  DATA_LABELS.each do |site|
+    status =~ /#{site}\s+=\s+(\d+)/
+    puts "#{site}.value #{$1}"
+  end
+
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end

@@ -10,15 +10,15 @@
 - content_for(:header) do
   Step 1 - Add & Annotate
   
-#notice_notice.notice
-#notice_error.notice
+#flash_notice.notice{:style => "display: none;"}
+#flash_error.notice.hidden
 #artifact_picker
   #type_list
     %ul.tabs
       %li.artitype= link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums', :view => 'memento_editor')
       %li.artitype= link_to image_tag(content_icon_path + 'movie.png'), contents_path(:type => 'web_videos', :view => 'memento_editor')
       %li.artitype= link_to image_tag(content_icon_path + 'audio.png'), contents_path(:type => 'all_audio', :view => 'memento_editor')
-      %li.artitype= link_to image_tag(content_icon_path + 'doc.png'), 'editor', :id => 'new_text_slide'
+      %li.artitype= link_to image_tag(content_icon_path + 'doc.png'), 'editor.html', :id => 'new_text_slide'
       
   .instructions Select artifacts by clicking the tabs above.
   #artifact_view
@@ -27,11 +27,13 @@
       #pane2
       #pane3
       #pane4
-        #wysiwyg_instructions.instructions
-          Create a text-only movie slide using the the editor below.
+        #wysiwyg_instructions.hidden
+          %span{:style=>"text-align: center"}
+            You can add a text-only slide with this editor...<br/>
+            Just write your message here & click the Save button.
         <form id="wysiwyg_form" method="POST">
         %textarea.editor{:name => "slidecontent"}
-        %input{:type => 'submit', :value => 'Save & Add to Movie'} 
+        %input#save_wysiwyg{:type => 'submit', :value => 'Save & Add to Movie'} 
         %input#clear_wysiwyg{:type => 'button', :value => 'Clear'} 
         </form>
 .clear

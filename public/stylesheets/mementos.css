@@ -229,6 +229,7 @@
 
 #artifact-hover-menu-items li a:hover {
 	text-decoration: underline;
+	font-size: 10px;
 }
 
 
