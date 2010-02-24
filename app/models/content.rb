@@ -222,7 +222,11 @@ class Content < ActiveRecord::Base
   end
   
   def duration_seconds
-    d = duration ? (duration.to_i) / 1000 : 0
+    duration ? (duration.to_i) / 1000 : 0
+  end
+  
+  def duration_seconds_float
+    duration ? (duration.to_f) / 1000 : 0
   end
   
   def content_icon_path

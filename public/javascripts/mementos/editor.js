@@ -1,7 +1,16 @@
 // $Id$
 //
-// Memento editor object
+// Memento editor js
+
 // Helper functions
+
+// Untested: from http://forums.devshed.com/javascript-development-115/convert-seconds-to-minutes-seconds-386816.html
+String.prototype.pad = function(l, s){
+    return (l -= this.length) > 0
+        ? (s = new Array(Math.ceil(l / s.length) + 1).join(s)).substr(0, s.length) + this + s.substr(0, l - s.length)
+        : this;
+};
+
 var flash_and_fade = function(id, message) {
 	$(id).innerHTML = message;
 	$(id).show();
@@ -164,6 +173,10 @@ var MementoEditor = function() {
 		$(artifactDetailsId).update();
 		$('drag_instructions').addClassName('hidden');
 	};
+	// Updates movie details data
+	that.updateMovieDetails = function() {
+		artifactSelection.getMovieGenerator().movieUpdated();
+	};
 	return that;
 } ();
 
@@ -248,17 +261,16 @@ var ArtifactSelector = function() {
 	};
 	// info div element is bound to the function's scope
 	function onArtifactMouseover(event) {
-		var target = event.findElement();
-		var div = getArtifactContainer(target),
-			info = null;
+		var target = event.currentTarget;
+		var info = null;
 
-		if (div) {
-			info = div.down('div.info');
+		if (target) {
+			info = target.down('div.info');
 		}
 		if ((info !== null) && (info !== undefined)) {
-			this.innerHTML = info.innerHTML;
+			jQuery('.artifact_info').html(info.innerHTML);
 		} else {
-			this.innerHTML = '';
+			jQuery('.artifact_info').html('');
 		}
 	};
 	// Init function - takes artifact view parent dom id
@@ -294,12 +306,10 @@ var ArtifactSelector = function() {
 				size: 5,
 				hoverClass: 'hoverActive'
 			}).navigator().mousewheel();
-			// Observe scrollable parent container for mouseover to handle all artifact mouseovers
-			if ((infoDiv = pane.find('.artifact_info')) !== null) {
-				pane.hover(function() {
-					onArtifactMouseover.bindAsEventListener(infoDiv[0]);
-				});
-			}
+
+			jQuery(scroller).find('.decoration_item').hover(function(el) {
+				onArtifactMouseover(el);
+			});
 		}
 	};
 	return that;
@@ -321,28 +331,38 @@ var ArtifactSelection = function() {
 
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) {
-		var newSlide;
+		var newSlide, duration;
 
 		// Save artifact for other actions 
 		selectedArtifact = draggable;
-
+		
 		// superghosting: draggable fix in dragdropextra.js fails when dropped into Scrollable...
 		// workaround by creating a new slide 
 		// from the dragged element & hiding the cloned draggable element
+		// Currently only applies to videos
 		if (jQuery(selectedArtifact).css('position') == 'absolute') {
 			newSlide = jQuery(newSlideDiv()).append(selectedArtifact.innerHTML);
 			draggable.hide();
+			duration = jQuery(selectedArtifact).attr('duration');
 			selectedArtifact = newSlide[0];
+			selectedArtifact.durationSeconds = parseFloat(duration); // Copy playtime in seconds
 			// Make sure to create a draggable on the new element to keep drag&drop ordering support
 			new Draggable(selectedArtifact, {
 				revert: true
 			});
 		}
 		addArtifact(selectedArtifact);
-		
-		showActionLinks();
 		showArtifactEditForm(selectedArtifact);
+		
+		onMovieUpdated();
 	};
+	
+	// Called whenever artifact slide added or removed
+	function onMovieUpdated() {
+		movieGenerator.movieUpdated();
+		showActionLinks();
+	};
+	
 	// Adds artifact to scroller
 	function addArtifact(artifact) {
 		var drophere = getArtifacts().last();
@@ -371,6 +391,7 @@ var ArtifactSelection = function() {
 				// On hover out
 			});
 		}
+		
 		jQuery('.remove_slide').click(function() {
 			removeArtifact(this.up('.artifact'));
 		});
@@ -392,7 +413,10 @@ var ArtifactSelection = function() {
 		getArtifacts().each(function(i) {
 			if (artifact == i) {
 				new Effect.DropOut(i, {
-					afterFinish: function() { i.remove(); }
+					afterFinish: function() { 
+						i.remove(); 
+						onMovieUpdated();
+					}
 				});
 			}
 		});
@@ -407,7 +431,7 @@ var ArtifactSelection = function() {
 	function newSlideDiv() {
 		return '<div class="decoration_item artifact text"></div>';
 	}
-
+	
 	// Show slide links
 	function showActionLinks() {
 		$('selection_links').removeClassName('hidden');
@@ -492,7 +516,8 @@ var ArtifactSelection = function() {
 		slide[0].userHtml = html;
 		
 		addArtifact(slide[0]);
-		showActionLinks();
+		onMovieUpdated();
+		
 		return true;
 	};
 
@@ -505,6 +530,11 @@ var ArtifactSelection = function() {
 		} else {
 			mementoFlash.error("Error saving slide: don't know which slide to update");
 		}
+	};
+	
+	// Returns movie generator object
+	that.getMovieGenerator = function() { 
+		return movieGenerator;
 	};
 	
 	// Init function - takes artifact selection dom id
@@ -543,7 +573,7 @@ var ArtifactSelection = function() {
 
 		// create movie generator
 		movieGenerator = MovieGenerator.init(selectionScroller, audioSelection);
-
+		
 		// Setup click handlers
 		$('clear_selection').observe('click', clearItems);
 
@@ -593,36 +623,53 @@ var AudioSelection = function() {
 
 	var selection = new Array();
 	var audioIcon = '<img src="/javascripts/timeline/icons/audio.png" width="15" height="15"/>';
-
-	// Returns total duration of sountrack in seconds
-	function getDuration() {
-		var duration;
-		return selection.inject(0, function(acc, audio) {
-			if ((duration = audio.readAttribute('duration')) !== null) {
-				return acc + parseInt(duration, 10);
-			} else {
-				return acc;
-			}
-		});
-	};
-
-
+	var dropTarget,
+		ogDropareaHtml;
+	
+	// on audio dropped into droptarget
 	function onAudioAdded(draggable, droparea) {
 		var text;
 
+		dropTarget = droparea; // Save this for when we want to empty it
 		selection.push(draggable);
 		text = "Soundtrack files: " + selection.map(function(audio) {
 			return audioIcon + audio.down('div.info').innerHTML;
 		});
 		droparea.innerHTML = text;
+		// Update movie details
+		editor.updateMovieDetails();
 	};
 
+	// Removes all sounds
+	function clearItems() {
+		selection.clear();
+		jQuery(dropTarget).html(ogDropareaHtml);
+		editor.updateMovieDetails();
+	};
+	
+	// Returns total duration of sountrack in seconds
+	that.getDuration = function() {
+		var duration;
+		return selection.inject(0, function(acc, audio) {
+			if ((duration = audio.readAttribute('duration')) !== null) {
+				return acc + parseFloat(duration, 10).toFixed(2);
+			} else {
+				return acc;
+			}
+		});
+	};
+	
 	that.init = function(soundtrackId) {
 		// Make selection a drop target
 		Droppables.add(soundtrackId, {
 			hoverclass: 'soundtrackHover',
 			onDrop: onAudioAdded,
 			accept: ['audio']
+		});
+		
+		ogDropareaHtml = jQuery('#soundtrack-selection').html();
+		jQuery('#clear_sounds').click(function() {
+			clearItems();
 		});
 		return this;
 	};
@@ -632,7 +679,8 @@ var AudioSelection = function() {
 var MovieGenerator = function() {
 	var that = {};
 
-	var artifacts, soundtrack, duration, expose, seconds_per_frame, DefaultSecondsPerFrame = 5,
+	var artifacts, soundtrack, expose, seconds_per_frame, DefaultSecondsPerFrame = 5,
+		totalPlaytime,
 		slideInfoMap = new Hash();
 
 	// Creates playlist array for Flowplayer from selected artifacts
@@ -671,13 +719,52 @@ var MovieGenerator = function() {
 		// If soundtrack is empty,
 		return DefaultSecondsPerFrame;
 	};
+	
+	// Returns # slides in movie
+	function getNumSlides() {
+		return artifacts.getSize() - 1;
+	};
+	
+	// Converts seconds to MM:SS format
+	function secondsToDuration(seconds) {
+		var m = Math.floor(seconds / 60);
+		var s = (seconds % 60).toFixed();
+		return m + ':' + s.pad(2, "0");	
+	};
+	
+	// Returns avg seconds per slide
+	that.getAvgDurationPerSlide = function() {
+		return avgDurationPerFrame;
+	};
+	
+	// Returns total runtime
+	that.getTotalDuration = function() {
+		return totalPlaytime;
+	};
+	
+	// Updates movie metadata
+	that.movieUpdated = function() {
+		var i, artis = artifacts.getItems();
+		totalPlaytime = 0;
+		seconds_per_frame = 0;
+
+		for (i=0; i<getNumSlides(); i++) { 
+			totalPlaytime += artis[i].durationSeconds ? artis[i].durationSeconds : getDefaultClipDuration(); 
+		}
+		totalPlaytime = Math.max(totalPlaytime, soundtrack.getDuration());
+		avgDurationPerFrame = getNumSlides() ? (totalPlaytime / getNumSlides()).toFixed(2) : 0;
+		
+		jQuery('#duration').html('Total movie play time: ' + secondsToDuration(totalPlaytime));
+		jQuery('#frames').html(getNumSlides() + ' frames');
+		jQuery('#frame_seconds').html('Average frame display duration: ' + secondsToDuration(avgDurationPerFrame));
+	};
+	
 	// Create movie preview using existing selection
 	that.preview = function() {
 		var playlist = generatePlaylist();
 		if (playlist.size() === 0) {
 			return;
 		}
-
 		flowplayer('movie_player', FlowplayerSwfUrl, {
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
@@ -778,7 +865,7 @@ var MovieGenerator = function() {
 	that.init = function(selection, audio) {
 		artifacts = selection;
 		soundtrack = audio;
-		duration = 0;
+		totalPlaytime = 0;
 		seconds_per_frame = 0;
 		/* here is the exposing part of this demo */
 		expose = jQuery("#preview_pane").expose({
