@@ -20,7 +20,7 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = true
 
 config.action_controller.asset_host = Proc.new { |source, request|
-  (request ? request.protocol : 'http://') + 'dev.eternos.com' + request.port
+  (request ? request.protocol : 'http://') + 'dev.eternos.com'
 }
 
 # Use SMTP protocol to deliver emails
