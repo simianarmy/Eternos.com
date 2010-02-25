@@ -28,19 +28,19 @@
         
         = link_to(image_tag('logo.png', :border => "0"),  root_path)
         %ul
-          %li{:class => params[:action] == 'index' ? 'active' : 'inact'}
+          %li{:class => (controller.controller_name == 'home') ? 'active' : 'inact'}
             = link_to 'Home', '/'
             %span
-          %li{:class => params[:action] == 'what' ? 'active' : 'inact'}
+          %li{:class => (controller.action_name == 'what') ? 'active' : 'inact'}
             = link_to 'What is Eternos?', '/about/what'
             %span
-          %li{:class => request.url.match(/about/) ? 'active' : 'inact'}
+          %li{:class => (controller.controller_name == 'about' && controller.action_name == 'index') ? 'active' : 'inact'}
             = link_to 'About', about_path
             %span
-          %li{:class => params[:action] == 'blog' ? 'active' : 'inact'}
+          %li{:class => (controller.action_name == 'blog') ? 'active' : 'inact'}
             = link_to 'Our Blog', 'http://blog.eternos.com'
             %span
-          %li{:class => request.url.match(/signup/) ? 'active' : 'inact'}
+          %li{:class => (controller.controller_name == 'accounts') ? 'active' : 'inact'}
             = link_to 'Sign Up', 'signup'
     = yield
     
