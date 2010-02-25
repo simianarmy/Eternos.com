@@ -9,9 +9,9 @@
     /= link_to 'Login', login_path
     = hidden_field_tag :home_login, "1"
     - unless hide
-      <label class="login">No account yet?  
-      = link_to 'Free Signup!', new_account_url(:plan => AppConfig.default_plan)
-      </label>
+      No account yet? &nbsp;
+      = link_to 'Sign-Up Now!', new_account_url(:plan => AppConfig.default_plan)
+      &nbsp; &nbsp;
       = submit_tag 'submit', :value => 'login'
       -#
         - form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|

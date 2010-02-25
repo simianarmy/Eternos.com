@@ -1,17 +1,22 @@
 .footer
-  #here
-    %ul
-      %li= link_to 'Facebook', 'http://www.facebook.com/pages/Eternoscom/134291337425', :target => '_new'
-      %li= link_to 'follow us on Twitter', 'http://twitter.com/TeamEternos', :target => '_new'
-      %li= link_to 'press center', '/about/press'
-      %li= link_to 'terms of service', '/about/terms'
-      %li= link_to 'about us', '/about'
-      %li= link_to 'careers', '/about/careers'
-      %li= link_to 'privacy policy', '/about/privacy'
-      %li= link_to 'contact us', '/about/contact'
-      %li= link_to 'site map', '/about/sitemap'
-      / %li= link_to 'Terms', '/about/terms'
+  %div
+    %p.p1
+      = link_to 'Facebook', 'http://www.facebook.com/pages/Eternoscom/134291337425', :target => '_new'
+      = link_to 'follow us on Twitter', 'http://twitter.com/TeamEternos', :target => '_new'
+    %p.p2
+      = link_to 'what is eternos?', '/about/what'
+      = link_to 'about us', '/about'
+      = link_to 'blog', 'http://blog.eternos.com', :target => '_new'
+      = link_to 'contact us', '/about/contact'
+      = link_to 'site map', '/about/sitemap'
+    %p.p3
+      = link_to 'signup', '#'
+      = link_to 'terms of use', '/about/terms'
+      = link_to 'privacy policy', '/about/privacy'
+      = link_to 'press release', '/about/press'
+      = link_to 'careers', '/about/careers'
+
     %p
       &copy; 2008-2010, Eon Digital Preservation, Inc. All rights reserved.
-  %br
-  = render :partial => 'shared/mcafee_secure'
+      %br
+      = render :partial => 'shared/mcafee_secure'

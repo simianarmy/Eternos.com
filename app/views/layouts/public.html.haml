@@ -13,8 +13,8 @@
     /[if lte IE 6]
       = stylesheet_link_tag "new_design/styleie6.css"
 
-    /- stylesheet 'reset-fonts-grids'
-    - stylesheet 'screen', 'application', 'new_design/style.css'
+    /- stylesheet 'screen', 'application', 'reset-fonts-grids'
+    - stylesheet 'new_design/style.css'
     - load_prototype
     - javascript 'facebook'
     
@@ -28,19 +28,20 @@
         
         = link_to(image_tag('logo.png', :border => "0"),  root_path)
         %ul
-          %li{:class => params[:action] == 'show' ? 'active' : 'inact'}
+          %li{:class => params[:action] == 'index' ? 'active' : 'inact'}
             = link_to 'Home', '/'
             %span
           %li{:class => params[:action] == 'what' ? 'active' : 'inact'}
             = link_to 'What is Eternos?', '/about/what'
             %span
+          %li{:class => request.url.match(/about/) ? 'active' : 'inact'}
+            = link_to 'About', about_path
+            %span
           %li{:class => params[:action] == 'blog' ? 'active' : 'inact'}
             = link_to 'Our Blog', 'http://blog.eternos.com'
             %span
-          %li{:class => params[:action] == 'index' ? 'active' : 'inact'}
-            = link_to 'About', about_path
-            %span
-
+          %li{:class => request.url.match(/signup/) ? 'active' : 'inact'}
+            = link_to 'Sign Up', 'signup'
     = yield
     
     = render :partial => 'shared/site_footer' unless @hide_footer
