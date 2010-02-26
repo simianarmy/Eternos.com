@@ -27,15 +27,16 @@
           %br
           %span Add Trustees
     .signup-right
-      = render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan}
-/
-  .what
-    - form_tag('/accounts/create', :class => 'form_with_terms', :id => "new_account_form") do
-      = hidden_field_tag 'plan', @plan.name
-      = hidden_field_tag 'user[facebook_id]', @user.facebook_id
-      .yui-u.first
-        %p
+      %h1 Create Your Account
+      - form_tag('/accounts/create', :class => 'form_with_terms', :id => "new_account_form") do
+        = hidden_field_tag 'plan', @plan.name
+        = hidden_field_tag 'user[facebook_id]', @user.facebook_id
+
         - if @plan.allow_subdomain
           = render :partial => 'subdomain_form_fields', :locals => {}
         - fields_for @user, :html => {:id => 'new_user_form'} do |f|
           = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha, :checked_terms => @terms_accepted}
+      %p.signup01
+        %strong Or sign up with your Facebook account
+      %p.signup01= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
+        

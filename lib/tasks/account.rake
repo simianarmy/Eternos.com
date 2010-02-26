@@ -24,5 +24,11 @@ DESC
       end
     end
   end
+  
+  desc "run housekeeping tasks on accounts (run daily)"
+  task :daily_housekeeping => :environment do
+    Rake::Task["backup:disable_failed_backup_sources"].invoke
+    # notify_inactive
+  end
 end
       

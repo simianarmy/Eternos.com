@@ -21,6 +21,7 @@ class AccountsController < ApplicationController
   
   def new
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
+    @terms_accepted = true
     if params[:invitation_token]
       @invitation_token = params[:invitation_token]
     end
@@ -88,7 +89,7 @@ class AccountsController < ApplicationController
         activate_and_redirect_to account_setup_url
       end
     else
-      @terms_accepted = params[:user][:terms_of_service] == "1"
+      @terms_accepted = true unless params[:user][:terms_of_service] == "0"
       @invitation_token = params[:user][:invitation_token]
       
       render :action => 'new'#:layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
@@ -258,7 +259,7 @@ class AccountsController < ApplicationController
       redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(plan)
       @plan.discount = @discount
       @account.plan = @plan
-      @use_captcha = @plan.free?
+      @use_captcha = @plan.free? && AppConfig.email_registration_required
     end
     
     def redirect_url

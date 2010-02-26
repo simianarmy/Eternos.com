@@ -1,46 +1,43 @@
 = custom_error_messages_for(:user, :full_messages => true) unless params[:hide_errors]
 
 - if AppConfig.invitation_required
-  %p.input#invitation-token
-    Invitation Code: 
+  %p#invitation-token
+    %lable Invitation Code: 
     = text_field_tag 'user[invitation_token]', @invitation_token
-%p.input#fb-name
-%p.input#first-name-input
-  First Name:
+%p#fb-name
+%p#first-name-input
+  %label First Name:
   = f.text_field :first_name, :id => "first-name"
-%p.input#last-name-input
-  Last Name:
+%p#last-name-input
+  %label Last Name:
   = f.text_field :last_name, :id => "last-name"
-%p.input
-  Email Address:
+%p
+  %label Email Address:
   = f.text_field :email, :id => 'email'
-  %span.fine-print This will serve as your login name, and must be a valid email address
+  /%span.fine-print This will serve as your login name, and must be a valid email address
 #fb_pass_text{:style => "display: none;"}
   %p Choose a password in case of Facebook Account closure or disconnection
   %br
-%p.input#password-input
-  Password:
+%p#password-input
+  %label Password:
   = f.password_field :password, :style => "width: 184px"
   %span.fine-print Minimum 6 characters long
-%p.input#password-conf-input
-  Confirm Password:
+%p#password-conf-input
+  %label Confirm Password:
   = f.password_field :password_confirmation, :id => 'password-confirm'
-  %span.fine-print Confirm your password by entering it again
-- if user.new_record?
+  /%span.fine-print Confirm your password by entering it again
+%br
+- if use_captcha
   %br
-  %p
-  .checkbox_term
-    = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => checked_terms}
-    .term_text
-      &nbsp;I accept the 
-      = link_to 'Terms and Conditions', '/about/terms', :target => '_new'
-  .clear
-  - if use_captcha
-    %br
-    .captcha-right
-      %p.captcha_box
-        = recaptcha_tags :ssl => request.ssl?
-    
-  %p.input
-    %br
-    = submit_tag 'continue', :value => 'Continue', :class => "submit"
+  .captcha-right
+    %p.captcha_box= recaptcha_tags :ssl => request.ssl?
+
+%p
+  %label &nbsp;
+  = submit_tag 'signup', :value => 'Sign Up', :class => "submit"
+%br
+%p.signup-terms
+  %label &nbsp;
+  = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => checked_terms}
+  I accept the 
+  = link_to 'Terms and Conditions', '/about/terms', :target => '_new'

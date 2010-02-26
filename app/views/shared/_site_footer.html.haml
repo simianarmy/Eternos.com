@@ -4,6 +4,8 @@
       = link_to 'Facebook', 'http://www.facebook.com/pages/Eternoscom/134291337425', :target => '_new'
       %br
       = link_to 'follow us on Twitter', 'http://twitter.com/TeamEternos', :target => '_new'
+      %br
+      = link_to 'Eternos in the news', '/about/press'
     %p.p2
       = link_to 'what is eternos?', '/about/what'
       %br
@@ -15,16 +17,14 @@
       %br
       = link_to 'site map', '/about/sitemap'
     %p.p3
-      = link_to 'signup', '#'
+      = link_to 'signup', new_account_url(:plan => AppConfig.default_plan)
       %br
       = link_to 'terms of use', '/about/terms'
       %br
       = link_to 'privacy policy', '/about/privacy'
       %br
-      = link_to 'press release', '/about/press'
-      %br
       = link_to 'careers', '/about/careers'
-    %p
+    %p.p4
       &copy; 2008-2010, Eon Digital Preservation, Inc. All rights reserved.
-      %br
+    %p.p5
       = render :partial => 'shared/mcafee_secure'

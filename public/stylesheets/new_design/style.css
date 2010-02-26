@@ -125,4 +125,12 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .signup02, .signup02 A { color: #02419E;}
 .signup02 { background: url(/images/icon-email.gif) no-repeat; padding:0 0 0 50px;}
 
+/* fix 2-25-09 */
+.footer .p4 { width: 350px; white-space: nowrap;}
+.footer .p5 { clear: both; float: none; text-align: center;}
+.what01 {width: 490px; padding-right: 11px;}
+.what FIELDSET FIELDSET P { width: 300px; float: left;}
+.height01 { height: 65px;}
+
+
 
