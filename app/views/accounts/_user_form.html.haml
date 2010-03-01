@@ -1,5 +1,6 @@
-= custom_error_messages_for(:user, :full_messages => true) unless params[:hide_errors]
-
+- unless @hide_errors
+  = custom_error_messages_for(:user, :full_messages => true) 
+  
 - if AppConfig.invitation_required
   %p#invitation-token
     %lable Invitation Code: 
@@ -20,12 +21,16 @@
   %br
 %p#password-input
   %label Password:
-  = f.password_field :password, :style => "width: 184px"
+  = f.password_field :password
   %span.fine-print Minimum 6 characters long
 %p#password-conf-input
   %label Confirm Password:
-  = f.password_field :password_confirmation, :id => 'password-confirm'
+  = f.password_field :password_confirmation
   /%span.fine-print Confirm your password by entering it again
+%p
+  - fields_for :profile do |prof|
+    %label Birthday:
+    = prof.date_select 'birthday',  :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 120.years.ago.year, :prompt => { :day => 'day', :month => 'month', :year => 'year' }
 %br
 - if use_captcha
   %br

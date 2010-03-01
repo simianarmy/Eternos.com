@@ -12,14 +12,19 @@
     %label Password:
     = f.password_field :password
     %br
-    %label &nbsp;
+    %label &nbsp;    
     %em 6 characters minimum
+  %p
+    %label Birthday:
+    = f.date_select :birthday,  :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 120.years.ago.year, :prompt => { :day => 'day', :month => 'month', :year => 'year' }
   %p
     %label &nbsp;
     = submit_tag "Sign Up"
-%p
-  %strong Or sign up with your Facebook account
-%p= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
+
+#facebook-signup
+  %p
+    %strong Or sign up with your Facebook account
+  %p= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
 %p.home01
   %em *By proceeding, you confirm that your over 13 years of age and accept the 
   = link_to 'Privacy', '/about/privacy'

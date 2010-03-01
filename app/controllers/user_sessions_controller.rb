@@ -23,8 +23,13 @@ class UserSessionsController < ApplicationController
     @user_session    = UserSession.new(params[:user_session])
     
     if @user_session.save
-      #flash[:notice] = "Welcome, #{@user_session.user.name}"
-      redirect_back member_home_url
+      # 1st time logged in - send to account setup with welcome message
+      if @user_session.user && (@user_session.user.login_count <= 1)
+        flash[:notice] = "Welcome, #{@user_session.user.name}"
+        redirect_to account_setup_url
+      else # otherwise redirect back to last url, or member home
+        redirect_back member_home_url
+      end
     else
       if facebook_session && !params['commit']
         redirect_to new_account_path(:plan => 'Free')
@@ -37,6 +42,6 @@ class UserSessionsController < ApplicationController
 
   def destroy
     current_user_session.destroy
-    redirect_to root_path
+    redirect_to new_user_session_url
   end
 end

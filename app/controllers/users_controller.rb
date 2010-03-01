@@ -34,7 +34,7 @@ class UsersController < ApplicationController
   def activate
     @user = params[:activation_code].blank? ? false : User.find_by_activation_code(params[:activation_code])
     
-    if @user && !@user.active?
+    if @user && @user.pending?
       @user.activate!
     else
       flash[:notice] = "Sorry, we could not activate this account"

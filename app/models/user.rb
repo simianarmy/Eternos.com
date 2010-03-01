@@ -138,6 +138,13 @@ class User < ActiveRecord::Base
     @activated
   end
   
+  # For Authlogic::Session::MagicStates 
+  # When using email registration or whatever, we need a way to prevent user from 
+  # getting logged in after being created until they complete the signup process.
+  def confirmed?
+    live?
+  end
+  
   def facebook_session_connect(session)
     session.connect(facebook_session_key, facebook_id, nil, facebook_secret_key)
   end

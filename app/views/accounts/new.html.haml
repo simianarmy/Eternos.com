@@ -1,31 +1,11 @@
+- stylesheet 'application'
 - javascript 'facebook'
 - javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" if @use_captcha
-- use_form
 - hide_login_box
 
 .content.signup
   %fieldset
-    .signup-left
-      %h1 Sign-Up Process
-      %ul
-        %li.signup-active
-          %strong Sign-Up
-          %br
-          %span Account Info
-        %li.signup-inactive
-          %strong Email Verified
-          %br
-          %span Valid Email Confirmation
-      %h1.grey Account Setup
-      %ul
-        %li.signup-inactive 
-          Backup
-          %br
-          %span Add Backup Sites
-        %li.signup-inactive
-          Life Key
-          %br
-          %span Add Trustees
+    = render :partial => 'signup_wizard_left', :locals => {:steps => {}}
     .signup-right
       %h1 Create Your Account
       - form_tag('/accounts/create', :class => 'form_with_terms', :id => "new_account_form") do
@@ -36,7 +16,9 @@
           = render :partial => 'subdomain_form_fields', :locals => {}
         - fields_for @user, :html => {:id => 'new_user_form'} do |f|
           = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha, :checked_terms => @terms_accepted}
-      %p.signup01
-        %strong Or sign up with your Facebook account
-      %p.signup01= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
-        
+      #facebook-signup
+        %p.signup01
+          %strong Or sign up with your Facebook account
+        %p.signup01= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
+        %p.signup01
+          <em>*By proceeding, you confirm that your over 13 years of age and accept the <a href="privacy.html">Privacy</a> and <a href="terms.html">Terms</a>.</em>

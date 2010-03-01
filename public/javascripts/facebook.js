@@ -7,9 +7,10 @@ var EternosFB = function() {
 	    var api = FB.Facebook.apiClient;
 		  var uid = api.get_session().uid;
 			var fb_name_tag;
+			var birthday;
 			
 		  // Get full name for form inputs
-		  api.users_getInfo([uid], ["first_name", "last_name"], function(response, exception) {
+		  api.users_getInfo([uid], ["first_name", "last_name", "birthday_date", "email"], function(response, exception) {
 				if (exception) {
 					alert("Error logging you in, contact support");
 				} else if ( response[0] ) {
@@ -19,8 +20,17 @@ var EternosFB = function() {
 		    		$('first-name').value = response[0].first_name;
 		    		$('last-name').value = response[0].last_name;
 					}
+					$('email').balue = response[0].email;
+					// Parse birthday string for date select
+					if ((birthday = response[0].birthday_date) && (birthday !== '')) {
+						dates = birthday.split('/');
+						$('profile_birthday_2i').value = parseInt(dates[0]);
+						$('profile_birthday_3i').value = parseInt(dates[1]);
+						$('profile_birthday_1i').value = dates[2];
+					}					
 					if ($('new_account_form')) {
-						new Effect.Pulsate('new_account_form', { pulses: 3 });
+						new Effect.Highlight('new_account_form', { pulses: 3 });
+						$('facebook-signup').fade({duration: 1.0, from: 1, to: 0.3});
 					}
 				}
 		  });

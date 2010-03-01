@@ -62,8 +62,12 @@ class AccountsController < ApplicationController
     # uncomment at your own risk
     # reset_session
     
-    # Don't use email activation for paying accounts
-    @user.registration_required = false if @account.needs_payment_info?
+    # Using email registration?
+    if @account.needs_payment_info?
+      @user.registration_required = false # Not for paying accounts
+    else
+      @user.registration_required = AppConfig.email_registration_required 
+    end
     
     # if @account.needs_payment_info?
     #       @address.first_name = @creditcard.first_name
@@ -72,27 +76,36 @@ class AccountsController < ApplicationController
     #       @account.creditcard = @creditcard
     #     end
     
-    # Free subscriptions use Captcha in signup form
-    @success = @plan.free? ? verify_recaptcha(:model => @account) : true
+    # Some subscriptions use Captcha in signup form
+    @hide_errors = params[:hide_errors]
+
+    @success = using_captcha_in_signup?(@account) ? verify_recaptcha(:model => @account) : true
     @account.name = @user.full_name
     
     if @success && @account.save
-      @user.register!
-      
-      if @account.needs_payment_info?
-        @subscription = @account.subscription
-        flash[:domain] = @account.domain
-        # Save account id for next action's load_subscription()
-        session[:account_id] = @account.id
-        render :action => 'billing'
+      unless @user.email_registration_required?
+        @user.register!
+        
+        if @account.needs_payment_info?
+          # display billing page
+          @subscription = @account.subscription
+          flash[:domain] = @account.domain
+          # Save account id for next action's load_subscription()
+          session[:account_id] = @account.id
+          render :action => 'billing'
+        else
+          # login & redirect to account setup
+          activate_and_redirect_to account_setup_url
+        end
       else
-        activate_and_redirect_to account_setup_url
+        # Force logout for email confirmation requirement
+        cookies.delete :auth_token
       end
-    else
+    else # @account not saved
       @terms_accepted = true unless params[:user][:terms_of_service] == "0"
       @invitation_token = params[:user][:invitation_token]
       
-      render :action => 'new'#:layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
+      render :action => :new
     end
   end
   
@@ -259,7 +272,7 @@ class AccountsController < ApplicationController
       redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(plan)
       @plan.discount = @discount
       @account.plan = @plan
-      @use_captcha = @plan.free? && AppConfig.email_registration_required
+      @use_captcha = using_captcha_in_signup?(@account)
     end
     
     def redirect_url
@@ -315,4 +328,7 @@ class AccountsController < ApplicationController
       redirect_to member_home_url if current_user
     end
 
+    def using_captcha_in_signup?(account)
+      account.plan.free? && !AppConfig.email_registration_required
+    end
 end

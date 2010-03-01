@@ -191,7 +191,7 @@ class ApplicationController < ActionController::Base
     uri = session[:original_uri]
     session[:original_uri] = nil
     
-    unless uri.nil? || uri.match(/logout/)
+    unless uri.nil? || uri.match(/logout|signup/)
       RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{uri}"
       redirect_to uri
     else

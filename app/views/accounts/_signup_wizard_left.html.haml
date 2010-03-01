@@ -1,0 +1,24 @@
+.signup-left
+  %h1 Sign-Up Process
+  %ul
+    %li{:class => get_signup_wizard_step_class(steps[:signup])}
+      %strong Sign-Up
+      %br
+      %span Account Info
+    %li{:class => get_signup_wizard_step_class(steps[:email])}
+      - if steps[:signup] || steps[:email]
+        %strong Email Verified
+      - else
+        Email Verified
+      %br
+      %span Valid Email Confirmation
+  %h1.grey Account Setup
+  %ul
+    %li{:class => get_signup_wizard_step_class(steps[:backup])}
+      Backup
+      %br
+      %span Add Backup Sites
+    %li{:class => get_signup_wizard_step_class(steps[:lifekey])}
+      Life Key
+      %br
+      %span Add Trustees

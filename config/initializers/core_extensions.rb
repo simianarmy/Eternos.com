@@ -2,6 +2,7 @@
 module ActionView
   module Helpers
     module ActiveRecordHelper
+      # This is retarded...
       def error_messages_for(*params)
         options = params.extract_options!.symbolize_keys
                   
