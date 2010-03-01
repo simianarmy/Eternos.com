@@ -10,7 +10,7 @@ var EternosFB = function() {
 			var birthday;
 			
 		  // Get full name for form inputs
-		  api.users_getInfo([uid], ["first_name", "last_name", "birthday_date", "email"], function(response, exception) {
+		  api.users_getInfo([uid], ["first_name", "last_name", "birthday_date"], function(response, exception) {
 				if (exception) {
 					alert("Error logging you in, contact support");
 				} else if ( response[0] ) {
@@ -20,7 +20,6 @@ var EternosFB = function() {
 		    		$('first-name').value = response[0].first_name;
 		    		$('last-name').value = response[0].last_name;
 					}
-					$('email').balue = response[0].email;
 					// Parse birthday string for date select
 					if ((birthday = response[0].birthday_date) && (birthday !== '')) {
 						dates = birthday.split('/');
