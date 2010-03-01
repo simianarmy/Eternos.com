@@ -68,6 +68,10 @@ class AccountsController < ApplicationController
     else
       @user.registration_required = AppConfig.email_registration_required 
     end
+    if params[:quickform] == "true"
+      RAILS_DEFAULT_LOGGER.debug "Using short form!"
+      @user.password_confirmation = @user.password
+    end
     
     # if @account.needs_payment_info?
     #       @address.first_name = @creditcard.first_name
