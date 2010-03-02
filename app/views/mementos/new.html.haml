@@ -66,6 +66,7 @@
   #duration
   #frames
   #frame_seconds
+  #audio-info
 %br
 #selection_links.hidden
   = link_to 'Clear Slides', '#', :id => 'clear_selection' 
@@ -88,7 +89,7 @@
     #arti_preview_img
 .clear
 #preview_pane.overlay
-  #movie_pane.hidden
+  #movie_pane{:style => "display: none;"}
     #movie_player
 
 :javascript

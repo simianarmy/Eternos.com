@@ -1,7 +1,7 @@
-- @hide_login = true
+- @hide_login = false
 %p
-= authlogic_facebook_login_button
-.clear
+  = authlogic_facebook_login_button
+<div style="clear:both"></div>
 - form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
   %br
   %p
