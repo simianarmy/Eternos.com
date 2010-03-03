@@ -146,7 +146,7 @@ require 'thinking_sphinx'
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
-  "<span class='field_error'>#{html_tag}</span>"
+  "#{html_tag}<span class='field_error'></span>"
 end
 
 # Disable email validator domain lookups

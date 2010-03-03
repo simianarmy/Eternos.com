@@ -26,6 +26,18 @@ module FormsHelper
     error_messages_for(*args)
   end
   
+  # Creates standard form errors box using localization
+  def custom_form_error_header(*args)
+    header = t('activerecord.errors.template.header.oops')
+    message = t('activerecord.errors.template.body', 
+      :email_link => link_to_support_email)
+    
+    content_tag(:div, :id => "errorExplanation", :class => "errorExplanation") do
+      content_tag(:h2, header) +
+      content_tag(:p, message)
+    end
+  end
+  
   # Template helper for generic forms
   def form_field_with_label(form, field, options={})
     render :partial => 'forms/field',

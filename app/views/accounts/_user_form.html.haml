@@ -1,32 +1,18 @@
-- unless @hide_errors
-  = custom_error_messages_for(:user, :full_messages => true) 
-  
 - if AppConfig.invitation_required
   %p#invitation-token
     %lable Invitation Code: 
     = text_field_tag 'user[invitation_token]', @invitation_token
 %p#fb-name
-%p#first-name-input
-  %label First Name:
-  = f.text_field :first_name, :id => "first-name"
-%p#last-name-input
-  %label Last Name:
-  = f.text_field :last_name, :id => "last-name"
-%p
-  %label Email Address:
-  = f.text_field :email, :id => 'email'
-  /%span.fine-print This will serve as your login name, and must be a valid email address
+= f.text_field :first_name, :id => "first-name", :container_id => "first-name-input"
+= f.text_field :last_name, :id => "last-name", :container_id => "last-name-input"
+= f.text_field :email, :id => 'email'
+
 #fb_pass_text{:style => "display: none;"}
   %p Choose a password in case of Facebook Account closure or disconnection
   %br
-%p#password-input
-  %label Password:
-  = f.password_field :password
-  %span.fine-print Minimum 6 characters long
-%p#password-conf-input
-  %label Confirm Password:
-  = f.password_field :password_confirmation
-  /%span.fine-print Confirm your password by entering it again
+= f.password_field :password
+= f.password_field :password_confirmation
+
 %p
   - fields_for :profile do |prof|
     %label Birthday:
@@ -43,6 +29,6 @@
 %br
 %p.signup-terms
   %label &nbsp;
-  = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => checked_terms}
+  = check_box_tag 'user[terms_of_service]', checked_terms, {:id => 'terms_of_service', :checked => checked_terms}
   I accept the 
   = link_to 'Terms and Conditions', '/about/terms', :target => '_new'

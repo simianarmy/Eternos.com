@@ -20,7 +20,8 @@ class ErrorHandlingFormBuilder < ActionView::Helpers::FormBuilder
       locals = {
         :element => yield,
         :label => label(field, options[:label])
-      }
+      }.reverse_merge(options)
+      
       if has_errors_on?(field)
         locals.merge!(:error => error_message(field, options))
         @template.render :partial => 'forms/field_with_errors',

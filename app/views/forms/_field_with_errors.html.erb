@@ -1,11 +1,7 @@
-<p>
-    <span class="field_label">
-    	<%= label %>
-    </span>
-    <span class="form_field">
-    	<%= element %>
-		<span class="form_error_message">
-			<!--<%= error %>-->
-		</span>
-    </span>
+<p id="<%= container_id if local_assigns[:container_id] %>" class="error <%= container_class if local_assigns[:container_class] %>">
+  <%= label %>
+  <%= element %>
+	<span class="form_error_message">
+	  <%= error %>
+  </span>
 </p>

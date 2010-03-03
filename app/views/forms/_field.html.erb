@@ -1,8 +1,4 @@
-<p>
-    <span class="field_label">
-    	<%= label %>
-    </span>
-    <span class="form_field">
-    	<%= element %>
-    </span>
+<p id="<%= container_id if local_assigns[:container_id] %>" class="<%= container_class if local_assigns[:container_class] %>">
+  <%= label %>
+  <%= element %>
 </p>
