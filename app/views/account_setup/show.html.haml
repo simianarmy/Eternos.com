@@ -1,25 +1,20 @@
 - use_calendar
 - title 'Account Setup'
   
-.acc-setup-container
-  .acc-setup-top
-  .acc-setup-body
-    .top-box
-      .clear
-      .top-box2
-        #account-setting-title.acc-title
-          Account Setup
-        .top-rightbox
+.content.login1
+  %fieldset
+    .login1_left
+      %h1 Account Setup
+      %ul.signup-left
+        %li.signup-active
+          %strong Step 1
+          %br
+          %span Online Accounts
+        %li.signup-inactive
+          %strong Step 2
+          %br
+          %span Life Key or Invite Friends??
           
-        .clear
-    .popup-content-left
-      = render :partial => "setting_nav", :locals => { :active_link => "step" + @active_step.to_s }
-    
-    /- Bad things happen if we use .popup-content-right
-    .pop-content-right
-      %center
-        = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
+    .login1_right.login1-mid.login2-mid
       = render :partial => @content_page, :locals => {:settings => @settings}
       
-    .clear
-  .acc-setup-down

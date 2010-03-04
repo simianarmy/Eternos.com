@@ -1,43 +1,22 @@
-<div id="account-setting-content2" class="makeScroll">
-  <div class="title3"><h3>Backup Your Online Life</h3><br />
-    <div class="textarea7">
-      <p/>
-      Add the online accounts that you would like us to backup for you.
-      Eternos currently provides backup services for:
-      <br/>
-      <br/>
-      <b>Facebook</b>: Wall posts & photos
-      <br/>
-      <b>Twitter</b>: Your tweets
-      <br/>
-      <b>RSS Feeds</b>: Feed entries &amp; screen captures
-      <br/>
-      <b>Gmail Accounts</b>: All archived emails
-      <br/>
-      <b>Picasa Web Albums</b>: All your Picasa Web Accounts photos
-      <p/>
-      <br/>
-      Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your  Timeline.  Easily browse, tag, annotate, remove, and share any of your life's events.
-    </div>
+<h1>Add the online accounts that you would like us to backup for you.</h1>
+<p>Eternos currently provides backup services for:</p>
+<p><%= image_tag '2nd-facebook.gif', :class => settings.facebook_confirmed ? 'active2' : "" %> 
+  <strong>Facebook:</strong> Eternos allows you to back up Wall posts &amp; photos.</p>
+<p><%= image_tag '2nd-twitter.gif', :class => settings.twitter_confirmed ? 'twitter-active' : 'twitter-btn' %> 
+  <strong>Twitter:</strong> Back up all your tweets.</p>
+<p><%= image_tag '2nd-rss.gif', :class => settings.rss_confirmed ? 'rss-active' : 'rss-btn' %> 
+  <strong>RSS Feeds:</strong> Back up feed entries &amp; screen captures.</p>
+<p><%= image_tag '2nd-gmail.gif', :class => settings.gmail_confirmed ? 'gmail-active' : 'gmail-btn' %> 
+  <strong>Gmail Accounts</strong>: Store and archived all emails.</p>
+<p><%= image_tag '2nd-picasa.gif', :class => settings.picasa_confirmed ? 'picasa-active' : 'picasa-btn' %> 
+  <strong>Picasa Web Albums:</strong>  Preserve all your Picasa Web photos. </p>			
+<p>Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your Timeline. Easily browse, tag, annotate, remove, and share any of your life's events. </p>
+<p>&nbsp; &nbsp; <input type="submit" value="Finish Setup" /></p>			
+
+<p>&nbsp;</p>
+</div>
 	<%= show_flash_messages :fade => 15 %>
-  <div class="network-icon-box">
-    <%= link_to_backup_source_icon('facebook-box', "", {:class => "#{settings.facebook_confirmed ? 'fb-active' : 'fb-btn2'}", :id => "fb-button"}) %>
-
-    <%= link_to_backup_source_icon('twitter-box', "", {:class => "#{settings.twitter_confirmed ? 'twitter-active' : 'twitter-btn'}", :id => "twitter-button"})  %>
-    
-    <%= link_to_backup_source_icon('rss-box', "", {:class => "#{settings.rss_confirmed ? 'rss-active' : 'rss-btn'}", :id => "rss-button"})  %>
-    
-    <%= link_to_backup_source_icon('gmail-box', "", {:class => "#{settings.gmail_confirmed ? 'gmail-active' : 'gmail-btn'}", :id => "gmail-button"})  %>
-    
-    <%= link_to_backup_source_icon('picasa-box', "", {:class => "#{settings.picasa_confirmed ? 'picasa-active' : 'picasa-btn'}", :id => "picasa-button"}) %>
-  </div>
-
   <div style="clear:both"></div>
-  <div id="notice" class="flash_notice"></div>
-  <div id="twitter_notice" class="flash_notice"></div>
-  <div id="facebook_notice" class="flash_notice"></div>
-  <div id="rss_notice" class="flash_notice"></div>
-  <br />
   
   <div class="network-login-box" id="form-box">
     <div id="facebook-box" style="display:none;">

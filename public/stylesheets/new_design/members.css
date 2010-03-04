@@ -1,0 +1,103 @@
+BODY { margin: 0; padding: 0; background: #fff url(/images/bg_header.gif) repeat-x; font-family: Arial, Helvetica, sans-serif; font-size: 14px;}
+FIELDSET { margin: 0; padding: 0; border: none;}
+
+/* header */
+.header { width: 100%; height: 100px; border-bottom: 1px solid #CCCCCC; background: url(/images/clouds.gif) top right no-repeat;}
+.header DIV { width: 988px; margin: 0 auto;}
+.header DIV FORM DIV { width: auto;}
+.header IMG { float: left;}
+.header FORM { margin: 23px 15px 0 0; padding: 0; float: right;}
+.header INPUT[type=submit] { background: url(/images/button-logout.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer; font-family: Arial, Helvetica, sans-serif; vertical-align: middle; margin-left: 10px;}
+.header UL { margin: 15px 0 0 500px; padding: 0; float: left;}
+.header LI { display: inline;}
+.inact, .inact2 { margin: 0 0 0 5px; height: 32px; float: left;}
+.inact A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left01.png); display: block; height: 26px; padding: 6px 0px 0 10px; float: left; white-space: nowrap;}
+.inact2 A { color: #cfcfcf; font-size: 18px; text-decoration: none; background: url(/images/nav-left01.png); display: block; height: 26px; padding: 6px 0px 0 10px; float: left; white-space: nowrap;}
+.inact2 SPAN, .inact SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right01.png); height: 32px;}
+.active { margin: 0 0 0 5px; height: 32px; float: left;}
+.active A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left02.png); display: block; height: 27px; padding: 6px 0px 0 10px; float: left; white-space: nowrap;}
+.active SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right02.png); height: 33px;}
+.active A:hover, .inact A:hover { text-decoration: underline; color: #02419E; }
+
+.header .log01 { margin: 15px 0 0 215px;}
+.header .log01 .inact A { color: #CFCFCF;}
+
+/* footer */
+.footer { height: 137px; background: url(/images/bg_footer.gif) repeat-x; border-top: 4px solid #CCCCCC; padding-top: 22px;}
+.footer DIV { width: 988px; margin: 0 auto;}
+.footer UL { margin: 0; padding: 0; width: 528px; list-style: none;}
+.footer LI { float: left; width: 176px; margin-bottom: 5px;}
+.footer LI, .footer LI A { color: #02419E; text-decoration: none;}
+.footer LI A:hover { text-decoration: underline;}
+.footer P { margin: 0; padding: 0; color: #02419E;}
+
+/* content */
+.content { width: 988px; margin: 0 auto; padding: 25px 0;}
+
+/* 1st login */
+.login1_left { width: 249px; float: left; margin-right: 13px;}
+.login1_left H1, .login1_right H1 { margin: 0 0 18px 0; padding: 0 0 10px 0; font-size: 20px; font-weight: normal; border-bottom: 1px dashed #CCCCCC; color: #02419E;}
+.login1_left UL { margin: 0; padding: 0; list-style: none;}
+.login1_left LI { margin-bottom: 30px;}
+.li-active { background: url(/images/green-check.gif) no-repeat 100px 0;}
+.login1_left H2 { margin: 0; padding: 0; font-size: 18px; font-weight: normal; color: #2EA4FF;}
+.login1_left H3 { margin: 0; padding: 0; font-size: 12px; font-weight: normal; color:#9D9D9D;}
+
+.login1_right { width: 722px; float: left; color: #5F5F5F;}
+.icons IMG { vertical-align: top;}
+
+.signup-left { margin: 0; padding: 0; list-style: none; font-size: 18px; color: #9D9D9D; line-height: 16px;}
+.signup-left SPAN { font-size: 12px;}
+.signup-left STRONG { color: #2EA4FF; font-weight: normal;}
+.signup-left LI { margin-bottom: 25px; padding-left: 35px;}
+.signup-active { background: url(/images/signup-active.gif) no-repeat;}
+.signup-inactive { background: url(/images/signup-inactive.gif) no-repeat;}
+
+.login1-mid { font-size: 12px;}
+.login1-mid STRONG { color: #FF0000;}
+.login1-mid LABEL { font-weight: bold; display: block; width: 80px; float: left; margin-right: 15px; text-align: right; padding-top: 5px;}
+.login1-mid P { float: none; clear: both; margin: 0; padding: 8px 0;}
+
+.login1-mid INPUT[type=text] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #666666; font-weight: bold; width: 245px;}
+.login1-mid SELECT { border: 1px solid #CCCCCC; padding: 2px; font-family: Arial, Helvetica, sans-serif; color: #666666; font-weight: bold;}
+.login1-mid INPUT[type=submit] { background: url(/images/button-next-step.gif) no-repeat; width: 197px; height: 50px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #FFFFFF; cursor: pointer; font-weight: bold;}
+
+/* login 2 */
+.login2-mid STRONG { color: #02419E; font-size: 14px;}
+.login2-mid IMG { vertical-align: middle; margin-right: 20px;}
+.login2-mid FORM P { padding: 14px 0;}
+.login2-mid .active2 { background: url(/images/activated2.gif) no-repeat 0px bottom; padding: 0 14px 30px 14px; margin:0 6px 0 -14px;}
+
+
+/* dashboard */
+#acct_settings { margin-top: -15px;}
+#acct_settings A { color: #6D6D6D; text-decoration: none; display: block; width: 131px; height: 37px; padding: 20px 0 0 10px; font-weight: bold;}
+#acct_settings A:hover { font-weight: bold;  background: url(/images/blue-button.gif) no-repeat;}
+#acct_settings LI { margin: 0 0 -15px 0; padding: 0;}
+.login1_right HR { clear: both;  margin: 20px 0; padding: 0; border: none; border-top: 1px dashed #cccccc; height: 1px;}
+
+#activated-services { background: url(/images/icon-activated.gif) no-repeat bottom center; padding:0 10px 22px 10px; float: left; margin: 0 -5px;}
+#active_network-add { background: url(/images/icon-add-more.gif) top center no-repeat; padding:0 0 10px 85px; margin-right: 10px; color: #000000; font-size: 12px;}
+.artifacts IMG { border: 3px solid #647384; margin: 0 3px 12px 0;}
+
+.search_timeline { margin: 0; padding: 0;}
+.search_timeline INPUT[type=text] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777; vertical-align: middle;}
+.search_timeline INPUT[type=submit] { background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer; vertical-align: middle;}
+
+.tags A { text-decoration: none; color: #6D6D6D;}
+
+.home { font-size: 12px;}
+
+.events { margin: 0; padding: 0; list-style: none;}
+.events LI { clear: both; float: none;}
+.events STRONG { display: block; float: left; width: 150px; height: 100px; text-align: center;}
+.fb-posts { float: left; width: 235px; height: 100px; padding-right: 100px;}
+.fb-posts P { margin: 0; padding: 0;}
+
+.event-images IMG { border: 1px solid #647384; margin: 0 3px 12px 0;}
+.fb-posts EM { background: url(/images/icon-facebook-small.gif) no-repeat 0 2px; padding-left: 20px; font-style: normal; font-weight: bold; color: #3154A7; font-size: 14px;}
+.fb-posts A, .event-images A { float: right; font-size: 11px; color: #3154A7;}
+
+.event-images { margin: 0; padding: 0 50px 0 0;}
+.event-images EM { background: url(/images/icon-images.gif) no-repeat 0 2px; padding-left: 20px; font-style: normal; font-weight: bold; color: #3154A7; font-size: 14px;}
+.event-images IMG { border: 2px solid #647384; margin: 0 3px 12px 0;}

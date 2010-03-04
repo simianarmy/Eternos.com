@@ -3,11 +3,11 @@
 class AccountSetupController < ApplicationController
   before_filter :login_required
   require_role "Member"
+  
   before_filter :load_facebook_desktop
   before_filter :load_facebook_session
   before_filter :load_presenter
   before_filter :load_completed_steps
-  layout 'account_setup'
   
   ssl_required :show, :save_personal_info, :backup_sources, :personal_info
   

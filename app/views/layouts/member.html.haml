@@ -9,7 +9,8 @@
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
-    - stylesheet 'member', 'screen', 'application' #, 'new_member/style'
+    /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
+    - stylesheet 'new_design/members'
     - load_prototype unless @no_prototype
     - use_lightview
     - use_lowpro
@@ -22,48 +23,51 @@
     = yield(:javascript)
     / end bundle
   %body
-    #wrapper
-      #header
-        #logo.alignleft
-          %h1= link_to((image_tag 'eternos.gif', :id => 'eternos_logo', :border => '0'),  member_home_path)
-          /= render :partial => 'shared/login_box' unless @hide_login_box
-        #menu.alignright
-          = render :partial => 'users/inner_nav'
-          %br
-          %br
-          .clearboth
-          - cache 'user_nav' do
-            = render :partial => 'users/nav'
-        .clearboth
+    .header
+      %div
+        %form
+          Welcome,
+          %strong= @current_user.full_name
+          - if @facebook_session
+            %li.logout= fb_logout_link "log&nbsp;out", logout_path
+          - else
+            %li.logout= link_to "log&nbsp;out", logout_path
+    
+        = link_to((image_tag 'logo.png', :border => '0'),  member_home_path)
+        %ul.log01
+          %li{:class => tab_class_active?('home')}
+            = link_to 'Home', member_home_path
+            %span
+          %li{:class => tab_class_active?('video_diary')}
+            = recording_popup_link 'Video Journal'
+            %span
+          %li{:class => tab_class_active?('lifekey')}
+            = link_to 'Life Key', trustees_path
+            %span
+          %li{:class => tab_class_active?('bio')}
+            = link_to_lightview 'Bio', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
+            %span
+          %li{:class => tab_class_active?('images')}
+            = link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
+            %san
+          %li{:class => tab_class_active?('setup')}
+            = link_to 'Account Setup', account_setup_path
+            %span
+          /-%li= link_to_lightview 'Upload', new_content_path(:dialog=>true), {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '600'}
+              
       
-      #topdiv
-      #content
-        .content_title.alignleft
-          = yield(:title_icon)
-          /%h2= yield(:title)
-        .clearboth
+    / for rjs flash notices
+    #notice.flash_notice
+    = show_flash_messages
+    
+    = yield(:header)
+    / start content
+    = yield
+    / end content
+     
+    = render :partial => 'shared/site_footer' unless @hide_footer
+    = render :partial => 'shared/get_satisfaction' unless @hide_feedback
 
-        / for rjs flash notices
-        #notice.flash_notice
-        = show_flash_messages
-        /= render :partial => 'users/user_bar'
-        .context
-          %span.subtitle2= yield(:header)
-          
-        #sub_content
-          /.content_title.alignleft
-          .clearboth
-          %br
-          = yield
-         
-        / end of sub content
-        .clearboth
-        
-      / end of content area  
-      #bd
-      = render :partial => 'shared/og_footer'
-        
-    = render :partial => 'shared/get_satisfaction'
     - if @facebook_session
       = fb_connect_javascript_tag
       = init_fb_connect "XFBML"
@@ -74,4 +78,3 @@
       Element.observe(window, 'load', function() { 
         handle_timeout_popups(#{session_timeout_seconds});
       });
-      

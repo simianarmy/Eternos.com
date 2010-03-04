@@ -101,4 +101,10 @@ Xen for virtualization
 
 Backup Monitoring: http://www.rightmirror.com/
 
+RabbitMQ Monitoring:
+  Alice & Wonderland
+  Alice: 
+    put .erlang.cookie in home directory
+    run on rabbit server with command from alice dir: ./scripts/alice.sh -p 9998 -d
+    
 Cap recipes http://capitate.rubyforge.org/index.html

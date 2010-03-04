@@ -261,6 +261,10 @@ module LayoutHelper
      expression ? "display:none;" : ""
   end
    
+  def tab_class_active?(page)
+    'inactive'
+  end
+  
   private
   
   def js_min_unless_dev(js)
