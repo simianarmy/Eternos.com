@@ -121,7 +121,13 @@ module LayoutHelper
     # Make sure jquery doesn't conflict with any loaded prototype libs
     javascript 'application_jquery'
   end
-  
+
+  # default set of jQuery Tools + jQuery 1.3.2
+  def use_jquerytools
+    javascript 'http://cdn.jquerytools.org/1.1.2/jquery.tools.min.js', 'application_jquery'
+    @@jquery_loaded = true
+  end
+    
   def use_scrollable
     # fault set of jQuery Tools + jQuery 1.3.2
     javascript 'http://cdn.jquerytools.org/1.1.2/full/jquery.tools.min.js'
@@ -261,8 +267,8 @@ module LayoutHelper
      expression ? "display:none;" : ""
   end
    
-  def tab_class_active?(page)
-    'inactive'
+  def members_tab_class_active?(page)
+    (controller.controller_name == page) ? 'active' : 'inact'
   end
   
   private

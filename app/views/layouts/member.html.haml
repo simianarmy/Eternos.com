@@ -25,32 +25,33 @@
   %body
     .header
       %div
-        %form
+        - form_for :user, logout_path do |f|
           Welcome,
           %strong= @current_user.full_name
           - if @facebook_session
             %li.logout= fb_logout_link "log&nbsp;out", logout_path
           - else
-            %li.logout= link_to "log&nbsp;out", logout_path
+            = f.submit 'Log Out'
+            
     
         = link_to((image_tag 'logo.png', :border => '0'),  member_home_path)
         %ul.log01
-          %li{:class => tab_class_active?('home')}
+          %li{:class => members_tab_class_active?('timeline')}
             = link_to 'Home', member_home_path
             %span
-          %li{:class => tab_class_active?('video_diary')}
+          %li{:class => members_tab_class_active?('recordings')}
             = recording_popup_link 'Video Journal'
             %span
-          %li{:class => tab_class_active?('lifekey')}
+          %li{:class => members_tab_class_active?('trustees')}
             = link_to 'Life Key', trustees_path
             %span
-          %li{:class => tab_class_active?('bio')}
+          %li{:class => members_tab_class_active?('account_info')}
             = link_to_lightview 'Bio', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
             %span
-          %li{:class => tab_class_active?('images')}
+          %li{:class => members_tab_class_active?('images')}
             = link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
-            %san
-          %li{:class => tab_class_active?('setup')}
+            %span
+          %li{:class => members_tab_class_active?('account_setup')}
             = link_to 'Account Setup', account_setup_path
             %span
           /-%li= link_to_lightview 'Upload', new_content_path(:dialog=>true), {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '600'}

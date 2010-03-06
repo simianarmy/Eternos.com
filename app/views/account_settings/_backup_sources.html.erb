@@ -1,131 +1,140 @@
+<% use_jquerytools %>
+<% stylesheet 'account_settings' %>
+
 <h1>Add the online accounts that you would like us to backup for you.</h1>
 <p>Eternos currently provides backup services for:</p>
-<p><%= image_tag '2nd-facebook.gif', :class => settings.facebook_confirmed ? 'active2' : "" %> 
-  <strong>Facebook:</strong> Eternos allows you to back up Wall posts &amp; photos.</p>
-<p><%= image_tag '2nd-twitter.gif', :class => settings.twitter_confirmed ? 'twitter-active' : 'twitter-btn' %> 
-  <strong>Twitter:</strong> Back up all your tweets.</p>
-<p><%= image_tag '2nd-rss.gif', :class => settings.rss_confirmed ? 'rss-active' : 'rss-btn' %> 
-  <strong>RSS Feeds:</strong> Back up feed entries &amp; screen captures.</p>
-<p><%= image_tag '2nd-gmail.gif', :class => settings.gmail_confirmed ? 'gmail-active' : 'gmail-btn' %> 
-  <strong>Gmail Accounts</strong>: Store and archived all emails.</p>
-<p><%= image_tag '2nd-picasa.gif', :class => settings.picasa_confirmed ? 'picasa-active' : 'picasa-btn' %> 
-  <strong>Picasa Web Albums:</strong>  Preserve all your Picasa Web photos. </p>			
-<p>Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your Timeline. Easily browse, tag, annotate, remove, and share any of your life's events. </p>
-<p>&nbsp; &nbsp; <input type="submit" value="Finish Setup" /></p>			
 
-<p>&nbsp;</p>
-</div>
-	<%= show_flash_messages :fade => 15 %>
-  <div style="clear:both"></div>
-  
-  <div class="network-login-box" id="form-box">
-    <div id="facebook-box" style="display:none;">
-    <% if settings.facebook_user %>
-      <div id="result-facebook-account">
-        Currently backing up <font style="font-weight: bold"><%= settings.facebook_user %>'s</font> Facebook Account
-        <br/>
-        <span>
-        <%= image_tag settings.facebook_pic %>
-        </span>
-        <br/>
-        <%= link_to 'Revoke Backup Permissions', cancel_facebook_backup_path %>
-    </div>
-    <% else %>
-      <div id="facebook_blurb">
-        Simply click on the Facebook button below to begin saving your Facebook photos, profile, friends &amp; posts (including friend messages).
-        <p/>
-        <br/>
-      </div>
-      <div class="fb-btn1">
-        <%= link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), settings.fb_login_url %>
-        <br/>
-      </div>
-      <span style="font-size: x-small">
-      <%= link_to 'Click here', '#' %> for details on the permissions Eternos Backup requires.
-      </span>
-    <% end %>
-    <div style="clear:both"></div>
-  </div>
-  </div>
-  
-  <div class="network-login-box" id="form-box">
-    <div id="twitter-box" style="display:none;">
-      <div id="twitter_blurb">
-        Simply click the "Sign in with Twitter" button below to begin saving your Tweets.  Add as many Twitter accounts as you want.    
-        <p/>
-        <br/>
-      </div>
-      <%= link_to image_tag('twitter_button_3_lo.gif'), add_twitter_backup_sources_path %>
-      
-      <div style="clear:both"></div>
-      <div id="result-twitter-accounts">
-        <%= render :partial => 'backup_sources/twitter_list', :locals => { :list => settings.twitter_accounts } %>
-      </div>
-    </div>
-  </div>
-   
-    <div class="network-login-box" id="form-box">
-      <div id="rss-box" style="display:none;">
-        <div id="rss_blurb">
-          Add your blogs here and we will begin backing them up every day.
+<%= show_flash_messages :fade => 15 %>
+
+<div id="accordion">
+  <p class="current"><%= image_tag '2nd-facebook.gif', :class => settings.facebook_confirmed ? 'active2' : "" %> 
+    <strong>Facebook:</strong> Back up all Photos, Wall posts, Comments, Friends, &amp; Groups.
+  </p>
+  <!-- Facebook Pane -->
+  <div class="pane network-login-box" id="facebook-form-box" style="display:block">
+    <div id="facebook-box">
+      <% if settings.facebook_user %>
+        <div id="result-facebook-account">
+          Currently backing up <font style="font-weight: bold"><%= settings.facebook_user %>'s</font> Facebook Account
           <br/>
-          If you don't have a blog of your own, we recommend that you add your favorite blog here in order to put your life in context to current events.
+          <span>
+          <%= image_tag settings.facebook_pic %>
+          </span>
+          <br/>
+          <%= link_to 'Revoke Backup Permissions', cancel_facebook_backup_path %>
+        </div>
+      <% else %>
+        <div id="facebook_blurb">
+          Simply click on the Facebook button below to begin saving your Facebook photos, profile, friends &amp; posts (including friend messages).
           <p/>
           <br/>
         </div>
-        <%= image_tag "errors/rss-top.png" %>
-        <div class="rss-box">
+        <div class="fb-btn1">
+          <%= link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), settings.fb_login_url %>
+          <br/>
+        </div>
+        <span style="font-size: x-small">
+        <%= link_to 'Click here', '#' %> for details on the permissions Eternos Backup requires.
+        </span>
+      <% end %>
+    </div>
+  </div>
+  
+  <p><%= image_tag '2nd-twitter.gif', :class => settings.twitter_confirmed ? 'active2' : 'twitter-btn' %> 
+    <strong>Twitter:</strong> Back up all your tweets.
+  </p>
+  <!-- Twitter Pane -->
+  <div class="pane network-login-box">
+      <div id="twitter-box">
+        <div id="twitter_blurb">
+          Simply click the "Sign in with Twitter" button below to begin saving your Tweets.  Add as many Twitter accounts as you want.    
+          <br/>
+        </div>
+        <%= link_to image_tag('twitter_button_3_lo.gif'), add_twitter_backup_sources_path %>
+
+        <div id="result-twitter-accounts">
+          <%= render :partial => 'backup_sources/twitter_list', :locals => { :list => settings.twitter_accounts } %>
+        </div>
+      </div>
+  </div>
+  
+  <p><%= image_tag '2nd-rss.gif', :class => settings.rss_confirmed ? 'active2' : 'rss-btn' %> 
+    <strong>RSS Feeds &amp; Blogs:</strong> Back up feed entries text &amp; html, including screen captures of the pages.
+  </p>
+  <!-- RSS Pane -->
+  <div class="pane network-login-box">
+    <div id="rss-box">
+      <div id="rss_blurb">
+          Add your blogs here and we will begin backing them up every day.
+          <br/>
+          If you don't have a blog of your own, we recommend that you add your favorite blog here in order to put your life in context to current events.
+          <br/>
+      </div>
+      <%= image_tag "errors/rss-top.png" %>
+      <div class="rss-box">
           <% form_remote_for :feed_url, settings.feed_url,
           :url => add_feed_url_backup_sources_path,
           :loading => "$('progress-bar').show();",
           :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{@completed_steps});"  do |f| %>
-
-          <table class="table-form5" align="left">
-            <tr>
-              <td class="coll-form8" valign="center">URL</td>
-              <td class="coll-form2" valign="center">:</td>
-              <td class="coll-form9" valign="center">
-                <%= f.text_field :rss_url, :class => "textbox7" %>
-                <%= f.submit "Add Feed", :class => "submit-btn4" %>
-              </td>
-            </tr>
-          </table>
-
+            <table class="table-form5" align="left">
+              <tr>
+                <td class="coll-form8" valign="center">URL</td>
+                <td class="coll-form2" valign="center">:</td>
+                <td class="coll-form9" valign="center">
+                  <%= f.text_field :rss_url, :class => "textbox7" %>
+                  <%= f.submit "Add Feed", :class => "submit-btn4" %>
+                </td>
+              </tr>
+            </table>
           <% end %>
-        </div>
-        <%= image_tag "errors/fb-box-footer.gif" %>
-        <div id="result-urls">
-          <%= render :partial => 'backup_sources/rss_url_list', :locals => {:feed_urls => settings.feed_urls} %>
-        </div>
+      </div>
+      <%= image_tag "errors/fb-box-footer.gif" %>
+      <div id="result-urls">
+        <%= render :partial => 'backup_sources/rss_url_list', :locals => {:feed_urls => settings.feed_urls} %>
+      </div>
     </div>
-   </div>
-   <div class="clearboth"></div>
-   <div class="network-login-box" id="form-box">
-     <div id="picasa-box" style="display:none;">
-       <div id="picasa_blurb">
-         <p>
-         
-         </p>
-         <br/>
-       </div>
+  </div>
+
+  <p><%= image_tag '2nd-gmail.gif', :class => settings.gmail_confirmed ? 'active2' : 'gmail-btn' %> 
+    <strong>Gmail Accounts</strong>: Store and archive multiple Gmail Accounts (IMAP only).
+  </p>
+  <!-- Gmail Pane -->
+  <div class="pane">
+    <%= render :partial => 'account_settings/gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => settings.current_gmail, :email_accounts => settings.email_accounts} %>
+  </div>
+  
+  <p><%= image_tag '2nd-picasa.gif', :class => settings.picasa_confirmed ? 'active2' : 'picasa-btn' %> 
+    <strong>Picasa Web Albums:</strong>  Preserve all your Picasa Web photo albums. 
+  </p>			
+  <!-- Picasa Pane -->
+  <div class="pane network-login-box">
+    <div id="picasa-box">
+       <div id="picasa_blurb"></div>
        <%= link_to 'Click Here', add_picasa_backup_sources_path %> to add a new Picasa Web Albums account
 
-       <div style="clear:both"></div>
        <div id="result-picasa-accounts">
          <%= render :partial => 'backup_sources/picasa_list', :locals => { :list => settings.picasa_accounts } %>
        </div>
-     </div>
-   </div>
-   
-   <%= render :partial => 'account_settings/gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => settings.current_gmail, :email_accounts => settings.email_accounts} %>
-   <br/>
-    
-   <%= render :partial => 'account_settings/security_blurb' %>
-   <div class="feedback-text">
-		  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.
-	  </div>
-  </div>  
+    </div>
+  </div>
+<!-- End accordion -->
 </div>
+<p>Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your Timeline. Easily browse, tag, annotate, remove, and share any of your life's events. </p>
+<%= render :partial => 'account_settings/security_blurb' %>
+<p>&nbsp; &nbsp; <input type="submit" value="Finish Setup" /></p>			
+
+<p>&nbsp;</p>
 
 
+<!--    
+<div class="feedback-text">
+	  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.
+</div>
+-->
+
+<%= javascript_tag "
+jQuery(function() { 
+  jQuery('#accordion').tabs('#accordion div.pane', {tabs: 'p', effect: 'slide', initialIndex: 0});
+});
+" %>
 

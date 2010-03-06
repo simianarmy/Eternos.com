@@ -1,4 +1,4 @@
-BODY { margin: 0; padding: 0; background: #fff url(/images/bg_header.gif) repeat-x; font-family: Arial, Helvetica, sans-serif; font-size: 14px;}
+BODY { margin: 0; padding: 0; background: #fff ur/images/bg_header.gif) repeat-x; font-family: Arial, Helvetica, sans-serif; font-size: 14px;}
 FIELDSET { margin: 0; padding: 0; border: none;}
 
 /* header */
@@ -25,11 +25,13 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 /* footer */
 .footer { height: 137px; background: url(/images/bg_footer.gif) repeat-x; border-top: 4px solid #CCCCCC; padding-top: 22px;}
 .footer DIV { width: 988px; margin: 0 auto;}
-.footer UL { margin: 0; padding: 0; width: 528px; list-style: none;}
-.footer LI { float: left; width: 176px; margin-bottom: 5px;}
-.footer LI, .footer LI A { color: #02419E; text-decoration: none;}
-.footer LI A:hover { text-decoration: underline;}
-.footer P { margin: 0; padding: 0; color: #02419E;}
+.footer A { color: #02419E; text-decoration: none;}
+.footer A:hover { text-decoration: underline;}
+.footer P { margin: 0; padding: 0 35px; color: #02419E; float: left; line-height: 18px;}
+.footer .p1 { width: 125px;}
+.footer .p2 { width: 105px;}
+.footer .p3 { width: 90px;}
+
 
 /* content */
 .content { width: 988px; margin: 0 auto; padding: 25px 0;}
