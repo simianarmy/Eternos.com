@@ -2,68 +2,85 @@
 
 <% use_timeline %>
 
-<% content_for(:header) do %>
-  <%= @member_name %>
-  <div id="searchbar" style="float: right">
-    <%= render :partial => 'shared/search_box', :locals => {:url => user_search_path} %>
-  </div>
-<% end %>
-
-<div class="clearboth"></div>
-<div id="content-container3">
-  <div id="timeline-top">
-    <div id="backups" class="backup-container">
-      <%= render :partial => 'backup_bars', :locals => {:backups => @backups} 
-      %>
+<div id="content login1">
+  <fieldset>
+    <div class="login1_left">
+      <h1>Account Services</h1>
+			<p>
+				<img src="images/mini-facebook.gif" id="activated-services" /> <img src="images/mini-twitter.gif" />  <img src="images/mini-gmail.gif" /> <img src="images/mini-what.gif" /> <img src="images/mini-rss.gif" />			
+			</p>
+			<p align="right"><a href="#" id="active_network-add">Add More</a></p>
+			<p>&nbsp;</p>
+			
+			<h1>Account Features</h1>
+			<ul id="acct_settings">
+			  <li><%= link_to 'Memento Studio', new_memento_path %></li>
+		    <li><%= recording_popup_link 'Video Journal' %></li>
+		    <li><%= link_to_lightview 'Upload', new_content_path(:dialog=>true), {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '600'} %></li>
+        <li><%= link_to 'Life Key', trustees_path %></li>
+        <li><%= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'} %></li>
+      </ul>
+      
+      <p>&nbsp;</p>
+			<h1>Active Networks</h1>
+			
+			<p>&nbsp;</p>
+			<div id="arti-area"></div>			    
+      <p class="artifacts"></p>
+			<p>&nbsp;</p>            
     </div>
     
-    <div id="tl_flash_notice" style="display: none"></div>
-    <div id="tl_flash_error" style="display: none"></div>
-    <div id="item_details"><div class="clearboth"></div></div>
-    <div class="alignleft">
-      <div id="month-selector">
-        <a id="month_selector_down" href="#" class="btn-left"></a><span id="display_month" class="subtitle6"></span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6"></span><a id="year_selector_up" href="#" class="btn-right"></a>
+    <div class="login1_right home">
+      <h1><%= @current_user.full_name %>'s Timeline</h1>
+      
+      <div id="backups" class="backup-container">
+        <%= render :partial => 'backup_bars', :locals => {:backups => @backups} 
+        %>
+      </div>
+      
+      <div id="searchbar" style="float: right">
+        <%= render :partial => 'shared/search_box', :locals => {:url => user_search_path} %>
+      </div>
+      
+      <div id="tl_flash_notice" style="display: none"></div>
+      <div id="tl_flash_error" style="display: none"></div>
+      <div id="item_details"><div class="clearboth"></div></div>
+      <div class="alignleft">
+        <div id="month-selector">
+          <a id="month_selector_down" href="#" class="btn-left"></a><span id="display_month" class="subtitle6"></span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6"></span><a id="year_selector_up" href="#" class="btn-right"></a>
+        </div>
+      </div>
+      
+      <div id="timeline_links" class="alignright">
+        <%= link_to_function "Today", "timeline.reload({today: true});" %>&nbsp;|&nbsp;
+        <%= link_to_function "Refresh", 'timeline.reload()' %>&nbsp;|&nbsp;
+        <%= render :partial => 'helplink' %>
+      </div>
+      <div class="clearbothXX"></div>
+      <div class="timelinebox">
+        <div id="my-timeline"></div>
+        <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
+      </div>
+      <div id="debug_box" class="debug_container"></div>
+  
+      <div id="timeline-detail">
+        <!--
+        <div id="proximity_search">
+          <a class="btn-left" href="#" id="prev_event_search"></a><%= link_to_function 'Present', "timeline.reload({today: true});", :class => 'subtitle6' %><a  class="btn-right" href="#" id="next_event_search"></a>
+    		</div>
+    		-->
+        <div id="story-area"></div>
+      </div>
+      <br/>
+      <div id="timeline-footer" class="tl_helptext">
+        <span class="tl_helptext">
+          If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We welcome any feedback you might have!
+        </span>
       </div>
     </div>
-    <div id="timeline_links" class="alignright">
-      <%= link_to_function "Today", "timeline.reload({today: true});" %>&nbsp;|&nbsp;
-      <%= link_to_function "Refresh", 'timeline.reload()' %>&nbsp;|&nbsp;
-      <%= render :partial => 'helplink' %>
-    </div>
-    <div class="clearboth"></div>
-    <div class="timelinebox">
-      <div id="my-timeline"></div>
-      <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
-    </div>
-    <div id="debug_box" class="debug_container"></div>
-    
-		<div class="dotline"></div>
-  </div>
-  <div id="video_section" style="display:none;">
-    <div id="player" class="player plain medium"></div>
-    <div class="float:right">
-      <%= link_to_function 'Close Video Player', "$('video_section').hide();" %>
-    </div>
-  </div>
-  <div class="clearboth"></div>
-  <div id="timeline-detail">
-    <!--
-    <div id="proximity_search">
-      <a class="btn-left" href="#" id="prev_event_search"></a><%= link_to_function 'Present', "timeline.reload({today: true});", :class => 'subtitle6' %><a  class="btn-right" href="#" id="next_event_search"></a>
-		</div>
-		-->
-		<div class="clearboth"></div>
-    <div id="story-area"></div>
-    <div id="arti-area"></div>			            
-		<div class="clearboth"></div>
-  </div>
-  <br/>
-  <div id="timeline-footer" class="tl_helptext">
-  <span class="tl_helptext">
-    If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We welcome any feedback you might have!
-  </span>
-  </div>
+  </fieldset>
 </div>
+<!-- end content -->
 
 <%= javascript_tag("
 var timeline;

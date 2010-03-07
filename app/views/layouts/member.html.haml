@@ -35,28 +35,17 @@
             
     
         = link_to((image_tag 'logo.png', :border => '0'),  member_home_path)
-        %ul.log01
+        %ul
           %li{:class => members_tab_class_active?('timeline')}
             = link_to 'Home', member_home_path
-            %span
-          %li{:class => members_tab_class_active?('recordings')}
-            = recording_popup_link 'Video Journal'
-            %span
-          %li{:class => members_tab_class_active?('trustees')}
-            = link_to 'Life Key', trustees_path
             %span
           %li{:class => members_tab_class_active?('account_info')}
             = link_to_lightview 'Bio', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
             %span
-          %li{:class => members_tab_class_active?('images')}
-            = link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
-            %span
           %li{:class => members_tab_class_active?('account_setup')}
             = link_to 'Account Setup', account_setup_path
             %span
-          /-%li= link_to_lightview 'Upload', new_content_path(:dialog=>true), {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '600'}
-              
-      
+          
     / for rjs flash notices
     #notice.flash_notice
     = show_flash_messages
