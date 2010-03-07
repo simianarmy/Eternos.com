@@ -1,19 +1,22 @@
 - use_calendar
 - title 'Account Setup'
-  
+
 .content.login1
   %fieldset
     .login1_left
       %h1 Account Setup
       %ul.signup-left
-        %li.signup-active
+        %li{:class => get_signup_wizard_step_class(@completed_steps >= 1)}
           %strong Step 1
           %br
           %span Online Accounts
-        %li.signup-inactive
-          %strong Step 2
+        %li{:class => get_signup_wizard_step_class(@completed_steps > 2)}
+          - if @completed_steps >= 2
+            %strong Step 2
+          - else 
+            Step 2
           %br
-          %span Life Key or Invite Friends??
+          %span Invite Friends
           
     .login1_right.login1-mid.login2-mid
       = render :partial => @content_page, :locals => {:settings => @settings}

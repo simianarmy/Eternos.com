@@ -121,18 +121,14 @@
 </div>
 <p>Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your Timeline. Easily browse, tag, annotate, remove, and share any of your life's events. </p>
 <%= render :partial => 'account_settings/security_blurb' %>
-<p>&nbsp; &nbsp; <input type="submit" value="Finish Setup" /></p>			
-
-<p>&nbsp;</p>
-
-
-<!--    
+<!-- 
 <div class="feedback-text">
 	  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.
 </div>
 -->
 
 <%= javascript_tag "
+// Accordion  setup 
 jQuery(function() { 
   jQuery('#accordion').tabs('#accordion div.pane', {tabs: 'p', effect: 'slide', initialIndex: 0});
 });

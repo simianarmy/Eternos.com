@@ -15,14 +15,16 @@ class AccountSetupController < ApplicationController
     session[:setup_account] = true
     
     # Dynamic action view based on current setup step
-    @content_page = if @completed_steps > 0
+    @content_page = if @completed_steps == 0
       load_online
       'backup_sources'
     else
+      # This should be the invite page now..
       @settings.load_personal_info
-      'personal_info'
+      #'personal_info'
+      'invite_others'
     end
-    @active_step = @completed_steps + 1
+    @active_step = @completed_steps.to_i + 1
     
     respond_to do |format|
       format.html
@@ -103,7 +105,7 @@ class AccountSetupController < ApplicationController
   private
    
    def load_completed_steps
-     @completed_steps = current_user.setup_step
+     @completed_steps = params[:step].to_i || current_user.setup_step || 0
    end
    
    def load_online

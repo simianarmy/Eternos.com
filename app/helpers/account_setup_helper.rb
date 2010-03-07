@@ -21,4 +21,5 @@ module AccountSetupHelper
   def get_signup_wizard_step_class(is_active)
     is_active ? 'signup-active' : 'signup-inactive'
   end
+  
 end

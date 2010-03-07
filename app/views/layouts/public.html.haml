@@ -42,6 +42,7 @@
             %span
           %li{:class => (controller.controller_name == 'accounts') ? 'active' : 'inact'}
             = link_to 'Sign Up', new_account_url(:plan => AppConfig.default_plan)
+            %span
     = yield
     
     = render :partial => 'shared/site_footer' unless @hide_footer
