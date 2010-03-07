@@ -1,5 +1,6 @@
 class AboutController < ApplicationController
   before_filter :hide_feedback_tab
+  layout 'public'
   
   def index
     
