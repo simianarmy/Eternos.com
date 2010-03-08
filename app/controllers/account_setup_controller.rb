@@ -123,10 +123,6 @@ class AccountSetupController < ApplicationController
      end
    end
    
-   def load_facebook_session
-     @fb_session ||= Facebooker::Session.current
-   end
-   
    def load_presenter
      @settings = SetupPresenter.new(current_user, load_facebook_session, params)
    end

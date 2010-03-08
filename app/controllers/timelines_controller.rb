@@ -22,6 +22,10 @@ class TimelinesController < ApplicationController
   # All other requests will be done via AJAX queries.0
   def show
     @member = current_user
+    
+    # Create home presenter object
+    @settings = MemberHomePresenter.new(@member)
+  
     @member_name = @member.full_name
     @tl_start_date, @tl_end_date = Rails.cache.fetch("tl_date_range:#{@member.id}", :force => session[:refresh_timeline]) { 
       @member.timeline_span 
@@ -43,8 +47,9 @@ class TimelinesController < ApplicationController
         flash[:notice] = "Backup in progress...estimated completion in #{estimated}."
       end
       
-      #@backups = BackupSourceJob.descend_by_created_at[0..3] #
-      @backups = @member.backup_sources.map(&:latest_backup).compact rescue []
+      # Get backup status for progress bars
+      # DISABLED
+      #@backups = @member.backup_sources.map(&:latest_backup).compact rescue []
     end
     
   end

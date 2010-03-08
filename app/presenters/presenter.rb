@@ -7,6 +7,8 @@
 # Hopefully the right place for this base class
 # All presenters should inherit from this
 
+require 'decorations'
+
 class Presenter
 
   def initialize(params)

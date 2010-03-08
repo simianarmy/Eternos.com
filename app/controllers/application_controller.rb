@@ -252,6 +252,10 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def load_facebook_session
+     @facebook_session ||= Facebooker::Session.current
+   end
+   
   def load_facebook_desktop
     Facebooker::Session.current = FacebookDesktopApp::Session.create
   end

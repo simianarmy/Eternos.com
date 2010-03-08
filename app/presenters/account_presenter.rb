@@ -58,6 +58,5 @@ class AccountPresenter < Presenter
      !ab.first_name.blank? && !ab.last_name.blank? && ab.birthdate &&
      (@user.security_questions.size == @@NumSecurityQuestions)
   end
-   
 end
-  
+

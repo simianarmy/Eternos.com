@@ -78,7 +78,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #acct_settings LI { margin: 0 0 -15px 0; padding: 0;}
 .login1_right HR { clear: both;  margin: 20px 0; padding: 0; border: none; border-top: 1px dashed #cccccc; height: 1px;}
 
-#activated-services { background: url(/images/icon-activated.gif) no-repeat bottom center; padding:0 10px 22px 10px; float: left; margin: 0 -5px;}
+.activated-services { background: url(/images/icon-activated.gif) no-repeat bottom center; padding:0 10px 22px 10px; float: left; margin: 0 -5px;}
 #active_network-add { background: url(/images/icon-add-more.gif) top center no-repeat; padding:0 0 10px 85px; margin-right: 10px; color: #000000; font-size: 12px;}
 .artifacts IMG { border: 3px solid #647384; margin: 0 3px 12px 0;}
 
