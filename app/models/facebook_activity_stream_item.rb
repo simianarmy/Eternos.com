@@ -6,7 +6,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
   after_create :process_attachment 
   
   serialize_with_options do
-    methods :url, :thumbnail_url
+    methods :url, :thumbnail_url, :parsed_attachment_data
     except :guid, :attachment_data
   end
   

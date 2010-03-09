@@ -185,19 +185,37 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 			media += '<br/><a href="' + url + '" class="lightview">';
 
 			if (((thumb = this.getThumbnailURL()) != null) && (thumb !== url)) {
-				media += '<img src="' + thumb + '">';
+				media += '<img src="' + thumb + '"/>';
 			} else {
 				media += 'Click to View';
 			}
 			media += '</a>';
+		} else if (this.attributes.parsed_attachment_data && 
+				this.attributes.parsed_attachment_data.src != null) {
+				media += '<br/><img src="' + this.attributes.parsed_attachment_data.src + '"/>';
 		}
 		// Debug attributes:
 		// media += print_r(this.attributes); //'';
 		return media;
 	},
 	getMessage: function() {
-		var msg = '';
-		if (this.attributes.message != null) {
+		var thumb, msg = '';
+		
+		if (this.attributes.parsed_attachment_data && 
+			this.attributes.parsed_attachment_data.name != null) {
+			attached = this.attributes.parsed_attachment_data;
+			// If link type
+			if (attached.type === 'link') {
+				// Use caption, name, description
+				msg = '<a href="' + attached.href + '" target="_new">' + attached.name + '</a>';
+				if (attached.caption != null) {
+					msg += '<br/>' + attached.caption;
+				}
+				if (attached.description != null) {
+					msg += '<br/>' + attached.description;
+				}
+			}
+		} else if (this.attributes.message != null) {
 			msg = this.attributes.message.urlToLink();
 		} else if (this.attributes.url != null) {
 			msg = this.attributes.url.urlToLink();

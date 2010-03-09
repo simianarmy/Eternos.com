@@ -2,6 +2,7 @@ class DevStagingMapsController < ApplicationController
   before_filter :login_required
   require_role "Member"
   before_filter :load_map, :except => [:new, :create]
+  layout nil
   
   def index
     if @dev_staging_map

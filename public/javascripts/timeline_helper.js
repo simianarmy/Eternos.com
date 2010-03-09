@@ -119,7 +119,7 @@ String.prototype.toISODate = function() {
 	return dt;
 };
 // Timeline-wide debug flag
-var DEBUG = true;
+var DEBUG = false;
 var DEBUG_BOX = false; // show debug in box
 // Timeline debug module
 var ETDebug = function() {
