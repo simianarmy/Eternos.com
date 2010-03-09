@@ -1,6 +1,7 @@
 <% javascript 'jsProgressBarHandler', 'backup_progress_bar' %>
 <% use_timeline %>
-    
+<% stylesheet 'new_design/members', 'new_design/misc-fix' %>
+
 <div class="login1_right home">
   <h1><%= @current_user.full_name %>'s Timeline</h1>
   <!--
@@ -12,7 +13,9 @@
   
   <div id="tl_flash_notice" style="display: none"></div>
   <div id="tl_flash_error" style="display: none"></div>
-  <div id="item_details"><div class="clearboth"></div></div>
+  <div id="item_details">
+    <div class="clearboth"></div>
+  </div>
   <div class="alignleft">
     <div id="month-selector">
       <a id="month_selector_down" href="#" class="btn-left"></a><span id="display_month" class="subtitle6"></span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6"></span><a id="year_selector_up" href="#" class="btn-right"></a>

@@ -10,7 +10,7 @@
     %title= "Eternos Members - " + h(yield(:title) || "Home")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    - stylesheet 'new_design/members'
+    - stylesheet 'new_design/members', 'new_design/misc-fix'
     - load_prototype unless @no_prototype
     - use_lightview
     - use_lowpro
@@ -45,13 +45,13 @@
           %li{:class => members_tab_class_active?('account_setup')}
             = link_to 'Account Setup', account_setup_path
             %span
-          
-    / for rjs flash notices
-    #notice.flash_notice
-    = show_flash_messages
     
-    #content.login1
+    #content.content.login1
       %fieldset
+        / for rjs flash notices
+        #notice.flash_notice
+        = show_flash_messages
+        
         .login1_left
           %h1 Account Services
           %p
@@ -86,10 +86,10 @@
           <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" />
           </p>
           <p>&nbsp;</p>            
-
-          / start content
-          = yield
-          / end content
+        <!-- end login1_left -->
+        / start content
+        = yield
+        / end content
           
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
