@@ -111,7 +111,7 @@ var ETLEventSource = Class.create({
 	getEventAuthorHtml: function() {
 		var author 	= '';
 		if (this.attributes.author) {
-			author = this._getSmallTooltipLine('Author: ' + this.attributes.author);
+			author = '<font style="font-weight: bold">' + this.attributes.author + '</font><br/>';
 		}
 		return author;
 	},
@@ -191,7 +191,8 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 			}
 			media += '</a>';
 		} else if (this.attributes.parsed_attachment_data && 
-				this.attributes.parsed_attachment_data.src != null) {
+				(this.attributes.parsed_attachment_data.src != null) &&
+				(typeof this.attributes.parsed_attachment_data.src == "string")) {
 				media += '<br/><img src="' + this.attributes.parsed_attachment_data.src + '"/>';
 		}
 		// Debug attributes:
@@ -201,24 +202,26 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 	getMessage: function() {
 		var thumb, msg = '';
 		
-		if (this.attributes.parsed_attachment_data && 
-			this.attributes.parsed_attachment_data.name != null) {
-			attached = this.attributes.parsed_attachment_data;
-			// If link type
-			if (attached.type === 'link') {
-				// Use caption, name, description
-				msg = '<a href="' + attached.href + '" target="_new">' + attached.name + '</a>';
-				if (attached.caption != null) {
-					msg += '<br/>' + attached.caption;
-				}
-				if (attached.description != null) {
-					msg += '<br/>' + attached.description;
-				}
-			}
-		} else if (this.attributes.message != null) {
+		
+		if (this.attributes.message != null) {
 			msg = this.attributes.message.urlToLink();
 		} else if (this.attributes.url != null) {
 			msg = this.attributes.url.urlToLink();
+		}
+		// Add any attachment link data (might fuck up existing layouts...)
+		if (this.attributes.parsed_attachment_data && 
+			(this.attributes.parsed_attachment_data.name != null) &&
+			(typeof this.attributes.parsed_attachment_data.name == "string") &&
+			(this.attributes.parsed_attachment_data.type == "link")) {
+			attached = this.attributes.parsed_attachment_data;
+			// Use caption, name, description
+			msg = '<br/><a href="' + attached.href + '" target="_new">' + attached.name + '</a>';
+			if (attached.caption != null && (typeof attached.description == "string")) {
+				msg += '<br/>' + attached.caption;
+			}
+			if (attached.description != null && (typeof attached.description == "string")) {
+				msg += '<br/>' + attached.description;
+			}
 		}
 		return msg;
 	},

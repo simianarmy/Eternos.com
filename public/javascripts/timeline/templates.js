@@ -202,11 +202,11 @@ var ETemplates = function() {
 	};
 	that.tooltipTemplates = {
 		activity_stream_item: function() {
-			return new Template('<div class="tooltip_as">' + tooltipItemViewLink('#{message}#{media}') + 
-				'#{time}#{author}#{source}<div class="comment_thread">#{comments}</div>#{likes}</div>');
+			return new Template('<div class="tooltip_as">' + tooltipItemViewLink('#{author}#{message}#{media}') + 
+				'#{time}#{source}<div class="comment_thread">#{comments}</div>#{likes}</div>');
 		} (),
 		facebook_comment: function() {
-			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}#{author} said: #{comment}</div><div class="clearboth"></div></div>');
+			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}</div><div class="clearboth"></div></div>');
 		} (),
 		image: function() {
 			return new Template('<div class="tooltip_img"><a href="#{img_url}" class="lightview"><img src="#{thumbnail_url}"></a><br/>#{caption}</div>');
