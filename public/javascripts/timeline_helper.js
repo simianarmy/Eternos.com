@@ -719,7 +719,8 @@ var ETimeline = function(opts) {
 	//Eternos Timeline Artifact Section
 	var ETLArtifactSection = Class.create({
 		initialize: function(domID) {
-			this.MaxDisplayCount = 18;
+			this.MaxDisplayCount 	= 9;
+			this.pixPerRow				= 3;
 			// Set this to true|false
 			this.doRandomize = false;
 
@@ -744,7 +745,7 @@ var ETimeline = function(opts) {
 			});
 		},
 		_itemsToS: function(activeDate) {
-			var i, numDisplay;
+			var i, j, rows, numDisplay;
 			var s = '',
 				ul_class;
 			var item, artis = this._itemsInDate(activeDate);
@@ -754,20 +755,23 @@ var ETimeline = function(opts) {
 			}
 			ETDebug.log("Displaying " + numDisplay + " artifacts for: " + activeDate);
 
-			for (i = 0; i < numDisplay; i++) {
+			for (i=0, j=0; i<numDisplay; i++) {
 				item = artis[i];
 				ETDebug.log("Adding artifact #" + i + ": type: " + item.type);
 
-				ul_class = "class=\"visible-artifact-item\"";
 				s += this.boxTemplate.evaluate({
 					id: item.getID(),
 					num: i,
-					style: ul_class,
+					style: 'artifact-thumbnail',
 					url: item.getURL(),
 					thumbnail_url: item.getThumbnailURL(),
 					title: item.getTitle(),
 					caption: item.getText()
 				});
+				// In rows of pixPerRow
+				if (((j+1) % this.pixPerRow) == 0) {
+					s += '<br/>';
+				}
 			}
 			return s;
 		},
@@ -1419,7 +1423,7 @@ var ETimeline = function(opts) {
 			this.currentDate = this.centerDate = date;
 		},
 		_getTitleFromDate: function(date, type) {
-			return (type + " from " + date.getMonthName() + " " + date.getFullYear());
+			return (date.getMonthName() + " " + date.getFullYear() + " " + type);
 		},
 		_onScroll: function() {
 			var band;

@@ -7,15 +7,15 @@
     %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
     %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
-    %title= "Eternos Members - " + h(yield(:title) || "Home")
-    / bundle do
-    /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    - stylesheet 'new_design/members', 'new_design/misc-fix'
+    %title= "Eternos Members - " + h(yield(:title) || "Member Home")
+
     - load_prototype unless @no_prototype
     - use_lightview
     - use_lowpro
     - use_prototip
+    - use_timeline
     - javascript 'application', 'login'
+    - stylesheet 'new_design/members', 'new_design/misc-fix'
     
     = yield(:head)
     = yield(:js_libs)
@@ -25,14 +25,7 @@
   %body
     .header
       %div
-        - form_for :user, logout_path do |f|
-          Welcome,
-          %strong= @current_user.full_name
-          - if @facebook_session
-            %li.logout= fb_logout_link "log&nbsp;out", logout_path
-            = submit_tag 'FIX ME'
-          - else
-            = f.submit 'Log Out'
+        = render :partial => 'shared/header_logout'
     
         = link_to((image_tag 'logo.png', :border => '0'),  member_home_path)
         %ul
@@ -46,12 +39,14 @@
             = link_to 'Account Setup', account_setup_path
             %span
     
+    / start content
     #content.content.login1
       %fieldset
         / for rjs flash notices
         #notice.flash_notice
         = show_flash_messages
         
+        / start login1_left
         .login1_left
           %h1 Account Services
           %p
@@ -79,17 +74,15 @@
           %h1 Active Networks
 
           <p>&nbsp;</p>
-          <div id="arti-area"></div>			    
-          <p class="artifacts">
-          <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" /><br />
-          <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" /><br />
-          <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" /> <img src="images/pic-artifacts.jpg" />
-          </p>
-          <p>&nbsp;</p>            
-        <!-- end login1_left -->
-        / start content
+          #artifacts-header
+          <p>&nbsp;</p>         
+             
+        / end login1_left
+        
+        / start sub content
         = yield
-        / end content
+        / end sub content
+    / end content
           
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback

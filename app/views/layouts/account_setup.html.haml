@@ -1,0 +1,73 @@
+!!!
+%html{html_attrs('en')}
+  %head
+    %link{:rel=>"shortcut icon", :type=>"image/vnd.microsoft.icon", :href=>"#{image_path 'favicon.ico'}"}
+    %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
+    %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
+    %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
+    %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
+    %meta{:name=>"description", :content=>"#{meta_descriptions}"}
+    %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
+    / bundle do
+    /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
+    - stylesheet 'new_design/members', 'new_design/misc-fix'
+    - load_prototype unless @no_prototype
+    - use_lightview
+    - use_lowpro
+    - use_prototip
+    - javascript 'application', 'login'
+    
+    = yield(:head)
+    = yield(:js_libs)
+    /- FIX: Doesn't work when put at bottom of <body>
+    = yield(:javascript)
+    / end bundle
+  %body
+    .header
+      %div
+        = render :partial => 'shared/header_logout'
+    
+        = link_to((image_tag 'logo.png', :border => '0'),  member_home_path)
+        %ul
+          %li{:class => 'inact'}
+            = link_to 'Home', member_home_path
+            %span
+          %li{:class => 'inact'}
+            = link_to_lightview 'Bio', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
+            %span
+          %li{:class => 'active'}
+            = link_to 'Account Setup', account_setup_path
+            %span
+    
+    .content.login1
+      %fieldset
+        .login1_left
+          %h1 Account Setup
+          %ul.signup-left
+            %li{:class => get_signup_wizard_step_class(@completed_steps >= 1)}
+              %strong Step 1
+              %br
+              %span Online Accounts
+            %li{:class => get_signup_wizard_step_class(@completed_steps > 2)}
+              - if @completed_steps >= 2
+                %strong Step 2
+              - else 
+                Step 2
+              %br
+              %span Invite Friends
+    
+        = yield
+        
+    = render :partial => 'shared/site_footer' unless @hide_footer
+    = render :partial => 'shared/get_satisfaction' unless @hide_feedback
+
+    - if @facebook_session
+      = fb_connect_javascript_tag
+      = init_fb_connect "XFBML"
+    :javascript
+      // This needs to be global to all js
+      var lightview_height = 0.9 * win_dimension()[1];
+      //alert('lightview_height = ' + lightview_height);
+      Element.observe(window, 'load', function() { 
+        handle_timeout_popups(#{session_timeout_seconds});
+      });

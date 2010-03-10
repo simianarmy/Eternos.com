@@ -250,10 +250,10 @@ var ETemplates = function() {
 	// Artifacts section templates
 	that.artifactTemplates = {
 		artifacts: function() {
-			return new Template("<div class=\"artibox-top\"><p class=\"details_box_title\">#{title}</p></div>" + "<div class=\"artibox\"><ul id=\"etl-artifact-items\" style=\"list-style-type:none\">#{artifacts}</ul></div>" + "<img src=\"/images/artibox-bottom.gif\" /></div>");
+			return new Template('<h1>#{title}</h1><p class="artifacts">#{artifacts}</p>');
 		} (),
 		artifactBox: function() {
-			return new Template('<li id="etl-artifact-item-#{num}" #{style}><a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}" class="arti-thumb"/></a></li>');
+			return new Template('<a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}"/></a>');
 		} ()
 	};
 	that.eventSelectorTemplate = function() {

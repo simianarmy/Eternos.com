@@ -1,15 +1,11 @@
-<% javascript 'jsProgressBarHandler', 'backup_progress_bar' %>
-<% use_timeline %>
-<% stylesheet 'new_design/members', 'new_design/misc-fix' %>
+<% #javascript 'jsProgressBarHandler', 'backup_progress_bar' 
+%>
 
 <div class="login1_right home">
   <h1><%= @current_user.full_name %>'s Timeline</h1>
-  <!--
-  <div id="backups" class="backup-container">
-    <%= #render :partial => 'backup_bars', :locals => {:backups => @backups} 
-    %>
-  </div>
-  -->
+  <%= 
+    #render :partial => 'backup_bars', :locals => {:backups => @backups} 
+  %>
   
   <div id="tl_flash_notice" style="display: none"></div>
   <div id="tl_flash_error" style="display: none"></div>
@@ -27,7 +23,7 @@
     <%= link_to_function "Refresh", 'timeline.reload()' %>&nbsp;|&nbsp;
     <%= render :partial => 'helplink' %>
   </div>
-  <div class="clearbothXX"></div>
+  <div class="clearboth"></div>
   <div class="timelinebox">
     <div id="my-timeline"></div>
     <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
@@ -40,8 +36,10 @@
       <a class="btn-left" href="#" id="prev_event_search"></a><%= link_to_function 'Present', "timeline.reload({today: true});", :class => 'subtitle6' %><a  class="btn-right" href="#" id="next_event_search"></a>
 		</div>
 		-->
-    <div id="story-area"></div>
   </div>
+  <p>&nbsp;</p>
+	<h1>Events from February 2010</h1>
+	<ul id="events" class="events">
   <br/>
   <div id="timeline-footer" class="tl_helptext">
     <span class="tl_helptext">
@@ -55,8 +53,8 @@
 var timeline;
 document.observe('dom:loaded', function() {
   timeline = new ETimeline({month_selector_id: 'month-selector',
-    artifact_section_id: 'arti-area',
-    events_section_id: 'story-area',
+    artifact_section_id: 'artifacts-header',
+    events_section_id: 'events',
     timeline_section_id: 'my-timeline',
     timeline: {
       memberID: #{current_user.id}, 

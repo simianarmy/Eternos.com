@@ -1,0 +1,13 @@
+/* fix for timeline.css */
+#my-timeline {
+border:1px solid #AAAAAA;
+height:300px;
+width: 720px;
+}
+
+.timelinebox {
+height:auto;
+padding:10px 0;
+width:722px;
+}
+

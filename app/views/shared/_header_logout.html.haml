@@ -1,0 +1,8 @@
+- form_for :user_session, current_user, :url => logout_path, :method => :get do |f|
+  Welcome,
+  %strong= current_user.full_name
+  - if @facebook_session
+    %li.logout= fb_logout_link "log&nbsp;out", logout_path
+    = submit_tag 'FIX ME'
+  - else
+    = f.submit 'Log Out'

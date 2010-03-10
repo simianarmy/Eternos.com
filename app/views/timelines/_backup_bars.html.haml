@@ -1,35 +1,36 @@
-- if @backups.try(:any?)
-  .clear &nbsp;
-  Latest Backups
-  %br
-  - @backups.reject{|b| b.backup_source.nil? || b.backup_source.backup_site.nil?}.each do |job|
-    .backup-box{:id => @boxid = dom_id(job)}
-      = backup_progress_bar(job)
+#backups.backup-container
+  - if @backups.try(:any?)
+    .clear &nbsp;
+    Latest Backups
+    %br
+    - @backups.reject{|b| b.backup_source.nil? || b.backup_source.backup_site.nil?}.each do |job|
+      .backup-box{:id => @boxid = dom_id(job)}
+        = backup_progress_bar(job)
       
-      .backup_tip{:id => @tipid = dom_id(job, 'tip'), :style => "display: none;"}
-        %span.bold
-          = job.backup_source.description
-        %br
-        %span.bold.job_percent_complete== #{job.percent_complete}
-        %span.bold % Complete
-        .job_status
-          - if job.finished?
-            - if !job.successful? 
-              (Failed)
-          - else
-            (Running)
-        %br
-        .job_finish_time
-          - if job.finished_at
-            == Finished #{distance_of_time_in_words(job.finished_at, Time.now)} ago
-            %br
-          - if sched = job.backup_source.next_backup_at
-            == Next backup in #{distance_of_time_in_words(Time.now, sched)}
-  #hideit{:style => "float: right;"}
-    = link_to_function 'hide', "$('backups').hide();"
-  .clear &nbsp;
-- else
-  No Recent Backups
+        .backup_tip{:id => @tipid = dom_id(job, 'tip'), :style => "display: none;"}
+          %span.bold
+            = job.backup_source.description
+          %br
+          %span.bold.job_percent_complete== #{job.percent_complete}
+          %span.bold % Complete
+          .job_status
+            - if job.finished?
+              - if !job.successful? 
+                (Failed)
+            - else
+              (Running)
+          %br
+          .job_finish_time
+            - if job.finished_at
+              == Finished #{distance_of_time_in_words(job.finished_at, Time.now)} ago
+              %br
+            - if sched = job.backup_source.next_backup_at
+              == Next backup in #{distance_of_time_in_words(Time.now, sched)}
+    #hideit{:style => "float: right;"}
+      = link_to_function 'hide', "$('backups').hide();"
+    .clear &nbsp;
+  - else
+    No Recent Backups
   
 :javascript
   document.observe('dom:loaded', function() {
