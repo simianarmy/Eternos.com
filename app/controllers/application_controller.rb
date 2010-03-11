@@ -55,6 +55,11 @@ class ApplicationController < ActionController::Base
     Time.zone = @current_user.time_zone if @current_user
   end
     
+  def load_member_home_presenter
+    # Create home presenter object
+    @settings = MemberHomePresenter.new(current_user)
+  end
+  
   def send_protected_content(path, type)
     # send_file with :x_sendfile => true option FAILS
     response.headers['X-Sendfile'] = path

@@ -3,10 +3,9 @@
 require 'timeline_request_response'
 require 'benchmark_helper'
 
-class TimelinesController < ApplicationController
+class TimelinesController < MemberHomeController
   before_filter :login_required, :except => [:search]
   require_role ['Guest', 'Member'], :for_all_except => :search
-  before_filter :set_facebook_connect_session
   
   def guest_index
     find_host
@@ -22,10 +21,6 @@ class TimelinesController < ApplicationController
   # All other requests will be done via AJAX queries.0
   def show
     @member = current_user
-    
-    # Create home presenter object
-    @settings = MemberHomePresenter.new(@member)
-  
     @member_name = @member.full_name
     @tl_start_date, @tl_end_date = Rails.cache.fetch("tl_date_range:#{@member.id}", :force => session[:refresh_timeline]) { 
       @member.timeline_span 

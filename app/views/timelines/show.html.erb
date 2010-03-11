@@ -1,52 +1,50 @@
 <% #javascript 'jsProgressBarHandler', 'backup_progress_bar' 
 %>
 
-<div class="login1_right home">
-  <h1><%= @current_user.full_name %>'s Timeline</h1>
-  <%= 
-    #render :partial => 'backup_bars', :locals => {:backups => @backups} 
-  %>
-  
-  <div id="tl_flash_notice" style="display: none"></div>
-  <div id="tl_flash_error" style="display: none"></div>
-  <div id="item_details">
-    <div class="clearboth"></div>
-  </div>
-  <div class="alignleft">
-    <div id="month-selector">
-      <a id="month_selector_down" href="#" class="btn-left"></a><span id="display_month" class="subtitle6"></span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6"></span><a id="year_selector_up" href="#" class="btn-right"></a>
-    </div>
-  </div>
-  
-  <div id="timeline_links" class="alignright">
-    <%= link_to_function "Today", "timeline.reload({today: true});" %>&nbsp;|&nbsp;
-    <%= link_to_function "Refresh", 'timeline.reload()' %>&nbsp;|&nbsp;
-    <%= render :partial => 'helplink' %>
-  </div>
-  <div class="clearboth"></div>
-  <div class="timelinebox">
-    <div id="my-timeline"></div>
-    <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
-  </div>
-  <div id="debug_box" class="debug_container"></div>
+<h1><%= @current_user.full_name %>'s Timeline</h1>
+<%= 
+  #render :partial => 'backup_bars', :locals => {:backups => @backups} 
+%>
 
-  <div id="timeline-detail">
-    <!--
-    <div id="proximity_search">
-      <a class="btn-left" href="#" id="prev_event_search"></a><%= link_to_function 'Present', "timeline.reload({today: true});", :class => 'subtitle6' %><a  class="btn-right" href="#" id="next_event_search"></a>
-		</div>
-		-->
-  </div>
-  <p>&nbsp;</p>
-	<div id="events"></div>
-  <br/>
-  <div id="timeline-footer" class="tl_helptext">
-    <span class="tl_helptext">
-      If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We welcome any feedback you might have!
-    </span>
+<div id="tl_flash_notice" style="display: none"></div>
+<div id="tl_flash_error" style="display: none"></div>
+<div id="item_details">
+  <div class="clearboth"></div>
+</div>
+<div class="alignleft">
+  <div id="month-selector">
+    <a id="month_selector_down" href="#" class="btn-left"></a><span id="display_month" class="subtitle6"></span><a id="month_selector_up" href="#" class="btn-right"></a><a id="year_selector_down" href="#" class="btn-left"></a><span id="display_year" class="subtitle6"></span><a id="year_selector_up" href="#" class="btn-right"></a>
   </div>
 </div>
-  
+
+<div id="timeline_links" class="alignright">
+  <%= link_to_function "Today", "timeline.reload({today: true});" %>&nbsp;|&nbsp;
+  <%= link_to_function "Refresh", 'timeline.reload()' %>&nbsp;|&nbsp;
+  <%= render :partial => 'helplink' %>
+</div>
+<div class="clearboth"></div>
+<div class="timelinebox">
+  <div id="my-timeline"></div>
+  <noscript>This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.</noscript>
+</div>
+<div id="debug_box" class="debug_container"></div>
+
+<div id="timeline-detail">
+  <!--
+  <div id="proximity_search">
+    <a class="btn-left" href="#" id="prev_event_search"></a><%= link_to_function 'Present', "timeline.reload({today: true});", :class => 'subtitle6' %><a  class="btn-right" href="#" id="next_event_search"></a>
+	</div>
+	-->
+</div>
+<p>&nbsp;</p>
+<div id="events"></div>
+<br/>
+<div id="timeline-footer" class="tl_helptext">
+  <span class="tl_helptext">
+    If you have any problems, suggestions, or concerns with our service, please use the "FEEDBACK" button that is along the right side of your screen.  We welcome any feedback you might have!
+  </span>
+</div>
+
 
 <%= javascript_tag("
 var timeline;

@@ -1,8 +1,8 @@
-class TrusteesController < ApplicationController
+class TrusteesController < MemberHomeController
   before_filter :login_required, :except => [:confirmation]
   require_role "Member", :except => [:confirmation]
-  
   ssl_required :confirmation
+  layout 'member_standalone'
   
   def index
     load_objects

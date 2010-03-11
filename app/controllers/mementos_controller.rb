@@ -1,8 +1,7 @@
 # $Id$
 
-class MementosController < ApplicationController
-  before_filter :login_required
-  require_role ['Member']
+class MementosController < MemberHomeController
+  layout 'member_standalone'
   
   def new
     

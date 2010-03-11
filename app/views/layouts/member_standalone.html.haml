@@ -39,50 +39,11 @@
             = link_to 'Account Setup', account_setup_path
             %span
     
-    / start content
-    #content.content.login1
-      %fieldset
-        / for rjs flash notices
-        #notice.flash_notice
-        = show_flash_messages
-        
-        / start login1_left
-        .login1_left
-          %h1 Account Services
-          %p
-            = image_tag 'mini-facebook.gif', :class => @settings.facebook_confirmed ? "activated-services" : ""
-            = image_tag 'mini-twitter.gif', :class => @settings.twitter_confirmed ? "activated-services" : ""
-            = image_tag 'mini-gmail.gif', :class => @settings.gmail_confirmed ? "activated-services" : ""
-            = image_tag 'mini-what.gif', :class => @settings.picasa_confirmed ? "activated-services" : ""
-            = image_tag 'mini-rss.gif', :class => @settings.rss_confirmed ? "activated-services" : ""
-            
-          <p align="right">
-          = link_to 'Add More', account_setup_path, :id => "active_network-add"
-          </p>
-          <p>&nbsp;</p>
-          #searchbar= render :partial => 'shared/search_box', :locals => {:url => user_search_path}
-          <br/>
-          %h1 Account Features
-          %ul#acct_settings
-            %li= link_to 'Memento Studio', new_memento_path
-            %li= recording_popup_link 'Video Journal'
-            %li= link_to_lightview 'Upload', new_content_path(:dialog=>true), {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '600'}
-            %li= link_to 'Life Key', trustees_path
-            %li= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
-
-          <p>&nbsp;</p>
-          %h1 Active Networks
-
-          <p>&nbsp;</p>
-          #artifacts-header
-          <p>&nbsp;</p>         
-             
-        / end login1_left
-        
-        / start sub content
-        .login1_right.home
-          = yield
-        / end sub content
+    
+    / start sub content
+    .login1_right.home
+      = yield
+    / end sub content
     / end content
           
     = render :partial => 'shared/site_footer' unless @hide_footer
