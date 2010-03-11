@@ -155,16 +155,16 @@ var ETemplates = function() {
 	// Events section templates
 	that.eventListTemplates = {
 		events: function() {
-			return new Template('<div id="events_header"><p class="details_box_title">#{title}</p></div>' + '<div id="events_list">#{events}</div>');
+			return new Template('<h1>#{title}</h1>' + '<ul class="events">#{events}</ul>');
 		} (),
 		eventGroup: function() {
-			return new Template('<div class="event_list_group_#{odd_or_even}"><div class="event_list_date">#{date}</div>' + '<ul class="event_list_group">#{body}</ul><div class="clearboth"></div></div>');
+			return new Template('<li class="#{odd_or_even}"><strong>#{date}</strong>#{body}</li>');
 		} (),
 		hiddenItem: function() {
 			return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 		} (),
 		eventGroupItem: function() {
-			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>' + '</div><div class="clearboth"></div></li>');
+			return new Template('<div class="fb-posts">#{caption}SOME TEXT HERE...<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">Read All</a></p></div><p class="event-images"><img src="images/pic-events.jpg" /> <img src="images/pic-events.jpg" /> <img src="images/pic-events.jpg" /><br/><em>Event Images</em> <a href="#">View All</a></p>');
 		} (),
 		eventItemWithTooltip: function() {
 			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + '<div id="evlitt_#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clearboth"></div></li>');

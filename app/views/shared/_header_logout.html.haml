@@ -2,7 +2,6 @@
   Welcome,
   %strong= current_user.full_name
   - if @facebook_session
-    %li.logout= fb_logout_link "log&nbsp;out", logout_path
-    = submit_tag 'FIX ME'
+    <input type="submit" value="Log Out" onclick="FB.Connect.logoutAndRedirect()"/>
   - else
     = f.submit 'Log Out'
