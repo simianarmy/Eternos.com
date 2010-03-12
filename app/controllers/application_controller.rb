@@ -196,7 +196,8 @@ class ApplicationController < ActionController::Base
     uri = session[:original_uri]
     session[:original_uri] = nil
     
-    unless uri.nil? || uri.match(/logout|signup/)
+    # AVOID REDIRECTING BACK IF BACK = PUBLIC AREA - IT WILL CONFUSE THE SHIT OUT OF USERS!
+    unless uri.nil? || uri.match(/about|user_sessions|logout|signup/)
       RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{uri}"
       redirect_to uri
     else
