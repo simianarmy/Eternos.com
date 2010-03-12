@@ -10,12 +10,19 @@
     %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    - stylesheet 'new_design/members', 'new_design/misc-fix'
+    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix', 'new_design/account_setup'
+    <!--[if lte IE 7]>
+    <link href="/css/styleie7.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    <!--[if lte IE 6]>
+    <link href="/css/styleie6.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+    
     - load_prototype unless @no_prototype
     - use_lightview
     - use_lowpro
     - use_prototip
-    - javascript 'application', 'login'
+    - javascript 'application', 'login', 'account_setup'
     
     = yield(:head)
     = yield(:js_libs)
@@ -44,11 +51,11 @@
         .login1_left
           %h1 Account Setup
           %ul.signup-left
-            %li{:class => get_signup_wizard_step_class(@completed_steps >= 1)}
+            %li#step1{:class => get_signup_wizard_step_class(@settings.any_activated)}
               %strong Step 1
               %br
               %span Online Accounts
-            %li{:class => get_signup_wizard_step_class(@completed_steps > 2)}
+            %li#step2{:class => get_signup_wizard_step_class(@completed_steps > 2)}
               - if @completed_steps >= 2
                 %strong Step 2
               - else 

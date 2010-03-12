@@ -4,6 +4,8 @@ class GmailAccountsController < EmailAccountsController
   before_filter :login_required
   require_role "Member"
   
+  ssl_allowed :create, :update, :destroy
+  
   def index
     load_accounts
   end

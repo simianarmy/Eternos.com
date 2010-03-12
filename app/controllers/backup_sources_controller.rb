@@ -8,7 +8,8 @@ class BackupSourcesController < ApplicationController
   before_filter :login_required
   require_role "Member"
   
-  ssl_allowed :add_twitter, :add_picasa, :remove_twitter_account, :remove_picasa_account,
+  ssl_allowed :add_twitter, :remove_twitter_account,
+    :add_picasa, :remove_picasa_account,
     :add_feed_url, :remove_url
     
   def index

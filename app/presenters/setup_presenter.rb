@@ -4,7 +4,7 @@
 # Contains common methods for both controllers
 
 class SetupPresenter < AccountPresenter
-  attr_accessor :active_step, :completed_steps, 
+  attr_accessor :active_step, :completed_steps, :any_activated,
     :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, :fb_login_url,
     :twitter_accounts, :twitter_account, :twitter_confirmed,
     :picasa_accounts, :picasa_account, :picasa_confirmed,
@@ -15,11 +15,13 @@ class SetupPresenter < AccountPresenter
   
   def load_backup_sources
     get_activations(@user)
-    
+  end
+  
+  def load_facebook_user_info
     # Also get facebook profile data
     if @facebook_confirmed
       begin
-        user.facebook_session_connect @fb_session
+        @user.facebook_session_connect @fb_session
         @fb_session.user.populate(:pic_small, :name) if @fb_session.verify
         @facebook_user = @fb_session.user.name
         @facebook_pic = @fb_session.user.pic_small

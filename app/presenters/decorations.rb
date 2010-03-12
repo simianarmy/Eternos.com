@@ -31,6 +31,8 @@ module BackupSourceActivation
       @email_accounts = backup_sources.gmail
       @current_gmail = @email_accounts.first
       @gmail_confirmed = @email_accounts && @email_accounts.any? {|t| t.confirmed?}
+      
+      @any_activated = @facebook_confirmed || @twitter_confirmed || @picasa_confirmed || @rss_confirmed || @gmail_confirmed
     end
   end
 end

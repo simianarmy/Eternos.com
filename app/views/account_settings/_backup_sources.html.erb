@@ -1,13 +1,17 @@
 <% use_jquerytools %>
-<% stylesheet 'account_settings' %>
 
 <h1>Add the online accounts that you would like us to backup for you.</h1>
 <p>Eternos currently provides backup services for:</p>
 
 <%= show_flash_messages :fade => 15 %>
 
+<div id="notice" class="flash_notice"></div>
+<div id="twitter_notice" class="flash_notice"></div>
+<div id="facebook_notice" class="flash_notice"></div>
+<div id="rss_notice" class="flash_notice"></div>
+
 <div id="accordion">
-  <p class="current"><%= image_tag '2nd-facebook.gif', :class => settings.facebook_confirmed ? 'active2' : "" %> 
+  <p class="current"><%= image_tag '2nd-facebook.gif', :id => "fb-button", :class => settings.facebook_confirmed ? 'active2' : "" %> 
     <strong>Facebook:</strong> Back up all Photos, Wall posts, Comments, Friends, &amp; Groups.
   </p>
   <!-- Facebook Pane -->
@@ -26,21 +30,19 @@
       <% else %>
         <div id="facebook_blurb">
           Simply click on the Facebook button below to begin saving your Facebook photos, profile, friends &amp; posts (including friend messages).
-          <p/>
-          <br/>
         </div>
         <div class="fb-btn1">
           <%= link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), settings.fb_login_url %>
           <br/>
         </div>
         <span style="font-size: x-small">
-        <%= link_to 'Click here', '#' %> for details on the permissions Eternos Backup requires.
+          <%= link_to 'Click here', '#' %> for details on the permissions Eternos Backup requires.
         </span>
       <% end %>
     </div>
   </div>
   
-  <p><%= image_tag '2nd-twitter.gif', :class => settings.twitter_confirmed ? 'active2' : 'twitter-btn' %> 
+  <p><%= image_tag '2nd-twitter.gif', :id => "twitter-button", :class => settings.twitter_confirmed ? 'active2' : 'twitter-btn' %>
     <strong>Twitter:</strong> Back up all your tweets.
   </p>
   <!-- Twitter Pane -->
@@ -58,7 +60,7 @@
       </div>
   </div>
   
-  <p><%= image_tag '2nd-rss.gif', :class => settings.rss_confirmed ? 'active2' : 'rss-btn' %> 
+  <p><%= image_tag '2nd-rss.gif', :id => "rss-button", :class => settings.rss_confirmed ? 'active2' : 'rss-btn' %> 
     <strong>RSS Feeds &amp; Blogs:</strong> Back up feed entries text &amp; html, including screen captures of the pages.
   </p>
   <!-- RSS Pane -->
@@ -95,7 +97,7 @@
     </div>
   </div>
 
-  <p><%= image_tag '2nd-gmail.gif', :class => settings.gmail_confirmed ? 'active2' : 'gmail-btn' %> 
+  <p><%= image_tag '2nd-gmail.gif', :id => "gmail-button", :class => settings.gmail_confirmed ? 'active2' : 'gmail-btn' %> 
     <strong>Gmail Accounts</strong>: Store and archive multiple Gmail Accounts (IMAP only).
   </p>
   <!-- Gmail Pane -->
@@ -103,7 +105,7 @@
     <%= render :partial => 'account_settings/gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => settings.current_gmail, :email_accounts => settings.email_accounts} %>
   </div>
   
-  <p><%= image_tag '2nd-picasa.gif', :class => settings.picasa_confirmed ? 'active2' : 'picasa-btn' %> 
+  <p><%= image_tag '2nd-picasa.gif', :id => "picasa-button", :class => settings.picasa_confirmed ? 'active2' : 'picasa-btn' %> 
     <strong>Picasa Web Albums:</strong>  Preserve all your Picasa Web photo albums. 
   </p>			
   <!-- Picasa Pane -->

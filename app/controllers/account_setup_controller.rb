@@ -109,7 +109,7 @@ class AccountSetupController < ApplicationController
    end
    
    def load_online
-     @settings.load_backup_sources
+     @settings.load_facebook_user_info
      @settings.create_fb_login_url(request)
    end
    
@@ -125,5 +125,6 @@ class AccountSetupController < ApplicationController
    
    def load_presenter
      @settings = SetupPresenter.new(current_user, load_facebook_session, params)
+     @settings.load_backup_sources
    end
 end
