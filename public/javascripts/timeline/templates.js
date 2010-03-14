@@ -157,18 +157,31 @@ var ETemplates = function() {
 		events: function() {
 			return new Template('<h1>#{title}</h1>' + '<ul class="events">#{events}</ul>');
 		} (),
+		// Event day row
 		eventGroup: function() {
-			return new Template('<li class="#{odd_or_even}"><strong>#{date}</strong>#{body}</li>');
+			return new Template('<li class="#{odd_or_even}"><strong>#{date}</strong>#{body}<p class="event-images">#{images}</p></li>');
+		} (),
+		// Event day row images 
+		eventGroupImages: function() {
+			return new Template('#{images}<br/><em>Event Images</em> #{view_all_images_link}');
 		} (),
 		hiddenItem: function() {
 			return new Template('<a href="#{link_url}" class="lightview" rel="#{link_rel}"></a>');
 		} (),
+		// Event day row template
 		eventGroupItem: function() {
-			return new Template('<div class="fb-posts">#{caption}SOME TEXT HERE...<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">Read All</a></p></div><p class="event-images"><img src="images/pic-events.jpg" /> <img src="images/pic-events.jpg" /> <img src="images/pic-events.jpg" /><br/><em>Event Images</em> <a href="#">View All</a></p>');
+			// Old: clickable tooltip link with lightview to multiple-item iframe
+			// return new Template('<div class="fb-posts">#{caption}<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">Browse</a></p></div><p class="event-images">#{images}<br/><em>Event Images</em> <a href="#{view_all_images_link}">View All</a></p>');
+			// New: non-clickable tooltip-only link
+			// New: images for item in separate template
+			return new Template('<div class="fb-posts">#{caption}<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="event_list_inline_item">Browse</a></p></div>');
 		} (),
+		// For image events?
 		eventItemWithTooltip: function() {
+			// fucking redesigns...
 			return new Template('<li class="event_list_item">' + '<div class="event_list_item_container">' + '<a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">#{title}</a>#{hidden_items}' + '<div id="evlitt_#{list_item_id}" class="tooltip_container" style="display:none"><p/>#{tt_content}</div></div><div class="clearboth"></div></li>');
 		} (),
+		// No idea what this does anymore...
 		eventItemTooltipItem: function() {
 			// Lightview popup on click
 			return new Template('<div class="event_preview_item_container tooltip_container">' +

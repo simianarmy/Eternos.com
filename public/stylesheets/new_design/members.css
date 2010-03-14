@@ -98,7 +98,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .fb-posts P { margin: 0; padding: 0;}
 
 .event-images IMG { border: 1px solid #647384; margin: 0 3px 12px 0;}
-.fb-posts EM { background: url(/images/icon-facebook-small.gif) no-repeat 0 2px; padding-left: 20px; font-style: normal; font-weight: bold; color: #3154A7; font-size: 14px;}
+.fb-posts EM { padding-left: 20px; font-style: normal; font-weight: bold; color: #3154A7; font-size: 14px;}
 .fb-posts A, .event-images A { float: right; font-size: 11px; color: #3154A7;}
 
 .event-images { margin: 0; padding: 0 50px 0 0;}

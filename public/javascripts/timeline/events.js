@@ -71,6 +71,14 @@ var ETLEventSource = Class.create({
 	getText: function() {
 		return this.attributes.message || this.attributes.description;
 	},
+	getCaption: function() {
+		var txt = this.getText();
+		if (txt != null && txt != '') {
+			return this.getText().truncate(30);
+		} else {
+			return null;
+		}
+	},
 	// Returns event date as string
 	getEventDate: function() {
 		return this.start_date_str;

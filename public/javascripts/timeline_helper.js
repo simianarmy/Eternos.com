@@ -422,22 +422,23 @@ var ETLEventItems = Class.create({
 	},
 	// show url for 1+ item
 	_getItemDetailsUrl: function(item) {
-		/*
-		if (item.isArtifact()) {
-			return item.getURL();
-		} else {
-			return ETemplates.eventListTemplates.detailsLink.evaluate({
-				memberId: this.options.memberID,
-				eventType: item.type,
-				eventIds: item.getID()
-			});
-		}
-		*/
 		return ETemplates.eventListTemplates.detailsLink.evaluate({
 			memberId: this.options.memberID,
 			eventType: item.type,
 			eventIds: item.getID()
 		});
+	},
+	_getItemCaptions: function() {
+		var caption = '', captions = new Array();
+		this.items.each(function(i) {
+			if ((caption = i.getCaption()) != null) {
+				captions.push(caption);
+			}
+		});
+		if (captions.size() > 0) {
+			caption = captions.join('<p>&nbsp;</p>');
+		}
+		return caption;
 	},
 	// Determine 'rel' attribute for Lightview link html
 	_getLinkRel: function() {
@@ -469,7 +470,9 @@ var ETLEventItems = Class.create({
 		return ETemplates.eventListTemplates.eventGroupItem.evaluate({
 			list_item_id: this._getItemID(),
 			title: this.getTooltipTitle(),
-			link_url: this._getLinkUrl(),
+			caption: this._getItemCaptions(),
+			//link_url: /this._getLinkUrl(),
+			link_url: 'javascript:void(0);', 
 			link_rel: this._getLinkRel(),
 			details_win_height: getWinHeight()
 		});
@@ -889,8 +892,7 @@ var ETimeline = function(opts) {
 			ETUI.createEventListItemObservers();
 		},
 		populate: function(content) {
-			var html = content || '';
-			this.content = html;
+			this.content = content || '';
 			this._write();
 		},
 		showLoading: function() {
@@ -946,9 +948,10 @@ var ETimeline = function(opts) {
 			var currentItems;
 			var itemsHtml;
 			var html = '';
-			var event;
+			var events;
 			var activeDates;
-
+			var dateItems = new Array();
+			
 			ETDebug.log("Populating with events from " + td);
 
 			// Only use events that fall in the active date month
@@ -957,20 +960,23 @@ var ETimeline = function(opts) {
 			});
 			activeDates.sort(orderDatesDescending).each(function(d, rowIndex) {
 				itemsHtml = '';
+				dateItems.clear();
 				currentItems = this._groupItemsByType(this.rawItems[d]);
 
 				currentItems.each(function(group, index) {
-					event = new ETLEventItems(group, {
+					events = new ETLEventItems(group, {
 						memberID: that.memberID
 					});
-					this.items.push(event);
-					itemsHtml += event.populate();
+					this.items.push(events);
+					dateItems.push(events);
+					itemsHtml += events.populate();
 				}.bind(this));
 
 				html += this.groupTemplate.evaluate({
 					date: this._eventDate(d),
 					odd_or_even: ((rowIndex % 2) === 0 ? 'even' : 'odd'),
-					body: itemsHtml
+					body: itemsHtml,
+					images: this._getGroupImagesHtml(dateItems)
 				});
 			}.bind(this));
 
@@ -1065,7 +1071,6 @@ var ETimeline = function(opts) {
 					results[types.length - 1] = new Array(items[i]);
 				}
 			}
-
 			//--results.each(function(item){ETDebug.log(item.length)});
 			return results;
 		},
@@ -1080,6 +1085,35 @@ var ETimeline = function(opts) {
 		_eventDate: function(date) {
 			var d = mysqlDateToDate(date);
 			return d.toLocaleDateString();
+		},
+		// Generates & returns images preview section html
+		_getGroupImagesHtml: function(dateItems) {
+			// Collect all artifacts from date's collection
+			var upTo, i, imageHtml;
+			var images = new Array();
+			dateItems.each(function(events) {
+				images.push(events.items.select(function(item) {
+					return item.isArtifact();
+				}));
+			});
+			images = images.flatten();
+			if (images.size() > 0) {
+				// collect 1st 3 images
+				upTo = Math.min(images.size(), 3);
+				imageHtml = '';
+				for (i=0; i<upTo; i++) {
+					imageHtml += '<img src="' + images[i].getThumbnailURL() + '"/>';
+				}
+				return ETemplates.eventListTemplates.eventGroupImages.evaluate({
+					images: imageHtml,
+					view_all_images_link: this._getViewAllEventImagesLinkUrl()
+				});
+			} else {
+				return '';
+			}
+		},
+		_getViewAllEventImagesLinkUrl: function() {
+			return '<a href="javascript: void(0);">View All</a>';
 		}
 	});
 
