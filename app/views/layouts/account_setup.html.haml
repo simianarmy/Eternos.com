@@ -10,7 +10,7 @@
     %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix', 'new_design/account_setup'
+    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix'
     <!--[if lte IE 7]>
     <link href="/css/styleie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->
@@ -35,16 +35,7 @@
         = render :partial => 'shared/header_logout'
     
         = link_to((image_tag 'logo.png', :border => '0'),  member_home_path)
-        %ul
-          %li{:class => 'inact'}
-            = link_to 'Home', member_home_path
-            %span
-          %li{:class => 'inact'}
-            = link_to_lightview 'Bio', account_settings_path, {:id => 'account-setting'}, {:rel => "'iframe'"}, {:autosize => false, :closeButton => false, :height => 'lightview_height', :width => '800'}
-            %span
-          %li{:class => 'active'}
-            = link_to 'Account Setup', account_setup_path
-            %span
+        = render :partial => 'layouts/member_tabs'
     
     .content.login1
       %fieldset

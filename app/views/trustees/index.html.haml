@@ -1,37 +1,35 @@
 - use_form
 - stylesheet 'trustees'
 - title 'Like Key'
-- header 'Life Key Manager' 
 
-#content-container3
-  .half.left{:style => "width: 420px"}
-    #likekey-description
-      %p
-        Welcome to the Life Key manager.  From here you can add trustees that will be responsible for notifying us in the event you pass away.
-        %br
-        In the event of your passing, your trustees will be given access to your account based upon permissions that you select. 
-        %br
-        Add the name, nature of your relationship, and email for each trustee. 
-        %br
-        /-= link_to 'Eternos Life Key Details', '#'
-      %br
-    = link_to image_tag('trustees/add-button1.png', :id => "toggle_new_trustee", :class => "toggleable"), '#', :class => 'right'
-    .clear &nbsp;
 
-    #new_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
-      %p Enter new trustee contact details below
-      #rjs_notice
-      - form_for @trustee, :html => { :id => 'new_trustee_form', :class => 'trustee_form remote_form' } do |f|
-        = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
-        .clear &nbsp;
-        .button
-          %a#remote_form_submit_button= image_tag('trustees/add-button2.png')
-          = link_to 'Cancel', '#', :id => "toggle_new_trustee", :class => "toggleable", :style => "marging-top:5px"
-
-  .half.right
-    #confirmed= render :partial => 'list', :locals => {:title => 'Verified', :trustees => @confirmed_trustees}
+#likekey-description
+  %p
+    Welcome to the Life Key manager.  From here you can add trustees that will be responsible for notifying us in the event you pass away.
     %br
-    #pending= render :partial => 'list', :locals => {:title => 'Pending', :trustees => @pending_trustees}
-  .clear &nbsp;
+    In the event of your passing, your trustees will be given access to your account based upon permissions that you select. 
+    %br
+    Add the name, nature of your relationship, and email for each trustee. 
+    %br
+    /-= link_to 'Eternos Life Key Details', '#'
+  %br
+= link_to image_tag('trustees/add-button1.png', :id => "toggle_new_trustee", :class => "toggleable"), '#', :class => 'right'
+.clear &nbsp;
+
+#new_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
+  %p Enter new trustee contact details below
+  #rjs_notice
+  - form_for @trustee, :html => { :id => 'new_trustee_form', :class => 'trustee_form remote_form' } do |f|
+    = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}
+    .clear &nbsp;
+    .button
+      %a#remote_form_submit_button= image_tag('trustees/add-button2.png')
+      = link_to 'Cancel', '#', :id => "toggle_new_trustee", :class => "toggleable", :style => "marging-top:5px"
+
+.tables
+  #confirmed= render :partial => 'list', :locals => {:title => 'Verified', :trustees => @confirmed_trustees}
+  %br
+  #pending= render :partial => 'list', :locals => {:title => 'Pending', :trustees => @pending_trustees}
+.clear &nbsp;
 
 #edit_trustee

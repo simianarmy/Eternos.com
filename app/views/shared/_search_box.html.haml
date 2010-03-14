@@ -1,3 +1,3 @@
 - form_tag url, :method => 'get', :class => 'search-form' do
-  = text_field_tag :terms, params[:terms], :class => 'search-input withHint', :defaultValue => 'Search'
+  = text_field_tag :terms, params[:terms], :class => 'search-input withHint', :defaultValue => (local_assigns.has_key?(:search_prompt) ? search_prompt : 'Search')
   = submit_tag("Search", :class => 'search-button') if local_assigns.has_key?(:show_search_button) && show_search_button
