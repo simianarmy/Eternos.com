@@ -12,7 +12,7 @@ class UserSearchController < ApplicationController
   def show
     # support more than just search terms in the future
     BenchmarkHelper.rails_log("sphinx search for #{params[:terms]}") do
-      @results = UserSearch.new(current_user).execute params[:terms]
+      @results = UserSearch.new(current_user).execute(params[:terms]).compact
     end
     RAILS_DEFAULT_LOGGER.debug "sphinx results: #{@results.inspect}"
     respond_to do |format|

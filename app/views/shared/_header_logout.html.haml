@@ -1,6 +1,6 @@
 - form_for :user_session, current_user, :url => logout_path, :method => :get do |f|
   Welcome,
-  %strong= current_user.full_name
+  %strong= link_to current_user.full_name, member_home_path
   - if @facebook_session
     <input type="submit" value="Log Out" onclick="FB.Connect.logoutAndRedirect()"/>
   - else

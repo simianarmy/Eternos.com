@@ -37,6 +37,8 @@ module UserSearchHelper
       obj.content_icon
     when BackupEmail
       'email_accept.png'
+    else
+      content_icon_path + obj.to_str + '.png'
     end
     
     icon || 'BROKEN'

@@ -1,4 +1,6 @@
-<% #javascript 'jsProgressBarHandler', 'backup_progress_bar' 
+<% 
+  #javascript 'jsProgressBarHandler', 'backup_progress_bar' 
+  use_busy
 %>
 
 <div class='flash_notice' id='notice'></div>
@@ -20,8 +22,11 @@
   </div>
 </div>
 <div class="search-timeline">
-  <%= render :partial => 'shared/search_box', :locals => {
-    :url => user_search_path, :show_search_button => true, :search_prompt => 'Search Timeline'} %>
+  <% form_remote_tag :url => user_search_path, :method => 'get', :update => 'search-results', 
+    :html => {:class => 'search-form'}, :loading => "spinner.load('events')", :complete => "spinner.unload(); onSearchComplete();" do %>
+    <%= text_field_tag :terms, params[:terms], :class => 'search-input withHint', :defaultValue => 'Search Timeline' %>
+    <%= submit_tag("Search", :class => 'search-button') %>
+  <% end %>
 </div>
   
 
@@ -46,8 +51,9 @@
 	-->
 </div>
 <p>&nbsp;</p>
-<div class="back-events"><a href="#">Show Events</a></div>
+<div id="back-to-events-button" class="back-events"><a href="javascript:void(0);" onclick="onShowEvents();">Show Events</a></div>
 
+<div id="search-results"></div>
 <div id="events"></div>
 <br/>
 <div id="timeline-footer" class="tl_helptext">
@@ -58,8 +64,16 @@
 
 
 <%= javascript_tag("
+function onSearchComplete() {
+  $('events').hide(); $('back-to-events-button').show();
+}
+function onShowEvents() {
+  $('search-results').hide(); $('events').show(); $('back-to-events-button').hide();
+}
 var timeline;
 document.observe('dom:loaded', function() {
+  $('back-to-events-button').hide();
+  
   timeline = new ETimeline({month_selector_id: 'month-selector',
     artifact_section_id: 'artifacts-header',
     events_section_id: 'events',
@@ -79,5 +93,6 @@ document.observe('dom:loaded', function() {
   Event.observe(window, 'lightview:hidden', function(e) { 
     //timeline.reload(); 
   });
+
 });") unless @hide_timeline %>
 

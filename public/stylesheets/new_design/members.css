@@ -35,7 +35,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .footer .p5 { clear: both; float: none; text-align: center;}
 
 /* content */
-.content { width: 998px; margin: 0 auto; padding: 25px 0;}
+.page-content { width: 998px; margin: 0 auto; padding: 25px 0;}
 
 /* 1st login */
 .login1_left { width: 249px; float: left; margin-right: 13px;}

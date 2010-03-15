@@ -1,15 +1,14 @@
-- stylesheet 'search', 'timeline'
-- use_busy
-- use_flashplayer
+/- stylesheet 'search', 'timeline'
+/- use_busy
+/- use_flashplayer
 
-#user-search-box= render :partial => 'shared/search_box', :locals => {:url => user_search_path, :show_search_button => true}
-%p
-%br
+/#user-search-box= render :partial => 'shared/search_box', :locals => {:url => user_search_path, :show_search_button => true}
 #search-results-header
   .results-title
     %h3== Search results for '#{h params[:terms]}'
   .results-stats
-    = pluralize(@results.size, 'result')
+    %strong= pluralize(@results.size, 'result')
+%p
 #results-config
 #search-results= render :partial => 'result', :collection => @results
 #search-results-footer
