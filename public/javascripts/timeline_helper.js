@@ -1819,3 +1819,23 @@ var ETimeline = function(opts) {
 	// Return 'class' object with only public methods exposed.
 	return me;
 };
+
+// Helper to create & draw timeline 
+function drawETimeline() {
+	// Create timeline
+  ETERNOS.timeline = new ETimeline({month_selector_id: 'month-selector',
+    artifact_section_id: 'artifacts-header',
+    events_section_id: 'events',
+    timeline_section_id: 'my-timeline',
+    timeline: {
+      memberID: ETERNOS.user_id, 
+      startDate: ETERNOS.tl_start_date, 
+      endDate: ETERNOS.tl_end_date, 
+      options: {
+        max_results: 100,
+        fake: ETERNOS.fake_timeline
+      }
+    }
+  });
+  ETERNOS.timeline.draw();
+}

@@ -9,6 +9,15 @@ if (!("console" in window)) {
  	window.console = {log: function() {}, dir: function() {}};
 }
 
+// Global container
+var ETERNOS = {};
+
+// Global functionality
+document.observe('dom:loaded', function() {
+	lightview_height = 0.9 * win_dimension()[1];
+  handle_timeout_popups(ETERNOS.session_timeout_seconds);
+});
+
 // Possible needs its own file if it grows too large.
 // WARNING: UNTESTED
 var AssetManager = function() {

@@ -14,13 +14,14 @@
     - use_lowpro
     - use_prototip
     - use_timeline
-    - javascript 'application', 'login'
+    - javascript 'application', 'login', 'member_home'
     - stylesheet 'application', 'new_design/members', 'new_design/misc-fix'
     
     = yield(:head)
     = yield(:js_libs)
     /- FIX: Doesn't work when put at bottom of <body>
     = yield(:javascript)
+    = javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds};"
     / end bundle
   %body
     .header
@@ -46,34 +47,18 @@
           <p>&nbsp;</p>
           %h1 Backup Services
           %p
-            - if @settings.facebook_confirmed
-              = backup_icon('facebook', '36x36')
-            - else
-              = image_tag 'mini-facebook.gif'
-            - if @settings.twitter_confirmed
-              = backup_icon('twitter', '36x36')
-            - else
-              = image_tag 'mini-twitter.gif'
-            - if @settings.gmail_confirmed
-              = backup_icon('gmail', '36x36')
-            - else
-              = image_tag 'mini-gmail.gif'
-            - if @settings.picasa_confirmed
-              = backup_icon('picasa', '36x36')
-            - else
-              = image_tag 'mini-what.gif'
-            - if @settings.rss_confirmed
-              = backup_icon('rss', '36x36')
-            - else
-              = image_tag 'mini-rss.gif'
+            = backup_icon('facebook', '36x36', @settings.facebook_confirmed)
+            = backup_icon('twitter', '36x36', @settings.twitter_confirmed)
+            = backup_icon('gmail', '36x36', @settings.gmail_confirmed)
+            = backup_icon('picasa', '36x36', @settings.picasa_confirmed)
+            = backup_icon('rss', '36x36', @settings.rss_confirmed)
             
           <p align="right">
           = link_to 'Add More', account_setup_path(:step => 0), :id => "active_network-add"
           </p>
           <p>&nbsp;</p>
-          /
-            %h1 Tag Cloud
-            #tag-cloud
+          / %h1 Tag Cloud
+          #tag-cloud
           <p>&nbsp;</p>
           #artifacts-header
           <p>&nbsp;</p>         
@@ -92,10 +77,10 @@
     - if @facebook_session
       = fb_connect_javascript_tag
       = init_fb_connect "XFBML"
+    
     :javascript
-      // This needs to be global to all js
-      var lightview_height = 0.9 * win_dimension()[1];
-      //alert('lightview_height = ' + lightview_height);
-      Element.observe(window, 'load', function() { 
-        handle_timeout_popups(#{session_timeout_seconds});
+      document.observe('dom:loaded', function() {
+        createTagCloud('#{tag_cloud_timeline_url}', {
+          user_search_path: '#{user_search_path}?terms='}
+        );
       });

@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :profile
   map.resource :facebook_profile
   map.resource :fb, :controller => 'fb'
-  map.resource :timeline
+  map.resource :timeline, :member => {:tag_cloud => :get, :search => :get}
   map.resource :wysiwyg_preview
   map.resource :backup_state
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { 
