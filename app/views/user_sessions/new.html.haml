@@ -1,16 +1,19 @@
 - hide_login_box
 
-.content.what
+.content.home
   %fieldset
-    .what01
+    .login
       - if params[:home_login]
         - flash.discard
       -else
         = show_flash_messages
       = custom_error_messages_for :user
       = render :partial => 'shared/login_form', :locals => {:user_session => @user_session}
-      %p
-      %br
-      Not a member?  
-      = link_to "Signup now", new_account_path(:plan => 'Free'), {:id => "start_button", :class => "reg-btn"}
+      <p>&nbsp;</p>
+      
+      %p{:align=>"right"}
+        = link_to 'forgot login?', new_password_reset_path
+        |
+        Not a member?  
+        = link_to "Signup now", new_account_path(:plan => 'Free'), {:id => "start_button", :class => "reg-btn"}
       
