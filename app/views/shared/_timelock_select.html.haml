@@ -18,7 +18,7 @@
   
 - @field_name = "#{parent.new_record? ? 'new_time_lock_attributes' : 'time_lock_attributes'}"
 - f.fields_for @field_name, timelock do |ff|
-  .labelcol.tooltip-target{:rel=>"{target: $('timelock_sel'), hook: {target: 'rightMiddle', tip: 'leftMiddle'}, stem: 'leftMiddle', width: 100}"}
+  .labelcol.tooltip-target{:rel=>prototip_options_for_div('timelock_sel')}
     = local_assigns.has_key?(:text) ? text : 'Post:'
   .tooltip
     Choose when this item can be viewed by others

@@ -9,7 +9,7 @@
 = hidden_field_tag :privacy_update, '1' unless object.new_record?
 
 - class_field = local_assigns.has_key?(:object_name) ? object_name : object.to_str
-.labelcol.tooltip-target{:rel=>"{target: $('access_permissions'), hook: {target: 'rightMiddle', tip: 'leftMiddle'}, stem: 'leftMiddle', width: 100}"} Privacy:
+.labelcol.tooltip-target{:rel=>prototip_options_for_div('access_permissions')} Privacy:
 .tooltip
   Set view permissions for this item
 
