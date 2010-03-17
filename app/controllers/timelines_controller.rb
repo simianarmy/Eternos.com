@@ -105,8 +105,8 @@ class TimelinesController < MemberHomeController
   
   # Returns JSON for jquery tag cloud widget
   def tag_cloud
-    @tags = {:tags => [{:tag => 'fuck', :freq => 10}, {:tag => 'shit', :freq => 5}]}
-    
+    #@tags = {:tags => [{:tag => 'fuck', :freq => 10}, {:tag => 'shit', :freq => 5}]}
+    @tags = {:tags => []}
     respond_to do |format|
       format.js { render :json => @tags }
     end
