@@ -8,7 +8,6 @@ class TimelineEventsController < ApplicationController
   before_filter :member_or_guests_only, :only => [:index]
   # For authorization dsl 
   before_filter :load_item, :only => [:show, :edit, :update, :destroy]
-  layout 'dialog'
   
   def index
     type = params[:type]

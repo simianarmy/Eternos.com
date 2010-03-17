@@ -1,11 +1,7 @@
-#table
-  .header= "#{title} Trustees"
-  .body
-    .title
-      .col1 Name
-      .col2 Relationship
-      .col3 Action
-      .clear
-    %div{:id => "#{title.downcase}_trustees_table_rows"}
-      = render :partial => trustees if trustees.any?
-  .footer &nbsp;
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="trustee-table">
+%tr.trustee-table-header
+  %td Name
+  %td{:align=>"center"} Relationship
+  %td{:align=>"center"} Action
+= render :partial => trustees if trustees.any?
+</table>

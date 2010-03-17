@@ -11,5 +11,9 @@ padding:10px 0;
 width:722px;
 }
 
-
+/* Fix for life key trustees tables */
+#table .header { height: auto; border-bottom: none; width: 428px;}
+#table .title { width: 406px;}
+#table .footer { width: 428px; border-top: none; height: auto; padding-top: 0px; margin-bottom: 5px;}
+form.trustee_form { margin-bottom: 10px;}
 

@@ -144,3 +144,10 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #tagList li a { text-decoration:none;  }
 #tagList li a:hover ( text-decoration:underline; }
 
+/* 3-17-10 */
+.trustee-table { color: #7A7A7A; margin-bottom: 20px;}
+.trustee-table EM { color: #A8A777; font-style: normal;}
+.trustee-table TD { border-bottom: 1px dotted #7a7a7a; padding: 11px 2px;}
+
+.trustee-table-header { background: #F1F1F1; font-weight: bold;}
+.trustee-table-header TD { padding: 7px 18px; border-bottom: 2px solid #D6D6D6;}
