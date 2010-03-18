@@ -159,7 +159,7 @@ var ETemplates = function() {
 		} (),
 		// Event day row
 		eventGroup: function() {
-			return new Template('<li class="#{odd_or_even}"><strong>#{date}</strong>#{body}<p class="event-images">#{images}</p></li>');
+			return new Template('<li class="events-#{odd_or_even}"><strong>#{date}</strong>#{body}<p class="event-images">#{images}</p></li>');
 		} (),
 		// Event day row images 
 		eventGroupImages: function() {

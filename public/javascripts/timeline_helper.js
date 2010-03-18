@@ -535,6 +535,7 @@ var ETLEventItems = Class.create({
 		} else {
 			// Images & the rest handled below
 			if (this.first.isArtifact()) {
+				return ''; // Images get listed next to the days now.
 				count = Math.min(this.MaxArtifactTooltipItems, this.num);
 				html = '<div class="tooltip_arti_container">';
 			} else {

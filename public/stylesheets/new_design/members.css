@@ -126,7 +126,11 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #twitter-box IMG { border: none; margin: 5px 0;}
 #rss-box INPUT[type=submit] {background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer; vertical-align: middle; margin-top: 3px;}
 #rss-box INPUT[type=text], #gmail-box INPUT[type=text], #gmail-box INPUT[type=password] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #666666; font-weight: bold; width: 245px;}
-.events-even { background: #F0F7F9;}
+.events-even { 
+	background: #F0F7F9;
+	display:table; 
+	width:572px;
+}
 .subtitle6 { width: auto;}
 .fb-posts { height: auto;}
 .event-images { float: left;}
@@ -147,7 +151,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
   list-style-type:none; float:left; margin:0 10px; height:35px;
 }
 #tagList li a { text-decoration:none;  }
-#tagList li a:hover ( text-decoration:underline; }
+#tagList li a:hover { text-decoration:underline; }
 
 /* 3-17-10 */
 .trustee-table { color: #7A7A7A; margin-bottom: 20px;}

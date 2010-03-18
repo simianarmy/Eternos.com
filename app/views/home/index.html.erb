@@ -1,10 +1,17 @@
 <% use_lightview %>
-
+<% use_flashplayer %>
+<% use_lowpro %>
 <!-- start content -->
 <div class="content home">
 	<fieldset>
 	  <div id="home-flash">
-	    <%= image_tag 'image01.jpg', :width=>"493", :height=>"289" %>
+	    <%= #image_tag 'image01.jpg', :width=>"493", :height=>"289" 
+	    %>
+	    <a  
+          href="/flv/eternos30sec.flv"  
+          style="display:block;width:493px;height:289px;"  
+          id="player" class="video_player"> 
+      </a>
 	  </div>
 	  <h1>Sign up below and start saving your life's moments for generations to come!</h1>
 	  <%= render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan} %>
@@ -30,3 +37,8 @@
 	</fieldset>
 </div>
 <!-- end content -->
+<%= javascript_tag "
+  document.observe('dom:loaded', function() {
+    //flowplayer('player', 'swf/flowplayer.commercial-3.1.5.swf');
+  });
+" %>
