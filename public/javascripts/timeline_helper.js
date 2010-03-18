@@ -507,6 +507,10 @@ var ETLEventItems = Class.create({
 			event_delete_link: item.getDeleteURL()
 		};
 	},
+	// Determines if items are artifacts
+	isArtifacts: function() {
+		return this.first.isArtifact();
+	},
 	getTooltipTitle: function() {
 		return ETemplates.eventListTemplates.tooltipTitle.evaluate({
 			icon: this.icon,
@@ -535,7 +539,6 @@ var ETLEventItems = Class.create({
 		} else {
 			// Images & the rest handled below
 			if (this.first.isArtifact()) {
-				return ''; // Images get listed next to the days now.
 				count = Math.min(this.MaxArtifactTooltipItems, this.num);
 				html = '<div class="tooltip_arti_container">';
 			} else {
@@ -968,9 +971,13 @@ var ETimeline = function(opts) {
 					events = new ETLEventItems(group, {
 						memberID: that.memberID
 					});
-					this.items.push(events);
-					dateItems.push(events);
-					itemsHtml += events.populate();
+					dateItems.push(events); // Save all items grouped by date
+					
+					// Skip image events - these get added by _getGroupImagesHtml()
+					if (!events.isArtifacts()) {
+						this.items.push(events);
+						itemsHtml += events.populate();
+					}
 				}.bind(this));
 
 				html += this.groupTemplate.evaluate({
