@@ -23,4 +23,8 @@
           %strong Or sign up with your Facebook account
         %p.signup01= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
         %p.signup01
-          <em>*By proceeding, you confirm that your over 13 years of age and accept the <a href="privacy.html">Privacy</a> and <a href="terms.html">Terms</a>.</em>
+          <em>*By proceeding, you confirm that your are over 13 years of age and accept the 
+          = link_to 'Privacy', '/about/privacy', :target => "_new"
+          and 
+          = link_to 'Terms', '/about/terms', :target => "_new"
+          \.</em>

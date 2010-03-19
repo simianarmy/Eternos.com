@@ -16,9 +16,10 @@
         . If you're not into social networking you can upload video, important documents, and photos via our direct file upload. We offer a simple and intuitive video diary for you to record whatever happens to be on your mind and in your heart. Eternos is a completely private and secure life chronicle where you can save life's precious and important interactions, files, memories, and moments for the future.
         </p>		
     </div>
-    <h1>What are you waiting for? Complete the Sign up!</h1>
-     <%= render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan} %>
-     
+    <% unless current_user %>
+      <h1>What are you waiting for? Complete the Sign up!</h1>
+      <%= render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan} %>
+    <% end %>
     <p class="clear-both">&nbsp;</p>
    	<hr />
    

@@ -1,0 +1,20 @@
+Text Analysis Resources
+
+Generating tag clouds
+
+Cool Tag-Cloud generator: /www.tagcrowd.com
+  http://tagcrowd.com/faq.html#howto
+  
+Porter Stemming Algorithm
+  TagCrowd uses the standard  Porter Stemming Algorithm to detect and combine similar words. For example, the words 'teachers', 'teaching' and 'teach' will all be combined so your text cloud is less redundant. The most frequent of the variants is chosen to represent them all. In the case of a tie, the shorter variant is used.
+  Ruby implementation: http://tartarus.org/~martin/PorterStemmer/ruby.txt
+  
+Since we already use thinking_sphinx to index all text data per user, it makes sense to plugin to their 
+indexer for analysis.
+
+thinking-sphinx gem uses Riddle internally, which can be configured to take all kinds of things we probably want:
+  stopwords
+  morphology (PorterStemming?)
+  phrase boundaries
+  html remove elements
+  

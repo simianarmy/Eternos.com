@@ -878,6 +878,13 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
     t.string "name"
   end
 
+  create_table "raw_texts", :force => true do |t|
+    t.integer "user_id", :null => false
+    t.text  "txt"
+    t.timestamps
+  end
+  add_index "raw_texts", ["user_id"]
+  
   create_table "themes", :force => true do |t|
     t.string "name", :null => false
   end
@@ -978,5 +985,4 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
     t.datetime "sent_at", :null => false
   end
   
-    
 end

@@ -6,9 +6,11 @@ width: 720px;
 }
 
 .timelinebox {
-height:auto;
-padding:10px 0;
-width:722px;
+	clear: both; 
+	float: none;
+	height:auto;
+	padding:10px 0;
+	width:722px;
 }
 
 /* Fix for life key trustees tables */
