@@ -2,7 +2,8 @@
 class HomeController < ApplicationController
   before_filter :set_facebook_connect_session
   #before_filter :redirect_if_logged_in, :only => :index
-
+  caches_page :blog_header_partial, :blog_header_footer
+  
   layout 'public'
   
   def new
@@ -18,6 +19,14 @@ class HomeController < ApplicationController
     render :action => params[:page]
   end
   
+  def blog_header_partial
+    @blog = true
+    render :partial => 'shared/public_header'
+  end
+  
+  def blog_footer_partial
+    render :partial => 'shared/site_footer'
+  end
   
   private
       

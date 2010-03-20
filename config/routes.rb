@@ -174,6 +174,10 @@ ActionController::Routing::Routes.draw do |map|
   end
   # End SaaS Kit routes
   
+  # Static partials for WordPress blog
+  map.header_partial 'static/blog_header', :controller => 'home', :action => 'blog_header_partial'
+  map.footer_partial 'static/blog_footer', :controller => 'home', :action => 'blog_footer_partial'
+  
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home", :action => 'index'         
   map.home ':page', :controller => 'home', :action => 'show'

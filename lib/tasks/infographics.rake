@@ -30,10 +30,10 @@ namespace :infographics do
       # Begin collecting & adding text to raw_text table
       # Scope query to user
       sql_queries.each do |sql|
-        puts sql
         sql.gsub!('$start', u.id.to_s)
         sql.gsub!('$end', u.id.to_s)
         puts "SQL => #{sql}\n\n"
+        res = ActiveRecord::Base.connection.execute(sql)
       end
       break
     end
