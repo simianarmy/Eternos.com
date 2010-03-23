@@ -29,6 +29,6 @@
 %br
 %p.signup-terms
   %label &nbsp;
-  = check_box_tag 'user[terms_of_service]', checked_terms, {:id => 'terms_of_service', :checked => checked_terms}
+  = f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => checked_terms}
   I accept the 
   = link_to 'Terms and Conditions', '/about/terms', :target => '_new'

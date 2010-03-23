@@ -25,13 +25,13 @@ class User < ActiveRecord::Base
   acts_as_tagger
   
   # Virtual attributes
-  attr_accessor :invitation_required, :registration_required
+  attr_accessor :invitation_required, :registration_required, :terms_of_service
 
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :first_name, :last_name, :email, :facebook_id,
     :password, :password_confirmation, :identity_url, :invitation_token, 
-    :terms_of_service, :full_name
+    :full_name, :terms_of_service
   
   # Validate first,last name
   validates_presence_of :first_name
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   
   #validates_uniqueness_of   :email, :case_sensitive => false
   #validates_email           :email, :message => "Invalid email address"
-  validates_acceptance_of :terms_of_service
+  validates_acceptance_of :terms_of_service, :on => :create, :message => "Please accept the Terms of Service"
   
   with_options :if => :invitation_required? do |u|
     u.validates_presence_of     :invitation_id
@@ -272,6 +272,11 @@ class User < ActiveRecord::Base
   def initialize_address_book
     create_address_book(:first_name => first_name, :last_name => last_name) unless address_book
     true # Required in order for callback chain to continue
+  end
+  
+  # BULLSHIT RAILS
+  def terms_accepted
+    self.errors.add(:terms_of_service, "You must accept the Terms & Conditions") unless @terms_of_service
   end
   
   private

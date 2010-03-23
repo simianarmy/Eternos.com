@@ -85,6 +85,12 @@ class AccountsController < ApplicationController
 
     @success = using_captcha_in_signup?(@account) ? verify_recaptcha(:model => @account) : true
     @account.name = @user.full_name
+    # THIS IS LAME
+    #@user.terms_of_service = @terms_accepted = (params[:user][:terms_of_service] == "1")
+    
+    Rails.logger.debug "Creating account #{@account.inspect}"
+    Rails.logger.debug "Account user #{@account.user.inspect}"
+    Rails.logger.debug "Terms checked? #{@account.user.terms_of_service}"
     
     if @success && @account.save
       unless @user.email_registration_required?
@@ -106,7 +112,7 @@ class AccountsController < ApplicationController
         cookies.delete :auth_token
       end
     else # @account not saved
-      @terms_accepted = true unless params[:user][:terms_of_service] == "0"
+      @terms_accepted = @user.terms_of_service == "1"
       @invitation_token = params[:user][:invitation_token]
       
       render :action => :new
@@ -274,7 +280,7 @@ class AccountsController < ApplicationController
     def build_plan
       return redirect_to root_url unless plan = params[:plan]
       redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(plan)
-      @plan.discount = @discount
+      @plan.discount = load_discount
       @account.plan = @plan
       @use_captcha = using_captcha_in_signup?(@account)
     end
@@ -295,9 +301,12 @@ class AccountsController < ApplicationController
     
     # Load the discount by code, but not if it's not available
     def load_discount
-      if params[:discount].blank? || !(@discount = SubscriptionDiscount.find_by_code(params[:discount])) || !@discount.available?
-        @discount = nil
+      unless @discount
+        if params[:discount].blank? || !(@discount = SubscriptionDiscount.find_by_code(params[:discount])) || !@discount.available?
+          @discount = nil
+        end
       end
+      @discount
     end
     
     # This never gets called by AuthenticatedSystem...why not?

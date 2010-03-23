@@ -36,6 +36,8 @@ class UsersController < ApplicationController
     
     if @user && @user.pending?
       @user.activate!
+      flash[:notice] = "Your account has been activated ... Welcome to Eternos!"
+      redirect_to login_path
     else
       flash[:notice] = "Sorry, we could not activate this account"
       redirect_back_or_default('/')
