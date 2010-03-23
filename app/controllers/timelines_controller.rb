@@ -7,6 +7,8 @@ class TimelinesController < MemberHomeController
   before_filter :login_required, :except => [:search]
   require_role ['Guest', 'Member'], :for_all_except => :search
   
+  ssl_allowed :show
+  
   def guest_index
     find_host
     permit "guest of :host" do

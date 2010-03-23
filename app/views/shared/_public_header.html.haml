@@ -10,7 +10,7 @@
     = link_to 'About', about_path
     %span
   %li{:class => (controller.action_name == 'blog') ? 'active' : 'inact'}
-    = link_to 'Our Blog', 'http://blog.eternos.com'
+    = link_to 'Our Blog', '/blog/'
     %span
   %li{:class => (controller.controller_name == 'accounts') ? 'active' : 'inact'}
     = link_to 'Sign Up', new_account_url(:plan => AppConfig.default_plan)

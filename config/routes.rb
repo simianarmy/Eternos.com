@@ -181,7 +181,7 @@ ActionController::Routing::Routes.draw do |map|
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home", :action => 'index'         
   map.home ':page', :controller => 'home', :action => 'show'
-  
+
   #UJS::routes
     
   # See how all your routes lay out with "rake routes"

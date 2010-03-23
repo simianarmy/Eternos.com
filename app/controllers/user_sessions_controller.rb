@@ -3,7 +3,7 @@
 # Authlogic sessions controller
 
 class UserSessionsController < ApplicationController
-  ssl_required :new, :index
+  ssl_required :new
   ssl_allowed :create, :destroy
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => :destroy
@@ -29,7 +29,8 @@ class UserSessionsController < ApplicationController
         flash[:notice] = "Welcome, #{@user_session.user.name}"
         redirect_to account_setup_url
       else # otherwise redirect back to last url, or member home
-        redirect_back member_home_url
+        #redirect_back member_home_url
+        redirect_to member_home_path
       end
     else
       if facebook_session && !params['commit']

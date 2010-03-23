@@ -13,6 +13,8 @@ width: 720px;
 	width:722px;
 }
 
+.timeline-ether-bg .timeline-ether-highlight { background: url(/images/bg-scroll.gif) no-repeat top center;}
+
 /* Fix for life key trustees tables */
 #table .header { height: auto; border-bottom: none; width: 428px;}
 #table .title { width: 406px;}
