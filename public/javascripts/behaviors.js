@@ -558,7 +558,7 @@ var Flowplayer = Behavior.create({
 				key: FLOWPLAYER_PRODUCT_KEY,
 				clip: {
 					url: url,
-					autoPlay: this.opts.autoPlay || true,
+					autoPlay: this.opts.autoPlay || false,
 					autoBuffering: true
 				},
 				logo: {
@@ -595,9 +595,7 @@ Event.addBehavior({
 		with_track: true
 	}),
 	'.video_player': Flowplayer,
-	'a.popup_video_player': Flowplayer({
-		popup: true
-	}),
+	'a.popup_video_player': Flowplayer,
 	'.catch_lightview_close': LightviewClose,
 	'.remote_form': RemoteForm,
 	'select': FormSelect,
