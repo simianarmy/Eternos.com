@@ -3,6 +3,9 @@
 </div>
 <% javascript "timezone_detector" %>
 <%= javascript_tag "
-  resetDinamycHeight('account-setting-content');
-  datePickerController.create();"  
+  document.observe('dom:loaded', function() {
+    resetDinamycHeight('account-setting-content');
+    datePickerController.create();
+  });
+"  
 %>

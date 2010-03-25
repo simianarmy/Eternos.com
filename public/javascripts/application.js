@@ -10,13 +10,30 @@ if (!("console" in window)) {
 }
 
 // Global container
-var ETERNOS = {};
+var ETERNOS = {session_timeout_seconds: 60*60*24};
 
 // Global functionality
 document.observe('dom:loaded', function() {
 	lightview_height = 0.9 * win_dimension()[1];
   handle_timeout_popups(ETERNOS.session_timeout_seconds);
 });
+
+// Sets up observer to handle case when a session is timed out and a lightview 
+// pop opens in an iframe.  Logs user out by redirect.
+var handle_timeout_popups = function(timeout) {	
+	var lastRequestTime = new Date().getTime();
+	var clickTime;
+	
+  document.observe('lightview:opened', function(e) {
+    clickTime = new Date().getTime();
+    if ((clickTime - lastRequestTime) > (timeout * 1000)) {
+			e.stop();
+      Lightview.hide();
+		  window.location = '/logout'; // Destroy session
+		} 
+	  lastRequestTime = new Date().getTime();
+  });
+};
 
 // Possible needs its own file if it grows too large.
 // WARNING: UNTESTED

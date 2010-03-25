@@ -534,19 +534,32 @@ var Flowplayer = Behavior.create({
 	initialize: function(options) {
 		this.opts = options || {};
 		var url;
-		if ((rel = this.element.readAttribute('rel')) !== null) {
+
+		if (((rel = this.element.readAttribute('rel')) !== null) && (rel !== '')) {
 			this.opts = Object.extend(rel.evalJSON(), this.opts);
 		}
 		url = (this.element.href !== '') ? this.element.href : this.element.readAttribute('url');
+		
 		if (window.flowplayer) {
 			// Create Flowplayer & use 1st frame of video as splash image --> 
-			flowplayer(this.element.id, FlowplayerSwfUrl, {
+			flowplayer(this.element.id, 
+				// 2nd arg is flash config
+			{
+				src: FlowplayerSwfUrl,
+				onFail: function() {
+					document.getElementById("info").innerHTML = 
+						"You need the latest Flash version to see MP4 movies. " + 
+					  "Your version is " + this.getVersion() + 
+						"<br/>Download the latest version <a href='http://www.adobe.com/go/getflashplayer'>here</a>"; 
+				}
+			}, 
+			// 3rd argument is flowplayer config
+			{
 				key: FLOWPLAYER_PRODUCT_KEY,
 				clip: {
 					url: url,
 					autoPlay: this.opts.autoPlay || true,
 					autoBuffering: true
-					//initialScale: this.opts.scale || 'scale'
 				},
 				logo: {
 					url: '/images/favico.png',

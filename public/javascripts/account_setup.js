@@ -26,7 +26,7 @@ document.observe("dom:loaded", function() {
                         onComplete:function(request){$('progress-bar').hide();} });
         e.stop();
       }
-    })
+    });
   }
 });
 
@@ -38,7 +38,7 @@ var on_facebook_backup_auth_close = function(check_url) {
 			updateSourceActivationIcon('fb', (json && json.authenticated) ? 'true' : 'false');
 		}
 	} );
-}
+};
 
 function updateSourceActivationIcon(button, activate) {
 	var buttonEl = $(button + '-button');
@@ -67,7 +67,7 @@ function updateStep(check_url, completed_steps) {
 	new Ajax.Request(check_url, {
 		method: 'get',
 		onSuccess:function(transport) {
-			current_step = parseInt(transport.responseText);
+			current_step = parseInt(transport.responseText, 10);
 			//alert('completed steps = ' + completed_steps + ' current step = ' + current_step);
 			if (current_step > completed_steps) {
 				showCompleteStep(current_step);
