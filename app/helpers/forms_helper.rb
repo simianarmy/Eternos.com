@@ -14,6 +14,14 @@ module FormsHelper
     form_for(record_or_name_or_array, *args, &block)
   end
   
+  def form_remote_for_using_ssl(record_or_name_or_array, *args, &block)
+    options = args.extract_options!
+    options[:url] ||= {}
+    options[:url].merge!(:protocol => 'https', :only_path => false)
+    args << options  
+    form_remote_for(record_or_name_or_array, *args, &block)
+  end
+  
   # Creates standard form errors box using localization
   def custom_error_messages_for(*args)
     options = args.last.kind_of?(Hash) ? args.pop : {}

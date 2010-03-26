@@ -1,6 +1,6 @@
 #family_notice.error-message
 #new_family
-  - form_for :family, :html => { :target => 'new-family-parent', :multipart => true }, :url => new_family_account_settings_path(:format => 'js') do |form|
+  - form_for :family, :html => { :target => 'new-family-parent', :multipart => true }, :url => new_family_account_settings_path(:format => 'js', :protocol => 'https', :only_path => false) do |form|
     - form.fields_for :person_attributes do |person_form|
       #table-form-family-wrapper
         #table-form-family

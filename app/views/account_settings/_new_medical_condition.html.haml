@@ -1,6 +1,6 @@
 #medical_condition_notice.error-message
 #new_medical_condition
-  - form_remote_for :medical_condition, :url => {:controller => 'account_settings', :action => 'new_medical_condition'}, :loading => "spinner.load('new_medical_condition');" do |form|
+  - form_remote_for_using_ssl :medical_condition, :url => {:controller => 'account_settings', :action => 'new_medical_condition'}, :loading => "spinner.load('new_medical_condition');" do |form|
     #table-form-medical-cond-wrapper
       #table-form-medical-cond
         %table#add-new-medical-cond.popup-newbox

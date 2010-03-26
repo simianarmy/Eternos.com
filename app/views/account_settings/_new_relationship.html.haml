@@ -1,6 +1,6 @@
 #relationship_notice.error-message
 #new_relationship
-  - form_for :relationship, :html => { :target => 'new-relationship-parent', :multipart => true }, :url => new_relationship_account_settings_path(:format => 'js') do |form|
+  - form_for :relationship, :html => { :target => 'new-relationship-parent', :multipart => true }, :url => new_relationship_account_settings_path(:format => 'js',  :protocol => 'https', :only_path => false) do |form|
     - form.fields_for :person_attributes do |person_form|
       #table-form-relationship-wrapper
         #table-form-relationship

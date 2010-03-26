@@ -1,5 +1,6 @@
 <div id="account-setting-nav">
-  <% link_class = "step1-1-btn" #gen_step_class(1, @active_step) %>
+  <% link_class = gen_step_class(1, @active_step) %>
+  
   <div id="step1-1" class="step">
     <%= link_to_remote "", { :url => personal_info_account_settings_path, 
       :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
@@ -14,7 +15,8 @@
         }, :class => link_class) %>
   </div>
 -->
-  <%- link_class = "step4-1-active" #gen_step_class(4, @active_step)  %>
+  <% link_class = gen_step_class(4, @active_step)  %>
+  
   <div id="step4-1" class="step">
     <%= link_to_remote("", { :url => your_history_account_settings_path,
       :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 

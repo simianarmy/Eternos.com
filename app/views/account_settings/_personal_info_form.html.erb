@@ -1,6 +1,5 @@
-<% form_remote_tag :html => { :action => url_for(:action => 'save_personal_info'), 
-  :id => 'personal_info_form' },
-  :url => { :action => 'save_personal_info' },
+<% form_remote_tag :html => { :id => 'personal_info_form' },
+  :url => { :action => 'save_personal_info', :protocol => 'https', :only_path => false },
   :complete => "updateStep('#{completed_steps_account_setting_path(current_user)}', #{completed_steps})" do %>
   <table class="table-form1" width="460" >
     <tbody>

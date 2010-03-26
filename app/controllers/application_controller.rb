@@ -244,10 +244,8 @@ class ApplicationController < ActionController::Base
   end
   
   def set_facebook_connect_session
-    Rails.logger.debug "Loading FB connect"
     load_facebook_connect
     #set_facebook_session
-    Rails.logger.debug "Creating FB session"
     create_facebook_session
     Rails.logger.debug "FB session => #{@facebook_session.inspect}"
     #ensure_application_is_installed_by_facebook_user
@@ -270,7 +268,6 @@ class ApplicationController < ActionController::Base
   end
   
   def current_user_session
-    Rails.logger.debug "WHAT THE FUCK MAN?? #{UserSession.find.inspect}"
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
   end

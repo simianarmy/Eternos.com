@@ -10,6 +10,16 @@ module AccountSettingsHelper
     "updateStep('#{completed_steps_account_setting_path(current_user)}', #{steps});"
   end
   
+  def gen_step_class(num, on_step)
+    klass = "step#{num}-1-"
+    if on_step == num
+      klass += "active"
+    else
+      klass += "btn" 
+    end
+    klass
+  end
+    
   def link_to_new_profile_entry(name, locals={})
     link_to_function "+ Add New" do |page|
       page.replace_html "#{name}_container", :partial => name, :locals => locals

@@ -5,13 +5,15 @@
   .popuptop
   .popup-content
     .top-box
-      = link_to_function "", "window.parent.Lightview.hide();", {:id => "close-as-btn", :class => "stop-btn"}
+      %a#close-as-btn.stop-btn{:href=>"#"}
       .clear
       .top-box2
         #account-setting-title.acc-title
           Profile
         .top-rightbox
-          = render :partial => 'fb_sync_button', :locals => { :active_step => @active_step, :checked => @always_sync_account_info_with_facebook }
+          - if @fb_session
+            = render :partial => 'fb_sync_button', :locals => { :active_step => @active_step, :checked => @always_sync_account_info_with_facebook }
+            
         .clear
     .popup-content-left
       = render :partial => "setting_nav", :locals => { :active_link => "step" + (@completed_steps+1).to_s }
@@ -32,6 +34,8 @@
     // Save form info on popup close code
     $('close-as-btn').observe('click', function(e) {
       var f;
-      if (f = $('personal_info_form')) { f.request(); }
+      $('personal_info_form').request({
+        onComplete: function() {parent.Lightview.hide();}
+      });
     });
   });

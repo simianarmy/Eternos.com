@@ -8,11 +8,14 @@ class AccountSettingsController < ApplicationController
   before_filter :load_completed_steps
   layout 'account_settings'
   
+  ssl_required :all
+  
   def index
     check_account_facebook_sync
     clear_timeline_cache
     session[:setup_account] = true
     
+    Rails.logger.debug "setup: completed steps = #{@completed_steps}"
     # Dynamic action view based on current setup step
     session[:account_settings_page] = @content_page = case @completed_steps
     when 0

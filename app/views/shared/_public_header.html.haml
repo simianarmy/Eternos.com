@@ -9,7 +9,7 @@
   %li{:class => (controller.controller_name == 'about' && controller.action_name == 'index') ? 'active' : 'inact'}
     = link_to 'About', about_path
     %span
-  %li{:class => (controller.action_name == 'blog') ? 'active' : 'inact'}
+  %li{:class => (@blog || (controller.action_name == 'blog')) ? 'active' : 'inact'}
     = link_to 'Our Blog', '/blog/'
     %span
   %li{:class => (controller.controller_name == 'accounts') ? 'active' : 'inact'}
