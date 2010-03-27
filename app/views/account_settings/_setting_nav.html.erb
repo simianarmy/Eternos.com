@@ -1,36 +1,33 @@
 <div id="account-setting-nav">
-  <% link_class = gen_step_class(1, @active_step) %>
-  
+  <% link_class = gen_step_class('step1', @active_step == 1) %>
   <div id="step1-1" class="step">
     <%= link_to_remote "", { :url => personal_info_account_settings_path, 
-      :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
+      :loading =>  "Effect.Fade('profile-content');$('progress-bar').show();", 
       :complete => "highlightStep('step1-1'); $('progress-bar').hide();" }, 
       :class =>  link_class %>
   </div>
 <!--
   <div id="step2" class="step">
     <%= link_to_remote("", { :url => online_account_settings_path,  
-        :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
+        :loading =>  "Effect.Fade('profile-content');$('progress-bar').show();", 
         :complete => "highlightStep(2); ;$('progress-bar').hide(); "
         }, :class => link_class) %>
   </div>
 -->
-  <% link_class = gen_step_class(4, @active_step)  %>
+  <% link_class = gen_step_class('step4', @active_step == 2)  %>
   
   <div id="step4-1" class="step">
     <%= link_to_remote("", { :url => your_history_account_settings_path,
-      :loading =>  "Effect.Fade('account-setting-content');$('progress-bar').show();", 
+      :loading =>  "Effect.Fade('profile-content');$('progress-bar').show();", 
       :complete => "highlightStep('step4-1'); $('progress-bar').hide();"}, 
       :class => link_class ) %>
   </div>
   
 <!--
-  <%- link_class = active_link == "step5" ? "step5-active" : "step5-btn"  -%>
   <%#= link_to_remote "", { :url => upgrades_account_settings_path,
 		:loading =>  "Effect.Fade('account-setting-content');"},
 		:class => link_class %>
 
-  <%- link_class = active_link == "step6" ? "step6-active" : "step6-btn"  -%>
   <%#= link_to_remote "", { :url => billings_account_settings_path,
 		:loading =>  "Effect.Fade('account-setting-content');"},
 		:class => link_class %>

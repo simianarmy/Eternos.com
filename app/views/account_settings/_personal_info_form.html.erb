@@ -1,5 +1,5 @@
-<% form_remote_tag :html => { :id => 'personal_info_form' },
-  :url => { :action => 'save_personal_info', :protocol => 'https', :only_path => false },
+<% form_remote_tag :html => {:id => 'personal_info_form' },
+  :url => { :action => 'save_personal_info' },
   :complete => "updateStep('#{completed_steps_account_setting_path(current_user)}', #{completed_steps})" do %>
   <table class="table-form1" width="460" >
     <tbody>
@@ -29,7 +29,9 @@
       <%= render :partial => 'profiles/personal_info_form', :locals => {:address_book => settings.address_book, :profile => settings.profile, :basic_view => setup} %>
       
       <%= render :partial => 'account_settings/security_questions', :locals => {:security_questions => settings.security_questions} %>
+      <tr>
+        <td><%= submit_tag("Save") %></td>
+      </tr>
     </tbody>
   </table>
-  <%= setup ? submit_tag('Next Step', :class => "submit-btn4") : submit_tag("Save", :class => "submit-btn4") %>
 <% end %>

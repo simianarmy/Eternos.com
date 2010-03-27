@@ -55,8 +55,8 @@ class AccountPresenter < Presenter
    
   def has_required_personal_info_fields?
      (ab = @address_book) &&
-     !ab.first_name.blank? && !ab.last_name.blank? && ab.birthdate &&
-     (@user.security_questions.size == @@NumSecurityQuestions)
+     !ab.first_name.blank? && !ab.last_name.blank? && ab.birthdate
+     # && (@user.security_questions.size == @@NumSecurityQuestions)
   end
 end
 

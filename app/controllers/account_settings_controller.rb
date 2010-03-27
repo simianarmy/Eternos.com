@@ -1,6 +1,6 @@
 # $Id$
 
-class AccountSettingsController < ApplicationController
+class AccountSettingsController < MemberHomeController
   before_filter :login_required
   require_role "Member"
   before_filter :set_facebook_connect_session
@@ -8,7 +8,8 @@ class AccountSettingsController < ApplicationController
   before_filter :load_completed_steps
   layout 'account_settings'
   
-  ssl_required :all
+  ssl_required :all # Way nicer than specifying each frickin action
+  #ssl_allowed :all # It must be so for Lightview to access parent window :(
   
   def index
     check_account_facebook_sync

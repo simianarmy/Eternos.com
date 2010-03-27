@@ -1,41 +1,8 @@
-- use_calendar
-- title 'Profile'
-  
-.popup-container
-  .popuptop
-  .popup-content
-    .top-box
-      %a#close-as-btn.stop-btn{:href=>"#"}
-      .clear
-      .top-box2
-        #account-setting-title.acc-title
-          Profile
-        .top-rightbox
-          - if @fb_session
-            = render :partial => 'fb_sync_button', :locals => { :active_step => @active_step, :checked => @always_sync_account_info_with_facebook }
-            
-        .clear
-    .popup-content-left
-      = render :partial => "setting_nav", :locals => { :active_link => "step" + (@completed_steps+1).to_s }
-    
-    /- Bad things happen if we use .popup-content-right
-    .pop-content-right
-      %center
-        = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
-      = render :partial => @content_page, :locals => {:settings => @settings}
+.top-rightbox
+  - if @fb_session
+    = render :partial => 'fb_sync_button', :locals => { :active_step => @active_step, :checked => @always_sync_account_info_with_facebook }
+ 
+%center
+  = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
       
-      .clear
-  = image_tag "errors/popup-footer.png"
-
-:javascript
-  // Tricky scrollbar code - probably shouldn't mess with this unless you know what 
-  // you're doing
-  document.observe('dom:loaded', function() {  
-    // Save form info on popup close code
-    $('close-as-btn').observe('click', function(e) {
-      var f;
-      $('personal_info_form').request({
-        onComplete: function() {parent.Lightview.hide();}
-      });
-    });
-  });
+= render :partial => @content_page, :locals => {:settings => @settings}
