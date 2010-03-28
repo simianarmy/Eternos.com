@@ -25,12 +25,5 @@ Personal message from <%= @sender %>:
 ---------------------
 <p><br/>
 <% end %>
-This mail was sent by <%= AppConfig.base_domain %>.  Questions?  Comments?  Let us know: 
 <br/>
-Email: support@eternos.com
-<br/>
-Support/Feedback: <%= @support_url %>
-<br/>
-<br/>
-Eternos.com
-EON Digital Preservation, INC 4757 48th Ave SW Seattle WA 98116 USA
+<%= render :partial => 'shared/email_sig.html' %>

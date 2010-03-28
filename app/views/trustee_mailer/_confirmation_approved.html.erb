@@ -4,12 +4,5 @@ You have been approved by <%= @sender %> to be a Account Trustee for their Etern
 <p></br>
 Please make sure that emails from this address are not marked as junk so that you can receive our periodic reminders.
 <p><br/>
-This mail was sent by <%= AppConfig.base_domain %>.  Questions?  Comments?  Let us know: 
 <br/>
-Email: support@eternos.com
-<br/>
-Support/Feedback: <%= @support_url %>
-<br/>
-<br/>
-Eternos.com
-EON Digital Preservation, INC 4757 48th Ave SW Seattle WA 98116 USA
+<%= render :partial => 'shared/email_sig.html' %>
