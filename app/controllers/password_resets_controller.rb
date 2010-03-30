@@ -4,6 +4,8 @@ class PasswordResetsController < ApplicationController
   before_filter :require_no_user  
   before_filter :load_user_using_perishable_token, :only => [:edit, :update]
 
+  ssl_required :all
+  
   def new
   end
 
@@ -14,14 +16,12 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(params[:email])
     if @user
       if @user.facebook_user?
-        flash[:notice] = "You are using Facebook Connect to login.  If you need to change your password, please contact facebook."
-        @sent_email = false
-      else
-        @sent_email = true
-        @user.deliver_password_reset_instructions!
-        flash[:notice] = "Instructions to reset your password have been emailed to you. " +
-          "Please check your email."
+        flash[:notice] = "<p>You are using Facebook Connect to login.  Did you try logging in using the Facebook button?</p><br/>"
       end
+      @sent_email = true
+      @user.deliver_password_reset_instructions!
+      flash[:notice] << "Instructions to reset your password have been emailed to you. " +
+          "Please check your email."
     else
       flash[:notice] = "No user was found with that email address"
       render :action => :new
@@ -33,7 +33,7 @@ class PasswordResetsController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]
     if @user.save
       flash[:notice] = "Password successfully updated"
-      redirect_to account_url
+      redirect_to member_home_url
     else
       render :action => :edit
     end

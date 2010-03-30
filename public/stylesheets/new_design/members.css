@@ -137,6 +137,9 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .events LI { padding: 10px 0 10px 150px;}
 .events STRONG { margin-left: -150px;}
 .event-images EM { margin-right: 8px;}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.events LI { width: 724px;}
+}
 
 /* Tag cloud */
 #tag-cloud {
@@ -153,7 +156,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #tagList li a { text-decoration:none;  }
 #tagList li a:hover { text-decoration:underline; }
 
-/* 3-17-10 */
+/* Like Key redesign */
 .trustee-table { color: #7A7A7A; margin-bottom: 20px;}
 .trustee-table EM { color: #A8A777; font-style: normal;}
 .trustee-table TD { border-bottom: 1px dotted #7a7a7a; padding: 11px 2px;}

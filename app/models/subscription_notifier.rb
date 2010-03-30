@@ -1,6 +1,7 @@
 class SubscriptionNotifier < ActionMailer::Base
   include ActionView::Helpers::NumberHelper
   include MailHistory
+  layout 'email'
   
   def setup_email(to, subject, from = AppConfig['from_email'])
     @sent_on = Time.now
@@ -47,6 +48,6 @@ class SubscriptionNotifier < ActionMailer::Base
   
   def password_reset(reset)
     setup_email(reset, 'Password Reset Request')
-    @body = { :reset => reset }
+    @body = { :reset => reset, :edit_password_reset_url => edit_password_reset_url(:id => reset.perishable_token) } 
   end
 end
