@@ -1,6 +1,6 @@
-- use_form
 - stylesheet 'trustees'
-- title 'Like Key'
+- use_form
+- title 'Life Key'
 
 %h1 Life Key Manager
 %p
@@ -15,6 +15,7 @@
 
 #new_trustee{:style => style_hidden_if(@trustee.errors.empty?)}
   %h1 Enter new trustee contact details below
+  #notice
   #rjs_notice
   - form_for @trustee, :html => { :id => 'new_trustee_form', :class => 'trustee_form remote_form' } do |f|
     = render :partial => 'form', :locals => {:f => f, :trustee => @trustee}

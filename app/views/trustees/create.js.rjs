@@ -1,9 +1,9 @@
 unless @trustee.new_record?
   page.flash_and_fade
-  page.insert_html :bottom, 'pending_trustees_table_rows', :partial => 'trustee', 
+  page.insert_html :bottom, 'pending-table', :partial => 'trustee', 
     :locals => {:trustee => @trustee}
   page.visual_effect :highlight, dom_id(@trustee), :duration => 2.0
-  page.hide :new_trustee
+  page.hide 'new_trustee'
   page.call "$('new_trustee_form').reset"
   page.replace_html :rjs_notice, ''
 else

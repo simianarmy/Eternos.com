@@ -10,7 +10,7 @@
     = trustee.relationship
   %td{:align=>"center"}
     = link_to image_tag('Edit-16x16.png', :alt => "Edit"), "##{dom_id(trustee, 'edit')}", :class => 'lightview', :rel => 'inline', :title => "Edit Trustee Details :: :: autosize: true"
-    = link_to '', trustee_path(trustee), :class => 'delete remote_delete'
+    = link_to image_tag('delete-icon-16.png'), trustee_path(trustee), :method => :delete, :confirm => "Are you sure you want to remove this Trustee?", :class => 'delete remote_delete'
 
     / Add hidden edit form here
     - form_for trustee, :html => { :id => dom_id(trustee, 'edit'), :class => "remote_form trustee_form", :style => "display: none" } do |f|
