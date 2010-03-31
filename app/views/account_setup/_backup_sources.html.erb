@@ -1,5 +1,5 @@
 <%= render :partial => 'account_settings/backup_sources', :locals => {:settings => @settings, :completed_steps => @completed_steps, :setup => true} %>
 <p>&nbsp;</p>
-<% form_tag account_setup_path(:step => 2) do %>
-  <input type="submit" value="Save & Continue" /></p>			
+<% form_tag url_for(:controller => 'account_setup', :action => 'show', :step => 2) do %>
+  <input type="submit" value="Save & Continue"/>
 <% end %>

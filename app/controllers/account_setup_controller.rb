@@ -9,18 +9,17 @@ class AccountSetupController < ApplicationController
   before_filter :load_presenter
   before_filter :load_completed_steps
   
-  ssl_required :show, :save_personal_info, :backup_sources, :personal_info
+  ssl_required :all
   
   def show
     session[:setup_account] = true
     
-    # Dynamic action view based on current setup step
-    if @completed_steps == 0
+    # Dynamic action view based on current setup step - stupid
+    if @completed_steps < 2
       load_online
       @content_page = 'backup_sources'
-    elsif @completed_steps == 2 # yeah this is stupid
+    elsif @completed_steps == 2
       # This should be the invite page now..
-      @settings.load_personal_info
       @content_page = 'invite_others'
     else 
       flash[:notice] = "Account Setup Complete!"
@@ -34,36 +33,6 @@ class AccountSetupController < ApplicationController
     end
   end
 
-  # TODO: Move to profile controller
-  def save_personal_info
-    @settings.load_personal_info
-    
-    if @settings.update_personal_info
-      if @settings.has_required_personal_info_fields?
-        @current_step = current_user.setup_step
-        current_user.completed_setup_step(1)
-        flash[:notice] = "Personal Info Saved"
-      else
-        flash[:error] = "Please fill in all required fields"
-      end
-    else
-      flash[:error] = "Unable to save your changes: <br/>" + @settings.errors.join('<br/>')
-    end
-    
-    respond_to do |format|
-      format.js {
-        render :update do |page|
-          # On 1st successful save, we want to refresh page to next step
-          unless flash[:error] || (@completed_steps > 0)
-            page.redirect_to :action => 'index'
-          else
-            page.show_flash
-          end
-        end
-      }
-    end 
-  end
-  
   # TODO: Move to Feeds controller
   def set_feed_rss_url
     begin
@@ -80,18 +49,6 @@ class AccountSetupController < ApplicationController
     end
   end
   
-  def personal_info
-    @settings.load_personal_info
-    
-    respond_to do |format|
-      format.js do
-        render :update do |page|
-          update_account_setup_layout(page, "personal_info")
-        end
-      end
-    end
-  end
-  
   def backup_sources
     load_online
     
@@ -100,6 +57,17 @@ class AccountSetupController < ApplicationController
         render :update do |page|
           update_account_setup_layout(page, "backup_sources")
         end
+      }
+    end
+  end
+  
+  def invite_others
+    current_user.completed_setup_step(2)
+    
+    respond_to do |format|
+      format.html {
+        flash[:notice] = "Account Setup Complete!"
+        redirect_to member_home_path
       }
     end
   end
