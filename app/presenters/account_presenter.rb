@@ -47,9 +47,10 @@ class AccountPresenter < Presenter
     end
     # Save security questions
     @user.update_attributes(params[:user])
-    unless @user.security_questions.all?(&:valid?)
-      @errors = @user.security_questions.collect(&:errors).map(&:full_messages).uniq
-    end
+    # Don't require security questions for saves
+    # unless @user.security_questions.all?(&:valid?)
+    #       @errors = @user.security_questions.collect(&:errors).map(&:full_messages).uniq
+    #     end
     @errors.empty?
   end
    

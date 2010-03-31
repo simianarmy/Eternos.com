@@ -10,7 +10,8 @@
     %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix'
+    - stylesheet 'account_settings'
+    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix'
     <!--[if lte IE 7]>
     <link href="/css/styleie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->
@@ -55,7 +56,6 @@
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
 
-    - if @facebook_session
-      = fb_connect_javascript_tag
-      = init_fb_connect "XFBML"
+    = fb_connect_javascript_tag
+    = init_fb_connect "XFBML"
 

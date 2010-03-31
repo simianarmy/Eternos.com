@@ -252,9 +252,11 @@ class ApplicationController < ActionController::Base
     
     # If user is logged in to facebook but not logged in using FB Connect,
     # destroy session info
-    if @facebook_session && @facebook_session.user && current_user && 
+    if @facebook_session && @facebook_session.user && current_user && !current_user.facebook_id.blank? &&
       (current_user.facebook_id.to_s != @facebook_session.user.id.to_s)
-      RAILS_DEFAULT_LOGGER.debug "Facebook user id conflict - Clearing facebook session"
+      Rails.logger.debug "current user facebook id #{current_user.facebook_id} != facebook session id #{@facebook_session.user.id}"
+      Rails.logger.debug "Facebook user id conflict - Clearing facebook session"
+      flash[:error] = "This facebook account is in use by another Eternos account."
       @facebook_session = nil
     end
   end

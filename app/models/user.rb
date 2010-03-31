@@ -103,16 +103,20 @@ class User < ActiveRecord::Base
     end
   end
   
-  # We are going to connect this user object with a facebook id. But only ever one account.
+  # We are going to connect this user object with a facebook id. 
   def link_fb_connect(fb_user_id)
     unless fb_user_id.nil?
       #check for existing account
-      existing_fb_user = find_by_facebook_uid(fb_user_id)
+      # UPDATE:
+      # allow multiple accounts to use the same facebook id I guess - 
+      # makes debugging a lot easier too
+      # existing_fb_user = find_by_facebook_uid(fb_user_id)
+      
       #unlink the existing account
-      unless existing_fb_user.nil?
-        existing_fb_user.facebook_id = nil
-        existing_fb_user.save(false)
-      end
+      # unless existing_fb_user.nil?
+      #         existing_fb_user.facebook_id = nil
+      #         existing_fb_user.save(false)
+      #       end
       #link the new one
       self.facebook_id = fb_user_id
       save(false)

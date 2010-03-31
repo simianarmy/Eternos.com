@@ -79,6 +79,9 @@ class AccountSettingsController < MemberHomeController
     # Required for rjs to know whether or not to redirect 
     @content_page = session[:account_settings_page]
     respond_to do |format|
+      format.html {
+        redirect_to account_settings_url
+      }
       format.js
     end
   end
@@ -383,6 +386,7 @@ class AccountSettingsController < MemberHomeController
 
   def merge_with_facebook
     if facebook_session && (fb_user = facebook_session.user)
+      current_user.link_fb_connect(fb_user.id) if current_user.facebook_id.nil?
       begin
         current_user.sync_with_facebook_profile(fb_user)
       rescue

@@ -26,6 +26,7 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     @subject    += @@Subjects[:activation]
     base_domain = "http://" + AppConfig.base_domain
+    body[:login]  = user.login
   end
   
   def invitation(invitation, signup_url)
