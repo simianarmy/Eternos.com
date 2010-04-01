@@ -50,11 +50,15 @@ class UserMailer < ActionMailer::Base
   end
 
   def friend_invite(user, to, invite_url)
+    # Use sendmail when sending friend invites so that From address can be set to 
+    # the current user's email address.  
+    # Google Apps won't allow custom From's that it doesn't know about
     recipients    to
     from          user.email
     @headers['Reply-To'] = user.email
-    @headers['From'] = user.email
-    subject       "#{user.name} invites you to try Eternos.com"
+    @headers['From']     = user.email
+    sent_on       Time.now
+    subject       "[#{user.name}] Check out Eternos.com"
     body          :user => user, :signup_url => invite_url
     content_type "text/html" 
   end

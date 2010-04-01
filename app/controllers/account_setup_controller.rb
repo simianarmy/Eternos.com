@@ -66,13 +66,21 @@ class AccountSetupController < ApplicationController
     invite_url = new_account_url(:plan => AppConfig.default_plan)
     sent = false
     
+    # Use sendmail to send so that From can be set correctly (Google Apps won't allow it)
+    og_delivery_method = ActionMailer::Base.delivery_method
+    ActionMailer::Base.delivery_method = :sendmail
+    
     1.upto(4) do |i|
       email = params["email_#{i}"]
       unless email.blank?
         sent = true
-        spawn { UserMailer.deliver_friend_invite(current_user, email, invite_url) }
+        #spawn { 
+          UserMailer.deliver_friend_invite(current_user, email, invite_url) 
+        #}
       end
     end
+    # Set mailer delivery back to default
+    ActionMailer::Base.delivery_method = og_delivery_method
     
     respond_to do |format|
       format.html {

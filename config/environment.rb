@@ -168,5 +168,9 @@ Spawn::method :yield, 'test' # Don't fork in tests
 # feed parsing already
 ActiveSupport::XmlMini.backend = 'Nokogiri'
 
+ActionMailer::Base.sendmail_settings = { 
+  :location       => '/usr/sbin/sendmail', 
+  :arguments      => '-i -t'
+}
 
 
