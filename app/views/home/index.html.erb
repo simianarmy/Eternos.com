@@ -15,7 +15,7 @@
           id="player" class="video_player"> 
       </a>
 	  </div>
-	  <h1>Signup for secure, automatic logging of your online life, it's free!</h1>
+	  <h1>Signup for secure, automatic backup of your online life, it's free!</h1>
 	  <%= render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan} %>
 	  
   	<fieldset>
@@ -26,7 +26,7 @@
   		</div>
   		<div class="home03">
   			<h2>Automated Logging</h2>
-  			<p class="height01">Automatically log <%= render :partial => 'about/backup_sources' %></p>
+  			<p class="height01">Automatically backup <%= render :partial => 'about/backup_sources' %></p>
   			<p><%= link_to 'View Sample', image_path('backup_sample.png'), :class => 'lightview' %></p>
   		</div>
   		<div class="home04">
