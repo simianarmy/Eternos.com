@@ -43,11 +43,14 @@
           %h1 Account Setup
           %ul.signup-left
             %li#step1{:class => get_signup_wizard_step_class(@settings.any_activated)}
-              %strong Step 1
+              - if @active_step <= 1
+                %strong Step 1
+              - else
+                Step 1
               %br
               %span Online Accounts
             %li#step2{:class => get_signup_wizard_step_class(@completed_steps > 2)}
-              - if @completed_steps >= 2
+              - if @active_step == 2
                 %strong Step 2
               - else 
                 Step 2
