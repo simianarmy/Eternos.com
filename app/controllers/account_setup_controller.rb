@@ -74,9 +74,9 @@ class AccountSetupController < ApplicationController
       email = params["email_#{i}"]
       unless email.blank?
         sent = true
-        #spawn { 
+        spawn { 
           UserMailer.deliver_friend_invite(current_user, email, invite_url) 
-        #}
+        }
       end
     end
     # Set mailer delivery back to default
