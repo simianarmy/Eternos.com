@@ -1,14 +1,15 @@
 # $Id$
 
 class UserMailer < ActionMailer::Base
-  layout 'email'
+  layout 'email', :except => :friend_invite
   include MailHistory
   
   @@Subjects = {
     :signup_notification    => 'Please activate your new account',
     :activation             => 'Your account has been activated!',
     :invitation             => 'Invitation From Eternos.com',
-    :inactive_notification  => 'Inactive Account Notice'
+    :inactive_notification  => 'Inactive Account Notice',
+    :friend_invitation      => 'Invitation to Eternos.com'
   }
   
   def self.subject(action)
@@ -48,7 +49,18 @@ class UserMailer < ActionMailer::Base
     @body[:link]  = account_setup_url
   end
 
+  def friend_invite(user, to, invite_url)
+    recipients    to
+    from          user.email
+    @headers['Reply-To'] = user.email
+    @headers['From'] = user.email
+    subject       "#{user.name} invites you to try Eternos.com"
+    body          :user => user, :signup_url => invite_url
+    content_type "text/html" 
+  end
+  
   protected
+  
   def setup_email(user)
     @user = user
     @recipients  = "#{user.email}"

@@ -68,7 +68,7 @@ class BackupSourcesController < ApplicationController
             )
           if backup_source.save
             backup_source.confirmed!
-            current_user.completed_setup_step(2)            
+            current_user.completed_setup_step(1)            
             flash[:notice] = "Twitter account successfully saved"
           end
         else
@@ -114,7 +114,7 @@ class BackupSourcesController < ApplicationController
           if backup_source.save
             # This triggers backup job
             backup_source.confirmed!
-            current_user.completed_setup_step(2)            
+            current_user.completed_setup_step(1)            
             flash[:notice] = "#{PicasaWebAccount.display_title} account successfully saved"
           end
         else
@@ -181,7 +181,7 @@ class BackupSourcesController < ApplicationController
         :backup_site_id => BackupSite.find_by_name(BackupSite::Blog).id)
       if @feed_url.save
         @feed_url.confirmed!
-        current_user.completed_setup_step(2)
+        current_user.completed_setup_step(1)
         flash[:notice] = "Feed sucessfully saved"
       else
         flash[:error] = @feed_url.errors.full_messages

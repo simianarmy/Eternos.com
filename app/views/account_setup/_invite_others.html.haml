@@ -1,5 +1,7 @@
 %h1 Please help Eternos grow ... tell your friends & family about us!
-#notice.flash_notice
+
+= show_flash_messages
+
 - form_tag invite_others_account_setup_path do
   = hidden_field_tag :step, "3"
   - 4.times do |i|
@@ -10,7 +12,7 @@
   %p
     Email Message
     %br
-    %textarea{:name=>"message", :rows=>"10", :cols=>"60"}= render :partial => 'invite_message'
+    %textarea{:rows=>"10", :cols=>"60"}= render :partial => 'invite_message'
 
   %p &nbsp
   <input type="button" name="skip" value="skip"/ onclick="this.form.submit();">&nbsp;&nbsp;&nbsp;&nbsp;

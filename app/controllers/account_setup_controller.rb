@@ -15,18 +15,18 @@ class AccountSetupController < ApplicationController
     session[:setup_account] = true
     
     # Dynamic action view based on current setup step - stupid
-    if @completed_steps < 2
+    Rails.logger.debug "SETUP STEP = #{@completed_steps}"
+    if @active_step <= 1
       load_online
       @content_page = 'backup_sources'
-    elsif @completed_steps == 2
+    elsif @active_step == 2
       # This should be the invite page now..
       @content_page = 'invite_others'
     else 
       flash[:notice] = "Account Setup Complete!"
       return redirect_to member_home_path
     end
-    @active_step = @completed_steps.to_i + 1
-    
+  
     respond_to do |format|
       format.html
       format.js
@@ -39,7 +39,7 @@ class AccountSetupController < ApplicationController
       @feed = current_user.backup_sources.blog.find(params[:id])
       @feed.rss_url = params[:value]
       if @feed.save
-        current_user.completed_setup_step(2)
+        current_user.completed_setup_step(1)
         render :text => @feed.send(:rss_url).to_s
       else
         render :text => @feed.errors.full_messages
@@ -63,11 +63,26 @@ class AccountSetupController < ApplicationController
   
   def invite_others
     current_user.completed_setup_step(2)
+    invite_url = new_account_url(:plan => AppConfig.default_plan)
+    sent = false
+    
+    1.upto(4) do |i|
+      email = params["email_#{i}"]
+      unless email.blank?
+        sent = true
+        spawn { UserMailer.deliver_friend_invite(current_user, email, invite_url) }
+      end
+    end
     
     respond_to do |format|
       format.html {
-        flash[:notice] = "Account Setup Complete!"
-        redirect_to member_home_path
+        if sent
+          flash[:notice] = "Invitations sent, thank you!"
+          redirect_to account_setup_path(:step => 2)
+        else
+          flash[:notice] = "Account setup complete" if @completed_steps > 0
+          redirect_to member_home_url
+        end
       }
     end
   end
@@ -75,7 +90,8 @@ class AccountSetupController < ApplicationController
   private
    
    def load_completed_steps
-     @completed_steps = params[:step].to_i || current_user.setup_step || 0
+    @active_step = params[:step] ? params[:step].to_i : 1
+    @completed_steps = current_user.setup_step
    end
    
    def load_online
