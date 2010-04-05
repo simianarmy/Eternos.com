@@ -162,9 +162,9 @@ var ETimeline = function(opts) {
 
 			this.showLoading();
 		},
-		// Returns collection of artifacts for the given date
+		// Returns collection of artifacts for the given month
 		// Skip any items that don't have thumbnail or don't fall on target month
-		_itemsInDate: function(date) {
+		_itemsInMonth: function(date) {
 			var targetDate = date.startingMonth();
 
 			ETDebug.log("Looking for artifacts in collection of " + this.items.size() + " items matching date: " + targetDate);
@@ -176,7 +176,7 @@ var ETimeline = function(opts) {
 			var i, j, rows, numDisplay;
 			var s = '',
 				ul_class;
-			var item, artis = this._itemsInDate(activeDate);
+			var item, artis = this._itemsInMonth(activeDate);
 
 			if ((numDisplay = Math.min(artis.length, this.MaxDisplayCount)) > 0) {
 				artis.randomize();
@@ -211,6 +211,14 @@ var ETimeline = function(opts) {
 			this.parent.innerHTML = this.template.evaluate({
 				title: this.title,
 				artifacts: c
+			});
+		},
+		// Returns collection of artifacts for the given date
+		itemsInDate: function(date) {
+			ETDebug.log("Looking for artifacts in collection of " + this.items.size() + " items matching date: " + date);
+			var dateObj = date.toDate();
+			return this.items.findAll(function(i) {
+				return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) && i.getEventDateObj().clearTime().equals(dateObj);
 			});
 		},
 		// Adds artifact event object to internal collection, returns 
@@ -383,11 +391,13 @@ var ETimeline = function(opts) {
 			activeDates = this.dates.select(function(d) {
 				return td.equalsYearMonth(d.toDate());
 			});
+			// Generate html for each day with events
 			activeDates.sort(orderDatesDescending).each(function(d, rowIndex) {
 				itemsHtml = '';
 				dateItems.clear();
 				currentItems = this._groupItemsByType(this.rawItems[d]);
 
+				// Generate html for each event type
 				currentItems.each(function(group, index) {
 					events = new ETLEventItems(group, {
 						memberID: that.memberID
@@ -405,7 +415,7 @@ var ETimeline = function(opts) {
 					date: this._eventDate(d),
 					odd_or_even: ((rowIndex % 2) === 0 ? 'even' : 'odd'),
 					body: itemsHtml,
-					images: this._getGroupImagesHtml(dateItems)
+					images: this._getGroupImagesHtml(d)
 				});
 			}.bind(this));
 
@@ -516,22 +526,23 @@ var ETimeline = function(opts) {
 			return d.toLocaleDateString();
 		},
 		// Generates & returns images preview section html
-		_getGroupImagesHtml: function(dateItems) {
+		_getGroupImagesHtml: function(date) {
 			// Collect all artifacts from date's collection
 			var upTo, i, imageHtml;
-			var images = new Array();
-			dateItems.each(function(events) {
-				images.push(events.items.select(function(item) {
-					return item.isArtifact();
-				}));
-			});
+			var images = that.artifactSection.itemsInDate(date);
+			
 			images = images.flatten();
 			if (images.size() > 0) {
 				// collect 1st 3 images
 				upTo = Math.min(images.size(), 3);
 				imageHtml = '';
 				for (i=0; i<upTo; i++) {
-					imageHtml += '<img src="' + images[i].getThumbnailURL() + '"/>';
+					imageHtml += ETemplates.eventListTemplates.eventGroupArtifact.evaluate({
+						date: date,
+						url: images[i].getURL(),
+						thumbnail: images[i].getThumbnailURL(),
+						caption: images[i].getTitle() 
+						});
 				}
 				return ETemplates.eventListTemplates.eventGroupImages.evaluate({
 					images: imageHtml,

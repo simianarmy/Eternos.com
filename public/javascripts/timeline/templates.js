@@ -161,6 +161,9 @@ var ETemplates = function() {
 		eventGroup: function() {
 			return new Template('<li class="events-#{odd_or_even}"><strong>#{date}</strong>#{body}<p class="event-images">#{images}</p></li>');
 		} (),
+		eventGroupArtifact: function() {
+			return new Template('<a href="#{url}" class="lightview etl-artifact-link" rel="set[evarti_#{date}]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail}" class="events_artifact" border="0"/></a>');
+		} (),
 		// Event day row images 
 		eventGroupImages: function() {
 			return new Template('#{images}<br/><em>Event Images</em> #{view_all_images_link}');
