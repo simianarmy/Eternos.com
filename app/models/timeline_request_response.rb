@@ -25,13 +25,12 @@ class TimelineRequestResponse
     }
   end
   
-  def to_json
+  def execute
     @results ||= search_events
     @response.merge!(:resultCount => @results.size,
       :results => @results,
       :status => @status,
       :responseDetails => @details)
-    @response.to_json
   end
   
 private

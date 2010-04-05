@@ -12,19 +12,19 @@ class ActivityStreamItem < ActiveRecord::Base
   acts_as_restricted :owner_method => :member
   acts_as_commentable
   acts_as_time_locked
-
-  serialize :attachment_data
-  serialize :comment_thread
-  serialize :liked_by
   
   include TimelineEvents
-  
   include CommonDateScopes
   named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
   named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
   named_scope :with_attachment, :conditions => ['attachment_data IS NOT ?', nil]
   named_scope :with_photo, :conditions => {:attachment_type => 'photo'}
   named_scope :with_video, :conditions => {:attachment_type => 'video'}
+  
+  # serialization problems on OS X (works fine on RHEL5)
+  serialize :attachment_data
+  serialize :comment_thread
+  serialize :liked_by
   
   # thinking_sphinx
   define_index do
@@ -41,7 +41,7 @@ class ActivityStreamItem < ActiveRecord::Base
     
     where "deleted_at IS NULL"
   end
-
+  
   # Takes proxy object & block, checks for existing item using on block call.  
   # Returns:
   #  (updated) found item if block yields result,
@@ -87,7 +87,7 @@ class ActivityStreamItem < ActiveRecord::Base
     :liked_by         => item.likers
     }
   end
-  
+
   def bytes
     message.length + (attachment_data ? attachment_data.length : 0)
   end
@@ -97,7 +97,7 @@ class ActivityStreamItem < ActiveRecord::Base
   def thumbnail_url; end
   def media_attachment?; false end
   def parsed_attachment_data
-    self.attachment_data
+    d = self.attachment_data
   end
 end
 

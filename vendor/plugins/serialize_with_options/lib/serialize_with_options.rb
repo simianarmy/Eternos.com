@@ -55,8 +55,9 @@ module SerializeWithOptions
       super(self.class.serialization_options(set).deep_merge(opts))
     end
 
-    def to_json(opts = {})
+    def as_json(opts = {})
       set, opts = parse_serialization_options(opts)
+      Rails.logger.debug "IN as_json WITH OPTS #{self.class.serialization_options(set)}"
       super(self.class.serialization_options(set).deep_merge(opts))
     end
 

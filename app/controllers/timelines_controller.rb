@@ -7,7 +7,7 @@ class TimelinesController < MemberHomeController
   before_filter :login_required, :except => [:search]
   require_role ['Guest', 'Member'], :for_all_except => :search
   
-  ssl_allowed :show
+  ssl_allowed :show, :search, :tag_cloud
   
   def guest_index
     find_host
@@ -80,28 +80,26 @@ class TimelinesController < MemberHomeController
       @response = ActiveSupport::JSON.decode(@json) if @json
     else
       filters = parse_search_filters params[:filters]
-      RAILS_DEFAULT_LOGGER.debug "searching with filters => #{filters.inspect}"
+      Rails.logger.debug "searching with params => #{params.inspect}"
+      Rails.logger.debug "searching with filters => #{filters.inspect}"
       refresh = filters[:no_cache] || session[:refresh_timeline] #|| current_user.refresh_timeline?
       uid = current_user ? current_user.id : 0
       md5 = Digest::MD5.hexdigest(request.url)
       
       BenchmarkHelper.rails_log("Timeline search #{request.url}") {
         @response = Rails.cache.fetch(md5, :force => refresh, :expires_in => 10.minutes) { 
-          TimelineRequestResponse.new(uid, request.url, params, filters).to_json 
+          TimelineRequestResponse.new(uid, request.url, params, filters).execute
         }
+        #Rails.logger.debug "Timeline search response = #{@response.inspect}"
       }
       session[:refresh_timeline] = nil
     end
     respond_to do |format|
       format.js {
-        render :json => @response # already in json format
+        render :json => @response # Will call as_json??
       }
       # html for debug view
-      format.html {
-        #render :inline => @response
-        @json = @response
-        @response = ActiveSupport::JSON.decode(@response)
-      }
+      format.html
     end
   end
   

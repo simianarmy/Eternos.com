@@ -33,14 +33,20 @@ var ETLEventSource = Class.create({
 	getPreviewHtml: function() {
 		return 'Click link to view';
 	},
+	// Display type may be different than type if an attachment is involved,
+	// But I think we just want to display the source icon now...
 	getDisplayType: function() {
-		return (this.attachment_type != null) ? this.attachment_type : this.type;
+		// For now, just return source until Eric changes his mind
+		return this.type;
+		//return (this.attachment_type != null) ? this.attachment_type : this.type;
 	},
 	getID: function() {
 		return this.attributes.id;
 	},
 	getIcon: function() {
-		return ETEvent.getSourceIcon(this.getDisplayType());
+		// For now, just return source until Eric changes his mind
+		return this.icon;
+		//return ETEvent.getSourceIcon(this.getDisplayType());
 	},
 	getURL: function() {
 		return this.attributes.url;
@@ -217,18 +223,30 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 			msg = this.attributes.url.urlToLink();
 		}
 		// Add any attachment link data (might fuck up existing layouts...)
+		// Getting complicated b/c we have to include artifacts here
 		if (this.attributes.parsed_attachment_data && 
 			(this.attributes.parsed_attachment_data.name != null) &&
-			(typeof this.attributes.parsed_attachment_data.name == "string") &&
-			(this.attributes.parsed_attachment_data.type == "link")) {
-			attached = this.attributes.parsed_attachment_data;
-			// Use caption, name, description
-			msg = '<br/><a href="' + attached.href + '" target="_new">' + attached.name + '</a>';
-			if (attached.caption != null && (typeof attached.description == "string")) {
-				msg += '<br/>' + attached.caption;
-			}
-			if (attached.description != null && (typeof attached.description == "string")) {
-				msg += '<br/>' + attached.description;
+			(typeof this.attributes.parsed_attachment_data.name == "string")) {
+			if (this.attributes.parsed_attachment_data.type == "link") {
+				attached = this.attributes.parsed_attachment_data;
+				// Use caption, name, description
+				msg = '<br/><a href="' + attached.href + '" target="_new">' + attached.name + '</a>';
+				if (attached.caption != null && (typeof attached.description == "string")) {
+					msg += '<br/>' + attached.caption;
+				}
+				if (attached.description != null && (typeof attached.description == "string")) {
+					msg += '<br/>' + attached.description;
+				}
+			} else if (this.attributes.parsed_attachment_data.type == "video") {
+				attached = this.attributes.parsed_attachment_data;
+				// Use caption, name, description
+				msg = '<br/>' + ETemplates.tooltipTemplates.facebook_video.evaluate({
+					video_url: attached.href,
+					thumbnail_url: attached.src,
+					title: attached.name,
+					video_source: attached.caption,
+					description: attached.description
+				});
 			}
 		}
 		return msg;

@@ -1,26 +1,10 @@
 -# This is for debugging search api - used when url entered into browser manually
 %h2 Response JSON
 %br
-= debug @json
+= debug ActiveSupport::JSON.encode(@response)
 %p
-%h2 Result headers
+%h2 Results
 %br
-- @results = @response.delete('results')
+/- @results = @response.delete('results')
 = debug @response
 %p
-%h2 Result details
-%p
-  %b= pluralize(@results.size, 'results')
-
-- @results.group_by{|r| r['type']}.each do |res|
-  %b= pluralize(res[1].size, res[0])
-  %br
-  
-- @results.group_by{|r| r['type']}.each do |res|
-  %p
-    %b= pluralize(res[1].size, res[0])
-  %br
-  - res[1].each do |r|
-    %p= debug r
-  %br
-  

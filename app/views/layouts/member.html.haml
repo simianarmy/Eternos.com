@@ -21,7 +21,7 @@
     = yield(:js_libs)
     /- FIX: Doesn't work when put at bottom of <body>
     = yield(:javascript)
-    = javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds};"
+    = javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds}; ETERNOS.debug = #{Rails.env == 'development' ? 'true' : 'false'};"
     / end bundle
   %body
     .header

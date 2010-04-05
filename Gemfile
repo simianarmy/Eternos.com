@@ -9,7 +9,7 @@ source "http://gems.github.com"
 
 #source :gemcutter
 
-gem 'rails', '2.3.2'
+gem 'rails', '2.3.4'
 gem 'capistrano', '2.5.10'
 gem 'capistrano-ext', '1.2.1'
 
@@ -33,7 +33,6 @@ end
 gem 'active_presenter', '1.2.0'
 gem 'after_commit', '1.0.5'
 gem 'aws-s3', '0.6.2'
-gem 'contacts', '1.0.18'
 gem 'crack', '0.1.4'
 gem 'eventmachine', '0.12.10'
 gem 'ezcrypto', '0.7.2'

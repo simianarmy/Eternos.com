@@ -131,6 +131,11 @@ describe ActivityStreamItem do
             @proxy_item.attachment_data.should be_a Hash
           end
             
+          it "should unserialize attachment data properly" do
+            @item = FacebookActivityStreamItem.create_from_proxy! @as.id, @proxy_item
+            @item.attachment_data.should == @proxy_item.attachment_data
+          end
+          
           it "should create the object scoped by user's facebook activity stream" do
             lambda {
               FacebookActivityStreamItem.create_from_proxy! @as.id, @proxy_item

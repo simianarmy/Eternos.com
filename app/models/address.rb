@@ -50,9 +50,9 @@ class Address < ActiveRecord::Base
   include CommonDurationScopes
   self.end_archivable_attribute = :moved_out_on
   
-	serialize_with_options do
-		methods :postal_address
-	end
+  serialize_with_options do
+    methods :postal_address
+  end
 	
 	# thinking_sphinx
   define_index do

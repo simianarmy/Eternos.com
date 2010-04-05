@@ -194,7 +194,7 @@ class TimelineSearch
       fb_photo_urls = collect_facebook_attachment_urls
       RAILS_DEFAULT_LOGGER.debug "fb photo url hash: #{fb_photo_urls.keys.inspect}"
       RAILS_DEFAULT_LOGGER.debug "events before rejecting: #{@events.size}"
-      @events.reject!{|e| (e.type == 'photo') && fb_photo_urls[e.attributes.url]}
+      @events.reject!{|e| (e.type == 'photo') && fb_photo_urls[e.event.url]}
       RAILS_DEFAULT_LOGGER.debug "events after rejecting: #{@events.size}"
     end
     @events
@@ -204,7 +204,7 @@ class TimelineSearch
   
   # Returns hash of facebook attachment photo urls as keys
   def collect_facebook_attachment_urls
-    @events.select{|e| (e.type == 'facebook_activity_stream_item') && (e.attachment_type == 'photo')}.inject(Hash.new){|h,e| h[e.attributes.url] = 1; h}
+    @events.select{|e| (e.type == 'facebook_activity_stream_item') && (e.attachment_type == 'photo')}.inject(Hash.new){|h,e| h[e.event.url] = 1; h}
   end
 end
 

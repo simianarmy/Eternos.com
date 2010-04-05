@@ -6,6 +6,8 @@ class UserSearchController < ApplicationController
   before_filter :login_required
   require_role 'Member'
   
+  ssl_allowed :show
+  
   def new
   end
   
