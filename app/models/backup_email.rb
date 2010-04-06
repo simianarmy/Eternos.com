@@ -71,13 +71,13 @@ class BackupEmail < ActiveRecord::Base
 
   # Required to handle subject.to_json exceptions when subject cannot be decrypted
   # and returns a binary byte string which causes JSON to blork
-  def to_json
+  def as_json(options={})
     res = {:id => id, :sender => sender, :start_date => start_date, :subject => subject}
     begin
-      res.to_json
+      res.as_json(options)
     rescue JSON::GeneratorError
       res[:subject] = 'Could not decrypt subject!'
-      res.to_json
+      res.as_json(options)
     end
   end
   
