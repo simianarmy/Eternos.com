@@ -196,14 +196,26 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 		var media = '', url = '', thumb = '';
 		
 		if (this.isMedia() && ((url = this.getURL()) != null)) {
-			media += '<br/><a href="' + url + '" class="lightview">';
-
-			if (((thumb = this.getThumbnailURL()) != null) && (thumb !== url)) {
-				media += '<img src="' + thumb + '"/>';
+			if (this.attributes.parsed_attachment_data.type == "video") {
+				attached = this.attributes.parsed_attachment_data;
+				// Use caption, name, description
+				media = '<br/>' + ETemplates.tooltipTemplates.facebook_video.evaluate({
+					video_url: this.getURL(),
+					thumbnail_url: this.getThumbnailURL(),
+					title: attached.name,
+					video_source: attached.caption,
+					description: attached.description
+				});
 			} else {
-				media += 'Click to View';
+				media += '<br/><a href="' + url + '" class="lightview">';
+
+				if (((thumb = this.getThumbnailURL()) != null) && (thumb !== url)) {
+					media += '<img src="' + thumb + '"/>';
+				} else {
+					media += 'View ' + this.getDisplayTitle();
+				}
+				media += '</a>';
 			}
-			media += '</a>';
 		} else if (this.attributes.parsed_attachment_data && 
 				(this.attributes.parsed_attachment_data.src != null) &&
 				(typeof this.attributes.parsed_attachment_data.src == "string")) {
@@ -230,28 +242,18 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 			if (this.attributes.parsed_attachment_data.type == "link") {
 				attached = this.attributes.parsed_attachment_data;
 				// Use caption, name, description
-				msg = '<br/><a href="' + attached.href + '" target="_new">' + attached.name + '</a>';
-				if (attached.caption != null && (typeof attached.description == "string")) {
-					msg += '<br/>' + attached.caption;
-				}
-				if (attached.description != null && (typeof attached.description == "string")) {
-					msg += '<br/>' + attached.description;
-				}
-			} else if (this.attributes.parsed_attachment_data.type == "video") {
-				attached = this.attributes.parsed_attachment_data;
-				// Use caption, name, description
-				msg = '<br/>' + ETemplates.tooltipTemplates.facebook_video.evaluate({
-					video_url: attached.href,
-					thumbnail_url: attached.src,
+				msg = '<br/>' + ETemplates.tooltipTemplates.facebook_link.evaluate({
+					url: attached.href,
 					title: attached.name,
-					video_source: attached.caption,
+					caption: attached.caption,
 					description: attached.description
 				});
-			}
+			} 
 		}
 		return msg;
 	},
 	getPreviewHtml: function() {
+		
 		return this._evalTemplate(Object.extend({
 			message: this.getMessage(),
 			author: this.getEventAuthorHtml(),
@@ -542,7 +544,7 @@ var ETEvent = {
 			// Load flowplayer libraries as needed
 			if (SimileAjax.findScript(document, 'flowplayer') === null) {
 				SimileAjax.includeCssFiles(document, '/stylesheets/', ['media.css']);
-				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['flowplayer-3.1.4.min.js', 'flowplayer.playlist-3.0.7.js', 'flowplayer.js'])
+				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['flowplayer-3.1.4.min.js', 'flowplayer.playlist-3.0.7.js', 'flowplayer.js']);
 			}
 			return new ETLVideoEventSource(data);
 		} else if (type === "audio" || type === "music") {
@@ -578,7 +580,7 @@ var ETEvent = {
 		return (type === 'audio' || type === 'music');
 	},
 	isArtifact: function(type) {
-		return (type === 'photo');
+		return (type === 'photo') || (type === 'video') || (type === 'web_video');
 	},
 	isVideo: function(type) {
 		return (type === 'web_video');

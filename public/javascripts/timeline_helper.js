@@ -54,7 +54,10 @@ var ETimeline = function(opts) {
 	that.monthSelector = null;
 	that.utils = ETemplates.utils;
 
-	//Eternos Timeline Selector
+	////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Eternos Timeline Selector
+	//
 	var ETLMonthSelector = Class.create({
 		initialize: function(domID) {
 			this.parent = $(domID);
@@ -144,7 +147,10 @@ var ETimeline = function(opts) {
 		}
 	});
 
-	//Eternos Timeline Artifact Section
+	////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Eternos Timeline Artifact Section
+	//
 	var ETLArtifactSection = Class.create({
 		initialize: function(domID) {
 			this.MaxDisplayCount 	= 9;
@@ -301,7 +307,10 @@ var ETimeline = function(opts) {
 		*/
 	});
 
-	//Eternos Timeline Event Section
+	////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Eternos Timeline Event Section
+	//
 	var ETLEventSection = Class.create({
 		initialize: function(domID) {
 			this.parent = $(domID);
@@ -340,7 +349,10 @@ var ETimeline = function(opts) {
 		}
 	});
 
-	//Eternos Timeline Event Collection
+	////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Eternos Timeline Event Collection
+	//
 	var ETLEventCollection = Class.create({
 		initialize: function() {
 			this.reset();
@@ -557,7 +569,10 @@ var ETimeline = function(opts) {
 		}
 	});
 
-	//Eternos Timeline Event Parser
+	////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Eternos Timeline Event Parser
+	//
 	var ETLEventParser = Class.create({
 		initialize: function(events) {
 			var ev = events || [];
@@ -605,7 +620,7 @@ var ETimeline = function(opts) {
 					}
 					*/
 				} else if (event.hasAttachedArtifact()) {
-					ETDebug.log("adding event with attached image to artifacts");
+					ETDebug.log("adding event with attached artifact to artifacts");
 					that.artifactSection.addItem(event);
 				}
 				this.eventItems.addSource(event);
@@ -628,7 +643,10 @@ var ETimeline = function(opts) {
 		}
 	});
 
-	//Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: Object}
+	////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: Object}
+	//
 	var ETLSearch = Class.create({
 		initialize: function(timeline, params) {
 			var date = new Date();

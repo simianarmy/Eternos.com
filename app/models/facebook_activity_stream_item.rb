@@ -44,7 +44,12 @@ class FacebookActivityStreamItem < ActivityStreamItem
         d['src']
       end
     when 'video'
-      d['video']['source_url']
+      # It depends..
+      if d['src'] && (d['src'] =~ /\.jpg$/)
+        d['src']
+      else 
+        d['video']['source_url']
+      end
     end
   end
     
