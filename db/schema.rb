@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
   add_index "activity_stream_items", ["activity_stream_id"], :name => "index_activity_stream_items_on_activity_stream_id"
   add_index "activity_stream_items", ["published_at"], :name => "index_activity_stream_items_on_published_at"
   add_index "activity_stream_items", ["type"], :name => "index_activity_stream_items_on_type"
+  add_index "activity_stream_items", ["activity_stream_id", "published_at", "guid"], :name => "index_unique_stream_hash"
 
   create_table "activity_streams", :force => true do |t|
     t.integer  "user_id",          :null => false

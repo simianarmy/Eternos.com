@@ -55,15 +55,15 @@ class ActivityStreamItem < ActiveRecord::Base
   #
   def self.sync_from_proxy!(p)
     # Uniqueness based on optional passed find query
-    if f = yield(self)
-      f.update_attributes!(
-        :author         => p.author,
-        :source_url     => p.source_url,
-        :attribution    => p.attribution,
-        :comment_thread => p.comments,
-        :liked_by       => p.likers)
-      f
-    end
+      if f = yield(self)
+        f.update_attributes!(
+          :author         => p.author,
+          :source_url     => p.source_url,
+          :attribution    => p.attribution,
+          :comment_thread => p.comments,
+          :liked_by       => p.likers)
+        f
+      end
   end
   
   def self.create_from_proxy!(activity_stream_id, item)

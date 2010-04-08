@@ -1,6 +1,7 @@
 # $Id$
 
 # ActivityStreamItem STI class child
+require 'cgi'
 
 class FacebookActivityStreamItem < ActivityStreamItem
   after_create :process_attachment 
@@ -44,9 +45,10 @@ class FacebookActivityStreamItem < ActivityStreamItem
         d['src']
       end
     when 'video'
-      # It depends..
-      if d['src'] && (d['src'] =~ /\.jpg$/)
-        d['src']
+      # It depends..pinche facebook hides their images if you try to hotlink them
+      # so we have to pull the image server url out
+      if d['src'] && (matched = d['src'].match(/url=(.+\.jpg)$/))
+        d['src'] = CGI.unescape(matched[1])
       else 
         d['video']['source_url']
       end

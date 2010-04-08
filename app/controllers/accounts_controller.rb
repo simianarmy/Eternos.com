@@ -279,7 +279,9 @@ class AccountsController < ApplicationController
     
     def build_plan
       return redirect_to root_url unless plan = params[:plan]
-      redirect_to :action => "plans" unless @account.plan = @plan = SubscriptionPlan.find_by_name(plan)
+      unless @plan = SubscriptionPlan.find_by_name(plan)
+        @plan = SubscriptionPlan.find_by_name(AppConfig.default_plan)
+      end
       @plan.discount = load_discount
       @account.plan = @plan
       @use_captcha = using_captcha_in_signup?(@account)

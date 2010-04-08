@@ -73,10 +73,12 @@ namespace :backup do
     end
   end 
   
+  # This should be run about 1/week or as needed.
   desc "Disables backup sources with too many backup errors"
   task :disable_failed_backup_sources => :environment do
     BackupSource.active.find_each do |bs|
       bs.backup_error_max_reached! if bs.backup_broken?
     end
   end
+
 end
