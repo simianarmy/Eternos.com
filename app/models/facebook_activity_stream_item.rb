@@ -47,8 +47,12 @@ class FacebookActivityStreamItem < ActivityStreamItem
     when 'video'
       # It depends..pinche facebook hides their images if you try to hotlink them
       # so we have to pull the image server url out
-      if d['src'] && (matched = d['src'].match(/url=(.+\.jpg)$/))
-        d['src'] = CGI.unescape(matched[1])
+      if d['src'] && d['src'].match(/\.jpg$/)
+        if (matched = d['src'].match(/url=(.+\.jpg)$/))
+          d['src'] = CGI.unescape(matched[1])
+        else
+          d['src']
+        end
       else 
         d['video']['source_url']
       end

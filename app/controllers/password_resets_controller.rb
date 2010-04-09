@@ -20,7 +20,7 @@ class PasswordResetsController < ApplicationController
       end
       @sent_email = true
       @user.deliver_password_reset_instructions!
-      flash[:notice] << "Instructions to reset your password have been emailed to you. " +
+      flash[:notice] = "Instructions to reset your password have been emailed to you. " +
           "Please check your email."
     else
       flash[:notice] = "No user was found with that email address"
