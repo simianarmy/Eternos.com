@@ -123,6 +123,11 @@ class FacebookActivityStreamItem < ActivityStreamItem
             BackupPhotoAlbum.find_or_create_by_backup_source_id_and_source_album_id(bs.id, d['photo']['aid'])
           end
 
+          # If Facebook is trying to be sneaky and only passing the small thumbnail image, 
+          # we replace _s with _n to get the larger image instead. mwahaha..will definitely 
+          # bite us in the ass when FB changes formats.
+          d['src'].gsub!(/_s\.jpg$/, '_n.jpg')
+          
           BackupPhoto.create(:backup_photo_album => album,
             :source_photo_id => d['photo']['pid'],
             :source_url => d['src'],
