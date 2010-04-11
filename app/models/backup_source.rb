@@ -73,8 +73,14 @@ class BackupSource < ActiveRecord::Base
     transitions :from => [:pending, :backed_up], :to => :disabled
   end
   
+  # Returns most recent BackupSourceJob
   def latest_backup
     backup_source_jobs.newest
+  end
+  
+  # Returns backup data type sets associated with this site
+  def backup_data_sets
+    EternosBackup::SiteData.site_data_sets(backup_site)
   end
   
   # Uses searchlogic association named_scope to find all photos
@@ -113,11 +119,11 @@ class BackupSource < ActiveRecord::Base
   
   # add this backup source to backup queue
   def backup
-    BackupJobPublisher.add_source(self)
+    EternosBackup::BackupJobPublisher.add_source(self)
   end
   
   def next_backup_at
-    BackupScheduler.next_source_backup_at(self)
+    EternosBackup::BackupScheduler.next_source_backup_at(self)
   end
   
   # Counts how many times most recent backup jobs have failed in a row, 

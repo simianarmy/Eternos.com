@@ -215,8 +215,9 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
   add_index "backup_source_days", ["backup_day"], :name => "backup_dates", :unique => true
 
   create_table "backup_source_jobs", :force => true do |t|
-    t.integer  "backup_job_id"
-    t.integer  "backup_source_id"
+    t.integer  "backup_job_id",       :null => false
+    t.integer  "backup_source_id",    :null => false
+    t.integer  "backup_data_set_id",  :default => 0, :null => false
     t.integer  "size"
     t.integer  "days"
     t.datetime "created_at"
@@ -227,7 +228,7 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
     t.integer  "percent_complete", :default => 0, :null => false
   end
 
-  add_index "backup_source_jobs", ["backup_job_id", "backup_source_id"], :name => "backup_job_source", :unique => true
+  add_index "backup_source_jobs", ["backup_job_id", "backup_source_id", "backup_data_set_id"], :name => "backup_job_source_data_set", :unique => true
   add_index "backup_source_jobs", ["backup_job_id"], :name => "index_backup_source_jobs_on_backup_job_id"
 
   create_table "backup_sources", :force => true do |t|

@@ -174,10 +174,10 @@ var ETemplates = function() {
 		// Event day row template
 		eventGroupItem: function() {
 			// Old: clickable tooltip link with lightview to multiple-item iframe
-			// return new Template('<div class="fb-posts">#{caption}<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">Browse</a></p></div><p class="event-images">#{images}<br/><em>Event Images</em> <a href="#{view_all_images_link}">View All</a></p>');
+			// return new Template('<div class="fb-posts">#{caption}<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="lightview event_list_inline_item" rel="#{link_rel}" title=":: Timeline Details :: topclose: true, width: 650, height: #{details_win_height}">View</a></p></div><p class="event-images">#{images}<br/><em>Event Images</em> <a href="#{view_all_images_link}">View All</a></p>');
 			// New: non-clickable tooltip-only link
 			// New: images for item in separate template
-			return new Template('<div class="fb-posts">#{caption}<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="event_list_inline_item">Browse</a></p></div>');
+			return new Template('<div class="fb-posts">#{caption}<p><em>#{title}</em><a id="evli_#{list_item_id}" href="#{link_url}" class="event_list_inline_item">View</a></p></div>');
 		} (),
 		// For image events?
 		eventItemWithTooltip: function() {

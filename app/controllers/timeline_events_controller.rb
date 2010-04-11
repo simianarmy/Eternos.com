@@ -9,6 +9,8 @@ class TimelineEventsController < ApplicationController
   # For authorization dsl 
   before_filter :load_item, :only => [:show, :edit, :update, :destroy]
   
+  ssl_allowed :all
+  
   def index
     type = params[:type]
     ids = params[:events]

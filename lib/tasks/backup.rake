@@ -35,7 +35,7 @@ namespace :backup do
   desc "Generate backup jobs"
   task :run_scheduled => :environment do
     cutoff = ENV['FORCE'] ? Time.now : nil
-    BackupScheduler.run :cutoff => cutoff
+    EternosBackup::BackupScheduler.run :cutoff => cutoff
   end
   
   desc "Run backup on a single source by id" 
@@ -44,8 +44,12 @@ namespace :backup do
       puts "pass backup source id in SOURCE parameter" 
       exit
     end
+    opts = {}
+    if ENV['DATASET']
+      opts[:dataType] = ENV['DATASET'].to_i
+    end
     if bs = BackupSource.find(id)
-      BackupJobPublisher.add_source(bs)
+      EternosBackup::BackupJobPublisher.add_source(bs, opts)
       puts "backup source #{id} added to backup job queue"
     else
       puts "Could not find backup source with id #{id}"
@@ -60,7 +64,7 @@ namespace :backup do
       exit
     end
     if site = BackupSite.find_by_name(site)
-      BackupJobPublisher.add_by_site(site)
+      EternosBackup::BackupJobPublisher.add_by_site(site)
     else
       puts "Could not find backup site (options: #{BackupSite.names.join('|')})"
     end

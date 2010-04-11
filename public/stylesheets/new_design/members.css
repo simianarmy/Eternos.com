@@ -86,7 +86,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 .activated-services { background: url(/images/icon-activated.gif) no-repeat bottom center; padding:0 10px 22px 10px; float: left; margin: 0 -5px;}
 #active_network-add { background: url(/images/icon-add-more.gif) top center no-repeat; padding:0 0 10px 85px; margin-right: 10px; color: #000000; font-size: 12px;}
-.artifacts IMG { border: 3px solid #647384; margin: 0 3px 12px 0;}
+.artifacts IMG { border: 3px solid #647384; margin: 0 3px 12px 0; width: 100px; height: 100px;}
 
 .search_timeline { margin: 0; padding: 0;}
 .search_timeline INPUT[type=text] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777; vertical-align: middle;}
@@ -108,7 +108,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 .event-images { margin: 0; padding: 0 50px 0 0;}
 .event-images EM { background: url(/images/icon-images.gif) no-repeat 0 2px; padding-left: 20px; font-style: normal; font-weight: bold; color: #3154A7; font-size: 14px;}
-.event-images IMG { border: 2px solid #647384; margin: 0 3px 12px 0;}
+.event-images IMG { border: 2px solid #647384; margin: 0 3px 12px 0; width: 100px; height: 75px;}
 
 /* latest updates */
 .header UL { margin-left: 578px;}

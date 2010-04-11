@@ -23,4 +23,11 @@ class BackupSite < ActiveRecord::Base
   def type_name
     TypeMap.has_key?(name) ? TypeMap[name] : name
   end
+  
+  # site type helpers
+  def facebook?; name == Facebook end
+  def twitter?; name == Twitter end
+  def gmail?; name == Gmail end
+  def blog?; name == Blog end
+  def picasa?; name == Picasa end
 end
