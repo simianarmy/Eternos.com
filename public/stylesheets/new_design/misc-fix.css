@@ -21,3 +21,15 @@ width: 720px;
 #table .footer { width: 428px; border-top: none; height: auto; padding-top: 0px; margin-bottom: 5px;}
 form.trustee_form { margin-bottom: 10px;}
 
+/* Timeline layout fixes */
+.events-odd {
+	display:table;
+	width:572px;
+}
+.fb-posts {
+float:left;
+padding: 0 100px 20px 0;
+width:205px;
+}		
+.event-images IMG { border: 1px solid #647384; margin: 0 3px 12px 0;}
+.event-images A { float: none}

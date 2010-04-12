@@ -565,7 +565,8 @@ var ETimeline = function(opts) {
 			}
 		},
 		_getViewAllEventImagesLinkUrl: function() {
-			return '<a href="javascript: void(0);">View All</a>';
+			return '';
+			//'<a href="javascript: void(0);">View All</a>';
 		}
 	});
 

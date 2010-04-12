@@ -36,7 +36,7 @@ module EternosBackup
 
       # Adds backup job request to backup queue for a single backup source
       def add_source(backup_source, options={})
-        options.reverse_merge! :dataType => EternosBackup::SiteData::General
+        options.reverse_merge! :dataType => EternosBackup::SiteData.defaultDataSet
         
         MessageQueue.execute do
           publish_sources(MessageQueue.pending_backup_jobs_queue, backup_source.member, 
@@ -46,7 +46,7 @@ module EternosBackup
 
       # Adds backup job requests to backup queue for a backup site type
       def add_by_site(site, options={})
-        options.reverse_merge! :dataType => EternosBackup::SiteData::General
+        options.reverse_merge! :dataType => EternosBackup::SiteData.defaultDataSet
   
         MessageQueue.execute do
           q = MessageQueue.pending_backup_jobs_queue

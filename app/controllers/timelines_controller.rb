@@ -77,6 +77,7 @@ class TimelinesController < MemberHomeController
     # Proxy ajax request for dev env. to staging server
     if (ENV['RAILS_ENV'] == 'development') && (dev_map = DevStagingMap.find_by_dev_user_id(current_user.id)) && dev_map.mapped_id > 0
       proxy_search(dev_map)
+      Rails.logger.debug "Using dev map #{dev_map.inspect}"
       @response = ActiveSupport::JSON.decode(@json) if @json
     else
       filters = parse_search_filters params[:filters]

@@ -46,3 +46,4 @@ Memory Usage Watchers:
   memorylogic: http://github.com/binarylogic/memorylogic
   Oink: http://github.com/noahd1/oink/
 
+http://codemonkey.ravelry.com/2010/03/24/ravelry-runs-on-2010/
