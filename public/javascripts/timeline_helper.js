@@ -427,7 +427,7 @@ var ETimeline = function(opts) {
 					date: this._eventDate(d),
 					odd_or_even: ((rowIndex % 2) === 0 ? 'even' : 'odd'),
 					body: itemsHtml,
-					images: this._getGroupImagesHtml(d)
+					images: '' // disabled for now this._getGroupImagesHtml(d)
 				});
 			}.bind(this));
 
