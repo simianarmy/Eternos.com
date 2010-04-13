@@ -1,0 +1,3 @@
+<fb:name uid='<%= current_user.facebook_id %>' useyou='false' /> is a member of Eternos.com 
+and would like to share that experience with you.  To join, simply click on the JOIN button below. 
+<fb:req-choice url="<%= new_account_url(:plan => AppConfig.default_plan, :ref => 'fb_invite') %>" label='JOIN' />

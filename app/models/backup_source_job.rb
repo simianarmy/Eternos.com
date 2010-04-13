@@ -7,9 +7,6 @@ class BackupSourceJob < ActiveRecord::Base
   validates_presence_of :backup_source_id
   validates_presence_of :backup_job_id
   
-  cattr_reader :time_to_expire
-  @@time_to_expire = 4.hours
-  
   serialize :error_messages
   serialize :messages
   xss_terminate :except => [ :error_messages, :messages ] # conflicts w/serialize
@@ -39,11 +36,15 @@ class BackupSourceJob < ActiveRecord::Base
     !!finished_at
   end
   
-  def expired?
-    !finished? && ((Time.now - created_at) > time_to_expire)
+  def expired?(ds=0)
+    !finished? && ((Time.now - created_at) > time_to_expire(ds))
   end
   
-  def time_remaining
+  def time_to_expire(ds=0)
+    EternosBackup::DataSchedules.min_backup_interval(ds)
+  end
+  
+  def time_remaining(ds=0)
     return 0 if finished?
     
     remaining = 0

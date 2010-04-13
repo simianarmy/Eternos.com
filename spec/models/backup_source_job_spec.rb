@@ -54,6 +54,10 @@ describe BackupSourceJob do
     end
 
     describe "on time_remaining" do
+      before(:each) do
+        @job.finished_at = nil
+      end
+      
       it "should return zero if it has finished" do
         @job.finished_at = Time.now
         @job.time_remaining.should == 0
@@ -62,6 +66,29 @@ describe BackupSourceJob do
       it "should return non-zero value if it has not finished" do
         @job.time_remaining.should > 0
       end    
+      
+      it "should not be expired if it started < dataset interval ago" do
+        ds = EternosBackup::SiteData.defaultDataSet
+        @job.created_at = Time.now - (@job.time_to_expire(ds) - 60)
+        @job.expired?(ds).should be_false
+      end
+      
+      it "should be in expired state if it has not finished after the dataset interval" do
+        ds = EternosBackup::SiteData.defaultDataSet
+        @job.created_at = Time.now - (@job.time_to_expire(ds) + 60)
+        @job.expired?(ds).should be_true
+      end
+    end
+    
+    describe "time_to_expire" do
+      it "should not be zero" do
+        @job.time_to_expire.should > 0
+      end
+      
+      it "should not be zero for any dataset" do
+        ds = EternosBackup::SiteData::FacebookOtherWallPosts
+        @job.time_to_expire(ds).should == EternosBackup::DataSchedules.min_backup_interval(ds)
+      end
     end
   end
 end

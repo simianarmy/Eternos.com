@@ -4,10 +4,9 @@ class AccountSetupController < ApplicationController
   before_filter :login_required
   require_role "Member"
   
-  before_filter :load_facebook_desktop
-  before_filter :load_facebook_session
-  before_filter :load_presenter
   before_filter :load_completed_steps
+  before_filter :load_facebook_app_session
+  before_filter :load_presenter
   
   ssl_required :all
   
@@ -84,41 +83,45 @@ class AccountSetupController < ApplicationController
     
     respond_to do |format|
       format.html {
-        if sent
-          flash[:notice] = "Invitations sent, thank you!"
-          redirect_to account_setup_path(:step => 2)
-        else
-          flash[:notice] = "Account setup complete" if @completed_steps > 0
-          redirect_to member_home_url
-        end
+        flash[:notice] = "Account setup complete" if @completed_steps > 0
+        redirect_to member_home_url
       }
     end
   end
+
+  protected
+
+  def load_facebook_app_session
+    if @active_step == 2
+      set_facebook_connect_session
+    else
+      set_facebook_desktop_session
+    end
+  end
   
-  private
-   
-   def load_completed_steps
+  def load_completed_steps
     @active_step = params[:step] ? params[:step].to_i : 1
     @completed_steps = current_user.setup_step
-   end
-   
-   def load_online
-     @settings.load_facebook_user_info
-     @settings.create_fb_login_url(request)
-   end
-   
-   def respond_to_ajax_remove(obj)
-     respond_to do |format|
-       format.js do
-         render :update do |page|
-           page.replace_html "#{obj.to_str}_#{obj.id}"
-         end
-       end
-     end
-   end
-   
-   def load_presenter
-     @settings = SetupPresenter.new(current_user, load_facebook_session, params)
-     @settings.load_backup_sources
-   end
+  end
+
+  def load_online
+    @settings.load_facebook_user_info
+    @settings.create_fb_login_url(request)
+  end
+
+  def respond_to_ajax_remove(obj)
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html "#{obj.to_str}_#{obj.id}"
+        end
+      end
+    end
+  end
+
+  def load_presenter
+    Rails.logger.debug "Creating SetupPresenter with session => #{@facebook_session.inspect}"
+    @settings = SetupPresenter.new(current_user, @facebook_session, params)
+    @settings.load_backup_sources
+  end
 end

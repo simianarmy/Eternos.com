@@ -243,11 +243,21 @@ class ApplicationController < ActionController::Base
     Facebooker.load_configuration(File.join(RAILS_ROOT, 'config', 'facebooker.yml'))
   end
   
+  def load_facebook_desktop
+    Facebooker::Session.current = FacebookDesktopApp::Session.create
+  end
+  
+  def load_facebook_session
+     @facebook_session = Facebooker::Session.current
+     Rails.logger.debug "FB session => #{@facebook_session.inspect}"
+  end
+  
+  # Helper to create & save facebook connect session
   def set_facebook_connect_session
     load_facebook_connect
     #set_facebook_session
     create_facebook_session
-    Rails.logger.debug "FB session => #{@facebook_session.inspect}"
+    
     #ensure_application_is_installed_by_facebook_user
     
     # If user is logged in to facebook but not logged in using FB Connect,
@@ -261,14 +271,12 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def load_facebook_session
-     @facebook_session ||= Facebooker::Session.current
-   end
-   
-  def load_facebook_desktop
-    Facebooker::Session.current = FacebookDesktopApp::Session.create
+  # Helper to create & save facebook desktop session
+  def set_facebook_desktop_session
+    load_facebook_desktop
+    load_facebook_session
   end
-  
+    
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find

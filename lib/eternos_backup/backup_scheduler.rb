@@ -48,7 +48,7 @@ module EternosBackup
           latest_job.successful? ? (latest_job.finished_at < cutoff_time(data_set)) : true
         else
           # handle case where job crashes without saving error or finish time
-          latest_job.expired?
+          latest_job.expired?(data_set)
         end      
       end
 

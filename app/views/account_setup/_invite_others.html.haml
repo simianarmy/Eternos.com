@@ -2,19 +2,22 @@
 
 = show_flash_messages
 
-- form_tag invite_others_account_setup_path do
-  = hidden_field_tag :step, "3"
-  - 4.times do |i|
+- if @facebook_session
+  = render :partial => 'fb_invite'
+- else
+  - form_tag invite_others_account_setup_path do
+    = hidden_field_tag :step, "3"
+    - 4.times do |i|
+      %p
+        Email address
+        %br
+        <input type="text" name="email_#{i+1}" size="30">
     %p
-      Email address
+      Email Message
       %br
-      <input type="text" name="email_#{i+1}" size="30">
-  %p
-    Email Message
-    %br
-    %textarea{:rows=>"10", :cols=>"60"}= render :partial => 'shared/invitation_email_copy'
+      %textarea{:rows=>"10", :cols=>"60"}= render :partial => 'shared/invitation_email_copy'
 
-  %p &nbsp
-  <input type="button" name="skip" value="skip"/ onclick="this.form.submit();">&nbsp;&nbsp;&nbsp;&nbsp;
-  = submit_tag "Send"
+    %p &nbsp
+    <input type="button" name="skip" value="skip"/ onclick="this.form.submit();">&nbsp;&nbsp;&nbsp;&nbsp;
+    = submit_tag "Send"
 
