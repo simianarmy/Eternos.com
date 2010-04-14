@@ -16,7 +16,7 @@ ActionController::Routing::Routes.draw do |map|
     :check_auth => :get, :permissions => :get, :authorized => :get, :cancel => :get }
   map.resource :image_gallery, :controller => 'image_gallery'
   map.resource :user_search, :controller => 'user_search'
-  
+
   # regular resources
   map.resources :timeline_events, :collection => {
     :events => :get
@@ -177,6 +177,9 @@ ActionController::Routing::Routes.draw do |map|
   # Static partials for WordPress blog
   map.header_partial 'static/blog_header', :controller => 'home', :action => 'blog_header_partial'
   map.footer_partial 'static/blog_footer', :controller => 'home', :action => 'blog_footer_partial'
+  
+  # Facebook routes
+  map.facebook_home '/facebook', :controller => 'facebook', :action => 'index'
   
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home", :action => 'index'         
