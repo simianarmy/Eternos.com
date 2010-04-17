@@ -1,13 +1,25 @@
 # $Id$
+#
+# Facebook invitations controller
+
 class InvitationsController < ApplicationController
-  before_filter :login_required
-  require_role "Member"
+  before_filter :ensure_authenticated_to_facebook
+  layout nil
+  
+  ssl_allowed :new, :create
   
   def new
     @invitation = Invitation.new
   end
   
   def create
+    @sent_to_ids = params[:ids]
+  end
+  
+  protected
+  
+  # Used for non-facebook invitations - unused right now
+  def normal_create
     @invitation = Invitation.new(params[:invitation])
     @invitation.sender = current_user
     

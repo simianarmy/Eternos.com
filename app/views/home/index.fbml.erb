@@ -1,0 +1,18 @@
+<fb:header><%= link_to image_tag('http://eternos.com/images/logo.png'), 'http://eternos.com' %></fb:header>
+
+<fb:tabs>
+  <fb:tab-item href='http://eternos.com' title='Home' selected='true'/>
+  <fb:tab-item href='http://eternos.com/about/what' title='What is Eternos?' />
+  <fb:tab-item href='http://eternos.com/about' title='About Us' />
+  <fb:tab-item href='http://eternos.com/blog' title='Blog' />
+</fb:tabs>
+
+<p>
+  Hi there <fb:name uid="loggedinuser" useyou="false" />,
+</p>
+If you are already an Eternos member, tell your friends &amp; family about us...
+<br/>
+<p>
+<%= link_to 'No thanks, just take me to Eternos', "http://eternos.com" %>
+</p>
+<br/>

@@ -4,7 +4,7 @@ ActionController::Routing::Routes.draw do |map|
   
   # Singleton resources
   map.resource :account_setup, :controller => 'account_setup', :member => {
-    :show => :get, :backup_sources => :get, :invite_others => :post
+    :show => :get, :backup_sources => :get, :invite_others => [:get,:post]
   }
   map.resource :profile
   map.resource :facebook_profile

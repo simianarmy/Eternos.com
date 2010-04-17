@@ -30,5 +30,14 @@ DESC
     Rake::Task["backup:disable_failed_backup_sources"].invoke
     # notify_inactive
   end
+  
+  desc "Permanently removes member account with all contents"
+  task :destroy => :environment do
+    unless id=ENV['USER_ID']
+      puts "Usage: rake account:destroy USER_ID=XX"
+      exit
+    end
+    User.find(id).destroy
+  end
 end
       

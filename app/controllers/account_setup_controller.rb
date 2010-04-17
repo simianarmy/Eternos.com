@@ -84,7 +84,7 @@ class AccountSetupController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:notice] = "Account setup complete" if @completed_steps > 0
-        redirect_to member_home_url
+        redirect_to member_home_path
       }
     end
   end
