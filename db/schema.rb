@@ -882,7 +882,7 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
 
   create_table "raw_texts", :force => true do |t|
     t.integer "user_id", :null => false
-    t.text  "txt"
+    t.text  "word_counts"
     t.timestamps
   end
   add_index "raw_texts", ["user_id"]
