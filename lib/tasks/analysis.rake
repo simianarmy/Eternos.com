@@ -95,7 +95,7 @@ end
 def analyze_text(table)
   returning Array.new do |wc|
     @myisam_ftpdump ||= `which myisam_ftdump`.strip
-    @mysql_db_dir ||= '/opt/local/var/db/mysql5/' + @conn.instance_variable_get("@config")[:database]
+    @mysql_db_dir ||= File.join(@conn.instance_variable_get("@config")[:db_dir], @conn.instance_variable_get("@config")[:database])
     ftdump = `#{@myisam_ftpdump} -c #{@mysql_db_dir}/#{table} 0`
     ftdump.split("\n").each do |ws|
       parts = ws.split(/\s+/)
