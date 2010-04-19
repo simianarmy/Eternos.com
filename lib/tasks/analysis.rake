@@ -10,16 +10,25 @@
 module FullText
   require 'lingua/stemmer'
   
-  MinWordLength = 4
+  MinWordLength     = 4
+  StopWordPatterns  = [Regexp.new('^https?://'), Regexp.new('^[0-9\W\_]+$')]
   
-  ActivityStreamQuery =<<SQL
+  FBActivityStreamQuery =<<SQL
 SELECT SQL_NO_CACHE activity_stream_items.author AS author, activity_stream_items.message AS message, activity_stream_items.attachment_data AS metadata, activity_stream_items.comment_thread, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
 FROM activity_stream_items
 LEFT OUTER JOIN taggings ON (activity_stream_items.id = taggings.taggable_id AND taggings.taggable_type = 'ActivityStreamItem')  LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id) AND taggings.context = 'tags'   LEFT OUTER JOIN comments ON comments.commentable_id = activity_stream_items.id AND comments.commentable_type = 'ActivityStreamItem'
-WHERE activity_stream_id = ? AND deleted_at IS NULL
+WHERE activity_stream_id = ? AND type = 'FacebookActivityStreamItem' AND deleted_at IS NULL
 GROUP BY  activity_stream_items.id
 SQL
 
+  TwitterActivityStreamQuery=<<SQL
+SELECT SQL_NO_CACHE activity_stream_items.author AS author, activity_stream_items.message AS message, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
+FROM activity_stream_items
+LEFT OUTER JOIN taggings ON (activity_stream_items.id = taggings.taggable_id AND taggings.taggable_type = 'ActivityStreamItem')  LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id) AND taggings.context = 'tags'   LEFT OUTER JOIN comments ON comments.commentable_id = activity_stream_items.id AND comments.commentable_type = 'ActivityStreamItem'
+WHERE activity_stream_id = ? AND type = 'TwitterActivityStreamItem' AND deleted_at IS NULL
+GROUP BY  activity_stream_items.id
+SQL
+  
   FeedQuery=<<SQL
 SELECT SQL_NO_CACHE feed_entries.author AS author, feed_entries.name AS name, feed_entries.summary AS summary, feed_contents.html_content AS raw_content, feed_entries.url AS url, feed_entries.categories AS categories, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
 FROM feed_entries
@@ -43,58 +52,98 @@ WHERE contents.user_id = ? AND deleted_at IS NULL
 GROUP BY contents.id
 SQL
 
-  # Performs text analysis on some data store & returns word-count stats
-  # as sorted array of tuples [word, frequency]
-  # Sorted by frequency descending
-  # 
-  # Uses myisam_ftdump to collect collection of unique words from a fulltext index.
-  # This is useful in 2 ways: 
-  # => ftdump discards common words & short words, & we can probably use a stoplist
-  # => ftdump only returns unique words in the result, making counting impossible NOOOO
-  def analyze_ftdump(table)
-    returning Array.new do |wc|
-      @myisam_ftpdump ||= `which myisam_ftdump`.strip
-      @mysql_db_dir ||= File.join(@conn.instance_variable_get("@config")[:db_dir], @conn.instance_variable_get("@config")[:database])
-      ftdump = `#{@myisam_ftpdump} -c #{@mysql_db_dir}/#{table} 0`
-      ftdump.split("\n").each do |ws|
-        parts = ws.split(/\s+/)
-        puts parts.inspect
-        wc << [parts[3], parts[1].to_i]
-      end
-    end
-  end
-  
-  def stopwords
-    returning Hash.new do |h|
-      File.open(File.join(RAILS_ROOT, "db/stopwords.csv")) do |f| 
-        f.readline.split(',').map{|w| w.strip}.each { |w| h[w] = 1 }
-      end
-    end
-  end
-  
-  # Peforms brute-force fulltext parsing by tokenizing and creating dictionary 
-  # with counts.  Tries to improve relevance using Stemming & stoplists
-  def analyze_raw(txt)
-    @stemmer ||= Lingua::Stemmer.new # TODO: Supports any language in constructor - get from user db?
-    @stopwords ||= stopwords
+  class Frequency
+    # Performs text analysis on some data store & returns word-count stats
+    @@MinWordFrequency = 2
     
-    returning Hash.new(0) do |dict|
-      txt.split.each do |w|
-        # all lowercase, bub
-        w.downcase!
-        # Apply some custom rejection conditions
-        next if @stopwords.has_key?(w) || (w.length < MinWordLength) || (w.last == ':')
-        # Remove non-words chars
-        w.gsub!(/\W+/, '')
-        # Convert to stemmed words
-        stem = @stemmer.stem(w)
-        #next if stem.length < MinWordLength
-        dict[@stemmer.stem(w)] += 1
+    def initialize
+      @stemmer    = Lingua::Stemmer.new # TODO: Supports any language in constructor - get from user db?
+      @stopwords  = stopwords
+      @stems      = Hash.new
+    end
+
+    # Uses myisam_ftdump to collect collection of unique words from a fulltext index.
+    # This is useful in 2 ways: 
+    # => ftdump discards common words & short words, & we can probably use a stoplist
+    # => ftdump only returns unique words in the result, making counting impossible NOOOO
+    def analyze_ftdump(table)
+      returning Array.new do |wc|
+        @myisam_ftpdump ||= `which myisam_ftdump`.strip
+        @mysql_db_dir ||= File.join(@conn.instance_variable_get("@config")[:db_dir], @conn.instance_variable_get("@config")[:database])
+        ftdump = `#{@myisam_ftpdump} -c #{@mysql_db_dir}/#{table} 0`
+        ftdump.split("\n").each do |ws|
+          parts = ws.split(/\s+/)
+          puts parts.inspect
+          wc << [parts[3], parts[1].to_i]
+        end
       end
     end
-  end
-    
-end
+
+    # Returns word frequency hash by analyzing input string
+    def generate_hash(input)
+      @freq = analyze_raw(input)
+      # Reduce returning unnecessarily large hash be stripping away frequencies < min
+      @freq.delete_if {|key, value| value < @@MinWordFrequency}
+    end
+
+    protected 
+
+    def stopwords
+      returning Hash.new do |h|
+        File.open(File.join(RAILS_ROOT, "db/stopwords.csv")) do |f| 
+          f.readline.split(',').map{|w| w.strip}.each { |w| h[w] = 1 }
+        end
+      end
+    end
+
+    def skip_word?(w)
+      @stopwords[w] || (w.length < MinWordLength) || (w.last == ':') || StopWordPatterns.any?{|r| !r.match(w).nil?}
+    end
+
+    # Peforms brute-force fulltext parsing by tokenizing and creating dictionary 
+    # with counts.  Tries to improve relevance using Stemming & stoplists
+    def analyze_raw(txt)
+      stem_freq = {}
+      stem_lead = {}
+      
+      returning Hash.new(0) do |dict|
+        txt.downcase.split(/[\s,;!\?]+/).each do |w|
+          # Apply some custom rejection conditions
+          next if skip_word?(w)
+          # strip non-words chars
+          w.gsub!(/["\(\)\.]+/, '')
+          dict[w] += 1
+        end
+
+        # Peform stemming analysis
+        dict.each do |w, freq|
+          @stems[w] ||= @stemmer.stem(w)
+          (stem_freq[@stems[w]] ||= {})[w] = freq
+        end
+        
+        stem_freq.each_key do |stem|
+          #puts "Analyzing stem #{stem}"
+          total_freq = 0
+          lead_freq = 0
+          lead_word = ""
+          
+          #puts "stems => #{stem_freq[stem].inspect}"
+          stem_freq[stem].each do |word, freq|
+            total_freq += freq
+            if freq > lead_freq
+              lead_word = word
+              lead_freq = freq
+            end
+          end
+          #puts "lead word => #{lead_word} (#{total_freq})"
+          stem_lead[lead_word] = total_freq
+        end
+        # Replace word frequency hash with leading stem frequency hash
+        dict = stem_lead
+      end
+    end # def analyze_raw
+  end # class Frequency
+end # module FullText
   
 # How to use thinking_sphinx riddle config-building snippet to generate sql queries for text dumps
 def generate_text_sql
@@ -151,8 +200,9 @@ def user_text_dump(user)
   puts "Getting text for user #{user.id}"
   returning String.new do |txt|
     res = []
-    res << get_sql_result_str(@conn.execute(FullText::ActivityStreamQuery.gsub(/\?/, user.activity_stream.id.to_s)))
-   
+    res << get_sql_result_str(@conn.execute(FullText::FBActivityStreamQuery.gsub(/\?/, user.activity_stream.id.to_s)))
+    res << get_sql_result_str(@conn.execute(FullText::TwitterActivityStreamQuery.gsub(/\?/, user.activity_stream.id.to_s)))
+    
     if (feed_ids = user.backup_sources.blog.map(&:id)).any?
       res << get_sql_result_str(@conn.execute(FullText::FeedQuery.gsub(/\?/, feed_ids.join(','))))
     end
@@ -173,6 +223,7 @@ namespace :analysis do
     include FullText
     # Global database connection
     @conn = ActiveRecord::Base.connection
+    @freq_analyzer = FullText::Frequency.new
     
     begin
       # Per-user task
@@ -181,7 +232,7 @@ namespace :analysis do
 
         unless text.blank?
           # stats = analyze_myisam_fulltext(text)
-          stats = analyze_raw(text)
+          stats = @freq_analyzer.generate_hash(text)
           puts stats.sort{|a,b| b[1] <=> a[1]}.inspect
           # Add word stats to user text table
           if rt = RawText.find_or_create_by_user_id(u.id)
