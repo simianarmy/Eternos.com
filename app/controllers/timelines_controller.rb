@@ -106,10 +106,19 @@ class TimelinesController < MemberHomeController
   
   # Returns JSON for jquery tag cloud widget
   def tag_cloud
-    #@tags = {:tags => [{:tag => 'fuck', :freq => 10}, {:tag => 'shit', :freq => 5}]}
-    @tags = {:tags => []}
+    #@tags = {:tags => [{:tag => 'foo', :freq => 10}, {:tag => 'fee', :freq => 5}]}
+    @tags = []
+    # Lookup word_counts serialized hash for this user
+    if txt = RawText.find_by_user_id(current_user.id)
+      # Cache parsed results
+      @tags = Rails.cache.fetch("tag_cloud_#{current_user.id}", :expires_in => 24.hours) {
+        wcs = txt.word_counts
+        wcs.keys.inject([]) {|res, k| res << {:tag => k, :freq => wcs[k]}; res }
+      }
+    end
+
     respond_to do |format|
-      format.js { render :json => @tags }
+      format.js { render :json => {:tags => @tags} }
     end
   end
   

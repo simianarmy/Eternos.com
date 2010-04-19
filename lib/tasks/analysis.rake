@@ -45,7 +45,7 @@ GROUP BY backup_photo_albums.id
 SQL
  
   Contents=<<SQL
-SELECT SQL_NO_CACHE contents.title AS title, contents.filename AS filename, contents.description AS description, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
+SELECT SQL_NO_CACHE contents.title AS title, contents.description AS description, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
 FROM contents
 LEFT OUTER JOIN taggings ON (contents.id = taggings.taggable_id AND taggings.taggable_type = 'Content')  LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id) AND taggings.context = 'tags'   LEFT OUTER JOIN comments ON comments.commentable_id = contents.id AND comments.commentable_type = 'Content'
 WHERE contents.user_id = ? AND deleted_at IS NULL
@@ -215,34 +215,32 @@ def user_text_dump(user)
   end
 end
 
-
+# Analysis related tasks
+# Includes data mining, text processing, pattern finding tasks
 namespace :analysis do
-  # Must be run on the database server host for myisam_ftdump command
-  desc "Creates new text dump for all users"
+  desc "Calculates users' text data word frequencies"
   task :update_fulltext => :environment do
     include FullText
     # Global database connection
     @conn = ActiveRecord::Base.connection
+    # Text frequency counter object
     @freq_analyzer = FullText::Frequency.new
-    
-    begin
-      # Per-user task
-      User.active.find_each do |u|
-        text = user_text_dump(u)
+        
+    # Per-user task
+    User.active.find_each do |u|
+      text = user_text_dump(u)
 
-        unless text.blank?
-          # stats = analyze_myisam_fulltext(text)
-          stats = @freq_analyzer.generate_hash(text)
-          puts stats.sort{|a,b| b[1] <=> a[1]}.inspect
-          # Add word stats to user text table
-          if rt = RawText.find_or_create_by_user_id(u.id)
-            rt.update_attribute(:word_counts, stats)
-          end
+      unless text.blank?
+        # stats = analyze_myisam_fulltext(text)
+        stats = @freq_analyzer.generate_hash(text)
+        puts stats.sort{|a,b| b[1] <=> a[1]}.inspect
+        # Add word stats to user text table
+        if rt = RawText.find_or_create_by_user_id(u.id)
+          rt.update_attribute(:word_counts, stats)
         end
       end
-    rescue 
-      puts "Unexpected error: " + $!
     end
+    
   end
 end
   
