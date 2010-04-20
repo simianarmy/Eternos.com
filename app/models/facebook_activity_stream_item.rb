@@ -87,6 +87,25 @@ class FacebookActivityStreamItem < ActivityStreamItem
     end
   end
   
+  # Collect all text fields for output
+  def to_rawtext
+    res = []
+    res << author
+    res << message
+    res << tags
+    res << comments
+    if (comms = comment_thread) && !comms.empty?
+      res << comms.map{|c| c.text unless c.is_a? Array}
+    end
+    res << liked_by if liked_by && !liked_by.empty?
+    if d = parsed_attachment_data
+      res << d['name']
+      res << d['description']
+      res << d['caption']
+    end
+    res.flatten.join(' ')
+  end
+  
   protected
 
   # Do additional parsing of facebook attachment data structure in order 
@@ -124,7 +143,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
           end
 
           # If Facebook is trying to be sneaky and only passing the small thumbnail image, 
-          # we replace _s with _n to get the larger image instead. mwahaha..will definitely 
+          # we replace _s with _n to get the larger image instead. This will definitely 
           # bite us in the ass when FB changes formats.
           d['src'].gsub!(/_s\.jpg$/, '_n.jpg')
           

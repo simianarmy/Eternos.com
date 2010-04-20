@@ -14,6 +14,16 @@ class TwitterActivityStreamItem < ActivityStreamItem
     attachment_data.source
   end
   
+  # Collect all text fields for output
+  def to_rawtext
+    res = []
+    res << author
+    res << message
+    res << tags if !tags.try(:empty?)
+    res << comments if !comments.try(:empty?)
+    res.join(' ')
+  end
+  
   protected
   
 end

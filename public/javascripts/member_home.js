@@ -12,20 +12,40 @@ function createTagCloud(tag_cloud_url, opts) {
 	// Build tag cloud
 	// Having fun with prototype + jquery
   jQuery.getJSON(tag_cloud_url, function(data) {
-    //create list for tag links
+    // create list for tag links
     jQuery("<ul>").attr("id", "tagList").appendTo("#tag-cloud");
-    //create tags
+    // create tags
     jQuery.each(data.tags, function(i, val) {
-      //create item
+      // create item
       var li = jQuery("<li>");
 	
-      jQuery("<a>").text(val.tag).attr({title:"See all events tagged with " + val.tag, 
+      jQuery("<a>").text(val.tag).attr({class: "tag_cloud_tag", title:"See all events tagged with " + val.tag, 
 				href: opts.user_search_path + val.tag}).appendTo(li);
 			li.children().css("fontSize", (val.freq / 10 < 1) ? val.freq / 10 + 1 + "em": (val.freq / 10 > 2) ? "2em" : val.freq / 10 + "em");
 			
-      //add to list
+      // add to list
       li.appendTo("#tagList");
     });
+		// make tags activate ajax search on clicks
+		jQuery(".tag_cloud_tag").click(function(e) {
+			var url = e.target.href;
+			if (url != null && url !== "") {
+				new Ajax.Updater('search-results', url, {
+					asynchronous:true, 
+					evalScripts:true, 
+					method:'get', 
+					onComplete:function(request){
+						spinner.unload(); 
+						onSearchComplete();
+					}, 
+					onLoading:function(request){
+						spinner.load('tag-cloud')
+					}, 
+					parameters:'from=tags'
+				}); 
+			}
+			return false;
+		});
   });
 }
 

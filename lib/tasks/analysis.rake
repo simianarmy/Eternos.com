@@ -11,7 +11,7 @@ module FullText
   require 'lingua/stemmer'
   
   MinWordLength     = 4
-  StopWordPatterns  = [Regexp.new('^https?://'), Regexp.new('^[0-9\W\_]+$')]
+  StopWordPatterns  = [Regexp.new('^https?://'), Regexp.new('^[0-9\W\_]+$'), Regexp.new('\S&\S')]
   
   FBActivityStreamQuery =<<SQL
 SELECT SQL_NO_CACHE activity_stream_items.author AS author, activity_stream_items.message AS message, activity_stream_items.attachment_data AS metadata, activity_stream_items.comment_thread, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
@@ -45,7 +45,7 @@ GROUP BY backup_photo_albums.id
 SQL
  
   Contents=<<SQL
-SELECT SQL_NO_CACHE contents.title AS title, contents.description AS description, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
+SELECT SQL_NO_CACHE contents.description AS description, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
 FROM contents
 LEFT OUTER JOIN taggings ON (contents.id = taggings.taggable_id AND taggings.taggable_type = 'Content')  LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id) AND taggings.context = 'tags'   LEFT OUTER JOIN comments ON comments.commentable_id = contents.id AND comments.commentable_type = 'Content'
 WHERE contents.user_id = ? AND deleted_at IS NULL
@@ -200,9 +200,11 @@ def user_text_dump(user)
   puts "Getting text for user #{user.id}"
   returning String.new do |txt|
     res = []
-    res << get_sql_result_str(@conn.execute(FullText::FBActivityStreamQuery.gsub(/\?/, user.activity_stream.id.to_s)))
-    res << get_sql_result_str(@conn.execute(FullText::TwitterActivityStreamQuery.gsub(/\?/, user.activity_stream.id.to_s)))
-    
+    # Facebook data contains way too much cruft in the serialized columns to parse from a raw sql query
+    user.activity_stream.items.each do |as|
+      res << as.to_rawtext
+    end
+
     if (feed_ids = user.backup_sources.blog.map(&:id)).any?
       res << get_sql_result_str(@conn.execute(FullText::FeedQuery.gsub(/\?/, feed_ids.join(','))))
     end
@@ -210,8 +212,9 @@ def user_text_dump(user)
       res << get_sql_result_str(@conn.execute(FullText::PhotoAlbums.gsub(/\?/, albums_ids.join(','))))
     end
     res << get_sql_result_str(@conn.execute(FullText::Contents.gsub(/\?/, user.id.to_s)))
-    txt << res.join(' ')
-    #puts "result: #{txt}"
+    
+    txt << res.flatten.join(' ')
+    puts "result: #{txt}"
   end
 end
 
@@ -225,9 +228,14 @@ namespace :analysis do
     @conn = ActiveRecord::Base.connection
     # Text frequency counter object
     @freq_analyzer = FullText::Frequency.new
-        
+    
+    users = if ENV['USER_ID']
+      [ User.find(ENV['USER_ID']) ]
+    else
+      User.active.all
+    end
     # Per-user task
-    User.active.find_each do |u|
+    users.each do |u|
       text = user_text_dump(u)
 
       unless text.blank?

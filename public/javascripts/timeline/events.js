@@ -280,7 +280,7 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 	getComments: function() {
 		var comments = '';
 		if (this.attributes.comment_thread != null) {
-			this.attributes.comment_thread.each(function(c) {
+			$A(this.attributes.comment_thread).each(function(c) {
 				comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
 					author: (c.username ? c.username : 'You'),
 					thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
