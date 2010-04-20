@@ -46,6 +46,19 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .what INPUT[type=text], .what INPUT[type=password], .home INPUT[type=text], .home INPUT[type=password] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777; width: 185px;}
 .what INPUT[type=submit], .home INPUT[type=submit] { background: url(/images/button-signup.gif) no-repeat; width: 197px; height: 50px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #FFFFFF; cursor: pointer; font-weight: bold;}
 
+/* paul fix 4/18/10 */
+.what h1, .home h1 {
+border-bottom:1px dashed #CCCCCC;
+color:#000000;
+float:left;
+font-size:26px;
+font-weight:normal;
+margin:-5px 0 10px 0;
+padding:0 0 8px 0;
+width:470px;
+}
+
+/* signup */
 .signup01 EM, .home01 EM { font-style: normal; font-size: 11px;}
 .signup01 A, .home01 A { color: #5EC0EA;}
 .home FIELDSET FIELDSET { clear: both;}
