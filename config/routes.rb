@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   }
   map.resource :profile
   map.resource :facebook_profile
-  map.resource :fb, :controller => 'fb'
+
   map.resource :timeline, :member => {:tag_cloud => :get, :search => :get}
   map.resource :wysiwyg_preview
   map.resource :backup_state
@@ -99,10 +99,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :mementos
   map.resources :addresses, :collection => { :country_regions => :get }
   map.resources :trustees, :collection => { :confirmation => [:get, :post] }
-  
-  map.resources :prelaunch, :controller => "prelaunch"
-  map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
-  map.connect 'fb/*keywords', :controller => 'prelaunch', :action => 'index'
+  map.resource :about, :member => {
+    :privacy => :get, :terms => :get
+  }
+  #map.resources :prelaunch, :controller => "prelaunch"
+  #map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
+  #map.connect 'fb/*keywords', :controller => 'prelaunch', :action => 'index'
   
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -161,7 +163,7 @@ ActionController::Routing::Routes.draw do |map|
   map.new_account '/signup/:plan/:discount', :controller => 'accounts', :action => 'new', :discount => nil  
   map.forgot_password '/account/forgot', :controller => 'sessions', :action => 'forgot'
   map.reset_password '/account/reset/:token', :controller => 'sessions', :action => 'reset'
-    
+  
   map.with_options(:conditions => {:subdomain => AppConfig['admin_subdomain']}) do |subdom|
     subdom.root :controller => 'subscription_admin/subscriptions', :action => 'index'
     subdom.with_options(:namespace => 'subscription_admin/', :name_prefix => 'admin_', :path_prefix => nil) do |admin|

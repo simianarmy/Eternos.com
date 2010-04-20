@@ -1,18 +1,59 @@
-<fb:header><%= link_to image_tag('http://eternos.com/images/logo.png'), 'http://eternos.com' %></fb:header>
+<style type="text/css">
+	.eternos { width: 777px; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #666666;}
+	.eternos .header { background: url(<%= image_path "header.jpg" %>) no-repeat; width: 777px; height: 101px;}
+	.eternos FIELDSET { margin: 0; padding: 0; border: none;}
+	.eternos FIELDSET .left { width: 259px; background: url(<%= image_path "bg-left.gif" %>) no-repeat; float: left;}
+	.eternos FIELDSET .left #signup { margin: 115px 0 57px -14px; position: relative;}
+	.eternos FIELDSET .left .fan-button { margin-left: 86px;}
+	.eternos FIELDSET .left H3 { font-size: 20px; color: #02419E; font-weight: normal; border-bottom: 2px dotted #CCCCCC; margin: 19px 0; padding: 0 0 10px 0; text-indent: 15px;}
+	.eternos FIELDSET .left UL { margin: 0; padding: 0; list-style: none;}
+	.eternos FIELDSET .left LI { background: url(<%= image_path "orange-arrow.gif" %>) no-repeat 0 4px; padding-left: 15px; margin-bottom: 15px;}
 
-<fb:tabs>
-  <fb:tab-item href='http://eternos.com' title='Home' selected='true'/>
-  <fb:tab-item href='http://eternos.com/about/what' title='What is Eternos?' />
-  <fb:tab-item href='http://eternos.com/about' title='About Us' />
-  <fb:tab-item href='http://eternos.com/blog' title='Blog' />
-</fb:tabs>
+	.eternos FIELDSET .right { width: 494px; float: left; margin-left: 24px;}
+	.eternos FIELDSET .right H1 { font-size: 26px; color: #02419E; font-weight: normal; border-bottom: 2px dotted #CCCCCC; padding-bottom: 10px;}
+	.eternos FIELDSET .right H1 SPAN { font-weight: bold; color: #369C36;}
+	.eternos FIELDSET .right FORM { margin: 0; padding: 0;}	
+	.eternos FIELDSET .right FORM LABEL { text-align: right; display: block; float: left; width: 108px; margin-right: 13px; font-weight: bold; padding-top: 6px;}	
+	.eternos FIELDSET .right FORM P { float: none; clear: both; margin: 18px 0;}
+	.eternos FIELDSET .right FORM P STRONG { color: #FF0000;}
+	.eternos FIELDSET .right FORM INPUT[type=text] { background: url(<%= image_path "bg-input.gif" %>) repeat-x; border: 1px solid #C6C6C6; width: 246px; height: 20px; padding: 4px; font-family: Arial, Helvetica, sans-serif;}
+	.eternos FIELDSET .right FORM SELECT { padding: 2px; border: 1px solid #C6C6C6; font-family: Arial, Helvetica, sans-serif;}
+	.eternos FIELDSET .right FORM INPUT[type=submit] { background: url(<%= image_path "bg-button.gif" %>); width: 197px; height: 50px; border: none; cursor: pointer; color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #ffffff;}
+	.eternos FIELDSET .right H4 { background: url(<%= image_path "bg-h4.gif" %>); width: 458px; height: 57px; font-size: 18px; color: #02419E; margin: 0; padding: 20px 0 0 35px;}
+</style>
+<script type="text/javascript" src="http://static.ak.connect.facebook.com/connect.php/en_US"></script>
+<div class="eternos">
+	<div class="header"><%= image_tag "header.jpg" %></div>
+	<fieldset class="content">
+		<div class="left">
+			<%= image_tag "signup.png", :id => "signup" %>
+			
+			<span class="fan-button"><a href="#"><%= image_tag "become-a-fan.gif", :border => "0" %></a></span>
+			<h3>Eternos Features</h3>
+			<p>
+				<%= image_tag "icon-tumblr.gif" %> 
+				<%= image_tag "icon-facebook.gif" %>
+				<%= image_tag "icon-twitter.gif" %>
+				<%= image_tag "icon-gmail.gif" %>
+				<%= image_tag "icon-picasa.gif" %>
+				<%= image_tag "icon-wordpress.gif" %>
+			</p>
+			<ul>
+				<li>Automatic and daily backup of Facebook, Twitter, Gmail, Wordpress, Tumblr (any RSS), and Picasa </li>
+				<li>Sets all your online activity to a easy to navigate timeline</li>
+				<li>Biographical profile (your stats)</li>
+				<li>Direct file upload</li>
+				<li>Much more! Sign up to try it FREE!</li>
+			</ul>
+		</div>
+		
+		<div class="right">
+			<h1>Sign Up for Secure, Automatic Backup of Your Online Life, <span>it's Free!</span></h1>
+        <br/>
+				<%= render :partial => 'accounts/fb_short_form', :locals => {:plan => AppConfig.default_plan} %>
+	
+				<h4>Our mission is to provide our users with tools that allow for easy chronicling of their life and times.</h4>
+		</div>	
+	</fieldset>
+</div>
 
-<p>
-  Hi there <fb:name uid="loggedinuser" useyou="false" />,
-</p>
-If you are already an Eternos member, tell your friends &amp; family about us...
-<br/>
-<p>
-<%= link_to 'No thanks, just take me to Eternos', "http://eternos.com" %>
-</p>
-<br/>

@@ -9,7 +9,9 @@ module FormsHelper
   def form_for_using_ssl(record_or_name_or_array, *args, &block)
     options = args.extract_options!
     options[:url] ||= {}
-    options[:url].merge!(:protocol => 'https', :only_path => false)
+    if options[:url].is_a? Hash
+      options[:url].merge!(:protocol => 'https', :only_path => false)
+    end
     args << options  
     form_for(record_or_name_or_array, *args, &block)
   end

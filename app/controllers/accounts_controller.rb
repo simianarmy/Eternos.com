@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   include ModelControllerMethods
   
-  require_role "Member", :except => [:new, :create, :billing, :plans, :canceled, :thanks]
+  require_role "Member", :except => [:new, :create, :fb_create, :billing, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
   
   before_filter :set_facebook_connect_session
@@ -12,7 +12,7 @@ class AccountsController < ApplicationController
   before_filter :load_discount, :only => [ :plans, :plan, :new, :create ]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
   
-  before_filter :require_no_user, :only => [:new, :create, :canceled]
+  before_filter :require_no_user, :only => [:new, :create, :fb_create, :canceled]
   # Need more fine-grained control than redirect for all actions
   #before_filter :check_logged_in
   
@@ -117,6 +117,11 @@ class AccountsController < ApplicationController
       
       render :action => :new
     end
+  end
+  
+  # Create account from the Facebook app page form
+  def fb_create
+    Rails.logger.debug "HERE!"
   end
   
   def show

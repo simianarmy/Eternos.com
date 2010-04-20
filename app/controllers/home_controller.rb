@@ -12,6 +12,18 @@ class HomeController < ApplicationController
   
   def index
     @hide_feedback = true
+    
+    # Serve Facebook app home page from here
+    if request_comes_from_facebook?
+      ensure_authenticated_to_facebook
+      @fb_user_info = FacebookUserProfile.populate(@facebook_session.user)
+      @fb_birthdate = FacebookUserProfile.parse_model_date(@fb_user_info[:birthday_date])
+      Rails.logger.debug "FB user info => #{@fb_user_info.inspect}"
+      Rails.logger.debug "Birthday: #{@fb_birthdate.inspect}"
+      @user = User.new(:first_name => @fb_user_info[:first_name], :last_name => @fb_user_info[:last_name], 
+        :facebook_id => @facebook_session.user.id)
+      render :layout => false and return false
+    end
   end
   
   def show

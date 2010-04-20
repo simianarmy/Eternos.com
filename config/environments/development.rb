@@ -20,7 +20,11 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = true
 
 config.action_controller.asset_host = Proc.new { |source, request|
-  (request ? request.protocol : 'http://') + 'dev.eternos.com:' + request.port.to_s
+  # Handle facebook tunneling crazyiness
+  if (port = request.port) == 4007
+    port = 3001
+  end
+  (request ? request.protocol : 'http://') + 'dev.eternos.com:' + port.to_s
 }
 
 # Use SMTP protocol to deliver emails
