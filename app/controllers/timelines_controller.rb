@@ -107,18 +107,26 @@ class TimelinesController < MemberHomeController
   # Returns JSON for jquery tag cloud widget
   def tag_cloud
     #@tags = {:tags => [{:tag => 'foo', :freq => 10}, {:tag => 'fee', :freq => 5}]}
-    @tags = []
-    # Lookup word_counts serialized hash for this user
-    if txt = RawText.find_by_user_id(current_user.id)
-      # Cache parsed results
-      @tags = Rails.cache.fetch("tag_cloud_#{current_user.id}", :expires_in => 24.hours) {
+    limit = params[:limit] || MAX_TAG_CLOUD_SIZE
+    # Cache parsed results
+    tags = Rails.cache.fetch("tag_cloud_#{current_user.id}", :expires_in => 24.hours) do
+      # Lookup word_counts serialized hash for this user
+      if txt = RawText.find_by_user_id(current_user.id)
         wcs = txt.word_counts
         wcs.keys.inject([]) {|res, k| res << {:tag => k, :freq => wcs[k]}; res }
-      }
+      else
+        []
+      end
     end
-
+    # If limit > 0, sort descending & return up to limit
+    if limit > 0
+      # tags is frozen, can't use bang methods
+      tags = tags.sort{|a,b| b[:freq] <=> a[:freq]}
+      tags = tags.slice(0, limit) # can't use slice! for some reason
+    end
+    Rails.logger.debug "Returning #{tags.size} tags"
     respond_to do |format|
-      format.js { render :json => {:tags => @tags} }
+      format.js { render :json => {:tags => tags} }
     end
   end
   

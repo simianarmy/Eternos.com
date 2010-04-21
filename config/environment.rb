@@ -46,6 +46,7 @@ FLASH_RECORDER_KEY      = 'zyrc234mq7hbs6ptw5d1v9n0j8xfkg'
 MOD_PORTER_SECRET       = 'sh4mAlam4d1nGd0ng'
 RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID' # TODO: check if used
 SESSION_DURATION_SECONDS  = 86400 # 1 day before session times out
+MAX_TAG_CLOUD_SIZE      = 50
 
 Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.

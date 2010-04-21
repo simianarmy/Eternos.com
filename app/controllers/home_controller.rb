@@ -1,6 +1,5 @@
 # $Id$
 class HomeController < ApplicationController
-  before_filter :set_facebook_connect_session
   #before_filter :redirect_if_logged_in, :only => :index
   caches_page :blog_header_partial, :blog_header_footer
   
@@ -14,15 +13,19 @@ class HomeController < ApplicationController
     @hide_feedback = true
     
     # Serve Facebook app home page from here
-    if request_comes_from_facebook?
-      ensure_authenticated_to_facebook
-      @fb_user_info = FacebookUserProfile.populate(@facebook_session.user)
+    if request_comes_from_facebook?  
+      ensure_authenticated_to_facebook  
+      return false unless facebook_session
+      
+      @fb_user_info = FacebookUserProfile.populate(facebook_session.user)
       @fb_birthdate = FacebookUserProfile.parse_model_date(@fb_user_info[:birthday_date])
       Rails.logger.debug "FB user info => #{@fb_user_info.inspect}"
       Rails.logger.debug "Birthday: #{@fb_birthdate.inspect}"
       @user = User.new(:first_name => @fb_user_info[:first_name], :last_name => @fb_user_info[:last_name], 
         :facebook_id => @facebook_session.user.id)
       render :layout => false and return false
+    else
+      set_facebook_connect_session
     end
   end
   

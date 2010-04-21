@@ -93,3 +93,27 @@ config.after_initialize do
     end
   end
 end
+
+# For memcached + Rails class loading bug
+# Only affects development & test modes
+class << Marshal
+  def load_with_autoload(*args)
+    begin
+      load_without_autoload(*args)
+    rescue [ArgumentError, NameError] => ex
+      msg = ex.message
+      if msg =~ /undefined class\/module/
+        mod = msg.split(' ').last
+        if Dependencies.load_missing_constant(self, mod.to_sym)
+          load(*args)
+        else
+          raise ex
+        end
+      else
+        raise ex
+      end
+    end
+  end
+  alias_method :load_without_autoload, :load
+  alias_method :load, :load_with_autoload
+end

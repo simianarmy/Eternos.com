@@ -100,7 +100,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
     res << liked_by if liked_by && !liked_by.empty?
     if d = parsed_attachment_data
       res << d['name']
-      res << d['description']
+      res << d['description'] unless d['description'] && d['description']['<div'] # avoid html b.s.
       res << d['caption']
     end
     res.flatten.join(' ')

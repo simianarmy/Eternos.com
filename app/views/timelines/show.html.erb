@@ -71,6 +71,10 @@ ETERNOS.fake_timeline = #{@fake ? 'true' : 'false'};
 document.observe('dom:loaded', function() {
   drawETimeline();
   $('back-to-events-button').hide();
+
+  createTagCloud('#{tag_cloud_timeline_url}', {
+    user_search_path: '#{user_search_path}?terms='
+  });
 });
 "
 %>

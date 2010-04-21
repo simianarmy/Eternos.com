@@ -76,10 +76,3 @@
     - if @facebook_session
       = fb_connect_javascript_tag
       = init_fb_connect "XFBML"
-    
-    :javascript
-      document.observe('dom:loaded', function() {
-        createTagCloud('#{tag_cloud_timeline_url}', {
-          user_search_path: '#{user_search_path}?terms='}
-        );
-      });

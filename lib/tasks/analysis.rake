@@ -11,7 +11,7 @@ module FullText
   require 'lingua/stemmer'
   
   MinWordLength     = 4
-  StopWordPatterns  = [Regexp.new('^https?://'), Regexp.new('^[0-9\W\_]+$'), Regexp.new('\S&\S')]
+  StopWordPatterns  = [Regexp.new('^https?://'), Regexp.new('^[0-9\W\_]+$'), Regexp.new('\S[&=(::)]\S')]
   
   FBActivityStreamQuery =<<SQL
 SELECT SQL_NO_CACHE activity_stream_items.author AS author, activity_stream_items.message AS message, activity_stream_items.attachment_data AS metadata, activity_stream_items.comment_thread, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
@@ -30,10 +30,10 @@ GROUP BY  activity_stream_items.id
 SQL
   
   FeedQuery=<<SQL
-SELECT SQL_NO_CACHE feed_entries.author AS author, feed_entries.name AS name, feed_entries.summary AS summary, feed_contents.html_content AS raw_content, feed_entries.url AS url, feed_entries.categories AS categories, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
+SELECT SQL_NO_CACHE feed_entries.author AS author, feed_entries.name AS name, feed_entries.summary AS summary, feed_contents.html_content AS raw_content, feed_entries.categories AS categories, GROUP_CONCAT(DISTINCT IFNULL(tags.name, '') SEPARATOR ' ') AS tags, GROUP_CONCAT(DISTINCT IFNULL(comments.title, '') SEPARATOR ' ') AS comment_title, GROUP_CONCAT(DISTINCT IFNULL(comments.comment, '') SEPARATOR ' ') AS comment
 FROM feed_entries
 LEFT OUTER JOIN feed_contents ON feed_contents.feed_entry_id = feed_entries.id   LEFT OUTER JOIN taggings ON (feed_entries.id = taggings.taggable_id AND taggings.taggable_type = 'FeedEntry')  LEFT OUTER JOIN tags ON (tags.id = taggings.tag_id) AND taggings.context = 'tags'   LEFT OUTER JOIN comments ON comments.commentable_id = feed_entries.id AND comments.commentable_type = 'FeedEntry'
-WHERE feed_entries.feed_id IN (?) AND deleted_at IS NULL
+WHERE feed_entries.id IN (?) AND deleted_at IS NULL
 GROUP BY feed_entries.id
 SQL
 
@@ -205,7 +205,8 @@ def user_text_dump(user)
       res << as.to_rawtext
     end
 
-    if (feed_ids = user.backup_sources.blog.map(&:id)).any?
+    
+    if (feed_ids = FeedEntry.belonging_to_user(user.id).map(&:id)).any?
       res << get_sql_result_str(@conn.execute(FullText::FeedQuery.gsub(/\?/, feed_ids.join(','))))
     end
     if (albums_ids = BackupPhotoAlbum.by_user(user.id).map(&:backup_source_id).uniq).any?

@@ -69,7 +69,7 @@ module UserSearchHelper
   end
   
   def search_date(obj)
-    obj.start_date.to_s(:long)
+    obj.start_date.to_s
   end
   
   def search_link(obj)
