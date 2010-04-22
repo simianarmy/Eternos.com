@@ -1,28 +1,26 @@
-- form_for_using_ssl :user, :url => {:controller => 'accounts', :action => 'fb_create'}, :html => {:id => 'new_account_form'} do |f|
+- facebook_form_for :user, @user, :url => url_for(:controller => 'accounts', :action => 'fb_create'), :labelwidth => '75', :width => '500', :html => {:id => 'new_account_form'} do |f|
+  = facebook_messages
   = hidden_field_tag 'plan', plan
-  = hidden_field_tag 'user_facebook_id', @facebook_session.user.id
+  = f.hidden_field 'facebook_id'
   = hidden_field_tag 'from_fb', true
   = f.hidden_field :terms_of_service, :value => "1"
   %p
-    %label First Name:
     = f.text_field :first_name
-    %strong *
   %p
-    %label Last Name:
     = f.text_field :last_name
-    %strong *
   %p
-    %label Email:
     = f.text_field :email
-    %strong *
-  %p Your birthdate is required for us to properly display your timeline. 
+  %p 
   %p
-    - fields_for :profile do |prof|
-      %label Birthday:
-      = prof.date_select 'birthday', :default => 2.years.ago, :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 120.years.ago.year, :prompt => { :day => 'day', :month => 'month', :year => 'year' }
-      %strong *
-      %strong
-  <p align="center"><input type="submit" value="Sign Up" /></p>
+    -# f.fields_for :profile do |ff|
+    <fb:editor-custom label="Birthday">
+    = date_select 'user[profile]', 'birthday', :default => @fb_birthdate, :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 100.years.ago.year
+    <br/>
+    Your birthdate is required for us to properly display your timeline.
+    </fb:editor-custom>
+  <p align="center">
+  = f.buttons "Sign Up"
+  </p>
 
 
   

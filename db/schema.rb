@@ -663,6 +663,7 @@ ActiveRecord::Schema.define(:version => 20100116030626) do
     t.string   "nickname"
     t.string   "ethnicity"
     t.string   "children"
+    t.datetime "birthday"
     t.datetime "death_date"
     t.datetime "created_at"
     t.datetime "updated_at"

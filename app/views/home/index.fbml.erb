@@ -21,14 +21,8 @@
 	.eternos FIELDSET .right FORM INPUT[type=submit] { background: url(<%= image_path "bg-button.gif" %>); width: 197px; height: 50px; border: none; cursor: pointer; color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #ffffff;}
 	.eternos FIELDSET .right H4 { background: url(<%= image_path "bg-h4.gif" %>); width: 458px; height: 57px; font-size: 18px; color: #02419E; margin: 0; padding: 20px 0 0 35px;}
 	
-	#fanbtn { width: 123px; height: 100px; border: none; overflow: hidden; }
-  #fanbtn iframe { 
-    width: 200px; 
-    height: 22px; 
-    margin-left: -18px; 
-    margin-top: -59px;   
-    border: 0 solid;
-   }
+	#fanbtnZ { width: 123px; height: 120px; border: none; overflow: hidden; }
+  #fanbtnZ iframe { width: 200px; height: 100px; margin-left: -18px; margin-top: -59px; border: 0px solid; }
   
 </style>
 <script type="text/javascript" src="http://static.ak.connect.facebook.com/connect.php/en_US"></script>
@@ -39,7 +33,7 @@
 			<%= image_tag "signup.png", :id => "signup" %>
 			
       <div id="fanbtn">
-      <fb:iframe height="60px" scrolling="no" frameborder="0" src="http://www.facebook.com/connect/connect.php?id=82855842117&connections=0&stream=0" allowtransparency="true"></fb:iframe>
+      <fb:iframe height="60" scrolling="no" frameborder="0" src="http://www.facebook.com/connect/connect.php?id=82855842117&connections=0&stream=0" allowtransparency="true"></fb:iframe>
       </div>
       
 			<h3>Eternos Features</h3>
@@ -69,4 +63,5 @@
 		</div>	
 	</fieldset>
 </div>
+<%= fb_google_analytics(Rubaidh::GoogleAnalytics.tracker_id) %>
 

@@ -20,7 +20,6 @@ class Member < User
     m.has_many :security_questions
     m.has_one :activity_stream
     m.has_one :backup_state
-    m.has_one :profile
   end
   
   attr_accessible :security_question_attributes
@@ -37,6 +36,10 @@ class Member < User
     :joins => :backup_state,
     :conditions => { 'backup_states.items_saved' => true }
   }
+  
+  def self.from_facebook(facebook_id)
+    find_by_facebook_uid(facebook_id)
+  end
   
   def backup_in_progress!
     (backup_state || build_backup_state).update_attribute(:in_progress, true)

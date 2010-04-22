@@ -1,10 +1,11 @@
-<fb:serverfbml style="width: 776px;">
+<% fb_serverfbml :style => "width: 776px;" do %>
   <script type="text/fbml">
     <fb:fbml>
-      <fb:request-form action="<%= invite_others_account_setup_url(:step=>3, :protocol => 'https') %>" method="GET" invite="true" type="Eternos" content="<%= h(render :partial => 'fb_invite_message') %>">
-        <fb:multi-friend-selector showborder="false" actiontext="Invite your Facebook Friends to use Eternos."/>
-      </fb:request-form>
+      <% fb_multi_friend_request("Eternos", 
+        "Invite your Facebook Friends to use Eternos.",
+        invite_others_account_setup_url(:step=>3, :protocol => 'https')) do %>
+          <%= render :partial => 'fb_invite_message' %>
+      <% end %>
     </fb:fbml>
   </script>
-</fb:serverfbml>
-
+<% end %>

@@ -21,10 +21,13 @@ config.action_mailer.raise_delivery_errors = true
 
 config.action_controller.asset_host = Proc.new { |source, request|
   # Handle facebook tunneling crazyiness
-  if (port = request.port) == 4007
+  port = request ? request.port : nil
+  if port && (port == 4007)
     port = 3001
   end
-  (request ? request.protocol : 'http://') + 'dev.eternos.com:' + port.to_s
+  (request ? request.protocol : 'http://') + 
+  (request ? request.host : 'dev.eternos.com') + 
+  (port ? ':' + port.to_s : "")
 }
 
 # Use SMTP protocol to deliver emails
@@ -72,48 +75,25 @@ config.after_initialize do
   # This solution is adapted from here:
   # http://kballcodes.com/2009/09/05/rails-memcached-a-better-solution-to-the-undefined-classmodule-problem/
   #
-  # THIS FUCKS EVERYTHING UP FOR BACKUP DAEMON - DON'T INCLUDE IT UNLESS IN RAILS
-  if defined?(PhusionPassenger)
-    class <<Marshal
-      def load_with_rails_classloader(*args)
-        begin
-          load_without_rails_classloader(*args)
-        rescue ArgumentError, NameError => e
-          if e.message =~ %r(undefined class/module)
-            const = e.message.split(' ').last
-            const.constantize
-            retry
-          else
-            raise(e)
-          end
-        end
-      end
-
-      alias_method_chain :load, :rails_classloader
-    end
-  end
+  # THIS FUCKS EVERYTHING UP FOR BACKUP DAEMON & FACEBOOK - FIND ALTERNATIVE
+  # if defined?(PhusionPassenger)
+  #     class <<Marshal
+  #       def load_with_rails_classloader(*args)
+  #         begin
+  #           load_without_rails_classloader(*args)
+  #         rescue ArgumentError, NameError => e
+  #           if e.message =~ %r(undefined class/module)
+  #             const = e.message.split(' ').last
+  #             const.constantize
+  #             retry
+  #           else
+  #             raise(e)
+  #           end
+  #         end
+  #       end
+  # 
+  #       alias_method_chain :load, :rails_classloader
+  #     end
+  #end
 end
 
-# For memcached + Rails class loading bug
-# Only affects development & test modes
-class << Marshal
-  def load_with_autoload(*args)
-    begin
-      load_without_autoload(*args)
-    rescue [ArgumentError, NameError] => ex
-      msg = ex.message
-      if msg =~ /undefined class\/module/
-        mod = msg.split(' ').last
-        if Dependencies.load_missing_constant(self, mod.to_sym)
-          load(*args)
-        else
-          raise ex
-        end
-      else
-        raise ex
-      end
-    end
-  end
-  alias_method :load_without_autoload, :load
-  alias_method :load, :load_with_autoload
-end

@@ -18,11 +18,13 @@ class HomeController < ApplicationController
       return false unless facebook_session
       
       @fb_user_info = FacebookUserProfile.populate(facebook_session.user)
-      @fb_birthdate = FacebookUserProfile.parse_model_date(@fb_user_info[:birthday_date])
+      @fb_birthdate = FacebookUserProfile.parse_model_date(@fb_user_info[:birthday_date]) || Date.today
       Rails.logger.debug "FB user info => #{@fb_user_info.inspect}"
       Rails.logger.debug "Birthday: #{@fb_birthdate.inspect}"
       @user = User.new(:first_name => @fb_user_info[:first_name], :last_name => @fb_user_info[:last_name], 
         :facebook_id => @facebook_session.user.id)
+      @user.profile = Profile.new(:birthday => @fb_birthdate)
+      
       render :layout => false and return false
     else
       set_facebook_connect_session

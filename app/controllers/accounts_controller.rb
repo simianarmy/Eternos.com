@@ -78,12 +78,9 @@ class AccountsController < ApplicationController
 
     @success = using_captcha_in_signup?(@account) ? verify_recaptcha(:model => @account) : true
     @account.name = @user.full_name
-    # THIS IS LAME
-    #@user.terms_of_service = @terms_accepted = (params[:user][:terms_of_service] == "1")
-
+    
     Rails.logger.debug "Creating account #{@account.inspect}"
     Rails.logger.debug "Account user #{@account.user.inspect}"
-    Rails.logger.debug "Terms checked? #{@account.user.terms_of_service}"
 
     if @success && @account.save
       unless @user.email_registration_required?
@@ -114,18 +111,27 @@ class AccountsController < ApplicationController
 
   # Create account from the Facebook app page form
   def fb_create
-    Rails.logger.debug "IN FACEBOOK CREATE #{@user.inspect}!"
+    Rails.logger.debug "IN FACEBOOK CREATE FOR USER #{@user.inspect}"
     @user.registration_required = false
     @user.password = @user.password_confirmation = "foo man choo 000"
+    @user.profile = Profile.new(params[:user][:profile])
     @success = true
     @account.name = @user.full_name
-    
+
     if @success && @account.save
       @user.register!
+      flash[:notice] = "Account created!  You can now login with Facebook Connect."
       activate_and_redirect_to account_setup_url
     else
-      @terms_accepted = true
-      render :action => :new
+      respond_to do |format|
+        @terms_accepted = true
+        format.fbml {
+          Rails.logger.debug "User: #{@user.inspect}"
+          Rails.logger.debug "*** ERRORS: #{@user.errors.inspect}"
+          flash[:error] = @user.errors.full_messages.join(', ')
+          render :layout => false, :template => '/home/index'
+        }
+      end
     end
   end
 
@@ -284,6 +290,7 @@ class AccountsController < ApplicationController
   end
 
   def build_user
+    @account ||= Account.new
     @account.user = @user = User.new(params[:user])
   end
 
@@ -333,7 +340,7 @@ class AccountsController < ApplicationController
     flash_redirect "Your account has been created.", redirect_path
   end
 
-  # Override Application.rb current_account to handle newly created account
+  # Override application_controller.rb current_account to handle newly created account
   # which has not been activated or logged in yet
   def current_account
     begin
@@ -361,11 +368,11 @@ class AccountsController < ApplicationController
   def require_no_fb_user
     # If this user has already registered via facebook, redirect to member page
     if params[:user] && params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
-      if User.find_by_facebook_uid(params[:user][:facebook_id])
-        # Login manually & redirect to member home
-        UserSession.create
-        redirect_to member_home_url && return false
+      if Member.from_facebook(params[:user][:facebook_id])
+        flash[:notice] = "Your Facebook account is already connected to an Eternos account.  If you would like to create a new Eternos account, remove the Eternos application from your Facebook settings first then try again."
+        redirect_to logout_url and return false
       end
     end
   end
 end
+

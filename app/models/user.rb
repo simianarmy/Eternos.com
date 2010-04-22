@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :sent_invitations, :class_name => 'Invitation', :foreign_key => 'sender_id'
   belongs_to :invitation
   has_one :address_book, :dependent => :destroy
+  has_one :profile, :dependent => :destroy
   has_many :comments
   
   # Authentication: AuthLogic
@@ -16,8 +17,11 @@ class User < ActiveRecord::Base
     c.validates_length_of_password_field_options :minimum => 6, :if => :require_password?
     c.validates_length_of_password_field_options = c.validates_length_of_password_field_options.merge(
       :message => 'Password is too short')
-    #c.validates_length_of_email_field_options :minimum => 0 # to fix missing I18n error key problem
+    
+    # All this just to avoid email length errors - redundant if with the email format validation
+    c.merge_validates_length_of_email_field_options :allow_nil => true, :within => 0..255
   end
+
   # Authorization
   acts_as_authorized_user
   acts_as_authorizable
@@ -299,8 +303,8 @@ class User < ActiveRecord::Base
   end
   
   def create_member_associations
-    ActivityStream.create(:user_id => self.id)
-    Profile.create(:user_id => self.id)
+    ActivityStream.find_or_create_by_user_id(self.id)
+    Profile.find_or_create_by_user_id(self.id)
   end
   
 end

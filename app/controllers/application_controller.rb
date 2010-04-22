@@ -51,6 +51,7 @@ class ApplicationController < ActionController::Base
   
   layout :dynamic_layout
 
+  # Required for Facebooker integration
   def verify_authenticity_token
     super unless request_comes_from_facebook?
   end
@@ -301,6 +302,7 @@ class ApplicationController < ActionController::Base
   def require_no_user
     if current_user.try(:member?)
       RAILS_DEFAULT_LOGGER.debug "require_no_user invoked"
+      flash[:error] = "You must be logged out of Eternos to access this page"
       redirect_away root_url
       return false
     end
