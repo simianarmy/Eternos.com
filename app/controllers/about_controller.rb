@@ -7,7 +7,7 @@ class AboutController < ApplicationController
   end
   
   def show
-    render :action => params[:page]
+    render :action => 'index'
   end
 
 end

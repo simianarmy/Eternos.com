@@ -74,7 +74,7 @@ class AccountSettingsController < MemberHomeController
     if @synched = merge_with_facebook
       flash[:notice] = "Synched with Facebook Successfully"
     else
-      flash[:error] = "Error Synching with Facebook!  Please try again or notify support."
+      flash[:error] = "#{flash[:error]}  Please try again or notify support."
     end
     # Required for rjs to know whether or not to redirect 
     @content_page = session[:account_settings_page]
@@ -389,10 +389,12 @@ class AccountSettingsController < MemberHomeController
       current_user.link_fb_connect(fb_user.id) if current_user.facebook_id.nil?
       begin
         current_user.sync_with_facebook_profile(fb_user)
-      rescue
-        flash[:error] = "Unable to sync with Facebook profile!"
+      rescue Exception => e
+        flash[:error] = "Unable to sync with Facebook profile! #{e.message}"
         false
       end
+    else
+      flash[:error] = "Unable to confirm your Facebook account"
     end
   end
    

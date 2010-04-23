@@ -12,10 +12,13 @@ module FacebookUserProfile
   # Returns hash containing values for all user profile fields as defined in Fields array.
   
   def self.populate(facebook_user)
-    profile = {}
-    facebook_user.populate(*Fields)
-    Fields.each {|f| profile[f] = facebook_user.send(f)}
-    profile
+    returning Hash.new do |profile|
+      facebook_user.populate(*Fields)
+      Fields.each {|f| profile[f] = facebook_user.send(f)}
+      unless profile[:birthday_date].blank?
+        profile[:birthday] = parse_model_date(profile[:birthday_date])
+      end
+    end
   end
   
   # Parses facebook models' date attribute strings into date objects

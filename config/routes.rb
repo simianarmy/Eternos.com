@@ -100,7 +100,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :addresses, :collection => { :country_regions => :get }
   map.resources :trustees, :collection => { :confirmation => [:get, :post] }
   map.resource :about, :controller => 'about', :member => {
-    :privacy => :get, :terms => :get
+    :privacy => :get, :terms => :get, :press => :get, :what => :get, :contact => :get, 
+    :sitemap => :get, :careers => :get
   }
   #map.resources :prelaunch, :controller => "prelaunch"
   #map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
@@ -142,7 +143,6 @@ ActionController::Routing::Routes.draw do |map|
   #map.resource :session
   
   # Named routes
-  map.about '/about', :controller => 'about'
   map.signup '/invitation/:invitation_token/:plan', :controller => 'accounts', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.login '/login', :controller => 'user_sessions', :action => 'new', :secure => true

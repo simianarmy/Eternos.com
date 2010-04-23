@@ -34,7 +34,7 @@ class AccountsController < ApplicationController
         @user[:first_name] = prof[:first_name]
         @user[:last_name] = prof[:last_name]
         @user.facebook_id = fbuser.uid
-        @user.profile.birthday = @birthday = FacebookUserProfile.parse_model_date(prof[:birthday_date])
+        @user.profile.birthday = @birthday = prof[:birthday]
       end
     rescue
       # Nothing to say..

@@ -75,7 +75,7 @@ class AddressBook < ActiveRecord::Base
     self.first_name    = fb_info[:first_name]  unless fb_info[:first_name].blank?
     self.last_name     = fb_info[:last_name]   unless fb_info[:last_name].blank?
     self.gender        = fb_info[:sex]         unless fb_info[:sex].blank?
-    self.birthdate     = fb_info[:birthday_date].to_date unless fb_info[:birthday_date].blank?
+    self.birthdate     = fb_info[:birthday]    unless fb_info[:birthday].blank?
     # Facebooker fb_user object data
     if loc = fb_user.current_location
       logger.debug "FacebookUser.current_location = #{loc.inspect}"
