@@ -1,5 +1,8 @@
 # $Id$
 
+require 'larch'
+require 'cgi'
+
 class GmailAccountsController < EmailAccountsController
   before_filter :login_required
   require_role "Member"
@@ -15,21 +18,28 @@ class GmailAccountsController < EmailAccountsController
   #
   def create
     begin
+      # DISABLED: Contacts gem json dependency fucks JSON all up
       # Contacts authenticates in initialization.  If there are any problems logging in, 
       # an exception is raised.
-      Contacts::Gmail.new(params[:email][:email], params[:email][:password])
-
-      # At this point authentication has been authorized - create account & add to backup sources
-      @current_gmail = GmailAccount.create!(
-        :auth_login => params[:email][:email], 
-        :auth_password => params[:email][:password], 
-        :user_id => current_user.id,
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
-        :last_login_at => Time.now)
-      @current_gmail.confirmed!
-      current_user.completed_setup_step(2)
-      @success = true    
-      flash[:notice] = "Gmail account saved for backup!"
+       
+      #Contacts::Gmail.new(params[:email][:email], params[:email][:password])
+      raise "Please enter your Gmail account username and password" unless params[:email][:email].any? && params[:email][:password].any?
+      
+      if ensure_imap_auth params[:email][:email], params[:email][:password]
+        # At this point authentication has been authorized - create account & add to backup sources
+        @current_gmail = GmailAccount.create!(
+          :auth_login => params[:email][:email], 
+          :auth_password => params[:email][:password], 
+          :user_id => current_user.id,
+          :backup_site_id => BackupSite.find_by_name(BackupSite::Gmail).id,
+          :last_login_at => Time.now)
+        @current_gmail.confirmed!
+        current_user.completed_setup_step(2)
+        @success = true    
+        flash[:notice] = "Gmail account saved for backup!"
+      else
+        flash[:error] = "Error authenticating to your Gmail account.  Make sure you have IMAP enabled in your Gmail account."
+      end 
     rescue Exception => message
       flash[:error] = message.to_s
     end
@@ -85,5 +95,17 @@ class GmailAccountsController < EmailAccountsController
   
   def load_accounts
     @email_accounts = current_user.backup_sources.gmail.paginate :page => params[:page], :per_page => 10
+  end
+  
+  # Will attemp to createa an IMAP connection to Gmail using passed credentials
+  # If successful will return true
+  def ensure_imap_auth(user, pass)
+    Larch.init :debug, []
+    uri           = URI('imaps://imap.gmail.com')
+    uri.user      = CGI.escape user
+    uri.password  = CGI.escape pass
+    imap = Larch::IMAP.new(uri, {})
+    imap.connect
+    imap.conn
   end
 end
