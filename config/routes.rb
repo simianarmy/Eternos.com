@@ -181,7 +181,7 @@ ActionController::Routing::Routes.draw do |map|
   map.footer_partial 'static/blog_footer', :controller => 'home', :action => 'blog_footer_partial'
   
   # Facebook routes
-  map.facebook_home '/facebook', :controller => 'home', :action => 'facebook'
+  map.facebook_home '/', :controller => 'home', :action => 'index'
   
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "home", :action => 'index'         

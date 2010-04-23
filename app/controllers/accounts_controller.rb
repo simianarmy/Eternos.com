@@ -121,7 +121,7 @@ class AccountsController < ApplicationController
     if @success && @account.save
       @user.register!
       flash[:notice] = "Account created!  You can now login with Facebook Connect."
-      activate_and_redirect_to account_setup_url
+      activate_and_redirect_to account_setup_url and return false
     else
       respond_to do |format|
         @terms_accepted = true
