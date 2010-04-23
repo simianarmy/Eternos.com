@@ -1,3 +1,3 @@
 <fb:name uid='<%= current_user.facebook_id %>' useyou='false' /> is a member of Eternos.com 
 and would like to share that experience with you.  To join, simply click on the JOIN button below. 
-<%= fb_req_choice("Join Eternos", facebook_home_url(:from => current_user.facebook_id, :canvas => false, :only_path => false)) %>
+<%= fb_req_choice("Join Eternos", facebook_home_url(:from => current_user.facebook_id, :canvas => true, :only_path => false)) %>
