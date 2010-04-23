@@ -24,6 +24,7 @@ class AccountsController < ApplicationController
   def new
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
     @terms_accepted = true
+    
     if params[:invitation_token]
       @invitation_token = params[:invitation_token]
     end
@@ -33,6 +34,7 @@ class AccountsController < ApplicationController
         @user[:first_name] = prof[:first_name]
         @user[:last_name] = prof[:last_name]
         @user.facebook_id = fbuser.uid
+        @user.profile.birthday = @birthday = FacebookUserProfile.parse_model_date(prof[:birthday_date])
       end
     rescue
       # Nothing to say..
@@ -65,7 +67,8 @@ class AccountsController < ApplicationController
       RAILS_DEFAULT_LOGGER.debug "Using short form!"
       @user.password_confirmation = @user.password
     end
-
+    
+    
     # if @account.needs_payment_info?
     #       @address.first_name = @creditcard.first_name
     #       @address.last_name = @creditcard.last_name
@@ -81,11 +84,17 @@ class AccountsController < ApplicationController
     
     Rails.logger.debug "Creating account #{@account.inspect}"
     Rails.logger.debug "Account user #{@account.user.inspect}"
-
+    Rails.logger.debug "Profile: #{@user.profile.inspect}"
+    
     if @success && @account.save
+      Rails.logger.debug "Profile: #{@user.profile.inspect}"
+      if !@user.profile.save # WHY IS THIS EVEN NEEDED?
+        Rails.logger.debug "ERROR SAVING PROFILE: " + @user.profile.errors.full_messages.to_s
+      end
+      
       unless @user.email_registration_required?
         @user.register!
-
+        
         if @account.needs_payment_info?
           # display billing page
           @subscription = @account.subscription
@@ -104,7 +113,6 @@ class AccountsController < ApplicationController
     else # @account not saved
       @terms_accepted = @user.terms_of_service == "1"
       @invitation_token = params[:user][:invitation_token]
-
       render :action => :new
     end
   end
@@ -114,7 +122,7 @@ class AccountsController < ApplicationController
     Rails.logger.debug "IN FACEBOOK CREATE FOR USER #{@user.inspect}"
     @user.registration_required = false
     @user.password = @user.password_confirmation = "foo man choo 000"
-    @user.profile = Profile.new(params[:user][:profile])
+    @user.build_profile(params[:user][:profile])
     @success = true
     @account.name = @user.full_name
 
@@ -292,6 +300,8 @@ class AccountsController < ApplicationController
   def build_user
     @account ||= Account.new
     @account.user = @user = User.new(params[:user])
+    pattrs = params[:user][:profile] rescue {}
+    @user.build_profile(pattrs)
   end
 
   def build_plan

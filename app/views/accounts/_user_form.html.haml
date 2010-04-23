@@ -7,22 +7,18 @@
 = f.text_field :last_name, :id => "last-name", :container_id => "last-name-input"
 = f.text_field :email, :id => 'email'
 
-#fb_pass_text{:style => "display: none;"}
-  %p Choose a password in case of Facebook Account closure or disconnection
-  %br
-= f.password_field :password
-= f.password_field :password_confirmation
+- unless facebook_session
+  = f.password_field :password
+  = f.password_field :password_confirmation
 
 %p
-  - fields_for :profile do |prof|
-    %label Birthday:
-    = prof.date_select 'birthday',  :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 120.years.ago.year, :prompt => { :day => 'day', :month => 'month', :year => 'year' }
+  - f.fields_for :profile, @user.profile do |prof|
+    = prof.date_select 'birthday', :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 100.years.ago.year
 %br
 - if use_captcha
   %br
   .captcha-right
     %p.captcha_box= recaptcha_tags :ssl => request.ssl?
-
 %p
   %label &nbsp;
   = submit_tag 'signup', :value => 'Sign Up', :class => "submit"

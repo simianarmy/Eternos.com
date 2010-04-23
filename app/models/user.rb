@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_one :address_book, :dependent => :destroy
   has_one :profile, :dependent => :destroy
   has_many :comments
-  
+    
   # Authentication: AuthLogic
   acts_as_authentic do |c|
     c.validate_login_field = false

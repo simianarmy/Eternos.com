@@ -14,7 +14,6 @@ class Profile < ActiveRecord::Base
     m.has_attached_file :photo
   end
   
-  validates_existence_of :member, :message => 'Could not find the owner of this profile'
   validates_associated :careers, :message => 'Some required career fields are missing'
   validates_associated :schools, :messages => 'Some required education fields are missing'
   

@@ -152,6 +152,7 @@ class Member < User
       # TODO: Default timeline year span should be configurable 
       10.years.ago.to_date,
       address_book.birthdate, 
+      p.birthday,
       (t = address_book.addresses.oldest) ? t.moved_in_on : nil,
       (t = p.families.oldest) ? t.birthdate : nil,
       (t = p.careers.oldest) ? t.start_at : nil,

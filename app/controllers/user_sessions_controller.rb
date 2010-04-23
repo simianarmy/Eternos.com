@@ -26,6 +26,7 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       # 1st time logged in - send to account setup with welcome message
       if @user_session.user && (@user_session.user.login_count <= 1)
+        Rails.logger.debug "User logged in, redirecting to account setup"
         flash[:notice] = "Welcome, #{@user_session.user.name}"
         redirect_to account_setup_url
       else # otherwise redirect back to last url, or member home

@@ -10,7 +10,7 @@
       %h1 Create Your Account
       = custom_form_error_header if @user.errors.any? && !@hide_errors
         
-      - error_handling_form_for @user, :url => '/accounts/create', :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f|
+      - error_handling_form_for @user, :url => {:action => 'create'}, :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f|
         = hidden_field_tag 'plan', @plan.name
         = f.hidden_field :facebook_id
 
@@ -18,13 +18,14 @@
           = render :partial => 'subdomain_form_fields', :locals => {}
         
         = render :partial => 'user_form', :locals => {:f => f, :user => @user, :use_captcha => @use_captcha, :checked_terms => @terms_accepted}
-      #facebook-signup
-        %p.signup01
-          %strong Or sign up with your Facebook account
-        %p.signup01= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
-        %p.signup01
-          <em>*By proceeding, you confirm that your are over 13 years of age and accept the 
-          = link_to 'Privacy', '/about/privacy', :target => "_new"
-          and 
-          = link_to 'Terms', '/about/terms', :target => "_new"
-          \.</em>
+      - unless facebook_session
+        #facebook-signup
+          %p.signup01
+            %strong Or sign up with your Facebook account
+          %p.signup01= fb_login_button("EternosFB.create_account_form_cb()", :size => :medium, :background => :white, :length => :medium)
+          %p.signup01
+            <em>*By proceeding, you confirm that your are over 13 years of age and accept the 
+            = link_to 'Privacy', '/about/privacy', :target => "_new"
+            and 
+            = link_to 'Terms', '/about/terms', :target => "_new"
+            \.</em>

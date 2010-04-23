@@ -12,13 +12,14 @@ Please click on the link below to confirm and activate your account, or copy the
 <br/>
 Your login info:
 <br/>
+<% if @facebook %>
+Simply click the Facebook Connect button on the login page to enter the site.
+<% else %>
 Login: <%= @login %>
 <br/>
 Password: Type the password you used to create your account.
+<% end %>
 <p/>
-<br/>
-Next, simply check your Eternos Inbox for tips and information on getting started.
-<br/>
 <br/>
 Please enjoy your time with us and let us know if you have any questions or concerns.
 <br/>

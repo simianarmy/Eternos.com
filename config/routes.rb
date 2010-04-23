@@ -99,7 +99,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :mementos
   map.resources :addresses, :collection => { :country_regions => :get }
   map.resources :trustees, :collection => { :confirmation => [:get, :post] }
-  map.resource :about, :member => {
+  map.resource :about, :controller => 'about', :member => {
     :privacy => :get, :terms => :get
   }
   #map.resources :prelaunch, :controller => "prelaunch"
@@ -160,7 +160,7 @@ ActionController::Routing::Routes.draw do |map|
   map.thanks '/signup/thanks', :controller => 'accounts', :action => 'thanks'
   map.create '/signup/create/:discount', :controller => 'accounts', :action => 'create', :discount => nil
   map.resource :account, :collection => { :dashboard => :get, :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get }
-  map.new_account '/signup/:plan/:discount', :controller => 'accounts', :action => 'new', :discount => nil  
+  map.new_account '/signup/:plan/:discount/*opts', :controller => 'accounts', :action => 'new', :discount => nil  
   map.forgot_password '/account/forgot', :controller => 'sessions', :action => 'forgot'
   map.reset_password '/account/reset/:token', :controller => 'sessions', :action => 'reset'
   

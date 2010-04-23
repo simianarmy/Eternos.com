@@ -12,7 +12,6 @@
     = f.text_field :email
   %p 
   %p
-    -# f.fields_for :profile do |ff|
     <fb:editor-custom label="Birthday">
     = date_select 'user[profile]', 'birthday', :default => @fb_birthdate, :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 100.years.ago.year
     <br/>
