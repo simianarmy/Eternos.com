@@ -95,7 +95,7 @@ class FacebookActivityStreamItem < ActivityStreamItem
     res << tags
     res << comments
     if (comms = comment_thread) && !comms.empty?
-      res << comms.map{|c| c.text unless c.is_a? Array}
+      res << comms.map{|c| c.text if c.respond_to?(:text)}
     end
     res << liked_by if liked_by && !liked_by.empty?
     if d = parsed_attachment_data

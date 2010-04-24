@@ -215,7 +215,7 @@ def user_text_dump(user)
     res << get_sql_result_str(@conn.execute(FullText::Contents.gsub(/\?/, user.id.to_s)))
     
     txt << res.flatten.join(' ')
-    puts "result: #{txt}"
+    #puts "result: #{txt}"
   end
 end
 

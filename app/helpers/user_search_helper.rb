@@ -69,7 +69,13 @@ module UserSearchHelper
   end
   
   def search_date(obj)
-    obj.start_date.to_s
+    if obj.respond_to?(:start_date)
+      obj.start_date.to_s 
+    elsif obj.respond_to?(:created_at)
+      obj.created_at.to_s
+    else
+      ""
+    end
   end
   
   def search_link(obj)

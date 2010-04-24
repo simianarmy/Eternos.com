@@ -141,6 +141,7 @@ class TimelinesController < MemberHomeController
   
   def proxy_search(dev_map)
     uri = URI.parse request.url
+    uri.scheme = 'http'
     uri.host = dev_map.env + '.eternos.com'
     uri.path.gsub!(/js\/\d+\//, "js/#{dev_map.mapped_id}/")
     uri.path += '/mapped=1'
