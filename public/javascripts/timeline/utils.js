@@ -134,7 +134,9 @@ var ETDebug = function() {
 	};
 	function dump(msg) {
 		if (ETERNOS.debug) {
-			console.dir(msg);
+			if (!(/MSIE (\d+\.\d+);/.test(navigator.userAgent))) { //test for MSIE x.x;
+				console.dir(msg);
+			}
 		}
 	};
 	return {

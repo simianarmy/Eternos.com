@@ -13,6 +13,7 @@ SimileAjax.Graphics = new Object();
  */
 SimileAjax.Graphics.pngIsTranslucent = (!SimileAjax.Platform.browser.isIE) || (SimileAjax.Platform.browser.majorVersion > 6);
 if (!SimileAjax.Graphics.pngIsTranslucent) {
+
     SimileAjax.includeCssFile(document, SimileAjax.urlPrefix + "styles/graphics-ie6.css");
 }
 
