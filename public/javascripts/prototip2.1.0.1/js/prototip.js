@@ -82,7 +82,8 @@ Prototip.Styles = {
 		hideOn: {
 			element: 'tip',
 			event: 'mouseout'
-		}
+		},
+		stem: { height: 12, width: 15 }
 	}
 };
 
