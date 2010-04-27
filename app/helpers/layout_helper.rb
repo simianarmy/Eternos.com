@@ -4,7 +4,7 @@
 # to do so you may need to add this line to your ApplicationController
 #   helper :layout
 module LayoutHelper
-  @@js = []
+  @@js = {}
   @@google_api_loaded = false
   @@prototype_loaded = @@jquery_loaded = false
   @@layout = nil
@@ -13,7 +13,7 @@ module LayoutHelper
   class << self
     def clear_js_cache
       RAILS_DEFAULT_LOGGER.debug "Clearing js includes"
-      LayoutHelper.js = []
+      LayoutHelper.js = {}
       LayoutHelper.google_api_loaded = false
       LayoutHelper.prototype_loaded = false
       LayoutHelper.jquery_loaded = false
@@ -38,10 +38,12 @@ module LayoutHelper
   end
   
   def js_include(place, *args)
-    js << args = args.reject {|a| js.include? a}.map { |arg| arg == :defaults ? arg : arg.to_s }
-    js.flatten!
-    RAILS_DEFAULT_LOGGER.debug "Javascript includes: " + js.join("\t")
-    content_for(place.to_sym) { javascript_include_tag(*args) }
+    Rails.logger.debug "JS INCLUDES: #{args.inspect}"
+    p = place.to_sym
+    (js[p] ||= []) << args = args.reject {|a| js[p] && js[p].include?(a)}.map { |arg| arg == :defaults ? arg : arg.to_s }
+    js[p].flatten!
+    RAILS_DEFAULT_LOGGER.debug "Javascript #{p} includes: " + js[p].join("\t")
+    content_for(p) { javascript_include_tag(*args) }
   end
   
   def javascript(*args)
@@ -66,19 +68,19 @@ module LayoutHelper
   
   # Where we get prototype js from
   def prototype
-    request.protocol + 'ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js'
-    #'prototype'
+    #request.protocol + 'ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js'
+    'prototype'
   end
   
   def scriptaculous
-    request.protocol + 'ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
-    #'scriptaculous'
+    #request.protocol + 'ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
+    'scriptaculous'
   end
   
   # asset inclusion helpers
   def use_lightview_25
-    stylesheet '/javascripts/lightview2.5/css/lightview.css'
-    javascript 'lightview2.5/js/lightview'
+    stylesheet '/javascripts/lightview2.5.2.1/css/lightview.css'
+    javascript 'lightview2.5.2.1/js/lightview'
   end
   
   def use_lightview
@@ -105,27 +107,37 @@ module LayoutHelper
   
   def load_prototype
     return if prototype_loaded || @no_prototype
-    load_google_api {
-      javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
-    }
+    # load_google_api {
+    #       javascript_tag 'google.load("prototype", "1.6.1.0"); google.load("scriptaculous", "1.8.2");'
+    #     }
+    javascript_place :js_libs, prototype, scriptaculous
+
     @@prototype_loaded = true
+  end
+  
+  # Required when using both Prototype & jQuery - requires exact load order to work in IE
+  def load_jquery_prototype_compat_mode
+    javascript_place :js_libs, 'jQuery/jquerytools-1.1.2.min', 'application_jquery', prototype, scriptaculous
+    @@prototype_loaded = true
+    @@jquery_loaded = true
   end
   
   def use_jquery(context=:javascript)
     return if jquery_loaded
-    load_google_api
+    #load_google_api
     content_for(context) { 
-      javascript_tag('google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");')
+      #javascript_tag('google.load("jquery", "1.3.2"); google.load("jqueryui", "1.7.2");')
+      javascript 'jQuery/jquerytools-1.1.2.min', 'application_jquery'
     }
     @@jquery_loaded = true
     # Make sure jquery doesn't conflict with any loaded prototype libs
-    javascript 'application_jquery'
   end
 
   # default set of jQuery Tools + jQuery 1.3.2
   def use_jquerytools
-    javascript 'http://cdn.jquerytools.org/1.1.2/jquery.tools.min.js', 'application_jquery'
-    @@jquery_loaded = true
+    #use_jquery # required for ie bug?
+    javascript_place :js_libs, 'jQuery/jquerytools-1.1.2.min', 'application_jquery'
+    #@@jquery_loaded = true
   end
     
   def use_scrollable
@@ -237,11 +249,6 @@ module LayoutHelper
   
   def use_timeline
     stylesheet 'timeline'
-    
-    use_prototip
-    use_jquery
-    use_lightview
-    use_busy
     
     #javascript "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true" 
     javascript "timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js"

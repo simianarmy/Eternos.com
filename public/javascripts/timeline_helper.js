@@ -1086,12 +1086,15 @@ var ETimeline = function(opts) {
 			that.timeline = this;
 		},
 		onSearching: function() {
+			ETDebug.log("onSearching");
 			this.timeline.showLoadingMessage();
 		},
 		hideLoading: function() {
+			ETDebug.log('hideLoading');
 			this.timeline.hideLoadingMessage();
 		},
 		onSearchError: function() {
+			
 			this.searchInProgress = false;
 			this.hideLoading();
 			ETemplates.showError("An error occurred fetching your timeline data.  Please refresh the page.");

@@ -23,9 +23,9 @@ var EternosFB = function() {
 					// Parse birthday string for date select
 					if ((birthday = response[0].birthday_date) && (birthday !== '')) {
 						dates = birthday.split('/');
-						$('profile_birthday_2i').value = parseInt(dates[0]);
-						$('profile_birthday_3i').value = parseInt(dates[1]);
-						$('profile_birthday_1i').value = dates[2];
+						$('user_profile_birthday_2i').value = parseInt(dates[0]);
+						$('user_profile_birthday_3i').value = parseInt(dates[1]);
+						$('user_profile_birthday_1i').value = dates[2];
 					}					
 					if ($('new_account_form')) {
 						new Effect.Highlight('new_account_form', { pulses: 3 });
@@ -40,9 +40,7 @@ var EternosFB = function() {
 			// Don't hide password fields - needed in case Facebook disconnected
 		  //if ($('password-input')) $('password-input').hide();
 		  //if ($('password-conf-input')) $('password-conf-input').hide();
-			if ($('fb_pass_text')) {
-				$('fb_pass_text').show();
-			}
+			
 		  $('user_facebook_id').value = uid;
 		  FB.XFBML.Host.parseDomTree(); 
 	  },

@@ -15,12 +15,11 @@
 
     /- stylesheet 'screen', 'application', 'reset-fonts-grids'
     - stylesheet 'new_design/style.css'
-    - load_prototype
-    - javascript 'facebook'
-    
     = yield(:head)
-    = yield(:js_libs)
-    = yield(:javascript)
+    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous", "lightview2.5/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", "/javascripts/flowplayer.js", "lowpro", "defaultvalueactsashint", "behaviors", "facebook", :cache => "cache/public"
+    
+    /- = yield(:js_libs)
+    /- = yield(:javascript)
   %body
     .header
       %div

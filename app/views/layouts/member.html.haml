@@ -9,10 +9,10 @@
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos Members - " + h(yield(:title) || "Member Home")
 
-    - load_prototype unless @no_prototype
+    - load_jquery_prototype_compat_mode unless @no_prototype
+    - use_prototip
     - use_lightview
     - use_lowpro
-    - use_prototip
     - use_timeline
     - javascript 'application', 'login', 'member_home'
     - stylesheet 'application', 'new_design/members', 'new_design/misc-fix'

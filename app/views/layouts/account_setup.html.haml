@@ -18,11 +18,10 @@
     <link href="/css/styleie6.css" rel="stylesheet" type="text/css" />
     <![endif]-->
     
-    - load_prototype unless @no_prototype
-    - use_lightview
-    - use_lowpro
-    - use_prototip
-    - javascript 'application', 'login', 'account_setup'
+    <!-- - FIX: Doesn't work when put at bottom of <body> -->
+    
+    - load_jquery_prototype_compat_mode
+    - javascript 'application', 'login', 'account_setup', 'facebook'
     
     = yield(:head)
     = yield(:js_libs)
