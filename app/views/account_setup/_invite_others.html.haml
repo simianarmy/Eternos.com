@@ -2,7 +2,7 @@
 
 = show_flash_messages
 
-- if @facebook_session
+- if @facebook_session && !request_from_ie
   = render :partial => 'fb_invite'
 - else
   - form_tag invite_others_account_setup_path do

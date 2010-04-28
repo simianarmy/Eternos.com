@@ -5,7 +5,7 @@
 //Eternos Timeline Event Source base class
 var ETLEventSource = Class.create({
 	initialize: function(s) {
-		console.log("constructing ETLEventSource for " + s.type);
+		ETDebug.log("constructing ETLEventSource for " + s.type);
 		this.type 								= s.type;
 		this.attributes 					= s.attributes;
 		this.attachment_type			= s.attachment_type;
@@ -569,7 +569,7 @@ var ETEvent = {
 		} else if (type === "medical_condition") {
 			return new ETLMedicalConditionEventSource(data);
 		} else {
-			console.log("Unknown type from source: " + data.type);
+			ETDebug.log("Unknown type from source: " + data.type);
 			return null;
 		}
 	},

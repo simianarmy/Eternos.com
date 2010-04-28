@@ -9,7 +9,7 @@
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos Members - " + h(yield(:title) || "Member Home")
 
-    - load_jquery_prototype_compat_mode unless @no_prototype
+    - load_jquery_prototype_compat_mode
     - use_prototip
     - use_lightview
     - use_lowpro

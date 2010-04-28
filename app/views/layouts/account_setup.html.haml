@@ -20,8 +20,11 @@
     
     <!-- - FIX: Doesn't work when put at bottom of <body> -->
     
-    - load_jquery_prototype_compat_mode
-    - javascript 'application', 'login', 'account_setup', 'facebook'
+    - if @active_step <= 1
+      - load_jquery_prototype_compat_mode
+    - else
+      - load_prototype
+    - javascript 'application', 'login', 'account_setup'
     
     = yield(:head)
     = yield(:js_libs)
@@ -64,10 +67,5 @@
     - if @facebook_session
       = fb_connect_javascript_tag
       = init_fb_connect "XFBML"
-    :javascript
-      // This needs to be global to all js
-      var lightview_height = 0.9 * win_dimension()[1];
-      //alert('lightview_height = ' + lightview_height);
-      Element.observe(window, 'load', function() { 
-        handle_timeout_popups(#{session_timeout_seconds});
-      });
+
+

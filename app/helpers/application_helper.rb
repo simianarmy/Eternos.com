@@ -62,6 +62,12 @@ module ApplicationHelper
     SESSION_DURATION_SECONDS
   end
   
+  def request_from_ie
+    if request.env['HTTP_USER_AGENT']
+      request.env['HTTP_USER_AGENT'].downcase =~ /msie/i
+    end
+  end
+  
   private
   
   def parse_options(args)

@@ -8,10 +8,12 @@
     / bundle do
     - stylesheet 'member', 'screen', 'application'
     - unless @no_prototype
-      - load_prototype
+      - load_jquery_prototype_compat_mode
+      - use_flash
+      - use_prototip  
       - use_lowpro
       - use_lightview
-    - javascript 'application'
+      - javascript 'application'
     = yield(:head)
     = yield(:js_libs)
     = yield(:javascript)
