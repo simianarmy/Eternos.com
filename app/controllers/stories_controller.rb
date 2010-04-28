@@ -1,7 +1,7 @@
 # $Id$
 class StoriesController < ApplicationController
   before_filter :login_required
-  before_filter :load_artifacts, :except => [:index, :destroy]
+  #before_filter :load_artifacts, :except => [:index, :destroy]
  
   require_role "Member"
   
