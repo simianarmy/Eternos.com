@@ -19,15 +19,19 @@ config.action_controller.perform_caching             = false
 # Care if the mailer can't send
 config.action_mailer.raise_delivery_errors = true
 
+FACEBOOK_TUNNELLING = false
+
 config.action_controller.asset_host = Proc.new { |source, request|
   # Handle facebook tunneling crazyiness
-  port = request ? request.port : nil
-  if port && (port == 4007)
-    port = 3001
+  if FACEBOOK_TUNNELLING
+    port = request ? request.port : nil
+    if port && (port == 4007)
+      port = 3001
+    end
   end
   (request ? request.protocol : 'http://') + 
   (request ? request.host : 'dev.eternos.com') + 
-  (port ? ':' + port.to_s : "")
+  ((port && FACEBOOK_TUNNELLING) ? ':' + port.to_s : "")
 }
 
 # Use SMTP protocol to deliver emails

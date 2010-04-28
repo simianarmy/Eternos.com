@@ -20,8 +20,8 @@
           Currently backing up <font style="font-weight: bold"><%= settings.facebook_user %>'s</font> Facebook Account
           <br/>
           <span>
-          <% if settings.facebook_pic %>
-            <%= image_tag settings.facebook_pic %>
+          <% if settings.facebook_pic && !request.ssl? %>
+            <%= image_tag fbpic %>
           <% end %>
           </span>
           <br/>

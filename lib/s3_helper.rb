@@ -50,8 +50,9 @@ module S3Buckets
         @@current_bucket
       end
       
+      # Returns full url to Amazon resource using relative protocol trick
       def url(key)
-        'http://s3.amazonaws.com/' + eternos_bucket_name + '/' + key
+        '//s3.amazonaws.com/' + eternos_bucket_name + '/' + key
       end
     end
   end

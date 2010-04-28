@@ -1,9 +1,9 @@
 .footer
   %div
     %p.p1
-      = link_to 'Facebook', 'http://www.facebook.com/pages/Eternoscom/134291337425', :target => '_new'
+      = link_to 'Facebook', "#{request.protocol}www.facebook.com/pages/Eternoscom/134291337425", :target => '_new'
       %br
-      = link_to 'follow us on Twitter', 'http://twitter.com/TeamEternos', :target => '_new'
+      = link_to 'follow us on Twitter', "#{request.protocol}twitter.com/TeamEternos", :target => '_new'
       %br
       = link_to 'Eternos in the news', '/about/press'
     %p.p2
