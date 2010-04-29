@@ -30,3 +30,5 @@ config.after_initialize do
   # So that Passenger can find the identify command
   Paperclip.options[:command_path] = "/usr/local/bin"
 end
+
+#config.log_level = :debug
