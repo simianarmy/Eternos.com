@@ -5,7 +5,7 @@
 
 class ApplicationController < ActionController::Base
   # For Apache mod_porter (file upload optimizer)
-  # Must match PorterSharedSecret value in http config virtual host
+  # Must match PorterSharedSecret value in http config
   self.mod_porter_secret = MOD_PORTER_SECRET
   
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
