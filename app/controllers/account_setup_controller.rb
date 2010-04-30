@@ -12,13 +12,14 @@ class AccountSetupController < ApplicationController
   
   def show
     session[:setup_account] = true
-    
+
     # Dynamic action view based on current setup step - stupid
     Rails.logger.debug "SETUP STEP = #{@completed_steps}"
     if @active_step <= 1
       load_online
       @content_page = 'backup_sources'
     elsif @active_step == 2
+      @already_invited = []
       # This should be the invite page now..
       @content_page = 'invite_others'
     else 

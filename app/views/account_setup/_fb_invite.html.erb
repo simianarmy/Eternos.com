@@ -1,10 +1,14 @@
 <% fb_serverfbml :style => "width: 776px;" do %>
   <script type="text/fbml">
     <fb:fbml>
-      <% fb_multi_friend_request("Eternos", 
-        "Invite your Facebook Friends to use Eternos.",
+      <% # code from Mike Mangino Facebook book, p. 113 
+        content_for("invite_message") do %>
+        <%= render :partial => 'fb_invite_message' %>
+      <% end %>
+      <% fb_request_form("Eternos", "invite_message", 
         invite_others_account_setup_url(:step=>3, :protocol => 'https')) do %>
-          <%= render :partial => 'fb_invite_message' %>
+        <%= fb_multi_friend_selector("Invite your friends and family to use Eternos.",
+          :exclude_ids => @already_invited.join(",")) %>
       <% end %>
     </fb:fbml>
   </script>

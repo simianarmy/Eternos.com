@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
     u.validates_uniqueness_of   :invitation_id, :if => :invitation_id
   end
   before_create :set_invitation_limit, :make_activation_code
-  #after_create :register_user_to_fb
+  after_create :register_user_to_fb
   after_create :initialize_address_book
   
   acts_as_state_machine :initial => :pending
@@ -114,7 +114,7 @@ class User < ActiveRecord::Base
       # UPDATE:
       # allow multiple accounts to use the same facebook id I guess - 
       # makes debugging a lot easier too
-      # existing_fb_user = find_by_facebook_uid(fb_user_id)
+      #existing_fb_user = find_by_facebook_uid(fb_user_id)
       
       #unlink the existing account
       # unless existing_fb_user.nil?
