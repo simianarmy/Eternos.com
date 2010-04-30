@@ -22,7 +22,7 @@ class HomeController < ApplicationController
       Rails.logger.debug "FB user info => #{@fb_user_info.inspect}"
       Rails.logger.debug "Birthday: #{@fb_birthdate.inspect}"
       @user = User.new(:first_name => @fb_user_info[:first_name], :last_name => @fb_user_info[:last_name], 
-        :facebook_id => @facebook_session.user.id, :facebook_referrer = params[:from])
+        :facebook_id => @facebook_session.user.id, :facebook_referrer => params[:from])
       @user.profile = Profile.new(:birthday => @fb_birthdate)
       
       render :layout => false and return false
