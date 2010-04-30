@@ -90,18 +90,21 @@ class FacebookActivityStreamItem < ActivityStreamItem
   # Collect all text fields for output
   def to_rawtext
     res = []
-    res << author
-    res << message
-    res << tags
-    res << comments
-    if (comms = comment_thread) && !comms.empty?
-      res << comms.map{|c| c.text if c.respond_to?(:text)}
-    end
-    res << liked_by if liked_by && !liked_by.empty?
-    if d = parsed_attachment_data
-      res << d['name']
-      res << d['description'] unless d['description'] && d['description']['<div'] # avoid html b.s.
-      res << d['caption']
+    begin
+      res << author
+      res << message
+      res << tags
+      res << comments
+      if (comms = comment_thread) && !comms.empty?
+        res << comms.map{|c| c.text if c.respond_to?(:text)}
+      end
+      res << liked_by if liked_by && !liked_by.empty?
+      if d = parsed_attachment_data
+        res << d['name']
+        res << d['description'] unless d['description'] && d['description']['<div'] # avoid html b.s.
+        res << d['caption']
+      end
+    rescue
     end
     res.flatten.join(' ')
   end

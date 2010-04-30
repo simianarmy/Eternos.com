@@ -245,7 +245,11 @@ namespace :analysis do
         puts stats.sort{|a,b| b[1] <=> a[1]}.inspect
         # Add word stats to user text table
         if rt = RawText.find_or_create_by_user_id(u.id)
-          rt.update_attribute(:word_counts, stats)
+          begin
+            rt.update_attribute(:word_counts, stats)
+          rescue Exception => e
+            puts e.message 
+          end
         end
       end
     end
