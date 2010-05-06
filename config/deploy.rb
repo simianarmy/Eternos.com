@@ -33,7 +33,7 @@ default_run_options[:pty] = true
 set :user, "mmauger"            # defaults to the currently logged in user
 set :use_sudo, false
 # fast_remote_cache strategy - http://github.com/37signals/fast_remote_cache/tree 
-set :deploy_via, :fast_remote_cache
+set :deploy_via, :export #:fast_remote_cache
 set :copy_exclude, %w(features spec doc stories test tmp)
 set :group_writable, false
 
