@@ -1,5 +1,11 @@
 - @no_prototype = true
 - title "Upload Artifacts"
 
-= render :partial => 'shared/upload_form', :locals => {:object => @object, :form_url => @form_url || create_content_path_with_session_information}
+= error_messages_for @object.class
+
+- form_remote_for(@object, :url => @form_url, :html => { :id => "new_content", :multipart => true } ) do |f|
+  = render :partial => 'contents/upload_form', :locals => {:f=>f}
+- form_for :content, :url => {:controller => :contents, :action => :edit_selection, :dialog => using_layout?(:dialog) ? '1' : nil}, :html => {:id => 'add_descriptions_form'} do |f|
+  = hidden_field_tag 'content[ids]', '', {:id => 'content-ids'}
+  
 

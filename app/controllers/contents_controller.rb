@@ -58,7 +58,7 @@ class ContentsController < ApplicationController
   def new
     @content = current_user.contents.new
     
-    # Sometimes content uploads are for specific containers, ie: story elements.
+    # Sometimes content uploads area for specific containers, ie: story elements.
     # Setup view instance vars for form create url
     if params[:ref_type]
       el = params[:ref_type].constantize.find(params[:ref_id])

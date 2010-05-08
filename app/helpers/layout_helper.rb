@@ -74,7 +74,7 @@ module LayoutHelper
   
   def scriptaculous
     #request.protocol + 'ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js'
-    'scriptaculous'
+    'scriptaculous.js?load=effects,controls,slider'
   end
   
   # asset inclusion helpers
