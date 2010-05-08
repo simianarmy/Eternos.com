@@ -1,5 +1,3 @@
-- use_uploader
-
 %fieldset#content-fallback
   %legend= 'File Upload'
   %p
@@ -10,26 +8,13 @@
   %input{:type=>"submit", :value=>"Upload"}
 
 %p.instructions
-  #step1.highlight
-    1. Select files by clicking the 
-    %b Browse 
-    link
-  %br
-  #step2
-    2. Upload files by clicking the 
-    %b Upload 
-    link
-%p
-%br
+
 #content-status.hide
   #action-links
-    %a#content-browse-all.active{:href=>"#"}= "Browse"
-    |
-    %a#content-clear{:href=>"#"}= "Clear List"
-    |
-    %a#content-upload{:href=>"#"}= "Upload"
+    %a#content-browse-all.active{:href=>"#"}= "Browse Files"
+    %a#content-upload{:href=>"#"}
   %p
-    
+  .clearboth
   #progress
     %strong.overall-title 
       Overall progress
@@ -56,6 +41,9 @@
         Add Descriptions
   
 %ul#content-list
+
+%a#content-clear.hidden{:href=>"#"}
+  = "Clear List"
 
 
 

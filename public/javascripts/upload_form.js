@@ -27,9 +27,13 @@ window.addEvent('domready', function() {
 		callBacks: {
 			onAllSelect: function(files, current, overall) {
 				if (current.bytesTotal > 0) {
+					/*
 					$('upload-status').set('html', "Click 'Upload' to start uploading files.");
 					$('content-browse-all').removeClass('active');
-					$('content-upload').addClass('active'); 
+					$('content-upload').addClass('active');
+					$('content-clear').removeClass('hide');
+					*/
+					swiffy.upload();
 				}
 			}
 		}

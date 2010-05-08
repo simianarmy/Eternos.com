@@ -1,4 +1,5 @@
 - title 'Edit Settings'
+- load_jquery_prototype_compat_mode
 - use_lightview
 - use_busy
 - use_prototip
@@ -8,6 +9,8 @@
 %p
 #content-description
   - form_for :contents, :url => {:action => :update_selection}, :html => {:id => 'content_descriptions_form', :class => 'remote_form', :rel => "{busy_id: 'content-description'}"} do |f|
+
+    #notice.flash_notice
     #content-description-batch-settings
       - if @contents.size > 1
         = f.label 'Tags for all'
@@ -20,4 +23,7 @@
     %br
     .clearboth
     = submit_tag 'Save'
+    
+%p
+%h3= link_to 'Finished Editing', member_home_path
 

@@ -1,11 +1,12 @@
 # $Id$
 
-class ContentsController < ApplicationController
-  before_filter :login_required
-  require_role "Member"
-  
+class ContentsController < MemberHomeController  
   include TagsAutoComplete
   include DecorationsHelper
+  
+  before_filter :login_required
+  skip_before_filter :verify_authenticity_token, :only => [:create]
+  layout 'uploader', :only => [:new, :create, :edit_selection]
   
   def index
     @content_type = params[:type]
@@ -47,11 +48,22 @@ class ContentsController < ApplicationController
   end
   
   def show
-    @content = current_user.contents.find(params[:id])
+    begin
+      @content = current_user.contents.find(params[:id])
+    rescue
+      @content = nil
+      Rails.logger.error "Error looking up contents by ID: #{params[:id]}"
+    end
     
     respond_to do |format|
       format.html
-      format.js { render :action => :show, :layout => nil }
+      format.js { 
+        if @content
+          render :action => :show, :layout => nil 
+        else
+          render :nothing => true, :status => :ok
+        end
+      }
     end
   end
   
@@ -66,6 +78,10 @@ class ContentsController < ApplicationController
       @object = :decoration
     else
       @object = @content
+    end
+    
+    respond_to do |format|
+      format.html
     end
   end
   

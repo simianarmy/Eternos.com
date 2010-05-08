@@ -242,7 +242,7 @@ module LayoutHelper
   def use_uploader
     @no_prototype = true
     stylesheet "content_upload"
-    javascript "mootools-1.2-core-nc", "Swiff.Uploader", "Fx.ProgressBar", "FancyUpload2", "upload_form"
+    javascript "mootools-1.2.4-core-yc", "Swiff.Uploader", "Fx.ProgressBar", "FancyUpload2", "upload_form"
   end
 
   

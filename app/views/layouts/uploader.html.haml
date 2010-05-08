@@ -7,23 +7,15 @@
     %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
     %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
-    %title= "Eternos Members - " + h(yield(:title) || "Member Home")
+    %title= "Eternos Members - " + h(yield(:title) || "Uploader")
 
 
-    - load_jquery_prototype_compat_mode
-    - use_prototip
-    - use_lightview
-    - use_lowpro
-    - use_timeline
-    - use_busy
-    - javascript 'login', 'member_home'
     - stylesheet 'application', 'new_design/members', 'new_design/misc-fix'
     
     = yield(:head)
     = yield(:js_libs)
     /- FIX: Doesn't work when put at bottom of <body>
     = yield(:javascript)
-    = javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds}; ETERNOS.debug = #{Rails.env == 'development' ? 'true' : 'false'};"
     / end bundle
   %body
     .header
@@ -45,7 +37,7 @@
             /-%li= recording_popup_link 'Video Journal'
             %li= link_to 'Upload', new_content_path
             %li= link_to 'Life Key', trustees_path
-            %li= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
+            %li= link_to 'Images', image_gallery_path
             %li= link_to 'Invite Friends', account_setup_path(:step => 2)
           <p>&nbsp;</p>
           %h1 Backup Services
@@ -59,23 +51,14 @@
           <p align="right">
           = link_to 'Add More', account_setup_path(:step => 0), :id => "active_network-add"
           </p>
-          <p>&nbsp;</p>
-          #artifacts-header
-          <p>&nbsp;</p>         
-          %h1 Tag Cloud
-          #tag-cloud
-          <p>&nbsp;</p>
         / end login1_left
         
         / start sub content
-        .login1_right.home
+        / Right content
+        .login1_right.login1-mid.login2-mid
           = yield
         / end sub content
     / end content
           
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
-
-    - if @facebook_session
-      = fb_connect_javascript_tag
-      = init_fb_connect "XFBML"
