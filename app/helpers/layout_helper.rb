@@ -245,6 +245,11 @@ module LayoutHelper
     javascript "mootools-1.2.4-core-yc", "Swiff.Uploader", "Fx.ProgressBar", "FancyUpload2", "upload_form"
   end
 
+  def use_image_gallery
+    stylesheet 'image_gallery'
+    use_jquery
+    javascript 'jQuery/jquery-ui.min', 'image_gallery'
+  end
   
   def use_timeline
     stylesheet 'timeline'

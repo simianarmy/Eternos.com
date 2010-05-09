@@ -23,7 +23,8 @@
     %br
     .clearboth
     = submit_tag 'Save'
-    
 %p
-%h3= link_to 'Finished Editing', member_home_path
-
+  %h3
+    = link_to 'Upload More Artifacts', new_content_path
+    |
+    = link_to 'Finished', member_home_path

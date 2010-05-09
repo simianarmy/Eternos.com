@@ -75,7 +75,7 @@ ActionController::Routing::Routes.draw do |map|
       :collection => {:link_user_accounts => :get}
   
   map.resources :contents, :collection => { :edit_selection => :post, 
-      :gallery => :get }
+      :gallery => :get, :auto_complete_for_all_tags => :get }
       
   # map.resources :stories do |stories|  
   #     stories.resources :elements

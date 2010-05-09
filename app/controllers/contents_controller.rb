@@ -1,11 +1,15 @@
 # $Id$
 
-class ContentsController < MemberHomeController  
+# DON'T INHERIT FROM MemberHomeController!  UPLOADER NEEDS SPECIFIC before_filters ENABLED
+class ContentsController < ApplicationController  
   include TagsAutoComplete
   include DecorationsHelper
   
   before_filter :login_required
-  skip_before_filter :verify_authenticity_token, :only => [:create]
+  require_role "Member"
+  before_filter :load_member_home_presenter, :except => [:create]
+  #skip_before_filter :verify_authenticity_token, :only => [:create]
+
   layout 'uploader', :only => [:new, :create, :edit_selection]
   
   def index

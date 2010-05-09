@@ -1,8 +1,9 @@
 %fieldset#content-fallback
+  %noscript= "You should have Javascript enabled for a nicer upload experience"
   %legend= 'File Upload'
   %p
     Select your files to upload
-  %br/
+  %br
   %label{:for => 'content-fileupload'}
   %input#file-upload.content-fileupload{:type=>"file", :name=>"content[uploaded_data]"}
   %input{:type=>"submit", :value=>"Upload"}

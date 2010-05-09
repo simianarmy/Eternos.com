@@ -1,12 +1,11 @@
-- stylesheet 'image_gallery'
-- use_jquery :js_libs
-- javascript 'image_gallery'
+- use_image_gallery
 !!!
 %html
   %head
     %title Image Gallery
     = yield(:head)
     = yield(:js_libs)
+    = yield(:javascript)
   %body
     %h1 Image Gallery
     #content
@@ -18,5 +17,5 @@
       #slider
     :javascript
       var albums = #{@albums};
-    = yield(:javascript)
+    
     
