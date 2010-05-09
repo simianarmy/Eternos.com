@@ -47,6 +47,7 @@ MOD_PORTER_SECRET       = 'sh4mAlam4d1nGd0ng'
 RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID' # TODO: check if used
 SESSION_DURATION_SECONDS  = 86400 # 1 day before session times out
 MAX_TAG_CLOUD_SIZE      = 50
+ASSET_HOST              = "assets.eternos.com"
 
 Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.
@@ -101,6 +102,13 @@ Rails::Initializer.run do |config|
   config.load_paths << "#{RAILS_ROOT}/app/presenters"
   config.load_paths << "#{RAILS_ROOT}/app/renderers"
   config.load_paths << "#{RAILS_ROOT}/app/middleware"
+  
+  # Enable serving of images, stylesheets, and javascripts from an asset server
+  config.action_controller.asset_host = Proc.new { |source, request|
+    unless source.starts_with?('//')
+      (request ? request.protocol : 'http://') + ASSET_HOST
+    end
+  }
   
   config.after_initialize do
     Qusion.start

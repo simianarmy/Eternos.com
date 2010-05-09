@@ -29,9 +29,12 @@ config.action_controller.asset_host = Proc.new { |source, request|
       port = 3001
     end
   end
-  (request ? request.protocol : 'http://') + 
-  (request ? request.host : 'dev.eternos.com') + 
-  ((port && FACEBOOK_TUNNELLING) ? ':' + port.to_s : "")
+  # No host if url starts with relative protocol string '//'
+  unless source.starts_with?('//')
+    (request ? request.protocol : 'http://') + 
+    (request ? request.host : 'dev.eternos.com') + 
+    ((port && FACEBOOK_TUNNELLING) ? ':' + port.to_s : "")
+  end
 }
 
 # Use SMTP protocol to deliver emails
