@@ -1,8 +1,8 @@
 #security_info.textarea7
   %br
-  %a{:href => '#', :onclick => "$('security_text').show(); return false;"}
+  %a{:href => '#', :onclick => "$('security_text').toggle(); return false;"}
     Storage &amp; Security Details
-  #security_text{:style => "display: none;"}
+  #security_text
     %li Eternos uses Amazon Web Services and relational databases on a secured network to store your data.  
     %li All of your data is encrypted using  American Encryption Standard (AES) 256 bit symmetrical-key encryption.  
     %li As a member only you will have access to your  unencrypted data.  
