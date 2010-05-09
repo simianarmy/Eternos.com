@@ -1,7 +1,9 @@
 # $Id$
 
 class MementosController < MemberHomeController
-  layout 'member_standalone'
+  layout 'mementos'
+  
+  skip_before_filter :load_member_home_presenter
   
   def new
     

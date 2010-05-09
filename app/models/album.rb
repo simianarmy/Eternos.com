@@ -1,12 +1,23 @@
 class Album < ActiveRecord::Base
+  belongs_to :owner, :class_name => 'Member', :foreign_key => 'user_id'
   has_many :photos, :as => :collection, :dependent => :destroy
   
-  named_scope :by_user, lambda { |user_id|
-    { :joins => :photos,
-      :conditions => ['contents.user_id = ?', user_id]
-    }
-  }
   named_scope :include_photos, :include => :photos
+  
+  serialize_with_options(:gallery) do
+    methods :cover_photo_url
+    except :id, :cover_id
+    # Because serialize_with_options only supports 1 level of nesting, we have 
+    # to specify the attributes to exclude manually in the include hash - booo
+    includes :photos => { 
+        :methods => [:url, :thumbnail],
+        :except => [:id, :size, :type, :filename, :thumbnail, :bitrate, :created_at, 
+          :updated_at, :user_id, :content_type, :duration, :version, :processing_error_message,
+          :fps, :state, :is_recording, :s3_key] 
+      }
+  end
+  
+  alias_attribute :num_items, :size
   
   # Returns content Photo object for the album cover
   def cover_photo

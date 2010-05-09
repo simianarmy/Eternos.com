@@ -10,7 +10,7 @@ class ContentsController < ApplicationController
   before_filter :load_member_home_presenter, :except => [:create]
   #skip_before_filter :verify_authenticity_token, :only => [:create]
 
-  layout 'uploader', :only => [:new, :create, :edit_selection]
+  layout 'member_page', :only => [:new, :create, :edit_selection]
   
   def index
     @content_type = params[:type]

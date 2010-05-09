@@ -11,6 +11,8 @@ var sprite = ""; //The sprite of the currently selected album
 var gridView, mosaicView; //the views, defined later
 
 $j(document).ready(function() {
+	$j.getJSON(albumDataUrl, function(album_js) {
+		albums = album_js; //save to global
     view = gridView; //this referrs to a function that we havn't created yet
     albumView(); //render the album view
 
@@ -35,8 +37,8 @@ $j(document).ready(function() {
         $j("#views a.selected").removeClass("selected");
         $j(this).addClass("selected");
         mosaicView();
-    });
-
+    });	
+	});
 });
 
 function albumView() {

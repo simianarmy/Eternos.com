@@ -56,6 +56,8 @@ class Photo < Content
     end
   end
   
+  after_create :update_collection
+  
   def thumbnailable?
     true
   end
@@ -74,5 +76,20 @@ class Photo < Content
     end
   end
   
+  protected
+  
+  # Creates an album for the object if necessary
+  def update_collection
+    unless collection_id
+      # Only create collection if we can access the owner id
+      if self.owner
+        self.collection = Album.find_or_create_by_name(:name => Date.today.to_s, 
+          :user_id => self.owner.id, :cover_id => self.id)
+        self.collection.increment! :size
+        save(false)
+      end
+    end
+    true
+  end
 end
 

@@ -14,7 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :backup_state
   map.resource :facebook_backup, :controller => 'facebook_backup', :member => { 
     :check_auth => :get, :permissions => :get, :authorized => :get, :cancel => :get }
-  map.resource :image_gallery, :controller => 'image_gallery'
+  map.resource :image_gallery, :controller => 'image_gallery', :only => [:show], :member => {:albums => :get}
   map.resource :user_search, :controller => 'user_search'
 
   # regular resources

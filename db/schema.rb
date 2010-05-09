@@ -97,8 +97,15 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
   add_index "addresses", ["user_id"], :name => "index_addresses_on_user_id"
 
   create_table "albums", :force => true do |t|
+    t.integer  "user_id",   :null => false
+    t.integer  "cover_id"
+    t.integer  "size",             :default => 0, :null => false
+    t.string   "name"
+    t.text     "description"
+    t.string   "location"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   create_table "app_settings", :force => true do |t|

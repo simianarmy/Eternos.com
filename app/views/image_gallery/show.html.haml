@@ -8,6 +8,7 @@
     = yield(:javascript)
   %body
     %h1 Image Gallery
+    %h2 Loading Albums...
     #content
       
     #controls
@@ -16,6 +17,5 @@
         %a#mosaic{:href => "#"} Mosaic
       #slider
     :javascript
-      var albums = #{@albums};
-    
+      var albumDataUrl = '#{albums_image_gallery_path(:format=>"js")}';
     
