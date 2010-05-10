@@ -44,7 +44,7 @@
             %li= link_to 'Upload', new_content_path
             %li= link_to 'Profile', account_settings_path, :id => 'account-setting'
             /-%li= link_to 'Memento Studio', new_memento_path
-            %li= recording_popup_link 'Video Journal'
+            /-%li= recording_popup_link 'Video Journal'
             %li= link_to 'Life Key', trustees_path
             %li= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
             %li= link_to 'Invite Friends', account_setup_path(:step => 2)
