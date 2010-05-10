@@ -161,7 +161,7 @@ module LayoutHelper
   def use_flashplayer
     use_jquery
     stylesheet 'media'
-    javascript 'flowplayer-3.1.4.min', js_min_unless_dev('flowplayer.playlist-3.0.7'), 
+    javascript 'flowplayer-3.1.4.min', 'flowplayer.playlist-3.0.7.min', 
       '/javascripts/flowplayer.js'
   end
   

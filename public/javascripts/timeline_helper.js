@@ -1086,8 +1086,12 @@ var ETimeline = function(opts) {
 			that.timeline = this;
 		},
 		onSearching: function() {
+			var tl = this;
 			ETDebug.log("onSearching");
 			this.timeline.showLoadingMessage();
+			// Make sure shit gets turned off in case of IE fuckup.
+			// 10 secs. should be long enough
+			setTimeout(function() { tl.hideLoading(); }, 10000);
 		},
 		hideLoading: function() {
 			ETDebug.log('hideLoading');

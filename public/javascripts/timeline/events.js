@@ -542,10 +542,13 @@ var ETEvent = {
 			return new ETLPhotoEventSource(data);
 		} else if (type === "video" || type === "web_video") {
 			// Load flowplayer libraries as needed
+			// CANNOT USE THIS - IE randomly dies on flowplayer.playlist
+			/*
 			if (SimileAjax.findScript(document, 'flowplayer') === null) {
 				SimileAjax.includeCssFiles(document, '/stylesheets/', ['media.css']);
 				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['flowplayer-3.1.4.min.js', 'flowplayer.playlist-3.0.7.js', 'flowplayer.js']);
 			}
+			*/
 			return new ETLVideoEventSource(data);
 		} else if (type === "audio" || type === "music") {
 			// Load soundmanager js & css files dynamically - heavy & use flash
