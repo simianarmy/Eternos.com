@@ -14,19 +14,31 @@ class HomeController < ApplicationController
     
     # Serve Facebook app home page from here
     if request_comes_from_facebook?  
-      ensure_authenticated_to_facebook  
-      return false unless facebook_session
-      
-      @fb_user_info = FacebookUserProfile.populate(facebook_session.user)
-      @fb_birthdate = FacebookUserProfile.parse_model_date(@fb_user_info[:birthday_date]) || Date.today
-      Rails.logger.debug "FB user info => #{@fb_user_info.inspect}"
-      Rails.logger.debug "Birthday: #{@fb_birthdate.inspect}"
-      @user = User.new(:first_name => @fb_user_info[:first_name], :last_name => @fb_user_info[:last_name], 
-        :facebook_id => @facebook_session.user.id, :facebook_referrer => params[:from])
-      @user.profile = Profile.new(:birthday => @fb_birthdate)
-      
+      #ensure_authenticated_to_facebook
+        
+      # Check for referring facebook id
+      #return false unless facebook_session
+      if facebook_session && facebook_session.secured?
+        @fb_user_info = FacebookUserProfile.populate(facebook_session.user)
+        @fb_user_id = facebook_session.user.id
+      else
+        @fb_user_info = {}
+        @fb_user_id = params[:fb_sig_user]
+      end
+      # If the facebook ID matches a member
+      if @fb_user_id && @user = Member.from_facebook(@fb_user_id)
+        # Redirect to the Facebook fan page
+        redirect_to FACEBOOK_FAN_PAGE and return false
+      else
+        @user = User.new(:first_name => @fb_user_info[:first_name], :last_name => @fb_user_info[:last_name], 
+          :facebook_id => @fb_user_id, :facebook_referrer => params[:from])
+        @fb_birthdate = @fb_user_info[:birthday] || Date.today
+        @user.profile = Profile.new(:birthday => @fb_birthdate)
+      end
+      Rails.logger.debug "Rendering for Facebook app with user = #{@user.inspect} "
       render :layout => false and return false
     else
+      Rails.logger.debug "not from Facebook"
       set_facebook_connect_session
     end
   end

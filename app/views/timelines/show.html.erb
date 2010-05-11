@@ -37,7 +37,9 @@
   <div style="float: right;">
     <%= link_to_function "Today", "ETERNOS.timeline.reload({today: true});" %>&nbsp;|&nbsp;
     <%= link_to_function "Refresh", 'ETERNOS.timeline.reload()' %>&nbsp;|&nbsp;
-    <%= render :partial => 'helplink' %>
+    <%= link_to "What is this?", image_path('member_home_help.jpg'), :class => "lightview" %>
+    <%= #render :partial => 'helplink' 
+    %>
   </div>
 </div>
 <div id="debug_box" class="debug_container"></div>

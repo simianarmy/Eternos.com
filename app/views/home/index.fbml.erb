@@ -22,6 +22,7 @@
 	.eternos FIELDSET .right FORM P { float: none; clear: both; margin: 18px 0;}
 	.eternos FIELDSET .right FORM P STRONG { color: #FF0000;}
 	.eternos FIELDSET .right FORM INPUT[type=text] { background: url(<%= image_path "bg-input.gif" %>) repeat-x; border: 1px solid #C6C6C6; width: 246px; height: 20px; padding: 4px; font-family: Arial, Helvetica, sans-serif;}
+	.eternos FIELDSET .right FORM INPUT[type=password] { background: url(<%= image_path "bg-input.gif" %>) repeat-x; border: 1px solid #C6C6C6; width: 246px; height: 20px; padding: 4px; font-family: Arial, Helvetica, sans-serif;}
 	.eternos FIELDSET .right FORM SELECT { padding: 2px; border: 1px solid #C6C6C6; font-family: Arial, Helvetica, sans-serif;}
 	.eternos FIELDSET .right FORM INPUT[type=submit] { background: url(<%= image_path "bg-button.gif" %>); width: 197px; height: 50px; border: none; cursor: pointer; color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #ffffff;}
 	.eternos FIELDSET .right H4 { background: url(<%= image_path "bg-h4.gif" %>); width: 458px; height: 57px; font-size: 18px; color: #02419E; margin: 0; padding: 20px 0 0 35px;}
@@ -62,8 +63,9 @@
 		<div class="right">
 			<h1>Sign Up for Secure, Automatic Backup of Your Online Life, <span>it's Free!</span></h1>
         <br/>
+        
 				<%= render :partial => 'accounts/fb_short_form', :locals => {:plan => AppConfig.default_plan} %>
-	
+	      
 				<h4>Our mission is to provide our users with tools that allow for easy chronicling of their life and times.</h4>
 		</div>	
 	</fieldset>

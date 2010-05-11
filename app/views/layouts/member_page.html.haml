@@ -37,7 +37,7 @@
             /-%li= recording_popup_link 'Video Journal'
             %li= link_to 'Upload', new_content_path
             %li= link_to 'Life Key', trustees_path
-            %li= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
+            %li= link_to 'Images', image_gallery_path, :target => "_new"
             %li= link_to 'Invite Friends', account_setup_path(:step => 2)
           <p>&nbsp;</p>
           %h1 Backup Services

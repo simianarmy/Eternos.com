@@ -48,6 +48,7 @@ RECORDING_CONTENT_PARENT_COOKIE = 'RECORDING_PARENT_ID' # TODO: check if used
 SESSION_DURATION_SECONDS  = 86400 # 1 day before session times out
 MAX_TAG_CLOUD_SIZE      = 50
 ASSET_HOST              = "assets.eternos.com"
+FACEBOOK_FAN_PAGE       = "http://www.facebook.com/pages/Eternoscom/134291337425"
 
 Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.

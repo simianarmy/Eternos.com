@@ -2,6 +2,7 @@
   = facebook_messages
   = hidden_field_tag 'plan', plan
   = f.hidden_field 'facebook_id'
+  = f.hidden_field 'facebook_referrer'
   = hidden_field_tag 'from_fb', true
   = f.hidden_field :terms_of_service, :value => "1"
   %p
@@ -10,7 +11,13 @@
     = f.text_field :last_name
   %p
     = f.text_field :email
-  %p 
+  - unless @user.facebook_id
+    %p
+      <fb:editor-custom label="Password"> 
+      <input type="password" name="user[password]" /> 
+      <br/>
+      <em>6 characters minimum</em>
+      </fb:editor-custom>
   %p
     <fb:editor-custom label="Birthday">
     = date_select 'user[profile]', 'birthday', :default => @fb_birthdate, :order => [:month,:day,:year], :use_short_month => true, :start_year => Date.today.year, :end_year => 100.years.ago.year
