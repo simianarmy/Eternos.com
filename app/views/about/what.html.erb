@@ -1,20 +1,11 @@
 <div class="content what">
   <fieldset>
     <div class="what01">
-      <h1>What is Eternos?</h1>
-        <p>
-        You can think of Eternos as a family photo album, scrapbook, video vault, digital safe deposit box, and diary, kept secure at one site.
-        <p/>
-        <!--<h1>Why?</h1>-->
-        <p>
-        All too often the memories and personal artifacts we spend a lifetime accumulating are lost to natural disasters (fires, floods, earthquakes, hurricanes, etc.), discarded for lack of context, or simply misplaced. Important family histories are completely and needlessly lost. No more, Eternos is a 21st century solution to this age-old problem.
-        <p/>
-        <!--<h1>How It Works</h1>-->
-        <p>
-        Eternos allows you to automatically and continuously import data from 
-        <%= render :partial => 'backup_sources' %>
-        . If you're not into social networking you can upload video, important documents, and photos via our direct file upload. We offer a simple and intuitive video diary for you to record whatever happens to be on your mind and in your heart. Eternos is a completely private and secure life chronicle where you can save life's precious and important interactions, files, memories, and moments for the future.
-        </p>		
+      <h1>Eternos, Your Life Archive</h1>
+       
+      <p>
+        Here’s how it works - simply link your social media accounts to Eternos one time and in minutes, you’re already backing up your online material, life milestones, and treasured memories for future generations. If you're not into social networking you can upload video, important documents, and photos via our direct file upload. Eternos displays your activity in an easy-to-understand timeline where all of your activity is tracked and permanently saved. Here’s an example - let’s say you post something to your Facebook wall; within seconds it will then automatically show up in your Eternos timeline and is immediately stored and archived, giving you the ability to go back and locate, view, and recall exactly what and when you posted. Easy as 1-2-3! 
+      </p>		
     </div>
     <% unless current_user %>
       <h1>What are you waiting for? Complete the Sign up!</h1>
@@ -25,15 +16,54 @@
    
   <fieldset>
 
+    <h2>Automated Archiving/Backup</h2>
+    <a href="/images/backup_sample.jpg" class="lightview"><img src="/images/backup_sample.jpg" width="252" height="181" alt="Automated / Continuous Import" class="floatleft" /></a>
+    <p>
+      Once you choose what services you'd like to backup (Facebook, Twitter, etc.), Eternos automatically and continuously archives your data. The services we support include Facebook, Twitter, Picasa, Gmail, Tumblr, Wordpress, any blog or RSS feed, with many more to come! Automated archiving is the very core of our service, it is the easiest means of chronicling your life. 
+    </p>
+
+    <hr  />
+    
+    <h2>Your Timeline</h2>
+    <a href="/images/timeline_large.jpg" class="lightview"><img src="/images/timeline_large.jpg" width="252" height="181" alt="Timeline" class="floatleft" /></a>
+    <p>
+      Once you're personal artifacts* are imported into your Eternos account, they are set to a timeline that you can scroll through by age, day, month or year. View specific items at any point of your timeline by placing your cursor over the corresponding icon on your timeline. For example, if you post a status update, that will appear as a Facebook icon on your timeline. When you place your cursor on that icon, you'll see a popup box that displays the event or artifact. (for example, an old family photo).
+      <br/><br/>
+      * Artifacts = Your archived activity, emails, photos, videos, and files.
+    </p>
+
+    <hr  />    
+    
+    <h2>Easy Event Editing</h2>
+    <a href="/images/artifactediting_large.jpg" class="lightview"><img src="/images/artifactediting_large.jpg" width="252" height="181" alt="Easy Event / Artifact Editing" class="floatleft" /></a>
+    <p>
+      Use this feature to tag events for easy reference, delete artifacts you don't want in your archive, and to assign viewing permissions for posterity.
+    </p>
+
+    <hr  />
+    
+    <h2>Search and Tag Cloud</h2>
+    <a href="/images/search_large.jpg" class="lightview"><img src="/images/search_large.jpg" width="252" height="181" alt="Search" class="floatleft" /></a>
+    <p>
+      Events and Artifacts are automatically indexed into your personal search. Your tag cloud is a weighted list that shows what words and phrases appear most in your archive; clicking on the word or phrase performs a search for that keyword. These two features, along with the timeline, are essential tools for accessing and enjoying your artifacts.
+    </p> 
+    <hr  />
+    
+    <h2>Biographical Profile</h2>
+    <a href="/images/profile_sample.png" class="lightview"><img src="/images/profile_sample.png" width="252" height="181" alt="Profile" class="floatleft" /></a>
+    <p>
+      Your eternos archive has a full featured biographical survey for you to fill out (if you like). The information you enter will be shared with future generations. Not only will your Eternos profile give your descendants valuable insight into your life, it will provide them with medical data that might be important for them to know. For example, a history of heart disease or diabetes.
+    </p>
+    <hr/>
+    
   <h2>Life Key</h2>
-  <a href="#"><img src="/images/lifekey_large.jpg" width="252" height="181" alt="Life Key" class="floatleft" /></a>
-  <p>Using Life Key, you can appoint trustees who can notify us upon your passing and we will provide them access to the memories you chose to leave them.</p>
+  <a href="/images/lifekey_large.jpg" class="lightview"><img src="/images/lifekey_large.jpg" width="252" height="181" alt="Life Key" class="floatleft" /></a>
+  <p>
+    Life Key is the tool you'll utilize if you want to pass your archive on to loved ones in the event of your passing. Once we have confirm that you have passed on, we will provide your loved ones with access to your archive based upon your wishes. Life Key permissions can be revoked at any time during your lifetime. Only artifacts you choose to share will be viewable by your descendants. Life Key is the feature that ensures your legacy survives for generations to come and is highly recommended for members interested in Genealogy.
+  </p>
   <hr  />
  
-  <h2>Search</h2>
-  <a href="#"><img src="/images/search_large.jpg" width="252" height="181" alt="Search" class="floatleft" /></a>
-  <p>Look up moments in your life quickly, using our easy to use search feature.</p> 
-  <hr  />
+  
   <!--
   <h2>Video Diary</h2>
   <a href="#"><img src="/images/whatis-videodiary.jpg" width="252" height="181" alt="Video Diary" class="floatleft" /></a>
@@ -41,23 +71,10 @@
     </p>
   <hr  />
   -->
-  <h2>Automated / Continuous Import</h2>
-  <a href="#"><img src="/images/backup_sample.jpg" width="252" height="181" alt="Automated / Continuous Import" class="floatleft" /></a>
-  <p>Backup all your social networking data, emails, blogs and RSS feeds automatically.  Store everything that you do online so that you can go back and see what you were doing at any specific point in time.</p>
+  
 
-  <hr  />    
-
-  <h2>Timeline</h2>
-  <a href="#"><img src="/images/timeline_large.jpg" width="252" height="181" alt="Timeline" class="floatleft" /></a>
-  <p>Create a timeline that you can scroll through by age, day, month or year.  View specific items at any point of your timeline.</p>
-
-  <hr  />    
-
-  <h2>Easy Event / Artifact Editing</h2>
-  <a href="#"><img src="/images/artifactediting_large.jpg" width="252" height="181" alt="Easy Event / Artifact Editing" class="floatleft" /></a>
-  <p>Use this feature to tag events for easy reference, assign permissions to view events and to delete any content.</p>
-
-  <hr  />    
+  
+  
   <!--
   <h2>Eternos Momento Studio / Eternos Momento Player</h2>
   <a href="#"><img src="/images/whatis-blank.jpg" width="252" height="181" alt="Eternos Momento Studio / Eternos Momento Player" class="floatleft" /></a>

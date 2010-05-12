@@ -19,7 +19,8 @@ class AccountSetupController < ApplicationController
       load_online
       @content_page = 'backup_sources'
     elsif @active_step == 2
-      @already_invited = []
+      # Get list of facebook ids of friends that have joined after invites from this user
+      @already_invited = Member.find_all_by_facebook_referrer(current_user.facebook_id).map(&:facebook_id)
       # This should be the invite page now..
       @content_page = 'invite_others'
     else 
@@ -66,21 +67,26 @@ class AccountSetupController < ApplicationController
     invite_url = new_account_url(:plan => AppConfig.default_plan)
     sent = false
     
-    # Use sendmail to send so that From can be set correctly (Google Apps won't allow it)
-    og_delivery_method = ActionMailer::Base.delivery_method
-    ActionMailer::Base.delivery_method = :sendmail
+    # If sending facebook invites
+    if params[:ids]
+      # Save friends list to prevent from showing up later?
+    else # Otherwise sending invites from form
+      # Use sendmail to send so that From can be set correctly (Google Apps won't allow it)
+      og_delivery_method = ActionMailer::Base.delivery_method
+      ActionMailer::Base.delivery_method = :sendmail
     
-    1.upto(4) do |i|
-      email = params["email_#{i}"]
-      unless email.blank?
-        sent = true
-        spawn { 
-          UserMailer.deliver_friend_invite(current_user, email, invite_url) 
-        }
+      1.upto(4) do |i|
+        email = params["email_#{i}"]
+        unless email.blank?
+          sent = true
+          spawn { 
+            UserMailer.deliver_friend_invite(current_user, email, invite_url) 
+          }
+        end
       end
+      # Set mailer delivery back to default
+      ActionMailer::Base.delivery_method = og_delivery_method
     end
-    # Set mailer delivery back to default
-    ActionMailer::Base.delivery_method = og_delivery_method
     
     respond_to do |format|
       format.html {
