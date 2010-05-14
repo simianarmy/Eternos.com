@@ -275,7 +275,7 @@ var ETemplates = function() {
 			return new Template('<h1>#{title}</h1><p class="artifacts">#{artifacts}</p>');
 		} (),
 		artifactBox: function() {
-			return new Template('<a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}"/></a>');
+			return new Template('<a id="art:#{id}" href="#{url}" class="lightview etl-artifact-link #{style}" rel="set[artifacts]" title="#{caption} :: :: slideshow: true, autosize: true"><img src="#{thumbnail_url}"/></a>');
 		} ()
 	};
 	that.eventSelectorTemplate = function() {

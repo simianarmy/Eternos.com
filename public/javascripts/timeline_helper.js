@@ -3,7 +3,7 @@
 // Timeline javascript module
 
 // Load dependencies
-SimileAjax.includeJavascriptFiles(document, '/javascripts/timeline/', ['events.js', 'templates.js', 'media.js', 'utils.js', 'ui.js', 'event_items.js']);
+SimileAjax.includeJavascriptFiles(document, '/javascripts/timeline/', ['events.js', 'templates.js', 'media.js', 'utils.js', 'ui.js', 'event_items.js', 'artifacts.js', 'date_selectors.js']);
 
 // Returns new Timeline.DefaultEventSource.Event object
 var ETimelineEvent = function(events) {
@@ -48,264 +48,11 @@ var ETimeline = function(opts) {
 	var me = new Object();
 	var options = Object.extend(opts, {});
 	var api = '0.1';
-
+	
 	// Private instances & functions
 	that.options = options;
 	that.monthSelector = null;
 	that.utils = ETemplates.utils;
-
-	////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Eternos Timeline Selector
-	//
-	var ETLMonthSelector = Class.create({
-		initialize: function(domID) {
-			this.parent = $(domID);
-			this.activeDate = new Date();
-			this.advanceMonths = new Array();
-			this.pastMonths = new Array();
-			this.monthUpDisabled = false;
-			this.yearUpDisabled = false;
-			this._enableNavButtons();
-		},
-		_populate: function() {
-			$('display_month').innerHTML = this.activeDate.getMonthName();
-			$('display_year').innerHTML = this.activeDate.getFullYear();
-
-			if (!this._canClickNextMonth()) {
-				this._disableClick('month_selector_up');
-				this.monthUpDisabled = true;
-			} else if (this.monthUpDisabled) {
-				this._enableClick('month_selector_up');
-				this.monthUpDisabled = false;
-			}
-			if (!this._canClickNextYear()) {
-				this._disableClick('year_selector_up');
-				this.yearUpDisabled = true;
-			} else if (this.yearUpDisabled) {
-				this._enableClick('year_selector_up');
-				this.yearUpDisabled = false;
-			}
-		},
-		_canClickNextMonth: function() {
-			return this.activeDate.clone().addMonths(1).moveToFirstDayOfMonth().compareTo(Date.today()) !== 1;
-		},
-		_canClickNextYear: function() {
-			return this.activeDate.clone().addYears(1).moveToFirstDayOfMonth().compareTo(Date.today()) !== 1;
-		},
-		_disableClick: function(id) {
-			new Effect.Opacity(id, {
-				from: 1.0,
-				to: 0.4
-			});
-		},
-		_enableClick: function(id) {
-			new Effect.Opacity(id, {
-				from: 0.4,
-				to: 1.0
-			});
-		},
-		_enableNavButtons: function() {
-			$('month_selector_down').observe('click', function(event) {
-				event.stop();
-				this.stepDate(this.activeDate.clone().addMonths(-1));
-			}.bind(this));
-			$('year_selector_down').observe('click', function(event) {
-				event.stop();
-				this.stepDate(this.activeDate.clone().addYears(-1));
-			}.bind(this));
-			$('month_selector_up').observe('click', function(event) {
-				event.stop();
-				if (this._canClickNextMonth()) {
-					this.stepDate(this.activeDate.clone().addMonths(1));
-				}
-			}.bind(this));
-			$('year_selector_up').observe('click', function(event) {
-				event.stop();
-				if (this._canClickNextYear()) {
-					this.stepDate(this.activeDate.clone().addYears(1));
-				}
-			}.bind(this));
-		},
-		setDate: function(date) {
-			this.activeDate = date;
-		},
-		update: function(date) {
-			if (date) {
-				this.setDate(date);
-			}
-			this._populate();
-		},
-		stepDate: function(newDate) {
-			if (newDate.isMonthAfter(Date.today())) {
-				// Don't allow stepping into the future
-				return;
-			}
-			ETDebug.log("Date selector stepping from " + this.activeDate + " to " + newDate);
-			this.setDate(newDate);
-			that.timeline.onNewDate(newDate);
-		}
-	});
-
-	////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Eternos Timeline Artifact Section
-	//
-	var ETLArtifactSection = Class.create({
-		initialize: function(domID) {
-			this.MaxDisplayCount 	= 9;
-			this.pixPerRow				= 3;
-			// Set this to true|false
-			this.doRandomize = false;
-
-			this.parent = $(domID);
-			this.timeOut = 3;
-			this.title = "Artifacts";
-			this.items = [];
-			this.template = ETemplates.artifactTemplates.artifacts;
-			this.loadingTemplate = ETemplates.loadingTemplate;
-			this.boxTemplate = ETemplates.artifactTemplates.artifactBox;
-
-			this.showLoading();
-		},
-		// Returns collection of artifacts for the given month
-		// Skip any items that don't have thumbnail or don't fall on target month
-		_itemsInMonth: function(date) {
-			var targetDate = date.startingMonth();
-
-			ETDebug.log("Looking for artifacts in collection of " + this.items.size() + " items matching date: " + targetDate);
-			return this.items.findAll(function(i) {
-				return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) && (i.getEventDateObj().startingMonth() === targetDate);
-			});
-		},
-		_itemsToS: function(activeDate) {
-			var i, j, rows, numDisplay;
-			var s = '',
-				ul_class;
-			var item, artis = this._itemsInMonth(activeDate);
-
-			if ((numDisplay = Math.min(artis.length, this.MaxDisplayCount)) > 0) {
-				artis.randomize();
-			}
-			ETDebug.log("Displaying " + numDisplay + " artifacts for: " + activeDate);
-
-			for (i=0, j=0; i<numDisplay; i++) {
-				item = artis[i];
-				ETDebug.log("Adding artifact #" + i + ": type: " + item.type);
-
-				s += this.boxTemplate.evaluate({
-					id: item.getID(),
-					num: i,
-					style: 'artifact-thumbnail',
-					url: item.getURL(),
-					thumbnail_url: item.getThumbnailURL(),
-					title: item.getTitle(),
-					caption: item.getText()
-				});
-				// In rows of pixPerRow
-				if (((j+1) % this.pixPerRow) == 0) {
-					s += '<br/>';
-				}
-			}
-			return s;
-		},
-		_write: function(content) {
-			var c = content || '';
-			if (c === '' || this.items.length < 1) {
-				c = (div = $('artifact_info')) ? div.innertHTML : ''; //that.utils.blankArtifactImg;
-			}
-			this.parent.innerHTML = this.template.evaluate({
-				title: this.title,
-				artifacts: c
-			});
-		},
-		// Returns collection of artifacts for the given date
-		itemsInDate: function(date) {
-			ETDebug.log("Looking for artifacts in collection of " + this.items.size() + " items matching date: " + date);
-			var dateObj = date.toDate();
-			return this.items.findAll(function(i) {
-				return (i !== undefined) && (i.attributes.thumbnail_url !== undefined) && i.getEventDateObj().clearTime().equals(dateObj);
-			});
-		},
-		// Adds artifact event object to internal collection, returns 
-		// true if added.
-		addItem: function(item) {
-			// Skip artifacts with missing source or if already added
-			ETDebug.log("add artifact: " + item.type);
-			if ((item.getURL() == null) || this.contains(item)) {
-				ETDebug.log("not added");
-				return false;
-			}
-			this.items.push(item);
-			return true;
-		},
-		addItems: function(items) {
-			this.items.concat(items);
-		},
-		empty: function() {
-			this.items.clear();
-		},
-		// Returns true if items list contains item with the same source url
-		contains: function(item) {
-			return this.items.detect(function(i) {
-				return item.getURL() === i.getURL();
-			});
-		},
-		populate: function(activeDate) {
-			this._write(this._itemsToS(activeDate));
-		},
-		showLoading: function() {
-			this._write(this.loadingTemplate.evaluate({
-				type: " Artifacts"
-			}));
-			//	load_busy(this.parent);
-		},
-		updateTitle: function(title) {
-			this.title = title;
-			this._write();
-		}
-		/*
-		, randomize: function() {
-			var i, j, tmp, tmp_title;
-			var v = $$('li.visible-artifact-item');
-			var h = $$('li.hidden-artifact-item');
-			if (v.length === 0 || h.length === 0) {
-				return;
-			}
-
-			if (this.doRandomize) {
-				new PeriodicalExecuter(function(pe) {
-					if (v.length > 0 && h.length > 0) {
-						i = Math.floor(Math.random() * v.length);
-						j = Math.floor(Math.random() * h.length);
-						tmp = v[i]; // <a><img>...</a>
-						tmp_title = v[i].down().title;
-
-						v[i].pulsate({
-							pulses: 1,
-							duration: 1.5
-						});
-						// TODO: Fix me
-						// This is f'd up - title attibutes get lost, and we start seeing 
-						// a lot of duplicates in artifacts
-						ETDebug.log("Swapping artifact with html: " + h[j].innerHTML);
-						v[i].update(h[j].innerHTML);
-						if (h[j].down().title !== '') { // correct some weirdness
-							ETDebug.log("setting title attribute: " + h[j].down().title);
-							v[i].down().writeAttribute({
-								title: h[j].down().title
-							});
-						}
-						ETDebug.log("Swapping artifact with html: " + tmp.innerHTML);
-						h[j].update(tmp.innerHTML);
-						//ETDebug.log("setting title attribute: " + tmp_title);
-						//h[j].down().writeAttribute({title: tmp_title});
-					}
-				}.bind(this), this.timeOut);
-			}
-		}
-		*/
-	});
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -1277,10 +1024,14 @@ var ETimeline = function(opts) {
 		opts = Object.extend({no_cache: true}, opts||{});
 		that.base.reload(opts);
 	};
+	var getBase = function() {
+		return that.base;
+	}
 	// Set public methods now
 	me.draw = draw;
 	me.reload = reload;
 	me.api = api;
+	me.getBase = getBase;
 
 	// Return 'class' object with only public methods exposed.
 	return me;
