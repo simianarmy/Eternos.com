@@ -20,7 +20,9 @@ class AccountSetupController < ApplicationController
       @content_page = 'backup_sources'
     elsif @active_step == 2
       # Get list of facebook ids of friends that have joined after invites from this user
-      @already_invited = Member.find_all_by_facebook_referrer(current_user.facebook_id).map(&:facebook_id)
+      @already_invited = current_user.facebook_id ? 
+        Member.find_all_by_facebook_referrer(current_user.facebook_id).map(&:facebook_id).compact : []
+
       # This should be the invite page now..
       @content_page = 'invite_others'
     else 
