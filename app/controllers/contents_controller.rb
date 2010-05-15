@@ -93,6 +93,7 @@ class ContentsController < ApplicationController
     @content = Content.factory(params[:content])
     @content.owner = current_user
     
+    session[:refresh_images] = true
     respond_to do |format|
       # Must use 'any' for compatibility with IE text/* accept headers
       format.any {
@@ -127,6 +128,7 @@ class ContentsController < ApplicationController
     
     respond_to do |format|
       if @content.update_attributes(params[:content])
+        session[:refresh_images] = true
         flash[:notice] = "Updated!"
         format.html {       
           redirect_to content_path(@content) 

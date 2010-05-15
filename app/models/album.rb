@@ -4,6 +4,12 @@ class Album < ActiveRecord::Base
   
   named_scope :include_photos, :include => :photos
   
+  acts_as_restricted :owner_method => :owner
+  acts_as_archivable :on => :created_at
+  acts_as_time_locked
+  acts_as_taggable
+  acts_as_commentable
+  
   serialize_with_options(:gallery) do
     methods :cover_photo_url
     except :id, :cover_id
@@ -18,6 +24,7 @@ class Album < ActiveRecord::Base
   end
   
   alias_attribute :num_items, :size
+  alias_attribute :start_date, :created_at
   
   # Returns content Photo object for the album cover
   def cover_photo
@@ -29,4 +36,5 @@ class Album < ActiveRecord::Base
   def cover_photo_url
     cover_photo.url rescue nil
   end
+  
 end
