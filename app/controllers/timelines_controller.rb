@@ -7,7 +7,7 @@ class TimelinesController < MemberHomeController
   before_filter :login_required, :except => [:search]
   require_role ['Guest', 'Member'], :for_all_except => :search
   
-  ssl_allowed :show, :search, :tag_cloud
+  ssl_required :blank # Dummy action so that all actions forced to non-ssl
   
   def guest_index
     find_host
@@ -133,8 +133,17 @@ class TimelinesController < MemberHomeController
   def blank
   end
   
-  private
-    
+  protected
+  
+  # # Override to make sure member_home does not use ssl
+  #   def ssl_required? 
+  #     if action_name == 'show'
+  #       false
+  #     else
+  #       super
+  #     end
+  #   end
+  
   def find_host
     @host = current_user.get_host
   end

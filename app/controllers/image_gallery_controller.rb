@@ -4,6 +4,8 @@ class ImageGalleryController < MemberHomeController
   layout nil
   skip_before_filter :load_member_home_presenter
   
+  ssl_allowed :show, :albums
+  
   def show
     @title = current_user.first_name + "'s Image Gallery"
     
