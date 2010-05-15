@@ -93,7 +93,8 @@ class ContentsController < ApplicationController
     @content = Content.factory(params[:content])
     @content.owner = current_user
     
-    session[:refresh_images] = true
+    force_cache_reload!(:images, :timeline)
+    
     respond_to do |format|
       # Must use 'any' for compatibility with IE text/* accept headers
       format.any {

@@ -83,7 +83,7 @@ class TimelinesController < MemberHomeController
       filters = parse_search_filters params[:filters]
       Rails.logger.debug "searching with params => #{params.inspect}"
       Rails.logger.debug "searching with filters => #{filters.inspect}"
-      refresh = filters[:no_cache] || session[:refresh_timeline] #|| current_user.refresh_timeline?
+      refresh = filters[:no_cache] || force_cache_reload?(:timeline) #|| current_user.refresh_timeline?
       uid = current_user ? current_user.id : 0
       md5 = Digest::MD5.hexdigest(request.url)
       
@@ -93,7 +93,7 @@ class TimelinesController < MemberHomeController
         }
         #Rails.logger.debug "Timeline search response = #{@response.inspect}"
       }
-      session[:refresh_timeline] = nil
+      use_cache!(:timeline)
     end
     respond_to do |format|
       format.js {

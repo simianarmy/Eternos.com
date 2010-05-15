@@ -28,5 +28,6 @@ ASSET_HOST              = "dev.eternos.com"
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
+config.cache_store = nil
 
-  config.gem 'rspec-rails', :version => '>= 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+config.gem 'rspec-rails', :version => '>= 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))

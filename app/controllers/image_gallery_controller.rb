@@ -17,13 +17,14 @@ class ImageGalleryController < MemberHomeController
     # Don't know how to sort by polymorhphic association column in named_scope,
     # so sort by album date (descending) manually
       
-    albums = Rails.cache.fetch("albums:#{current_user.id}", :force => session[:refresh_images], :expires => 1.hour) { 
+    albums = Rails.cache.fetch("albums:#{current_user.id}", :force => force_cache_reload?(:images), :expires => 1.hour) { 
       current_user.contents.photos.collections.map(&:collection).compact.uniq.reject { |al| 
           (al.owner != current_user) || (al.num_items == 0) || al.name.nil?
         }.sort {|a,b| b.start_date <=> a.start_date}
-        
       #s.id_eq(params[:album_id].split(',')) if params[:album_id]
     }
+    use_cache!(:images)
+    
     Rails.logger.debug "Albums: #{albums.map(&:name)}" if albums
     # Weird json conversion required b/c calling to_json(:gallery) on an array doesn't work
     albums_str = albums.map{|a| a.to_json(:gallery)}.join(',')

@@ -220,6 +220,20 @@ class ApplicationController < ActionController::Base
     @hide_feedback = true
   end
   
+  # Memcache helpers
+  
+  def force_cache_reload?(key)
+    session["nocache_#{key.to_s}"]
+  end
+  
+  def force_cache_reload!(*keys)
+    keys.each { |k| session["nocache_#{k.to_s}"] = true }
+  end
+  
+  def use_cache!(key)
+    session["nocache_#{key.to_s}"] = nil
+  end
+  
   # From using helpers in controller
   # http://snippets.dzone.com/posts/show/1799
   # Need to call number_helper ActionView method from within

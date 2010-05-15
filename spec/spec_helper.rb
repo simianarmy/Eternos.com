@@ -177,7 +177,7 @@ end
   describe "a mocked member is signed in", :shared => true do
     include UserSpecHelper
     before( :each ) do
-      login_as @user = @member = mock_model(Member, :has_role_requirement? => true)
+      login_as @user = @member = mock_model(Member, :has_role_requirement? => true, :role => stub('Role'))
     end
   end
 

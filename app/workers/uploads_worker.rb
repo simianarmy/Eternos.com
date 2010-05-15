@@ -3,21 +3,18 @@
 # storage cloud.  Currently Amazon S3
   
 require 'benchmark'
+require 'workling_helper'
 
 class UploadsWorker < Workling::Base
+  include WorklingHelper
+  
   # content (media) uploader to S3
   def upload_content_to_cloud(payload)
     logger.debug "Upload worker got payload #{payload.inspect}"
-    begin
+    return unless content = safe_find {
       klass = payload[:class]
-      content = klass.constantize.find(payload[:id])
-    rescue ActiveRecord::StatementInvalid => e
-      # Catch mysql has gone away errors
-      if e.to_s =~ /away/
-        ActiveRecord::Base.connection.reconnect! 
-        retry
-      end
-    end
+      klass.constantize.find(payload[:id])
+    }
     
     begin
       content.start_cloud_upload!
