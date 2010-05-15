@@ -14,6 +14,11 @@ module ContentHelper
     "/javascripts/timeline/icons/"
   end
   
+  # Helper to display relative protocol s3 urls for paperclip file paths
+  def s3_url(path)
+    S3Buckets::MediaBucket.url(path)
+  end
+  
   # Label name for content's 'taken_at' attribute
   def content_creation_date_label(object)
     case object

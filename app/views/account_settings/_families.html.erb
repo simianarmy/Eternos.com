@@ -45,7 +45,7 @@
 		        <td class="coll-form6" valign="top">Photo</td>
 			    	<td class="coll-form2" valign="top">:</td>
 			    	<td class="coll-form3" valign="top">
-			    	<%= image_tag(family.person.photo(:thumb)) if family.try(:person) && family.person.photo_file_name %>
+			    	<%= image_tag(s3_url(family.person.photo.path(:thumb))) if family.try(:person) && family.person.photo_file_name %>
 		      </tr>
 					<tr>
 		        <td class="coll-form6" valign="top"></td>
