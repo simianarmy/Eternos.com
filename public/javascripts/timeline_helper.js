@@ -79,6 +79,7 @@ var ETimeline = function(opts) {
 				events: this.content
 			});
 			ETUI.createEventListItemObservers();
+			ETUI.createSearchClickHandlers();
 		},
 		populate: function(content) {
 			this.content = content || '';
@@ -880,13 +881,21 @@ var ETimeline = function(opts) {
 		},
 		// Search events prior to current display month
 		searchClosestEvents: function(past_or_future) {
+			var searchDate = this.centerDate.clone();
+			
 			this.seeking = past_or_future;
 
+			// Adjust search dates to prevent getting the same results
+			if (past_or_future == 'future') {
+				searchDate.add(1).days();
+			} else {
+				searchDate.add(-1).days();
+			}
 			// Search for nearest event
 			// If we get a result, do a full search on that result's date
 			this.updateEvents({
-				startDate: this.centerDate,
-				endDate: this.centerDate,
+				startDate: searchDate,
+				endDate: searchDate,
 				range: false,
 				onComplete: this.onProximitySearchSuccess,
 				options: {

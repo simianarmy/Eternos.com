@@ -213,7 +213,7 @@ var ETemplates = function() {
 			return new Template('tl_details/#{memberId}/#{eventType}/#{eventIds}');
 		} (),
 		noEvents: function() {
-			return new Template('<div class="event_list_group_even">' + 'No events for this month.</div>');
+			return new Template('<div class="event_list_group_even">No events for this month. <p><br/><a id="prev_event_search" href="javascript: void(0);">Show events before this month</a> | <a id="next_event_search" href="#">Show events after this month</a></div>');
 		} ()
 	};
 	that.tooltipTemplates = {
@@ -288,7 +288,7 @@ var ETemplates = function() {
 		return $("evli_" + id);
 	} ();
 	that.albumViewLinkTemplate = function(url) {
-		return new Template('<br/><a href="#{url}" class="lightview" rel="iframe" title=":: Photo Album :: topclose: true, width: 650, height: 650">View All</a>');
+		return new Template('<br/><a href="#{url}" class="lightview" rel="iframe" title=":: Photo Album :: topclose: true, width: 800, height: 800">View All</a>');
 	} ();
 	that.tooltipTemplateID = function(id, type) {
 		return type + '-evli_' + id;

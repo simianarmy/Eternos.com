@@ -22,6 +22,11 @@ class Photo < Content
       :conditions => ["taken_at >= ?", date] 
     }
   }
+  # Override 'sorted' named_scope to use custom archive attribute
+  named_scope :sorted, :order => 'taken_at'
+  named_scope :sorted_desc, :order => 'taken_at DESC'
+  named_scope :with_thumbnails, :include => :thumbnails
+  
   # workaround for shitty searchlogic code
   named_scope :not_deleted, :conditions => {:deleted_at => nil}
   

@@ -99,7 +99,7 @@ class TimelineSearch
     # use query method on searchlogic object.
     # Note that Photo needs a special not_deleted named_scope since using
     # deleted_at_null in the chain crashes
-    date_query Photo.user_id_eq(@member.id).not_deleted.searchlogic
+    date_query Photo.user_id_eq(@member.id).not_deleted.with_thumbnails.searchlogic
   end
   
   def get_emails

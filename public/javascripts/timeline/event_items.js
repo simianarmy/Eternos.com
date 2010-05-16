@@ -192,7 +192,9 @@ var ETLEventItems = Class.create({
 						url: '/image_gallery?album_id=' + encodeURIComponent(collectionIds.uniq().join(','))
 					});
 				} else {
-					html += '<br/><a href="' + this._getLinkUrl() + '" class="lightview" rel="iframe">View All</a>';
+					html += ETemplates.albumViewLinkTemplate.evaluate({
+						url: this._getLinkUrl()
+					});
 				}
 			}
 		}

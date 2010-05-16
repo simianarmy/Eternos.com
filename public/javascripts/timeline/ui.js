@@ -180,16 +180,16 @@ var ETUI = function() {
 
 			return createTooltip(element, event.getEventID(), event.isInstant() ? ETemplates.timelineTooltipOptions() : ETemplates.timelineDurationTooltipOptions());
 		},
-		createSearchClickHandlers: function(timeline) {
+		createSearchClickHandlers: function() {
 			// Setup previous, future events link click handlers when there are no events to display
 			if ((el = $('prev_event_search')) != null) {
 				el.observe('click', function(e) {
-					timeline.searchClosestEvents('past');
+					ETERNOS.timeline.getBase().searchClosestEvents('past');
 				});
 			}
 			if ((el = $('next_event_search')) != null) {
 				el.observe('click', function(e) {
-					timeline.searchClosestEvents('future');
+					ETERNOS.timeline.getBase().searchClosestEvents('future');
 				});
 			}
 		}
