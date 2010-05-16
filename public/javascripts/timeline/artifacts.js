@@ -78,8 +78,11 @@ var ETLArtifactSection = Class.create({
 		} else {
 			s += '<br/>';
 		}
-		s += 'Click any artifact to launch slideshow';
-		
+		if (numDisplay > 0) {
+			s += 'Click any artifact to launch slideshow';
+		} else {
+			s = 'No artifacts for this time period';
+		}
 		return s;
 	},
 	_write: function(content) {

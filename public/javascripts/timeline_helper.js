@@ -164,7 +164,7 @@ var ETimeline = function(opts) {
 					dateItems.push(events); // Save all items grouped by date
 					
 					// Skip image events - these get added by _getGroupImagesHtml()
-					if (!events.isArtifacts()) {
+					if (true || !events.isArtifacts()) {
 						this.items.push(events);
 						itemsHtml += events.populate();
 					}

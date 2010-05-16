@@ -84,17 +84,19 @@ var ETLEventItems = Class.create({
 		return this.detailsLinkRel;
 	},
 	_getArtifactItemHtml: function() {
+		/*
 		return ETemplates.eventListTemplates.eventItemWithTooltip.evaluate({
 			list_item_id: this._getItemID(),
 			b_title: this.title,
 			title: this.getTooltipTitle(),
 			link_url: this._getLinkUrl(),
 			link_rel: this._getLinkRel()
-			/*
-      hidden_items: other_items,
-      tt_content: this.getTooltipContents()
-*/
+			
+      //hidden_items: other_items,
+      //tt_content: this.getTooltipContents()
 		});
+		*/
+		return this._getInlineItemHtml();
 	},
 	_getInlineItemHtml: function() {
 		return ETemplates.eventListTemplates.eventGroupItem.evaluate({
