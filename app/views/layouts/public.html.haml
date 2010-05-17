@@ -16,10 +16,11 @@
     /- stylesheet 'screen', 'application', 'reset-fonts-grids'
     - stylesheet 'new_design/style.css'
     = yield(:head)
-    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", "lowpro", "defaultvalueactsashint", "behaviors", "facebook", :cache => "cache/public"
-    = javascript_include_tag "flowplayer.js"
     /- = yield(:js_libs)
     /- = yield(:javascript)
+    :javascript
+      var FlowplayerSwfUrl = '#{video_player_swf_url}';
+      var FLOWPLAYER_PRODUCT_KEY = '#{FLOWPLAYER_PRODUCT_KEY}';
   %body
     .header
       %div
@@ -31,6 +32,8 @@
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
 
+    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery"
+    = javascript_include_tag "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", "lowpro", "defaultvalueactsashint", "behaviors", "facebook", :cache => "cache/public"
     = fb_connect_javascript_tag
     = init_fb_connect "XFBML"
 
