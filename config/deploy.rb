@@ -169,9 +169,14 @@ CUTYCAPT
   task :symlink_sphinx_indexes, :roles => [:app] do
     run "ln -nfs #{shared_path}/db/sphinx #{current_path}/db/sphinx"
   end
+  
+  task :minify_js, :roles => [:app] do
+    run "cd #{release_path} && rake js:min RAILS_ENV=#{stage}"
+  end
 end
 
 before "deploy:update_code", "deploy:stop_daemons"
+after "deploy:symlink_shared", "deploy:minify_js"
 after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:google_analytics"
 #after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons

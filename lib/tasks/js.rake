@@ -87,6 +87,15 @@ namespace :js do
         "#{lib_global_dir}behaviors.js",
         "#{lib_global_dir}facebook.js"
       ],
+      "#{lib_cache_dir}account_setup.js" => [
+        "#{lib_global_dir}prototype.js", 
+        "#{lib_global_dir}scriptaculous.js",
+        "#{lib_global_dir}effects.js",
+        "#{lib_global_dir}controls.js",
+        "#{lib_global_dir}application.js", 
+        "#{lib_global_dir}login.js", 
+        "#{lib_global_dir}account_setup.js"
+        ],
       "#{lib_cache_dir}tools.js" => [
         "#{lib_global_dir}prototype.js", 
         "#{lib_global_dir}scriptaculous.js",

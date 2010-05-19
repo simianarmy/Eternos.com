@@ -10,5 +10,10 @@
     %strong= pluralize(@results.size, 'result')
 %p
 #results-config
-#search-results= render :partial => 'result', :collection => @results
+
+#search-results
+  - if @results.any?
+    = render :partial => 'result', :collection => @results
+  - else
+    The search database is updated every 4 hours.  If you recently added some content, please wait a few hours and try again.
 #search-results-footer

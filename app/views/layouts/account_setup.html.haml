@@ -27,9 +27,6 @@
     - javascript 'application', 'login', 'account_setup'
     
     = yield(:head)
-    = yield(:js_libs)
-    /- FIX: Doesn't work when put at bottom of <body>
-    = yield(:javascript)
     / end bundle
   %body
     .header
@@ -64,6 +61,14 @@
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
 
+    - if @active_step <= 1
+      = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery"
+      :javascript
+        // Accordion  setup 
+        jQuery(function() { 
+          jQuery('#accordion').tabs('#accordion div.pane', {tabs: 'p', effect: 'slide', initialIndex: 0});
+        });
+    = javascript_include_tag "prototype", "scriptaculous", "effects", "controls", 'application', 'login', 'account_setup', :cache => "cache/account_setup"
     - if @facebook_session
       = fb_connect_javascript_tag
       = init_fb_connect "XFBML"
