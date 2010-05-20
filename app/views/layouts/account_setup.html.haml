@@ -10,7 +10,7 @@
     %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    = stylesheet_link_tag 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix', "lightview2.5.2.1/css/lightview", :cache => "cache/account_setup"
+    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix', "lightview2.5.2.1/css/lightview"
     <!--[if lte IE 7]>
     <link href="/css/styleie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->

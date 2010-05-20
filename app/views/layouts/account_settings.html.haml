@@ -10,7 +10,7 @@
     %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    = stylesheet_link_tag 'account_settings', 'application', 'new_design/members', 'new_design/misc-fix', 'scrollbar', 'datepicker', "lightview2.5.2.1/css/lightview", :cache => "cache/profile"
+    - stylesheet 'account_settings', 'application', 'new_design/members', 'new_design/misc-fix', 'scrollbar', 'datepicker', "lightview2.5.2.1/css/lightview"
     <!--[if lte IE 7]>
     <link href="/css/styleie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->
@@ -43,7 +43,8 @@
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
 
-    = javascript_include_tag "prototype", "scriptaculous", "effects", "controls", "slider", "scroller", "datepicker", "lightview2.5.2.1/js/lightview", 'application', 'cvi_busy_lib', "lowpro", "defaultvalueactsashint", "behaviors", "account_setup", "timezone_detector" , :cache => "cache/profile"
+    / Have to load this separately from cached js
+    = javascript_include_tag "prototype", "scriptaculous", "effects", "controls", "slider", "scroller", "datepicker", "lightview2.5.2.1/js/lightview", 'application', 'cvi_busy_lib', "lowpro", "defaultvalueactsashint", "behaviors", "account_setup", "timezone_detector" # :cache => "cache/profile"
     = fb_connect_javascript_tag
     = init_fb_connect "XFBML"
 
