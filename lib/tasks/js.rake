@@ -96,6 +96,23 @@ namespace :js do
         "#{lib_global_dir}login.js", 
         "#{lib_global_dir}account_setup.js"
         ],
+      "#{lib_cache_dir}profile.js" => [
+          "#{lib_global_dir}prototype.js", 
+          "#{lib_global_dir}scriptaculous.js",
+          "#{lib_global_dir}effects.js",
+          "#{lib_global_dir}controls.js",
+          "#{lib_global_dir}slider.js",
+          "#{lib_global_dir}scroller.js",
+          "#{lib_global_dir}datepicker.js",
+          "#{lib_global_dir}lightview2.5.2.1/js/lightview.js",
+          "#{lib_global_dir}application.js", 
+          "#{lib_global_dir}cvi_busy_lib.js",
+          "#{lib_global_dir}lowpro.js",
+          "#{lib_global_dir}defaultvalueactsashint.js",
+          "#{lib_global_dir}behaviors.js",
+          "#{lib_global_dir}account_setup.js",
+          "#{lib_global_dir}timezone_detector.js"
+        ],
       "#{lib_cache_dir}tools.js" => [
         "#{lib_global_dir}prototype.js", 
         "#{lib_global_dir}scriptaculous.js",

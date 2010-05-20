@@ -13,11 +13,9 @@
     /[if lte IE 6]
       = stylesheet_link_tag "new_design/styleie6.css"
 
-    /- stylesheet 'screen', 'application', 'reset-fonts-grids'
-    - stylesheet 'new_design/style.css'
+    = stylesheet_link_tag 'new_design/style.css', "lightview2.5.2.1/css/lightview", :cache => "cache/public"
     = yield(:head)
-    /- = yield(:js_libs)
-    /- = yield(:javascript)
+    
     :javascript
       var FlowplayerSwfUrl = '#{video_player_swf_url}';
       var FLOWPLAYER_PRODUCT_KEY = '#{FLOWPLAYER_PRODUCT_KEY}';

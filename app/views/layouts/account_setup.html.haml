@@ -10,21 +10,13 @@
     %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix'
+    = stylesheet_link_tag 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix', "lightview2.5.2.1/css/lightview", :cache => "cache/account_setup"
     <!--[if lte IE 7]>
     <link href="/css/styleie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->
     <!--[if lte IE 6]>
     <link href="/css/styleie6.css" rel="stylesheet" type="text/css" />
     <![endif]-->
-    
-    <!-- - FIX: Doesn't work when put at bottom of <body> -->
-    
-    - if @active_step <= 1
-      - load_jquery_prototype_compat_mode
-    - else
-      - load_prototype
-    - javascript 'application', 'login', 'account_setup'
     
     = yield(:head)
     / end bundle

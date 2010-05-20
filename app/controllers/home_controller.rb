@@ -14,7 +14,7 @@ class HomeController < ApplicationController
     
     # Serve Facebook app home page from here
     if request_comes_from_facebook?  
-      #ensure_authenticated_to_facebook
+      ensure_authenticated_to_facebook
         
       # Check for referring facebook id
       #return false unless facebook_session
