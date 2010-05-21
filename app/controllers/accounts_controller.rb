@@ -104,7 +104,7 @@ class AccountsController < ApplicationController
           render :action => 'billing'
         else
           # login & redirect to account setup
-          activate_and_redirect_to account_setup_url
+          activate_and_redirect_to account_setup_url and return false
         end
       else
         # Force logout for email confirmation requirement
@@ -123,17 +123,21 @@ class AccountsController < ApplicationController
     
     @user.registration_required = AppConfig.email_registration_required 
     @user.password = @user.password_confirmation = "foo man choo 000"
+    @user.facebook_session_key = params[:fb_sig_session_key]
     @user.build_profile(params[:user][:profile])
     @success = true
     @account.name = @user.full_name
 
     if @success && @account.save
       @user.register!
+      @user.activate! 
       flash[:notice] = "Account created!"
 
-      # Set session so user is logged in for redirect
+      # Set session so user is logged in for redirect...yeah right this is Facebook we're dealing iwth
       set_facebook_connect_session
-      activate_and_redirect_to account_setup_url and return false
+      UserSession.create
+      activate_and_redirect_to login_url and return false
+      #fb_session.secure_with!(@user.facebook_session_key, @user.facebook_id, 1.hour.from_now)
     else
       respond_to do |format|
         @terms_accepted = true
@@ -351,7 +355,6 @@ class AccountsController < ApplicationController
 
   def activate_and_redirect_to(redirect_path)
     @user.activate! # unless @user.email_registration_required?
-    UserSession.create # Hail Mary
     flash_redirect "Your account has been created.", redirect_path
   end
 
