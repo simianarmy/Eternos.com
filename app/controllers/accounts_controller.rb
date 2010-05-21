@@ -130,7 +130,6 @@ class AccountsController < ApplicationController
 
     if @success && @account.save
       @user.register!
-      @user.activate! 
       flash[:notice] = "Account created!"
 
       # Set session so user is logged in for redirect...yeah right this is Facebook we're dealing iwth
