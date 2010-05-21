@@ -263,24 +263,27 @@ class User < ActiveRecord::Base
 
     if save
       create_member_associations
-      # Must spawn as thread or will crash in Passenger
-      spawn(:method => :thread) do
-        begin
-          UserMailer.deliver_activation(self) 
-        rescue
-          logger.error "Unable to send member activation email! " + $!
-        end
-      end
     end
   end
   
   def recently_activated?
     @activated
   end
-  
+
   def initialize_address_book
     create_address_book(:first_name => first_name, :last_name => last_name) unless address_book
     true # Required in order for callback chain to continue
+  end
+
+  def send_activation_mail
+    # Must spawn as thread or will crash in Passenger
+    spawn(:method => :thread) do
+      begin
+        UserMailer.deliver_activation(self) 
+      rescue
+        logger.error "Unable to send member activation email! " + $!
+      end
+    end
   end
   
   # BULLSHIT RAILS

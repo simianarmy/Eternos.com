@@ -1,0 +1,47 @@
+!!!
+%html{html_attrs('en'), 'xmlns:fb' => "http://www.facebook.com/2008/fbml"}
+  %head
+    %link{:rel=>"shortcut icon", :type=>"image/vnd.microsoft.icon", :href=>"#{image_path 'favicon.ico'}"}
+    %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
+    %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
+    %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
+    %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
+    %meta{:name=>"description", :content=>"#{meta_descriptions}"}
+    %title= "Eternos Members - " + h(yield(:title) || "Uploader")
+
+
+    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'mementos', "lightview2.5.2.1/css/lightview", 'soundmanager-ui'
+    
+    - javascript 'mementos/editor', 'dragdropextra'
+    - use_busy
+    - use_scrollable
+    - use_flashplayer
+    - use_soundmanager
+    - use_wysiwyg
+    
+    = yield(:head)
+    = yield(:js_libs)
+    /- FIX: Doesn't work when put at bottom of <body>
+    = yield(:javascript)
+    / end bundle
+  %body
+    .header
+      %div
+        = render :partial => 'shared/header_logout'
+    
+        = link_to((image_tag 'logo.png', :border => '0'),  member_home_path)
+        = render :partial => 'layouts/member_tabs'
+    
+    / start content
+    #content.page-content.login1
+      %fieldset
+
+        / start sub content
+        / Right content
+        .login1_right.login1-mid.login2-mid
+          = yield
+        / end sub content
+    / end content
+          
+    = render :partial => 'shared/site_footer' unless @hide_footer
+    = render :partial => 'shared/get_satisfaction' unless @hide_feedback

@@ -1,8 +1,8 @@
 <style type="text/css">
 	.eternos { width: 777px; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #666666;}
-	.eternos .header { background: url(<%= image_path "header.jpg" %>) no-repeat; width: 777px; height: 101px;}
+	.eternosZZ .header { background: url(<% image_path "header.jpg" %>) no-repeat; width: 777px; height: 101px;}
 	.eternos FIELDSET { margin: 0; padding: 0; border: none;}
-	.eternos FIELDSET .left { width: 259px; background: url(<%= image_path "bg-left.gif" %>) no-repeat; float: left;}
+	.eternos FIELDSET .left { width: 259px; background: url(<% image_path "bg-left.gif" %>) no-repeat; float: left;}
 	.eternos FIELDSET .left #signup { margin: 115px 0 57px -14px; position: relative;}
 	
 	.eternos FIELDSET .left .fan-button { margin-left: 86px; color: #02419E; display: block;}
@@ -25,7 +25,7 @@
 	.eternos FIELDSET .right FORM INPUT[type=password] { background: url(<%= image_path "bg-input.gif" %>) repeat-x; border: 1px solid #C6C6C6; width: 246px; height: 20px; padding: 4px; font-family: Arial, Helvetica, sans-serif;}
 	.eternos FIELDSET .right FORM SELECT { padding: 2px; border: 1px solid #C6C6C6; font-family: Arial, Helvetica, sans-serif;}
 	.eternos FIELDSET .right FORM INPUT[type=submit] { background: url(<%= image_path "bg-button.gif" %>); width: 197px; height: 50px; border: none; cursor: pointer; color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #ffffff;}
-	.eternos FIELDSET .right H4 { background: url(<%= image_path "bg-h4.gif" %>); width: 458px; height: 57px; font-size: 18px; color: #02419E; margin: 0; padding: 20px 0 0 35px;}
+	.eternos FIELDSET .right H4 { background: url(<% image_path "bg-h4.gif" %>); width: 458px; height: 57px; font-size: 18px; color: #02419E; margin: 0; padding: 20px 0 0 35px;}
 
   .eternos .footer { background: url(<%= image_path "footer-icon.gif" %>) no-repeat top left; padding-left: 20px;}
 	.eternos .footer A { color: #02419E; text-decoration: none;}
@@ -33,10 +33,10 @@
 </style>
 <script type="text/javascript" src="http://static.ak.connect.facebook.com/connect.php/en_US"></script>
 <div class="eternos">
-	<div class="header"><%= image_tag "header.jpg" %></div>
+	<div class="header"><% image_tag "header.jpg" %></div>
 	<fieldset class="content">
 		<div class="left">
-			<%= image_tag "signup.png", :id => "signup" %>
+			<% image_tag "signup.png", :id => "signupZ" %>
 			
       <div id="fanbtn">
       <fb:iframe height="60" scrolling="no" frameborder="0" src="http://www.facebook.com/connect/connect.php?id=82855842117&connections=0&stream=0" allowtransparency="true"></fb:iframe>
@@ -51,6 +51,9 @@
 				<%= image_tag "icon-picasa.gif" %>
 				<%= image_tag "icon-wordpress.gif" %>
 			</p>
+			<p>
+			<a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=apps.facebook.com/eternosdev"><img width="115" height="32" border="0" src="http://images.scanalert.com/meter/beta.eternos.com/12.gif" alt="McAfee Secure sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;"></a>
+			<p/>
 			<ul>
 				<li>Automatic and daily backup of Facebook, Twitter, Gmail, Wordpress, Tumblr (any RSS), and Picasa </li>
 				<li>Sets all your online activity to a easy to navigate timeline</li>
@@ -66,7 +69,7 @@
         
 				<%= render :partial => 'accounts/fb_short_form', :locals => {:plan => AppConfig.default_plan} %>
 	      
-				<h4>Our mission is to provide our users with tools that allow for easy chronicling of their life and times.</h4>
+				<h4></h4>
 		</div>	
 	</fieldset>
 </div>

@@ -276,7 +276,7 @@ class ApplicationController < ActionController::Base
     load_facebook_connect
     #set_facebook_session
     create_facebook_session
-    
+    Rails.logger.debug "*** create_facebook_session returned with #{@facebook_session.inspect}"
     #ensure_application_is_installed_by_facebook_user
     
     # If user is logged in to facebook but not logged in using FB Connect,
