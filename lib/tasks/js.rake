@@ -70,11 +70,12 @@ namespace :js do
 
     lib_cache_dir = 'public/javascripts/cache/'
     lib_global_dir = 'public/javascripts/'
-    jquery_global_dir = 'public/javascripts/jQuery/'
 
     # list of library js to minify by namespace
     collection = {
       "#{lib_cache_dir}public.js" => [
+        "#{lib_global_dir}jQuery/jquerytools-1.1.2.min.js", 
+        "#{lib_global_dir}application_jquery.js",
         "#{lib_global_dir}prototype.js", 
         "#{lib_global_dir}scriptaculous.js",
         "#{lib_global_dir}effects.js",

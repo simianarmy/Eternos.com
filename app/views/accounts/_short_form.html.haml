@@ -25,9 +25,9 @@
 
 #facebook-signup
   %p
-    %strong Or sign up with your Facebook account
-    %p= fb_login_and_redirect(new_account_url(:plan => AppConfig.default_plan, :fb => true, :protocol => 'https'), :size => :medium, :background => :white, :length => :short)
-    /- <a href="#" onclick="FB.Connect.requireSession(); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"><span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Signup with Facebook</span></a>
+  %strong Or sign up with your Facebook account
+  %p= fb_login_and_redirect(new_account_url(:plan => AppConfig.default_plan, :fb => true, :protocol => 'https'), :size => :medium, :background => :white, :length => :short)
+  -# <a href="#" onclick="FB.Connect.requireSession(); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"><span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Signup with Facebook</span></a>
 %p.home01
   %em *By proceeding, you confirm that your are over 13 years of age and accept the 
   = link_to 'Privacy', privacy_about_path, :target => "_new"

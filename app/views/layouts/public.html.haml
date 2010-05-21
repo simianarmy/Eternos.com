@@ -13,6 +13,7 @@
     /[if lte IE 6]
       = stylesheet_link_tag "new_design/styleie6.css"
 
+    - stylesheet 'new_design/style.css'
     = yield(:head)
     
     :javascript
@@ -29,8 +30,7 @@
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
 
-    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery"
-    = javascript_include_tag "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", "lowpro", "defaultvalueactsashint", "behaviors", "facebook", :cache => "cache/public"
+    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", "lowpro", "defaultvalueactsashint", "behaviors", "facebook", :cache => "cache/public"
     = fb_connect_javascript_tag
     = init_fb_connect "XFBML"
 

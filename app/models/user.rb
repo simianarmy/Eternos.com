@@ -135,6 +135,7 @@ class User < ActiveRecord::Base
     Facebooker::User.register([users])
     self.email_hash = Facebooker::User.hash_email(email)
     save(false)
+    true
   end
   
   def facebook_user?

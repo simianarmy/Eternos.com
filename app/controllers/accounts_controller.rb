@@ -120,16 +120,17 @@ class AccountsController < ApplicationController
   # Create account from the Facebook app page form
   def fb_create
     Rails.logger.debug "IN FACEBOOK CREATE FOR USER #{@user.inspect}"
-    @user.registration_required = false
+    @user.registration_required = true
     @user.password = @user.password_confirmation = "foo man choo 000"
     @user.build_profile(params[:user][:profile])
     @success = true
     @account.name = @user.full_name
 
     if @success && @account.save
-      @user.register!
-      flash[:notice] = "Account created!  You can now login with Facebook Connect."
-      activate_and_redirect_to account_setup_url and return false
+      render :action => 'create'
+      #@user.register!
+      #flash[:notice] = "Account created!  You can now login with Facebook Connect."
+      #activate_and_redirect_to account_setup_url and return false
     else
       respond_to do |format|
         @terms_accepted = true
