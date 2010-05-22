@@ -35,9 +35,10 @@ class UserSessionsController < ApplicationController
         #redirect_to member_home_path
       end
     else
+      set_facebook_connect_session
       if facebook_session 
-        if Member.from_facebook(facebook_session.user.id)
-          UserSession.create
+        if user = User.find_by_fb_user(facebook_session.user)
+          UserSession.create(user)
           redirect_to member_home_url and return false
         elsif !params['commit']
           redirect_to new_account_path(:plan => 'Free') and return false
