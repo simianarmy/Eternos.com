@@ -132,10 +132,10 @@ class AccountsController < ApplicationController
       @user.register!
       flash[:notice] = "Account created!"
 
-      # Set session so user is logged in for redirect...yeah right this is Facebook we're dealing iwth
-      set_facebook_connect_session
-      UserSession.create
-      activate_and_redirect_to login_url and return false
+      # Try to get Authlogic to log user in automatically before redirecting
+      #@user.reset_perishable_token!
+      UserSession.create(@user, true) # Login & set remember me
+      activate_and_redirect_to member_home_url and return false
       #fb_session.secure_with!(@user.facebook_session_key, @user.facebook_id, 1.hour.from_now)
     else
       respond_to do |format|
