@@ -184,6 +184,7 @@ ActionController::Routing::Routes.draw do |map|
     
   # FUCKING BULLSHIT
   #map.facebook_home '', :controller => 'facebook', :action => 'index', :conditions=>{:canvas=>true}  
+  map.facebook_home '/', :controller => 'home', :action => 'index'
   map.home ':page', :controller => 'home', :action => 'show'
   
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
