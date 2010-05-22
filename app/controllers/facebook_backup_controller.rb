@@ -5,8 +5,7 @@ require 'facebook_desktop'
 class FacebookBackupController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  before_filter :load_facebook_desktop
-  before_filter :load_session
+  before_filter :set_facebook_desktop_session
   before_filter :load_backup_source
   layout 'dialog'
   
