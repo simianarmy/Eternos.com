@@ -31,19 +31,23 @@ class FacebookBackupController < ApplicationController
   # secret
   # uid
   def authorized
-    RAILS_DEFAULT_LOGGER.debug "#{self.class.to_s}:authorized called by Facebook:\n"
-    fb_session = ActiveSupport::JSON.decode(params[:session])
-    RAILS_DEFAULT_LOGGER.debug "Session json = " + fb_session.inspect
+    Rails.logger.debug "#{self.class.to_s}:authorized called by Facebook:\n"
+    begin
+      fb_session = ActiveSupport::JSON.decode(params[:session])
+      Rails.logger.debug "Session json = " + fb_session.inspect
     
-    if fb_session['uid']
-      current_user.update_attribute(:facebook_uid, fb_session['uid'])
-      current_user.set_facebook_session_keys(fb_session['session_key'], fb_session['secret'])
-      if has_permissions?
-        save_authorization 
-        flash[:notice] = "Facebook account authorized for backup!"
-      else
-        flash[:error] = "You must grant ALL requested permissions to the Eternos Backup application."
+      if fb_session['uid']
+        current_user.update_attribute(:facebook_uid, fb_session['uid'])
+        current_user.set_facebook_session_keys(fb_session['session_key'], fb_session['secret'])
+        if has_permissions?
+          save_authorization 
+          flash[:notice] = "Facebook account authorized for backup!"
+        else
+          flash[:error] = "You must grant ALL requested permissions to the Eternos Backup application."
+        end
       end
+    rescue Exception => e
+      Rails.logger.warn "Exception in FacebookBackupController:authorized: " + e.message
     end
     
     respond_to do |format|
