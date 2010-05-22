@@ -13,6 +13,8 @@
 %p{:align=>"right"}
   = check_box_tag 'user_session[remember_me]'
   Remember me
-%p 
+%p{:style=>"margin-left: 73px;"}
   or login with Facebook connect
-= authlogic_facebook_login_button
+  = render :partial => 'shared/facebook_connect_button'
+  /= authlogic_facebook_login_button
+  

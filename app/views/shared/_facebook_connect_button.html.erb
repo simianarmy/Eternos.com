@@ -1,0 +1,11 @@
+<%= form_tag({:controller => 'user_sessions', :protocol => 'https', :only_path => false}, 
+  :id => 'connect_to_facebook_form') %>
+<a id="fb-login" href="#" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"><span id="RES_ID_fb_login_text" class="FBConnectButton_Text">LOGIN WITH FACEBOOK</span></a>
+
+<script>
+document.getElementById('fb-login').onclick = function() {
+  FB.Connect.requireSession(function(response) {
+    $('connect_to_facebook_form').submit();
+  });
+};
+</script>

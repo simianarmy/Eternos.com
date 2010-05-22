@@ -25,4 +25,5 @@ module FacebookHelper
     
     #<a href="#" onclick="FB.Connect.requireSession(); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"><span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Sync with Facebook</span></a>
   end
+  
 end

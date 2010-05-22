@@ -171,7 +171,8 @@ text-align:left;
 .login P { clear: both;}
 .login #flash_error { font-size: 11px; color: #FF0000; font-weight: bold;}
 .login A { color: #02419E; font-weight: normal; text-transform: capitalize; text-decoration: none;}
-.login #RES_ID_fb_login_image { margin-left: 73px} 
+.login #RES_ID_fb_login_image { margin-left: 73px;}
+.login #fb-login { margin-left: 73px;}
 
 
 

@@ -6,7 +6,7 @@
     .login
       - if params[:home_login]
         - flash.discard
-      -else
+      - elsif flash[:notice] && (flash[:notice] !~ /must be logged in/)
         = show_flash_messages
       = custom_error_messages_for :user
       = render :partial => 'shared/login_form', :locals => {:user_session => @user_session}
