@@ -104,6 +104,7 @@ class AccountsController < ApplicationController
           render :action => 'billing'
         else
           # login & redirect to account setup
+          UserSession.create(@user, true)
           activate_and_redirect_to account_setup_url and return false
         end
       else
@@ -132,10 +133,8 @@ class AccountsController < ApplicationController
       @user.register!
       flash[:notice] = "Account created!"
 
-      # Try to get Authlogic to log user in automatically before redirecting
-      #@user.reset_perishable_token!
       UserSession.create(@user, true) # Login & set remember me
-      activate_and_redirect_to member_home_url and return false
+      activate_and_redirect_to account_setup_url and return false
       #fb_session.secure_with!(@user.facebook_session_key, @user.facebook_id, 1.hour.from_now)
     else
       respond_to do |format|

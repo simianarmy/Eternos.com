@@ -50,7 +50,7 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    current_user_session.destroy
+    current_user_session.try(:destroy)
     redirect_to new_user_session_url
   end
 end
