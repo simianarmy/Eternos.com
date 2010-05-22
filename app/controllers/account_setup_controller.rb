@@ -1,11 +1,12 @@
 # $Id$
 
 class AccountSetupController < ApplicationController
+  before_filter :set_facebook_session
   before_filter :login_required
   require_role "Member"
   
   before_filter :load_completed_steps
-  before_filter :load_facebook_app_session
+#  before_filter :load_facebook_app_session
   before_filter :load_presenter
   
   ssl_required :all

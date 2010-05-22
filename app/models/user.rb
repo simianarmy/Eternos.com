@@ -100,11 +100,9 @@ class User < ActiveRecord::Base
   MemberRole        = 'Member'
   GuestRole         = 'Guest'
  
-  def deliver_password_reset_instructions!
-    reset_perishable_token!
-    spawn do
-      SubscriptionNotifier.deliver_password_reset(self)
-    end
+  #find the user in the database, first by the facebook user id and if that fails through the email hash
+  def self.find_by_fb_user(fb_user)
+    find_by_facebook_uid(fb_user.uid) || User.find_by_email_hash(fb_user.email_hashes)
   end
   
   # We are going to connect this user object with a facebook id. 
@@ -114,13 +112,13 @@ class User < ActiveRecord::Base
       # UPDATE:
       # allow multiple accounts to use the same facebook id I guess - 
       # makes debugging a lot easier too
-      #existing_fb_user = find_by_facebook_uid(fb_user_id)
+      existing_fb_user = find_by_facebook_uid(fb_user_id)
       
       #unlink the existing account
-      # unless existing_fb_user.nil?
-      #         existing_fb_user.facebook_id = nil
-      #         existing_fb_user.save(false)
-      #       end
+      unless existing_fb_user.nil?
+        existing_fb_user.facebook_id = nil
+        existing_fb_user.save(false)
+      end
       #link the new one
       self.facebook_id = fb_user_id
       save(false)
@@ -140,6 +138,13 @@ class User < ActiveRecord::Base
   
   def facebook_user?
     return !facebook_id.nil? && facebook_id > 0
+  end
+  
+  def deliver_password_reset_instructions!
+    reset_perishable_token!
+    spawn do
+      SubscriptionNotifier.deliver_password_reset(self)
+    end
   end
   
   # Returns true if the user has just been activated.

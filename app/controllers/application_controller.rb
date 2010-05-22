@@ -308,7 +308,10 @@ class ApplicationController < ActionController::Base
   
   def login_required
     unless current_user
-      flash_access_denied
+      if facebook_session
+        @current_user = User.find_by_fb_user(facebook_session.user)
+      end
+      flash_access_denied unless @current_user
     end
   end
   alias_method :require_user, :login_required

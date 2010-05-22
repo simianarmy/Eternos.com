@@ -378,7 +378,8 @@ class AccountsController < ApplicationController
   end
 
   def using_captcha_in_signup?(account)
-    account.plan.free? && !AppConfig.email_registration_required
+    false
+    #account.plan.free? && !AppConfig.email_registration_required
   end
 
   # Forces existing user with the same facebook ID to their home page
