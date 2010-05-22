@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :check_enable_maintenaince_mode
   before_filter :clear_js_include_cache
+  before_filter :set_facebook_connect_session
   
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store

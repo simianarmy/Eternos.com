@@ -5,9 +5,10 @@
 class UserSessionsController < ApplicationController
   ssl_required :new
   ssl_allowed :create, :destroy
+  
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => :destroy
-  before_filter :set_facebook_connect_session
+  
   
   def new
     @user_session    = UserSession.new
