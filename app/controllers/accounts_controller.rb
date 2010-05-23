@@ -131,11 +131,13 @@ class AccountsController < ApplicationController
 
     if @success && @account.save
       @user.register!
-      flash[:notice] = "Account created!"
-
+      @user.activate! # unless @user.email_registration_required?
       #UserSession.create(@user, true) # Login & set remember me
-      activate_and_redirect_to account_setup_url(:id => @user.perishable_token) and return false
-      #fb_session.secure_with!(@user.facebook_session_key, @user.facebook_id, 1.hour.from_now)
+      
+      # Get perishable token after all user callbacks activated!
+      Rails.logger.debug "*** Redirecting from Facebook canvas to account setup..."
+      flash_redirect "Your account has been created.", account_setup_url(:id => @user.reload.perishable_token)
+      return false
     else
       respond_to do |format|
         @terms_accepted = true
