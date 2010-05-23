@@ -39,7 +39,12 @@ class UserSessionsController < ApplicationController
       if facebook_session 
         if user = User.find_by_fb_user(facebook_session.user)
           UserSession.create(user)
-          redirect_to member_home_url and return false
+          if user.need_backup_setup?
+            redirect_to account_setup_url
+          else
+            redirect_to member_home_url
+          end
+          return false
         elsif !params['commit']
           redirect_to new_account_path(:plan => 'Free') and return false
         end
