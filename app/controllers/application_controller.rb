@@ -277,7 +277,6 @@ class ApplicationController < ActionController::Base
     #set_facebook_session
     create_facebook_session
     Rails.logger.debug "*** create_facebook_session returned with #{@facebook_session.inspect}"
-    #ensure_application_is_installed_by_facebook_user
     
     # If user is logged in to facebook but not logged in using FB Connect,
     # destroy session info
@@ -307,9 +306,12 @@ class ApplicationController < ActionController::Base
   end
   
   def login_required
+    # If not authenticated
     unless current_user
+      # Try Facebook Connect login
       set_facebook_connect_session
       if facebook_session
+        Rails.logger.debug "Logging in from Facebook session"
         @current_user = User.find_by_fb_user(facebook_session.user)
       end
       flash_access_denied unless @current_user

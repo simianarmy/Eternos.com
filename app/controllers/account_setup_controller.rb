@@ -1,6 +1,7 @@
 # $Id$
 
 class AccountSetupController < ApplicationController
+  before_filter :load_fb_user_using_perishable_token, :only => [:show]
   before_filter :login_required
   require_role "Member"
   
@@ -100,6 +101,17 @@ class AccountSetupController < ApplicationController
 
   protected
 
+  # Check for one-time access token in user account & logs in user if found
+  # Used for Facebook app Canvas / App server single-sign on
+  def load_fb_user_using_perishable_token
+    if params[:id]
+      if @current_user = User.find_using_perishable_token(params[:id])
+        Rails.logger.debug "Logging in from perishable token (user #{@current_user.id})"
+        UserSession.create(@current_user)
+      end
+    end
+  end
+  
   def load_facebook_app_session
     if @active_step == 2
       set_facebook_connect_session

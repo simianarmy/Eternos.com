@@ -133,8 +133,8 @@ class AccountsController < ApplicationController
       @user.register!
       flash[:notice] = "Account created!"
 
-      UserSession.create(@user, true) # Login & set remember me
-      activate_and_redirect_to account_setup_url and return false
+      #UserSession.create(@user, true) # Login & set remember me
+      activate_and_redirect_to account_setup_url(:id => @user.perishable_token) and return false
       #fb_session.secure_with!(@user.facebook_session_key, @user.facebook_id, 1.hour.from_now)
     else
       respond_to do |format|
