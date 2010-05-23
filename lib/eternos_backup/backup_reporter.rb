@@ -82,6 +82,7 @@ module EternosBackup
           latest_avg[k] = latest[k] / user_count
         end
 
+        ActionMailer::Base.delivery_method = :sendmail
         BackupReportMailer.deliver_daily_storage_report(:total => total, :latest => latest, 
         :total_avg => total_avg, :latest_avg => latest_avg, :num_users => user_count,
         :num_users_with_data => user_with_data_count)
@@ -94,9 +95,10 @@ module EternosBackup
         data = {}
         jobs = BackupJob.by_date Date.yesterday
         # Group by member
-        jobs.each do |job|
+        jobs.reject{|j| j.member.nil?}.each do |job|
           (data[job.member] ||= []) << {:job => job, :source_jobs => job.backup_source_jobs}
         end
+        ActionMailer::Base.delivery_method = :sendmail
         BackupReportMailer.deliver_daily_jobs_report(data)
       end
 
