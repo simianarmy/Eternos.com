@@ -1,3 +1,0 @@
-#!/opt/ruby-enterprise/bin/ruby
-require File.join(File.dirname(__FILE__), "../environment")
-load File.join(File.dirname(__FILE__), "../gems/httparty-0.4.5/bin/httparty")

@@ -1,3 +1,0 @@
-#!/opt/ruby-enterprise/bin/ruby
-require File.join(File.dirname(__FILE__), "../environment")
-load File.join(File.dirname(__FILE__), "../gems/javan-whenever-0.3.7/bin/whenever")
