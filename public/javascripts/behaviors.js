@@ -546,6 +546,7 @@ var Flowplayer = Behavior.create({
 				// 2nd arg is flash config
 			{
 				src: FlowplayerSwfUrl,
+				wmode: "opaque",
 				onFail: function() {
 					document.getElementById("info").innerHTML = 
 						"You need the latest Flash version to see MP4 movies. " + 
