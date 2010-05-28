@@ -12,6 +12,11 @@ namespace :reports do
       EternosBackup::BackupReporter.backup_jobs
     end
 
+    desc "Display all pending backup jobs"
+    task :print_pending => :environment do
+      EternosBackup::BackupScheduler.run :report => true
+    end
+    
     desc "Generate all backup-related reports"
     task :all => [:storage, :jobs]
   end

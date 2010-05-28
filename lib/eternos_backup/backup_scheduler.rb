@@ -30,10 +30,18 @@ module EternosBackup
                 end
               end
             end
-            Rails.logger.debug "sources scheduled for backup: #{sources.inspect}"
+            Rails.logger.debug "num sources scheduled for backup: #{sources.size}"
             sources.compact! # Remove nils
             # Send sources to job publisher
-            EternosBackup::BackupJobPublisher.run(member, sources) if sources.any?
+            if sources.any?
+              if options[:report]
+                sources.each do |s|
+                  puts "#{member.id} => " + [s[0].id, s[0].description, s[0].last_backup_at].join(':')
+                end
+              else
+                EternosBackup::BackupJobPublisher.run(member, sources) 
+              end
+            end
           end
           MessageQueue.stop
         end

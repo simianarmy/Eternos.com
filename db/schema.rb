@@ -235,8 +235,9 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
     t.integer  "backup_data_set_id", :default => 0, :null => false
   end
 
-  add_index "backup_source_jobs", ["backup_job_id", "backup_source_id", "backup_data_set_id"], :name => "backup_job_source_data_set", :unique => true
   add_index "backup_source_jobs", ["backup_job_id"], :name => "index_backup_source_jobs_on_backup_job_id"
+  add_index "backup_source_jobs", ["backup_job_id", "backup_source_id", "backup_data_set_id"], :name => "backup_job_source_data_set", :unique => true
+  add_index "backup_source_jobs", ["backup_source_id", "backup_data_set_id"], :name => "index_backup_source_data_set"
 
   create_table "backup_sources", :force => true do |t|
     t.string   "type"

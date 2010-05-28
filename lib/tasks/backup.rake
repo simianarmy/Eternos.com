@@ -85,4 +85,12 @@ namespace :backup do
     end
   end
 
+  desc "Count backup sources with too many backup errors"
+  task :count_failed_backup_sources => :environment do
+    count = 0
+    BackupSource.active.find_each do |bs|
+      count += 1 if bs.backup_broken?
+    end
+    puts "#{count} failed backup sources"
+  end
 end
