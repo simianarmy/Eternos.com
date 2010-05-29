@@ -53,7 +53,7 @@ staging:
   <<: *default_settings
   app_name: Eternos.com
   from_email: support@eternos.com
-  reports_email: simianarmy@gmail.com
+  reports_email: marc@eternos.com
   base_domain: staging.eternos.com
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
   s3_staging_dir: /usr/local/eternos/cloud_staging

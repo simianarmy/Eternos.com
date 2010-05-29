@@ -1,7 +1,7 @@
 # $Id$
 
 class TrusteeMailer < ActionMailer::Base
-  layout 'email'
+  layout nil
   include MailHistory
   
   def confirmation_request(user, trustee)
@@ -25,6 +25,7 @@ class TrusteeMailer < ActionMailer::Base
   protected
   
   def setup_email(user, trustee)
+    add_category_header "Life Key"
     from  "#{AppConfig.from_email}"
     reply_to "#{AppConfig.support_email}"
     

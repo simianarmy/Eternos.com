@@ -1,7 +1,7 @@
 # $Id$
 
 class BackupReportMailer < ActionMailer::Base
-  layout 'email'
+  layout nil
   include MailHistory
   
   def daily_storage_report(stats)

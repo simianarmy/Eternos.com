@@ -1,7 +1,7 @@
 # $Id$
 
 class UserMailer < ActionMailer::Base
-  layout 'email', :except => :friend_invite
+  layout nil
   include MailHistory
   
   @@Subjects = {
@@ -22,6 +22,7 @@ class UserMailer < ActionMailer::Base
     @body[:name] = user.full_name || 'Eternos user'
     @body[:url]  = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
     @body[:facebook] = !user.facebook_id.nil?
+    add_category_header "Activation Request" 
   end
   
   def activation(user)
@@ -29,6 +30,7 @@ class UserMailer < ActionMailer::Base
     @subject    += @@Subjects[:activation]
     base_domain = "http://" + AppConfig.base_domain
     body[:login]  = user.login
+    add_category_header "Activation Confirmation"
   end
   
   def invitation(invitation, signup_url)
@@ -48,6 +50,7 @@ class UserMailer < ActionMailer::Base
     @subject      += @@Subjects[:inactive_notification]
     @body[:name]  = user.full_name || 'Eternos user'
     @body[:link]  = account_setup_url
+    add_category_header "Inactivity Notification"
   end
 
   def friend_invite(user, to, invite_url)
@@ -62,6 +65,7 @@ class UserMailer < ActionMailer::Base
     subject       "[#{user.name}] Check out Eternos.com"
     body          :user => user, :signup_url => invite_url
     content_type "text/html" 
+    add_category_header "Invites"
   end
   
   protected

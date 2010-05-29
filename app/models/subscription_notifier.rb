@@ -1,13 +1,14 @@
 class SubscriptionNotifier < ActionMailer::Base
   include ActionView::Helpers::NumberHelper
   include MailHistory
-  layout 'email'
+  layout nil
   
   def setup_email(to, subject, from = AppConfig['from_email'])
     @sent_on = Time.now
     @subject = subject
     @recipients = to.respond_to?(:email) ? to.email : to
     @from = from.respond_to?(:email) ? from.email : from
+    add_category_header "Subscription"
   end
   
   def welcome(account)
