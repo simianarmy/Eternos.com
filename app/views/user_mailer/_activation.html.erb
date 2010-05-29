@@ -13,23 +13,14 @@
 		</td>
 	</tr>
 	<tr>
-		<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
-			<br />
-			 You will have access to all our features for FREE.  We will be adding some premium features in the future, but all of our beta users will get access to those features for a generous, but limited time, when they are released.  We do this to thank you for your support and your patience in helping us beta test our site.
-			<br /><br />
-		</td>
-	</tr>
-	<tr>
 		<td style="width:540px;height:1px;background:url(<%= image_path '/email/dotted.gif' %>) repeat-x;margin-top:10px;"></td>
 	</tr>
 	<tr>
 		<td style="font-family:arial;font-size:11px;color:#333333;text-align:justify;line-height:20px;">
 			Login: <%= @login %>
 			<br/>
-			Homepage: <%= link_to member_home_url, member_home_url %>
+			Your Homepage: <%= link_to member_home_url, member_home_url %>
 			<br />
-			<br/>
-			<%= render :partial => 'shared/email_sig.html' %>
 		</td>
 	</tr>
 	<tr>
