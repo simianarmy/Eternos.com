@@ -1,26 +1,28 @@
 Welcome, <%= @name %>!
 <br/>
 <br/>
-Thank you for creating your Eternos.com account. This should only take a minute.
+ Thank you for creating your Eternos.com account. This should only take a minute.
 <br/>
 <br/>
-Please click on the link below to confirm and activate your account, or copy the following URL and paste it into your browser:
+ Please click on the link below to confirm and activate your account, or copy the following URL and paste it into your browser:
 <br/>
 <br/>
-<%= @url %>
+ <%= @url %>
 <br/>
 <br/>
-Your login info:
+ Your login info:
 <br/>
 <% if @facebook %>
-Simply click the Facebook Connect button on the login page to enter the site.
+ Simply click the Facebook Connect button on the login page to enter the site.
 <% else %>
-Login: <%= @login %>
+ Login: <%= @login %>
 <br/>
-Password: Type the password you used to create your account.
+ Password: Type the password you used to create your account.
 <% end %>
+<br/>
+Your Homepage: <%= link_to member_home_url, member_home_url %>
 <p/>
 <br/>
-Please enjoy your time with us and let us know if you have any questions or concerns.
+ Please enjoy your time with us and let us know if you have any questions or concerns.
 <br/>
 

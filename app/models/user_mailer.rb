@@ -18,10 +18,11 @@ class UserMailer < ActionMailer::Base
   
   def signup_notification(user)
     setup_email(user)
-    @subject    += @@Subjects[:signup_notification]
-    @body[:name] = user.full_name || 'Eternos user'
-    @body[:url]  = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
-    @body[:facebook] = !user.facebook_id.nil?
+    @subject          += @@Subjects[:signup_notification]
+    @body[:name]      = user.full_name || 'Eternos user'
+    @body[:url]       = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
+    @body[:facebook]  = !user.facebook_id.nil?
+    @body[:login]     = user.login
     add_category_header "Activation Request" 
   end
   
