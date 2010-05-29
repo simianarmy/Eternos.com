@@ -13,6 +13,10 @@ module MailHistory
       def save_email
         UserMailing.create(:recipients => @recipients.to_s, :mailer => self.class.to_s, :subject => @subject, :sent_at => Time.now)
       end
+      
+      def add_category_header(category)
+        @headers["X-SMTPAPI"] = {"category" => category}.to_json
+      end
     end
   end
 end

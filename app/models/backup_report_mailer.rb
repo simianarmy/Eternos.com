@@ -8,7 +8,7 @@ class BackupReportMailer < ActionMailer::Base
     setup
     @recipients  = AppConfig.reports_email
     @subject     = "[#{RAILS_ENV}] Daily backup storage stats: #{Date.yesterday} - #{Date.today}"
-  
+    
     @stats      = stats
     @stats_keys = stats[:total].keys.reject { |k| k.to_s =~ /_size$/ } - [:backup_items, :s3_cost]
   end
@@ -21,10 +21,12 @@ class BackupReportMailer < ActionMailer::Base
     @data         = data
   end
   
-  private
+  protected
   
   def setup
-    @sent_on      = Time.now
-    @content_type = "text/html"
+    #@from                 = 'no-reply@eternos.com'
+    @sent_on              = Time.now
+    @content_type         = "text/html"
+    add_category_header "Backup Reports" 
   end
 end
