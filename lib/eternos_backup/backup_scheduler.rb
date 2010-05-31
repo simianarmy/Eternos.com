@@ -16,31 +16,41 @@ module EternosBackup
 
         # Get members that qualify for backup
         MessageQueue.start do
-          # Make sure to send backup jobs in random order every time to prevent early 
-          # members from getting preference
-          Member.needs_backup(@@cutoff).sort_by { rand }.each do |member|
+          members_sources = {}
+          
+          # Do all members needing a backup
+          Member.needs_backup(@@cutoff).each do |member|
             # Get all backup sources,datatypes that should be backed up
             # Result should be array with format: 
             # [[backup_source1, :dataType => datattype], [backupsource1, :dataType => datatype2], ...]
-            sources = []
             member.backup_sources.active.each do |bs|
               bs.backup_data_sets.each do |ds|
-                if source_scheduled_for_backup?(bs, ds)
-                  sources << [bs, {:dataType => ds}]
+                # Get latest backup job record for this backup source & data set
+                latest_job = BackupSourceJob.backup_source_id_eq(bs.id).backup_data_set_id_eq(ds).newest
+                
+                if source_scheduled_for_backup?(latest_job, bs, ds)
+                  # Save member-latest job pair for sorting later
+                  # Save member-sources pair for lookup by member id later
+                  (members_sources[member] ||= []) << [bs, {:dataType => ds}]
                 end
               end
             end
-            Rails.logger.debug "num sources scheduled for backup: #{sources.size}"
-            sources.compact! # Remove nils
+          end
+
+          # Using member.backup_state.last_successful_backup_at as sort key
+          members_sources.keys.sort { |a, b|
+            atime = a.backup_state ? a.backup_state.last_successful_backup_at.to_i : 0
+            btime = b.backup_state ? b.backup_state.last_successful_backup_at.to_i : 0
+            atime <=> btime
+          }.each do |member|
+            sources = members_sources[member]
             # Send sources to job publisher
-            if sources.any?
-              if options[:report]
-                sources.each do |s|
-                  puts "#{member.id} => " + [s[0].id, s[0].description, s[0].last_backup_at].join(':')
-                end
-              else
-                EternosBackup::BackupJobPublisher.run(member, sources) 
+            if options[:report]
+              sources.each do |s|
+                puts "#{member.id} => " + [s[0].id, s[0].description, s[0].member.backup_state.try(:last_successful_backup_at)].join(':')
               end
+            else
+              EternosBackup::BackupJobPublisher.run(member, sources) 
             end
           end
           MessageQueue.stop
@@ -48,9 +58,11 @@ module EternosBackup
       end
 
       # Determines if a backup source can be scheduled for backup
-      def source_scheduled_for_backup?(bs, data_set)
-        return true unless latest_job = BackupSourceJob.backup_source_id_eq(bs.id).backup_data_set_id_eq(data_set).newest
-        Rails.logger.debug "latest backup job for #{bs.description} (ds: #{data_set}): #{latest_job.inspect}"
+      def source_scheduled_for_backup?(latest_job, bs, data_set)
+        # Definitely needs backup if no backup jobs have been created for it
+        return true if latest_job.nil?
+        
+        #puts "latest backup job for #{bs.description} (ds: #{data_set}) finished at #{latest_job.finished_at}"
 
         if latest_job.finished?
           latest_job.successful? ? (latest_job.finished_at < cutoff_time(data_set)) : true

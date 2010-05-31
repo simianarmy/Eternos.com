@@ -43,7 +43,7 @@ class BackupSourceJob < ActiveRecord::Base
   def time_to_expire(ds=0)
     EternosBackup::DataSchedules.min_backup_interval(ds)
   end
-  
+
   def time_remaining(ds=0)
     return 0 if finished?
     

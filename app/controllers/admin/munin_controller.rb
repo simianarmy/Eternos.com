@@ -48,6 +48,49 @@ RESP
     render :inline => response, :status => :ok
   end
   
+  def backup_job_avg_run_times
+    backup_counts = Hash.new(0)
+    backup_times = Hash.new(0)
+    site_names = {}
+    
+    # Cache backup site id => names for later
+    BackupSite.find_each do |bs| 
+      site_names[bs.id] = bs.name
+      site = bs.name
+      backup_times[site] = backup_counts[site] = 0
+    end
+    
+    BackupSourceJob.created_at_gt(24.hours.ago).find(:all, :include => :backup_source, :conditions => ['finished_at > 0']) do |job|
+      if site_id = job.backup_source.try(:backup_site_id)
+        site = site_names[site_id]
+        backup_counts[site] += 1
+        backup_times[site] += (job.finished_at - job.created_at)
+      end
+    end
+    response = ""
+    backup_times.each do |site, count|
+      avg_time = backup_counts[site] > 0 ? (backup_times[site] / backup_counts[site]) : 0
+      response += "#{site} = #{avg_time.to_i}\n"
+    end
+    
+    render :inline => response, :status => :ok
+  end
+  
+  # Backup errors in last 24 hours
+  def backup_job_errors
+    errs = BackupSourceJob.created_at_gt(24.hours.ago).count(:conditions => ['finished_at > 0 AND error_messages != ?', ''])
+    response = errs
+    
+    render :inline => response, :status => :ok
+  end
+  
+  def facebook_session_errors
+    errs = BackupSourceJob.created_at_gt(24.hours.ago).error_messages_like('Facebook: Session key invalid').size
+    response = errs
+    
+    render :inline => response, :status => :ok
+  end
+  
   # Returns backup data storage sizes & counts
   def backup_items
     facebook_records = FacebookActivityStreamItem.count

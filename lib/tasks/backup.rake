@@ -69,7 +69,15 @@ namespace :backup do
       puts "Could not find backup site (options: #{BackupSite.names.join('|')})"
     end
   end
-
+  
+  desc "Run backup for recently failed backups caused by db connection errors"
+  task :rebackup_failed_from_db_max_error => :environment do
+     BackupSourceJob.created_at_gt(24.hours.ago).error_messages_like('could not obtain a database connection').find_each do |job|
+       puts "rebackup for job #{job.id} for #{job.backup_source.description}"
+       EternosBackup::BackupJobPublisher.add_source(job.backup_source, {})
+     end
+   end
+ 
   desc "Assign backup photo albums to backup photo -> photo objects"
   task :migrate_backup_photo_albums => :environment do
     BackupPhoto.with_photo.reject{|bp| !bp.photo}.each do |bp|

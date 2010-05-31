@@ -51,7 +51,7 @@ module EternosBackup
         MessageQueue.execute do
           q = MessageQueue.pending_backup_jobs_queue
 
-          Member.active.each do |m|
+          Member.active.sort_by{rand}.each do |m|
             sources = m.backup_sources.active.by_site(site.name).map {|s| [s, options]}
             publish_sources(q, m, *sources) if sources.any?
           end

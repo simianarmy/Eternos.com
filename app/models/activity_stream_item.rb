@@ -42,28 +42,15 @@ class ActivityStreamItem < ActiveRecord::Base
     where "deleted_at IS NULL"
   end
   
-  # Takes proxy object & block, checks for existing item using on block call.  
-  # Returns:
-  #  (updated) found item if block yields result,
-  #  nil if not found
-  # Note: Can chain from named_scopes to scope the block query
-  #
-  # Example: 
-  #   member.activity_stream.items.facebook.sync_from_proxy!(proxy) do |scope|
-  #     scope.find_by_this_and_that(proxy.this, proxy.that)
-  #   end    
-  #
-  def self.sync_from_proxy!(p)
+  # Helper for synching object from backup proxy object
+  def sync_from_proxy!(p)
     # Uniqueness based on optional passed find query
-      if f = yield(self)
-        f.update_attributes!(
-          :author         => p.author,
-          :source_url     => p.source_url,
-          :attribution    => p.attribution,
-          :comment_thread => p.comments,
-          :liked_by       => p.likers)
-        f
-      end
+    update_attributes!(
+      :author         => p.author,
+      :source_url     => p.source_url,
+      :attribution    => p.attribution,
+      :comment_thread => p.comments,
+      :liked_by       => p.likers)
   end
   
   def self.create_from_proxy!(activity_stream_id, item)
