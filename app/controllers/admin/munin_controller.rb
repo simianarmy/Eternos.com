@@ -60,7 +60,7 @@ RESP
       backup_times[site] = backup_counts[site] = 0
     end
     
-    BackupSourceJob.created_at_gt(24.hours.ago).find(:all, :include => :backup_source, :conditions => ['finished_at > 0']) do |job|
+    BackupSourceJob.created_at_gt(24.hours.ago).find(:all, :include => :backup_source, :conditions => ['finished_at > 0']).each do |job|
       if site_id = job.backup_source.try(:backup_site_id)
         site = site_names[site_id]
         backup_counts[site] += 1

@@ -34,13 +34,15 @@ module EternosBackup
         end
       end
 
-      # Adds backup job request to backup queue for a single backup source
-      def add_source(backup_source, options={})
-        options.reverse_merge! :dataType => EternosBackup::SiteData.defaultDataSet
+      # Adds backup job request to backup queue for one or more backup sources
+      def add_source(*backup_sources)
+        options = backup_sources.extract_options!
+        options[:dataType] ||= EternosBackup::SiteData.defaultDataSet
         
         MessageQueue.execute do
-          publish_sources(MessageQueue.pending_backup_jobs_queue, backup_source.member, 
-            [backup_source, options])
+          backup_sources.flatten.reject{|bs| bs.member.nil?}.each do |backup_source|
+            publish_sources(MessageQueue.pending_backup_jobs_queue, backup_source.member, [backup_source, options])
+          end
         end
       end
 

@@ -49,7 +49,7 @@ namespace :backup do
       opts[:dataType] = ENV['DATASET'].to_i
     end
     if bs = BackupSource.find(id)
-      EternosBackup::BackupJobPublisher.add_source(bs, opts)
+      EternosBackup::BackupJobPublisher.add_source([bs], opts)
       puts "backup source #{id} added to backup job queue"
     else
       puts "Could not find backup source with id #{id}"
@@ -72,10 +72,10 @@ namespace :backup do
   
   desc "Run backup for recently failed backups caused by db connection errors"
   task :rebackup_failed_from_db_max_error => :environment do
-     BackupSourceJob.created_at_gt(24.hours.ago).error_messages_like('could not obtain a database connection').find_each do |job|
-       puts "rebackup for job #{job.id} for #{job.backup_source.description}"
-       EternosBackup::BackupJobPublisher.add_source(job.backup_source, {})
-     end
+    sources = BackupSourceJob.created_at_gt(24.hours.ago).error_messages_like('could not obtain a database connection').map(&:backup_source).uniq.compact
+
+    puts "rebackup for sources #{sources.map(&:id).join(',')}"
+    EternosBackup::BackupJobPublisher.add_source(sources, {})
    end
  
   desc "Assign backup photo albums to backup photo -> photo objects"
