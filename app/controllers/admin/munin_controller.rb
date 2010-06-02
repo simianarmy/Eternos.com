@@ -7,6 +7,7 @@ class Admin::MuninController < ApplicationController
   @@MuninSampleInterval = 5.minutes
   
   before_filter :check_api_key
+  before_filter :load_backup_sites, :only => [:running_backup_jobs, :backup_job_avg_run_times]
   
   # Returns general user sessions & member counts
   def users
@@ -29,9 +30,9 @@ RESP
     backups_running = {}
     backups_finished = {}
     backups = {}
-    BackupSite.names.each { |site| backups[site] = backups_running[site] = backups_finished[site] = 0 }
+    @backup_sites.values.each { |site| backups[site] = backups_running[site] = backups_finished[site] = 0 }
     
-    BackupSourceJob.created_at_gt(Time.now.utc - @@MuninSampleInterval).each do |job|
+    BackupSourceJob.created_at_gt(munin_start_time).each do |job|
       site = job.backup_source.backup_site.name rescue 'Unknown'
       backups[site] += 1
       if job.finished? 
@@ -53,16 +54,13 @@ RESP
     backup_times = Hash.new(0)
     site_names = {}
     
-    # Cache backup site id => names for later
-    BackupSite.find_each do |bs| 
-      site_names[bs.id] = bs.name
-      site = bs.name
+    @backup_sites.values.each do |site| 
       backup_times[site] = backup_counts[site] = 0
     end
     
-    BackupSourceJob.created_at_gt(24.hours.ago).find(:all, :include => :backup_source, :conditions => ['finished_at > 0']).each do |job|
+    BackupSourceJob.finished_at_gt(munin_start_time).find(:all, :include => :backup_source).each do |job|
       if site_id = job.backup_source.try(:backup_site_id)
-        site = site_names[site_id]
+        site = @backup_sites[site_id]
         backup_counts[site] += 1
         backup_times[site] += (job.finished_at - job.created_at)
       end
@@ -76,16 +74,44 @@ RESP
     render :inline => response, :status => :ok
   end
   
+  def backup_jobs_success
+    jobs = {:success => 0, :failed => 0, :expired => 0, :unknown => 0}
+    BackupSourceJob.finished_at_gt(munin_start_time).each do |job|
+      if job.successful?
+        jobs[:success] += 1
+      elsif job.has_errors?
+        jobs[:failed] += 1
+      elsif job.expired?
+        jobs[:expired] += 1
+      else
+        jobs[:unknown] += 1
+      end
+    end
+    response = ""
+    jobs.each do |k,v|
+      response += "#{k} = #{v.to_i}\n"
+    end
+    
+    render :inline => response, :status => :ok
+  end
+        
   # Backup errors in last 24 hours
   def backup_job_errors
-    errs = BackupSourceJob.created_at_gt(24.hours.ago).count(:conditions => ['finished_at > 0 AND error_messages != ?', ''])
-    response = errs
+    errs = Hash.new(0)
+    errs[:none] = 0
+    BackupSourceJob.finished_at_gt(munin_start_time).find(:all, :conditions => ['error_messages != ?', '']).each do |job|
+      errs[job.error_messages.to_s] += 1
+    end
+    response = ""
+    errs.each do |k,v|
+      response += "#{k} = #{v.to_i}\n"
+    end
     
     render :inline => response, :status => :ok
   end
   
   def facebook_session_errors
-    errs = BackupSourceJob.created_at_gt(24.hours.ago).error_messages_like('Facebook: Session key invalid').size
+    errs = BackupSourceJob.finished_at_gt(munin_start_time).error_messages_like('Facebook: Session key invalid').size
     response = errs
     
     render :inline => response, :status => :ok
@@ -138,5 +164,15 @@ RESP
   
   def check_api_key
     render :nothing => true, :status => 401 unless params[:api] == @@API_KEY
+  end
+  
+  def load_backup_sites
+    # Cache backup site id => names for later
+    @backup_sites = {}
+    BackupSite.all.each {|bs| @backup_sites[bs.id] = bs.name }
+  end
+  
+  def munin_start_time
+    Time.now.utc - @@MuninSampleInterval
   end
 end
