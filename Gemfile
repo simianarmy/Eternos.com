@@ -1,6 +1,6 @@
 clear_sources
 
-# DEPRECATED in 0.9 BUT 0.9 IS FUCKED
+# DEPRECATED in 0.9 BUT 0.9 IS FUCKED - USE 0.8.x
 # You can specify this setting when installing via bundle install /path/to/bundle
 bundle_path "vendor/bundled_gems"
 
@@ -40,10 +40,9 @@ gem 'facebooker'
 gem 'gdata'
 gem 'haml'
 gem 'hashie'
-gem 'hoe'
+gem 'hoe', '2.4.0'
 gem 'hpricot'
 gem 'httparty'
-gem 'image_science'
 gem 'javan-whenever'
 gem 'jnunemaker-columbus'
 gem 'lockfile'
@@ -72,7 +71,7 @@ gem 'shuber-attr_encrypted'
 gem 'SystemTimer'
 gem 'taf2-curb'
 gem 'thinking-sphinx'
-gem 'tmm1-amqp', '0.6.4'
+gem 'amqp', '0.6.7'
 gem 'twitter'
 gem 'tzinfo'
 

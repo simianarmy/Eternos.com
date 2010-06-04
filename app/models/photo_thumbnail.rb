@@ -4,7 +4,7 @@ class PhotoThumbnail < ActiveRecord::Base
   
   has_attachment({
     :content_type => :image, 
-    :processor=>'ImageScience'
+    :processor=>'ImageMagick'
   }.reverse_merge(Content.attachment_fu_options))
   acts_as_saved_to_cloud
   

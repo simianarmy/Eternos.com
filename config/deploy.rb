@@ -20,11 +20,7 @@ set :scm, 'subversion'
 # your SCM below:
 # set :scm, :subversion
 
-role :app, "72.3.253.143"
-role :web, "72.3.253.143"
-role :db,  "72.3.253.143", :primary => true
-
-set :stages, %w(development staging production)
+set :stages, %w(development staging production utility)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
@@ -75,12 +71,14 @@ namespace :deploy do
       run "ln -nfs #{shared_path}/config/#{config} #{release_path}/config/#{config}"
     end
     run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
+    
     # Setup permissions so that designer can read/write in view directories
-    run "chgrp -R www #{release_path}"
-    run "chmod -R 770 #{release_path}"
-    run "chmod 775 #{release_path} #{release_path}/app"
-    run "chgrp -R www-dev #{release_path}/public #{release_path}/app/views"
-    run "chmod -R 775 #{release_path}/public #{release_path}/app/views"
+    # HORRIBLE idea
+    # run "chgrp -R www #{release_path}"
+    #     run "chmod -R 770 #{release_path}"
+    #     run "chmod 775 #{release_path} #{release_path}/app"
+    #     run "chgrp -R www-dev #{release_path}/public #{release_path}/app/views"
+    #     run "chmod -R 775 #{release_path}/public #{release_path}/app/views"
   end
   
   desc "migrate database"
@@ -175,18 +173,6 @@ CUTYCAPT
   end
 end
 
-before "deploy:update_code", "deploy:stop_daemons"
-after "deploy:symlink_shared", "deploy:minify_js"
-after "deploy:symlink", "deploy:publish_robots_file"
-#after "deploy:symlink", "deploy:google_analytics"
-#after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons
-#after "deploy:symlink", "deploy:update_crontab"
-
-after "deploy:symlink", "deploy:symlink_shared"
-#after "deploy:symlink_shared", "deploy:build_sphinx_index"
-after "deploy:symlink", "deploy:start_daemons"
-after "deploy:symlink", "deploy:sendmail"
-#after "deploy:symlink", "deploy:install_sitemaps"
 
 
 

@@ -47,7 +47,7 @@ module EternosBackup
             # Send sources to job publisher
             if options[:report]
               sources.each do |s|
-                puts "#{member.id} => " + [s[0].id, s[0].description, s[0].member.backup_state.try(:last_successful_backup_at)].join(':')
+                puts "#{member.id} => " + [s[0].id, s[0].description, s[1][:dataType], s[0].member.backup_state.try(:last_successful_backup_at)].join(':')
               end
             else
               EternosBackup::BackupJobPublisher.run(member, sources) 
