@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# 
+# $Id$
+# Munin plugin
+# Counts running backup jobs
+
+REQUEST_URI = 'http://dev.eternos.com/admin/munin/facebook_session_errors?api=FL1mFl4mAlamB'
+
+def output_config
+  puts <<-END
+graph_category Eternos.com
+graph_title facebook backup: invalid session key errors last 24 hours
+graph_vlabel count
+
+errors.label Errors
+END
+  exit 0
+end
+
+def output_values
+  status = `curl -s #{REQUEST_URI}`
+  
+  unless $?.success?
+    $stderr.puts "failed executing facebook_session_errors"
+    exit 1
+  end
+  
+  puts "errors.value #{status.strip}"
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end
