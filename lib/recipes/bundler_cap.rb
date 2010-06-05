@@ -2,7 +2,7 @@
 
 # Bundler recipes
 
-set :bundler_path, "vendor/bundled_gems"
+set :bundler_path, "vendor/bundled_gems/ruby/1.8"
 
 namespace :bundler do
   task :install do

@@ -1,5 +1,6 @@
 # For EngineYard backup software support.
 # Eventually we will split these 2 packages so that backup doesn't have to load Rails env.
+
 set :deploy_to, "/data/#{domain}"
 
 role :app, '184.73.167.220'

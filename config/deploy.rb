@@ -1,4 +1,5 @@
 # $Id$
+
 set :application, "eternos"
 set :domain, "#{application}.com"
 set :svn_user, ENV['svn_user'] || "marc"
