@@ -84,7 +84,9 @@ Red5 Open Source Flash Server Software:
     - Clear this periodically so that recordings don't fill up disk!
 
 CutyCapt Screencapture program:
-  See deploy.rb install_cutycapt recipe
+  General Unix INSTALL instructions here:
+  http://doc.qt.nokia.com/4.6/install-x11.html
+  See deploy.rb install_cutycapt recipe for RHEL 5 instructions
   Instructions for Xvfb installation here:
   http://corpocrat.com/2008/08/18/xvfb-problems/
   
