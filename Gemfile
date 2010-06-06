@@ -1,10 +1,9 @@
-clear_sources
-
 # DEPRECATED in 0.9 BUT 0.9 IS FUCKED - USE 0.8.x
 # You can specify this setting when installing via bundle install /path/to/bundle
-bundle_path "vendor/bundled_gems"
+#bundle_path "vendor/bundled_gems"
+#clear_sources
 
-source "http://gemcutter.org"
+source :gemcutter
 source "http://gems.github.com"
 
 #source :gemcutter
@@ -48,6 +47,7 @@ gem 'hashie'
 gem 'hoe', '2.4.0'
 gem 'hpricot'
 gem 'httparty'
+gem 'image_science'
 gem 'javan-whenever'
 gem 'jnunemaker-columbus'
 gem 'larch'
