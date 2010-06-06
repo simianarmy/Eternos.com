@@ -13,7 +13,7 @@ gem 'rails', '2.3.4'
 gem 'capistrano', '2.5.10'
 gem 'capistrano-ext', '1.2.1'
 
-only :development do
+group :development do
   # bundler requires these gems in development
   gem 'bullet'
   gem 'deadweight'
@@ -21,13 +21,17 @@ only :development do
   gem 'ruby-growl'
 end
 
-only :test do
+group :test do
   # bundler requires these gems while running tests
   gem 'webrat', '0.6.0'
   gem 'cucumber', '0.4.3'
   gem 'rspec', '1.3.0'
   gem 'rspec-rails', '1.3.2'
   gem 'ruby-debug', '0.10.3'
+end
+
+group :production do
+  gem 'newrelic_rpm', '>= 2.9.8'
 end
 
 gem 'active_presenter'
@@ -55,7 +59,6 @@ gem 'memcache-client'
 gem 'mime-types'
 gem 'moomerman-twitter_oauth'
 gem 'mysqlplus'
-gem 'newrelic_rpm', '>= 2.9.8', :only => :production
 gem 'nokogiri'
 gem 'oauth'
 gem 'packr'
