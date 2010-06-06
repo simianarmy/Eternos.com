@@ -152,6 +152,7 @@ require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
 require 'thinking_sphinx'
+require 'image_science'
 
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
