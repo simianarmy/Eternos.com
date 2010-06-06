@@ -1,0 +1,4 @@
+check process workling with pidfile /data/eternos.com/shared/log/workling.pid
+  start program = "/usr/bin/env HOME=/home/deploy RAILS_ENV=production /usr/bin/ruby /data/eternos.com/current/script/workling_client start" as uid deploy and gid deploy
+  stop program = "/usr/bin/env RAILS_ENV=production /usr/bin/ruby /data/eternos.com/current/script/workling_client stop"
+  group eternos

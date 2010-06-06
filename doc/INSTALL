@@ -5,7 +5,8 @@ rubygems 1.3.5+
 rails 2.3.4
 mysql 5.x
 apache 2.x
-Unix packages: libxml2-dev, libxslt-dev, readline-devel, curl-devel
+RHEL Unix packages: libxml2-dev, libxslt-dev, readline-devel, curl-devel
+Ubuntu:  libcurl4-openssl-dev, libxslt-devel
 
 Gems:
 bundler 0.9.25

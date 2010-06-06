@@ -12,6 +12,7 @@ common: &default_settings
     
 production:
   <<: *default_settings
+  listens_on: 184.73.167.220:5672
 
 development:
   <<: *default_settings

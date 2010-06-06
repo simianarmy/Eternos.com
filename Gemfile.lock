@@ -63,7 +63,7 @@ specs:
 - columnize: 
     version: 0.3.1
 - crack: 
-    version: 0.1.7
+    version: 0.1.6
 - diff-lcs: 
     version: 1.1.2
 - polyglot: 
@@ -93,7 +93,7 @@ specs:
 - hirb: 
     version: 0.3.2
 - httparty: 
-    version: 0.5.0
+    version: 0.5.2
 - image_science: 
     version: 1.2.1
 - javan-whenever: 

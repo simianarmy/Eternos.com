@@ -25,3 +25,7 @@ symlink ffmpeg to /usr/local/bin/ffmpeg
 Security:
 
 Add firewall opening to AMQP port (specify source networks)
+
+Startup:
+
+Install custom .monit scripts to /etc/monit.d (use sudo)
