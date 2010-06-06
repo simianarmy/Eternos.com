@@ -75,7 +75,7 @@ namespace :deploy do
     run "mkdir -p #{shared_path}/assets"
     run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
     run "mkdir -p #{shared_path}/tmp/cloud_staging"
-    run "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
+    run "ln -s #{shared_path}/tmp/cloud_staging #{release_path}/tmp/cloud_staging"
   end
   
   desc "migrate database"
