@@ -1,0 +1,21 @@
+Dependencies:
+
+ruby 1.8.7
+rubygems 1.3.5+
+rails 2.3.4
+mysql 5.x
+apache 2.x
+Unix packages: libxml2-dev, libxslt-dev, readline-devel, curl-devel
+
+Gems:
+bundler 0.8
+daemons
+
+- Checkout source
+- cd source dir
+> gem bundle --only development --only test
+
+If error on taf2-curb install on Ubuntu, see:
+ http://ruby.zigzo.com/2009/02/15/feedzirra-installation-errors/
+
+
