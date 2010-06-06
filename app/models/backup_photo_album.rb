@@ -132,7 +132,13 @@ class BackupPhotoAlbum < ActiveRecord::Base
     
     # Delete old photos
     backup_photos.each do |p|
-      p.destroy unless new_photo_ids.include?(p.source_photo_id)
+      unless new_photo_ids.include?(p.source_photo_id)
+        begin
+          p.destroy
+        rescue Exception => e
+          Rails.logger.error "Exception deleting a BackupPhoto: #{e.message}"
+        end
+      end
     end
     
     # Add all new photos
