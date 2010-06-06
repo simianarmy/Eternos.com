@@ -1,0 +1,431 @@
+--- 
+specs: 
+- rake: 
+    version: 0.8.7
+- ZenTest: 
+    version: 4.3.2
+- RubyInline: 
+    version: 3.8.4
+- SystemTimer: 
+    version: "1.2"
+- activesupport: 
+    version: 2.3.4
+- rack: 
+    version: 1.0.1
+- actionpack: 
+    version: 2.3.4
+- actionmailer: 
+    version: 2.3.4
+- active_presenter: 
+    version: 1.2.1
+- activerecord: 
+    version: 2.3.4
+- activeresource: 
+    version: 2.3.4
+- after_commit: 
+    version: 1.0.7
+- eventmachine: 
+    version: 0.12.10
+- amqp: 
+    version: 0.6.7
+- builder: 
+    version: 2.1.2
+- mime-types: 
+    version: "1.16"
+- xml-simple: 
+    version: 1.0.12
+- aws-s3: 
+    version: 0.6.2
+- bullet: 
+    version: 1.7.6
+- highline: 
+    version: 1.5.2
+- net-ssh: 
+    version: 2.0.23
+- net-scp: 
+    version: 1.0.2
+- net-sftp: 
+    version: 2.0.4
+- net-ssh-gateway: 
+    version: 1.0.1
+- capistrano: 
+    version: 2.5.10
+- capistrano-ext: 
+    version: 1.2.1
+- json_pure: 
+    version: 1.4.3
+- rubyforge: 
+    version: 2.0.4
+- hoe: 
+    version: 2.4.0
+- chronic: 
+    version: 0.2.3
+- columnize: 
+    version: 0.3.1
+- crack: 
+    version: 0.1.7
+- diff-lcs: 
+    version: 1.1.2
+- polyglot: 
+    version: 0.2.9
+- term-ansicolor: 
+    version: 1.0.4
+- treetop: 
+    version: 1.4.2
+- cucumber: 
+    version: 0.4.3
+- daemons: 
+    version: 1.0.10
+- hpricot: 
+    version: 0.8.2
+- deadweight: 
+    version: 0.1.3
+- ezcrypto: 
+    version: 0.7.2
+- facebooker: 
+    version: 1.0.69
+- gdata: 
+    version: 1.1.1
+- haml: 
+    version: 3.0.9
+- hashie: 
+    version: 0.2.0
+- hirb: 
+    version: 0.3.2
+- httparty: 
+    version: 0.5.0
+- image_science: 
+    version: 1.2.1
+- javan-whenever: 
+    version: 0.3.7
+- jnunemaker-columbus: 
+    version: 0.1.2
+- json: 
+    version: 1.4.3
+- trollop: 
+    version: 1.16.2
+- larch: 
+    version: 1.0.2
+- linecache: 
+    version: "0.43"
+- lockfile: 
+    version: 1.4.3
+- markevans-block_helpers: 
+    version: 0.2.11
+- mash: 
+    version: 0.1.1
+- nokogiri: 
+    version: 1.4.2
+- mdalessio-dryopteris: 
+    version: 0.1.2
+- memcache-client: 
+    version: 1.8.3
+- oauth: 
+    version: 0.4.0
+- moomerman-twitter_oauth: 
+    version: 0.2.1
+- mysqlplus: 
+    version: 0.1.2
+- newrelic_rpm: 
+    version: 2.12.1
+- oyster: 
+    version: 0.9.3
+- packr: 
+    version: 3.1.0
+- pauldix-sax-machine: 
+    version: 0.0.14
+- taf2-curb: 
+    version: 0.5.4.0
+- pauldix-feedzirra: 
+    version: 0.0.18
+- rails: 
+    version: 2.3.4
+- riddle: 
+    version: 1.0.10
+- right_http_connection: 
+    version: 1.2.4
+- right_aws: 
+    version: 2.0.0
+- rio: 
+    version: 0.4.2
+- rmagick: 
+    version: 2.12.2
+- rspec: 
+    version: 1.3.0
+- rspec-rails: 
+    version: 1.3.2
+- ruby-debug-base: 
+    version: 0.10.3
+- ruby-debug: 
+    version: 0.10.3
+- ruby-growl: 
+    version: 1.0.1
+- ruby-hmac: 
+    version: 0.4.0
+- ruby-stemmer: 
+    version: 0.8.2
+- rvideo: 
+    version: 0.9.3
+- searchlogic: 
+    version: 2.3.4
+- shared-mime-info: 
+    version: "0.1"
+- shuber-eigenclass: 
+    version: 1.0.1
+- shuber-encryptor: 
+    version: 1.0.1
+- shuber-attr_encrypted: 
+    version: 1.0.8
+- thinking-sphinx: 
+    version: 1.3.17
+- yajl-ruby: 
+    version: 0.7.6
+- twitter: 
+    version: 0.9.7
+- tzinfo: 
+    version: 0.3.22
+- webrat: 
+    version: 0.6.0
+hash: caba624e62f9cda58766e21fd21504a3eed28436
+sources: 
+- Rubygems: 
+    uri: http://gemcutter.org
+- Rubygems: 
+    uri: http://gems.github.com
+dependencies: 
+  taf2-curb: 
+    version: ">= 0"
+    group: 
+    - :default
+  ruby-debug: 
+    version: = 0.10.3
+    group: 
+    - :test
+  ezcrypto: 
+    version: ">= 0"
+    group: 
+    - :default
+  memcache-client: 
+    version: ">= 0"
+    group: 
+    - :default
+  moomerman-twitter_oauth: 
+    version: ">= 0"
+    group: 
+    - :default
+  SystemTimer: 
+    version: ">= 0"
+    group: 
+    - :default
+  oauth: 
+    version: ">= 0"
+    group: 
+    - :default
+  httparty: 
+    version: ">= 0"
+    group: 
+    - :default
+  facebooker: 
+    version: ">= 0"
+    group: 
+    - :default
+  rails: 
+    version: = 2.3.4
+    group: 
+    - :default
+  nokogiri: 
+    version: ">= 0"
+    group: 
+    - :default
+  twitter: 
+    version: ">= 0"
+    group: 
+    - :default
+  tzinfo: 
+    version: ">= 0"
+    group: 
+    - :default
+  shuber-attr_encrypted: 
+    version: ">= 0"
+    group: 
+    - :default
+  rio: 
+    version: ">= 0"
+    group: 
+    - :default
+  haml: 
+    version: ">= 0"
+    group: 
+    - :default
+  bullet: 
+    version: ">= 0"
+    group: 
+    - :development
+  rspec: 
+    version: = 1.3.0
+    group: 
+    - :test
+  mash: 
+    version: ">= 0"
+    group: 
+    - :default
+  javan-whenever: 
+    version: ">= 0"
+    group: 
+    - :default
+  newrelic_rpm: 
+    version: ">= 2.9.8"
+    group: 
+    - :production
+  hashie: 
+    version: ">= 0"
+    group: 
+    - :default
+  amqp: 
+    version: = 0.6.7
+    group: 
+    - :default
+  searchlogic: 
+    version: = 2.3.4
+    group: 
+    - :default
+  ruby-hmac: 
+    version: ">= 0"
+    group: 
+    - :default
+  mime-types: 
+    version: ">= 0"
+    group: 
+    - :default
+  crack: 
+    version: ">= 0"
+    group: 
+    - :default
+  active_presenter: 
+    version: ">= 0"
+    group: 
+    - :default
+  image_science: 
+    version: ">= 0"
+    group: 
+    - :default
+  right_aws: 
+    version: ">= 0"
+    group: 
+    - :default
+  rspec-rails: 
+    version: = 1.3.2
+    group: 
+    - :test
+  rmagick: 
+    version: = 2.12.2
+    group: 
+    - :default
+  thinking-sphinx: 
+    version: ">= 0"
+    group: 
+    - :default
+  mysqlplus: 
+    version: ">= 0"
+    group: 
+    - :default
+  larch: 
+    version: ">= 0"
+    group: 
+    - :default
+  eventmachine: 
+    version: ">= 0"
+    group: 
+    - :default
+  ruby-growl: 
+    version: ">= 0"
+    group: 
+    - :development
+  deadweight: 
+    version: ">= 0"
+    group: 
+    - :development
+  capistrano-ext: 
+    version: = 1.2.1
+    group: 
+    - :default
+  hirb: 
+    version: ">= 0"
+    group: 
+    - :development
+  webrat: 
+    version: = 0.6.0
+    group: 
+    - :test
+  pauldix-feedzirra: 
+    version: ">= 0"
+    group: 
+    - :default
+  mdalessio-dryopteris: 
+    version: ">= 0"
+    group: 
+    - :default
+  markevans-block_helpers: 
+    version: ">= 0"
+    group: 
+    - :default
+  jnunemaker-columbus: 
+    version: ">= 0"
+    group: 
+    - :default
+  lockfile: 
+    version: ">= 0"
+    group: 
+    - :default
+  packr: 
+    version: ">= 0"
+    group: 
+    - :default
+  ruby-stemmer: 
+    version: ">= 0"
+    group: 
+    - :default
+  hoe: 
+    version: = 2.4.0
+    group: 
+    - :default
+  after_commit: 
+    version: ">= 0"
+    group: 
+    - :default
+  capistrano: 
+    version: = 2.5.10
+    group: 
+    - :default
+  daemons: 
+    version: ">= 0"
+    group: 
+    - :default
+  RubyInline: 
+    version: ">= 0"
+    group: 
+    - :default
+  aws-s3: 
+    version: ">= 0"
+    group: 
+    - :default
+  hpricot: 
+    version: ">= 0"
+    group: 
+    - :default
+  rvideo: 
+    version: ">= 0"
+    group: 
+    - :default
+  shared-mime-info: 
+    version: ">= 0"
+    group: 
+    - :default
+  cucumber: 
+    version: = 0.4.3
+    group: 
+    - :test
+  gdata: 
+    version: ">= 0"
+    group: 
+    - :default
