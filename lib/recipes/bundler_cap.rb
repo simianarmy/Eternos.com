@@ -25,4 +25,4 @@ namespace :bundler do
   end
 end
 
-after 'deploy:update_code', 'bundler:bundle_new_release'
+#after 'deploy:update_code', 'bundler:bundle_new_release'
