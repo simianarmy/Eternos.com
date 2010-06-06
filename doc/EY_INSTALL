@@ -1,0 +1,27 @@
+Instructions for Intalling on EngineYard Cloud (EC2)
+
+Settings:
+
+ruby 1.8.7
+rails 2.3.4
+
+Unix packages:
+
+freeimage
+ffmpeg
+rabbitmq-server
+xorg-x11 (for cutycapt)
+Not sure about these: libxml2-dev, libxslt-dev, readline-devel, curl-devel
+
+Gems:
+bundler 0.9.25
+jeweler 1.4.0+
+daemons 1.0.9+
+
+Filesystem:
+
+symlink ffmpeg to /usr/local/bin/ffmpeg
+
+Security:
+
+Add firewall opening to AMQP port (specify source networks)

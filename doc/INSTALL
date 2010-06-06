@@ -8,12 +8,12 @@ apache 2.x
 Unix packages: libxml2-dev, libxslt-dev, readline-devel, curl-devel
 
 Gems:
-bundler 0.8
+bundler 0.9.25
 daemons
 
 - Checkout source
 - cd source dir
-> gem bundle --only development --only test
+> bundle install
 
 If error on taf2-curb install on Ubuntu, see:
  http://ruby.zigzo.com/2009/02/15/feedzirra-installation-errors/

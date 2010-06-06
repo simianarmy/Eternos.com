@@ -71,25 +71,16 @@ namespace :deploy do
     fetch(:shared_configs).each do |config|
       run "ln -nfs #{shared_path}/config/#{config} #{release_path}/config/#{config}"
     end
-    run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
     
-    # Setup permissions so that designer can read/write in view directories
-    # HORRIBLE idea
-    # run "chgrp -R www #{release_path}"
-    #     run "chmod -R 770 #{release_path}"
-    #     run "chmod 775 #{release_path} #{release_path}/app"
-    #     run "chgrp -R www-dev #{release_path}/public #{release_path}/app/views"
-    #     run "chmod -R 775 #{release_path}/public #{release_path}/app/views"
+    run "mkdir -p #{shared_path}/assets"
+    run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
+    run "mkdir -p #{shared_path}/tmp/cloud_staging"
+    run "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
   end
   
   desc "migrate database"
   task :migrate do
     run "cd #{current_path} && rake RAILS_ENV=#{stage} db:auto:migrate" 
-  end
-  
-  desc "Custom actions for setup"
-  task :after_setup do
-    run "mkdir -p #{shared_path}/assets"
   end
   
   desc "Update the crontab file"
