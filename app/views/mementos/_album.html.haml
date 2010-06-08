@@ -1,0 +1,10 @@
+.decoration_item[item]
+  = link_to_remote image_tag(item.cover_photo.thumbnail_url), :url => album_url(item, :view => 'memento_editor'), :method => 'get', :update => 'artifacts_expanded_view', :loading => "spinner.load('artifact_view');", :complete => "spinner.unload();"
+  %br
+  %span.title= truncate(item.name, :length => 20)
+  .info.title.hidden
+    == Title: #{item.name}
+    - if item.description && !item.description.blank?
+      == , #{item.description}
+    == , Photos: #{item.size}
+    == , Created: #{item.created_at.to_date}

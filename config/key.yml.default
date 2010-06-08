@@ -1,0 +1,14 @@
+# $Id$
+
+# DO NOT EDIT - TEMPLATE ONLY!
+# CREATE LOCAL COPY at config/key.yml
+
+# ENCRYPTION KEY SETTINGS
+
+development:
+  key: key
+  salt: salt
+  
+test:
+  key: key
+  salt: salt

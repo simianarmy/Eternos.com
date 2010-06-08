@@ -10,19 +10,9 @@
     %title= "Eternos Members - " + h(yield(:title) || "Uploader")
 
 
-    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'mementos', '/javascripts/lightview2.5.2.1/css/lightview.css', 'soundmanager-ui'
-    
-    - javascript 'mementos/editor', 'dragdropextra'
-    - use_busy
-    - use_scrollable
-    - use_flashplayer
-    - use_soundmanager
-    - use_wysiwyg
-    
+    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'mementos', 'scrollable', 'scrollable-navig', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'soundmanager-ui', 'inlineplayer'
     = yield(:head)
-    = yield(:js_libs)
-    /- FIX: Doesn't work when put at bottom of <body>
-    = yield(:javascript)
+    
     / end bundle
   %body
     .header
@@ -45,3 +35,16 @@
           
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
+    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'inlineplayer', 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'jQuery/jquery.form.js', 'dragdrop', 'dragdropextra', 'wysiwyg', 'mementos/editor', 'cvi_busy_lib', :cache => 'cache/mementos'
+    :javascript
+      var FlowplayerSwfUrl = '#{video_player_swf_url}';
+      var FLOWPLAYER_PRODUCT_KEY = '#{FLOWPLAYER_PRODUCT_KEY}';
+      var editor, artifactPicker;
+
+      window._token = '#{form_authenticity_token}';
+      soundManager.debugMode = true;
+      soundManager.consoleOnly = true;
+
+      document.observe('dom:loaded', function() {
+        editor = MementoEditor.init();
+      });

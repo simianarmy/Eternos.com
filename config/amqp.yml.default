@@ -1,0 +1,21 @@
+# $Id$
+
+# DO NOT EDIT - TEMPLATE ONLY!
+# CREATE LOCAL COPY at config/amqp.yml
+
+common: &default_settings
+  user: 
+  pass: 
+  host: 127.0.0.1
+  port: 5672
+  timeout: 3600
+  logging: false
+  ssl: false
+  
+development:
+  <<: *default_settings
+  vhost: /eternos_development
+  
+test:
+  <<: *default_settings
+  vhost: /eternos_test

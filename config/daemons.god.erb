@@ -81,19 +81,6 @@ God.watch do |w|
   generic_monitoring(w, :cpu_limit => 80.percent, :memory_limit => 100.megabytes)
 end
   
-God::Contacts::Email.server_settings = {
-  :address => "smtp.gmail.com",
-  :port => 587,
-  :domain => "eternos.com",
-  :authentication => :plain,
-  :user_name => "mailer@eternos.com",
-  :password => "UBy6XprJ50MhIE"
-}
-
-God.contact(:email) do |c|
-  c.name = 'sysadmin'
-  c.email = 'marc@eternos.com'
-end
 
 
 

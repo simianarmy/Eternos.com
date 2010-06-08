@@ -11,6 +11,7 @@ module MessageQueue
     DirectExchange          = 'backup_processing'
     WorkerTopicExchange     = 'backup_workers'
     WorkerTopicQueue        = 'backup_job'
+    WorkerLongJobQueue      = 'long_backup_job'
     PendingJobsQueue        = 'pending_backups'
     FeedbackQueue           = 'ruote_backup_feedback'
     EmailUploadQueue        = 'backup_email_upload'
@@ -109,12 +110,20 @@ module MessageQueue
       @@topic_ex ||= MQ.topic(WorkerTopicExchange)
     end
     
+    def backup_worker_direct
+      @@direct_ex ||= MQ.direct(DirectExchange, :durable => true)
+    end
+    
     def backup_worker_subscriber_queue(site)
-      MQ.queue(site).bind(backup_worker_topic, :key => backup_worker_topic_route(site))
+      MQ.queue('backup_worker').bind(backup_worker_topic, :key => backup_worker_topic_route(site))
+    end
+    
+    def long_backup_worker_queue
+      @@long_backup ||= MQ.queue(WorkerLongJobQueue).bind(backup_worker_direct)
     end
     
     def email_upload_queue
-      @@eu_q ||= MQ.queue(EmailUploadQueue).bind(MQ.direct(DirectExchange, :durable => true))
+      @@eu_q ||= MQ.queue(EmailUploadQueue).bind(backup_worker_direct)
     end
     
     def create_topic_queue(channel, queue, options={})

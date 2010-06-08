@@ -56,6 +56,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :gmail_accounts
   map.resources :backup_emails, :member => {:body => :get}
   map.resources :feed_entries
+  map.resources :albums
   map.resources :backup_photo_albums
   map.resources :facebook_activity_stream_items
   map.resources :twitter_activity_stream_items

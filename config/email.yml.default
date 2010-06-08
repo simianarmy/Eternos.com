@@ -1,0 +1,18 @@
+# $Id$
+
+# DO NOT EDIT - TEMPLATE ONLY!
+# CREATE LOCAL COPY at config/email.yml
+
+common: &default_settings
+  tls: false
+  server: 
+  port: 
+  domain: 
+  authentication: 
+  username: 
+  password: 
+  
+development:
+  <<: *common
+
+

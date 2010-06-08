@@ -1,0 +1,19 @@
+# $Id: $
+#
+# DO NOT EDIT - TEMPLATE ONLY!
+# CREATE LOCAL COPY at config/amazon_s3.yml
+
+common: &default_settings
+  access_key_id: 
+  secret_access_key:
+  use_ssl: false
+  
+development:
+  <<: *default_settings
+  bucket_name: eternos_development
+  use_ssl: false
+  
+test:
+  <<: *default_settings
+  bucket_name: eternos_test
+  use_ssl: false

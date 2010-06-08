@@ -42,7 +42,7 @@ class ActivityStreamItem < ActiveRecord::Base
     where "deleted_at IS NULL"
   end
   
-  # Helper for synching object from backup proxy object
+  # Helpers for synching object from backup proxy object
   def sync_from_proxy!(p)
     # Uniqueness based on optional passed find query
     update_attributes!(
@@ -51,6 +51,10 @@ class ActivityStreamItem < ActiveRecord::Base
       :attribution    => p.attribution,
       :comment_thread => p.comments,
       :liked_by       => p.likers)
+  end
+  
+  def needs_sync?(p)
+    self.comment_thread != p.comments || self.liked_by != p.likers
   end
   
   def self.create_from_proxy!(activity_stream_id, item)

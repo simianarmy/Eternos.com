@@ -70,6 +70,12 @@ namespace :backup do
     end
   end
   
+  desc "Run long facebook backups"
+  task :run_long_facebook => :environment do
+    EternosBackup::BackupJobPublisher.add_by_site(BackupSite.find_by_name(BackupSite::Facebook), 
+      :dataType => EternosBackup::SiteData::FacebookOtherWallPosts)
+  end
+  
   desc "Run backup for recently failed backups caused by db connection errors"
   task :rebackup_failed_from_db_max_error => :environment do
     sources = BackupSourceJob.created_at_gt(24.hours.ago).error_messages_like('could not obtain a database connection').map(&:backup_source).uniq.compact

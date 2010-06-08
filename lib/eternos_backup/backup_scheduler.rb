@@ -25,6 +25,7 @@ module EternosBackup
             # [[backup_source1, :dataType => datattype], [backupsource1, :dataType => datatype2], ...]
             member.backup_sources.active.each do |bs|
               bs.backup_data_sets.each do |ds|
+                next if options[:dataType] && (ds != options[:dataType])
                 # Get latest backup job record for this backup source & data set
                 latest_job = BackupSourceJob.backup_source_id_eq(bs.id).backup_data_set_id_eq(ds).newest
                 

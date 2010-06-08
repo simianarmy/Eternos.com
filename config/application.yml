@@ -1,4 +1,7 @@
 # $Id$
+#
+# CREATE REQUIRED PATHS ON YOUR FILESYSTEM SO THAT YOU DON'T HAVE TO EDIT THESE SETTING!
+
 common: &default_settings
   invitation_required: false
   email_registration_required: false 
