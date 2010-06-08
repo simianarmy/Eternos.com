@@ -8,7 +8,7 @@
 unless defined? Bundler
   # CUSTOM FIX FOR PASSENGER
   # From http://tomafro.net/2009/11/a-rails-template-for-gem-bundler
-  require File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle", "environment"))
+  #require File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle", "environment"))
   
   begin
     require "rubygems"

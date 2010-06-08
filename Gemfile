@@ -3,7 +3,8 @@
 #bundle_path "vendor/bundled_gems"
 #clear_sources
 
-source :gemcutter
+#source :gemcutter
+source 'http://gemcutter.org'
 source "http://gems.github.com"
 
 #source :gemcutter
