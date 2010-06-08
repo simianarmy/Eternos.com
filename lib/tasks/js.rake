@@ -114,6 +114,26 @@ namespace :js do
           "#{lib_global_dir}account_setup.js",
           "#{lib_global_dir}timezone_detector.js"
         ],
+        "#{lib_cache_dir}mementos.js" => [
+            "#{lib_global_dir}jQuery/jquerytools-1.1.2.min.js", 
+            "#{lib_global_dir}application_jquery.js",
+            "#{lib_global_dir}prototype.js", 
+            "#{lib_global_dir}scriptaculous.js",
+            "#{lib_global_dir}effects.js",
+            "#{lib_global_dir}controls.js",
+            "#{lib_global_dir}lightview2.5.2.1/js/lightview.js",
+            "#{lib_global_dir}flowplayer-3.1.4.min.js",
+            "#{lib_global_dir}flowplayer.playlist-3.0.7.js",
+            "#{lib_global_dir}soundmanager2-nodebug-jsmin.js",
+            "#{lib_global_dir}inlineplayer.js",
+            "#{lib_global_dir}ckeditor/ckeditor.js",
+            "#{lib_global_dir}ckeditor/adapters/jquery.js",
+            "#{lib_global_dir}dragdrop.js",
+            "#{lib_global_dir}dragdropextra.js",
+            "#{lib_global_dir}wysiwyg.js",
+            "#{lib_global_dir}mementos/editor.js",
+            "#{lib_global_dir}cvi_busy_lib.js"
+          ],
       "#{lib_cache_dir}tools.js" => [
         "#{lib_global_dir}prototype.js", 
         "#{lib_global_dir}scriptaculous.js",

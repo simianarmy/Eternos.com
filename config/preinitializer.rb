@@ -3,10 +3,12 @@
 # For Bundler 0.8
 #require "#{File.dirname(__FILE__)}/../vendor/bundled_gems/environment"
 
-# UNCOMMENT BELOW WHEN Bundler 0.9+ ACTUALLY WORKS
 
 # WORKAROUND FOR CUSTOM APPS LOADING RAILS THAT ALREADY HAVE BUNDLER LOADED
 unless defined? Bundler
+  # CUSTOM FIX FOR PASSENGER
+  # From http://tomafro.net/2009/11/a-rails-template-for-gem-bundler
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle", "environment"))
   
   begin
     require "rubygems"

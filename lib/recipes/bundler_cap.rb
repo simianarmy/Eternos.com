@@ -20,9 +20,9 @@ namespace :bundler do
   end
 
   task :bundle_new_release do
-    bundler.symlink_vendor
-    run("cd #{release_path} && gem bundle --only #{stage}")
+    #bundler.symlink_vendor
+    run("cd #{release_path} && bundle install")
   end
 end
 
-#after 'deploy:update_code', 'bundler:bundle_new_release'
+after 'deploy:update_code', 'bundler:bundle_new_release'
