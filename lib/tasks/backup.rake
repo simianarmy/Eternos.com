@@ -34,7 +34,7 @@ namespace :backup do
   
   desc "Generate backup jobs"
   task :run_scheduled => :environment do
-    cutoff = ENV['FORCE'] ? Time.now : nil
+    cutoff = ENV['FORCE'] ? Time.now.utc : nil
     EternosBackup::BackupScheduler.run :cutoff => cutoff
   end
   

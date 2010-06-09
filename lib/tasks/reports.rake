@@ -13,8 +13,12 @@ namespace :reports do
     end
 
     desc "Display all pending backup jobs"
-    task :print_pending => :environment do
-      EternosBackup::BackupScheduler.run :report => true
+    task :pending_jobs => :environment do
+      EternosBackup::BackupScheduler.get_pending_backups.each do |member, sources|
+        sources.each do |s|
+          puts "#{member.id} => " + [s[0].id, s[0].description, s[1][:dataType], s[0].member.backup_state.try(:last_successful_backup_at)].join(':')
+        end
+      end
     end
     
     desc "Generate all backup-related reports"

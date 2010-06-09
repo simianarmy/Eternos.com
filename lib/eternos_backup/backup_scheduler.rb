@@ -10,54 +10,57 @@ module EternosBackup
       def default_run_interval  
         EternosBackup::DataSchedules.min_backup_interval(EternosBackup::SiteData.defaultDataSet)
       end
-      
+
+      # Run in EM reactor to publish pending backup jobs to MQ
       def run(options={})
         @@cutoff = options[:cutoff] || cutoff_time
 
-        # Get members that qualify for backup
         MessageQueue.start do
-          members_sources = {}
+          # Get members that qualify for backup
+          member_sources = get_pending_backups(@@cutoff, options)
           
+          # Using member.backup_state.last_successful_backup_at as sort key
+          member_sources.keys.sort { |a, b|
+            atime = a.backup_state ? a.backup_state.last_successful_backup_at.to_i : 0
+            btime = b.backup_state ? b.backup_state.last_successful_backup_at.to_i : 0
+            atime <=> btime
+          }.each do |member|
+            sources = member_sources[member]
+            # Send sources to job publisher
+            EternosBackup::BackupJobPublisher.run(member, sources) 
+          end
+          MessageQueue.stop
+        end
+      end
+      
+      # Meat of the backup scheduler.  Process each member with at least 1 backup source.
+      # Returns hash containing:
+      # Member => [[backup_source1, :dataType => datattype], [backupsource1, :dataType => datatype2], ...]
+      #   
+      def get_pending_backups(cutoff=nil, options={})
+        returning({}) do |member_sources|
           # Do all members needing a backup
-          Member.needs_backup(@@cutoff).each do |member|
-            # Get all backup sources,datatypes that should be backed up
-            # Result should be array with format: 
-            # [[backup_source1, :dataType => datattype], [backupsource1, :dataType => datatype2], ...]
+          Member.needs_backup(cutoff).each do |member|
+            # Get all backup sources,datatypes that should be backed up          
             member.backup_sources.active.each do |bs|
               bs.backup_data_sets.each do |ds|
                 next if options[:dataType] && (ds != options[:dataType])
                 # Get latest backup job record for this backup source & data set
                 latest_job = BackupSourceJob.backup_source_id_eq(bs.id).backup_data_set_id_eq(ds).newest
-                
+            
                 if source_scheduled_for_backup?(latest_job, bs, ds)
                   # Save member-latest job pair for sorting later
                   # Save member-sources pair for lookup by member id later
-                  (members_sources[member] ||= []) << [bs, {:dataType => ds}]
+                  (member_sources[member] ||= []) << [bs, {:dataType => ds}]
                 end
               end
             end
           end
-
-          # Using member.backup_state.last_successful_backup_at as sort key
-          members_sources.keys.sort { |a, b|
-            atime = a.backup_state ? a.backup_state.last_successful_backup_at.to_i : 0
-            btime = b.backup_state ? b.backup_state.last_successful_backup_at.to_i : 0
-            atime <=> btime
-          }.each do |member|
-            sources = members_sources[member]
-            # Send sources to job publisher
-            if options[:report]
-              sources.each do |s|
-                puts "#{member.id} => " + [s[0].id, s[0].description, s[1][:dataType], s[0].member.backup_state.try(:last_successful_backup_at)].join(':')
-              end
-            else
-              EternosBackup::BackupJobPublisher.run(member, sources) 
-            end
-          end
-          MessageQueue.stop
         end
       end
-
+      
+      protected
+      
       # Determines if a backup source can be scheduled for backup
       def source_scheduled_for_backup?(latest_job, bs, data_set)
         # Definitely needs backup if no backup jobs have been created for it
@@ -77,7 +80,7 @@ module EternosBackup
       # schedule the next backup
       def cutoff_time(ds=EternosBackup::SiteData.defaultDataSet)
         min_interval = EternosBackup::DataSchedules.min_backup_interval(ds) || default_run_interval
-        Time.now - min_interval
+        Time.now.utc - min_interval
       end
 
       # Calculates estimated next backup run time for some backup source (and optional data set)
@@ -90,7 +93,7 @@ module EternosBackup
             next_run_time
           end
           # Don't schedule for sometime in the past
-          (scheduled.nil? || (scheduled <= Time.now)) ? next_run_time : scheduled
+          (scheduled.nil? || (scheduled <= Time.now.utc)) ? next_run_time : scheduled
         end
       end
 
