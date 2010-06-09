@@ -1,8 +1,6 @@
 # $Id$
 
 class BackupPhoto < ActiveRecord::Base
-  include AfterCommit::ActiveRecord
-  
   belongs_to :backup_photo_album
   belongs_to :photo, :class_name => 'Content', :foreign_key => 'content_id', :dependent => :destroy
   
@@ -13,8 +11,6 @@ class BackupPhoto < ActiveRecord::Base
   xss_terminate :except => [ :tags ]
   acts_as_archivable :on => :added_at
   acts_as_state_machine :initial => :pending_download
-  
-  include TimelineEvents
   
   state :pending_download
   state :downloading, :enter => :download
@@ -33,6 +29,10 @@ class BackupPhoto < ActiveRecord::Base
     transitions :from => [:downloading, :downloaded], :to => :failed_download
   end
   
+  include AfterCommit::ActiveRecord
+  after_commit_on_create :download_photo
+  
+  include TimelineEvents
   include CommonDateScopes
   named_scope :needs_download, :conditions => { :state => ['pending_download', 'failed_download'] }
   named_scope :belonging_to_source, lambda { |id| 
@@ -91,7 +91,7 @@ class BackupPhoto < ActiveRecord::Base
 
   protected
   
-  def after_commit_on_create
+  def download_photo
     logger.debug "Sending job to image download worker: #{self.id}"
     
     ImageDownloadWorker.async_download_image(:id => self.id)

@@ -4,9 +4,8 @@ require 'screen_capture'
 require 's3_helper'
 
 class FeedContent < ActiveRecord::Base
-  include AfterCommit::ActiveRecord
-
   belongs_to :feed_entry
+  
   has_attached_file :screencap, 
   :styles => { :thumb => "300x300" },
   :storage => :s3,
@@ -17,6 +16,9 @@ class FeedContent < ActiveRecord::Base
   :url => ":class/:id/:basename_:style.:extension",
   :path => ":class/:id/:basename_:style.:extension",
   :bucket => S3Buckets::ScreencapBucket.eternos_bucket_name
+  
+  include AfterCommit::ActiveRecord
+  after_commit_on_create :fetch_contents
     
   def save_html
     c = Curl::Easy.perform(feed_entry.url)
@@ -53,7 +55,7 @@ class FeedContent < ActiveRecord::Base
   
   protected
 
-  def after_commit_on_create
+  def fetch_contents
     logger.debug "Sending job to rss worker: #{self.id}"
     RssWorker.async_fetch_blog_contents(:id => self.id) if self.feed_entry.url
   end
