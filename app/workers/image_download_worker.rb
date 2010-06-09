@@ -9,7 +9,7 @@ class ImageDownloadWorker < Workling::Base
   include WorklingHelper
   
   def download_image(payload)
-    logger.debug "#{self.class.to_s} got payload #{payload.inspect}"
+    logger.info "#{self.class.to_s} got payload #{payload.inspect}"
     return unless bp = safe_find {
       BackupPhoto.find(payload[:id])
     }
@@ -17,7 +17,7 @@ class ImageDownloadWorker < Workling::Base
       BackupPhotoDownloader.download_photo(bp)
     rescue
       bp.download_error!
-      logger.debug "Exception in #{self.class.to_s}: " + $!
+      logger.error "Exception in #{self.class.to_s}: " + $!
     end
   end
 end

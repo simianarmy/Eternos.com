@@ -7,7 +7,7 @@ class RssWorker < Workling::Base
   
   # fetch rss item contents, take screen capture, and upload capture+thumb to S3
   def fetch_blog_contents(payload)
-    logger.debug "#{self.class.to_s} got payload #{payload.inspect}"
+    logger.info "#{self.class.to_s} got payload #{payload.inspect}"
     return unless entry = safe_find {
       FeedContent.find(payload[:id])
     }
@@ -15,7 +15,7 @@ class RssWorker < Workling::Base
       #entry.save_html
       entry.save_screencap
     rescue
-      logger.debug "Exception in RssWorker:fetch_blog_contents: " + $!
+      logger.error "Exception in RssWorker:fetch_blog_contents: " + $!
     end
   end
 end

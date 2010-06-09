@@ -30,6 +30,7 @@ development:
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   s3_staging_dir: /tmp
   ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false
   
 test:
   <<: *default_settings
@@ -40,6 +41,7 @@ test:
   base_domain: localhost
   s3_staging_dir: /tmp
   ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false
   
 production:
   <<: *default_settings
@@ -51,6 +53,7 @@ production:
   s3_staging_dir: tmp/cloud_staging
   invitation_required: false
   ffmpeg_path: /usr/local/bin/ffmpeg
+  register_users_to_facebook: true
     
 staging:
   <<: *default_settings
@@ -61,6 +64,7 @@ staging:
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
   s3_staging_dir: tmp/cloud_staging
   ffmpeg_path: /usr/local/bin/ffmpeg
+  register_users_to_facebook: true
 
 local_production:
   <<: *default_settings
@@ -71,3 +75,4 @@ local_production:
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   s3_staging_dir: /tmp
   ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false

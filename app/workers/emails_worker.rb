@@ -7,7 +7,7 @@ class EmailsWorker < Workling::Base
   
   # content (media) uploader to S3
   def process_backup_email(payload)
-    logger.debug "EmailsWorker got payload #{payload.inspect}"
+    logger.info "EmailsWorker got payload #{payload.inspect}"
     return unless email = safe_find {
       BackupEmail.find(payload[:id])
     }
@@ -18,11 +18,12 @@ class EmailsWorker < Workling::Base
         uploader = S3Uploader.create(:email) # Needs to be singleton for performance
         email.upload_to_s3(uploader)
       end
-      logger.debug "Uploaded email in #{mark} seconds"
+      logger.info "Uploaded email in #{mark} seconds"
       
       email.finish_cloud_upload!
     rescue 
       email.cloud_upload_error $!.to_s
+      logger.error "Exception in #{self.class.to_s}: " + $!
     end
   end
 end

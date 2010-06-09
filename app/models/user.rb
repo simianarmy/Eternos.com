@@ -129,10 +129,12 @@ class User < ActiveRecord::Base
   # We need this so Facebook can find friends on our local application even if they have not connect through connect
   # We hen use the email hash in the database to later identify a user from Facebook with a local user
   def register_user_to_fb
-    users = {:email => email, :account_id => id}
-    Facebooker::User.register([users])
-    self.email_hash = Facebooker::User.hash_email(email)
-    save(false)
+    if AppConfig.register_users_to_facebook
+      users = {:email => email, :account_id => id}
+      Facebooker::User.register([users])
+      self.email_hash = Facebooker::User.hash_email(email)
+      save(false)
+    end
     true
   end
   

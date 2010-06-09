@@ -28,6 +28,9 @@ group :test do
   gem 'rspec', '1.3.0'
   gem 'rspec-rails', '1.3.2'
   gem 'ruby-debug', '0.10.3'
+  gem 'mocha'
+  gem 'faker'
+  gem 'spork'
 end
 
 group :production do

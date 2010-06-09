@@ -12,7 +12,7 @@ class BackupPhotoDownloader
     # Run in em loop since rake tasks do not start amqp
     # Run thread within EM loop, and sleep to pass control back 
     # to em to publish immediately
-    MessageQueue.start do
+    MessageQueue.execute do
       RAILS_DEFAULT_LOGGER.info "Starting backup photo downloads"
       Thread.new do
         # Why is shuffle causing undefined method `shuffle' for named_scope
@@ -24,7 +24,6 @@ class BackupPhotoDownloader
           sleep(0.3) # Don't flood source with download requests, and allow em to publish
         end
         RAILS_DEFAULT_LOGGER.info "Ending backup photo downloads"
-        MessageQueue.stop
       end
     end
   end

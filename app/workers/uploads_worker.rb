@@ -10,7 +10,7 @@ class UploadsWorker < Workling::Base
   
   # content (media) uploader to S3
   def upload_content_to_cloud(payload)
-    logger.debug "Upload worker got payload #{payload.inspect}"
+    logger.info "Upload worker got payload #{payload.inspect}"
     return unless content = safe_find {
       klass = payload[:class]
       klass.constantize.find(payload[:id])
@@ -23,7 +23,7 @@ class UploadsWorker < Workling::Base
       mark = Benchmark.realtime do
         s3.upload(content.full_filename, content.public_filename, :content_type => content.content_type)
       end
-      logger.debug "Uploaded content in #{mark} seconds"
+      logger.info "Uploaded content in #{mark} seconds"
       
       content.update_attribute(:s3_key, s3.key)    
       content.finish_cloud_upload!

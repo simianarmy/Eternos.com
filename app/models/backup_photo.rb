@@ -93,6 +93,8 @@ class BackupPhoto < ActiveRecord::Base
   
   def after_commit_on_create
     logger.debug "Sending job to image download worker: #{self.id}"
+    
     ImageDownloadWorker.async_download_image(:id => self.id)
+    puts "Sent imager download job for backup photo #{self.id}."
   end
 end

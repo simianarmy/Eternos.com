@@ -133,8 +133,7 @@ class ApplicationController < ActionController::Base
   
   def ssl_required?
     # (Comment this one line out if you want to test ssl locally)
-    #return false if local_request? 
-    
+    return false if local_request? 
     # otherwise, use the filters.
     super
   end

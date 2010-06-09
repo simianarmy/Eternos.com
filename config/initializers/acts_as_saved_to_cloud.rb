@@ -7,6 +7,8 @@ module ActsAsSavedToCloud
   
   module ActMethods
     def acts_as_saved_to_cloud(opts={})
+      after_commit_on_create :start_upload
+      
       acts_as_state_machine :initial => :pending
       
       state :pending
@@ -56,7 +58,7 @@ module ActsAsSavedToCloud
     
     protected
     
-    def after_commit_on_create
+    def start_upload
       stage!
     end
   end

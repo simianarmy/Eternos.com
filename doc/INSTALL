@@ -6,7 +6,7 @@ rails 2.3.4
 mysql 5.x
 apache 2.x
 RHEL Unix packages: libxml2-dev, libxslt-dev, readline-devel, curl-devel
-Ubuntu:  libcurl4-openssl-dev, libxslt-devel
+Ubuntu:  libcurl4-openssl-dev, libxslt-devel, libopenssl-ruby, libfreeimage-dev
 
 Gems:
 bundler 0.9.25
@@ -18,5 +18,11 @@ daemons
 
 If error on taf2-curb install on Ubuntu, see:
  http://ruby.zigzo.com/2009/02/15/feedzirra-installation-errors/
+ 
+- Copy config/*.yml.default to config/ & populate
+- Create database.yml & workling.yml
+- Create dev & test dbs
+- Grant permissions on dbs
+> rake db:auto:migrate
 
 

@@ -159,6 +159,7 @@ class Content < ActiveRecord::Base
   # because just created or modified.
   def upload
     UploadsWorker.async_upload_content_to_cloud(:id => self.id, :class => "Content")
+    logger.debug "Upload worker job sent for content #{self.id}"
   end
   
   # Override in subclasses that can be played like audio & video
