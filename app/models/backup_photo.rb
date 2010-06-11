@@ -64,29 +64,35 @@ class BackupPhoto < ActiveRecord::Base
     begin
       # Sanity check
       @member = backup_photo_album.backup_source.member 
-      @filename = File.join(AppConfig.s3_staging_dir, URI::parse(source_url).path.split('/').last)
-      logger.debug "Downloading #{source_url} to #{@filename}..."
-
+      
+      @filename = File.join(Rails.root, AppConfig.s3_staging_dir, URI::parse(source_url).path.split('/').last)
       @img = rio(@filename)
-      rio(source_url).binmode > @img
-
-      raise "Rio error saving #{source_url} to #{@filename}" unless @img.size?
+      
+      # Don't download if already on filesystem
+      unless @img.size?  
+        logger.debug "Downloading #{source_url} to #{@filename}..."
+        puts "Downloading #{source_url} to #{@filename}..."
+        rio(source_url).binmode > @img
+        raise "Rio error saving #{source_url} to #{@filename}" unless @img.size?
+      end
 
       self.photo = Photo.create!(
-      :owner => @member,
-      :content_type => Content.detect_mimetype(@filename),
-      :description => caption,
-      :filename => File.basename(@filename),
-      :temp_path => File.new(@filename),
-      :tag_list => tags || '',
-      :taken_at => added_at,
-      :collection => backup_photo_album)
+        :owner => @member,
+        :content_type => Content.detect_mimetype(@filename),
+        :description => caption,
+        :filename => File.basename(@filename),
+        :temp_path => File.new(@filename),
+        :tag_list => tags || '',
+        :taken_at => added_at,
+        :collection => backup_photo_album
+      )
       save!
-    rescue
-      update_attribute(:download_error, $!)
-    ensure
       @img.delete if @img && @img.exist?
-    end
+    rescue Exception => e
+      logger.debug "Error in backup photo download: #{e.class} #{e.message}"
+      puts "Error in backup photo download: #{e.class} #{e.message}"
+      update_attribute(:download_error, $!)
+    end    
   end
 
   protected

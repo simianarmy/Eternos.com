@@ -4,7 +4,7 @@ ruby 1.8.7
 rubygems 1.3.5+
 rails 2.3.4
 mysql 5.x
-apache 2.x
+apache 2.x + mod_rails (Passenger)
 RHEL Unix packages: libxml2-dev, libxslt-dev, readline-devel, curl-devel
 Ubuntu:  libcurl4-openssl-dev, libxslt-devel, libopenssl-ruby, libfreeimage-dev
 
@@ -12,6 +12,44 @@ Gems:
 bundler 0.9.25
 daemons
 
+Apache:
+  Add local site to /etc/hosts
+  Create SSL keys
+  Create VirtualHosts
+    Example VirtualHosts:
+    <VirtualHost *:80>
+       ServerName dev.eternos.com
+       DocumentRoot /Users/marcmauger/Documents/code/EDP/eternos/eternos.com/public
+       RailsEnv development
+
+       #ProxyPass / http://127.0.0.1:3000/
+       #ProxyPassReverse / http://127.0.0.1:3000/
+       #ProxyPreserveHost on
+       Porter On
+       PorterSharedSecret sh4mAlam4d1nGd0ng
+       PorterPermission 0x0666
+
+       RewriteEngine on
+       RewriteRule ^/blog$ /Users/marcmauger/Documents/code/EDP/eternos/blog/blog/index.php [QSA]
+       RewriteRule ^(/blog.*/$)$ /Users/marcmauger/Documents/code/EDP/eternos/blog/blog/index.php [QSA]
+       RewriteRule ^/blog/?(.*)$ /Users/marcmauger/Documents/code/EDP/eternos/blog/blog/$1 [NC,QSA,L]
+    </VirtualHost>
+    
+    <VirtualHost *:443>
+      SSLEngine On
+      ServerName dev.eternos.com
+      RailsEnv development
+
+      Porter On
+      PorterSharedSecret sh4mAlam4d1nGd0ng
+      PorterPermission 0x0666
+
+      DocumentRoot /Users/marcmauger/Documents/code/EDP/eternos/eternos.com/public
+    </VirtualHost>
+    
+  http://www.subelsky.com/2007/11/testing-rails-ssl-requirements-on-your.html
+  
+  
 - Checkout source
 - cd source dir
 > bundle install

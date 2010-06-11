@@ -37,7 +37,7 @@ set :group_writable, false
 set :keep_releases, 3
 set :dos2unix, "/usr/bin/dos2unix"
 
-set :shared_configs, %w[ amazon_s3.yml amqp.yml database.yml email.yml facebooker.yml 
+set :shared_configs, %w[ amazon_s3.yml amqp.yml amqp-backup.yml database.yml email.yml facebooker.yml 
   facebooker_desktop.yml gateway.yml key.yml paypal.yml twitter_oauth.yml workling.yml ]
 
 namespace :deploy do

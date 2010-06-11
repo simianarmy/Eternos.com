@@ -5,10 +5,11 @@
 
 
 # WORKAROUND FOR CUSTOM APPS LOADING RAILS THAT ALREADY HAVE BUNDLER LOADED
-unless defined? Bundler
+unless defined? DaemonKit
   # CUSTOM FIX FOR PASSENGER
   # From http://tomafro.net/2009/11/a-rails-template-for-gem-bundler
-  #require File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle", "environment"))
+  # CAUTION: MAY NOT WORK ON YOUR OS
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle", "environment"))
   
   begin
     require "rubygems"

@@ -38,6 +38,8 @@ specs:
     version: 0.6.2
 - bullet: 
     version: 1.7.6
+- bundler: 
+    version: 0.9.25
 - highline: 
     version: 1.5.2
 - net-ssh: 
@@ -89,7 +91,7 @@ specs:
 - gdata: 
     version: 1.1.1
 - haml: 
-    version: 3.0.10
+    version: 3.0.11
 - hashie: 
     version: 0.2.0
 - hirb: 
@@ -131,7 +133,7 @@ specs:
 - mysqlplus: 
     version: 0.1.2
 - newrelic_rpm: 
-    version: 2.12.2
+    version: 2.12.3
 - oyster: 
     version: 0.9.4
 - packr: 
@@ -192,7 +194,7 @@ specs:
     version: 0.3.22
 - webrat: 
     version: 0.6.0
-hash: 430b2eebadde768f8970c8c2758b586e95d379a9
+hash: b437f51cc1723f9c220f9810f006f30a80e56d9f
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
@@ -203,7 +205,7 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  faker: 
+  spork: 
     version: ">= 0"
     group: 
     - :test
@@ -211,7 +213,7 @@ dependencies:
     version: = 0.10.3
     group: 
     - :test
-  spork: 
+  faker: 
     version: ">= 0"
     group: 
     - :test
@@ -271,14 +273,14 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  rspec: 
-    version: = 1.3.0
-    group: 
-    - :test
   bullet: 
     version: ">= 0"
     group: 
     - :development
+  rspec: 
+    version: = 1.3.0
+    group: 
+    - :test
   mash: 
     version: ">= 0"
     group: 
@@ -315,14 +317,14 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  mocha: 
-    version: ">= 0"
-    group: 
-    - :test
   active_presenter: 
     version: ">= 0"
     group: 
     - :default
+  mocha: 
+    version: ">= 0"
+    group: 
+    - :test
   image_science: 
     version: ">= 0"
     group: 
@@ -355,11 +357,11 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  webrat: 
-    version: = 0.6.0
+  ruby-growl: 
+    version: ">= 0"
     group: 
-    - :test
-  hirb: 
+    - :development
+  deadweight: 
     version: ">= 0"
     group: 
     - :development
@@ -367,14 +369,14 @@ dependencies:
     version: = 1.2.1
     group: 
     - :default
-  deadweight: 
+  hirb: 
     version: ">= 0"
     group: 
     - :development
-  ruby-growl: 
-    version: ">= 0"
+  webrat: 
+    version: = 0.6.0
     group: 
-    - :development
+    - :test
   pauldix-feedzirra: 
     version: ">= 0"
     group: 
@@ -407,12 +409,12 @@ dependencies:
     version: = 2.4.0
     group: 
     - :default
-  after_commit: 
-    version: ">= 0"
-    group: 
-    - :default
   capistrano: 
     version: = 2.5.10
+    group: 
+    - :default
+  after_commit: 
+    version: ">= 0"
     group: 
     - :default
   daemons: 
@@ -425,6 +427,10 @@ dependencies:
     - :default
   aws-s3: 
     version: ">= 0"
+    group: 
+    - :default
+  bundler: 
+    version: = 0.9.25
     group: 
     - :default
   hpricot: 

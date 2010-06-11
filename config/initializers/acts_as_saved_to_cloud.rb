@@ -7,6 +7,7 @@ module ActsAsSavedToCloud
   
   module ActMethods
     def acts_as_saved_to_cloud(opts={})
+      include AfterCommit::ActiveRecord
       after_commit_on_create :start_upload
       
       acts_as_state_machine :initial => :pending
@@ -18,7 +19,7 @@ module ActsAsSavedToCloud
       state :upload_error
 
       event :start_cloud_upload do
-        transitions :from => :staging, :to => :processing
+        transitions :from => [:pending, :staging, :complete, :upload_error], :to => :processing
       end
 
       event :finish_cloud_upload do
@@ -38,7 +39,6 @@ module ActsAsSavedToCloud
       end
       
       extend ClassMethods
-      include AfterCommit::ActiveRecord
       include InstanceMethods
     end
   end 

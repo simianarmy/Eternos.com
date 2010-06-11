@@ -4,6 +4,13 @@
 # All require the Rails environment
 
 namespace :backup do
+  def remove_file(f)
+    if File.exists? f
+      puts "Removing #{f}"
+      FileUtils.rm f
+    end
+  end
+  
   desc "Download new backup photos"
   task :download_photos => :environment do
     count = ENV['COUNT'] || 100
@@ -13,6 +20,15 @@ namespace :backup do
   desc "Ensure backup photos properly saved" 
   task :fix_photos => :environment do
     BackupPhotoDownloader.fix_photos
+  end
+  
+  task :cleanup_local_assets => :environment do
+    Content.s3_key_not_nil.find_each do |c|
+      remove_file(c.full_filename)
+    end
+    PhotoThumbnail.s3_key_not_nil.find_each do |thumb|
+      remove_file(thumb.full_filename)
+    end
   end
   
   desc "Ensure thumbnails properly created"
@@ -25,11 +41,23 @@ namespace :backup do
     BackupPhotoDownloader.download_photos_from_facebook_attachments
   end
   
+  desc "Ensure downloaded photos have been saved to cloud"
+  task :ensure_content_saved_to_cloud => :environment do
+    require 'content_uploader'
+    ContentUploader.upload_all
+  end
+  
   desc "Make sure all blog entries have screencaps"
   task :ensure_feed_screencaps => :environment do
-    FeedEntry.all.each do |fe|
+    FeedEntry.find_each do |fe|
       (fe.feed_content || fe.create_feed_content).save_screencap unless fe.screencap_url
     end
+  end
+  
+  desc "Make sure all email files are uploaded"
+  task :upload_email_files => :environment do
+    require 'email_uploader'
+    EmailUploader.upload_all
   end
   
   desc "Generate backup jobs"

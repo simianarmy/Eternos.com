@@ -17,4 +17,9 @@ module WorklingHelper
       nil
     end
   end
+  
+  def logit(who, msg)
+    Rails.logger.debug msg
+    puts "#{who}: #{Time.now.utc}: #{msg}"
+  end
 end

@@ -27,7 +27,7 @@ module EternosBackup
       # Adds member backup jobs to backup queue
       # sources format: array of [[BackupSource object, options Hash], ...]
       def run(member, sources)
-        MessageQueue.execute do
+        run_backup_job do
           q = MessageQueue.pending_backup_jobs_queue
           member.backup_in_progress! 
           publish_sources q, member, *sources
@@ -39,7 +39,7 @@ module EternosBackup
         options = backup_sources.extract_options!
         options[:dataType] ||= EternosBackup::SiteData.defaultDataSet
         
-        MessageQueue.execute do
+        run_backup_job do
           backup_sources.flatten.reject{|bs| bs.member.nil?}.each do |backup_source|
             publish_sources(MessageQueue.pending_backup_jobs_queue, backup_source.member, [backup_source, options])
           end
@@ -50,7 +50,7 @@ module EternosBackup
       def add_by_site(site, options={})
         options.reverse_merge! :dataType => EternosBackup::SiteData.defaultDataSet
   
-        MessageQueue.execute do
+        run_backup_job do
           q = MessageQueue.pending_backup_jobs_queue
 
           Member.active.sort_by{rand}.each do |m|
@@ -64,7 +64,7 @@ module EternosBackup
 
       def publish_sources(q, member, *sources)
         q.publish payload = BackupJobMessage.new.member_payload(member, *sources)
-        RAILS_DEFAULT_LOGGER.info "Sent backup payload to queue: #{payload.inspect}"
+        Rails.logger.info "Sent backup payload to queue: #{payload.inspect}"
       end
     end
   end

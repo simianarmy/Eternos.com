@@ -107,7 +107,7 @@ class Content < ActiveRecord::Base
       raise UnknownContentTypeException, "Unknown content type!"
     end
   end
-  
+
   def detect_mimetype(data)
     self.class.detect_mimetype(data)
   end
@@ -160,6 +160,7 @@ class Content < ActiveRecord::Base
   def upload
     UploadsWorker.async_upload_content_to_cloud(:id => self.id, :class => "Content")
     logger.debug "Upload worker job sent for content #{self.id}"
+    puts "Upload worker job sent for content #{self.id}"
   end
   
   # Override in subclasses that can be played like audio & video

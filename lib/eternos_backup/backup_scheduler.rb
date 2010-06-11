@@ -1,6 +1,7 @@
 # $Id$
 
 module EternosBackup
+  
   class BackupScheduler
     cattr_writer :cutoff
     cattr_reader :cutoff_time
@@ -15,7 +16,7 @@ module EternosBackup
       def run(options={})
         @@cutoff = options[:cutoff] || cutoff_time
 
-        MessageQueue.start do
+        run_backup_job do
           # Get members that qualify for backup
           member_sources = get_pending_backups(@@cutoff, options)
           
@@ -29,7 +30,6 @@ module EternosBackup
             # Send sources to job publisher
             EternosBackup::BackupJobPublisher.run(member, sources) 
           end
-          MessageQueue.stop
         end
       end
       

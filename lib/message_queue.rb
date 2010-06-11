@@ -84,13 +84,13 @@ module MessageQueue
     # Runs code block inside em reactor.
     # Helpful for one-time execution where caller doesn't know if em started 
     # or not.
-    def execute(&block)
+    def execute(connect_settings=connect_params, &block)
       if EM.reactor_running?
-        RAILS_DEFAULT_LOGGER.debug "MessageQueue: EM reactor already running"
+        Rails.logger.debug "MessageQueue: EM reactor already running"
         yield
       else
-        RAILS_DEFAULT_LOGGER.debug "MessageQueue: Starting EM reactor"
-        start do
+        Rails.logger.debug "MessageQueue: Starting EM reactor"
+        start(connect_settings) do
           block.call
           stop
         end

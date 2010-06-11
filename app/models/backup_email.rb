@@ -145,7 +145,7 @@ class BackupEmail < ActiveRecord::Base
     key = gen_s3_key
     if s3.upload(email_file, key)
       update_attributes(:s3_key => key, :size => File.size(email_file))
-      FileUtils.rm email_file
+      FileUtils.rm email_file # Delete file from disk
     end    
   end
   
