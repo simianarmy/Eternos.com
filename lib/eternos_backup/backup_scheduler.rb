@@ -7,6 +7,8 @@ module EternosBackup
     cattr_reader :cutoff_time
 
     class << self
+      include EternosBackup::QueueRunner
+      
       # Using central DataSchedules module for default min. backup run interval timers
       def default_run_interval  
         EternosBackup::DataSchedules.min_backup_interval(EternosBackup::SiteData.defaultDataSet)

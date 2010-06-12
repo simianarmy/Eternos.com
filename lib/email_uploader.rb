@@ -9,9 +9,10 @@ module EmailUploader
     @@max = 500
     def upload_all
       MessageQueue.start do
-        t = Thread.new do
+        Thread.abort_on_exception = true
+        t1 = Thread.new do
           i = 0
-          BackupEmail.deleted_at_nil.s3_key_nil.find(:all, :joins => {:backup_source => :member}, :conditions => ['users.state = ?', 'live']).each do |bu_email|
+          BackupEmail.deleted_at_nil.s3_key_nil.find(:all, :readonly => false, :joins => {:backup_source => :member}, :conditions => ['users.state = ?', 'live']).each do |bu_email|
             if File.exists? bu_email.temp_filename
               puts "Saving #{bu_email.temp_filename}"
               # Try to upload
@@ -24,10 +25,10 @@ module EmailUploader
                 sleep(10)
               end
             end
-          end
+          end # BackupEmail.each
           puts "Done."
-        end
-        t.join
+        end # Thread.new
+        t1.join
         puts "Out of thread"
         MessageQueue.stop
       end

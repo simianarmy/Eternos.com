@@ -54,7 +54,7 @@ module MessageQueue
 
     # Connects and runs block
     def start(connect_settings=connect_params)
-      puts "** AMQP connecting to #{connect_settings[:vhost]}"
+      puts "=> AMQP connecting to #{connect_settings[:host]}/#{connect_settings[:vhost]}"
       if block_given?
         AMQP.start(connect_settings) { yield }
       else

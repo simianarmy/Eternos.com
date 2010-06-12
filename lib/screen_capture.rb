@@ -11,16 +11,26 @@ module ScreenCapture
   mattr_reader :capturer
   
   class << self
+    @@timeout_seconds = 1.minute
+    
     # Takes screencap and saves to file, returns filename
     def capture(url, ext='png')
       return unless File.exist? capturer
       
       tmp = Tempfile.new('screencap')
       @out = "#{tmp.path}.#{ext}"
-      SystemTimer.timeout_after(30.seconds) {
-        system "DISPLAY=localhost:1.0 #{capturer} #{CutyCaptOpts} --url='#{url}' --out=#{@out}"
-      }
-      tmp.delete
+      puts "saving screencap to #{@out}..."
+      begin
+        SystemTimer.timeout_after(@@timeout_seconds) {
+          system "DISPLAY=localhost:1.0 #{capturer} #{CutyCaptOpts} --url='#{url}' --out=#{@out}"
+        }
+      rescue Timeout::Error => e
+        puts "Timeout saving screencap (#{@@timeout_seconds} s. max): #{e.message}"
+        @out = nil
+      ensure
+        tmp.delete
+      end
+      puts "screencap done."
       @out
     end
   end

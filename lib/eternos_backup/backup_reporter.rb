@@ -3,6 +3,7 @@
 # detailed statistics on storage (along with costs for S3 storage) for our current user base, 
 # including average size of data stores.
 
+
 module EternosBackup
   module S3PriceCalculator
     class << self
@@ -92,18 +93,68 @@ module EternosBackup
       # Generate previous days's backup jobs report for performance analysis & 
       # error detection in beta software
       def backup_jobs
-        data = {}
+        totals = Hash.new(0)
+        errors = Hash.new(0)
+        members_data = {}
+        sources = []
+        members = []
+        source_failures = Hash.new(0)
+        source_errors = {}
+        all_errors = Hash.new(0)
+        
         jobs = BackupJob.by_date Date.yesterday
+        totals[:jobs] = jobs.size
         # Group by member
         jobs.reject{|j| j.member.nil?}.each do |job|
-          (data[job.member] ||= []) << {:job => job, :source_jobs => job.backup_source_jobs}
+          members << job.member.id
+          source_jobs = job.backup_source_jobs
+          sources << source_jobs.map(&:backup_source_id)
+          
+          totals[:source_jobs] += source_jobs.size
+          
+          source_jobs.each do |s|
+            if s.backup_source.consecutive_failed_backup_jobs > 100
+              source_failures[s.backup_source_id] += 1
+            end
+            if s.successful? 
+              totals[:successful] += 1
+            elsif s.has_errors?
+              totals[:errors] += 1
+              s.error_messages.each do |e|
+                err = e.first(100) # truncate error string
+  
+                source_errors[s.backup_source_id] ||= {}
+                unless source_errors[s.backup_source_id][err]
+                  all_errors[err] += 1
+                else
+                  source_errors[s.backup_source_id][err] = 1
+                end                
+                errors[err] += 1
+              end
+            end
+          end
         end
-        #ActionMailer::Base.delivery_method = :sendmail
-        BackupReportMailer.deliver_daily_jobs_report(data)
+        totals[:members] = members.uniq.size
+        totals[:sources] = sources.uniq.size
+        totals[:source_failures] = array_sum(source_failures.values)
+        totals[:avg_failures_per_failed_source] = array_mean(source_failures.values)
+        totals[:failed_sources_needing_alert] = source_failures.size
+        
+        report = {:totals => totals, :errors => all_errors}
+        ActionMailer::Base.delivery_method = :sendmail
+        BackupReportMailer.deliver_daily_jobs_report(report)
       end
-
+      
       protected
-
+      
+      def array_sum(arr)
+        arr.inject( 0 ) { |sum,x| sum+x }
+      end
+      
+      def array_mean(arr)
+        (arr.size > 0) ? arr.sum.to_f / arr.size : 0
+      end
+      
       # With find_in_batches 
       def sum_with_method(klass, method)
         sum = 0

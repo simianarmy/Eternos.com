@@ -24,6 +24,8 @@ module EternosBackup
     end
 
     class << self
+      include EternosBackup::QueueRunner
+      
       # Adds member backup jobs to backup queue
       # sources format: array of [[BackupSource object, options Hash], ...]
       def run(member, sources)
