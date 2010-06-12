@@ -1,0 +1,12 @@
+%p
+  %h2 Daily Backup Job Stats
+  
+- @data[:totals].each_pair do |tot, count|
+  == #{tot}: <strong>#{count}</strong>
+  %br
+  
+%p Errors
+- @data[:errors].each_pair do |err, count|
+  == #{err}: <strong>#{count}</strong>
+  %br
+  
