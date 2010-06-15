@@ -103,25 +103,25 @@ module EternosBackup
         all_errors = Hash.new(0)
         
         jobs = BackupJob.by_date Date.yesterday
-        totals[:jobs] = jobs.size
+        totals[:group_backup_jobs] = jobs.size
         # Group by member
         jobs.reject{|j| j.member.nil?}.each do |job|
           members << job.member.id
           source_jobs = job.backup_source_jobs
           sources << source_jobs.map(&:backup_source_id)
+          totals[:source_backup_jobs] += source_jobs.size
           
-          totals[:source_jobs] += source_jobs.size
-          
+          # Save per-backup source stats
           source_jobs.each do |s|
             if s.backup_source.consecutive_failed_backup_jobs > 100
               source_failures[s.backup_source_id] += 1
             end
             if s.successful? 
-              totals[:successful] += 1
+              totals[:successful_source_jobs] += 1
             elsif s.has_errors?
-              totals[:errors] += 1
+              totals[:failed_source_jobs] += 1
               s.error_messages.each do |e|
-                err = e.first(100) # truncate error string
+                err = short_error(e) # truncate error string
   
                 source_errors[s.backup_source_id] ||= {}
                 unless source_errors[s.backup_source_id][err]
@@ -129,23 +129,30 @@ module EternosBackup
                 else
                   source_errors[s.backup_source_id][err] = 1
                 end                
-                errors[err] += 1
               end
+            end
+          end
+          # Save every kind of error
+          if job.error_messages
+            job.error_messages.each do |err|
+              errors[short_error(err.to_s)] += 1
             end
           end
         end
         totals[:members] = members.uniq.size
-        totals[:sources] = sources.uniq.size
-        totals[:source_failures] = array_sum(source_failures.values)
-        totals[:avg_failures_per_failed_source] = array_mean(source_failures.values)
-        totals[:failed_sources_needing_alert] = source_failures.size
+        totals[:backup_sources] = sources.uniq.size
+        totals[:backup_sources_failed_at_least_100_times] = source_failures.size
         
-        report = {:totals => totals, :errors => all_errors}
-        ActionMailer::Base.delivery_method = :sendmail
+        report = {:totals => totals, :job_errors => errors, :source_errors => all_errors}
+        #ActionMailer::Base.delivery_method = :sendmail
         BackupReportMailer.deliver_daily_jobs_report(report)
       end
       
       protected
+      
+      def short_error(err)
+        err.first(100)
+      end
       
       def array_sum(arr)
         arr.inject( 0 ) { |sum,x| sum+x }
