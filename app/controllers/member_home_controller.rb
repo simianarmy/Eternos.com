@@ -9,4 +9,8 @@ class MemberHomeController < ApplicationController
     @name = current_user.name
   end
   
+  def account_dashboard
+    
+  end
+  
 end
