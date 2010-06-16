@@ -833,6 +833,7 @@ var MovieGenerator = function() {
 						});
 					}
 				},
+
 				onLastSecond: function() {
 					this.getPlugin("content").animate({width: 1, height: 1}, 1000);
 				}
@@ -860,10 +861,6 @@ var MovieGenerator = function() {
 				expose.load();
 			},
 
-			// when playback finishes, close the expose 
-			onFinish: function() {
-				expose.close();
-			},
 			// content specific event listeners and methods 
 			onMouseOver: function() {
 				this.getPlugin("content").setHtml('Mouse over');
@@ -885,10 +882,13 @@ var MovieGenerator = function() {
 					height: initContentBoxHeight,
 					top: 10,
 					left: 10,
-					borderRadius: 30,
+					borderRadius: 10,
 					padding: 15,
+					// Styles can be defined inline or with external stylesheet
+					// http://flowplayer.org/plugins/flash/content.html
 					body: {
-						fontSize: 20
+						fontSize: 16,
+						fontFamily: 'verdana,arial,helvetica'
 					},
 					opacity: 0.7,
 					textDecoration: 'outline',
@@ -896,19 +896,17 @@ var MovieGenerator = function() {
 					// one styling property  
 					backgroundGradient: [0.1, 0.1, 1.0],
 
-					// linked stylesheet 
-					//stylesheet: 'content-plugin.css',
-					// content plugin specific properties 
+					/*
+							initial HTML content. content can also be fetched from the HTML document
+							*/
 					html: ''
-				}
+				},
 
 				// Uncomment for production
-				/*
 				gatracker: { 
 					url: "flowplayer.analytics-3.1.5.swf", 
 					trackingMode: "Bridge"
 				}
-				*/
 			}
 		});
 	};

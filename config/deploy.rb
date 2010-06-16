@@ -48,16 +48,16 @@ namespace :deploy do
   desc "Stops work daemons"
   task :stop_daemons, :roles => [:app] do
     #thinking_sphinx.stop
-    run "god stop eternos_#{stage}"
+    #run "god stop eternos_#{stage}"
     # Try to prevent too many worklings god/deploy bug
-    run "god unmonitor eternos-workling_#{stage}"
+    #run "god unmonitor eternos-workling_#{stage}"
   end
 
   desc "Restarts any work daemons"
   task :start_daemons, :roles => [:app] do
     #run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
-    run "RAILS_ENV=#{stage} god load #{current_path}/config/daemons.god"
-    run "RAILS_ENV=#{stage} god start eternos_#{stage}"
+    #run "RAILS_ENV=#{stage} god load #{current_path}/config/daemons.god"
+    #run "RAILS_ENV=#{stage} god start eternos_#{stage}"
   end
 
   desc "Restart web server"
