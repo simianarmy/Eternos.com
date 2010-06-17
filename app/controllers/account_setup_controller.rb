@@ -15,6 +15,7 @@ class AccountSetupController < ApplicationController
     session[:setup_account] = true
 
     # Dynamic action view based on current setup step - stupid
+    Rails.logger.debug "ACTIVE STEP = #{@active_step}"
     Rails.logger.debug "SETUP STEP = #{@completed_steps}"
     if @active_step <= 1
       load_online

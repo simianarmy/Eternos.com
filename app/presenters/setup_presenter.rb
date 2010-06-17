@@ -21,9 +21,12 @@ class SetupPresenter < AccountPresenter
     # Also get facebook profile data
     if @facebook_confirmed
       begin
+        Rails.logger.debug "FETCHING FACEBOOK USER INFO.."
         @user.facebook_session_connect @fb_session
         @fb_session.user.populate(:pic_small, :name) if @fb_session.verify
+        
         @facebook_user = @fb_session.user.name
+        Rails.logger.debug @fb_session.user.pic_small
         @facebook_pic = @fb_session.user.pic_small
       rescue Facebooker::Session::SessionExpired => e
         RAILS_DEFAULT_LOGGER.error "load_backup_sources: #{e.class} #{e.message}"
