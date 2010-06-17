@@ -10,10 +10,12 @@
     %label Password: 
     = f.password_field :password, {:id => "password-created2"}
   %p{:align=>"right"}= submit_tag 'submit', :value => 'login', :class => "login verification"
-%p{:align=>"right"}
+%p 
+  %label &nbsp;
   = check_box_tag 'user_session[remember_me]'
   Remember me
-%p{:style=>"margin-left: 73px;"}
+%p
+  %label &nbsp;
   or login with Facebook connect
   = render :partial => 'shared/facebook_connect_button'
   /= authlogic_facebook_login_button
