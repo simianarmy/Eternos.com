@@ -20,9 +20,7 @@ class ImageGalleryController < MemberHomeController
     # so sort by album date (descending) manually
       
     albums = Rails.cache.fetch("albums:#{current_user.id}", :force => force_cache_reload?(:images), :expires => 1.hour) { 
-      current_user.contents.photos.collections.map(&:collection).compact.uniq.reject { |al| 
-          (al.owner != current_user) || (al.num_items == 0) || al.name.nil?
-        }.sort {|a,b| b.start_date <=> a.start_date}
+      current_user.photo_albums.sort {|a,b| b.start_date <=> a.start_date}
       #s.id_eq(params[:album_id].split(',')) if params[:album_id]
     }
     use_cache!(:images)

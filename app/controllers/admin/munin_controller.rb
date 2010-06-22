@@ -12,13 +12,15 @@ class Admin::MuninController < ApplicationController
   # Returns general user sessions & member counts
   def users
     user_count = Member.active.size
-    user_with_data_count = Member.active.with_data.size
+    user_with_data_count = Member.active.with_data.count
+    user_with_source_count = Member.active.with_sources.all.uniq.size
     active_sessions = Member.last_request_at_gt(24.hours.ago).size
     closed = Member.closed.size
     
     response =<<RESP
 sessions = #{active_sessions}
 total = #{user_count}
+setup = #{user_with_source_count}
 active = #{user_with_data_count}
 closed = #{closed}
 RESP

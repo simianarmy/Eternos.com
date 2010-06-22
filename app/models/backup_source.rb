@@ -62,7 +62,7 @@ class BackupSource < ActiveRecord::Base
   
   acts_as_state_machine :initial => :pending, :column => 'backup_state'
   state :pending
-  state :backed_up
+  state :backed_up, :enter => :do_backed_up
   state :disabled
   
   event :backup_complete do
@@ -170,6 +170,12 @@ class BackupSource < ActiveRecord::Base
     end
   end
   
-  private
+  protected
+  
+  def do_backed_up
+    self.update_attributes(:needs_initial_scan => false, 
+      :last_backup_at => Time.now.utc,
+      :latest_day_backed_up => Date.today)
+  end
   
 end

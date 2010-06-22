@@ -141,6 +141,7 @@ require 'facebook_desktop'
 require 'facebook_user_profile'
 require 'message_queue'
 require 'mail_history'
+require 'content_collections'
 # For saas
 require 'association_proxy'
 # 3rd party libs 

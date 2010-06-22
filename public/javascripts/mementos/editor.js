@@ -56,7 +56,8 @@ var MementoEditor = function() {
 		AlbumPaneId = 'pane1',
 		VideoPaneId = 'pane2',
 		AudioPaneId = 'pane3',
-		TextPaneId = 'pane4';
+		TextPaneId = 'pane4',
+		panesReady = false;
 
 	// Handles artifact type picker link click
 	function onArtifactTypeLinkClick(link) {
@@ -133,14 +134,17 @@ var MementoEditor = function() {
 		jQuery('ul.tabs').tabs('div.panes > div', {
 			effect: 'fade',
 			onBeforeClick: function(event, i) {
-				// get the pane to be opened
-				currentPane = this.getPanes().eq(i);
-				if (currentPane.is(":empty")) {
-					// load it with a page specified in the tab's href attribute
-					spinner.load('type_list');
-					currentPane.load(this.getTabs().eq(i).attr("href"));
-				} else if (jQuery(currentPane).attr('id') === TextPaneId) {
-					//textSlideEditor.load();
+				// On page load, don't try to load last opened pane - confuses and crashes scroller..
+				if (that.panesReady) {
+					// get the pane to be opened
+					currentPane = this.getPanes().eq(i);
+					if (currentPane.is(":empty")) {
+						// load it with a page specified in the tab's href attribute
+						spinner.load('type_list');
+						currentPane.load(this.getTabs().eq(i).attr("href"));
+					} else if (jQuery(currentPane).attr('id') === TextPaneId) {
+						//textSlideEditor.load();
+					}
 				}
 			}
 		}).history();
@@ -159,6 +163,9 @@ var MementoEditor = function() {
 				mementoFlash.error('Error initializing sound...please reload the page.');
 			}
 		});
+		currentPane.load(tabs.getTabs().eq(0).attr("href"));
+		this.panesReady = true;
+		
 		return this;
 	};
 	that.getArtifactPicker = function() {

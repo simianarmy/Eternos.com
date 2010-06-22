@@ -24,17 +24,23 @@ class Member < User
   
   attr_accessible :security_question_attributes
   
+  include ContentCollections::PhotoAlbum
+  
   named_scope :needs_backup, lambda { |cutoff_date|
     {
     :include => :backup_state, # DO NOT use :joins - need LEFT JOIN, not INNER JOIN!
     :conditions => ['(backup_states.id IS NULL) OR ' +
       '((backup_states.last_backup_finished_at <= ?) OR ' +
       '(backup_states.last_failed_backup_at > backup_states.last_successful_backup_at))', 
-      cutoff_date || Time.now]
+      cutoff_date || Time.now.utc]
   } }
   named_scope :with_data, {
     :joins => :backup_state,
     :conditions => { 'backup_states.items_saved' => true }
+  }
+  named_scope :with_sources, {
+    :joins => :backup_sources,
+    :group => 'users.id'
   }
   
   def self.from_facebook(facebook_id)

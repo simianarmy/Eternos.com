@@ -28,9 +28,8 @@ class BackupSourceJob < ActiveRecord::Base
   end
   
   def finished!
-    t = Time.now
+    t = Time.now.utc
     update_attribute(:finished_at, t)
-    backup_source.update_attribute(:last_backup_at, t)
     backup_source.backup_complete!
   end
   

@@ -1,12 +1,2 @@
-.decoration_item.artifact.video{:id=> dom_id(item), :src => item.url, :duration => item.duration_seconds_float}
-  - if item.thumbnail_url
-    = image_tag item.thumbnail_url, :class => 'video_thumb'
-  - else
-    = image_tag item.content_icon, :class => 'video_thumb'
-  %br
-  %span.title= truncate(item.title, :length => 20)
-  .info.title.hidden
-    = item.title
-    = item.description
-    = item.duration_to_s
+= render :partial => 'mementos/movie', :locals => {:item => item}
     

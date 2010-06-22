@@ -5,7 +5,7 @@
 # Counts users (active & total)
 
 REQUEST_URI = 'http://beta.eternos.com/admin/munin/users?api=FL1mFl4mAlamB'
-DATA_LABELS = %w( sessions total active closed )
+DATA_LABELS = %w( sessions total setup active closed )
 
 def output_config
   puts <<-END
@@ -15,6 +15,7 @@ graph_vlabel count
 
 sessions.label active sessions
 total.label total users
+setup.label users with sources
 active.label active users
 closed.label closed accounts
 END

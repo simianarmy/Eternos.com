@@ -58,6 +58,7 @@ class Content < ActiveRecord::Base
   named_scope :audio, :conditions => {:type => 'Audio'}
   named_scope :music, :conditions => {:type => 'Music'}
   named_scope :all_audio, :conditions => {:type => ['Audio', 'Music']}
+  named_scope :all_video, :conditions => {:type => ['Video', 'WebVideo']}
   named_scope :media, :conditions => {:type => ['WebVideo', 'Audio', 'Music']}
   #  :include => :thumbnails
   named_scope :collections, :group => 'collection_id', :include => :collection
