@@ -63,7 +63,11 @@ namespace :backup do
   desc "Generate backup jobs"
   task :run_scheduled => :environment do
     cutoff = ENV['FORCE'] ? Time.now.utc : nil
-    EternosBackup::BackupScheduler.run :cutoff => cutoff
+    opts = {:cutoff => cutoff}
+    if ENV['DATASET']
+      opts[:dataType] = ENV['DATASET'].to_i
+    end
+    EternosBackup::BackupScheduler.run opts
   end
   
   desc "Run backup on a single source by id" 
@@ -102,6 +106,18 @@ namespace :backup do
   task :run_long_facebook => :environment do
     EternosBackup::BackupJobPublisher.add_by_site(BackupSite.find_by_name(BackupSite::Facebook), 
       :dataType => EternosBackup::SiteData::FacebookOtherWallPosts)
+  end
+  
+  desc "Run backups for recent joins"
+  task :run_recent_accounts => :environment do
+    unless days_old = ENV['CREATED_DAYS_AGO']
+      puts "Specify how far back to get members with CREATED_DAYS_AGO parameter"
+      exit
+    end
+    cutoff = days_old.to_i.days.ago
+    EternosBackup::BackupScheduler.run :cutoff => cutoff,
+      :dataType => 0,
+      :member_created_after => cutoff
   end
   
   desc "Run backup for recently failed backups caused by db connection errors"

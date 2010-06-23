@@ -53,13 +53,17 @@ class BackupState < ActiveRecord::Base
   
   protected
   
-  # true if last backup job has any saved backup records, or activity stream not empty
+  # TRUE if last backup job has any saved backup records, or activity stream not empty
+  # TODO: DECOUPLE! TOO MANY DEPENDENCIES
   def has_data?
-    member.activity_stream.items.any? ||
-      BackupJob.find(self.last_backup_job_id).backup_source_jobs.map(&:backup_source).any? do |bs|
-        bs.num_items > 0
-      end
-  rescue 
-    false
+    !!self.last_successful_backup_at
+
+    # member.activity_stream.items.any? ||
+    #       BackupJob.find(self.last_backup_job_id).backup_source_jobs.map(&:backup_source).any? do |bs|
+    #         bs.num_items > 0
+    #       end
+    #   rescue 
+    #     false
+    #   end
   end
 end

@@ -154,6 +154,7 @@ class BackupSource < ActiveRecord::Base
     BackupPhoto.find backup_photo_albums.photos_between_dates(s, e).map(&:id)
   end
   
+  # ABSTRACT CLASS - BACKUP SOURCES SHOULD IMPLEMENT
   def num_items
     backup_photo_albums.size
   end

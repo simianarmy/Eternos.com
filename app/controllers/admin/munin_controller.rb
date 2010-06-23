@@ -146,10 +146,15 @@ RESP
   
   def backup_sites
     facebook = BackupSource.facebook.count
+    facebook_active = BackupSource.facebook.active.count
     twitter = BackupSource.twitter.count
+    twitter_active = BackupSource.twitter.active.count
     rss = BackupSource.blog.count
+    rss_active = BackupSource.blog.active.count
     gmail = BackupSource.gmail.count
+    gmail_active = BackupSource.gmail.active.count
     picasa = BackupSource.picasa.count
+    picasa_active = BackupSource.picasa.active.count
     
     response =<<RESP
 facebook = #{facebook}
@@ -157,6 +162,11 @@ twitter = #{twitter}
 rss = #{rss}
 gmail = #{gmail}
 picasa = #{picasa}
+facebook_active = #{facebook_active}
+twitter_active = #{twitter_active}
+rss_active = #{rss_active}
+gmail_active = #{gmail_active}
+picasa_active = #{picasa_active}
 RESP
   
     render :inline => response, :status => :ok

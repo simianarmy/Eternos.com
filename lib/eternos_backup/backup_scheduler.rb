@@ -42,15 +42,21 @@ module EternosBackup
       def get_pending_backups(cutoff=nil, options={})
         returning({}) do |member_sources|
           # Do all members needing a backup
-          Member.needs_backup(cutoff).each do |member|
+          members = if options[:member_created_after] 
+            Member.created_at_gt(options[:member_created_after]).with_sources
+          else
+            Member.needs_backup(cutoff)
+          end
+          members.each do |member|
             # Get all backup sources,datatypes that should be backed up          
             member.backup_sources.active.each do |bs|
               bs.backup_data_sets.each do |ds|
                 next if options[:dataType] && (ds != options[:dataType])
+                
                 # Get latest backup job record for this backup source & data set
                 latest_job = BackupSourceJob.backup_source_id_eq(bs.id).backup_data_set_id_eq(ds).newest
             
-                if source_scheduled_for_backup?(latest_job, bs, ds)
+                if source_scheduled_for_backup?(latest_job, bs, ds) 
                   # Save member-latest job pair for sorting later
                   # Save member-sources pair for lookup by member id later
                   (member_sources[member] ||= []) << [bs, {:dataType => ds}]
