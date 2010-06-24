@@ -2,8 +2,6 @@
 
 # Mixin for ActiveMailer classes that saves emails after delivery to custom table
 
-class UserMailing < ActiveRecord::Base
-end
 
 module MailHistory
   def self.included(base)

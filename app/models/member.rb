@@ -173,7 +173,7 @@ class Member < User
   def completed_setup_step(step)
     self.increment!(:setup_step) if self.setup_step < step
   end
-    
+  
   def security_question_attributes=(attributes)
     attributes.each_pair do |idx, attr|
       security_questions[idx.to_i].update_attributes(attr)

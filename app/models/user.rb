@@ -149,6 +149,11 @@ class User < ActiveRecord::Base
     end
   end
   
+  def deliver_account_setup_reminder!
+    reset_perishable_token!  
+    UserMailer.deliver_account_setup_reminder(self)  
+  end
+  
   # Returns true if the user has just been activated.
   def recently_activated?
     @activated

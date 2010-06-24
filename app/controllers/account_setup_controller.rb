@@ -108,7 +108,7 @@ class AccountSetupController < ApplicationController
     if params[:id]
       if @current_user = User.find_using_perishable_token(params[:id])
         Rails.logger.debug "Logging in from perishable token (user #{@current_user.id})"
-        UserSession.create(@current_user)
+        UserSession.create(@current_user) # Is this necessary?
       end
     end
   end

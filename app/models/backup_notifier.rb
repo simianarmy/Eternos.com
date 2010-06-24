@@ -12,4 +12,5 @@ class BackupNotifier < ActionMailer::Base
     @content_type = "text/html"
     add_category_header "Backup Data Ready"
   end
+  
 end

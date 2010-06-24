@@ -9,6 +9,7 @@ class UserMailer < ActionMailer::Base
     :activation             => 'Your account has been activated!',
     :invitation             => 'Invitation From Eternos.com',
     :inactive_notification  => 'Inactive Account Notice',
+    :account_setup_reminder => 'Complete your Eternos.com Account Setup',
     :friend_invitation      => 'Invitation to Eternos.com'
   }
   
@@ -51,7 +52,7 @@ class UserMailer < ActionMailer::Base
     @subject      += @@Subjects[:inactive_notification]
     @body[:name]  = user.full_name || 'Eternos user'
     @body[:link]  = account_setup_url
-    add_category_header "Inactivity Notification"
+    add_category_header "Inactive Account Notice"
   end
 
   def friend_invite(user, to, invite_url)
@@ -67,6 +68,15 @@ class UserMailer < ActionMailer::Base
     body          :user => user, :signup_url => invite_url
     content_type "text/html" 
     add_category_header "Invites"
+  end
+  
+  def account_setup_reminder(user)
+    setup_email(user)
+    @recipients         = 'eric@eternos.com'
+    @subject            +=  @@Subjects[:account_setup_reminder]
+    @body[:name]        = user.full_name
+    @body[:setup_url]   = account_setup_url(:id => user.perishable_token, :protocol => 'https')
+    add_category_header "Account Setup Reminder"
   end
   
   protected
