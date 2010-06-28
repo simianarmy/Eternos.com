@@ -248,6 +248,11 @@ class User < ActiveRecord::Base
   end
   # --------------------------------------
   
+  def email_activation_received!
+    self.deleted_at = self.activation_code = nil
+    save
+  end
+  
   protected
   
   def login_required?
@@ -270,7 +275,11 @@ class User < ActiveRecord::Base
   def do_activate
     @activated = true
     self.activated_at = Time.now.utc
-    self.deleted_at = self.activation_code = nil
+    # Handle Facebook-style automatic activation
+    if email_registration_required?
+      email_activation_received!
+    end
+    
     make_member! unless guest?
 
     if save
@@ -291,7 +300,7 @@ class User < ActiveRecord::Base
     # Must spawn as thread or will crash in Passenger
     spawn(:method => :thread) do
       begin
-        UserMailer.deliver_activation(self) 
+        UserMailer.deliver_activation!(self) 
       rescue
         logger.error "Unable to send member activation email! " + $!
       end

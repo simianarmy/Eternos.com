@@ -24,8 +24,8 @@ development:
   invitation_required: false 
   email_registration_required: false
   app_name: Eternos Dev
-  from_email: dev@eternos.com
-  reports_email: simianarmy@gmail.com
+  from_email: support@eternos.com
+  reports_email: marc@eternos.com 
   base_domain: dev.eternos.com
   FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
   s3_staging_dir: /tmp
@@ -48,7 +48,7 @@ production:
   app_name: Eternos.com
   from_email: support@eternos.com
   reports_email: reports@eternos.com
-  base_domain: beta.eternos.com
+  base_domain: eternos.com
   FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
   s3_staging_dir: tmp/cloud_staging
   invitation_required: false

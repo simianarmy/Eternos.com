@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :require_no_user, :only => [:new, :create, :activate]
+  before_filter :require_no_user, :only => [:new, :create]
   
   # render new.rhtml
   def new
@@ -34,9 +34,20 @@ class UsersController < ApplicationController
   def activate
     @user = params[:activation_code].blank? ? false : User.find_by_activation_code(params[:activation_code])
     
-    if @user && @user.pending?
-      @user.activate!
-      flash[:notice] = "Your account has been activated ... Welcome to Eternos!"
+    # Now that we activate automatically, this is really just to confirm email addresses.
+    if @user
+      # We now have to support both cases since we activate automatically
+      if @user.pending?
+        @user.activate!
+      else
+        @user.email_activation_received!
+      end
+      # Check if this email already sent once
+      unless UserMailing.count_by_email_and_subject(@user.email, UserMailer.subject(:activation)) > 0
+        UserMailer.deliver_activation!(@user)
+      end
+      
+      flash[:notice] = "Your account has been activated!"
       redirect_to login_path
     else
       flash[:notice] = "Sorry, we could not activate this account"

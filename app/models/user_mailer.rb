@@ -1,11 +1,12 @@
 # $Id$
 
 class UserMailer < ActionMailer::Base
-  layout nil
+  #layout nil
+  layout 'email'
   include MailHistory
   
   @@Subjects = {
-    :signup_notification    => 'Please activate your new account',
+    :signup_notification    => 'Activate Your Eternos.com Account',
     :activation             => 'Your account has been activated!',
     :invitation             => 'Invitation From Eternos.com',
     :inactive_notification  => 'Inactive Account Notice',
@@ -29,9 +30,9 @@ class UserMailer < ActionMailer::Base
   
   def activation(user)
     setup_email(user)
-    @subject    += @@Subjects[:activation]
-    base_domain = "http://" + AppConfig.base_domain
-    body[:login]  = user.login
+    @subject          += @@Subjects[:activation]
+    base_domain       = "http://" + AppConfig.base_domain
+    body[:login]      = user.login
     add_category_header "Activation Confirmation"
   end
   
@@ -51,7 +52,7 @@ class UserMailer < ActionMailer::Base
     @recipients   = 'marc@eternos.com'
     @subject      += @@Subjects[:inactive_notification]
     @body[:name]  = user.full_name || 'Eternos user'
-    @body[:link]  = account_setup_url
+    @body[:link]  = account_setup_url(:id => user.perishable_token)
     add_category_header "Inactive Account Notice"
   end
 
@@ -72,11 +73,21 @@ class UserMailer < ActionMailer::Base
   
   def account_setup_reminder(user)
     setup_email(user)
-    @recipients         = 'eric@eternos.com'
-    @subject            +=  @@Subjects[:account_setup_reminder]
+    @recipients         = 'marc@eternos.com'
+    @subject            = @@Subjects[:account_setup_reminder]
     @body[:name]        = user.full_name
-    @body[:setup_url]   = account_setup_url(:id => user.perishable_token, :protocol => 'https')
+    @body[:setup_url]   = account_setup_url(:id => user.perishable_token)
+
     add_category_header "Account Setup Reminder"
+  end
+  
+  def test
+    recipients    'eric@eternos.com'
+    subject       "nothing bad here"
+    from          "support@eternos.com"
+    sent_on       Time.now
+    content_type  "text/plain"
+    add_category_header "Test"
   end
   
   protected

@@ -103,9 +103,10 @@ class AccountsController < ApplicationController
           session[:account_id] = @account.id
           render :action => 'billing'
         else
-          # login & redirect to account setup
-          UserSession.create(@user, true)
-          activate_and_redirect_to account_setup_url and return false
+          # redirect to account setup with autologin token
+          @user.activate! # unless @user.email_registration_required?
+          flash_redirect "Your account has been created.", account_setup_url(:id => @user.reload.perishable_token)
+          return false
         end
       else
         # Force logout for email confirmation requirement

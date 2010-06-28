@@ -13,8 +13,12 @@ module FacebookUserProfile
   
   def self.populate(facebook_user)
     returning Hash.new do |profile|
-      facebook_user.populate(*Fields)
-      Fields.each {|f| profile[f] = facebook_user.send(f)}
+      begin
+        facebook_user.populate(*Fields)
+        Fields.each {|f| profile[f] = facebook_user.send(f)}
+      rescue Exception => e
+        Rails.logger.error "Facebooker error in populate: #{e.message}"
+      end
       unless profile[:birthday_date].blank?
         profile[:birthday] = parse_model_date(profile[:birthday_date])
       end
