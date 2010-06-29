@@ -706,7 +706,7 @@ var MovieGenerator = function() {
 	var artifacts, soundtrack, expose, seconds_per_frame, 
 		DefaultSecondsPerFrame = 5,
 		initContentBoxWidth = 260,
-		initContentBoxHeight = 370,
+		initContentBoxHeight = 380,
 		soundtrackId = 'soundtrack-selection',
 		totalPlaytime,
 		slideInfoMap = new Hash();
@@ -725,17 +725,23 @@ var MovieGenerator = function() {
 			item = slides[i];
 			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
 				if ((item.id.match('photo|^video') !== null)) {
-					playlist.push(src);
+					playlist.push({
+						url: src,
+						scaling: 'fit'
+					});
+					console.log("Adding image or video: " + src);
 				} else if (item.id.match('web_video') !== null) {
 					playlist.push({
 						url: src,
 						scaling: 'fit'
 					});
+					console.log("Adding video: " + src);
 				} else if (item.id.match('music|audio') !== null) {
 					playlist.push({
 						url: src,
 						duration: item.readAttribute('duration')
 					});
+					console.log("Adding audio: " + src);
 				}
 				// Save each clip's metadata for playblack event handlers
 				if (item.text_description !== undefined) {
@@ -751,6 +757,7 @@ var MovieGenerator = function() {
 				slideInfoMap['text_'+i] = item.userHtml;
 			}
 		}
+		
 		return playlist;
 	};
 
@@ -813,10 +820,11 @@ var MovieGenerator = function() {
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
 				// by default clip lasts 5 seconds 
-				duration: getAvgDurationPerSlide(),
+				//duration: getAvgDurationPerSlide(),
 				// accessing current clip's properties 
 				onStart: function(clip) {
 					// get access to a configured plugin
+					/*
 					var plugin = this.getPlugin("content");
 					var text, boxWidth = initContentBoxWidth, boxHeight = initContentBoxHeight;
 					
@@ -839,10 +847,15 @@ var MovieGenerator = function() {
 							this.setHtml('');
 						});
 					}
+					*/
 				},
-
+				// when playback finishes, close the expose 
+				onFinish: function() {
+					alert('finished slide!');
+					//expose.close();
+				},
 				onLastSecond: function() {
-					this.getPlugin("content").animate({width: 1, height: 1}, 1000);
+				//	this.getPlugin("content").animate({width: 1, height: 1}, 1000);
 				}
 			},
 			// our playlist
@@ -859,15 +872,20 @@ var MovieGenerator = function() {
 
 			// screen positioning inside background screen.
 			screen: {
-				height: 380,
+				height: 400,
 				bottom: 0,
-				left: 100
+				left: 110,
+				right: 10
 			},
 
 			onStart: function() {
-				expose.load();
+				console.log("Starting Movie!");
+				//expose.load();
 			},
-
+			
+			onFinish: function() {		
+				alert("Click Player to start video again");
+			},
 			// content specific event listeners and methods 
 			onMouseOver: function() {
 				this.getPlugin("content").setHtml('Mouse over');

@@ -20,6 +20,7 @@ class UserMailer < ActionMailer::Base
   
   def signup_notification(user)
     setup_email(user)
+    
     @subject          += @@Subjects[:signup_notification]
     @body[:name]      = user.full_name || 'Eternos user'
     @body[:url]       = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
@@ -47,8 +48,10 @@ class UserMailer < ActionMailer::Base
     invitation.update_attribute(:sent_at, Time.now)
   end
   
+  # MUST BE CALLED BY User.deliver_inactive_notification!
   def inactive_notification(user)
     setup_email(user)
+    
     @recipients   = 'marc@eternos.com'
     @subject      += @@Subjects[:inactive_notification]
     @body[:name]  = user.full_name || 'Eternos user'
@@ -71,13 +74,15 @@ class UserMailer < ActionMailer::Base
     add_category_header "Invites"
   end
   
+  # MUST BE CALLED BY User.deliver_account_setup_reminder!
   def account_setup_reminder(user)
     setup_email(user)
+    
     @recipients         = 'marc@eternos.com'
     @subject            = @@Subjects[:account_setup_reminder]
     @body[:name]        = user.full_name
-    @body[:setup_url]   = account_setup_url(:id => user.perishable_token)
-
+    @body[:setup_url]   = account_setup_url(:id => user.perishable_token, :ref => 'asr1')
+    
     add_category_header "Account Setup Reminder"
   end
   
