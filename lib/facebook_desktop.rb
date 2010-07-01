@@ -8,9 +8,42 @@
 require 'facebooker'
 
 module FacebookDesktopApp
-  mattr_accessor :config_path, :required_permissions
   @@config_path = File.join(RAILS_ROOT, 'config', 'facebooker_desktop.yml')
-  @@required_permissions = %w( read_stream publish_stream offline_access )
+  
+  @@all_permissions = %W( 
+    publish_stream 
+    offline_access 
+    read_stream 
+    read_mailbox
+    user_about_me
+    user_activities
+    user_birthday
+    user_education_history
+    user_events
+    user_groups
+    user_hometown
+    user_interests
+    user_likes
+    user_location
+    user_notes
+    user_online_presence
+    user_photo_video_tags
+    user_photos
+    user_relationships
+    user_religion_politics
+    user_status
+    user_videos
+    user_website
+    user_work_history
+    read_friendlists
+  )
+  @@backup_permissions = %W( 
+    publish_stream 
+    offline_access 
+    read_stream
+    user_photos
+    )
+  mattr_accessor :config_path, :all_permissions, :backup_permissions
   
   # Wrapper around Facebooker's load_configuration method - adds exception handling, 
   # default config file name
@@ -45,7 +78,7 @@ module FacebookDesktopApp
 
     # Returns login url + required permissions code
     def login_url_with_perms(options={})
-      "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookDesktopApp.required_permissions.join(',')}#{add_next_parameters(options).join}"
+      "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookDesktopApp.all_permissions.join(',')}#{add_next_parameters(options).join}"
     end
     
     # Checks if associated user can query 'friends' list.  If not, then session 

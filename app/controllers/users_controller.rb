@@ -48,7 +48,7 @@ class UsersController < ApplicationController
       end
       
       flash[:notice] = "Your account has been activated!"
-      redirect_to login_path
+      redirect_to account_setup_path
     else
       flash[:notice] = "Sorry, we could not activate this account"
       redirect_back_or_default('/')

@@ -8,7 +8,7 @@ class FacebookBackupController < ApplicationController
   before_filter :create_new_session
   before_filter :load_backup_source
   layout 'dialog'
-  
+    
   #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
   
   # For js ajax requests to check user's auth status
@@ -120,16 +120,17 @@ class FacebookBackupController < ApplicationController
     @backup_source.confirmed!
   end
   
+  # Checks if user has required facebook permissions
   def has_permissions?
     begin
       current_user.facebook_session_connect @session
-      check_permission(:offline_access) && check_permission(:read_stream)
+      @session.user.has_permissions? FacebookDesktopApp.backup_permissions
     rescue
       false
     end
   end
   
-  # Helper for ajax permission check methods
+  # Helper for Facebook permission check method
   def check_permission(perm)
     @session.user.has_permission?(perm)
   rescue
