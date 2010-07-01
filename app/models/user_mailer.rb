@@ -78,7 +78,7 @@ class UserMailer < ActionMailer::Base
   def account_setup_reminder(user)
     setup_email(user)
     
-    @recipients         = 'marc@eternos.com'
+    @recipients         = user.email
     @subject            = @@Subjects[:account_setup_reminder]
     @body[:name]        = user.full_name
     @body[:setup_url]   = account_setup_url(:id => user.perishable_token, :ref => 'asr1')

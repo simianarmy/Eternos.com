@@ -102,7 +102,7 @@ class User < ActiveRecord::Base
  
   #find the user in the database, first by the facebook user id and if that fails through the email hash
   def self.find_by_fb_user(fb_user)
-    find_by_facebook_uid(fb_user.uid) || User.find_by_email_hash(fb_user.email_hashes)
+    User.find_by_facebook_uid(fb_user.uid) || User.find_by_email_hash(fb_user.email_hashes)
   end
   
   # We are going to connect this user object with a facebook id. 
@@ -112,7 +112,7 @@ class User < ActiveRecord::Base
       # UPDATE:
       # allow multiple accounts to use the same facebook id I guess - 
       # makes debugging a lot easier too
-      existing_fb_user = find_by_facebook_uid(fb_user_id)
+      existing_fb_user = User.find_by_facebook_uid(fb_user_id)
       
       #unlink the existing account
       unless existing_fb_user.nil?

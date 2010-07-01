@@ -39,10 +39,10 @@ class UserSessionsController < ApplicationController
       if facebook_session 
         if user = User.find_by_fb_user(facebook_session.user)
           UserSession.create(user)
-          if user.need_backup_setup?
-            redirect_to account_setup_url
-          else
+          if user.has_backup_data?
             redirect_to member_home_url
+          else
+            redirect_to account_setup_url
           end
           return false
         elsif !params['commit']
