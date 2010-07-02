@@ -21,7 +21,7 @@ class ContentsController < ApplicationController
         current_user.photo_albums.sort {|a,b| b.start_date <=> a.start_date}
         #current_user.contents.photo_albums.map(&:collection)
       when 'web_videos'
-        current_user.contents.all_video
+        current_user.contents.web_videos
       when 'audio'
         current_user.contents.audio
       when 'music'

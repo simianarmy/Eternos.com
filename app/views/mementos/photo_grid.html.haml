@@ -9,7 +9,9 @@
           = p.title
           = p.description
   .clear
-  .instructions
-    Drag photos from above to the box below to create your movie.
+  - if @photos.any?
+    .instructions
+      Drag photos from above to the box below to create your movie.
+      = link_to_function 'Add all photos to movie', "editor.addCurrentArtifacts();"
 :javascript
   editor.getArtifactPicker().createDraggables($A(jQuery('.gallery_item')));

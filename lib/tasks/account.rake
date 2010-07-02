@@ -37,7 +37,8 @@ DESC
   desc "Sends email notification to accounts that need setup completed"
   task :notify_account_setup_incomplete => :environment do
     cutoff = (ENV['CUTOFF_DAYS'] || 14).to_i # days
-    
+    limit = (ENV['MAX'] || 1000).to_i
+    total = 0
     Member.active.each do |user|
       if user.backup_sources.active.empty? && ((Time.now - user.activated_at) > cutoff)
         # Skip if emailed about this recently
@@ -49,9 +50,16 @@ DESC
           end
         end
 
-        Rails.logger.info "#{user.email} has no backup sources...sending email"
-        user.deliver_account_setup_reminder!
-        break
+        Rails.logger.info "#{total}: #{user.email} has no backup sources...sending email"
+        begin
+          user.deliver_account_setup_reminder!
+          total += 1
+        rescue Timeout::Error
+          puts "*** TIMED OUT"
+        rescue
+          puts "ERROR!?"
+        end
+        break if total >= limit
       end
     end
   end

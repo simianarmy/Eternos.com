@@ -151,7 +151,7 @@ var MementoEditor = function() {
 		tabs = jQuery('ul.tabs').tabs('div.panes > div');
 		currentPane = tabs.getPanes().eq(0);
 		
-		artifactPicker = ArtifactSelector.init(artifactViewerId);
+		artifactPicker = ArtifactPicker.init(artifactViewerId);
 		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
 		
 		jQuery('#wysiwyg_form').submit(function() {
@@ -168,9 +168,17 @@ var MementoEditor = function() {
 		
 		return this;
 	};
+	// Accessor functions
 	that.getArtifactPicker = function() {
 		return artifactPicker;
 	};
+	that.getArtifactSelection = function() {
+		return artifactSelection;
+	};
+	that.addCurrentArtifacts = function() {
+		artifactSelection.addArtifacts(artifactPicker.getArtifacts());
+	};
+	// Cleanup/Edit functions
 	that.refreshSelector = function() {
 		spinner.unload();
 		artifactViewPopulated();
@@ -252,9 +260,9 @@ var TextEditor = function() {
 } ();
 
 // Artifact picker object
-var ArtifactSelector = function() {
+var ArtifactPicker = function() {
 	var that = {};
-
+	var draggables = [];
 	var scroller_el, scroller;
 
 	// Helper to return div containing artifact
@@ -289,16 +297,23 @@ var ArtifactSelector = function() {
 		var opts = {
 			revert: true
 		};
-
+		draggables.clear();
+		
 		// Use dragdroppatch.js option 'superghosting' for non-audio divs in order to 
 		// fix the dragging visibility bug & clone dragged object 
 		if (items.size() && items[0].hasClassName('video')) {
 			opts.superghosting = true;
 		}
 		items.each(function(i) {
+			draggables.push(i);
 			new Draggable(i, opts);
 		});
 	};
+	// Adds all visible artifacts to selection
+	that.getArtifacts = function() {
+		return draggables;
+	};
+	
 	// Update selector pane
 	that.refresh = function(pane) {
 		var scroller;
@@ -518,6 +533,13 @@ var ArtifactSelection = function() {
 	};
 	
 	// Public functions
+	
+	// Programmatically add artifacts (non drag&drop)
+	that.addArtifacts = function(artifacts) {
+		artifacts.each(function(i) {
+			onArtifactAdded(i);
+		});
+	};
 	
 	// Add html slide
 	that.addHtmlSlide = function(html) {
@@ -812,6 +834,7 @@ var MovieGenerator = function() {
 	// Create movie preview using existing selection
 	that.preview = function() {
 		var playlist = generatePlaylist();
+		var text, boxWidth = initContentBoxWidth, boxHeight = initContentBoxHeight;
 		
 		if (playlist.size() === 0) {
 			return;
@@ -820,13 +843,12 @@ var MovieGenerator = function() {
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
 				// by default clip lasts 5 seconds 
-				//duration: getAvgDurationPerSlide(),
+				duration: getAvgDurationPerSlide(),
 				// accessing current clip's properties 
 				onStart: function(clip) {
 					// get access to a configured plugin
-					/*
+					
 					var plugin = this.getPlugin("content");
-					var text, boxWidth = initContentBoxWidth, boxHeight = initContentBoxHeight;
 					
 					if ((text = slideInfoMap[clip.url]) !== undefined) {
 						if (text === '') {
@@ -847,15 +869,17 @@ var MovieGenerator = function() {
 							this.setHtml('');
 						});
 					}
-					*/
+					
 				},
-				// when playback finishes, close the expose 
-				onFinish: function() {
-					alert('finished slide!');
-					//expose.close();
-				},
+				
 				onLastSecond: function() {
-				//	this.getPlugin("content").animate({width: 1, height: 1}, 1000);
+					console.log("onLastSecond");
+					// If at end of movie...
+					/*
+					this.getPlugin("content").animate({width: boxWidth, height: boxHeight}, function() {
+						this.setHtml('<a href="http://eternos.com">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
+					});
+					*/
 				}
 			},
 			// our playlist
@@ -879,20 +903,25 @@ var MovieGenerator = function() {
 			},
 
 			onStart: function() {
-				console.log("Starting Movie!");
+				console.log("onStart");
 				//expose.load();
 			},
 			
 			onFinish: function() {		
-				alert("Click Player to start video again");
+				console.log("onFinish");
 			},
+			
+			onStop: function() {
+				console.log("onStop");
+			},
+			
 			// content specific event listeners and methods 
 			onMouseOver: function() {
-				this.getPlugin("content").setHtml('Mouse over');
+				//this.getPlugin("content").setHtml('Mouse over');
 			},
 
 			onMouseOut: function() {
-				this.getPlugin("content").setHtml('Mouse moved away. Please visit Finland someday.');
+				//this.getPlugin("content").setHtml('Mouse moved away. Please visit Finland someday.');
 			},
 
 			plugins: {
@@ -912,7 +941,7 @@ var MovieGenerator = function() {
 					// Styles can be defined inline or with external stylesheet
 					// http://flowplayer.org/plugins/flash/content.html
 					body: {
-						fontSize: 16,
+						fontSize: 20,
 						fontFamily: 'verdana,arial,helvetica'
 					},
 					opacity: 0.7,
@@ -925,13 +954,15 @@ var MovieGenerator = function() {
 							initial HTML content. content can also be fetched from the HTML document
 							*/
 					html: ''
-				},
-
+				}
+				/*
+				,
 				// Uncomment for production
 				gatracker: { 
 					url: "flowplayer.analytics-3.1.5.swf", 
 					trackingMode: "Bridge"
 				}
+				*/
 			}
 		});
 	};
