@@ -77,10 +77,11 @@
 }
 
 .scrollable {
-	width: 90%;
-	height: 120px;
-	border:1px solid #ccc;
-	background:url(/images/h300.png) repeat-x;
+	background:url("/images/h300.png") repeat-x scroll 0 0 transparent; 
+	border:1px solid #CCCCCC; 
+	height:120px; 
+	margin:10px auto; 
+	width:90%;
 }
 
 #selection-scroller .decoration_item, #selection-scroller .gallery_item, .arti-scroller .decoration_item { 
@@ -157,14 +158,15 @@
 }
 
 /* For image grid */
-#gallery .gallery_item {
-	border:1px solid #ccc;
-	cursor:pointer;
-	width:100px;
-	height:100px;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	float: left;
+#gallery .gallery_item { 
+	-moz-border-radius:4px 4px 4px 4px; 
+	border:1px solid #CCCCCC; 
+	cursor:pointer; 
+	float:left; 
+	height:100px; 
+	margin:8px 2px; 
+	padding:2px; 
+	text-align:center; 
 }
 
 .gallery_item img {
@@ -244,7 +246,7 @@
 }
 
 #save_wysiwyg {
-	width: auto;
+	/* width: auto; */
 }
 
 /* Tabs */

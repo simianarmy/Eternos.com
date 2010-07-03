@@ -153,8 +153,8 @@ class AccountsController < ApplicationController
   end
 
   def show
-    #return redirect_to(member_home_path)
-    @plan = @subscription.subscription_plan
+    return redirect_to(member_home_path)
+    #@plan = @subscription.subscription_plan
   end
 
   def edit

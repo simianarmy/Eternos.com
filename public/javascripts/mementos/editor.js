@@ -816,6 +816,11 @@ var MovieGenerator = function() {
 		that.movieUpdated();
 	};
 	
+	// Helper to determine when movie is on last slide
+	function isLastSlide(playlist, clip) {
+		return (playlist[playlist.size()-1].url === clip.url);
+	};
+	
 	// Updates movie metadata
 	that.movieUpdated = function() {
 		var i, artis = artifacts.getItems();
@@ -872,14 +877,13 @@ var MovieGenerator = function() {
 					
 				},
 				
-				onLastSecond: function() {
-					console.log("onLastSecond");
+				onLastSecond: function(clip) {
 					// If at end of movie...
-					/*
-					this.getPlugin("content").animate({width: boxWidth, height: boxHeight}, function() {
-						this.setHtml('<a href="http://eternos.com">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
-					});
-					*/
+					if (isLastSlide(playlist, clip)) {
+						this.getPlugin("content").animate({width: boxWidth, height: boxHeight}, function() {
+							this.setHtml('<a href="http://eternos.com">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
+						});
+					}
 				}
 			},
 			// our playlist
@@ -909,10 +913,6 @@ var MovieGenerator = function() {
 			
 			onFinish: function() {		
 				console.log("onFinish");
-			},
-			
-			onStop: function() {
-				console.log("onStop");
 			},
 			
 			// content specific event listeners and methods 

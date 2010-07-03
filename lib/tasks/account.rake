@@ -54,6 +54,7 @@ DESC
         begin
           user.deliver_account_setup_reminder!
           total += 1
+          sleep(2) # Be nice or Google will block us
         rescue Timeout::Error
           puts "*** TIMED OUT"
         rescue
