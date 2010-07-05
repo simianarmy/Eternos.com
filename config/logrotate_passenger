@@ -1,0 +1,11 @@
+/var/www/eternos.com/shared/log/*.log {
+  daily
+  missingok
+  #rotate 30
+  compress
+  delaycompress
+  sharedscripts
+  postrotate
+    touch /var/www/eternos.com/current/tmp/restart.txt
+  endscript
+}

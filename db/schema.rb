@@ -432,6 +432,12 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
 
   add_index "facebook_contents", ["profile_id"], :name => "index_facebook_contents_on_profile_id"
 
+  create_table "facebook_ids", :force => true do |t|
+    t.integer  "facebook_uid",              :limit => 8, :null => false
+    t.boolean  "joined",       :null => false, :default => false
+    t.datetime "last_contacted_at"
+  end
+  
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
     t.string   "name"
