@@ -22,8 +22,13 @@ class HomeController < ApplicationController
         @fb_user_info = {}
         @fb_user_id = params[:fb_sig_user]
       end
+      fb_id = nil
+      if @fb_user_id
+        fb_id = FacebookId.find_or_create_by_facebook_uid(@fb_user_id)
+      end
       # If the facebook ID matches a member
       if @fb_user_id && @user = Member.from_facebook(@fb_user_id)
+        fb_id.update_attribute(:joined, true)
         # Redirect to the Facebook fan page
         redirect_to FACEBOOK_FAN_PAGE and return false
       else

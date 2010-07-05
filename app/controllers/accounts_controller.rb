@@ -131,6 +131,10 @@ class AccountsController < ApplicationController
     @account.name = @user.full_name
 
     if @success && @account.save
+      # Keep track of joined facebook ids (duplicate info in users table)
+      fb = FacebookId.find_or_create_by_facebook_uid(@user.facebook_id)
+      fb.update_attribute(:joined, true)
+      
       @user.register!
       @user.activate! # unless @user.email_registration_required?
       #UserSession.create(@user, true) # Login & set remember me

@@ -437,6 +437,7 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
     t.boolean  "joined",       :null => false, :default => false
     t.datetime "last_contacted_at"
   end
+  add_index "facebook_ids", ['facebook_uid'], :name => "index_facebook_ids_on_facebook_uid"
   
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
