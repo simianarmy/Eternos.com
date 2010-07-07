@@ -15,7 +15,7 @@ module BackupPhotoDownloader
       # to em to publish immediately
       MessageQueue.start do
         logit "Starting backup photo downloads"
-        Thread.new do
+        t = Thread.new do
           # Why is shuffle causing undefined method `shuffle' for named_scope
           # but not from command line...obviously env paths..
           # using shuffle method code as work-around
@@ -26,6 +26,7 @@ module BackupPhotoDownloader
           end
           logit "Ending backup photo downloads"
         end
+        t.join
         MessageQueue.stop
       end
     end
@@ -59,23 +60,28 @@ module BackupPhotoDownloader
     # Tries to re-download prior failed photo downloads
     def fix_photos
       MessageQueue.start do
-        Thread.new do
+        t = Thread.new do
           # Get all backup photos with content objects (using batch find)
-          BackupPhoto.deleted_at_nil.find_all_by_state([:downloaded, :pending_download, :failed_download], :include => [:backup_photo_album, :photo]).each do |bp|
+          BackupPhoto.deleted_at_nil.find_all_by_state([:downloaded, :pending_download, :failed_download], :include => [:photo]).each do |bp|
             unless bp.photo
               bp.update_attribute(:state, 'failed_download')
               download_photo bp
+              sleep(0.5)
             end
           end
-          MessageQueue.stop
         end
+        logit "Waiting for thread to end.."
+        t.join
+        logit "Finished."
+        MessageQueue.stop
       end
     end
   
     # Tries to re-upload prior failed thumbnail downloads
     def fix_thumbnails
       MessageQueue.execute do
-        PhotoThumbnail.state_does_not_equal('complete').find_each do |thumb|
+        Photo.deleted_at_nil.s3_key_nil.with_photo.find_each do |photo|
+          
           logit "Attempting to fix thumbnail #{thumb.id}"
           if thumb.staging?
             thumb.upload
@@ -108,8 +114,10 @@ module BackupPhotoDownloader
       end
     end
   
+    
     # starts the actual download job
     def download_photo(bp)
+      logit "Downloading photo #{bp.source_url}"
       bp.starting_download!
       if bp.photo
         logit "Downloading complete"

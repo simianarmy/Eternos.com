@@ -652,12 +652,14 @@ var Soundtrack = function() {
 	var selection;
 	var audioIcon = '<img src="/javascripts/timeline/icons/audio.png" width="15" height="15"/>';
 	var dropTarget,
-		ogDropareaHtml;
+		ogDropareaHtml,
+		currentAudio = null;
 	
 	// on audio dropped into droptarget
 	function onAudioAdded(draggable, droparea) {
 		var text;
-
+		var source;
+		
 		dropTarget = droparea; // Save this for when we want to empty it
 		selection.push(draggable);
 		text = "Soundtrack files: " + selection.map(function(audio) {
@@ -673,8 +675,40 @@ var Soundtrack = function() {
 		jQuery(dropTarget).html(ogDropareaHtml);
 	};
 	
+	// Returns list of track sources
+	function getTracks() {
+		var source;
+		return selection.map(function(audio) {
+			if ((source = audio.down('li a').href) !== null) {
+				return source;
+			}
+		});
+	};
+	
 	that.getSize = function() {
 		return selection.size();
+	};
+	
+	that.play = function() {
+		var sounds;
+		
+		if (this.getSize() > 0) {
+			sounds = getTracks();
+		
+			currentAudio = soundManager.createSound({
+				id: "memento_soundtrack",
+			  url: sounds[0],
+			  volume: 50
+			});
+			currentAudio.play();
+		}
+	};
+	
+	that.stop = function() {
+		if (currentAudio !== null) {
+			currentAudio.stop();
+			currentAudio = null;
+		}
 	};
 	
 	// Returns total duration of sountrack in seconds
@@ -816,6 +850,10 @@ var MovieGenerator = function() {
 		that.movieUpdated();
 	};
 	
+	// Helpers to determine position of slide in movie
+	function isFirstSlide(playlist, clip) {
+		return (playlist[0].url === clip.url);
+	}
 	// Helper to determine when movie is on last slide
 	function isLastSlide(playlist, clip) {
 		return (playlist[playlist.size()-1].url === clip.url);
@@ -849,8 +887,15 @@ var MovieGenerator = function() {
 			clip: {
 				// by default clip lasts 5 seconds 
 				duration: getAvgDurationPerSlide(),
+				
 				// accessing current clip's properties 
 				onStart: function(clip) {
+					console.log("on clip " + clip.url);
+					if (isFirstSlide(playlist, clip)) {
+						expose.load();
+						// If there is a soundtrack, start it
+						soundtrack.play();
+					}
 					// get access to a configured plugin
 					
 					var plugin = this.getPlugin("content");
@@ -883,6 +928,8 @@ var MovieGenerator = function() {
 						this.getPlugin("content").animate({width: boxWidth, height: boxHeight}, function() {
 							this.setHtml('<a href="http://eternos.com">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
 						});
+						soundtrack.stop();
+						expose.close();
 					}
 				}
 			},
@@ -906,10 +953,7 @@ var MovieGenerator = function() {
 				right: 10
 			},
 
-			onStart: function() {
-				console.log("onStart");
-				//expose.load();
-			},
+			
 			
 			onFinish: function() {		
 				console.log("onFinish");
@@ -936,24 +980,25 @@ var MovieGenerator = function() {
 					height: initContentBoxHeight,
 					top: 10,
 					left: 10,
+					borderColor: '#CCCCCC',
 					borderRadius: 10,
 					padding: 15,
 					// Styles can be defined inline or with external stylesheet
 					// http://flowplayer.org/plugins/flash/content.html
 					body: {
-						fontSize: 20,
-						fontFamily: 'verdana,arial,helvetica'
+						fontSize: 12,
+						fontFamily: 'Arial',
+						color: '#000000'
 					},
-					opacity: 0.7,
-					textDecoration: 'outline',
-
-					// one styling property  
-					backgroundGradient: [0.1, 0.1, 1.0],
+					opacity: 0.9,
+					textDecoration: 'none',
+					backgroundColor: '#BBE3FC',
+					backgroundGradient: [0.1, 2, 0.1],
 
 					/*
 							initial HTML content. content can also be fetched from the HTML document
 							*/
-					html: ''
+					html: 'Eternos.com Mementos Player'
 				}
 				/*
 				,

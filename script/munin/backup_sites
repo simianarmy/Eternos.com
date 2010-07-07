@@ -37,7 +37,8 @@ def output_values
   DATA_LABELS.each do |site|
     if status =~ /#{site}\s+=\s+(\d+)/
       puts "#{site}.value #{$1}"
-    elsif status =~ /#{site}_active\s+=\s+(\d+)/
+    end
+    if status =~ /#{site}_active\s+=\s+(\d+)/
       puts "#{site}_active.value #{$1}"
     end
   end

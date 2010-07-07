@@ -157,6 +157,12 @@
 	text-align: center;
 }
 
+li .handle {
+  font-size: 12px;
+  cursor: move;
+  color: #777;
+}
+
 /* For image grid */
 #gallery .gallery_item { 
 	-moz-border-radius:4px 4px 4px 4px; 
