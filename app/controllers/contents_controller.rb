@@ -18,7 +18,7 @@ class ContentsController < ApplicationController
     @contents = Rails.cache.fetch(key, :expires_in => 10.minutes) {
       case @content_type
       when 'albums'
-        current_user.photo_albums.sort {|a,b| b.start_date <=> a.start_date}
+        current_user.photo_albums.reject{|album| album.photos.empty?}.sort {|a,b| b.start_date <=> a.start_date}
         #current_user.contents.photo_albums.map(&:collection)
       when 'web_videos'
         current_user.contents.web_videos

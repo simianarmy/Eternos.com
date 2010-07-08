@@ -6,6 +6,9 @@
         %ul.graphic
           = render :partial => 'mementos/audio', :collection => @contents, :as => :item
     - else
+      - if [BackupPhotoAlbum, Album].include?(@contents.first.class)
+        %h3== These are photo albums, dog.  Click on one to see the individual photos.
+      
       .navi
       %a.prevPage.browse.left
       .arti-scroller.scrollable

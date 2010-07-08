@@ -953,8 +953,6 @@ var MovieGenerator = function() {
 				right: 10
 			},
 
-			
-			
 			onFinish: function() {		
 				console.log("onFinish");
 			},
@@ -998,7 +996,7 @@ var MovieGenerator = function() {
 					/*
 							initial HTML content. content can also be fetched from the HTML document
 							*/
-					html: 'Eternos.com Mementos Player'
+					html: ''
 				}
 				/*
 				,
