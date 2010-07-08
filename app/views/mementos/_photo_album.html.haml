@@ -1,0 +1,12 @@
+.decoration_item[item]
+  - album_link = item.cover_photo ? image_tag(item.cover_photo.thumbnail_url) : item.name
+  = link_to_remote(album_link, :url => album_url, :method => 'get', :update => 'artifacts_expanded_view', :loading => "spinner.load('artifact_view');", :complete => "spinner.unload();")
+  
+  %br
+  %span.title= truncate(item.name, :length => 20)
+  .info.title.hidden
+    == Title: #{item.name}
+    - if item.description && !item.description.blank?
+      == , #{item.description}
+    == , Photos: #{item.size}
+    == , Created: #{item.created_at.to_date}
