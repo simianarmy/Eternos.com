@@ -81,7 +81,9 @@ class Video < Content
   # Hook called by acts_as_saved_to_cloud after upload process completed
   # 
   def uploaded
+    Rails.logger.debug "*** post S3 hook called"
     if EncodingStrategy == 'cloud'
+      Rails.logger.debug "*** Sending video to encoding.com"
       # Now that video is on cloud server, begin cloud encoding process
       self.encodingid = ENCQ.add_and_process(
         encoding_source_url, #source
@@ -98,13 +100,13 @@ class Video < Content
           #                'profile' => 'baseline',
           #                'two_pass' => 'yes'),
           # Encode into a 608x size video flv w/ vp6
-          # encoding_target_url('flv') => EncodingDotCom::Format.create(
-          #               'output' => 'flv',
-          #               'size' => '608x0',
-          #               'bitrate' => '1024k',
-          #               'framerate' => '25',
-          #               'video_codec' => 'vp6',
-          #               'audio_bitrate' => '128k'),
+          encoding_target_url('flv') => EncodingDotCom::Format.create(
+            'output' => 'flv',
+            'size' => '608x0',
+            'bitrate' => '1024k',
+            'framerate' => '25',
+            'video_codec' => 'vp6',
+            'audio_bitrate' => '128k'),
           # # Task 2: Encode into a 320x size video (preview)
           #           resource.container_encoded_url('preview') => EncodingDotCom::Format.create(
           #                'output' => 'mp4',
