@@ -54,6 +54,13 @@ module S3Buckets
       def url(key)
         '//s3.amazonaws.com/' + eternos_bucket_name + '/' + key
       end
+      
+      # Returns url to Amazon resource with aws key/secret
+      def encoded_url(key)
+        s3_config = S3Connection.new.s3_config
+        "http://#{CGI::escape(s3_config['access_key_id'])}:#{CGI::escape(s3_config['secret_access_key'])}@#{eternos_bucket_name}.s3.amazonaws.com/#{key}"
+      end
+      
     end
   end
 
@@ -84,6 +91,7 @@ class S3Connection
   S3ConfigFile = File.join(RAILS_ROOT, 'config', 'amazon_s3.yml')
   DefaultBucket = :media
   
+  attr_reader :s3_config
   attr_reader :bucket_type, :errors
   
   def set_bucket(sym)
@@ -115,7 +123,7 @@ class S3Connection
   protected
    
   def config(config=S3ConfigFile)
-    @S3_CONFIG ||= YAML.load_file(config)[RAILS_ENV]
+    @s3_config ||= YAML.load_file(config)[RAILS_ENV]
   end
   
   # finds/creates & returns bucket object

@@ -64,6 +64,27 @@ class WebVideo < Content
     end
   end
   
+  # Create new instance from video record info
+  def self.create_from_video(video, info={})
+    logger.debug "Creating new web video from video: #{video.inspect}"
+   
+    create(
+      :owner => video.member,
+      :s3_key => info[:s3_key],
+      :is_recording => true,
+      :title => video.title,
+      :filename => video.filename,
+      :taken_at => video.taken_at,
+      :bitrate => info[:bitrate],
+      :width => info[:width],
+      :content_type => info[:content_type],
+      :size => video.size,
+      :duration => info[:duration],
+      :fps => info[:fps],
+      :parent => video
+      ) 
+  end
+  
   # Creates thumbnail from 1st frames of video
   def create_thumbnails
     WebVideo.attachment_fu_options[:thumbnails].each do |thumb_name, size|

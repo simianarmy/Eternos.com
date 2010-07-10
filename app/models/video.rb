@@ -12,13 +12,17 @@ class Video < Content
   has_attachment attachment_opts
   validates_as_attachment
   
+  EncodingStrategy = 'cloud' # or transcode
+  
   # Use RVideo to get attributes
   after_attachment_saved do |attach|
-    # Don't repeat this if creators have already done this
-    unless attach.width
-      begin
-        if info = RVideo::Inspector.new(:file => attach.full_filename, :ffmpeg_binary => AppConfig.ffmpeg_path)
-          attach.save_metadata(info)
+    if EncodingStrategy == 'transcode'
+      # Don't repeat this if creators have already done this
+      unless attach.width
+        begin
+          if info = RVideo::Inspector.new(:file => attach.full_filename, :ffmpeg_binary => AppConfig.ffmpeg_path)
+            attach.save_metadata(info)
+          end
         end
       end
     end
@@ -32,6 +36,7 @@ class Video < Content
     only :id, :title, :width, :height, :description, :taken_at
   end
   
+  # Not transcoding videos anymore - using encoding.com instead
   after_create :transcode
   
   # Class methods
@@ -44,12 +49,14 @@ class Video < Content
   
   # adds transcoding job to worker queue
   def transcode
-    logger.info "Sending video to transcode worker (#{self.id})"
-    # NOTE:
-    # At this point attachment_fu has not copied the file to its proper place.
-    # The worker may fail if it executes before attachment_fu's callback does...
-    # How to chain after_create with after_process_attachment???
-    TranscodeWorker.async_transcode_video(:id => self.id)
+    if EncodingStrategy == 'transcode'
+      logger.info "Sending video to transcode worker (#{self.id})"
+      # NOTE:
+      # At this point attachment_fu has not copied the file to its proper place.
+      # The worker may fail if it executes before attachment_fu's callback does...
+      # How to chain after_create with after_process_attachment???
+      TranscodeWorker.async_transcode_video(:id => self.id)
+    end
   end
   
   # Has video been transcoded and uploaded to a streaming server?
@@ -61,5 +68,69 @@ class Video < Content
     true
   end
   
-  private
+  def encoding_source_url
+    S3Buckets::MediaBucket.encoded_url(s3_key)
+  end
+  
+  def encoding_target_url(ext)
+    S3Buckets::MediaBucket.encoded_url("#{s3_key}.#{ext}") + '?acl=public-read'
+  end
+  
+  protected
+  
+  # Hook called by acts_as_saved_to_cloud after upload process completed
+  # 
+  def uploaded
+    if EncodingStrategy == 'cloud'
+      # Now that video is on cloud server, begin cloud encoding process
+      self.encodingid = ENCQ.add_and_process(
+        encoding_source_url, #source
+        {
+          # Task 1: Encode into a 608x size video mp4 (normal)
+          # encoding_target_url => EncodingDotCom::Format.create(
+          #                'output' => 'mp4',
+          #                'size' => '608x0',
+          #                'add_meta' => 'yes',
+          #                'bitrate' => '1024k',
+          #                'framerate' => '25',
+          #                'video_codec' => 'libx264',
+          #                'audio_bitrate' => '128k',
+          #                'profile' => 'baseline',
+          #                'two_pass' => 'yes'),
+          # Encode into a 608x size video flv w/ vp6
+          # encoding_target_url('flv') => EncodingDotCom::Format.create(
+          #               'output' => 'flv',
+          #               'size' => '608x0',
+          #               'bitrate' => '1024k',
+          #               'framerate' => '25',
+          #               'video_codec' => 'vp6',
+          #               'audio_bitrate' => '128k'),
+          # # Task 2: Encode into a 320x size video (preview)
+          #           resource.container_encoded_url('preview') => EncodingDotCom::Format.create(
+          #                'output' => 'mp4',
+          #                'size' => '320x0',
+          #                'add_meta' => 'yes',
+          #                'bitrate' => '1024k',
+          #                'framerate' => '25',
+          #                'video_codec' => 'libx264',
+          #                'audio_bitrate' => '128k',
+          #                'profile' => 'baseline',
+          #                'two_pass' => 'yes'),
+                            
+            # Task 2: Generate a thumbnail
+            encoding_target_url('jpg') => EncodingDotCom::Format.create(
+              'output' => 'thumbnail', 
+              'width' => '100', 
+              'height' => '100',
+              'time' => 2),
+        },
+        #{ 'notify' => encoding_callback_url }
+        { 'notify' => encoding_callback_url(:host => 'staging.eternos.com')}
+        # Alternatively you could also:
+        #{ 'notify' => "marc@eternos.com" }
+      )
+      save
+    end
+  end
+  
 end

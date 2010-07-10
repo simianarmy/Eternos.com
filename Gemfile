@@ -23,14 +23,16 @@ end
 
 group :test do
   # bundler requires these gems while running tests
-  gem 'webrat', '0.6.0'
-  gem 'cucumber', '0.4.3'
-  gem 'rspec', '1.3.0'
-  gem 'rspec-rails', '1.3.2'
-  gem 'ruby-debug', '0.10.3'
+  gem 'webrat'
+  gem 'cucumber'
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'ruby-debug'
   gem 'mocha'
   gem 'faker'
   gem 'spork'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
 end
 
 group :production do

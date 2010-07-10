@@ -1,8 +1,14 @@
 module NavigationHelpers
+  # Maps a name to a path. Used by the
+  #
+  #   When /^I go to (.+)$/ do |page_name|
+  #
+  # step definition in web_steps.rb
+  #
   def path_to(page_name)
     case page_name
     
-    when /the homepage/
+    when /the home\s?page/
       root_path
     when /the new story page/
       new_story_path
@@ -33,6 +39,7 @@ module NavigationHelpers
         "Now, go and add a mapping in features/support/paths.rb"
     end
   end
+  
 end
 
 World(NavigationHelpers)

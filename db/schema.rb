@@ -370,6 +370,7 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
     t.string   "collection_type"
     t.integer  "collection_id"
     t.integer  "parent_id"
+    t.string   "encodingid"
     t.datetime "deleted_at"
   end
 

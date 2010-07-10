@@ -43,6 +43,16 @@ test:
   ffmpeg_path: /opt/local/bin/ffmpeg
   register_users_to_facebook: false
   
+cucumber:
+  <<: *default_settings
+  app_name: Eternos Test
+  from_email: test@eternos.com
+  reports_email: marc@eternos.com
+  base_domain: localhost
+  s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false
+  
 production:
   <<: *default_settings
   app_name: Eternos.com

@@ -16,6 +16,9 @@ development:
 test:
   <<: *default_settings
 
+cucumber:
+  <<: *default_settings
+  
 staging:
   <<: *default_settings
   

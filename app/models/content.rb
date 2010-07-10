@@ -156,6 +156,7 @@ class Content < ActiveRecord::Base
       :fps => fps
   end
   
+  # Called by acts_as_saved_to_cloud when state enters :complete
   # Adds uploader job to queue if file needs to be added to storage
   # because just created or modified.
   def upload
@@ -268,6 +269,10 @@ class Content < ActiveRecord::Base
   # Deletes from s3 before destroy
   def delete_from_cloud
     S3Connection.new(:media).bucket.delete(s3_key) if s3_key
+  end
+  
+  def uploaded
+    logger.debug "Content object: #{self.id} saved to cloud !"
   end
   
   # before_create callback

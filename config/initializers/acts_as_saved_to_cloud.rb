@@ -15,7 +15,7 @@ module ActsAsSavedToCloud
       state :pending
       state :staging, :enter => :upload
       state :processing
-      state :complete
+      state :complete, :enter => :uploaded
       state :upload_error
 
       event :start_cloud_upload do

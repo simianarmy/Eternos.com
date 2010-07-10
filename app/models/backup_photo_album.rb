@@ -135,6 +135,8 @@ class BackupPhotoAlbum < ActiveRecord::Base
       unless new_photo_ids.include?(p.source_photo_id)
         begin
           p.destroy
+        rescue Errno::ENOENT
+        rescue SystemCallError
         rescue 
           Rails.logger.error "Exception deleting a BackupPhoto: #{$!}"
         end

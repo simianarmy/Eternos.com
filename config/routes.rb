@@ -181,6 +181,8 @@ ActionController::Routing::Routes.draw do |map|
   map.header_partial 'static/blog_header', :controller => 'home', :action => 'blog_header_partial'
   map.footer_partial 'static/blog_footer', :controller => 'home', :action => 'blog_footer_partial'
   
+  map.encoding_callback 'encoding_cb', :controller => 'encodings', :action => 'callback'
+  
   # Facebook routes
     
   # FUCKING BULLSHIT
