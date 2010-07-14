@@ -7,7 +7,7 @@ class AudioController < TimelineEventsController
       format.html
       format.xml { render :xml => @item }
       format.mp3 { 
-        send_protected_content(@item.full_filename, 'audio/mp3')
+        send_protected_content(@item.cdn_url_with_protocol, 'audio/mp3')
       }
       format.m3u { render :text => item.absolute_url(request) }
     end

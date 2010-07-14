@@ -1,1 +1,4 @@
-= render :partial => 'mementos/photo_album', :locals => {:album_url => album_url(item, :view => 'memento_editor'), :item => item}
+- if item.kind_of? BackupPhotoAlbum
+  = render :partial => 'mementos/photo_album', :locals => {:album_url => backup_photo_album_url(item, :view => 'memento_editor'), :item => item}
+- else
+  = render :partial => 'mementos/photo_album', :locals => {:album_url => album_url(item, :view => 'memento_editor'), :item => item}

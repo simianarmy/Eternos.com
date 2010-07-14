@@ -183,6 +183,10 @@ class Content < ActiveRecord::Base
     thumbnails.first
   end
   
+  def cdn_url_with_protocol
+    'http:' + cdn_url
+  end
+  
   def cdn_url
     S3Buckets::MediaBucket.url(s3_key) if s3_key
   end

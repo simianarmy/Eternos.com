@@ -16,6 +16,8 @@ class EncodingsController < ApplicationController
         # do something
       end
     end
+    
+    render :nothing => true, :status => :ok
   end
 
 end

@@ -147,7 +147,9 @@ var MementoEditor = function() {
 					}
 				}
 			}
-		}).history();
+		}); 
+		// tabs cacheing fucks up page refreshes
+		//.history();
 		tabs = jQuery('ul.tabs').tabs('div.panes > div');
 		currentPane = tabs.getPanes().eq(0);
 		

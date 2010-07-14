@@ -9,12 +9,14 @@
       - if [BackupPhotoAlbum, Album].include?(@contents.first.class)
         %h3== These are photo albums, dog.  Click on one to see the individual photos.
       
-      .navi
       %a.prevPage.browse.left
       .arti-scroller.scrollable
         / root element for the items
         .artifact_list.items
-          = render :partial => "mementos/#{@contents.first.to_str}", :collection => @contents, :as => :item
+          - if [BackupPhotoAlbum, Album].include?(@contents.first.class)
+            = render :partial => "mementos/album", :collection => @contents, :as => :item
+          - else
+            = render :partial => "mementos/#{@contents.first.to_str}", :collection => @contents, :as => :item
       %a.nextPage.browse.right
   .clear
   .artifact_info

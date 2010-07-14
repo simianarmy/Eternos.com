@@ -11,6 +11,18 @@ namespace :backup do
     end
   end
   
+  def get_backup_opts
+    returning({}) do |opts|
+      opts[:cutoff] = ENV['FORCE'] ? Time.now.utc : nil
+      if ENV['DATASET']
+        opts[:dataType] = ENV['DATASET'].to_i
+      end
+      if ENV['MAX']
+        opts[:max_jobs] = ENV['MAX'].to_i
+      end
+    end
+  end
+  
   desc "Download new backup photos"
   task :download_photos => :environment do
     count = ENV['COUNT'] || 100
@@ -62,11 +74,7 @@ namespace :backup do
   
   desc "Generate backup jobs"
   task :run_scheduled => :environment do
-    cutoff = ENV['FORCE'] ? Time.now.utc : nil
-    opts = {:cutoff => cutoff}
-    if ENV['DATASET']
-      opts[:dataType] = ENV['DATASET'].to_i
-    end
+    opts = get_backup_opts
     EternosBackup::BackupScheduler.run opts
   end
   
@@ -76,10 +84,7 @@ namespace :backup do
       puts "pass backup source id in SOURCE parameter" 
       exit
     end
-    opts = {}
-    if ENV['DATASET']
-      opts[:dataType] = ENV['DATASET'].to_i
-    end
+    opts = get_backup_opts
     if bs = BackupSource.find(id)
       EternosBackup::BackupJobPublisher.add_source([bs], opts)
       puts "backup source #{id} added to backup job queue"
@@ -115,9 +120,9 @@ namespace :backup do
       exit
     end
     cutoff = days_old.to_i.days.ago
-    EternosBackup::BackupScheduler.run :cutoff => cutoff,
-      :dataType => 0,
-      :member_created_after => cutoff
+    opts = get_backup_opts.merge({:cutoff => cutoff,
+      :member_created_after => cutoff})
+    EternosBackup::BackupScheduler.run opts
   end
   
   desc "Run backup for recently failed backups caused by db connection errors"

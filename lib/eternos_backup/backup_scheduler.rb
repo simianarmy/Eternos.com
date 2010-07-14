@@ -21,6 +21,7 @@ module EternosBackup
         run_backup_job do
           # Get members that qualify for backup
           member_sources = get_pending_backups(@@cutoff, options)
+          count = 0
           
           # Using member.backup_state.last_successful_backup_at as sort key
           member_sources.keys.sort { |a, b|
@@ -31,6 +32,8 @@ module EternosBackup
             sources = member_sources[member]
             # Send sources to job publisher
             EternosBackup::BackupJobPublisher.run(member, sources) 
+            count += 1
+            break if options[:max_jobs] && (count >= options[:max_jobs])
           end
         end
       end
