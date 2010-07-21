@@ -164,6 +164,13 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
 
   add_index "backup_jobs", ["user_id"], :name => "index_backup_jobs_on_user_id"
 
+  create_table "backup_job_errors", :force => true do |t|
+    t.integer  "code"
+    t.string   "error_text"
+    t.integer  "count"
+  end
+  add_index "backup_job_errors", ["error_text"], :name => "index_backup_job_errors_on_error_text"
+  
   create_table "backup_photo_albums", :force => true do |t|
     t.integer  "backup_source_id",                :null => false
     t.string   "source_album_id",                 :null => false

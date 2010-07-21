@@ -83,7 +83,7 @@ module FacebookDesktopApp
     
     # Checks if associated user can query 'friends' list.  If not, then session 
     # is incorrect (or secret key, or user doesn't exist anymore, etc.)
-    def verify
+    def verify_permissions
       user.friends
       true
     rescue 

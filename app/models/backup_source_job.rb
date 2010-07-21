@@ -27,10 +27,22 @@ class BackupSourceJob < ActiveRecord::Base
     update_attribute(:percent_complete, 0)
   end
   
+  # Call when job has completed.  
+  # Assumes all messages & errors have already been saved
   def finished!
     t = Time.now.utc
     update_attribute(:finished_at, t)
+    # Save errors counts
+    errs = error_messages
+    BackupJobError.increment_errors_count(*errs) if errs
     backup_source.backup_complete!
+    on_finish :errors => errs, :messages => messages
+  end
+  
+  # Call to perform any post-finish tasks
+  # info hash contains errors, messasges, and anything else you want to add
+  def on_finish(info={})
+    backup_source.on_backup_complete(info)
   end
   
   def finished?

@@ -23,7 +23,7 @@ class SetupPresenter < AccountPresenter
       begin
         Rails.logger.debug "FETCHING FACEBOOK USER INFO.."
         @user.facebook_session_connect @fb_session
-        @fb_session.user.populate(:pic_small, :name) if @fb_session.verify
+        @fb_session.user.populate(:pic_small, :name) if @fb_session.verify_permissions
         
         @facebook_user = @fb_session.user.name
         Rails.logger.debug @fb_session.user.pic_small

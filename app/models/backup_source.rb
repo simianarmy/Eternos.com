@@ -141,6 +141,11 @@ class BackupSource < ActiveRecord::Base
     consecutive_failed_backup_jobs >= self.max_consecutive_failed_backups
   end
   
+  # Delegates backup completion info to the source owner
+  def on_backup_complete(info={})
+    member.backup_finished!(info)
+  end
+  
   # These photo methods should not be here
   def photo_album(id)
     backup_photo_albums.find_by_source_album_id(id)
@@ -173,6 +178,8 @@ class BackupSource < ActiveRecord::Base
   
   protected
   
+  # Called by state machine entering :backed_up
+  # Updates source backup related attributes
   def do_backed_up
     self.update_attributes(:needs_initial_scan => false, 
       :last_backup_at => Time.now.utc,

@@ -7,12 +7,12 @@ class BackupState < ActiveRecord::Base
   
   # Save latest backup status with passed info hash data
   
-  def finished!(info)
+  def finished!(info={})
     self.in_progress = false
     self.last_backup_finished_at = Time.now
     self.last_backup_job_id = info[:job_id]
     
-    if info[:errors].empty?
+    if info[:errors].nil? || info[:errors].empty?
       self.last_successful_backup_at = Time.now
       self.last_messages = info[:messages] if info[:messages]
       self.last_errors.clear if self.last_errors
