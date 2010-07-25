@@ -51,6 +51,11 @@ module ActsAsSavedToCloud
       raise NoMethodError, "You must define a upload instance method in #{self.class}"
     end
     
+    # Override this method in class to implement custom post-upload action
+    def uploaded
+      # NO OP
+    end
+    
     def cloud_upload_error(err)
       logger.debug "#{self.class}: error uploading to cloud: #{err}"
       processing_error!

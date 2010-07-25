@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+# 
+# $Id$
+# Munin plugin
+# Counts pending backup jobs
+
+INFO_FILE = '/var/www/eternos.com/current/tmp/backup_jobs_scheduled.txt'
+DATA_LABELS = %w( facebook facebook_long twitter gmail blog picasa )
+
+def output_config
+  puts <<-END
+graph_category Eternos.com
+graph_title pending backups
+graph_vlabel count
+
+facebook.label Facebook
+facebook_long.label Facebook posts
+twitter.label Twitter
+gmail.label Gmail
+blog.label RSS
+picasa.label Picasa
+members.label Members
+END
+  exit 0
+end
+
+def load_data
+  @users = []
+  @sites = Hash.new(0)
+  
+  IO.readlines(INFO_FILE).each do |line|
+    member_id, data = line.split(' => ')
+    parts = data.split(':')
+    
+    @users << member_id
+    if parts[1] == 'Facebook'
+      if parts[2] == '0'
+        @sites['facebook'] += 1
+      else
+        @sites['facebook_long'] += 1
+      end
+    else
+      site = parts[1].split.shift.downcase
+      @sites[site] += 1
+    end
+  end
+end
+
+def output_values
+  load_data
+  
+  DATA_LABELS.each do |site|
+    puts "#{site}.value #{@sites[site]}"
+  end
+  puts "members.value #{@users.uniq.size}"
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end

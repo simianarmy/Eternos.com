@@ -131,8 +131,20 @@ namespace :backup do
 
     puts "rebackup for sources #{sources.map(&:id).join(',')}"
     EternosBackup::BackupJobPublisher.add_source(sources, {})
-   end
+  end
  
+  desc "Prints all pending backup jobs"
+  opts = get_backup_opts
+  task :print_pending_jobs => :environment do
+    File.open(File.join(Rails.root, "tmp", "backup_jobs_scheduled.txt"), 'w+') do |log|
+      EternosBackup::BackupScheduler.get_pending_backups(opts).each do |member, jobs|
+        jobs.each do |job|
+          log.puts EternosBackup::BackupReporter.job_to_s(job)
+        end
+      end
+    end
+  end
+   
   desc "Assign backup photo albums to backup photo -> photo objects"
   task :migrate_backup_photo_albums => :environment do
     BackupPhoto.with_photo.reject{|bp| !bp.photo}.each do |bp|

@@ -80,7 +80,18 @@ module EternosBackup
         #puts "latest backup job for #{bs.description} (ds: #{data_set}) finished at #{latest_job.finished_at}"
 
         if latest_job.finished?
-          latest_job.successful? ? (latest_job.finished_at < cutoff_time(data_set)) : true
+          # If last job finished successfully, compare finish time to cutoff
+          if latest_job.successful? 
+            latest_job.finished_at < cutoff_time(data_set)
+          else
+            # otherwise, schedule it if error did not occur too recently
+            time_since_failed = (Time.now.utc - latest_job.finished_at)
+            retry_interval = EternosBackup::DataSchedules.min_backup_retry_interval(data_set)
+            #puts "Last job failed #{time_since_failed} ago"
+            #puts "ds retry interval = #{retry_interval}"
+            #puts "scheduling? #{time_since_failed > retry_interval}"
+            time_since_failed > retry_interval
+          end
         else
           # handle case where job crashes without saving error or finish time
           latest_job.expired?(data_set)

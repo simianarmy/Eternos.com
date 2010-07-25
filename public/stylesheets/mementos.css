@@ -1,9 +1,10 @@
 /* Page structure */
 
-.login1_right,
-.login1-mid,
-.login2-mid {
-	width: 100%;
+.login1_right, .login1-mid, .login2-mid { width: 733px;}
+
+.login2-mid img {
+margin-right:10px;
+vertical-align:middle;
 }
 
 #artifact_picker {
@@ -14,8 +15,8 @@
 }
 
 #type_list .tabs img {
-	width: 24px;
-	height: 24px;
+	height:22px;
+	width:22px;
 }
 
 #artifact_view {
@@ -27,7 +28,8 @@
 }
 
 .artifact_info {
-	font-size: x-small;
+	font-size:x-small;
+	padding-left:40px;
 }
 
 #artifacts_expanded_view {
@@ -335,3 +337,87 @@ ul.tabs a.xl.current { background-position: 0 -62px; }
 div.panes div.pane {
 	display:none;		
 }
+
+/* Paul N. Mods */
+/* scrollable.css line 79 */
+.scrollable {
+	background:url(/images/h300.png) repeat-x scroll 0 0 transparent;
+	border:1px solid #CCCCCC;
+	height:120px;
+	margin:10px auto;
+	width:630px;
+}
+
+/* inlineplayer.css line 123 */
+ul.graphic li a.sm2_link, ul.graphic li a.sm2_paused:hover, ul.graphic li a.sm2_link:hover {
+	background:url(/images/icon_play.png) no-repeat scroll 0 50% #aaaaaa;
+	border-color:#aaaaaa;
+}
+
+/* new class added */
+.mementos-p { font-size: 14px;}
+.mementos-p IMG { vertical-align: middle}
+UL.tabs-like-header { margin: 15px 0 0 0; padding: 0; border-bottom: 1px solid #D6D6D6; display: table; width: 733px;}
+.tabs-like-header LI { display: inline;}
+.tabs-like-header .artitype, .tabs-like-header .artitype { margin: -2px 0 0 5px; height: 32px; float: left;} 
+.tabs-like-header .artitype { margin: 0 0 0 5px; height: 32px; float: left;} 
+.tabs-like-header .artitype A { color: #737373; font-size: 12px; text-decoration: none; background: url(/images/nav-left02.png); display: block; height: 26px; padding: 6px 0px 0 10px; float: left; white-space: nowrap;} 
+.tabs-like-header .artitype SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right02.png); height: 32px;} 
+.tabs-like-header .artitype .current { color: #02419E}
+
+#j-button001 {
+	background:url(/images/button-logout.gif) no-repeat scroll 0 0 transparent;
+	border:medium none;
+	color:#FFFFFF;
+	cursor:pointer;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	height:30px;
+	padding:0;
+	vertical-align:middle;
+	width:76px; float: right; position: relative; margin-top: -35px;
+}
+
+#j-button002 {
+	background:url(/images/button-logout.gif) no-repeat scroll 0 0 transparent;
+	border:medium none;
+	color:#FFFFFF;
+	cursor:pointer;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	height:30px;
+	padding:0;
+	vertical-align:middle;
+	width:76px; float: left; margin: 0 0 0 3px;
+}
+
+#j-button003 {
+	background:url(/images/button-green.gif) no-repeat scroll 0 0 transparent;
+	border:medium none;
+	color:#FFFFFF;
+	cursor:pointer;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:12px;
+	height:30px;
+	padding:0;
+	vertical-align:middle;
+	width:126px; float: left;
+}
+
+UL.j-audio-files { margin: 20px auto; list-style: none; clear: both; padding: 0;}
+.j-audio-files LI { padding: 0px 0 20px 0; border-bottom: 1px dotted #D5D5D5; clear: both; float: none; height: 30px; margin-top: 10px}
+H3.j-audio-files01 { background: #F1F1F1; border-bottom: 1px solid #D6D6D6; height: 24px; font-size: 12px; color: #7A7A7A; margin: 20px 0 0 0; padding: 0;}
+.j-audio-files01 SPAN, .j-audio-files LI SPAN { display: block; width: 200px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px;}
+.j-audio-files01 STRONG, .j-audio-files LI DIV{ display: block; width: 310px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px; color: #7A7A7A; font-size: 12px;}
+.j-audio-files .sm2_link { float: left; width: 280px; vertical-align: middle;}
+
+.mementos-textarea {
+	background:url(/images/bg_input.gif) repeat-x scroll 0 0 transparent;
+	border:1px solid #CCCCCC;
+	color:#907777;
+	font-family:Arial,Helvetica,sans-serif;
+	padding:5px;
+	width:500px; height: 190px;
+}
+
+

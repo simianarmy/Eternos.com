@@ -37,8 +37,8 @@ module EternosBackup
         stats = [:backup_items, :backup_size, :backup_s3_size].each do |s|
           total[s] = total_avg[s] = latest[s] = latest_avg[s] = 0
         end
-
-        backup_items = %w( ActivityStreamItem BackupPhotoAlbum BackupPhoto BackupEmail Feed FeedEntry )
+        
+        backup_items = %w( ActivityStreamItem BackupPhotoAlbum Content BackupEmail Feed FeedEntry )
         backup_items.each do |bi|
           key = bi.tableize.to_sym
           klass = bi.constantize
@@ -47,7 +47,13 @@ module EternosBackup
           latest[key.to_s + '_size']  ||= 0
 
           # Use batch iterator to prevent massive memory consumption
-          size = klass.first.respond_to?(:bytes) ? sum_with_method(klass, :bytes) : 0
+          size = if klass.first.respond_to?(:bytes)
+            sum_with_method(klass, :bytes)
+          elsif klass.first.respond_to?(:size)
+            sum_with_method(klass, :size)
+          else
+            0
+          end
 
           total[key]   = klass.count
           total[key.to_s + '_size'] += size
@@ -56,7 +62,13 @@ module EternosBackup
 
           # Use batch iterator to prevent massive memory consumption
           last_day = klass.created_at_greater_than_or_equal_to(1.day.ago)
-          size = last_day.first.respond_to?(:bytes) ? sum_with_method(last_day, :bytes) : 0
+          size = if last_day.first.respond_to?(:bytes)
+            sum_with_method(last_day, :bytes)
+          elsif last_day.first.respond_to?(:size)
+            sum_with_method(last_day, :size)
+          else
+            0
+          end
 
           latest[key]  = last_day.count
           latest[key.to_s + '_size'] += size
@@ -67,12 +79,10 @@ module EternosBackup
         # Calculate s3 costs
 
         # Use batch iterator to prevent massive memory consumption
-        size = sum_with_method(BackupPhoto, :bytes)
-        total[:backup_s3_size] = size + BackupEmail.sum(:size)
+        total[:backup_s3_size] = total['contents_size'] + total['backup_emails_size']
         total[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:backup_s3_size])
 
-        latest[:backup_s3_size] = BackupPhoto.created_at_greater_than_or_equal_to(1.day.ago).collect(&:bytes).compact.sum +
-        BackupEmail.created_at_greater_than_or_equal_to(1.day.ago).sum(:size)
+        latest[:backup_s3_size] = latest['contents_size'] + latest['backup_emails_size']
         latest[:s3_cost] = S3PriceCalculator.calculate_monthly_storage_cost(total[:s3_cost])
 
         user_count = Member.active.size
@@ -146,6 +156,12 @@ module EternosBackup
         report = {:totals => totals, :job_errors => errors, :source_errors => all_errors}
         #ActionMailer::Base.delivery_method = :sendmail
         BackupReportMailer.deliver_daily_jobs_report(report)
+      end
+      
+      # Prints out details for a single backup job
+      def job_to_s(job)
+        member = job[0].member
+        "#{member.id} => " + [job[0].id, job[0].description, job[1][:dataType], member.backup_state.try(:last_successful_backup_at)].join(':')
       end
       
       protected

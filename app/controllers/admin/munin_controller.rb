@@ -30,22 +30,25 @@ RESP
   # Returns live backup job stats assuming munin sample rate of 1 / 5 minutes
   def running_backup_jobs
     backups_running = {}
-    backups_finished = {}
+    long_backups_running = Hash.new(0)
     backups = {}
-    @backup_sites.values.each { |site| backups[site] = backups_running[site] = backups_finished[site] = 0 }
+    @backup_sites.values.each { |site| backups[site] = backups_running[site] = 0 }
     
-    BackupSourceJob.created_at_gt(munin_start_time).each do |job|
+    BackupSourceJob.created_at_gt(1.day.ago).finished_at_eq(nil).each do |job|
       site = job.backup_source.backup_site.name rescue 'Unknown'
-      backups[site] += 1
-      if job.finished? 
-        backups_finished[site] += 1
-      else
+      backups[site] += 1      
+      if job.backup_data_set_id == EternosBackup::SiteData.defaultDataSet
         backups_running[site] += 1
+      else
+        long_backups_running[site] += 1
       end
     end
     response = ""
     backups.each do |site, count|
       response += "#{site} = #{count}\n"
+    end
+    long_backups_running.each do |site, count|
+      response += "#{site}_long = #{count}\n"
     end
     
     render :inline => response, :status => :ok

@@ -4,6 +4,8 @@ require 'daemons'
 
 QusionAllowed = true
 
+ENV['RAILS_ENV'] ||= 'production'
+
 workling = File.join(File.dirname(__FILE__), '..', 'vendor', 'plugins', 'workling', 'script', 'listen.rb')
 options = {
   :app_name   => "workling",

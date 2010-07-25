@@ -7,10 +7,10 @@
     %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
     %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
-    %title= "Eternos Members - " + h(yield(:title) || "Uploader")
+    %title= "Eternos Members - " + h(yield(:title) || "Memento Creator")
 
 
-    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'mementos', 'scrollable', 'scrollable-navig', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'soundmanager-ui', 'inlineplayer'
+    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'scrollable', 'scrollable-navig', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'soundmanager-ui', 'inlineplayer', 'mementos'
     = yield(:head)
     
     / end bundle
@@ -25,10 +25,40 @@
     / start content
     #content.page-content.login1
       %fieldset
-
+        / start login1_left
+        .login1_left
+          %h1 Account Features
+          %ul#acct_settings
+            %li= link_to 'Upload', new_content_path
+            %li= link_to 'Profile', account_settings_path, :id => 'account-setting'
+            /-%li= link_to 'Memento Studio', new_memento_path
+            /-%li= recording_popup_link 'Video Journal'
+            %li= link_to 'Life Key', trustees_path
+            %li= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
+            %li= link_to 'Invite Friends', account_setup_path(:step => 2)
+          <p>&nbsp;</p>
+          %h1 Backup Services
+          %p
+            = backup_icon('facebook', '36x36', @settings.facebook_confirmed)
+            = backup_icon('twitter', '36x36', @settings.twitter_confirmed)
+            = backup_icon('gmail', '36x36', @settings.gmail_confirmed)
+            = backup_icon('picasa', '36x36', @settings.picasa_confirmed)
+            = backup_icon('rss', '36x36', @settings.rss_confirmed)
+            
+          <p align="right">
+          = link_to 'Add More', account_setup_path(:step => 0), :id => "active_network-add"
+          </p>
+          <p>&nbsp;</p>
+          #artifacts-header
+          <p>&nbsp;</p>         
+          %h1 Tag Cloud
+          #tag-cloud
+          <p>&nbsp;</p>
+        / end login1_left
+        
         / start sub content
         / Right content
-        .login1_right.login1-mid.login2-mid
+        .login1_right.home
           = yield
         / end sub content
     / end content

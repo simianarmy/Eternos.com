@@ -3,7 +3,7 @@
 class MementosController < MemberHomeController
   layout 'mementos'
   
-  skip_before_filter :load_member_home_presenter
+  #skip_before_filter :load_member_home_presenter
   
   def new
     

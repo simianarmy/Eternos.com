@@ -91,18 +91,20 @@ class ContentsController < ApplicationController
   end
   
   def create
-    @content = Content.factory(params[:content])
-    @content.owner = current_user
+    if params[:content]
+      @content = Content.factory(params[:content])
+      @content.owner = current_user
+    end
     
     force_cache_reload!(:images, :timeline)
     
     respond_to do |format|
       # Must use 'any' for compatibility with IE text/* accept headers
       format.any {
-        if params[:Filename]
+        if params[:Filename] && @content
           result = AjaxFileUpload.save(@content)
           render :json => result.to_json
-        elsif @content.save
+        elsif @content.try(:save)
           flash_redirect "File succesfully uploaded", contents_path
         else
           flash[:error] = "Error uploading file!"

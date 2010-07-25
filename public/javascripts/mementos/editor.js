@@ -51,6 +51,7 @@ var MementoEditor = function() {
 		wysiwygEditor = null,
 		droppablesId = 'scrollable_decorations',
 		artifactDetailsId = 'artifacts_expanded_view',
+		tabsSelector = 'ul.tabs-like-header',
 		tabs = null,
 		currentPane = null,
 		AlbumPaneId = 'pane1',
@@ -131,7 +132,7 @@ var MementoEditor = function() {
 		textSlideEditor = TextEditor.init();
 		
 		// Create artifact tabs & click handlers
-		jQuery('ul.tabs').tabs('div.panes > div', {
+		jQuery(tabsSelector).tabs('div.panes > div', {
 			effect: 'fade',
 			onBeforeClick: function(event, i) {
 				// On page load, don't try to load last opened pane - confuses and crashes scroller..
@@ -150,7 +151,7 @@ var MementoEditor = function() {
 		}); 
 		// tabs cacheing fucks up page refreshes
 		//.history();
-		tabs = jQuery('ul.tabs').tabs('div.panes > div');
+		tabs = jQuery(tabsSelector).tabs('div.panes > div');
 		currentPane = tabs.getPanes().eq(0);
 		
 		artifactPicker = ArtifactPicker.init(artifactViewerId);

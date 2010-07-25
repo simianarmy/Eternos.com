@@ -5,7 +5,7 @@
 # Counts running backup jobs
 
 REQUEST_URI = 'http://beta.eternos.com/admin/munin/running_backup_jobs?api=FL1mFl4mAlamB'
-DATA_LABELS = %w( facebook twitter gmail blog picasa )
+DATA_LABELS = %w( facebook facebook_long twitter gmail blog picasa )
 
 def output_config
   puts <<-END
@@ -14,6 +14,7 @@ graph_title running backups
 graph_vlabel count
 
 facebook.label Facebook
+facebook_long.label Facebook posts
 twitter.label Twitter
 gmail.label Gmail
 blog.label RSS

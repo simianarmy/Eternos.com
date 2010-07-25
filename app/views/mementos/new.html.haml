@@ -1,95 +1,123 @@
 - title 'Memento Creator'
 
-%b HEADER TITLE OR GRAPHIC
-%br
-%h3 Step 1 - WIZARD / STEP COMPLETION GRAPHIC OR CSS HERE?
-Instructions lorem ipsum blah
-blah blah blah blah blah blah blah blah blah blah blah blah
-blah blah blah blah blah blah blah blah blah blah blah blah
-blah blah blah blah blah blah blah blah blah blah blah blah
-blah blah blah blah blah blah blah blah blah blah blah blah
-%br
-%h3 READ THE BLUE RECTANGLES FOR INSTRUCTIONS, OR COME UP WITH BETTER VISUAL CUES, DOG
-%p
-#flash_notice.notice{:style => "display: none;"}
-#flash_error.notice.hidden
-#artifact_picker
-  #type_list
-    %ul.tabs
-      %li.artitype= link_to image_tag(content_icon_path + 'photo.png'), contents_path(:type => 'albums', :view => 'memento_editor')
-      %li.artitype= link_to image_tag(content_icon_path + 'movie.png'), contents_path(:type => 'web_videos', :view => 'memento_editor')
-      %li.artitype= link_to image_tag(content_icon_path + 'audio.png'), contents_path(:type => 'all_audio', :view => 'memento_editor')
-      %li.artitype= link_to image_tag(content_icon_path + 'doc.png'), 'editor.html', :id => 'new_text_slide'
-      
-  .instructions Select artifacts by clicking the tabs above.
-  #artifact_view
-    .panes
-      #pane1{:style => "display: block"}
-      #pane2
-      #pane3
-      #pane4
-        #wysiwyg_instructions.hidden
-          %span{:style=>"text-align: center"}
-            You can add a text-only slide with this editor...<br/>
-            Just write your message here & click the Save button.
-        <form id="wysiwyg_form" method="POST">
-        %textarea.editor{:name => "slidecontent"}
-        %input#save_wysiwyg{:type => 'submit', :value => 'Add to Movie'} 
-        %input#clear_wysiwyg{:type => 'button', :value => 'Clear'} 
-        </form>
-.clear 
-/- required for pageplayer.js
-= render :partial => 'shared/audio_controls'
-#slideshow_droptarget
-  #scrollable_decorations
-    .navi
-    %a.prevPage.browse.left
-    #selection-scroller.scrollable
-      #item_list.items
-        .decoration_item.dragdrop{:style => "border: 3px dashed #aaa; height: 95px"}
-          = image_tag(content_icon_path + 'photo.png')
-          = image_tag(content_icon_path + 'movie.png')
-          %br
-          Drag & Drop An Artifact Here
-          /.new-frame-links
-          /= link_to 'Add a Text Slide', '#', :id => 'add_text_slide'
-          
-    %a.nextPage.browse.right
-  .clear
-  .instructions You can change the order of the selected artifacts by dragging them left or right.
-  %br
-  .soundtrack
-    #soundtrack-selection
-      = image_tag content_icon_path + 'audio.png', :size => '20x20'
-      Drag audio track(s) here to create your movie soundtrack.
-.clear
-#slideshow_info
-  #duration
-  #frames
-  #frame_seconds
-  #audio-info
-%br
-#selection_links.hidden
-  = link_to 'Clear Slides', '#', :id => 'clear_selection' 
-  |
-  = link_to 'Clear Sountrack', '#', :id => 'clear_sounds'
-  |
-  = link_to 'Preview movie', '#', :id => 'do_preview'
-.clear
-%br
-#arti_preview_details.instructions.hidden
+%h1 Memento Creator
+.alignleft
+  %p.mementos-p
+    %strong Welcome to the Eternos Memento Creator
+    Access all the media that you have archived in your Eternos account and create fun Mashup E-cards with text and audio! Follow the step by step instructions and you’ll have a fun Memento to share with your friends and family in minutes!
+%p &nbsp;
+%h1 Start by selecting &amp; dragging artifacts into the Memento Timeline
 
-#artifact_editor.hidden
-  %br
-  %form
-    = text_area_tag :description, "Write about this artifact here.  When you are finished, click Save.", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+.login1_right.login1-mid.login2-mid
+  #flash_notice.notice{:style => "display: none;"}
+  #flash_error.notice.hidden
+  #artifact_picker
+    #type_list
+      %ul.tabs-like-header
+        %li.artitype
+          - link_to contents_path(:type => 'albums', :view => 'memento_editor') do
+            = image_tag('icon-j-photo.png', :width=>"22", :height=>"22")
+            &nbsp;Add Photo
+          %span &nbsp;
+        %li.artitype
+          - link_to contents_path(:type => 'web_videos', :view => 'memento_editor') do
+            = image_tag('icon-j-movie.png', :width=>"22", :height=>"22")
+            &nbsp;Add Movie
+          %span &nbsp;
+        /%li.artitype= link_to image_tag(''), contents_path(:type => 'all_audio', :view => 'memento_editor')
+        %li.artitype
+          - link_to 'editor.html', :id => 'new_text_slide' do
+            = image_tag('icon-j-text.png', :width=>"22", :height=>"22")
+            &nbsp;Add Text
+          %span &nbsp;
+        %li.artitype
+          - link_to new_content_path, :id => 'new_text_slide' do
+            = image_tag('icon-j-upload.png', :width=>"22", :height=>"22")
+            &nbsp;Upload Files
+          %span &nbsp;
+      <form><input id="j-button001" type="submit" value="Clear Slides" /></form>
+    %p.mementos-p 
+      Select one of the tabs to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
+    #artifact_view
+      .panes
+        #pane1{:style => "display: block"}
+        #pane2
+        #pane3
+        #pane4
+          #wysiwyg_instructions.hidden
+            %span{:style=>"text-align: center"}
+              You can add a text-only slide with this editor...<br/>
+              Just write your message here & click the Save button.
+          <form id="wysiwyg_form" method="POST">
+          %textarea.editor{:name => "slidecontent"}
+          %input#save_wysiwyg{:type => 'submit', :value => 'Add to Movie'} 
+          %input#clear_wysiwyg{:type => 'button', :value => 'Clear'} 
+          </form>
+    .clear 
+    /- required for pageplayer.js
+    = render :partial => 'shared/audio_controls'
+    #slideshow_droptarget
+      #scrollable_decorations
+        .navi
+        %p.mementos-p 
+          = image_tag 'mementos-timeline.gif'
+          You can rearrange the order of artifacts by draging them left and right.
+        %a.prevPage.browse.left
+        #selection-scroller.scrollable
+          #item_list.items
+            .decoration_item.dragdrop{:style => "border: 3px dashed #aaa; height: 95px"}
+              = image_tag(content_icon_path + 'photo.png')
+              = image_tag(content_icon_path + 'movie.png')
+              %br
+              Drag & Drop Artifacts Here
+        %a.nextPage.browse.right
+      .clear
+    #pane2
+    #pane3
+      .soundtrack
+        %ul.tabs-like-header
+          %li.artitype
+            - link_to contents_path(:type => 'albums', :view => 'memento_editor') do
+              = image_tag('icon-j-photo.png', :width=>"22", :height=>"22")
+              &nbsp;Add Photo
+            %span &nbsp;
+          %li.artitype
+            - link_to contents_path(:type => 'web_videos', :view => 'memento_editor') do
+              = image_tag('icon-j-movie.png', :width=>"22", :height=>"22")
+              &nbsp;Add Movie
+            %span &nbsp;
+            
+        #soundtrack-selection
+          = image_tag content_icon_path + 'audio.png', :size => '20x20'
+          Drag audio track(s) here to create your movie soundtrack.
+    .clear
+    #slideshow_info
+      #duration
+      #frames
+      #frame_seconds
+      #audio-info
     %br
-    %input#save_desc{:type => 'button', :value => 'Save'} 
-    #editor_notice.success_notice.hidden
-  #arti_preview
-    #arti_preview_img
-.clear
-#preview_pane.overlayZ
-  #movie_pane{:style => "display: none;"}
-    #movie_player
+    #selection_links.hidden
+      = link_to 'Clear Slides', '#', :id => 'clear_selection' 
+      |
+      = link_to 'Clear Sountrack', '#', :id => 'clear_sounds'
+      |
+      = link_to 'Preview movie', '#', :id => 'do_preview'
+    .clear
+    %br
+    #arti_preview_details.instructions.hidden
+
+    #artifact_editor.hidden
+      %br
+      %form
+        = text_area_tag :description, "Write about this artifact here.  When you are finished, click Save.", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+        %br
+        %input#save_desc{:type => 'button', :value => 'Save'} 
+        #editor_notice.success_notice.hidden
+      #arti_preview
+        #arti_preview_img
+    .clear
+    #preview_pane.overlayZ
+      #movie_pane{:style => "display: none;"}
+        #movie_player
 
