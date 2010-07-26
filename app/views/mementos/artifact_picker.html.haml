@@ -3,11 +3,12 @@
     -# Render grid for photos, list for audio, scroller for everything else
     - if @contents.first.kind_of? Audio
       .artifact_list.items
-        %ul.graphic
+        <h3 class="j-audio-files01"><strong>Drag Audio Files Below </strong> <span> File Name</span> <span>Audio Length</span></h3>
+        %ul.graphic.j-audio-files
           = render :partial => 'mementos/audio', :collection => @contents, :as => :item
     - else
       - if [BackupPhotoAlbum, Album].include?(@contents.first.class)
-        %h3== These are photo albums, dog.  Click on one to see the individual photos.
+        %h3== Click on a photo album to expand the individual photos.
       
       %a.prevPage.browse.left
       .arti-scroller.scrollable
@@ -31,7 +32,8 @@
       Drag audio links from above to the soundtrack box to create your movie soundtrack.
 - else
   .artifacts_list_empty
-    No Files
+    %p.mementos-p
+      %strong You do not have any files of this format.  You can UPLOAD some though.
 :javascript
   editor.refreshSelector();
   

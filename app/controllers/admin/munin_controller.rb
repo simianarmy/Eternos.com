@@ -32,11 +32,11 @@ RESP
     backups_running = {}
     long_backups_running = Hash.new(0)
     backups = {}
-    @backup_sites.values.each { |site| backups[site] = backups_running[site] = 0 }
+    @backup_sites.values.each { |site| backups_running[site] = 0 }
     
     BackupSourceJob.created_at_gt(1.day.ago).finished_at_eq(nil).each do |job|
       site = job.backup_source.backup_site.name rescue 'Unknown'
-      backups[site] += 1      
+
       if job.backup_data_set_id == EternosBackup::SiteData.defaultDataSet
         backups_running[site] += 1
       else
@@ -44,7 +44,7 @@ RESP
       end
     end
     response = ""
-    backups.each do |site, count|
+    backups_running.each do |site, count|
       response += "#{site} = #{count}\n"
     end
     long_backups_running.each do |site, count|

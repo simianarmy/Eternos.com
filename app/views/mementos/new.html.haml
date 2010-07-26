@@ -13,7 +13,7 @@
   #flash_error.notice.hidden
   #artifact_picker
     #type_list
-      %ul.tabs-like-header
+      %ul#artifact-tabs.tabs-like-header
         %li.artitype
           - link_to contents_path(:type => 'albums', :view => 'memento_editor') do
             = image_tag('icon-j-photo.png', :width=>"22", :height=>"22")
@@ -24,7 +24,6 @@
             = image_tag('icon-j-movie.png', :width=>"22", :height=>"22")
             &nbsp;Add Movie
           %span &nbsp;
-        /%li.artitype= link_to image_tag(''), contents_path(:type => 'all_audio', :view => 'memento_editor')
         %li.artitype
           - link_to 'editor.html', :id => 'new_text_slide' do
             = image_tag('icon-j-text.png', :width=>"22", :height=>"22")
@@ -35,15 +34,14 @@
             = image_tag('icon-j-upload.png', :width=>"22", :height=>"22")
             &nbsp;Upload Files
           %span &nbsp;
-      <form><input id="j-button001" type="submit" value="Clear Slides" /></form>
+      <form class="clear_slides"><input id="j-button001" type="submit" value="Clear Slides" /></form>
     %p.mementos-p 
       Select one of the tabs to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
     #artifact_view
-      .panes
-        #pane1{:style => "display: block"}
-        #pane2
-        #pane3
-        #pane4
+      .panes1
+        #artipane1{:style => "display: block"}
+        #artipane2
+        #artipane3
           #wysiwyg_instructions.hidden
             %span{:style=>"text-align: center"}
               You can add a text-only slide with this editor...<br/>
@@ -53,6 +51,7 @@
           %input#save_wysiwyg{:type => 'submit', :value => 'Add to Movie'} 
           %input#clear_wysiwyg{:type => 'button', :value => 'Clear'} 
           </form>
+        #artipane4
     .clear 
     /- required for pageplayer.js
     = render :partial => 'shared/audio_controls'
@@ -72,30 +71,65 @@
               Drag & Drop Artifacts Here
         %a.nextPage.browse.right
       .clear
+        
+      #arti_preview_details.instructions.hidden
+      
+    #artifact_editor.hidden
+      %p.mementos-p
+        You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished.
+      .editor-body
+        %form
+          = text_area_tag :description, "Add a description here", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+          %br
+          %input#save_desc{:type => 'button', :value => 'Save'} 
+          #editor_notice.success_notice.hidden
+        #arti_preview
+          #arti_preview_img
+      .clear
     #pane2
     #pane3
       .soundtrack
-        %ul.tabs-like-header
+        %ul#soundtrack-tabs.tabs-like-header
           %li.artitype
-            - link_to contents_path(:type => 'albums', :view => 'memento_editor') do
-              = image_tag('icon-j-photo.png', :width=>"22", :height=>"22")
-              &nbsp;Add Photo
+            - link_to contents_path(:type => 'all_audio', :view => 'memento_editor') do
+              = image_tag('icon-j-audio.png', :width=>"22", :height=>"22")
+              &nbsp;Add Audio
             %span &nbsp;
           %li.artitype
-            - link_to contents_path(:type => 'web_videos', :view => 'memento_editor') do
-              = image_tag('icon-j-movie.png', :width=>"22", :height=>"22")
-              &nbsp;Add Movie
+            - link_to new_content_path, :id => 'new_text_slide' do
+              = image_tag('icon-j-upload.png', :width=>"22", :height=>"22")
+              &nbsp;Upload Files
             %span &nbsp;
-            
-        #soundtrack-selection
-          = image_tag content_icon_path + 'audio.png', :size => '20x20'
-          Drag audio track(s) here to create your movie soundtrack.
-    .clear
-    #slideshow_info
-      #duration
-      #frames
-      #frame_seconds
-      #audio-info
+        <form><input id="j-button001" type="submit" value="Clear Audio" /></form>
+      .panes2
+        #audiopane1{:style => "display: block"}
+        #audiopane2
+      %p.mementos-p
+        = image_tag 'mementos-audio.gif', :width => "201", :height => "33"
+        /You can rearrange the order of your soundtrack's audio files by draging them left and right.
+
+      #soundtrack-selection
+        = image_tag content_icon_path + 'audio.png', :size => '20x20'
+        Drag audio track(s) here to create your movie soundtrack.
+      .clear
+    %p &nbsp;
+    .mementos-preview
+      %h1 Manage, Preview and Share Your Memento!
+      %h3.j-audio-files01
+        <strong>Timeline Options</strong> <span>Extra Info</span> <span>Memento Length</span>
+      %ul.j-audio-files
+        %li
+          #slideshow_info
+            %form
+              <input id="j-button003" type="submit" value="Preview Memento" />
+            %form.clear_slides                                                              
+              <input id="j-button002" type="submit" value="Clear Slides" />      
+            %form                                                              
+              <input id="j-button002" type="submit" value="Clear Audio" />       
+				  
+          <span>2 Frames Display Duration: 2:07 1 Audio Tracks</span>
+          <span>04:13</span>
+    
     %br
     #selection_links.hidden
       = link_to 'Clear Slides', '#', :id => 'clear_selection' 
@@ -103,19 +137,7 @@
       = link_to 'Clear Sountrack', '#', :id => 'clear_sounds'
       |
       = link_to 'Preview movie', '#', :id => 'do_preview'
-    .clear
-    %br
-    #arti_preview_details.instructions.hidden
-
-    #artifact_editor.hidden
-      %br
-      %form
-        = text_area_tag :description, "Write about this artifact here.  When you are finished, click Save.", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
-        %br
-        %input#save_desc{:type => 'button', :value => 'Save'} 
-        #editor_notice.success_notice.hidden
-      #arti_preview
-        #arti_preview_img
+    
     .clear
     #preview_pane.overlayZ
       #movie_pane{:style => "display: none;"}

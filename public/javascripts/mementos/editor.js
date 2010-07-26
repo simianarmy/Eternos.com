@@ -45,19 +45,24 @@ var MementoEditor = function() {
 	var contentCache = {},
 		artifactPicker = null,
 		artifactSeletion = null,
+		audioPicker = null,
+		audioSelection = null,
 		artifactViewerId = 'artifacts_list',
 		artifactTypesId = 'type_list',
 		wysiwygId = 'slide_text_editor',
 		wysiwygEditor = null,
 		droppablesId = 'scrollable_decorations',
 		artifactDetailsId = 'artifacts_expanded_view',
-		tabsSelector = 'ul.tabs-like-header',
+		tabsSelector = 'ul#artifact-tabs',
+		audioTabsSelector	= 'ul#soundtrack-tabs',
 		tabs = null,
 		currentPane = null,
-		AlbumPaneId = 'pane1',
-		VideoPaneId = 'pane2',
-		AudioPaneId = 'pane3',
-		TextPaneId = 'pane4',
+		AlbumPaneId 	= 'artipane1',
+		VideoPaneId 	= 'artipane2',
+		TextPaneId 		= 'artipane3',
+		TimelineUploadPaneId 	= 'artipane4',
+		AudioPaneId 						= 'audiopane1',
+		SoundtrackUploadPaneId	= 'audiopane2',
 		panesReady = false;
 
 	// Handles artifact type picker link click
@@ -102,6 +107,7 @@ var MementoEditor = function() {
 		var paneId = currentPane[0].id;
 
 		// If audio pane loaded
+		/*
 		if (paneId === AudioPaneId) {
 			// Setup inline audio players
 			if (inlinePlayer) {
@@ -110,6 +116,7 @@ var MementoEditor = function() {
 				inlinePlayer = new InlinePlayer();
 			}
 		}
+		*/
 	};
 
 	// Called when wysiwyg save button clicked
@@ -132,7 +139,7 @@ var MementoEditor = function() {
 		textSlideEditor = TextEditor.init();
 		
 		// Create artifact tabs & click handlers
-		jQuery(tabsSelector).tabs('div.panes > div', {
+		jQuery(tabsSelector).tabs('div.panes1 > div', {
 			effect: 'fade',
 			onBeforeClick: function(event, i) {
 				// On page load, don't try to load last opened pane - confuses and crashes scroller..
@@ -151,20 +158,16 @@ var MementoEditor = function() {
 		}); 
 		// tabs cacheing fucks up page refreshes
 		//.history();
-		tabs = jQuery(tabsSelector).tabs('div.panes > div');
+		tabs = jQuery(tabsSelector).tabs('div.panes1 > div');
 		currentPane = tabs.getPanes().eq(0);
 		
 		artifactPicker = ArtifactPicker.init(artifactViewerId);
 		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
+		audioPicker = AudioPicker.init(audioTabsSelector);
 		
 		jQuery('#wysiwyg_form').submit(function() {
 			onTextEditorSave();
 			return false;
-		});
-		soundManager.onready(function(oStatus) {
-			if (!oStatus.success) {
-				mementoFlash.error('Error initializing sound...please reload the page.');
-			}
 		});
 		currentPane.load(tabs.getTabs().eq(0).attr("href"));
 		this.panesReady = true;
@@ -606,7 +609,9 @@ var ArtifactSelection = function() {
 		movieGenerator = MovieGenerator.init(selectionScroller);
 		
 		// Setup click handlers
-		$('clear_selection').observe('click', function(e) { e.stop(); clearItems(); });
+		$$('form.clear_slides').each(function(f) {
+			f.observe('submit', function(e) { e.stop(); clearItems(); });
+		});
 
 		// Setup description input
 		jQuery('#artifact_description').addClass("idleField");
@@ -648,6 +653,48 @@ var ArtifactSelection = function() {
 
 	return that;
 } ();
+
+var AudioPicker = function() {
+	var that = {};
+	
+	var panesReady = false,
+		tabs,
+		currentPane;
+		
+	that.init = function(tabsSelector) {
+		// Create artifact tabs & click handlers
+		jQuery(tabsSelector).tabs('div.panes2 > div', {
+			effect: 'fade',
+			onBeforeClick: function(event, i) {
+				// On page load, don't try to load last opened pane - confuses and crashes scroller..
+				if (that.panesReady) {
+					// get the pane to be opened
+					currentPane = this.getPanes().eq(i);
+					if (currentPane.is(":empty")) {
+						// load it with a page specified in the tab's href attribute
+						spinner.load('pane3');
+						currentPane.load(this.getTabs().eq(i).attr("href"));
+					} 
+				}
+			}
+		}); 
+		// tabs cacheing fucks up page refreshes
+		//.history();
+		tabs = jQuery(tabsSelector).tabs('div.panes2 > div');
+		currentPane = tabs.getPanes().eq(0);
+		
+		soundManager.onready(function(oStatus) {
+			if (!oStatus.success) {
+				mementoFlash.error('Error initializing sound...please reload the page.');
+			}
+		});
+		currentPane.load(tabs.getTabs().eq(0).attr("href"));
+		this.panesReady = true;
+		
+		return this;
+	};
+	return that;
+}();
 
 var Soundtrack = function() {
 	var that = {};
