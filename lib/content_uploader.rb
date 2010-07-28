@@ -1,4 +1,5 @@
 # $Id$
+require 'fileutils'
 
 module ContentUploader
   # Ensures any unsaved asset on filesystem is saved to cloud.  
@@ -20,6 +21,29 @@ module ContentUploader
                 puts "#{i} done, sleeping..."
                 sleep(5)
               end
+            end
+          end
+          # Look for files in cloud staging directory
+          Dir.glob(File.join(Rails.root, AppConfig.s3_staging_dir, '*.jpg')).each do |f|
+            fname = File.basename(f)
+            logit "Looking for #{fname} in db..."
+            if c = Content.filename_eq(fname).first
+              logit "Found matching record #{c.id} with S3 key: #{c.s3_key}"
+              if c.s3_key
+                logit "Deleting #{f}"
+                FileUtils.rm(f)
+              else
+                logit "Scheduling for upload..."
+                unless File.exists? c.full_filename
+                  logit "Moving file to #{c.full_filename}..."
+                  FileUtils.mkdir_p File.dirname(c.full_filename)
+                  FileUtils.mv f, c.full_filename
+                end
+                c.update_attribute(:state, 'pending')
+                c.stage!
+              end
+            else
+              logit "Content record not found!"
             end
           end
         end

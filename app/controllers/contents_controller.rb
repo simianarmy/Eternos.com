@@ -12,6 +12,24 @@ class ContentsController < ApplicationController
 
   layout 'member_page', :only => [:new, :create, :edit_selection]
   
+  def new
+    @content = current_user.contents.new
+    
+    # Sometimes content uploads area for specific containers, ie: story elements.
+    # Setup view instance vars for form create url
+    if params[:ref_type]
+      el = params[:ref_type].constantize.find(params[:ref_id])
+      @form_url = help.build_decoration_path(el)
+      @object = :decoration
+    else
+      @object = @content
+    end
+    
+    respond_to do |format|
+      format.html
+    end
+  end
+  
   def index
     @content_type = params[:type]
     key = Digest::MD5.hexdigest("content:#{current_user.id}:#{@content_type}")
@@ -69,24 +87,6 @@ class ContentsController < ApplicationController
           render :nothing => true, :status => :ok
         end
       }
-    end
-  end
-  
-  def new
-    @content = current_user.contents.new
-    
-    # Sometimes content uploads area for specific containers, ie: story elements.
-    # Setup view instance vars for form create url
-    if params[:ref_type]
-      el = params[:ref_type].constantize.find(params[:ref_id])
-      @form_url = help.build_decoration_path(el)
-      @object = :decoration
-    else
-      @object = @content
-    end
-    
-    respond_to do |format|
-      format.html
     end
   end
   

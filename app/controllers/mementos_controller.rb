@@ -1,12 +1,22 @@
 # $Id$
 
 class MementosController < MemberHomeController
-  layout 'mementos'
+  layout 'mementos', :only => 'new'
   
   #skip_before_filter :load_member_home_presenter
   
-  def new
+  def new  
     
+  end
+  
+  def new_content
+    @object = @content = current_user.contents.new
+    
+    respond_to do |format|
+      format.html {
+        render :layout => 'dialog'
+      }
+    end
   end
   
   protected

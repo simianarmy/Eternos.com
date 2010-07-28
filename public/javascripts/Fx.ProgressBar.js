@@ -20,9 +20,9 @@ Fx.ProgressBar = new Class({
 	},
 
 	initialize: function(element, options) {
-		this.element = $(element);
+		this.element = document.id(element);
 		this.parent(options);
-		this.text = $(this.options.text);
+		this.text = document.id(this.options.text);
 		this.set(0);
 	},
 

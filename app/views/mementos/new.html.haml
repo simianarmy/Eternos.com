@@ -1,5 +1,5 @@
 - title 'Memento Creator'
-
+- use_uploader
 %h1 Memento Creator
 .alignleft
   %p.mementos-p
@@ -11,6 +11,9 @@
 .login1_right.login1-mid.login2-mid
   #flash_notice.notice{:style => "display: none;"}
   #flash_error.notice.hidden
+  %p.mementos-p 
+    Select one of the tabs to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
+  
   #artifact_picker
     #type_list
       %ul#artifact-tabs.tabs-like-header
@@ -30,28 +33,19 @@
             &nbsp;Add Text
           %span &nbsp;
         %li.artitype
-          - link_to new_content_path, :id => 'new_text_slide' do
+          - link_to 'uploader.hml', :id => 'new_upload_slide' do
             = image_tag('icon-j-upload.png', :width=>"22", :height=>"22")
-            &nbsp;Upload Files
+            = link_to_lightview 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
           %span &nbsp;
       <form class="clear_slides"><input id="j-button001" type="submit" value="Clear Slides" /></form>
-    %p.mementos-p 
-      Select one of the tabs to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
     #artifact_view
       .panes1
         #artipane1{:style => "display: block"}
         #artipane2
         #artipane3
-          #wysiwyg_instructions.hidden
-            %span{:style=>"text-align: center"}
-              You can add a text-only slide with this editor...<br/>
-              Just write your message here & click the Save button.
-          <form id="wysiwyg_form" method="POST">
-          %textarea.editor{:name => "slidecontent"}
-          %input#save_wysiwyg{:type => 'submit', :value => 'Add to Movie'} 
-          %input#clear_wysiwyg{:type => 'button', :value => 'Clear'} 
-          </form>
+          = render :partial => 'text_editor'
         #artipane4
+          /= render :partial => 'upload_content'
     .clear 
     /- required for pageplayer.js
     = render :partial => 'shared/audio_controls'
@@ -96,9 +90,9 @@
               &nbsp;Add Audio
             %span &nbsp;
           %li.artitype
-            - link_to new_content_path, :id => 'new_text_slide' do
+            - link_to 'uploader.hml', :id => 'new_upload_slide' do
               = image_tag('icon-j-upload.png', :width=>"22", :height=>"22")
-              &nbsp;Upload Files
+              = link_to_lightview 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>300
             %span &nbsp;
         <form><input id="j-button001" type="submit" value="Clear Audio" /></form>
       .panes2

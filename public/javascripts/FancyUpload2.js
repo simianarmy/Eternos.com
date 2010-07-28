@@ -8,6 +8,7 @@
  * @author		Harald Kirschner <mail [at] digitarald [dot] de>
  * @copyright	Authors
  */
+// MooTools
 
 var FancyUpload2 = new Class({
 
@@ -36,8 +37,8 @@ var FancyUpload2 = new Class({
 	},
 
 	initialize: function(status, list, options) {
-		this.status = $(status);
-		this.list = $(list);
+		this.status = document.id(status);
+		this.list = document.id(list);
 		
 		this.files = [];
 
@@ -139,7 +140,7 @@ var FancyUpload2 = new Class({
 		this.status.removeClass('file-uploading');
 	
 		if (this.files.some(function(f) { return f.content_id && (f.content_id>0); })) {
-			$('action-links').empty();
+			document.id('action-links').empty();
 			if (this.options.next_step) {
 				this.currentText.set('html', '');
 				this.options.next_step.setStyle('display', ''); 

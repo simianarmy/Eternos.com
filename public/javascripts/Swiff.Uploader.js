@@ -8,6 +8,7 @@
  * @author		Harald Kirschner <mail [at] digitarald [dot] de>
  * @copyright	Authors
  */
+// MooTools! Using Dollar Safe Mode
 
 Swiff.Uploader = new Class({
 
@@ -44,7 +45,7 @@ Swiff.Uploader = new Class({
 
 		var prepare = {}, self = this;
 		['onBrowse', 'onSelect', 'onAllSelect', 'onCancel', 'onBeforeOpen', 'onOpen', 'onProgress', 'onComplete', 'onError', 'onAllComplete'].each(function(index) {
-			var fn = callBacks[index] || $empty;
+			var fn = callBacks[index] || document.id(empty);
 			prepare[index] = function() {
 				self.fireEvent(index, arguments, 10);
 				return fn.apply(self, arguments);
@@ -71,7 +72,7 @@ Swiff.Uploader = new Class({
 			}
 		});
 		this.inject(this.box);
-		this.box.inject($(this.options.container) || document.body);
+		this.box.inject(document.id(this.options.container) || document.body);
 
 		return this;
 	},
@@ -80,7 +81,7 @@ Swiff.Uploader = new Class({
 		this.remote('register', this.instance, this.options.multiple, this.options.queued);
 		this.fireEvent('onLoad');
 
-		this.target = $(this.options.target);
+		this.target = document.id(this.options.target);
 		if (Browser.Plugins.Flash.version >= 10 && this.target) {
 			this.reposition();
 			window.addEvent('resize', this.reposition.bind(this));
@@ -110,7 +111,7 @@ Swiff.Uploader = new Class({
 	upload: function(options){
 		var current = this.options;
 		options = $extend({data: current.data, url: current.url, method: current.method, fieldName: current.fieldName}, options);
-		if ($type(options.data) == 'element') options.data = $(options.data).toQueryString();
+		if ($type(options.data) == 'element') { options.data = document.id(options.data).toQueryString(); }
 		return this.remote('upload', options);
 	},
 

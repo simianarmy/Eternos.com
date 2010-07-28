@@ -38,7 +38,8 @@
       %b= 'Finished!'
       %br
       %a#add-descriptions{:href=>'#'}
-        Add descriptions, tags, privacy settings, and dates to your uploaded files.
+        - unless local_assigns.has_key?(:simple)
+          Add descriptions, tags, privacy settings, and dates to your uploaded files.
   
 %ul#content-list
 

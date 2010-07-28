@@ -30,7 +30,7 @@ module LayoutHelper
   end
  
   def using_layout?(layout)
-    !(response.layout.match %r(layouts/#{layout.to_s}$)).nil?
+    response.layout && !(response.layout.match %r(layouts/#{layout.to_s}$)).nil?
   end
   
   def stylesheet(*args)

@@ -3,7 +3,10 @@ class AboutController < ApplicationController
   layout 'public'
   
   def index
-    
+  end
+  
+  def company
+    render :action => 'index'
   end
   
   def show
