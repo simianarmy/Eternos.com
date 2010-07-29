@@ -20,7 +20,7 @@ class WebVideo < Content
   # Use RVideo to get attributes & thumbnail
   after_attachment_saved do |attach|
     # Don't repeat this if creators have already done this
-    unless attach.width
+    unless attach.width || attach.bitrate
       begin
         if info = RVideo::Inspector.new(:file => attach.full_filename)
           attach.save_metadata(info)
@@ -65,24 +65,44 @@ class WebVideo < Content
   end
   
   # Create new instance from video record info
-  def self.create_from_video(video, info={})
+  def self.create_from_encoding_dot_com(video, info={})
     logger.debug "Creating new web video from video: #{video.inspect}"
-   
-    create(
+    
+    if info[:video] =~ /http:.+s3\.amazonaws\.com\/(.+)\?acl=.+$/
+      info[:s3_key] = $1
+    end
+    unless info[:s3_key]
+      logger.error "Can't create encoding.com video without destination S3 URL!"
+    end
+    
+    vid = self.create(
       :owner => video.member,
       :s3_key => info[:s3_key],
-      :is_recording => true,
       :title => video.title,
       :filename => video.filename,
       :taken_at => video.taken_at,
       :bitrate => info[:bitrate],
-      :width => info[:width],
-      :content_type => info[:content_type],
-      :size => video.size,
-      :duration => info[:duration],
+      :content_type => info[:video_codec],
+      :size => info[:size],
+      :duration => video.duration,
       :fps => info[:fps],
       :parent => video
-      ) 
+      ) do |video|
+        video.no_upload = true # Prevent cloud upload!
+        
+        # Save S3 thumbnail path
+        if info[:thumb] =~ /http:.+s3\.amazonaws\.com\/(.+)\?acl=.+$/
+          thumb = video.thumbnails.new(:width => 100, :height => 100, 
+            :state => 'complete',
+            :filename => File.basename($1),
+            :s3_key => $1)
+          thumb.no_upload = true
+          thumb.save(false)
+        end
+    end # create
+    # HACK HACK
+    # Force cloud status to uploaded
+    vid.update_attribute(:state, 'complete')
   end
   
   # Creates thumbnail from 1st frames of video

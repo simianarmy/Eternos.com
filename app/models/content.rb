@@ -40,6 +40,10 @@ class Content < ActiveRecord::Base
     only :size, :type, :title, :filename, :width, :height, :taken_at, :description
   end
   
+  # Virtual attributes
+  # Disable cloud upload on create
+  attr_writer :no_upload
+  
   # Define start_date for serializing.  Define in child classes if start_date
   # should return a different column value than the ones shown
   def start_date
@@ -160,9 +164,11 @@ class Content < ActiveRecord::Base
   # Adds uploader job to queue if file needs to be added to storage
   # because just created or modified.
   def upload
-    UploadsWorker.async_upload_content_to_cloud(:id => self.id, :class => "Content")
-    logger.debug "Upload worker job sent for content #{self.id}"
-    puts "Upload worker job sent for content #{self.id}"
+    unless @no_upload
+      UploadsWorker.async_upload_content_to_cloud(:id => self.id, :class => "Content")
+      logger.debug "Upload worker job sent for content #{self.id}"
+      puts "Upload worker job sent for content #{self.id}"
+    end
   end
   
   # Override in subclasses that can be played like audio & video

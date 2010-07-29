@@ -1,6 +1,32 @@
 # $Id$
 class Video < Content
-  self.content_types    = ['video/mpeg', 'video/mpeg-2', 'video/mp4', 'video/quicktime', 'video/x-ms-wmv', 'video/x-msvideo', 'video/x-sgi-movie', 'video/vdo', 'video/vnd.vivo', 'video/vivo', 'application/x-dvi']
+  # Accepted video codecs
+  self.content_types    = [
+    'video/mpeg', 
+    'video/mpeg-2', 
+    'video/mp4', 
+    'video/quicktime', 
+    'video/x-ms-wmv', 
+    'video/x-msvideo', 
+    'video/x-sgi-movie', 
+    'video/vdo', 
+    'video/vnd.vivo', 
+    'video/vivo', 
+    'application/x-dvi', 
+    'video/vnd.objectvideo',
+    'application/x-mp4',
+    'video/vnd.objectvideo',
+    'video/x-la-asf', # .asf
+    'video/x-ms-asf', # .asf
+    'application/vnd.ms-asf', # .asf
+    'video/3gpp',
+    'video/x-flv',
+    'video/flv',
+    'application/octet-stream',
+    'flv-application/octet-stream',
+    'video/mpeg4',
+    'video/mpeg4-generic'
+  ]
   self.attachment_fu_options = {:content_type => self.content_types}
      
   with_options :foreign_key => 'parent_id' do |m|
@@ -13,7 +39,7 @@ class Video < Content
   validates_as_attachment
   
   EncodingStrategy = 'cloud' # or transcode
-  
+
   # Use RVideo to get attributes
   after_attachment_saved do |attach|
     if EncodingStrategy == 'transcode'
@@ -36,8 +62,7 @@ class Video < Content
     only :id, :title, :width, :height, :description, :taken_at
   end
   
-  # Not transcoding videos anymore - using encoding.com instead
-  after_create :transcode
+  after_create :postprocess
   
   # Class methods
   
@@ -46,18 +71,6 @@ class Video < Content
   # Disable attachment_fu's process_attachment - not needed.
   # I would think setting :processor => :none would do the trick, but no such luck
   #def process_attachment; end
-  
-  # adds transcoding job to worker queue
-  def transcode
-    if EncodingStrategy == 'transcode'
-      logger.info "Sending video to transcode worker (#{self.id})"
-      # NOTE:
-      # At this point attachment_fu has not copied the file to its proper place.
-      # The worker may fail if it executes before attachment_fu's callback does...
-      # How to chain after_create with after_process_attachment???
-      TranscodeWorker.async_transcode_video(:id => self.id)
-    end
-  end
   
   # Has video been transcoded and uploaded to a streaming server?
   def has_flash?
@@ -78,61 +91,81 @@ class Video < Content
   
   protected
   
+  def postprocess
+    # NO-OP
+  end
+  
   # Hook called by acts_as_saved_to_cloud after upload process completed
-  # 
   def uploaded
     Rails.logger.debug "*** post S3 hook called"
     if EncodingStrategy == 'cloud'
-      Rails.logger.debug "*** Sending video to encoding.com"
-      # Now that video is on cloud server, begin cloud encoding process
-      self.encodingid = ENCQ.add_and_process(
-        encoding_source_url, #source
-        {
-          # Task 1: Encode into a 608x size video mp4 (normal)
-          # encoding_target_url => EncodingDotCom::Format.create(
-          #                'output' => 'mp4',
-          #                'size' => '608x0',
-          #                'add_meta' => 'yes',
-          #                'bitrate' => '1024k',
-          #                'framerate' => '25',
-          #                'video_codec' => 'libx264',
-          #                'audio_bitrate' => '128k',
-          #                'profile' => 'baseline',
-          #                'two_pass' => 'yes'),
-          # Encode into a 608x size video flv w/ vp6
-          encoding_target_url('flv') => EncodingDotCom::Format.create(
-            'output' => 'flv',
-            'size' => '608x0',
-            'bitrate' => '1024k',
-            'framerate' => '25',
-            'video_codec' => 'vp6',
-            'audio_bitrate' => '128k'),
-          # # Task 2: Encode into a 320x size video (preview)
-          #           resource.container_encoded_url('preview') => EncodingDotCom::Format.create(
-          #                'output' => 'mp4',
-          #                'size' => '320x0',
-          #                'add_meta' => 'yes',
-          #                'bitrate' => '1024k',
-          #                'framerate' => '25',
-          #                'video_codec' => 'libx264',
-          #                'audio_bitrate' => '128k',
-          #                'profile' => 'baseline',
-          #                'two_pass' => 'yes'),
-                            
-            # Task 2: Generate a thumbnail
-            encoding_target_url('jpg') => EncodingDotCom::Format.create(
-              'output' => 'thumbnail', 
-              'width' => '100', 
-              'height' => '100',
-              'time' => 2),
-        },
-        #{ 'notify' => encoding_callback_url }
-        { 'notify' => encoding_callback_url(:host => 'staging.eternos.com')}
-        # Alternatively you could also:
-        #{ 'notify' => "marc@eternos.com" }
-      )
-      save
+      encode
+    elsif EncodingStrategy == 'transcode'
+      transcode
     end
   end
   
+  # Now that video is on cloud server, begin cloud encoding process
+  def encode
+    Rails.logger.debug "*** Sending video to encoding.com"
+    self.encodingid = ENCQ.add_and_process(
+      encoding_source_url, #source
+      {
+        # Task 1: Encode into a 608x size video mp4 (normal)
+        # encoding_target_url => EncodingDotCom::Format.create(
+        #                'output' => 'mp4',
+        #                'size' => '608x0',
+        #                'add_meta' => 'yes',
+        #                'bitrate' => '1024k',
+        #                'framerate' => '25',
+        #                'video_codec' => 'libx264',
+        #                'audio_bitrate' => '128k',
+        #                'profile' => 'baseline',
+        #                'two_pass' => 'yes'),
+        # Encode into a 608x size video flv w/ vp6
+        encoding_target_url('flv') => EncodingDotCom::Format.create(
+          'output' => 'flv',
+          'size' => '608x0',
+          'bitrate' => '1024k',
+          'framerate' => '25',
+          'video_codec' => 'vp6',
+          'audio_bitrate' => '128k'),
+        # # Task 2: Encode into a 320x size video (preview)
+        #           resource.container_encoded_url('preview') => EncodingDotCom::Format.create(
+        #                'output' => 'mp4',
+        #                'size' => '320x0',
+        #                'add_meta' => 'yes',
+        #                'bitrate' => '1024k',
+        #                'framerate' => '25',
+        #                'video_codec' => 'libx264',
+        #                'audio_bitrate' => '128k',
+        #                'profile' => 'baseline',
+        #                'two_pass' => 'yes'),
+                          
+          # Task 2: Generate a thumbnail
+          encoding_target_url('jpg') => EncodingDotCom::Format.create(
+            'output' => 'thumbnail', 
+            'width' => '100', 
+            'height' => '100',
+            'time' => 2),
+      },
+      #{ 'notify' => encoding_callback_url }
+      { 'notify' => encoding_callback_url(:host => 'staging.eternos.com')}
+      # Alternatively you could also:
+      #{ 'notify' => "marc@eternos.com" }
+    )
+    save
+  end
+  
+  # adds transcoding job to worker queue
+  def transcode
+    if EncodingStrategy == 'transcode'
+      logger.info "Sending video to transcode worker (#{self.id})"
+      # NOTE:
+      # At this point attachment_fu has not copied the file to its proper place.
+      # The worker may fail if it executes before attachment_fu's callback does...
+      # How to chain after_create with after_process_attachment???
+      TranscodeWorker.async_transcode_video(:id => self.id)
+    end
+  end
 end

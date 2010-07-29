@@ -8,6 +8,10 @@ class PhotoThumbnail < ActiveRecord::Base
   }.reverse_merge(Content.attachment_fu_options))
   acts_as_saved_to_cloud
   
+  # virtual attributes
+  # To disable uploading
+  attr_accessor :no_upload
+  
   before_destroy :delete_from_cloud
   
   serialize_with_options do
@@ -26,7 +30,9 @@ class PhotoThumbnail < ActiveRecord::Base
   # Adds uploader job to queue if file needs to be added to storage
   # because just created or modified.
   def upload
-    UploadsWorker.async_upload_content_to_cloud({:id => self.id, :class => self.class.to_s})
+    unless @no_upload
+      UploadsWorker.async_upload_content_to_cloud({:id => self.id, :class => self.class.to_s})
+    end
   end
   
   # Deletes from s3 before destroy
