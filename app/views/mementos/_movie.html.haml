@@ -1,12 +1,20 @@
 .decoration_item.artifact.video{:id=> dom_id(item), :src => item.url, :duration => item.duration_seconds_float}
+  - @preview_div = dom_id(item,'preview')
   - if item.thumbnail_url
     = image_tag item.thumbnail_url, :class => 'video_thumb'
   - else
     = image_tag item.content_icon, :class => 'video_thumb'
   %br
   %span.title= truncate(item.title, :length => 20)
+  = link_to 'Preview', '#'+@preview_div, :class => 'lightview', :rel => 'inline', :title => "Preview :: #{item.title} :: width: 425, height: 320"
   .info.title.hidden
     = item.title
     = item.description
     = item.duration_to_s
-    = link_to 'preview', item.url, :class => 'lightview'
+
+    %div{:id => @preview_div, :style => "display:none;"}
+      = link_to '', item.cdn_url_with_protocol, :syle => "display:block;width:425px;height:300px;", :id => "#{@preview_div}-player", :class => "video_player"
+
+
+  
+

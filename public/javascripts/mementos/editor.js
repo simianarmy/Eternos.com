@@ -105,7 +105,19 @@ var MementoEditor = function() {
 	// Called when an artifacts tab pane dom is loaded
 	function artifactViewPopulated() {
 		var paneId = currentPane[0].id;
-
+		
+		// Setup video players
+		jQuery('.video_player').each(function() {
+			flowplayer(this.id, FlowplayerSwfUrl,
+		  {
+		    key: FLOWPLAYER_PRODUCT_KEY,
+		    clip: {
+		      autoPlay: true
+		    }
+		  }
+		  );
+		});
+		
 		// If audio pane loaded
 		/*
 		if (paneId === AudioPaneId) {
