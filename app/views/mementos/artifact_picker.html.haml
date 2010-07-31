@@ -18,6 +18,7 @@
             = render :partial => "mementos/album", :collection => @contents, :as => :item
           - else
             = render :partial => "mementos/#{@contents.first.to_str}", :collection => @contents, :as => :item
+
       %a.nextPage.browse.right
   .clear
   .artifact_info

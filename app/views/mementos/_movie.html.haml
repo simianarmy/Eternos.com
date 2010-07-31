@@ -1,20 +1,19 @@
-.decoration_item.artifact.video{:id=> dom_id(item), :src => item.url, :duration => item.duration_seconds_float}
+.decoration_item.video.artifact{:id=> dom_id(item), :src => item.url, :duration => item.duration_seconds_float}
   - @preview_div = dom_id(item,'preview')
+  %div{:id => @preview_div, :style => "display:none;"}
+    = link_to '', item.player_url, :syle => "display:block;width:425px;height:300px;", :id => "#{@preview_div}-player", :class => "video_player"
+
   - if item.thumbnail_url
     = image_tag item.thumbnail_url, :class => 'video_thumb'
   - else
     = image_tag item.content_icon, :class => 'video_thumb'
   %br
-  %span.title= truncate(item.title, :length => 20)
-  = link_to 'Preview', '#'+@preview_div, :class => 'lightview', :rel => 'inline', :title => "Preview :: #{item.title} :: width: 425, height: 320"
+  %span.title= link_to truncate(item.title, :length => 20), '#'+@preview_div, :class => 'lightview', :title => "Preview :: #{item.title} :: autosize: false, topclose: true, overflow: 'hidden', closeButton: 'large'"
   .info.title.hidden
     = item.title
     = item.description
     = item.duration_to_s
 
-    %div{:id => @preview_div, :style => "display:none;"}
-      = link_to '', item.cdn_url_with_protocol, :syle => "display:block;width:425px;height:300px;", :id => "#{@preview_div}-player", :class => "video_player"
 
-
-  
+    
 

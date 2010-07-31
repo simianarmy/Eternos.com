@@ -66,7 +66,7 @@ class WebVideo < Content
   
   # Create new instance from video record info
   def self.create_from_encoding_dot_com(video, info={})
-    logger.debug "Creating new web video from video: #{video.inspect}"
+    logger.debug "Creating new web video from video: #{video.id}, #{info.inspect}"
     
     if info[:video] =~ /http:.+s3\.amazonaws\.com\/(.+)\?acl=.+$/
       info[:s3_key] = $1
@@ -86,6 +86,8 @@ class WebVideo < Content
       :size => info[:size],
       :duration => video.duration,
       :fps => info[:fps],
+      :width => (info[:width] ? info[:width] : 0),
+      :height => (info[:height] ? info[:height] : 0),
       :parent => video
       ) do |video|
         video.no_upload = true # Prevent cloud upload!
@@ -93,11 +95,13 @@ class WebVideo < Content
         # Save S3 thumbnail path
         if info[:thumb] =~ /http:.+s3\.amazonaws\.com\/(.+)\?acl=.+$/
           thumb = video.thumbnails.new(:width => 100, :height => 100, 
+            :parent_id => video.id,
             :state => 'complete',
             :filename => File.basename($1),
             :s3_key => $1)
           thumb.no_upload = true
           thumb.save(false)
+          video.thumbnails << thumb
         end
     end # create
     # HACK HACK

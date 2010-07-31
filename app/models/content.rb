@@ -197,6 +197,14 @@ class Content < ActiveRecord::Base
     S3Buckets::MediaBucket.url(s3_key) if s3_key
   end
   
+  def player_url
+    if s3_key
+      cdn_url_with_protocol
+    else
+      public_filename
+    end
+  end
+  
   def thumbnail_url(tp=:thumb)
     thumbnail.url rescue thumbnail_path(:thumb => tp)
   end
