@@ -347,9 +347,10 @@ div.panes div.pane {
 
 /* inlineplayer.css line 123 */
 ul.graphic li a.sm2_link, ul.graphic li a.sm2_paused:hover, ul.graphic li a.sm2_link:hover {
-	background:url(/images/icon_play.png) no-repeat scroll 0 50% #aaaaaa;
-	border-color:#aaaaaa;
+	/* background:url(/images/icon_play.png) no-repeat scroll 0 50% #aaaaaa; */
+	background-color:#aaaaaa;
 }
+
 
 /* new class added */
 .mementos-p { font-size: 14px;}
@@ -405,7 +406,7 @@ UL.tabs-like-header { margin: 15px 0 0 0; padding: 0; border-bottom: 1px solid #
 UL.j-audio-files { margin: 20px auto; list-style: none; clear: both; padding: 0;}
 .j-audio-files LI { padding: 0px 0 20px 0; border-bottom: 1px dotted #D5D5D5; clear: both; float: none; height: 30px; margin-top: 10px}
 H3.j-audio-files01 { background: #F1F1F1; border-bottom: 1px solid #D6D6D6; height: 24px; font-size: 12px; color: #7A7A7A; margin: 20px 0 0 0; padding: 0;}
-.j-audio-files01 SPAN, .j-audio-files LI SPAN { display: block; width: 200px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px;}
+.j-audio-files01 SPAN.audioinfo, .j-audio-files LI SPAN.audioinfo { display: block; width: 200px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px;}
 .j-audio-files01 STRONG, .j-audio-files LI DIV{ display: block; width: 310px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px; color: #7A7A7A; font-size: 12px;}
 .j-audio-files .sm2_link { float: left; width: 280px; vertical-align: middle;}
 

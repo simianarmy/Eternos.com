@@ -54,81 +54,13 @@ var MementoEditor = function() {
 		droppablesId = 'scrollable_decorations',
 		artifactDetailsId = 'artifacts_expanded_view',
 		tabsSelector = 'ul#artifact-tabs',
-		audioTabsSelector	= 'ul#soundtrack-tabs',
-		tabs = null,
-		currentPane = null,
-		AlbumPaneId 	= 'artipane1',
-		VideoPaneId 	= 'artipane2',
-		TextPaneId 		= 'artipane3',
-		TimelineUploadPaneId 	= 'artipane4',
-		AudioPaneId 						= 'audiopane1',
-		SoundtrackUploadPaneId	= 'audiopane2',
-		panesReady = false;
-
-	// Handles artifact type picker link click
-	function onArtifactTypeLinkClick(link) {
-		var url = link.href;
-
-		// Check cache for results
-		that.hideArtifactDetailsView();
-		if (link.id === 'new_text_slide') {
-			// wysiwyg editor tab handled differently than other content types
-			showWysiwygEditor();
-		} else if (contentCache[url]) {
-			// Load from cache
-			populateArtifactView(contentCache[url]);
-		} else {
-			new Ajax.Updater({
-				success: artifactViewerId,
-				failure: 'flash_notice'
-			},
-			url, {
-				asynchronous: true,
-				evalScripts: true,
-				method: 'get',
-				parameters: '&view=memento_editor&authenticity_token=' + encodeURIComponent(window._token),
-				onLoading: function(request) {
-					spinner.load(artifactTypesId);
-				},
-				onComplete: function(request) {
-					spinner.unload();
-					contentCache[url] = request.responseText;
-					artifactViewPopulated();
-				},
-				onFailure: function() {
-					mementoFlash.error("Unexpected error loading content...please try again");
-				}
-			});
-		}
-	};
+		audioTabsSelector	= 'ul#soundtrack-tabs';
 
 	// Called when an artifacts tab pane dom is loaded
+	// Delegates to picker objects
 	function artifactViewPopulated() {
-		var paneId = currentPane[0].id;
-		
-		// Setup video players
-		jQuery('.video_player').each(function() {
-			flowplayer(this.id, FlowplayerSwfUrl,
-		  {
-		    key: FLOWPLAYER_PRODUCT_KEY,
-		    clip: {
-		      autoPlay: true
-		    }
-		  }
-		  );
-		});
-		
-		// If audio pane loaded
-		/*
-		if (paneId === AudioPaneId) {
-			// Setup inline audio players
-			if (inlinePlayer) {
-				inlinePlayer.init();
-			} else {
-				inlinePlayer = new InlinePlayer();
-			}
-		}
-		*/
+		artifactPicker.artifactViewPopulated();
+		audioPicker.artifactViewPopulated();
 	};
 
 	// Called when wysiwyg save button clicked
@@ -149,40 +81,14 @@ var MementoEditor = function() {
 	that.init = function() {
 		// Create wysiwyg widget 1st
 		textSlideEditor = TextEditor.init();
-		
-		// Create artifact tabs & click handlers
-		jQuery(tabsSelector).tabs('div.panes1 > div', {
-			effect: 'fade',
-			onBeforeClick: function(event, i) {
-				// On page load, don't try to load last opened pane - confuses and crashes scroller..
-				if (that.panesReady) {
-					// get the pane to be opened
-					currentPane = this.getPanes().eq(i);
-					if (currentPane.is(":empty")) {
-						// load it with a page specified in the tab's href attribute
-						spinner.load('type_list');
-						currentPane.load(this.getTabs().eq(i).attr("href"));
-					} else if (jQuery(currentPane).attr('id') === TextPaneId) {
-						//textSlideEditor.load();
-					}
-				}
-			}
-		}); 
-		// tabs cacheing fucks up page refreshes
-		//.history();
-		tabs = jQuery(tabsSelector).tabs('div.panes1 > div');
-		currentPane = tabs.getPanes().eq(0);
-		
-		artifactPicker = ArtifactPicker.init(artifactViewerId);
-		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
+		artifactPicker = ArtifactPicker.init(artifactViewerId, tabsSelector);
 		audioPicker = AudioPicker.init(audioTabsSelector);
+		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
 		
 		jQuery('#wysiwyg_form').submit(function() {
 			onTextEditorSave();
 			return false;
 		});
-		currentPane.load(tabs.getTabs().eq(0).attr("href"));
-		this.panesReady = true;
 		
 		return this;
 	};
@@ -200,7 +106,8 @@ var MementoEditor = function() {
 	that.refreshSelector = function() {
 		spinner.unload();
 		artifactViewPopulated();
-		artifactPicker.refresh(currentPane);
+		artifactPicker.refresh();
+		audioPicker.refresh();
 	};
 	that.hideArtifactDetailsView = function() {
 		$(artifactDetailsId).update();
@@ -280,8 +187,18 @@ var TextEditor = function() {
 // Artifact picker object
 var ArtifactPicker = function() {
 	var that = {};
+	
 	var draggables = [];
-	var scroller_el, scroller;
+	var scroller_el, 
+		scroller, 
+		domId,
+		currentPane,
+		panesReady = false,
+		tabs = null,
+		AlbumPaneId 	= 'artipane1',
+		VideoPaneId 	= 'artipane2',
+		TextPaneId 		= 'artipane3',
+		TimelineUploadPaneId 	= 'artipane4';
 
 	// Helper to return div containing artifact
 	function getArtifactContainer(arti) {
@@ -306,8 +223,56 @@ var ArtifactPicker = function() {
 			jQuery('.artifact_info').html('');
 		}
 	};
+	// Called on tab load
+	that.artifactViewPopulated = function() {
+		var paneId = currentPane[0].id;
+		
+		console.log(paneId + " populated");
+		console.log("Creating video components");
+		
+		// Setup video players
+		jQuery('.video_player').each(function() {
+			flowplayer(this.id, FlowplayerSwfUrl,
+		  {
+		    key: FLOWPLAYER_PRODUCT_KEY,
+		    clip: {
+		      autoPlay: true
+		    }
+		  }
+		  );
+		});
+	};
 	// Init function - takes artifact view parent dom id
-	that.init = function() {
+	that.init = function(domId, tabsSelector) {
+		// Create artifact tabs & click handlers
+		that.domId = domId;
+		
+		jQuery(tabsSelector).tabs('div.panes1 > div', {
+			effect: 'fade',
+			onBeforeClick: function(event, i) {
+				// On page load, don't try to load last opened pane - confuses and crashes scroller..
+				if (panesReady) {
+					// get the pane to be opened
+					currentPane = this.getPanes().eq(i);
+					if (jQuery(currentPane).attr('id') === TextPaneId) {
+						//textSlideEditor.load();
+					} else if (jQuery(currentPane).attr('id') == TimelineUploadPaneId) {
+						// Upload Pane - do nothing
+					} else if (true || currentPane.is(":empty")) {
+						// load it with a page specified in the tab's href attribute
+						spinner.load('type_list');
+						currentPane.load(this.getTabs().eq(i).attr("href"));
+					} 
+				}
+			}
+		}); 
+		// tabs cacheing fucks up page refreshes
+		//.history();
+		tabs = jQuery(tabsSelector).tabs('div.panes1 > div');
+		currentPane = tabs.getPanes().eq(0);
+		currentPane.load(tabs.getTabs().eq(0).attr("href"));
+		panesReady = true;
+		
 		return this;
 	};
 	// Create draggable objects
@@ -333,9 +298,10 @@ var ArtifactPicker = function() {
 	};
 	
 	// Update selector pane
-	that.refresh = function(pane) {
+	that.refresh = function() {
 		var scroller;
-
+		var pane = currentPane;
+		
 		// Make all artifacts draggable
 		this.createDraggables($A(jQuery(pane).find('.artifact')));
 
@@ -345,7 +311,7 @@ var ArtifactPicker = function() {
 			jQuery(scroller).scrollable({
 				size: 5,
 				hoverClass: 'hoverActive'
-			}).navigator().mousewheel();
+			});//.navigator().mousewheel();
 
 			jQuery(scroller).find('.decoration_item').hover(function(el) {
 				onArtifactMouseover(el);
@@ -682,21 +648,67 @@ var ArtifactSelection = function() {
 
 var AudioPicker = function() {
 	var that = {};
-	
+	var draggables = [];
 	var panesReady = false,
 		tabs,
-		currentPane;
+		currentPane,
+		AudioPaneId						= 'audiopane1',
+		TimelineUploadPaneId 	= 'audiopane2';
+
+	// Called on tab load
+	that.artifactViewPopulated = function() {
+		var paneId = currentPane[0].id;
+
+		console.log(paneId + " populated");
+		console.log("Creating audio components");
 		
+		if (paneId === AudioPaneId) {
+			// Setup inline audio players
+			if (inlinePlayer) {
+				inlinePlayer.init();
+			} else {
+				inlinePlayer = new InlinePlayer();
+			}
+		}
+	};
+	
+	// Create draggable objects
+	that.createDraggables = function(items) {
+		var opts = {
+			revert: true
+		};
+		draggables.clear();
+		
+		items.each(function(i) {
+			draggables.push(i);
+			new Draggable(i, opts);
+		});
+	};
+	
+	// Adds all visible artifacts to selection
+	that.getArtifacts = function() {
+		return draggables;
+	};
+	
+	// Refresh on reload
+	that.refresh = function() {
+		// Make all artifacts draggable
+		this.createDraggables($A(jQuery(currentPane).find('.artifact')));
+	};
+	
 	that.init = function(tabsSelector) {
 		// Create artifact tabs & click handlers
 		jQuery(tabsSelector).tabs('div.panes2 > div', {
 			effect: 'fade',
+			
 			onBeforeClick: function(event, i) {
 				// On page load, don't try to load last opened pane - confuses and crashes scroller..
 				if (that.panesReady) {
 					// get the pane to be opened
 					currentPane = this.getPanes().eq(i);
-					if (currentPane.is(":empty")) {
+					if (jQuery(currentPane).attr('id') == TimelineUploadPaneId) {
+						// Upload Pane - do nothing
+					} else {
 						// load it with a page specified in the tab's href attribute
 						spinner.load('pane3');
 						currentPane.load(this.getTabs().eq(i).attr("href"));
@@ -739,7 +751,7 @@ var Soundtrack = function() {
 		dropTarget = droparea; // Save this for when we want to empty it
 		selection.push(draggable);
 		text = "Soundtrack files: " + selection.map(function(audio) {
-			return audioIcon + audio.down('div.info').innerHTML;
+			return audioIcon + audio.readAttribute('fname');
 		});
 		droparea.innerHTML = text;
 	};
@@ -799,13 +811,12 @@ var Soundtrack = function() {
 		});
 	};
 	
-	that.init = function(id) {
+	that.init = function(domId) {
 		selection = new Array();
 		
-		ogDropareaHtml = jQuery('#'+id).html();
-		jQuery('.clear_sounds').click(function() {
-			this.stop();
-			clearItems();
+		ogDropareaHtml = jQuery('#'+domId).html();
+		$$('form.clear_sounds').each(function(f) {
+			f.observe('submit', function(e) { e.stop(); clearItems(); });
 		});
 			
 		return this;
@@ -838,8 +849,8 @@ var MovieGenerator = function() {
 
 	var artifacts, soundtrack, expose, seconds_per_frame, 
 		DefaultSecondsPerFrame = 5,
-		initContentBoxWidth = 260,
-		initContentBoxHeight = 380,
+		initContentBoxWidth = 240,
+		initContentBoxHeight = 400,
 		soundtrackId = 'soundtrack-selection',
 		totalPlaytime,
 		slideInfoMap = new Hash();
@@ -857,25 +868,21 @@ var MovieGenerator = function() {
 			// If slide contains artifact
 			item = slides[i];
 			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
-				if ((item.id.match('photo|^video') !== null)) {
+				if ((item.id.match('photo') !== null)) {
 					playlist.push({
 						url: src,
-						scaling: 'fit'
+						scaling: 'fit',
+						// by default clip lasts 5 seconds 
+						duration: getAvgDurationPerSlide()
 					});
 					console.log("Adding image or video: " + src);
-				} else if (item.id.match('web_video') !== null) {
+				} else if (item.id.match('video') !== null) {
 					playlist.push({
 						url: src,
 						scaling: 'fit'
 					});
 					console.log("Adding video: " + src);
-				} else if (item.id.match('music|audio') !== null) {
-					playlist.push({
-						url: src,
-						duration: item.readAttribute('duration')
-					});
-					console.log("Adding audio: " + src);
-				}
+				} 
 				// Save each clip's metadata for playblack event handlers
 				if (item.text_description !== undefined) {
 					slideInfoMap[src] = item.text_description;
@@ -884,8 +891,9 @@ var MovieGenerator = function() {
 				// Use tiny image for "video" position for now
 				// Generate id for this playlist item
 				playlist.push({
-					url: "/images/about01.gif",
-					textId: 'text_' + i
+					url: "/images/black.jpg",
+					textId: 'text_' + i,
+					duration: getAvgDurationPerSlide()
 				});
 				slideInfoMap['text_'+i] = item.userHtml;
 			}
@@ -955,6 +963,7 @@ var MovieGenerator = function() {
 	that.preview = function() {
 		var playlist = generatePlaylist();
 		var text, boxWidth = initContentBoxWidth, boxHeight = initContentBoxHeight;
+		var animateTextBoxOpenOptions = {width: boxWidth, height: boxHeight};
 		
 		if (playlist.size() === 0) {
 			return;
@@ -962,12 +971,11 @@ var MovieGenerator = function() {
 		flowplayer('movie_player', FlowplayerSwfUrl, {
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
-				// by default clip lasts 5 seconds 
-				//duration: getAvgDurationPerSlide(),
-				
 				// accessing current clip's properties 
 				onStart: function(clip) {
 					console.log("on clip " + clip.url);
+					console.log("clip text: " + slideInfoMap[clip.url]);
+					
 					if (isFirstSlide(playlist, clip)) {
 						//expose.load();
 						// If there is a soundtrack, start it
@@ -981,13 +989,13 @@ var MovieGenerator = function() {
 						if (text === '') {
 							boxWidth = boxHeight = 1;
 						}
-						plugin.animate({width: boxWidth, height: boxHeight}, function() {
+						plugin.animate(animateTextBoxOpenOptions, function() {
 							this.setHtml(slideInfoMap[clip.url]);
 						});
 						//$('slide_caption').innerHTML = slideInfoMap[clip.url];
 						//$('slide_caption').show();
 					} else if (clip.textId) {
-						plugin.animate({width: "95%", height: "95%"}, function() {
+						plugin.animate({width: "100%", height: "100%"}, function() {
 							this.setHtml(slideInfoMap[clip.textId]);
 						});
 					} else {
@@ -1003,7 +1011,7 @@ var MovieGenerator = function() {
 					// If at end of movie...
 					if (isLastSlide(playlist, clip)) {
 						this.getPlugin("content").animate({width: boxWidth, height: boxHeight}, function() {
-							this.setHtml('<a href="http://eternos.com">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
+							this.setHtml('<a href="http://eternos.com/?ref=memento">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
 						});
 						soundtrack.stop();
 						//expose.close();
@@ -1061,8 +1069,9 @@ var MovieGenerator = function() {
 					// Styles can be defined inline or with external stylesheet
 					// http://flowplayer.org/plugins/flash/content.html
 					body: {
-						fontSize: 12,
+						fontSize: 14,
 						fontFamily: 'Arial',
+						textAlign: 'center',
 						color: '#000000'
 					},
 					opacity: 0.9,

@@ -3,7 +3,7 @@
     -# Render grid for photos, list for audio, scroller for everything else
     - if @contents.first.kind_of? Audio
       .artifact_list.items
-        <h3 class="j-audio-files01"><strong>Drag Audio Files Below </strong> <span> File Name</span> <span>Audio Length</span></h3>
+        <h3 class="j-audio-files01"><strong>Audio Files</strong> <span>File Name</span> <span>Audio Length</span></h3>
         %ul.graphic.j-audio-files
           = render :partial => 'mementos/audio', :collection => @contents, :as => :item
     - else

@@ -23,12 +23,12 @@
         %li.artitype
           - link_to contents_path(:type => 'albums', :view => 'memento_editor') do
             = image_tag('icon-j-photo.png', :width=>"22", :height=>"22")
-            &nbsp;Add Photo
+            &nbsp;Images
           %span &nbsp;
         %li.artitype
           - link_to contents_path(:type => 'web_videos', :view => 'memento_editor') do
             = image_tag('icon-j-movie.png', :width=>"22", :height=>"22")
-            &nbsp;Add Movie
+            &nbsp;Movies
           %span &nbsp;
         %li.artitype
           - link_to 'editor.html', :id => 'new_text_slide' do
@@ -88,23 +88,23 @@
           %li.artitype
             - link_to contents_path(:type => 'all_audio', :view => 'memento_editor') do
               = image_tag('icon-j-audio.png', :width=>"22", :height=>"22")
-              &nbsp;Add Audio
+              &nbsp;Audio
             %span &nbsp;
           %li.artitype
             = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
             %span &nbsp;
         %form.clear_audio
           <input id="j-button001" type="submit" value="Clear Audio" />
-      .panes2
-        #audiopane1{:style => "display: block"}
-        #audiopane2
-      %p.mementos-p
-        = image_tag 'mementos-audio.gif', :width => "201", :height => "33"
-        /You can rearrange the order of your soundtrack's audio files by draging them left and right.
+        .panes2
+          #audiopane1{:style => "display: block"}
+          #audiopane2
+        %p.mementos-p
+          = image_tag 'mementos-audio.gif', :width => "201", :height => "33"
+          /You can rearrange the order of your soundtrack's audio files by draging them left and right.
 
-      #soundtrack-selection
-        = image_tag content_icon_path + 'audio.png', :size => '20x20'
-        Drag audio track(s) here to create your movie soundtrack.
+        #soundtrack-selection
+          = image_tag content_icon_path + 'audio.png', :size => '20x20'
+          Drag audio track(s) here to create your movie soundtrack.
       .clear
     %p &nbsp;
     #preview.mementos-preview

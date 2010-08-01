@@ -1,6 +1,6 @@
-%li.artifact.audio{:id=> dom_id(item), :src => item.url, :duration => item.duration_seconds}
-  - link_to item.url, :class => 'sm2_link' do
-    %span.handle [drag]
-    = truncate(item.to_s, :length => 30)
-  %span filename.mp3
-  %span '00:00:00'
+%li
+  %span.handle.audioinfo.artifact.audio{:id=> dom_id(item), :src => item.url, :duration => item.duration_seconds, :fname => item.filename}
+    [drag]
+    = truncate(item.filename, :length => 30)
+  = link_to 'Play', item.player_url, :class => 'sm2_link'
+  %span.audioinfo= item.duration_to_s
