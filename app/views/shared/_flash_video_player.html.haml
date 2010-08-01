@@ -1,13 +1,17 @@
 - use_flashplayer
 
 - if (options[:thumbnail] != false) && object.has_thumbnail?
-  %a.video_player{:href => "#{object.url}", :id => dom_id(object), :style => "background-image:url(#{object.preview_url});width:#{options[:thumbnail_width]||320}px;height:#{options[:thumbnail_height]||240}px;"}
+  %a.video_player{:href => "#{object.player_url}", :id => dom_id(object), :style => "background-image:url(#{object.preview_url});width:#{options[:thumbnail_width]||320}px;height:#{options[:thumbnail_height]||240}px;"}
     = image_tag 'play_large.png', :alt => 'Play this video'
     .info
       = object.description
       %span== duration: #{object.duration_to_s}
 - else
-  .video_player{:id=>dom_id(object), :url => "#{object.url}",  :rel=>"#{options.to_json}"}
+  %a.video_player{:id=>dom_id(object), :url => "#{object.player_url}",  :rel=>"#{options.to_json}", :style=>"width:320px;height:240px;"}
+    = image_tag 'play_large.png', :alt => 'Play this video'
+    .info
+      = object.description
+      %span== duration: #{object.duration_to_s}
 
 .clearboth
 = javascript_tag "$('#{dom_id(object)}').hide()" if options[:hidden]

@@ -1,5 +1,8 @@
 - title 'Memento Creator'
 - use_uploader
+- @memento_width = 760
+- @memento_height = 500
+
 %h1 Memento Creator
 .alignleft
   %p.mementos-p
@@ -33,9 +36,7 @@
             &nbsp;Add Text
           %span &nbsp;
         %li.artitype
-          - link_to 'uploader.hml', :id => 'new_upload_slide' do
-            = image_tag('icon-j-upload.png', :width=>"22", :height=>"22")
-            = link_to_lightview 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
+          = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
           %span &nbsp;
       <form class="clear_slides"><input id="j-button001" type="submit" value="Clear Slides" /></form>
     #artifact_view
@@ -76,7 +77,7 @@
           = text_area_tag :description, "Add a description here", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
           %br
           %input#save_desc{:type => 'button', :value => 'Save'} 
-          #editor_notice.success_notice.hidden
+        #editor_notice.success_notice.hidden
         #arti_preview
           #arti_preview_img
       .clear
@@ -90,11 +91,10 @@
               &nbsp;Add Audio
             %span &nbsp;
           %li.artitype
-            - link_to 'uploader.hml', :id => 'new_upload_slide' do
-              = image_tag('icon-j-upload.png', :width=>"22", :height=>"22")
-              = link_to_lightview 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>300
+            = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
             %span &nbsp;
-        <form><input id="j-button001" type="submit" value="Clear Audio" /></form>
+        %form.clear_audio
+          <input id="j-button001" type="submit" value="Clear Audio" />
       .panes2
         #audiopane1{:style => "display: block"}
         #audiopane2
@@ -107,33 +107,28 @@
         Drag audio track(s) here to create your movie soundtrack.
       .clear
     %p &nbsp;
-    .mementos-preview
+    #preview.mementos-preview
       %h1 Manage, Preview and Share Your Memento!
       %h3.j-audio-files01
         <strong>Timeline Options</strong> <span>Extra Info</span> <span>Memento Length</span>
       %ul.j-audio-files
         %li
-          #slideshow_info
-            %form
+          #slideshow_info.hidden
+            %form#do_preview
               <input id="j-button003" type="submit" value="Preview Memento" />
             %form.clear_slides                                                              
               <input id="j-button002" type="submit" value="Clear Slides" />      
-            %form                                                              
+            %form.clear_sounds                                                              
               <input id="j-button002" type="submit" value="Clear Audio" />       
 				  
-          <span>2 Frames Display Duration: 2:07 1 Audio Tracks</span>
-          <span>04:13</span>
-    
-    %br
-    #selection_links.hidden
-      = link_to 'Clear Slides', '#', :id => 'clear_selection' 
-      |
-      = link_to 'Clear Sountrack', '#', :id => 'clear_sounds'
-      |
-      = link_to 'Preview movie', '#', :id => 'do_preview'
-    
-    .clear
-    #preview_pane.overlayZ
-      #movie_pane{:style => "display: none;"}
+          <span id="movie_info">2 Frames Display Duration: 2:07 1 Audio Tracks</span>
+          <span id="movie_duration">04:13</span>
+      .clear
+    #preview_pane{:style => "width:#{@memento_width}px;height:#{@memento_height}px;display: none;"}
+      #movie_pane
         #movie_player
 
+:javascript
+  var MEMENTO = {};
+  MEMENTO.width = #{@memento_width};
+  MEMENTO.height = #{@memento_height};

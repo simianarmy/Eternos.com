@@ -382,9 +382,14 @@ var ArtifactSelection = function() {
 		if (jQuery(selectedArtifact).css('position') == 'absolute') {
 			newSlide = jQuery(newSlideDiv()).append(selectedArtifact.innerHTML);
 			draggable.hide();
-			duration = jQuery(selectedArtifact).attr('duration');
+			
 			selectedArtifact = newSlide[0];
-			selectedArtifact.durationSeconds = parseFloat(duration); // Copy playtime in seconds
+			// Copy dragged div's attributes
+			selectedArtifact.id = draggable.id;
+			selectedArtifact.writeAttribute('src', draggable.readAttribute('src'));
+			if ((duration = draggable.readAttribute('duration')) !== null) {
+				selectedArtifact.durationSeconds = parseFloat(duration); // Copy playtime in seconds
+			}
 			// Make sure to create a draggable on the new element to keep drag&drop ordering support
 			new Draggable(selectedArtifact, {
 				revert: true
@@ -473,12 +478,12 @@ var ArtifactSelection = function() {
 	
 	// Show slide links
 	function showActionLinks() {
-		$('selection_links').removeClassName('hidden');
+		jQuery('slideshow_info').removeClass('hidden');
 	};
 
 	// Hide slide links
 	function hideActionLinks() {
-		$('selection_links').addClassName('hidden');
+		jQuery('slideshow_info').addClass('hidden');
 	};
 	
 	// Displays form for adding text description to an artifact
@@ -535,9 +540,9 @@ var ArtifactSelection = function() {
 			link.removeClassName('hide');
 			$('preview_pane').hide();
 		} else {
-			$('do_preview').innerHTML = 'Hide preview';
-			link.addClassName('hide');
-			$('preview_pane').show();
+			//$('do_preview').innerHTML = 'Hide preview';
+			//link.addClassName('hide');
+			//$('preview_pane').show();
 			showPreview();
 		}
 	};
@@ -545,8 +550,17 @@ var ArtifactSelection = function() {
 	// Generates movie preview
 	function showPreview() {
 		hideArtifactEditForm();
-		$('movie_pane').show();
-		new Effect.ScrollTo('preview_pane');  
+		//$('movie_pane').show();
+		Lightview.show({href: '#preview_pane',
+			title: 'Memento Previewer',
+			rel: 'inline',
+			options: {
+				width: MEMENTO.width + 40,
+				height: MEMENTO.height + 40
+			}
+		});
+		
+		//new Effect.ScrollTo('preview_pane');  
 		movieGenerator.preview();
 	};
 	
@@ -789,10 +803,11 @@ var Soundtrack = function() {
 		selection = new Array();
 		
 		ogDropareaHtml = jQuery('#'+id).html();
-		$('clear_sounds').observe('click', function(e) {
-			e.stop();
+		jQuery('.clear_sounds').click(function() {
+			this.stop();
 			clearItems();
 		});
+			
 		return this;
 	};
 	return that;
@@ -948,13 +963,13 @@ var MovieGenerator = function() {
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
 				// by default clip lasts 5 seconds 
-				duration: getAvgDurationPerSlide(),
+				//duration: getAvgDurationPerSlide(),
 				
 				// accessing current clip's properties 
 				onStart: function(clip) {
 					console.log("on clip " + clip.url);
 					if (isFirstSlide(playlist, clip)) {
-						expose.load();
+						//expose.load();
 						// If there is a soundtrack, start it
 						soundtrack.play();
 					}
@@ -991,7 +1006,7 @@ var MovieGenerator = function() {
 							this.setHtml('<a href="http://eternos.com">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
 						});
 						soundtrack.stop();
-						expose.close();
+						//expose.close();
 					}
 				}
 			},
@@ -1078,12 +1093,12 @@ var MovieGenerator = function() {
 
 		totalPlaytime = 0;
 		seconds_per_frame = 0;
-
+		/*
 		expose = jQuery("#preview_pane").expose({
 			// return exposing API 
 			api: true
 		});
-		
+		*/
 		// Make audio selection a drop target
 		Droppables.add(soundtrackId, {
 			hoverclass: 'soundtrackHover',

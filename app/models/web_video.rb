@@ -30,6 +30,12 @@ class WebVideo < Content
     attach.create_thumbnails if attach.thumbnails.empty?
   end
   
+  def self.s3_path(s3_url)
+    if s3_url =~ /http:.+s3\.amazonaws\.com\/(.+)\?acl=.+$/
+      $1
+    end
+  end
+  
   # Creates new instance from transcoding object info
   def self.create_from_transcoding(transcoding)
     logger.info "Creating new web video from transcoding: #{transcoding.inspect}"
@@ -64,14 +70,13 @@ class WebVideo < Content
     end
   end
   
-  # Create new instance from video record info
+  # Create new instance from encoding.com postback video record info
   def self.create_from_encoding_dot_com(video, info={})
     logger.debug "Creating new web video from video: #{video.id}, #{info.inspect}"
     
-    if info[:video] =~ /http:.+s3\.amazonaws\.com\/(.+)\?acl=.+$/
-      info[:s3_key] = $1
-    end
-    unless info[:s3_key]
+    # Parse path portion of encoding.com's saved S3 url - it contains the s3 user/pass!
+    
+    unless info[:s3_key] = s3_path(info[:video])
       logger.error "Can't create encoding.com video without destination S3 URL!"
     end
     
@@ -93,14 +98,17 @@ class WebVideo < Content
         video.no_upload = true # Prevent cloud upload!
         
         # Save S3 thumbnail path
-        if info[:thumb] =~ /http:.+s3\.amazonaws\.com\/(.+)\?acl=.+$/
+        if thumb_s3_path = s3_path(info[:thumb])
           thumb = video.thumbnails.new(:width => 100, :height => 100, 
             :parent_id => video.id,
-            :state => 'complete',
-            :filename => File.basename($1),
-            :s3_key => $1)
+            :thumbnail => 'thumb',
+            :filename => File.basename(thumb_s3_path),
+            :s3_key => thumb_s3_path)
           thumb.no_upload = true
           thumb.save(false)
+          ## HACK HACK
+          # Force cloud status to uploaded
+          thumb.update_attribute(:state, 'complete')
           video.thumbnails << thumb
         end
     end # create

@@ -51,15 +51,12 @@ vertical-align:middle;
 }
 
 #movie_pane {
-	width: 100%;
 	background:#000 url(/images/h300.png) 0 0 repeat-x;
-	padding: 20px;
+	padding: 10px;
 }
 
 #movie_player {
 	display:block;
-	width:860px;
-	height:400px;
 	text-align:center;
 	margin: 10px auto;
 }
@@ -364,6 +361,7 @@ UL.tabs-like-header { margin: 15px 0 0 0; padding: 0; border-bottom: 1px solid #
 .tabs-like-header .artitype A { color: #737373; font-size: 12px; text-decoration: none; background: url(/images/nav-left02.png); display: block; height: 26px; padding: 6px 0px 0 10px; float: left; white-space: nowrap;} 
 .tabs-like-header .artitype SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right02.png); height: 32px;} 
 .tabs-like-header .artitype .current { color: #02419E}
+
 
 #j-button001 {
 	background:url(/images/button-logout.gif) no-repeat scroll 0 0 transparent;
