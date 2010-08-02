@@ -93,7 +93,7 @@
           %li.artitype
             = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
             %span &nbsp;
-        %form.clear_audio
+        %form.clear_sounds
           <input id="j-button001" type="submit" value="Clear Audio" />
         .panes2
           #audiopane1{:style => "display: block"}
@@ -110,7 +110,7 @@
     #preview.mementos-preview
       %h1 Manage, Preview and Share Your Memento!
       %h3.j-audio-files01
-        <strong>Timeline Options</strong> <span>Extra Info</span> <span>Memento Length</span>
+        <strong>Timeline Options</strong> <span>Num. Artifacts</span> <span>Playback Time</span>
       %ul.j-audio-files
         %li
           #slideshow_info.hidden
@@ -121,8 +121,8 @@
             %form.clear_sounds                                                              
               <input id="j-button002" type="submit" value="Clear Audio" />       
 				  
-          <span id="movie_info">2 Frames Display Duration: 2:07 1 Audio Tracks</span>
-          <span id="movie_duration">04:13</span>
+          <span id="movie_info"></span>
+          <span id="movie_duration"></span>
       .clear
     #preview_pane{:style => "width:#{@memento_width}px;height:#{@memento_height}px;display: none;"}
       #movie_pane

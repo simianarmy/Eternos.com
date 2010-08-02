@@ -332,7 +332,8 @@ var ArtifactSelection = function() {
 		audioSelection = null,
 		playlistGenerator = null,
 		textEditor = null,
-		editingArtifact = null;
+		editingArtifact = null,
+		movieGenerator = null;
 
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) {
@@ -525,9 +526,13 @@ var ArtifactSelection = function() {
 				height: MEMENTO.height + 40
 			}
 		});
-		
-		//new Effect.ScrollTo('preview_pane');  
-		movieGenerator.preview();
+		document.observe('lightview:opened', function() {
+			//new Effect.ScrollTo('preview_pane');  
+			movieGenerator.preview();
+		});
+		document.observe('lightview:hidden', function() {
+			movieGenerator.stop();
+		});
 	};
 	
 	// Public functions
@@ -747,13 +752,24 @@ var Soundtrack = function() {
 	function onAudioAdded(draggable, droparea) {
 		var text;
 		var source;
+		var obj = {};
 		
+		if (that.getSize() >= 1) {
+			alert('Only one audio track is supported at the moment!')
+			return;
+		}
 		dropTarget = droparea; // Save this for when we want to empty it
-		selection.push(draggable);
-		text = "Soundtrack files: " + selection.map(function(audio) {
-			return audioIcon + audio.readAttribute('fname');
-		});
-		droparea.innerHTML = text;
+		if ((source = draggable.readAttribute('src')) !== null) {
+			obj.source = source;
+			obj.filename = draggable.readAttribute('fname');
+			obj.duration = draggable.readAttribute('duration');
+			
+			selection.push(obj);
+			text = "Soundtrack files: " + selection.map(function(audio) {
+				return audioIcon + audio.filename;
+			});
+			droparea.innerHTML = text;
+		}
 	};
 	that.onAudioAdded = onAudioAdded;
 	
@@ -767,9 +783,7 @@ var Soundtrack = function() {
 	function getTracks() {
 		var source;
 		return selection.map(function(audio) {
-			if ((source = audio.down('li a').href) !== null) {
-				return source;
-			}
+			return audio.source;
 		});
 	};
 	
@@ -788,12 +802,14 @@ var Soundtrack = function() {
 			  url: sounds[0],
 			  volume: 50
 			});
+			console.log("Playing audio!");
 			currentAudio.play();
 		}
 	};
 	
 	that.stop = function() {
 		if (currentAudio !== null) {
+			console.log("Stopping audio!");
 			currentAudio.stop();
 			currentAudio = null;
 		}
@@ -803,7 +819,7 @@ var Soundtrack = function() {
 	that.getDuration = function() {
 		var duration;
 		return selection.inject(0, function(acc, audio) {
-			if ((duration = audio.readAttribute('duration')) !== null) {
+			if ((duration = audio.duration) !== null) {
 				return acc + parseFloat(duration, 10).toFixed(2);
 			} else {
 				return acc;
@@ -834,10 +850,12 @@ var movieInfo = function() {
 	
 	// Updates movie info pane
 	function update(movie) {
-		jQuery('#duration').html('Total movie play time: ' + secondsToDuration(movie.getTotalDuration()));
-		jQuery('#frames').html(movie.getNumSlides() + ' frames');
-		jQuery('#frame_seconds').html('Average frame display duration: ' + secondsToDuration(movie.getAvgDurationPerSlide()));
-		jQuery('#audio-info').html(movie.getSoundtrack().getSize() + ' audio tracks');
+		var info = "";
+		info += movie.getNumSlides() + ' frames - ' +
+			'Average frame display duration: ' + secondsToDuration(movie.getAvgDurationPerSlide()) + ' - ' +
+			movie.getSoundtrack().getSize() + ' audio tracks';
+		jQuery('#movie_duration').html('Total movie play time: ' + secondsToDuration(movie.getTotalDuration()));
+		jQuery('#movie_info').html(info);
 	};
 	return {
 		update: update
@@ -920,15 +938,6 @@ var MovieGenerator = function() {
 	};
 	that.getAvgDurationPerSlide = getAvgDurationPerSlide;
 	
-	// Returns total runtime
-	that.getTotalDuration = function() {
-		return totalPlaytime;
-	};
-	
-	that.getSoundtrack = function() {
-		return soundtrack;
-	};
-	
 	// Wrapper to soundtrack handler
 	function onAudioAdded(draggable, droparea) {
 		soundtrack.onAudioAdded(draggable, droparea);
@@ -942,6 +951,15 @@ var MovieGenerator = function() {
 	// Helper to determine when movie is on last slide
 	function isLastSlide(playlist, clip) {
 		return (playlist[playlist.size()-1].url === clip.url);
+	};
+	
+	// Returns total runtime
+	that.getTotalDuration = function() {
+		return totalPlaytime;
+	};
+	
+	that.getSoundtrack = function() {
+		return soundtrack;
 	};
 	
 	// Updates movie metadata
@@ -975,6 +993,7 @@ var MovieGenerator = function() {
 				onStart: function(clip) {
 					console.log("on clip " + clip.url);
 					console.log("clip text: " + slideInfoMap[clip.url]);
+					console.log("clip duration: " + clip.duration);
 					
 					if (isFirstSlide(playlist, clip)) {
 						//expose.load();
@@ -1094,6 +1113,10 @@ var MovieGenerator = function() {
 				*/
 			}
 		});
+	};
+	
+	that.stop = function() {
+		soundtrack.stop();
 	};
 	
 	that.init = function(selection) {
