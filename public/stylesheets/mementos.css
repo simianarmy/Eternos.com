@@ -36,11 +36,11 @@ vertical-align:middle;
 	height: auto; /* 200px; */
 }
 
-#slideshow_droptarget {
+#slideshow_droptarget {	
 }
 
 #soundtrack-selection {
-	border:1px solid #ccc;
+	border: 3px solid #ccc;
 	background:url(/images/h300.png) repeat-x;
 	padding: 5px;
 	font-size: 14px;
@@ -104,13 +104,17 @@ vertical-align:middle;
 	font-size: 12px;
 }
 
+#item_list {
+	
+}
+
 .selectorHover {
 	border: solid 2px #73A6FF;
 	background:#EFF5FF;
 }
 
 /* Not working */
-#soundtrack-selection .soundtrackHover {
+.soundtrackHover {
 	border: solid 2px #73A6FF;
 	background:#EFF5FF;
 }

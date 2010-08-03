@@ -791,19 +791,24 @@ var Soundtrack = function() {
 		return selection.size();
 	};
 	
+	// Sound control functions
 	that.play = function() {
 		var sounds;
 		
-		if (this.getSize() > 0) {
-			sounds = getTracks();
-		
-			currentAudio = soundManager.createSound({
-				id: "memento_soundtrack",
-			  url: sounds[0],
-			  volume: 50
-			});
-			console.log("Playing audio!");
+		if (currentAudio !== null) {
 			currentAudio.play();
+		} else {
+			if (this.getSize() > 0) {
+				sounds = getTracks();
+			
+				currentAudio = soundManager.createSound({
+					id: "memento_soundtrack",
+				  url: sounds[0],
+				  volume: 50
+				});
+				console.log("Playing audio!");
+				currentAudio.play();
+			}
 		}
 	};
 	
@@ -812,6 +817,13 @@ var Soundtrack = function() {
 			console.log("Stopping audio!");
 			currentAudio.stop();
 			currentAudio = null;
+		}
+	};
+	
+	that.pause = function() {
+		if (currentAudio !== null) {
+			console.log("Pausing audio!");
+			currentAudio.pause();
 		}
 	};
 	
@@ -830,7 +842,11 @@ var Soundtrack = function() {
 	that.init = function(domId) {
 		selection = new Array();
 		
-		ogDropareaHtml = jQuery('#'+domId).html();
+		dropTargetDiv = jQuery('#'+domId);
+		ogDropareaHtml = dropTargetDiv.html();
+		// DOESN'T FUCKING WORK!
+		dropTargetDiv.hover(function() { jQuery(this).addClass('selectorHover'); });
+				
 		$$('form.clear_sounds').each(function(f) {
 			f.observe('submit', function(e) { e.stop(); clearItems(); });
 		});
@@ -891,13 +907,15 @@ var MovieGenerator = function() {
 						url: src,
 						scaling: 'fit',
 						// by default clip lasts 5 seconds 
-						duration: getAvgDurationPerSlide()
+						duration: getAvgDurationPerSlide(),
+						mediaType: 'image'
 					});
 					console.log("Adding image or video: " + src);
 				} else if (item.id.match('video') !== null) {
 					playlist.push({
 						url: src,
-						scaling: 'fit'
+						scaling: 'fit',
+						mediaType: 'video'
 					});
 					console.log("Adding video: " + src);
 				} 
@@ -911,7 +929,8 @@ var MovieGenerator = function() {
 				playlist.push({
 					url: "/images/black.jpg",
 					textId: 'text_' + i,
-					duration: getAvgDurationPerSlide()
+					duration: getAvgDurationPerSlide(),
+					mediaType: 'html'
 				});
 				slideInfoMap['text_'+i] = item.userHtml;
 			}
@@ -987,6 +1006,7 @@ var MovieGenerator = function() {
 			return;
 		}
 		flowplayer('movie_player', FlowplayerSwfUrl, {
+			log: { level: 'debug' },
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
 				// accessing current clip's properties 
@@ -994,6 +1014,7 @@ var MovieGenerator = function() {
 					console.log("on clip " + clip.url);
 					console.log("clip text: " + slideInfoMap[clip.url]);
 					console.log("clip duration: " + clip.duration);
+					console.log("clip type: " + clip.mediaType);
 					
 					if (isFirstSlide(playlist, clip)) {
 						//expose.load();
@@ -1026,6 +1047,11 @@ var MovieGenerator = function() {
 					
 				},
 				
+				onStop: function(clip) {
+					if (clip.mediaFormat === 'video') {
+						soundtrack.play();
+					}
+				},
 				onLastSecond: function(clip) {
 					// If at end of movie...
 					if (isLastSlide(playlist, clip)) {
@@ -1075,7 +1101,7 @@ var MovieGenerator = function() {
 
 				// content plugin settings
 				content: {
-					url: 'flowplayer.content-3.1.0.swf',
+					url: 'flowplayer.content-3.2.0.swf',
 
 					// some display properties 
 					width: initContentBoxWidth,
@@ -1133,7 +1159,7 @@ var MovieGenerator = function() {
 		*/
 		// Make audio selection a drop target
 		Droppables.add(soundtrackId, {
-			hoverclass: 'soundtrackHover',
+			//hoverclass: 'soundtrackHover',
 			onDrop: onAudioAdded,
 			accept: ['audio']
 		});
