@@ -1,7 +1,7 @@
 #gallery
   - @photos.each do |p|
     .gridsquare
-      .gallery_item.photo.artifact{:id=> dom_id(p), :src => p.url}
+      .gallery_item.photo.artifact{:id=> dom_id(p), :src => p.cdn_url_with_protocol}
         = image_tag p.thumbnail_url, :alt => p.title
         %br
         %span.title= truncate(p.title, :length => 20)

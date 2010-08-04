@@ -51,14 +51,23 @@ vertical-align:middle;
 }
 
 #movie_pane {
-	background:#000 url(/images/h300.png) 0 0 repeat-x;
-	padding: 10px;
+	/* background image */
+	background:transparent url(/images/mementos/themes/Theme-Dark.jpg) no-repeat scroll 0%;
+	/* container dimensions */
+	display:block;
+	width:720px;
+	height:480px;
+	
+	/* make play button centerered horizontally */ 
+	text-align:center;
+	color:#fff
 }
 
 #movie_player {
-	display:block;
-	text-align:center;
-	margin: 10px auto;
+	width: 490;
+	height: 370px;
+	/* padding will show the surroundings even when the player is loaded */
+	padding:60px 110px;
 }
 
 #slide_caption {

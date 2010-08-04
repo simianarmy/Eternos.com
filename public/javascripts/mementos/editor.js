@@ -522,8 +522,8 @@ var ArtifactSelection = function() {
 			title: 'Memento Previewer',
 			rel: 'inline',
 			options: {
-				width: MEMENTO.width + 40,
-				height: MEMENTO.height + 40
+				width: MEMENTO.preview_win_width,
+				height: MEMENTO.preview_win_height
 			}
 		});
 		document.observe('lightview:opened', function() {
@@ -636,7 +636,7 @@ var ArtifactSelection = function() {
 		});
 		*/
 		// Setup description save button click handler
-		$('save_desc').observe('click', function(e) {
+		$('save_desc').observe('submit', function(e) {
 			e.stop();
 			saveArtifactDescription();
 		});
@@ -755,7 +755,7 @@ var Soundtrack = function() {
 		var obj = {};
 		
 		if (that.getSize() >= 1) {
-			alert('Only one audio track is supported at the moment!')
+			alert('Only one audio track is supported at the moment!');
 			return;
 		}
 		dropTarget = droparea; // Save this for when we want to empty it
@@ -1006,7 +1006,7 @@ var MovieGenerator = function() {
 			return;
 		}
 		flowplayer('movie_player', FlowplayerSwfUrl, {
-			log: { level: 'debug' },
+			//log: { level: 'debug' },
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
 				// accessing current clip's properties 
@@ -1073,14 +1073,17 @@ var MovieGenerator = function() {
 			// canvas background
 			canvas: {
 				background: '#fff'
+				//backgroundColor:'#18b9ed',
+				//backgroundGradient: 'high'
 			},
 
 			// screen positioning inside background screen.
 			screen: {
-				height: 400,
-				bottom: 0,
-				left: 110,
-				right: 10
+				top: 5,
+				bottom: 5,
+				left: 2,
+				right: 2
+								//height: 266,
 			},
 
 			onFinish: function() {		
@@ -1097,7 +1100,12 @@ var MovieGenerator = function() {
 			},
 
 			plugins: {
-				controls: null,
+				controls: {
+					backgroundColor: 'transparent',
+					backgroundGradient: 'none',
+					all:false,
+					scrubber:false
+				},
 
 				// content plugin settings
 				content: {
@@ -1123,7 +1131,7 @@ var MovieGenerator = function() {
 					textDecoration: 'none',
 					backgroundColor: '#BBE3FC',
 					backgroundGradient: [0.1, 2, 0.1],
-
+					
 					/*
 							initial HTML content. content can also be fetched from the HTML document
 							*/

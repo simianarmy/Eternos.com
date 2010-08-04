@@ -1,7 +1,7 @@
 - title 'Memento Creator'
 - use_uploader
-- @memento_width = 760
-- @memento_height = 500
+- @memento_width = 720
+- @memento_height = 480
 
 %h1 Memento Creator
 .alignleft
@@ -73,15 +73,15 @@
       %p.mementos-p
         You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished.
       .editor-body
-        %form
-          = text_area_tag :description, "Add a description here", :rows => '6', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+        %form#save_desc
+          = text_area_tag :description, "Add a description here", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
           %br
-          %input#save_desc{:type => 'button', :value => 'Save'} 
+          %input#j-button003{:type => 'button', :value => 'Save'} 
         #editor_notice.success_notice.hidden
         #arti_preview
           #arti_preview_img
-      .clear
     #pane2
+      .clear
     #pane3
       .soundtrack
         %ul#soundtrack-tabs.tabs-like-header
@@ -124,7 +124,7 @@
           <span id="movie_info"></span>
           <span id="movie_duration"></span>
       .clear
-    #preview_pane{:style => "width:#{@memento_width}px;height:#{@memento_height}px;display: none;"}
+    #preview_pane{:style => "display: none;"}
       #movie_pane
         #movie_player
 
@@ -132,3 +132,7 @@
   var MEMENTO = {};
   MEMENTO.width = #{@memento_width};
   MEMENTO.height = #{@memento_height};
+  MEMENTO.preview_win_width = 730;
+  MEMENTO.preview_win_height = 490;
+  MEMENTO.player_width = 480;
+  MEMENTO.player_height = 266;
