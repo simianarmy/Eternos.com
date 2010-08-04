@@ -73,10 +73,10 @@
       %p.mementos-p
         You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished.
       .editor-body
-        %form#save_desc
+        %form#save_desc{:action=>'#'}
           = text_area_tag :description, "Add a description here", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
           %br
-          %input#j-button003{:type => 'button', :value => 'Save'} 
+          %input#j-button003{:type => 'submit', :value => 'Save'} 
         #editor_notice.success_notice.hidden
         #arti_preview
           #arti_preview_img

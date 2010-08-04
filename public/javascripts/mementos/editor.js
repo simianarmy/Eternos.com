@@ -883,8 +883,8 @@ var MovieGenerator = function() {
 
 	var artifacts, soundtrack, expose, seconds_per_frame, 
 		DefaultSecondsPerFrame = 5,
-		initContentBoxWidth = 240,
-		initContentBoxHeight = 400,
+		initCaptionBoxWidth = '80%',
+		initCaptionBoxHeight = 40,
 		soundtrackId = 'soundtrack-selection',
 		totalPlaytime,
 		slideInfoMap = new Hash();
@@ -999,8 +999,9 @@ var MovieGenerator = function() {
 	// Create movie preview using existing selection
 	that.preview = function() {
 		var playlist = generatePlaylist();
-		var text, boxWidth = initContentBoxWidth, boxHeight = initContentBoxHeight;
-		var animateTextBoxOpenOptions = {width: boxWidth, height: boxHeight};
+		var text, boxWidth = initCaptionBoxWidth, boxHeight = initCaptionBoxHeight;
+		var animateTextBoxOpenOptions;
+		animateTextBoxOpenOptions = {width: boxWidth, height: boxHeight};
 		
 		if (playlist.size() === 0) {
 			return;
@@ -1100,18 +1101,26 @@ var MovieGenerator = function() {
 			},
 
 			plugins: {
-				controls: {
-					backgroundColor: 'transparent',
-					backgroundGradient: 'none',
-					all:false,
-					scrubber:false
-				},
+				// Turn off controls
+				controls: null,
+				// Captioning
+				/*
+				captions: {
+					url: 'flowplayer.captions-3.2.1.swf',
 
+					// pointer to a content plugin (see below)
+					captionTarget: 'content'
+				},
+				*/
 				// content plugin settings
 				content: {
 					url: 'flowplayer.content-3.2.0.swf',
-
-					// some display properties 
+					
+					// initial HTML content. content can also be fetched from the HTML document
+					html: '',
+					
+					// text slide some display properties 
+					/*
 					width: initContentBoxWidth,
 					height: initContentBoxHeight,
 					top: 10,
@@ -1127,15 +1136,34 @@ var MovieGenerator = function() {
 						textAlign: 'center',
 						color: '#000000'
 					},
-					opacity: 0.9,
 					textDecoration: 'none',
+					*/
+					// Eternos blue background
+					opacity: 0.9,
 					backgroundColor: '#BBE3FC',
 					backgroundGradient: [0.1, 2, 0.1],
 					
-					/*
-							initial HTML content. content can also be fetched from the HTML document
-							*/
-					html: ''
+					
+					// flowplayer caption example display properties
+					bottom: 25,
+					width: initCaptionBoxWidth,
+					height:initCaptionBoxHeight,
+					/* Hard to read on light backgrounds! 
+					backgroundColor: 'transparent',
+					backgroundGradient: 'low',
+					*/
+					borderRadius: 4,
+					border: 0,
+					textDecoration: 'outline',
+					
+					style: {
+						body: {
+							fontSize: '14',
+							fontFamily: 'Arial',
+							textAlign: 'center',
+							color: '#ffffff'
+						}
+					}					
 				}
 				/*
 				,
