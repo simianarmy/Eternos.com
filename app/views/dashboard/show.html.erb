@@ -1,0 +1,64 @@
+<div class='flash_notice' id='notice'></div>
+<%= show_flash_messages :fade => 20 %>
+
+<!-- start 7/22/10 updates -->
+<% table_info_part('Personal Information') do %>
+    <% content_tag(:tr) do %>
+        <%= td_thead_tag(148, 'User Name') %>
+        <%= td_thead_tag(125, 'Email', true) %>
+        <%= td_thead_tag(166, 'Address') %>
+        <%= td_thead_tag(145, 'Account Status', true) %>
+        <%= td_thead_tag(136) %>
+    <% end %>
+    <% content_tag(:tr) do %>
+        <% content_tag(:td) do %>
+            <%= current_user.full_name %> <br/> <%= content_tag(:em, "Member For: #{@days_signed} days") %>
+        <% end %>
+        <%= content_tag(:td, '***********', :align => 'center') %>
+        <% content_tag(:td) do %>
+            <%= current_user.address_book.home_address %>
+        <% end %>
+        <%= content_tag(:td, current_user.state.to_s.capitalize, :align => 'center') %>
+        <%= td_edit_button({:action => 'edit_profile'}) %>
+    <% end %>
+<% end %>
+
+<% table_info_part('Back Up Settings') do %>
+    <% content_tag(:tr) do %>
+        <%= td_thead_tag(132, 'Data Used') %>
+        <%= td_thead_tag(116, '# of Photos', true) %>
+        <%= td_thead_tag(131, '# of Videos', true) %>
+        <%= td_thead_tag(205, 'Total Items Backed Up', true) %>
+        <%= td_thead_tag(136) %>
+    <% end %>
+    <% content_tag(:tr) do %>
+        <%= content_tag(:td, bytes_to_human(@backup_data[:size])) %>
+        <%= content_tag(:td, @backup_data[:photos], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:videos], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:total], :align => 'center') %>
+        <%= td_edit_button('#') %>
+    <% end %>
+<% end %>
+
+<% if false %>
+<% table_info_part('Billing and Payment Information') do %>
+    <% content_tag(:tr) do %>
+        <%= td_thead_tag(148, 'Primary Contact') %>
+        <%= td_thead_tag(312, 'Payment Method', true) %>
+        <%= td_thead_tag(178, 'Card  Status', true) %>
+        <%= td_thead_tag(136) %>
+    <% end %>
+    <% content_tag(:tr) do %>
+        <% content_tag(:td) do %>
+            <%= current_user.full_name %> <br/> 
+            <%= content_tag(:em, 'Last Payment: 10/5/2010') 
+            %>
+        <% end %>
+        <%= content_tag(:td, 'Visa (...4752)', :align => 'center') %>
+        <%= content_tag(:td, 'Active', :align => 'center') %>
+        <%= td_edit_button('#') %>
+    <% end %>
+<% end %>
+<% end %>
+
+<!-- end 7/22/10 updates -->

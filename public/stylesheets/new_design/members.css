@@ -164,3 +164,29 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 .trustee-table-header { background: #F1F1F1; font-weight: bold;}
 .trustee-table-header TD { padding: 7px 18px; border-bottom: 2px solid #D6D6D6;}
+
+/*  Dashboard */
+.jtable01 { margin: 0 auto 20px auto; color: #7A7A7A;}
+.jtable01 TD { padding: 9px 20px; font-weight: bold; border-bottom: 1px dotted #D5D5D5;}
+.jtable01 .thead { background: #F1F1F1; border-bottom: 1px solid #D5D5D5;}
+.jtable01 EM { color: #B5A888; font-size: 10px; font-style: normal; font-weight: normal;}
+.account-edit-button { background: url(/images/button-account-edit-green.gif) no-repeat; border: none; text-align: center; cursor: pointer; display: block; width: 76px; height: 24px; padding-top: 6px; color: #ffffff; text-decoration: none; font-weight: normal;}
+
+.account-personal-form { margin: 0; padding: 0;}
+.account-personal-form input[type="password"], .account-personal-form input[type="text"] { background:url(http://staging.eternos.com/images/bg_input.gif) repeat-x scroll 0 0 transparent; border:1px solid #CCCCCC; color:#907777; font-family:Arial,Helvetica,sans-serif; padding:5px; width:185px; }
+.account-personal-form select { padding: 2px; font-family: Arial, Helvetica, sans-serif}
+.account-personal-form input[type="submit"] {
+background:url(http://staging.eternos.com/images/button-signup.gif) no-repeat scroll 0 0 transparent;
+border:medium none;
+color:#FFFFFF;
+cursor:pointer;
+font-family:Arial,Helvetica,sans-serif;
+font-size:20px;
+font-weight:bold;
+height:50px;
+padding:0;
+width:197px;
+}
+.account-personal-form label { display:block; float:left; font-size:12px; font-weight:bold; margin-right:12px; padding-top:6px; width:85px; text-align: right; }
+.account-personal-form STRONG { color: red; font-size: 16px;}
+.account-personal-form .message { background: #F1F1F1; border-bottom: 1px solid #D5D5D5; padding: 9px; margin: 0 0 25px 0;}
