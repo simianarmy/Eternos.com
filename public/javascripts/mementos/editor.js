@@ -905,7 +905,7 @@ var MovieGenerator = function() {
 				if ((item.id.match('photo') !== null)) {
 					playlist.push({
 						url: src,
-						scaling: 'fit',
+						scaling: 'orig',
 						// by default clip lasts 5 seconds 
 						duration: getAvgDurationPerSlide(),
 						mediaType: 'image'
@@ -1079,12 +1079,12 @@ var MovieGenerator = function() {
 			},
 
 			// screen positioning inside background screen.
+			// What does this really do???
 			screen: {
 				top: 5,
-				bottom: 5,
 				left: 2,
 				right: 2
-								//height: 266,
+				//height: 266,
 			},
 
 			onFinish: function() {		
@@ -1120,9 +1120,9 @@ var MovieGenerator = function() {
 					html: '',
 					
 					// text slide some display properties 
+					width: initCaptionBoxWidth,
+					height: initCaptionBoxHeight,
 					/*
-					width: initContentBoxWidth,
-					height: initContentBoxHeight,
 					top: 10,
 					left: 10,
 					borderColor: '#CCCCCC',
@@ -1137,21 +1137,26 @@ var MovieGenerator = function() {
 						color: '#000000'
 					},
 					textDecoration: 'none',
+					
 					*/
+					
+					/*
 					// Eternos blue background
 					opacity: 0.9,
 					backgroundColor: '#BBE3FC',
 					backgroundGradient: [0.1, 2, 0.1],
-					
+					*/
 					
 					// flowplayer caption example display properties
-					bottom: 25,
-					width: initCaptionBoxWidth,
-					height:initCaptionBoxHeight,
-					/* Hard to read on light backgrounds! 
-					backgroundColor: 'transparent',
+					bottom: 5,
+					// Hard to read on light backgrounds! 
+					backgroundColor: '#112233',
+					//opacity: 0.7,
+
+					// one styling property 
+					//backgroundGradient: [0.1, 0.1, 1.0],
+					//backgroundColor: 'transparent',
 					backgroundGradient: 'low',
-					*/
 					borderRadius: 4,
 					border: 0,
 					textDecoration: 'outline',

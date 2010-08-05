@@ -64,10 +64,10 @@ vertical-align:middle;
 }
 
 #movie_player {
-	width: 490;
-	height: 370px;
+	width: 580px;
+	height: 420px;
 	/* padding will show the surroundings even when the player is loaded */
-	padding:60px 110px;
+	padding:30px 65px 30px 65px;
 }
 
 #slide_caption {
