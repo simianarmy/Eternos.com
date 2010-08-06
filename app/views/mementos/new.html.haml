@@ -109,11 +109,11 @@
     %p &nbsp;
     #preview.mementos-preview
       %h1 Manage, Preview and Share Your Memento!
-      %h3.j-audio-files01
-        <strong>Timeline Options</strong> <span>Num. Artifacts</span> <span>Playback Time</span>
-      %ul.j-audio-files
+      %h3.memento-details
+        <strong>Timeline Options</strong><span><strong>Memento Details</strong>
+      %ul.memento-details
         %li
-          #slideshow_info.hidden
+          #slideshow_info
             %form#do_preview
               <input id="j-button003" type="submit" value="Preview Memento" />
             %form.clear_slides                                                              
@@ -124,6 +124,12 @@
           <span id="movie_info"></span>
           <span id="movie_duration"></span>
       .clear
+    #save-button
+      %p.mementos-p
+        When you are finished creating your Memento, click below to share!
+      - form_for @memento, :html => {:id => 'save-memento-form'} do |f|
+        %input{:type => 'submit', :value => 'SAVE & SHARE', :onclick => "editor.save(); return false;"}
+        
     #preview_pane{:style => "display: none;"}
       #movie_pane
         #movie_player
@@ -136,3 +142,4 @@
   MEMENTO.preview_win_height = 490;
   MEMENTO.player_width = 480;
   MEMENTO.player_height = 266;
+

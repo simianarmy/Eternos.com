@@ -6,7 +6,10 @@ class MementosController < MemberHomeController
   #skip_before_filter :load_member_home_presenter
   
   def new  
-    
+    @memento = current_user.mementos.new
+  end
+  
+  def create
   end
   
   def new_content

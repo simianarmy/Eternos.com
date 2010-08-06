@@ -3,4 +3,4 @@
     [drag]
     = truncate(item.filename, :length => 30)
   = link_to 'Play', item.player_url, :class => 'sm2_link'
-  %span.audioinfo= item.duration_to_s
+  %strong.audioinfo= item.duration_to_s

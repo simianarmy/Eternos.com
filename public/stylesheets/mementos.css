@@ -70,6 +70,13 @@ vertical-align:middle;
 	padding:30px 65px 30px 65px;
 }
 
+#movie_info {
+	font-weight: bold;
+}
+#movie_duration {
+	font-weight: bold;
+}
+
 #slide_caption {
 	height: auto;
 	width: 80%;
@@ -114,7 +121,6 @@ vertical-align:middle;
 }
 
 #item_list {
-	
 }
 
 .selectorHover {
@@ -162,7 +168,7 @@ vertical-align:middle;
 }
 
 .artifact_list .audio  {
-	font-size: x-small;
+	font-size: 14px;
 }
 
 .gridsquare {
@@ -416,12 +422,28 @@ UL.tabs-like-header { margin: 15px 0 0 0; padding: 0; border-bottom: 1px solid #
 	width:126px; float: left;
 }
 
+/* Soundtrack info */
 UL.j-audio-files { margin: 20px auto; list-style: none; clear: both; padding: 0;}
 .j-audio-files LI { padding: 0px 0 20px 0; border-bottom: 1px dotted #D5D5D5; clear: both; float: none; height: 30px; margin-top: 10px}
 H3.j-audio-files01 { background: #F1F1F1; border-bottom: 1px solid #D6D6D6; height: 24px; font-size: 12px; color: #7A7A7A; margin: 20px 0 0 0; padding: 0;}
-.j-audio-files01 SPAN.audioinfo, .j-audio-files LI SPAN.audioinfo { display: block; width: 200px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px;}
-.j-audio-files01 STRONG, .j-audio-files LI DIV{ display: block; width: 310px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px; color: #7A7A7A; font-size: 12px;}
-.j-audio-files .sm2_link { float: left; width: 280px; vertical-align: middle;}
+.j-audio-files01 SPAN, .j-audio-files LI SPAN { display: block; width: 300px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px;}
+.j-audio-files01 STRONG, .j-audio-files LI DIV, STRONG.audioinfo { display: block; width: 100px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px; color: #7A7A7A; font-size: 12px;}
+.j-audio-files .sm2_link { float: left; vertical-align: middle;}
+
+/* Mementos overview info */
+UL.memento-details { 
+	margin: 20px auto; list-style: none; clear: both; padding: 0;
+}
+H3.memento-details { 
+	background: #F1F1F1; border-bottom: 1px solid #D6D6D6; height: 24px; font-size: 12px; color: #7A7A7A; margin: 20px 0 0 0; padding: 0;
+}
+.memento-details STRONG, .memento-details LI DIV { 
+	display: block; width: 300px; float: left; text-align: center; vertical-align: middle; font-weight: bold; padding-top: 5px; color: #7A7A7A; font-size: 12px;
+}
+.memento-details SPAN, .memento-details LI SPAN { 
+	display: block; width: 200px; float: left; vertical-align: middle; font-weight: bold; padding-top: 5px; color: #7A7A7A; font-size: 12px;
+}
+
 
 .mementos-textarea {
 	background:url(/images/bg_input.gif) repeat-x scroll 0 0 transparent;

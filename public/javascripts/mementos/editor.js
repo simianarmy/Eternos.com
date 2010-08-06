@@ -117,6 +117,18 @@ var MementoEditor = function() {
 	that.updateMovieDetails = function() {
 		artifactSelection.getMovieGenerator().movieUpdated();
 	};
+	// Submits Memento to form action for saving
+	that.save = function() {
+		// Get data from movieGenerator
+	 	var data = artifactSelection.getMovieGenerator().getFormData();
+		var qs = $H(data).toQueryString();
+
+		$('save-memento-form').request({method: "POST",  
+			parameters: qs});
+		// Post to create action
+		return false;
+	};
+	
 	return that;
 } ();
 
@@ -532,6 +544,7 @@ var ArtifactSelection = function() {
 		});
 		document.observe('lightview:hidden', function() {
 			movieGenerator.stop();
+			jQuery('#save-button').removeClass('hidden');
 		});
 	};
 	
@@ -786,6 +799,7 @@ var Soundtrack = function() {
 			return audio.source;
 		});
 	};
+	that.getTracks = getTracks;
 	
 	that.getSize = function() {
 		return selection.size();
@@ -867,10 +881,10 @@ var movieInfo = function() {
 	// Updates movie info pane
 	function update(movie) {
 		var info = "";
-		info += movie.getNumSlides() + ' frames - ' +
-			'Average frame display duration: ' + secondsToDuration(movie.getAvgDurationPerSlide()) + ' - ' +
-			movie.getSoundtrack().getSize() + ' audio tracks';
-		jQuery('#movie_duration').html('Total movie play time: ' + secondsToDuration(movie.getTotalDuration()));
+		info += movie.getNumSlides() + ' frames<br/>' +
+			'Average slide length: ' + secondsToDuration(movie.getAvgDurationPerSlide()) + '<br/>' +
+			movie.getSoundtrack().getSize() + ' Audio tracks<br/>';
+		jQuery('#movie_duration').html('Total play time: ' + secondsToDuration(movie.getTotalDuration()));
 		jQuery('#movie_info').html(info);
 	};
 	return {
@@ -891,7 +905,7 @@ var MovieGenerator = function() {
 
 	// Creates playlist array for Flowplayer from selected artifacts
 	function generatePlaylist() {
-		var i, src, info, item, playlist = [];
+		var i, src, item, clip = {}, playlist = [];
 		
 		if (artifacts.getSize() <= 1) {
 			return playlist;
@@ -899,40 +913,43 @@ var MovieGenerator = function() {
 		// Step through all slides but the last (dragdrop slide)
 		var slides = artifacts.getItems();
 		for (i=0; i<slides.size()-1; i++) {
+			clip = new Object();
 			// If slide contains artifact
 			item = slides[i];
 			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
 				if ((item.id.match('photo') !== null)) {
-					playlist.push({
+					clip = {
 						url: src,
 						scaling: 'orig',
 						// by default clip lasts 5 seconds 
 						duration: getAvgDurationPerSlide(),
 						mediaType: 'image'
-					});
+					};
 					console.log("Adding image or video: " + src);
 				} else if (item.id.match('video') !== null) {
-					playlist.push({
+					clip = {
 						url: src,
 						scaling: 'fit',
 						mediaType: 'video'
-					});
+					};
 					console.log("Adding video: " + src);
 				} 
 				// Save each clip's metadata for playblack event handlers
 				if (item.text_description !== undefined) {
-					slideInfoMap[src] = item.text_description;
+					clip.caption = item.text_description;
 				}
+				playlist.push(clip);
 			} else if (item.userHtml) { // slide is text only
 				// Use tiny image for "video" position for now
 				// Generate id for this playlist item
-				playlist.push({
+				clip = {
 					url: "/images/black.jpg",
 					textId: 'text_' + i,
 					duration: getAvgDurationPerSlide(),
-					mediaType: 'html'
-				});
-				slideInfoMap['text_'+i] = item.userHtml;
+					mediaType: 'html',
+					html: item.userHtml
+				};
+				playlist.push(clip);
 			}
 		}
 		
@@ -996,6 +1013,21 @@ var MovieGenerator = function() {
 		movieInfo.update(this);
 	};
 	
+	// Generates movie info for submitting to form
+	that.getFormData = function() {
+		var formData = {slides: []};
+		var slide, slideIdx = 1;
+		
+		formData.soundtrack = soundtrack.getTracks();
+		
+		generatePlaylist().each(function(clip) {
+			formData['slide' + slideIdx] = $H(clip).toQueryString();
+			slideIdx += 1;
+		});
+		
+		return formData;
+	};
+	
 	// Create movie preview using existing selection
 	that.preview = function() {
 		var playlist = generatePlaylist();
@@ -1013,7 +1045,7 @@ var MovieGenerator = function() {
 				// accessing current clip's properties 
 				onStart: function(clip) {
 					console.log("on clip " + clip.url);
-					console.log("clip text: " + slideInfoMap[clip.url]);
+					console.log("clip text: " + clip.caption);
 					console.log("clip duration: " + clip.duration);
 					console.log("clip type: " + clip.mediaType);
 					
@@ -1026,26 +1058,25 @@ var MovieGenerator = function() {
 					
 					var plugin = this.getPlugin("content");
 					
-					if ((text = slideInfoMap[clip.url]) !== undefined) {
+					if ((text = clip.caption) !== undefined) {
 						if (text === '') {
 							boxWidth = boxHeight = 1;
 						}
 						plugin.animate(animateTextBoxOpenOptions, function() {
-							this.setHtml(slideInfoMap[clip.url]);
+							this.setHtml(clip.caption);
 						});
 						//$('slide_caption').innerHTML = slideInfoMap[clip.url];
 						//$('slide_caption').show();
-					} else if (clip.textId) {
+					} else if (clip.html !== undefined) {
 						plugin.animate({width: "100%", height: "100%"}, function() {
-							this.setHtml(slideInfoMap[clip.textId]);
+							this.setHtml(clip.html);
 						});
 					} else {
 						// Hide content plugin
 						plugin.animate({width: 1, height: 1}, function() {
 							this.setHtml('');
 						});
-					}
-					
+					}	
 				},
 				
 				onStop: function(clip) {

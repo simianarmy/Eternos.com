@@ -14,7 +14,7 @@
         <% content_tag(:td) do %>
             <%= current_user.full_name %> <br/> <%= content_tag(:em, "Member For: #{@days_signed} days") %>
         <% end %>
-        <%= content_tag(:td, '***********', :align => 'center') %>
+        <%= content_tag(:td, current_user.email, :align => 'center') %>
         <% content_tag(:td) do %>
             <%= current_user.address_book.home_address %>
         <% end %>
