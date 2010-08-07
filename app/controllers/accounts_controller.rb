@@ -1,23 +1,25 @@
 class AccountsController < ApplicationController
   include ModelControllerMethods
 
-  require_role "Member", :except => [:new, :create, :fb_create, :billing, :plans, :canceled, :thanks]
+  require_role "Member", :except => [:new, :create, :fb_create, :aff_create, :billing, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
 
-  before_filter :set_facebook_connect_session
-  before_filter :build_user, :only => [:new, :create, :fb_create]
-  before_filter :build_plan, :only => [:new, :create, :fb_create]
-  before_filter :load_billing, :only => [ :new, :create, :fb_create, :billing, :paypal]
+  before_filter :set_facebook_connect_session, :except => [:aff_create]
+  before_filter :build_user, :only => [:new, :create, :fb_create, :aff_create]
+  before_filter :build_plan, :only => [:new, :create, :fb_create, :aff_create]
+  before_filter :load_billing, :only => [ :new, :create, :fb_create, :aff_create, :billing, :paypal]
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update]
   before_filter :load_discount, :only => [ :plans, :plan, :new, :create, :fb_create ]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
 
-  before_filter :require_no_user, :only => [:new, :create, :fb_create, :canceled]
-  before_filter :require_no_fb_user, :only => [:create, :fb_create]
+  before_filter :require_no_user, :only => [:new, :create, :fb_create, :aff_create, :canceled]
+  before_filter :require_no_fb_user, :only => [:create, :fb_create, :aff_create]
 
   # Need more fine-grained control than redirect for all actions
   #before_filter :check_logged_in
-
+  
+  skip_before_filter :verify_authenticity_token, :only => [:aff_create]
+  
   ssl_required :billing, :cancel, :new, :create, :plans
   ssl_allowed :thanks, :canceled, :paypal
 
@@ -156,6 +158,32 @@ class AccountsController < ApplicationController
     end
   end
 
+  # Signup info sent from affiliates 
+  def aff_create
+    Rails.logger.debug "IN AFF CREATE FOR USER #{@user.full_name} - #{@user.login}"
+
+    @user.registration_required = false
+    @user.password_confirmation = @user.password
+    @user.build_profile(params[:user][:profile])
+    @success = true
+    @account.name = @user.full_name
+
+    begin
+      if @account.save
+        @user.register!
+        @user.activate!
+      else
+        Rails.logger.warn "Error in aff_create: #{@account.errors.to_json}"
+      end
+    rescue
+    end
+    respond_to do |format|
+      format.html {
+        render :nothing => true, :status => :ok
+      }
+    end
+  end
+    
   def show
     return redirect_to(member_home_path)
     #@plan = @subscription.subscription_plan
