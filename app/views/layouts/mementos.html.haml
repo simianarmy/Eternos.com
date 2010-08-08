@@ -53,7 +53,10 @@
           %p
           %ul#mementos-list
             - @mementos[0..@max_listed].each do |m|
-              %li== #{link_to_remote(m.title, :url => edit_memento_path(m), :method => 'get')} - #{time_ago_in_words(m.created_at)} ago
+              %li
+                == #{link_to_remote(truncate(m.title, :max_length => 30), :url => edit_memento_path(m), :method => 'get', :loading => "spinner.load('memento-editor');")}
+                %br
+                %span== created #{time_ago_in_words(m.created_at)} ago
             - if @mementos.size > @max_listed
               %li= link_to 'View all...', mementos_path
   

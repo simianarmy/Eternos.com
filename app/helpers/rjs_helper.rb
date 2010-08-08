@@ -25,11 +25,13 @@ module RjsHelper
     end
   end
   
-  def flash_and_fade(domid = :notice)
+  def flash_and_fade(domid = :notice, opts={})
+    opts.reverse_merge!({:duration => 3})
+    
     unless page.context.flash.empty?
       page.replace_html domid, page.context.show_flash_messages
       page.visual_effect :appear, domid
-      page.delay(3) do
+      page.delay(opts[:duration]) do
         page.visual_effect :fade, domid
       end
       page.context.flash.discard

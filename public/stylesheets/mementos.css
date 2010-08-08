@@ -444,6 +444,18 @@ H3.memento-details {
 	display: block; width: 200px; float: left; vertical-align: middle; font-weight: bold; padding-top: 5px; color: #7A7A7A; font-size: 12px;
 }
 
+#mementos-list span {
+	font-weight: bold; padding-left: 5px; padding-top: 5px; color: #7A7A7A; font-size: 10px;
+}
+
+#memento_title {
+	height: 30px;
+	font-size: 20px;
+}
+
+#memento_save_button {
+
+}
 
 .mementos-textarea {
 	background:url(/images/bg_input.gif) repeat-x scroll 0 0 transparent;

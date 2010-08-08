@@ -18,7 +18,7 @@ String.prototype.paramValue = function( key )
     var offset = this.search( re );
     if ( offset == -1 ) return null;
     return RegExp.$1;
-}
+};
 
 var flash_and_fade = function(id, message) {
 	$(id).innerHTML = message;
@@ -139,11 +139,17 @@ var MementoEditor = function() {
 		return false;
 	};
 	// Loads Mememto from JSON data
-	that.load_slides = function(slides_json) {
+	that.load_slides = function(title, slides_json, sounds_json) {
+		console.log("Loading memento '" + title + "'");
 		console.log("Loading slides from JSON");
+
 		$A(slides_json).each(function(json) {
-			console.log("Parsing slide data: " + json);
-			artifactSelection.loadFromQueryString(json);
+			artifactSelection.loadFromJSON(json);
+		});
+		console.log("Loading soundtrack from JSON");
+
+		$A(sounds_json).each(function(json) {
+			//audioPicker.loadFromJSON(json);
 		});
 	};
 	
@@ -489,15 +495,15 @@ var ArtifactSelection = function() {
 		$('artifact_editor').removeClassName('hidden');
 
 		// Populate with existing text description
-		if (artifact.text_description !== undefined) {
+		if ((artifact.text_description !== undefined) & (artifact.text_description !== null)) {
 			$('artifact_description').value = artifact.text_description;
 		} else {
 			$('artifact_description').value = $('artifact_description').defaultValue;
 		}
-		if ((node = artifact.down('img')) !== null) {
+		if (((node = artifact.down('img')) !== null) && (node !== undefined)) {
 			$('arti_preview_img').innerHTML = '<img src="' + node.src + '"/>';
 		}
-		if ((node = artifact.down('div.info')) !== null) {
+		if (((node = artifact.down('div.info')) !== null) && (node !== undefined)) {
 			$('arti_preview_details').removeClassName('hidden');
 			$('arti_preview_details').innerHTML = node.innerHTML;
 		}
@@ -602,13 +608,22 @@ var ArtifactSelection = function() {
 		return movieGenerator;
 	};
 	
-	// Parses string from query string into artifact data, adds to 
+	// Parses string from json object into artifact data, adds to 
 	// selection
-	that.loadFromQueryString = function(qs) {
-		var str = '?' + qs;
-		var url = str.paramValue('url');
-		var mediaType = str.paramValue('mediaType');
-		console.log("Got url " + url);
+	that.loadFromJSON = function(json) {
+		console.log("Got url " + json.url);
+		// Create new slide div
+		slide = jQuery(newSlideDiv()).css('position', 'relative');
+		slide.attr('src', json.url);
+		slide.attr('content_id', json.cid);
+		slide.attr('mediaType', json.mediaType);
+		
+		if (json.mediaType == 'image') {
+			slide.addClass('gallery_item photo')
+			slide.append('<img src="' + json.thumb_url + '"/>');
+		}
+		addArtifact(slide[0]);
+		onMovieUpdated();
 	};
 	
 	// Init function - takes artifact selection dom id
@@ -630,7 +645,7 @@ var ArtifactSelection = function() {
 			constraint: 'horizontal',
 			dropOnEmpty: true,
 			hoverclass: 'hoverActive ',
-			accept: ['ß', 'photo']
+			accept: ['video', 'photo', 'text']
 		});
 
 		// initialize scrollable widget & save object
@@ -950,7 +965,7 @@ var MovieGenerator = function() {
 			// If slide contains artifact
 			item = slides[i];
 			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
-				if ((item.id.match('photo') !== null)) {
+				if ((item.readAttribute('mediaType') === 'image') || (item.id.match('photo') !== null)) {
 					clip = {
 						url: src,
 						scaling: 'orig',
@@ -960,7 +975,7 @@ var MovieGenerator = function() {
 						cid: item.readAttribute('content_id')
 					};
 					console.log("Adding image or video: " + src);
-				} else if (item.id.match('video') !== null) {
+				} else if ((item.readAttribute('mediaType') === 'video') || (item.id.match('video') !== null)) {
 					clip = {
 						url: src,
 						scaling: 'fit',
@@ -970,7 +985,7 @@ var MovieGenerator = function() {
 					console.log("Adding video: " + src);
 				} 
 				// Save each clip's metadata for playblack event handlers
-				if (item.text_description !== undefined) {
+				if ((item.text_description !== undefined) && (item.text_description !== null)) {
 					clip.caption = item.text_description;
 				}
 			} else if (item.userHtml) { // slide is text only
@@ -1062,7 +1077,7 @@ var MovieGenerator = function() {
 				caption: clip.caption,
 				html: clip.html
 			};
-			formData['slide[]'].push($H(info).toQueryString());
+			formData['slide[]'].push($H(clip).toQueryString());
 		});
 		
 		return formData;

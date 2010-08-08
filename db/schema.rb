@@ -582,6 +582,7 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
     t.integer  "user_id",    :null => false
     t.string   "title",      :null => false
     t.text     "slides",     :null => false
+    t.string   "soundtrack", :null => false, :default => ''
     t.string   "version",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"

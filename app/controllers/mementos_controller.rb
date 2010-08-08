@@ -13,17 +13,20 @@ class MementosController < MemberHomeController
   
   def create
     @memento = current_user.mementos.new(params[:memento])
-    
+
     if params[:slide]
       @memento.slides = params[:slide]
     end
-    
+    if params[:audio]
+      @memento.soundtrack = params[:audio]
+    end
     @memento.save
+
     
     respond_to do |format|
       format.js {
         if @memento.errors
-          flash[:errors] = "Sorry, we were unable to create your Memento.  Please try again."
+          flash[:error] = @memento.errors.full_messages.join('<br/>')
         else
           flash[:notice] = "Memento saved!"
         end
@@ -31,8 +34,38 @@ class MementosController < MemberHomeController
     end
   end
   
+  # Load memento from db into editor
   def edit
-    @memento = current_user.mementos.find(params[:id])
+    # Convert to js-compatible data structure
+    begin
+      @memento = current_user.mementos.find(params[:id])
+      @slides = []
+      @sounds = []
+      (@memento.slides || []).each do |s|
+        # Convert cgi format: param = [value] to hash
+        slide = CGI.parse(s).inject({}) {|h, (k, v)| h[k] = v.first; h }
+      
+        # Load slide content object data if any
+        Rails.logger.debug "Parsed params: #{slide.inspect}"
+        if cid = slide['cid']
+          if c = current_user.contents.find(cid)
+            Rails.logger.debug "Found content object: #{c.id}"
+            slide.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url})
+          end
+        end
+        @slides << slide
+      end
+      Rails.logger.debug "Slides: #{@slides.inspect}"
+    
+      # Load soundtrack data
+      (@memento.soundtrack || []).each do |s|
+        sound = CGI.parse(s).inject({}) {|h, (k, v)| h[k] = v.first; h }
+        @sounds << sound
+      end
+      Rails.logger.debug "Audio: #{@sounds.inspect}"
+    rescue
+      flash[:error] = @error = "Sorry, we were not able to load this Memento!"
+    end
   end
   
   def new_content

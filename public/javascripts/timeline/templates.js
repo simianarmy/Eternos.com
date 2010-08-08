@@ -100,7 +100,7 @@ var ETemplates = function() {
 	}();
 	that.defaultTooltipWidth =function(type) {
 		if (type === 'photo') {
-			return '120px';
+			return '180px';
 		} else if (type === 'web_video') {
 			return '480px';
 		} else {

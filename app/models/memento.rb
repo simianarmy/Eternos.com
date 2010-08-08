@@ -7,6 +7,10 @@ class Memento < ActiveRecord::Base
   
   attr_accessor :html_slide
   serialize :slides
+  serialize :soundtrack
+  
+  validates_presence_of :title, :message => "Please enter a title"
+  validates_presence_of :slides, :message => "Memento must contain at least one image, movie, or text slide!"
   
   before_create :set_version
   
