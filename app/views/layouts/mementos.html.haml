@@ -49,9 +49,15 @@
           = link_to 'Add More', account_setup_path(:step => 0), :id => "active_network-add"
           </p>
           <p>&nbsp;</p>
-          #artifacts-header
-          <p>&nbsp;</p>         
-          
+          %h1 Previous Mementos
+          %p
+          %ul#mementos-list
+            - @mementos[0..@max_listed].each do |m|
+              %li== #{link_to_remote(m.title, :url => edit_memento_path(m), :method => 'get')} - #{time_ago_in_words(m.created_at)} ago
+            - if @mementos.size > @max_listed
+              %li= link_to 'View all...', mementos_path
+  
+              
         / end login1_left
         
         / start sub content

@@ -581,6 +581,8 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
   create_table "mementos", :force => true do |t|
     t.integer  "user_id",    :null => false
     t.string   "title",      :null => false
+    t.text     "slides",     :null => false
+    t.string   "version",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

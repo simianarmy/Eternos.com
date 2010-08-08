@@ -21,9 +21,9 @@
 
       %a.nextPage.browse.right
   .clear
-  .artifact_info
   - case @contents.first
   - when BackupPhotoAlbum, Album
+    .artifact_info
     #artifacts_expanded_view
   - when WebVideo
     .instructions

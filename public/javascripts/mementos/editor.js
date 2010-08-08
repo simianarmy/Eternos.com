@@ -11,6 +11,15 @@ String.prototype.pad = function(l, s){
         : this;
 };
 
+// Parses query string for param's value
+String.prototype.paramValue = function( key )
+{
+    var re = new RegExp( "[?&]" + key + "=([^&$]*)", "i" );
+    var offset = this.search( re );
+    if ( offset == -1 ) return null;
+    return RegExp.$1;
+}
+
 var flash_and_fade = function(id, message) {
 	$(id).innerHTML = message;
 	$(id).show();
@@ -124,9 +133,18 @@ var MementoEditor = function() {
 		var qs = $H(data).toQueryString();
 
 		$('save-memento-form').request({method: "POST",  
-			parameters: qs});
+			parameters: qs
+		});
 		// Post to create action
 		return false;
+	};
+	// Loads Mememto from JSON data
+	that.load_slides = function(slides_json) {
+		console.log("Loading slides from JSON");
+		$A(slides_json).each(function(json) {
+			console.log("Parsing slide data: " + json);
+			artifactSelection.loadFromQueryString(json);
+		});
 	};
 	
 	return that;
@@ -369,10 +387,6 @@ var ArtifactSelection = function() {
 			if ((duration = draggable.readAttribute('duration')) !== null) {
 				selectedArtifact.durationSeconds = parseFloat(duration); // Copy playtime in seconds
 			}
-			// Make sure to create a draggable on the new element to keep drag&drop ordering support
-			new Draggable(selectedArtifact, {
-				revert: true
-			});
 		}
 		addArtifact(selectedArtifact);
 		showArtifactEditForm(selectedArtifact);
@@ -391,6 +405,10 @@ var ArtifactSelection = function() {
 		var drophere = getArtifacts().last();
 		var items = selectionScroller.getItemWrap();
 		
+		// Make sure to create a draggable on the new element to keep drag&drop ordering support
+		new Draggable(artifact, {
+			revert: true
+		});
 		// Add slide action links code & click handlers
 		jQuery(artifact).append(
 			jQuery('<div id="artifact-hover-menu-items"></div>').append(
@@ -582,6 +600,15 @@ var ArtifactSelection = function() {
 	// Returns movie generator object
 	that.getMovieGenerator = function() { 
 		return movieGenerator;
+	};
+	
+	// Parses string from query string into artifact data, adds to 
+	// selection
+	that.loadFromQueryString = function(qs) {
+		var str = '?' + qs;
+		var url = str.paramValue('url');
+		var mediaType = str.paramValue('mediaType');
+		console.log("Got url " + url);
 	};
 	
 	// Init function - takes artifact selection dom id
@@ -776,6 +803,7 @@ var Soundtrack = function() {
 			obj.source = source;
 			obj.filename = draggable.readAttribute('fname');
 			obj.duration = draggable.readAttribute('duration');
+			obj.cid = draggable.readAttribute('content_id');
 			
 			selection.push(obj);
 			text = "Soundtrack files: " + selection.map(function(audio) {
@@ -800,6 +828,11 @@ var Soundtrack = function() {
 		});
 	};
 	that.getTracks = getTracks;
+	
+	// Returns the track data objects
+	that.getTrackData = function() {
+		return selection;
+	};
 	
 	that.getSize = function() {
 		return selection.size();
@@ -923,14 +956,16 @@ var MovieGenerator = function() {
 						scaling: 'orig',
 						// by default clip lasts 5 seconds 
 						duration: getAvgDurationPerSlide(),
-						mediaType: 'image'
+						mediaType: 'image',
+						cid: item.readAttribute('content_id')
 					};
 					console.log("Adding image or video: " + src);
 				} else if (item.id.match('video') !== null) {
 					clip = {
 						url: src,
 						scaling: 'fit',
-						mediaType: 'video'
+						mediaType: 'video',
+						cid: item.readAttribute('content_id')
 					};
 					console.log("Adding video: " + src);
 				} 
@@ -938,7 +973,6 @@ var MovieGenerator = function() {
 				if (item.text_description !== undefined) {
 					clip.caption = item.text_description;
 				}
-				playlist.push(clip);
 			} else if (item.userHtml) { // slide is text only
 				// Use tiny image for "video" position for now
 				// Generate id for this playlist item
@@ -949,8 +983,9 @@ var MovieGenerator = function() {
 					mediaType: 'html',
 					html: item.userHtml
 				};
-				playlist.push(clip);
 			}
+			clip.position = i+1;
+			playlist.push(clip);
 		}
 		
 		return playlist;
@@ -982,11 +1017,11 @@ var MovieGenerator = function() {
 	
 	// Helpers to determine position of slide in movie
 	function isFirstSlide(playlist, clip) {
-		return (playlist[0].url === clip.url);
+		return (clip.position === 1);
 	}
 	// Helper to determine when movie is on last slide
 	function isLastSlide(playlist, clip) {
-		return (playlist[playlist.size()-1].url === clip.url);
+		return (clip.position === playlist.size());
 	};
 	
 	// Returns total runtime
@@ -1015,14 +1050,19 @@ var MovieGenerator = function() {
 	
 	// Generates movie info for submitting to form
 	that.getFormData = function() {
-		var formData = {slides: []};
-		var slide, slideIdx = 1;
+		var formData = {'slide[]': [], 'audio[]': []};
 		
-		formData.soundtrack = soundtrack.getTracks();
-		
+		soundtrack.getTrackData().each(function(sound) {
+			formData['audio[]'].push(sound.cid);
+		});
+
 		generatePlaylist().each(function(clip) {
-			formData['slide' + slideIdx] = $H(clip).toQueryString();
-			slideIdx += 1;
+			info = {
+				content_id: clip.cid,
+				caption: clip.caption,
+				html: clip.html
+			};
+			formData['slide[]'].push($H(info).toQueryString());
 		});
 		
 		return formData;
@@ -1048,6 +1088,7 @@ var MovieGenerator = function() {
 					console.log("clip text: " + clip.caption);
 					console.log("clip duration: " + clip.duration);
 					console.log("clip type: " + clip.mediaType);
+					console.log("clip cid: " + clip.cid);
 					
 					if (isFirstSlide(playlist, clip)) {
 						//expose.load();
