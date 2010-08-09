@@ -85,7 +85,8 @@
       window._token = '#{form_authenticity_token}';
       soundManager.debugMode = true;
       soundManager.consoleOnly = true;
-
-      document.observe('dom:loaded', function() {
+      
+      jQuery(document).ready(function() {
+        jQuery("#accordion").tabs("#accordion div.memento-pane", {tabs: 'h1.accordiontab', effect: 'slide', initialIndex: 0});
         editor = MementoEditor.init();
       });

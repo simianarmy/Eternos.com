@@ -56,6 +56,8 @@ var MementoEditor = function() {
 		artifactSeletion = null,
 		audioPicker = null,
 		audioSelection = null,
+		movieGenerator = null,
+		soundtrack = null,
 		artifactViewerId = 'artifacts_list',
 		artifactTypesId = 'type_list',
 		wysiwygId = 'slide_text_editor',
@@ -63,7 +65,8 @@ var MementoEditor = function() {
 		droppablesId = 'scrollable_decorations',
 		artifactDetailsId = 'artifacts_expanded_view',
 		tabsSelector = 'ul#artifact-tabs',
-		audioTabsSelector	= 'ul#soundtrack-tabs';
+		audioTabsSelector	= 'ul#soundtrack-tabs',
+		soundtrackId = 'soundtrack-selection';
 
 	// Called when an artifacts tab pane dom is loaded
 	// Delegates to picker objects
@@ -87,30 +90,20 @@ var MementoEditor = function() {
 		}
 	}
 	// Public functions
-	that.init = function() {
-		// Create wysiwyg widget 1st
-		textSlideEditor = TextEditor.init();
-		artifactPicker = ArtifactPicker.init(artifactViewerId, tabsSelector);
-		audioPicker = AudioPicker.init(audioTabsSelector);
-		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
-		
-		jQuery('#wysiwyg_form').submit(function() {
-			onTextEditorSave();
-			return false;
-		});
-		
-		return this;
-	};
+	
 	// Accessor functions
 	that.getArtifactPicker = function() {
 		return artifactPicker;
 	};
+	
 	that.getArtifactSelection = function() {
 		return artifactSelection;
 	};
+	
 	that.addCurrentArtifacts = function() {
 		artifactSelection.addArtifacts(artifactPicker.getArtifacts());
 	};
+	
 	// Cleanup/Edit functions
 	that.refreshSelector = function() {
 		spinner.unload();
@@ -118,18 +111,31 @@ var MementoEditor = function() {
 		artifactPicker.refresh();
 		audioPicker.refresh();
 	};
+	
 	that.hideArtifactDetailsView = function() {
 		$(artifactDetailsId).update();
 		$('drag_instructions').addClassName('hidden');
 	};
+	
 	// Updates movie details data
 	that.updateMovieDetails = function() {
-		artifactSelection.getMovieGenerator().movieUpdated();
+		movieGenerator.movieUpdated();
 	};
+	
+	that.showTextEditor = function() {
+		// Display text editor pane
+		artifactPicker.displayEditorPane();
+	};
+	
+	// Returns instance of movie generator object
+	that.getMovieCreator = function() {
+		return movieGenerator;
+	}
+	
 	// Submits Memento to form action for saving
 	that.save = function() {
 		// Get data from movieGenerator
-	 	var data = artifactSelection.getMovieGenerator().getFormData();
+	 	var data = this.getMovieCreator().getFormData();
 		var qs = $H(data).toQueryString();
 
 		$('save-memento-form').request({method: "POST",  
@@ -138,9 +144,13 @@ var MementoEditor = function() {
 		// Post to create action
 		return false;
 	};
+	
 	// Loads Mememto from JSON data
-	that.load_slides = function(title, slides_json, sounds_json) {
+	that.load = function(title, slides_json, sounds_json) {
 		console.log("Loading memento '" + title + "'");
+		artifactSelection.clearItems();
+		soundtrack.clearItems();
+		
 		console.log("Loading slides from JSON");
 
 		$A(slides_json).each(function(json) {
@@ -149,8 +159,28 @@ var MementoEditor = function() {
 		console.log("Loading soundtrack from JSON");
 
 		$A(sounds_json).each(function(json) {
-			//audioPicker.loadFromJSON(json);
+			soundtrack.loadFromJSON(json);
 		});
+	};
+	
+	// Call to initialize
+	that.init = function() {
+		// Create wysiwyg widget 1st
+		textSlideEditor = TextEditor.init();
+		artifactPicker = ArtifactPicker.init(artifactViewerId, tabsSelector);
+		audioPicker = AudioPicker.init(audioTabsSelector);
+		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
+		soundtrack = Soundtrack.init(soundtrackId);
+		
+		// create movie generator
+		movieGenerator = MovieGenerator.init(artifactSelection, soundtrack);
+		
+		jQuery('#wysiwyg_form').submit(function() {
+			onTextEditorSave();
+			return false;
+		});
+		
+		return this;
 	};
 	
 	return that;
@@ -234,6 +264,7 @@ var ArtifactPicker = function() {
 		AlbumPaneId 	= 'artipane1',
 		VideoPaneId 	= 'artipane2',
 		TextPaneId 		= 'artipane3',
+		TextPaneIndex = 2,
 		TimelineUploadPaneId 	= 'artipane4';
 
 	// Helper to return div containing artifact
@@ -259,6 +290,7 @@ var ArtifactPicker = function() {
 			jQuery('.artifact_info').html('');
 		}
 	};
+	
 	// Called on tab load
 	that.artifactViewPopulated = function() {
 		var paneId = currentPane[0].id;
@@ -278,6 +310,12 @@ var ArtifactPicker = function() {
 		  );
 		});
 	};
+	
+	// Display text editor pane
+	that.displayEditorPane = function() {
+		tabs.click(TextPaneIndex);
+	};
+	
 	// Init function - takes artifact view parent dom id
 	that.init = function(domId, tabsSelector) {
 		// Create artifact tabs & click handlers
@@ -368,8 +406,7 @@ var ArtifactSelection = function() {
 		audioSelection = null,
 		playlistGenerator = null,
 		textEditor = null,
-		editingArtifact = null,
-		movieGenerator = null;
+		editingArtifact = null;
 
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) {
@@ -388,11 +425,7 @@ var ArtifactSelection = function() {
 			
 			selectedArtifact = newSlide[0];
 			// Copy dragged div's attributes
-			selectedArtifact.id = draggable.id;
-			selectedArtifact.writeAttribute('src', draggable.readAttribute('src'));
-			if ((duration = draggable.readAttribute('duration')) !== null) {
-				selectedArtifact.durationSeconds = parseFloat(duration); // Copy playtime in seconds
-			}
+			copyArtifactAttributes(selectedArtifact, draggable);			
 		}
 		addArtifact(selectedArtifact);
 		showArtifactEditForm(selectedArtifact);
@@ -400,9 +433,20 @@ var ArtifactSelection = function() {
 		onMovieUpdated();
 	};
 	
+	// Copies dragged artifact's div attributes to new div element
+	function copyArtifactAttributes(dest, src) {
+		// Copy dragged div's attributes
+		dest.id = src.id;
+		dest.writeAttribute('src', src.readAttribute('src'));
+		dest.writeAttribute('content_id', src.readAttribute('content_id'));
+		if ((duration = src.readAttribute('duration')) !== null) {
+			dest.durationSeconds = parseFloat(duration); // Copy playtime in seconds
+		}
+	};
+	
 	// Called whenever artifact slide added or removed
 	function onMovieUpdated() {
-		movieGenerator.movieUpdated();
+		editor.getMovieCreator().movieUpdated();
 		showActionLinks();
 	};
 	
@@ -439,12 +483,14 @@ var ArtifactSelection = function() {
 			});
 		}
 		
-		jQuery('.remove_slide').click(function() {
+		jQuery('.remove_slide').click(function(evt) {
 			removeArtifact(this.up('.artifact'));
+			evt.preventDefault();
 		});
 		
-		jQuery('.edit_slide').click(function() {
+		jQuery('.edit_slide').click(function(evt) {
 			editSlideHtml(this.up('.artifact'));
+			evt.preventDefault();
 		});
 		
 	};
@@ -453,6 +499,7 @@ var ArtifactSelection = function() {
 		// Load artifact's text html into editor for editing
 		editingArtifact = artifact;
 		textEditor.edit(artifact.userHtml);
+		editor.showTextEditor();
 	};
 	
 	// Removes artifact from movie
@@ -473,6 +520,7 @@ var ArtifactSelection = function() {
 	function getArtifacts() {
 		return $A(selectionScroller.getItems());
 	};
+	that.getArtifacts = getArtifacts;
 	
 	// Returns div html for a new slide
 	function newSlideDiv() {
@@ -535,6 +583,7 @@ var ArtifactSelection = function() {
 		hideArtifactEditForm();
 		onMovieUpdated();
 	};
+	that.clearItems = clearItems;
 
 	// Toggle preview link text
 	function togglePreview(link) {
@@ -562,17 +611,13 @@ var ArtifactSelection = function() {
 				height: MEMENTO.preview_win_height
 			}
 		});
-		document.observe('lightview:opened', function() {
-			//new Effect.ScrollTo('preview_pane');  
-			movieGenerator.preview();
-		});
-		document.observe('lightview:hidden', function() {
-			movieGenerator.stop();
-			jQuery('#save-button').removeClass('hidden');
-		});
 	};
 	
 	// Public functions
+	
+	that.getSize = function() {
+		return selectionScroller.getItems().size();
+	};
 	
 	// Programmatically add artifacts (non drag&drop)
 	that.addArtifacts = function(artifacts) {
@@ -614,16 +659,27 @@ var ArtifactSelection = function() {
 		console.log("Got url " + json.url);
 		// Create new slide div
 		slide = jQuery(newSlideDiv()).css('position', 'relative');
-		slide.attr('src', json.url);
-		slide.attr('content_id', json.cid);
-		slide.attr('mediaType', json.mediaType);
+		if (json.mediaType === 'html') {	
+			this.addHtmlSlide(json.html);
+		} else {
+			slide.attr('src', json.url);
+			slide.attr('content_id', json.cid);
+			slide.attr('mediaType', json.mediaType);
+			
+			if (json.caption) {
+				slide[0].text_description = json.caption;
+			}
 		
-		if (json.mediaType == 'image') {
-			slide.addClass('gallery_item photo')
-			slide.append('<img src="' + json.thumb_url + '"/>');
+			if (json.mediaType == 'image') {
+				slide.addClass('gallery_item photo');
+				slide.append('<img src="' + json.thumb_url + '"/>');
+			} else if (json.mediaType == 'video') {
+				slide.addClass('decoration_item video');
+				slide.append('<img src="' + json.thumb_url + '" class="video_thumb"/>');
+			}
+			addArtifact(slide[0]);
+			onMovieUpdated();
 		}
-		addArtifact(slide[0]);
-		onMovieUpdated();
 	};
 	
 	// Init function - takes artifact selection dom id
@@ -656,9 +712,6 @@ var ArtifactSelection = function() {
 			hoverClass: 'hoverActive'
 		}).navigator();
 		selectionScroller = jQuery(selectionId).scrollable();
-
-		// create movie generator
-		movieGenerator = MovieGenerator.init(selectionScroller);
 		
 		// Setup click handlers
 		$$('form.clear_slides').each(function(f) {
@@ -699,7 +752,7 @@ var ArtifactSelection = function() {
 			e.stop();
 			togglePreview(this);
 		});
-
+		
 		return this;
 	};
 
@@ -800,7 +853,8 @@ var Soundtrack = function() {
 	var selection;
 	var audioIcon = '<img src="/javascripts/timeline/icons/audio.png" width="15" height="15"/>';
 	var dropTarget,
-		ogDropareaHtml,
+		dropTargetDiv,
+		ogDropareaHtml = '',
 		currentAudio = null;
 	
 	// on audio dropped into droptarget
@@ -813,27 +867,44 @@ var Soundtrack = function() {
 			alert('Only one audio track is supported at the moment!');
 			return;
 		}
-		dropTarget = droparea; // Save this for when we want to empty it
 		if ((source = draggable.readAttribute('src')) !== null) {
 			obj.source = source;
 			obj.filename = draggable.readAttribute('fname');
 			obj.duration = draggable.readAttribute('duration');
 			obj.cid = draggable.readAttribute('content_id');
 			
-			selection.push(obj);
-			text = "Soundtrack files: " + selection.map(function(audio) {
-				return audioIcon + audio.filename;
-			});
-			droparea.innerHTML = text;
+			addAudio(obj);
+			updateSelectionText(droparea);
 		}
+		editor.getMovieCreator().movieUpdated();
 	};
 	that.onAudioAdded = onAudioAdded;
+	
+	// Adds sound object to list
+	function addAudio(sound) {
+		selection.push(sound);
+	};
+	
+	// Updates description of tracks in list
+	// Takes optional div for text update area
+	function updateSelectionText(droparea) {
+		text = "Soundtrack files: " + selection.map(function(audio) {
+			return audioIcon + audio.filename;
+		});
+		if (droparea) {
+			dropTarget = droparea; // Save this for when we want to empty it
+			droparea.innerHTML = text;
+		} else {
+			dropTargetDiv.html(text);
+		}
+	};
 	
 	// Removes all sounds
 	function clearItems() {
 		selection.clear();
-		jQuery(dropTarget).html(ogDropareaHtml);
+		dropTargetDiv.html(ogDropareaHtml);
 	};
+	that.clearItems = clearItems;
 	
 	// Returns list of track sources
 	function getTracks() {
@@ -901,6 +972,18 @@ var Soundtrack = function() {
 		});
 	};
 	
+	// Loads soundtrack from json data
+	that.loadFromJSON = function(json) {
+		console.log("Loading audio: " + json.url);
+		// Use json object as sound object
+		json.src = json.url;
+		json.content_id = json.cid;
+		
+		addAudio(json);
+		updateSelectionText();
+		editor.getMovieCreator().movieUpdated();
+	};
+	
 	that.init = function(domId) {
 		selection = new Array();
 		
@@ -909,6 +992,13 @@ var Soundtrack = function() {
 		// DOESN'T FUCKING WORK!
 		dropTargetDiv.hover(function() { jQuery(this).addClass('selectorHover'); });
 				
+		// Make audio selection a drop target
+		Droppables.add(domId, {
+			//hoverclass: 'soundtrackHover',
+			onDrop: onAudioAdded,
+			accept: ['audio']
+		});
+		
 		$$('form.clear_sounds').each(function(f) {
 			f.observe('submit', function(e) { e.stop(); clearItems(); });
 		});
@@ -947,7 +1037,6 @@ var MovieGenerator = function() {
 		DefaultSecondsPerFrame = 5,
 		initCaptionBoxWidth = '80%',
 		initCaptionBoxHeight = 40,
-		soundtrackId = 'soundtrack-selection',
 		totalPlaytime,
 		slideInfoMap = new Hash();
 
@@ -959,7 +1048,7 @@ var MovieGenerator = function() {
 			return playlist;
 		}
 		// Step through all slides but the last (dragdrop slide)
-		var slides = artifacts.getItems();
+		var slides = artifacts.getArtifacts();
 		for (i=0; i<slides.size()-1; i++) {
 			clip = new Object();
 			// If slide contains artifact
@@ -985,7 +1074,7 @@ var MovieGenerator = function() {
 					console.log("Adding video: " + src);
 				} 
 				// Save each clip's metadata for playblack event handlers
-				if ((item.text_description !== undefined) && (item.text_description !== null)) {
+				if (item.text_description) {
 					clip.caption = item.text_description;
 				}
 			} else if (item.userHtml) { // slide is text only
@@ -1025,9 +1114,9 @@ var MovieGenerator = function() {
 	that.getAvgDurationPerSlide = getAvgDurationPerSlide;
 	
 	// Wrapper to soundtrack handler
-	function onAudioAdded(draggable, droparea) {
+	that.onAudioAdded = function(draggable, droparea) {
 		soundtrack.onAudioAdded(draggable, droparea);
-		that.movieUpdated();
+		movieUpdated();
 	};
 	
 	// Helpers to determine position of slide in movie
@@ -1050,7 +1139,7 @@ var MovieGenerator = function() {
 	
 	// Updates movie metadata
 	that.movieUpdated = function() {
-		var i, artis = artifacts.getItems();
+		var i, artis = artifacts.getArtifacts();
 		totalPlaytime = 0;
 		seconds_per_frame = 0;
 
@@ -1068,15 +1157,10 @@ var MovieGenerator = function() {
 		var formData = {'slide[]': [], 'audio[]': []};
 		
 		soundtrack.getTrackData().each(function(sound) {
-			formData['audio[]'].push(sound.cid);
+			formData['audio[]'].push($H(sound).toQueryString());
 		});
 
 		generatePlaylist().each(function(clip) {
-			info = {
-				content_id: clip.cid,
-				caption: clip.caption,
-				html: clip.html
-			};
 			formData['slide[]'].push($H(clip).toQueryString());
 		});
 		
@@ -1273,10 +1357,10 @@ var MovieGenerator = function() {
 		soundtrack.stop();
 	};
 	
-	that.init = function(selection) {
-		artifacts = selection;
-		soundtrack = Soundtrack.init(soundtrackId);
-
+	that.init = function(artis, sounds) {
+		artifacts = artis;
+		soundtrack = sounds;
+		
 		totalPlaytime = 0;
 		seconds_per_frame = 0;
 		/*
@@ -1285,11 +1369,14 @@ var MovieGenerator = function() {
 			api: true
 		});
 		*/
-		// Make audio selection a drop target
-		Droppables.add(soundtrackId, {
-			//hoverclass: 'soundtrackHover',
-			onDrop: onAudioAdded,
-			accept: ['audio']
+		
+		// Setup movie to start after lightview opens & stops if it closes
+		document.observe('lightview:opened', function() {
+			that.preview();
+		});
+		document.observe('lightview:hidden', function() {
+			that.stop();
+			jQuery('#save-button').removeClass('hidden');
 		});
 		
 		return this;

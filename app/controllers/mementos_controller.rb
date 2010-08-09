@@ -50,7 +50,7 @@ class MementosController < MemberHomeController
         if cid = slide['cid']
           if c = current_user.contents.find(cid)
             Rails.logger.debug "Found content object: #{c.id}"
-            slide.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url})
+            slide.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url||c.content_icon})
           end
         end
         @slides << slide
@@ -60,6 +60,16 @@ class MementosController < MemberHomeController
       # Load soundtrack data
       (@memento.soundtrack || []).each do |s|
         sound = CGI.parse(s).inject({}) {|h, (k, v)| h[k] = v.first; h }
+        
+        # Load audio content object data if any
+        Rails.logger.debug "Parsed params: #{sound.inspect}"
+        if cid = sound['cid']
+          if c = current_user.contents.find(cid)
+            Rails.logger.debug "Found content object: #{c.id}"
+            sound.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url||c.content_icon})
+          end
+        end
+        
         @sounds << sound
       end
       Rails.logger.debug "Audio: #{@sounds.inspect}"

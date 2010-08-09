@@ -1,0 +1,6 @@
+page << "spinner.unload();"
+if @error
+  page.flash_and_fade 'flash_notice'
+else
+  page << "editor.load('#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});"
+end

@@ -1,0 +1,19 @@
+Eternos Affiliate New User Post Parameters
+
+POST url: http://eternos.com/accounts/aff_create
+POST parameters:
+  user[full_name] => First & Last name
+  user[email] => Email address
+  user[password] => Password (min. 6 characters)
+  user[profile][birthday(1i)] => Birthdate year (4 digits)
+  user[profile][birthday(2i)] => Birthdate month (numeric: 1-12)
+  user[profile][birthday(3i)] => Birthdate day (numeric: 1-31)
+  plan => "Free"
+  
+Response: none
+
+
+
+
+  
+

@@ -9,80 +9,82 @@
     %strong Welcome to the Eternos Memento Creator
     Access all the media that you have archived in your Eternos account and create fun Mashup E-cards with text and audio! Follow the step by step instructions and you’ll have a fun Memento to share with your friends and family in minutes!
 %p &nbsp;
-%h1 Start by selecting &amp; dragging artifacts into the Memento Timeline
+#flash_notice.notice{:style => "display: none;"}
 
-#memento-editor.login1_right.login1-mid.login2-mid
-  #flash_notice.notice{:style => "display: none;"}
-  #flash_error.notice.hidden
-  %p.mementos-p 
-    Select one of the tabs to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
+.login1_right.login1-mid.login2-mid
+  #accordion
+    %h1.accordiontab.current Start by selecting &amp; dragging artifacts into the Memento Timeline
   
-  #artifact_picker
-    #type_list
-      %ul#artifact-tabs.tabs-like-header
-        %li.artitype
-          - link_to contents_path(:type => 'albums', :view => 'memento_editor') do
-            = image_tag('icon-j-photo.png', :width=>"22", :height=>"22")
-            &nbsp;Images
-          %span &nbsp;
-        %li.artitype
-          - link_to contents_path(:type => 'web_videos', :view => 'memento_editor') do
-            = image_tag('icon-j-movie.png', :width=>"22", :height=>"22")
-            &nbsp;Movies
-          %span &nbsp;
-        %li.artitype
-          - link_to 'editor.html', :id => 'new_text_slide' do
-            = image_tag('icon-j-text.png', :width=>"22", :height=>"22")
-            &nbsp;Add Text
-          %span &nbsp;
-        %li.artitype
-          = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
-          %span &nbsp;
-      <form class="clear_slides"><input id="j-button001" type="submit" value="Clear Slides" /></form>
-    #artifact_view
-      .panes1
-        #artipane1{:style => "display: block"}
-        #artipane2
-        #artipane3
-          = render :partial => 'text_editor'
-        #artipane4
-          /= render :partial => 'upload_content'
-    .clear 
-    /- required for pageplayer.js
-    = render :partial => 'shared/audio_controls'
-    #slideshow_droptarget
-      #scrollable_decorations
-        .navi
-        %p.mementos-p 
-          = image_tag 'mementos-timeline.gif'
-          You can rearrange the order of artifacts by draging them left and right.
-        %a.prevPage.browse.left
-        #selection-scroller.scrollable
-          #item_list.items
-            .decoration_item.dragdrop{:style => "border: 3px dashed #aaa; height: 95px"}
-              = image_tag(content_icon_path + 'photo.png')
-              = image_tag(content_icon_path + 'movie.png')
-              %br
-              Drag & Drop Artifacts Here
-        %a.nextPage.browse.right
-      .clear
+    #artifact_picker.memento-pane{:style => "display:block"}
+      %p.mementos-p 
+        Select one of the tabs to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
+    
+      #type_list
+        %ul#artifact-tabs.tabs-like-header
+          %li.artitype
+            - link_to contents_path(:type => 'albums', :view => 'memento_editor') do
+              = image_tag('icon-j-photo.png', :width=>"22", :height=>"22")
+              &nbsp;Images
+            %span &nbsp;
+          %li.artitype
+            - link_to contents_path(:type => 'web_videos', :view => 'memento_editor') do
+              = image_tag('icon-j-movie.png', :width=>"22", :height=>"22")
+              &nbsp;Movies
+            %span &nbsp;
+          %li.artitype
+            - link_to 'editor.html', :id => 'new_text_slide' do
+              = image_tag('icon-j-text.png', :width=>"22", :height=>"22")
+              &nbsp;Add Text
+            %span &nbsp;
+          %li.artitype
+            = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
+            %span &nbsp;
+        <form class="clear_slides"><input id="j-button001" type="submit" value="Clear Slides" /></form>
+      #artifact_view
+        .panes1
+          #artipane1{:style => "display: block"}
+          #artipane2
+          #artipane3
+            = render :partial => 'text_editor'
+          #artipane4
+            /= render :partial => 'upload_content'
+      .clear 
+      /- required for pageplayer.js
+      = render :partial => 'shared/audio_controls'
+      #slideshow_droptarget
+        #scrollable_decorations
+          .navi
+          %p.mementos-p 
+            = image_tag 'mementos-timeline.gif'
+            You can rearrange the order of artifacts by draging them left and right.
+          %a.prevPage.browse.left
+          #selection-scroller.scrollable
+            #item_list.items
+              .decoration_item.dragdrop{:style => "border: 3px dashed #aaa; height: 95px"}
+                = image_tag(content_icon_path + 'photo.png')
+                = image_tag(content_icon_path + 'movie.png')
+                %br
+                Drag & Drop Artifacts Here
+          %a.nextPage.browse.right
+        .clear
         
-      #arti_preview_details.instructions.hidden
+        #arti_preview_details.instructions.hidden
       
-    #artifact_editor.hidden
-      %p.mementos-p
-        You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished.
-      .editor-body
-        %form#save_desc{:action=>'#'}
-          = text_area_tag :description, "Add a description here", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
-          %br
-          %input#j-button003{:type => 'submit', :value => 'Save'} 
-        #editor_notice.success_notice.hidden
-        #arti_preview
-          #arti_preview_img
-    #pane2
+      #artifact_editor.hidden
+        %p.mementos-p
+          You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished.
+        .editor-body
+          %form#save_desc{:action=>'#'}
+            = text_area_tag :description, "Add a description here", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+            %br
+            %input#j-button003{:type => 'submit', :value => 'Save'} 
+          #editor_notice.success_notice.hidden
+          #arti_preview
+            #arti_preview_img
       .clear
-    #pane3
+      %p &nbsp;
+    %h1.accordiontab Add MP3 audio tracks
+    #soundtrack.memento-pane
       .soundtrack
         %ul#soundtrack-tabs.tabs-like-header
           %li.artitype
@@ -104,11 +106,11 @@
 
         #soundtrack-selection
           = image_tag content_icon_path + 'audio.png', :size => '20x20'
-          Drag audio track(s) here to create your movie soundtrack.
-      .clear
-    %p &nbsp;
-    #preview.mementos-preview
-      %h1 Manage, Preview and Share Your Memento!
+          Drag audio files here to create your movie soundtrack.
+        .clear
+      %p &nbsp;
+    %h1.accordiontab Manage, Preview and Share Your Memento!
+    #preview.mementos-preview.memento-pane
       %h3.memento-details
         <strong>Timeline Options</strong><span><strong>Memento Details</strong>
       %ul.memento-details
@@ -120,23 +122,25 @@
               <input id="j-button002" type="submit" value="Clear Slides" />      
             %form.clear_sounds                                                              
               <input id="j-button002" type="submit" value="Clear Audio" />       
-				  
+			  
           <span id="movie_info"></span>
           <span id="movie_duration"></span>
       .clear
-    %p &nbsp;
-    #save-button
-      %p.mementos-p
-        %strong When you are finished creating your Memento, enter a title then press 'Save' to share!
-      #memento-save-notice.notice{:style => "display: none;"}
-      - form_for @memento, :html => {:id => 'save-memento-form'} do |f|
-        = f.text_field :title, :value => "Enter a title"
-        %input#memento_save_button{:type => 'submit', :value => 'SAVE & SHARE', :onclick => "editor.save(); return false;"}
+      %p &nbsp;
+      #preview_pane{:style => "display: none;"}
+        #movie_pane
+          #movie_player
+      %p &nbsp;
+      #save-button
+        %p.mementos-p
+          %strong When you are finished creating your Memento, enter a title then press 'Save' to share!
+        #memento-save-notice.notice{:style => "display: none;"}
+        - form_for @memento, :html => {:id => 'save-memento-form'} do |f|
+          = f.text_field :title, :value => "Enter a title"
+          %input#memento_save_button{:type => 'submit', :value => 'SAVE & SHARE', :onclick => "editor.save(); return false;"}
+      %p &nbsp;
+      #shareit
         
-    #preview_pane{:style => "display: none;"}
-      #movie_pane
-        #movie_player
-
 :javascript
   var MEMENTO = {};
   MEMENTO.width = #{@memento_width};
@@ -145,4 +149,4 @@
   MEMENTO.preview_win_height = 490;
   MEMENTO.player_width = 480;
   MEMENTO.player_height = 266;
-
+  
