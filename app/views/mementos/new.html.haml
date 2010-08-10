@@ -37,7 +37,7 @@
               &nbsp;Add Text
             %span &nbsp;
           %li.artitype
-            = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
+            = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + '<strong>Upload Files</strong>', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
             %span &nbsp;
         <form class="clear_slides"><input id="j-button001" type="submit" value="Clear Slides" /></form>
       #artifact_view
@@ -56,7 +56,7 @@
           .navi
           %p.mementos-p 
             = image_tag 'mementos-timeline.gif'
-            You can rearrange the order of artifacts by draging them left and right.
+            You can rearrange the order of artifacts by dragging them left and right.
           %a.prevPage.browse.left
           #selection-scroller.scrollable
             #item_list.items
@@ -75,7 +75,7 @@
           You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished.
         .editor-body
           %form#save_desc{:action=>'#'}
-            = text_area_tag :description, "Add a description here", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+            = text_area_tag :description, "Describe the image/video shown on the right in this area, then press 'Save'", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
             %br
             %input#j-button003{:type => 'submit', :value => 'Save'} 
           #editor_notice.success_notice.hidden
@@ -83,7 +83,7 @@
             #arti_preview_img
       .clear
       %p &nbsp;
-    %h1.accordiontab Add MP3 audio tracks
+    %h1.accordiontab Next, Click Here to add MP3 audio tracks (optional)
     #soundtrack.memento-pane
       .soundtrack
         %ul#soundtrack-tabs.tabs-like-header
@@ -93,7 +93,7 @@
               &nbsp;Audio
             %span &nbsp;
           %li.artitype
-            = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + 'Upload Files', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
+            = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + '<strong>Upload Files</strong>', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>400, :height=>500
             %span &nbsp;
         %form.clear_sounds
           <input id="j-button001" type="submit" value="Clear Audio" />
@@ -109,10 +109,15 @@
           Drag audio files here to create your movie soundtrack.
         .clear
       %p &nbsp;
-    %h1.accordiontab Manage, Preview and Share Your Memento!
+    %h1.accordiontab Finally, Click Here to Preview and Share Your Memento!
     #preview.mementos-preview.memento-pane
       %h3.memento-details
         <strong>Timeline Options</strong><span><strong>Memento Details</strong>
+      %p.mementos-p 
+        Watch a preview of your Memento here.
+        You can edit it with the tools above until you are ready to share it.
+        %br
+        You can save it anytime & come back later to finish it...Look for it in the left column under the "Previous Mementos" heading.
       %ul.memento-details
         %li
           #slideshow_info
@@ -128,7 +133,7 @@
       .clear
       %p &nbsp;
       #preview_pane{:style => "display: none;"}
-        #movie_pane
+        #movie_pane.theme-default
           #movie_player
       %p &nbsp;
       #save-button

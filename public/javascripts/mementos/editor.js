@@ -20,6 +20,27 @@ String.prototype.paramValue = function( key )
     return RegExp.$1;
 };
 
+// Trying various string escaping functions to display captions safely.
+// So far only removing quotes & apostrophes completely works.
+function getHTMLEncode(t) {
+	return t.replace(/'/g, "").replace(/"/g, "").replace(/&#39;/g, "").replace(/&quot;/g, "");
+}
+
+// Handy string escaping/unescape functions for passing text inputs from forms to 
+// be displayed inside Flowplayer
+function htmlEncode(input){
+  var t = document.createTextNode(input),
+      e = document.createElement('div');
+  e.appendChild(t);
+  return e.innerHTML;
+}
+
+function htmlDecode(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;
+  return e.childNodes[0].nodeValue;
+}
+
 var flash_and_fade = function(id, message) {
 	$(id).innerHTML = message;
 	$(id).show();
@@ -185,6 +206,40 @@ var MementoEditor = function() {
 	
 	return that;
 } ();
+
+// Player object - simplifed to load from json & begin playing
+var MementoPlayer = function() {
+	var that = {};
+
+	var artifactSelection, 
+		soundtrack,
+		movieGenerator;
+		
+	// Play from json data
+	that.play = function(title, slides_json, sounds_json) {
+		console.log("Playing memento '" + title + "'");
+
+		$A(slides_json).each(function(json) {
+			artifactSelection.loadFromJSON(json);
+		});
+		console.log("Loading soundtrack from JSON");
+
+		$A(sounds_json).each(function(json) {
+			soundtrack.loadFromJSON(json);
+		});
+	};
+	
+	// Initialize minimal setup
+	that.init = function() {
+		artifactSelection = ArtifactSelection.init();
+		soundtrack = Soundtrack.init();
+		movieGenerator = MovieGenerator.init(artifactSelection, soundtrack);
+		
+		return this;
+	}
+
+	return that;
+}();
 
 // WysiwygEditor handler
 var TextEditor = function() {
@@ -1075,7 +1130,9 @@ var MovieGenerator = function() {
 				} 
 				// Save each clip's metadata for playblack event handlers
 				if (item.text_description) {
-					clip.caption = item.text_description;
+					// We have to escape unsafe characters otherwise Flowplayer won't play
+					clip.caption = getHTMLEncode(item.text_description);
+					console.log("Saving caption as " + clip.caption);
 				}
 			} else if (item.userHtml) { // slide is text only
 				// Use tiny image for "video" position for now
@@ -1085,7 +1142,8 @@ var MovieGenerator = function() {
 					textId: 'text_' + i,
 					duration: getAvgDurationPerSlide(),
 					mediaType: 'html',
-					html: item.userHtml
+					// Have to decode html for Flowplayer or plugin won't load
+					html: getHTMLEncode(item.userHtml)
 				};
 			}
 			clip.position = i+1;

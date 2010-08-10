@@ -34,6 +34,11 @@ class MementosController < MemberHomeController
     end
   end
   
+  # Public view of memento movie - load it & play!
+  def show
+    @memento = Memento.find_by_uuid(params[:id])
+  end
+  
   # Load memento from db into editor
   def edit
     # Convert to js-compatible data structure

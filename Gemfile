@@ -41,6 +41,7 @@ end
 
 gem 'active_presenter'
 gem 'after_commit'
+gem 'amqp', '0.6.7'
 gem 'aws-s3'
 gem 'bundler', '0.9.25'
 gem 'crack'
@@ -83,8 +84,8 @@ gem 'shuber-attr_encrypted'
 gem 'SystemTimer'
 gem 'taf2-curb'
 gem 'thinking-sphinx'
-gem 'amqp', '0.6.7'
 gem 'twitter'
+gem 'uuidtools'
 gem 'tzinfo'
 
 

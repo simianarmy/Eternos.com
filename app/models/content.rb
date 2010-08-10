@@ -190,9 +190,12 @@ class Content < ActiveRecord::Base
   end
   
   def cdn_url_with_protocol
-    'http:' + cdn_url
+    if u = cdn_url
+      "http:#{u}"
+    end
   end
   
+  # Returns URL to cloud or CDN without protocol, ie: //domain.com/path
   def cdn_url
     S3Buckets::MediaBucket.url(s3_key) if s3_key
   end

@@ -13,11 +13,16 @@ class Memento < ActiveRecord::Base
   validates_presence_of :slides, :message => "A Memento must contain at least one image, movie, or text slide!"
   
   before_create :set_version
+  before_create :set_uuid
   
   protected
   
   def set_version
     self.version = @@version
+  end
+  
+  def set_uuid
+    self.uuid = UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, "eternos.com").to_s
   end
 end
 

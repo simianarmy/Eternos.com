@@ -7,6 +7,7 @@ margin-right:10px;
 vertical-align:middle;
 }
 
+
 #artifact_picker {
 }
 
@@ -51,8 +52,6 @@ vertical-align:middle;
 }
 
 #movie_pane {
-	/* background image */
-	background:transparent url(/images/mementos/themes/Theme-Dark.jpg) no-repeat scroll 0%;
 	/* container dimensions */
 	display:block;
 	width:720px;
@@ -61,6 +60,16 @@ vertical-align:middle;
 	/* make play button centerered horizontally */ 
 	text-align:center;
 	color:#fff
+}
+
+#movie_pane.theme-default, #movie_pane.theme-eternos {
+	/* background image */
+	background:transparent url(/images/mementos/themes/Theme-Eternos.jpg) no-repeat scroll 0%;
+}
+
+#movie_pane.theme-dark {
+	/* background image */
+	background:transparent url(/images/mementos/themes/Theme-Dark.jpg) no-repeat scroll 0%;
 }
 
 #movie_player {
@@ -348,6 +357,9 @@ ul.tabs a.xl 			{ background-position: 0 -0px; width:248px; }
 ul.tabs a.xl:hover 	{ background-position: 0 -31px; }
 ul.tabs a.xl.current { background-position: 0 -62px; }
 
+.upload-tab {
+	background-color: green;
+}
 
 /* initially all panes are hidden */ 
 div.panes div.pane {
@@ -464,6 +476,14 @@ H3.memento-details {
 	font-family:Arial,Helvetica,sans-serif;
 	padding:5px;
 	width:500px; height: 190px;
+}
+
+/* Copy to clipboard div */
+#d_clip_button {
+	border:1px;
+ 	background: url(/images/copy-to-clip.jpg) top no-repeat;
+	width: 32px;
+	height: 32px;
 }
 
 

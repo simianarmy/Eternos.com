@@ -55,7 +55,7 @@ specs:
 - capistrano-ext: 
     version: 1.2.1
 - json_pure: 
-    version: 1.4.3
+    version: 1.4.6
 - rubyforge: 
     version: 2.0.4
 - hoe: 
@@ -71,11 +71,11 @@ specs:
 - trollop: 
     version: 1.16.2
 - gherkin: 
-    version: 2.0.2
+    version: 2.1.5
 - term-ansicolor: 
     version: 1.0.5
 - cucumber: 
-    version: 0.8.3
+    version: 0.8.5
 - cucumber-rails: 
     version: 0.3.2
 - daemons: 
@@ -95,9 +95,9 @@ specs:
 - gdata: 
     version: 1.1.1
 - haml: 
-    version: 3.0.13
+    version: 3.0.16
 - hashie: 
-    version: 0.2.1
+    version: 0.2.2
 - hirb: 
     version: 0.3.2
 - httparty: 
@@ -109,7 +109,7 @@ specs:
 - jnunemaker-columbus: 
     version: 0.1.2
 - json: 
-    version: 1.4.3
+    version: 1.4.6
 - larch: 
     version: 1.0.2
 - linecache: 
@@ -121,7 +121,7 @@ specs:
 - mash: 
     version: 0.1.1
 - nokogiri: 
-    version: 1.4.2
+    version: 1.4.3.1
 - mdalessio-dryopteris: 
     version: 0.1.2
 - memcache-client: 
@@ -151,7 +151,7 @@ specs:
 - rails: 
     version: 2.3.4
 - riddle: 
-    version: 1.0.11
+    version: 1.0.12
 - right_http_connection: 
     version: 1.2.4
 - right_aws: 
@@ -196,9 +196,11 @@ specs:
     version: 0.9.7
 - tzinfo: 
     version: 0.3.22
+- uuidtools: 
+    version: 2.1.1
 - webrat: 
     version: 0.7.1
-hash: fbe73063894a374831aae211647c76785049c698
+hash: 5658b67f2044785fc4d8e8f7ac69d6cbd0d845e6
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
@@ -209,7 +211,7 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  spork: 
+  faker: 
     version: ">= 0"
     group: 
     - :test
@@ -217,7 +219,7 @@ dependencies:
     version: ">= 0"
     group: 
     - :test
-  faker: 
+  spork: 
     version: ">= 0"
     group: 
     - :test
@@ -234,6 +236,10 @@ dependencies:
     group: 
     - :default
   SystemTimer: 
+    version: ">= 0"
+    group: 
+    - :default
+  twitter: 
     version: ">= 0"
     group: 
     - :default
@@ -257,10 +263,6 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  twitter: 
-    version: ">= 0"
-    group: 
-    - :default
   tzinfo: 
     version: ">= 0"
     group: 
@@ -277,14 +279,14 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  bullet: 
-    version: ">= 0"
-    group: 
-    - :development
   rspec: 
     version: ">= 0"
     group: 
     - :test
+  bullet: 
+    version: ">= 0"
+    group: 
+    - :development
   mash: 
     version: ">= 0"
     group: 
@@ -299,10 +301,6 @@ dependencies:
     - :production
   hashie: 
     version: ">= 0"
-    group: 
-    - :default
-  amqp: 
-    version: = 0.6.7
     group: 
     - :default
   searchlogic: 
@@ -321,19 +319,27 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  active_presenter: 
-    version: ">= 0"
-    group: 
-    - :default
   mocha: 
     version: ">= 0"
     group: 
     - :test
+  active_presenter: 
+    version: ">= 0"
+    group: 
+    - :default
+  amqp: 
+    version: = 0.6.7
+    group: 
+    - :default
   image_science: 
     version: ">= 0"
     group: 
     - :default
   right_aws: 
+    version: ">= 0"
+    group: 
+    - :default
+  uuidtools: 
     version: ">= 0"
     group: 
     - :default
@@ -361,11 +367,11 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  ruby-growl: 
+  webrat: 
     version: ">= 0"
     group: 
-    - :development
-  deadweight: 
+    - :test
+  hirb: 
     version: ">= 0"
     group: 
     - :development
@@ -373,14 +379,14 @@ dependencies:
     version: = 1.2.1
     group: 
     - :default
-  hirb: 
+  deadweight: 
     version: ">= 0"
     group: 
     - :development
-  webrat: 
+  ruby-growl: 
     version: ">= 0"
     group: 
-    - :test
+    - :development
   pauldix-feedzirra: 
     version: ">= 0"
     group: 
@@ -417,16 +423,16 @@ dependencies:
     version: = 2.4.0
     group: 
     - :default
-  capistrano: 
-    version: = 2.5.10
+  after_commit: 
+    version: ">= 0"
     group: 
     - :default
   cucumber-rails: 
     version: ">= 0"
     group: 
     - :test
-  after_commit: 
-    version: ">= 0"
+  capistrano: 
+    version: = 2.5.10
     group: 
     - :default
   daemons: 
