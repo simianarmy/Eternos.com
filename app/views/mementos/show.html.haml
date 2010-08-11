@@ -4,13 +4,42 @@
     %link{:rel=>"shortcut icon", :type=>"image/vnd.microsoft.icon", :href=>"#{image_path 'favicon.ico'}"}
     %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
     %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
-    %meta{:'http-equiv' => "Content-Type", :content=>"text/html; charset=utf-8"}
+    %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=iso-8859-1"}
     %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos Memento Player"
+    /[if lte IE 7]
+      = stylesheet_link_tag "new_design/styleie7.css"
+    /[if lte IE 6]
+      = stylesheet_link_tag "new_design/styleie6.css"
+
+    - stylesheet 'new_design/style.css', 'mementos'
+    = yield(:head)
   %body
-    THE MEMENTO GOES HERE
-    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous",  "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'inlineplayer', 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'dragdrop', 'dragdropextra', 'wysiwyg', "lowpro", "behaviors", 'mementos/editor', 'cvi_busy_lib'e
+    .header
+      %div
+        = link_to(image_tag('logo.png', :border => "0"),  root_path)
+
+    <!-- start content -->
+    .content.home
+      #flash_notice.notice{:style => "display: none;"}
+      %fieldset
+        %h1== Memento: #{@memento.title}
+        %p
+          %br
+        %h3== Created by #{@memento.member.full_name}
+    		
+        #movie_pane.theme-default
+          #movie_player
+
+        %p== Authored on #{@memento.created_at.to_s(:short)}
+        %p
+          To create & share your own Mementos, 
+          = link_to 'sign up now for your free Eternos.com account!', new_account_url(:plan => AppConfig.default_plan)
+          
+    = render :partial => 'shared/site_footer' unless @hide_footer
+
+    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous",  "effects", "controls", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'mementos/editor', 'mementos/player'
 
     :javascript
       var FlowplayerSwfUrl = '#{video_player_swf_url}';
@@ -18,8 +47,6 @@
       var editor;
       
       jQuery(document).ready(function() {
-        mem = MementoPlayer.init();
-        mem.play('#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});
+        mem = MementoPlayer.init('#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});
+        mem.play();
       });
-      
-    

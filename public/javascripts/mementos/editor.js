@@ -207,40 +207,6 @@ var MementoEditor = function() {
 	return that;
 } ();
 
-// Player object - simplifed to load from json & begin playing
-var MementoPlayer = function() {
-	var that = {};
-
-	var artifactSelection, 
-		soundtrack,
-		movieGenerator;
-		
-	// Play from json data
-	that.play = function(title, slides_json, sounds_json) {
-		console.log("Playing memento '" + title + "'");
-
-		$A(slides_json).each(function(json) {
-			artifactSelection.loadFromJSON(json);
-		});
-		console.log("Loading soundtrack from JSON");
-
-		$A(sounds_json).each(function(json) {
-			soundtrack.loadFromJSON(json);
-		});
-	};
-	
-	// Initialize minimal setup
-	that.init = function() {
-		artifactSelection = ArtifactSelection.init();
-		soundtrack = Soundtrack.init();
-		movieGenerator = MovieGenerator.init(artifactSelection, soundtrack);
-		
-		return this;
-	}
-
-	return that;
-}();
-
 // WysiwygEditor handler
 var TextEditor = function() {
 	var that = {};
@@ -1042,22 +1008,23 @@ var Soundtrack = function() {
 	that.init = function(domId) {
 		selection = new Array();
 		
-		dropTargetDiv = jQuery('#'+domId);
-		ogDropareaHtml = dropTargetDiv.html();
-		// DOESN'T FUCKING WORK!
-		dropTargetDiv.hover(function() { jQuery(this).addClass('selectorHover'); });
+		if (domId !== null) {
+			dropTargetDiv = jQuery('#'+domId);
+			ogDropareaHtml = dropTargetDiv.html();
+			// DOESN'T FUCKING WORK!
+			dropTargetDiv.hover(function() { jQuery(this).addClass('selectorHover'); });
 				
-		// Make audio selection a drop target
-		Droppables.add(domId, {
-			//hoverclass: 'soundtrackHover',
-			onDrop: onAudioAdded,
-			accept: ['audio']
-		});
+			// Make audio selection a drop target
+			Droppables.add(domId, {
+				//hoverclass: 'soundtrackHover',
+				onDrop: onAudioAdded,
+				accept: ['audio']
+			});
 		
-		$$('form.clear_sounds').each(function(f) {
-			f.observe('submit', function(e) { e.stop(); clearItems(); });
-		});
-			
+			$$('form.clear_sounds').each(function(f) {
+				f.observe('submit', function(e) { e.stop(); clearItems(); });
+			});
+		}
 		return this;
 	};
 	return that;

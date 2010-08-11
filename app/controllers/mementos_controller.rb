@@ -45,13 +45,39 @@ class MementosController < MemberHomeController
   # Public view of memento movie - load it & play!
   def show
     @memento = Memento.find_by_uuid(params[:id])
+    create_memento_json
   end
   
   # Load memento from db into editor
   def edit
-    # Convert to js-compatible data structure
+    @memento = current_user.mementos.find(params[:id])
+    
+    create_memento_json
+  end
+  
+  def new_content
+    @object = @content = current_user.contents.new
+    
+    respond_to do |format|
+      format.html {
+        render :layout => 'dialog'
+      }
+    end
+  end
+  
+  protected
+  
+  def load_artifacts
+    contents = current_user.contents
+    @albums = contents.photo_albums
+    @videos = contents.web_videos
+    @audio  = contents.audio
+    @music  = contents.music
+  end
+  
+  # Convert to js-compatible data structure
+  def create_memento_json
     begin
-      @memento = current_user.mementos.find(params[:id])
       @slides = []
       @sounds = []
       (@memento.slides || []).each do |s|
@@ -90,25 +116,4 @@ class MementosController < MemberHomeController
       flash[:error] = @error = "Sorry, we were not able to load this Memento!"
     end
   end
-  
-  def new_content
-    @object = @content = current_user.contents.new
-    
-    respond_to do |format|
-      format.html {
-        render :layout => 'dialog'
-      }
-    end
-  end
-  
-  protected
-  
-  def load_artifacts
-    contents = current_user.contents
-    @albums = contents.photo_albums
-    @videos = contents.web_videos
-    @audio  = contents.audio
-    @music  = contents.music
-  end
-  
 end
