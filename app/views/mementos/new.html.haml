@@ -141,7 +141,7 @@
           %strong When you are finished creating your Memento, enter a title then press 'Save' to share!
         #memento-save-notice.notice{:style => "display: none;"}
         - form_for @memento, :html => {:id => 'save-memento-form'} do |f|
-          = f.text_field :title, :value => "Enter a title"
+          = f.text_field :title, :defaultValue => "Enter a title", :class => 'withHint'
           %input#memento_save_button{:type => 'submit', :value => 'SAVE & SHARE', :onclick => "editor.save(); return false;"}
       %p &nbsp;
       #shareit

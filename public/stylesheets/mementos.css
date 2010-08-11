@@ -478,6 +478,10 @@ H3.memento-details {
 	width:500px; height: 190px;
 }
 
+#memento-linking-code {
+	padding: 5px;
+}
+
 /* Copy to clipboard div */
 #d_clip_button {
 	border:1px;

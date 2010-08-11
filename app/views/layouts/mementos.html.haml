@@ -11,7 +11,12 @@
 
 
     - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'scrollable', 'scrollable-navig', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'soundmanager-ui', 'inlineplayer', 'mementos'
-
+    <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#publisher=a30d1209-bf76-4100-b37d-6d0477b5fabd&amp;type=website&amp;popup=true&amp;post_services=email%2Cfacebook%2Ctwitter%2Cgbuzz%2Cmyspace%2Cdigg%2Csms%2Cwindows_live%2Cdelicious%2Cstumbleupon%2Creddit%2Cgoogle_bmarks%2Clinkedin%2Cbebo%2Cybuzz%2Cblogger%2Cyahoo_bmarks%2Cmixx%2Ctechnorati%2Cfriendfeed%2Cpropeller%2Cwordpress%2Cnewsvine&amp;button=false"></script>
+    <style type="text/css">
+    body {font-family:helvetica,sans-serif;font-size:12px;}
+    a.stbar.chicklet img {border:0;height:16px;width:16px;margin-right:3px;vertical-align:middle;}
+    a.stbar.chicklet {height:16px;line-height:16px;}
+    </style>
     = yield(:head)
     / end bundle
   %body
@@ -52,7 +57,7 @@
           %h1 Previous Mementos
           %p
           %ul#mementos-list
-            - @mementos[0..@max_listed].each do |m|
+            - @mementos[0..@max_listed-1].each do |m|
               %li
                 == #{link_to_remote(truncate(m.title, :max_length => 30), :url => edit_memento_path(m), :method => 'get', :loading => "spinner.load('memento-editor');")}
                 %br
@@ -73,7 +78,7 @@
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
     
-    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous",  "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'inlineplayer', 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'dragdrop', 'dragdropextra', 'wysiwyg', "lowpro", "behaviors", 'mementos/editor', 'cvi_busy_lib', 'ZeroClipboard'
+    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous",  "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'inlineplayer', 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'dragdrop', 'dragdropextra', 'wysiwyg', "lowpro", "defaultvalueactsashint", "behaviors", 'mementos/editor', 'cvi_busy_lib', 'ZeroClipboard'
     
     /= javascript_include_tag "mootools-1.2.4-core-yc", "Swiff.Uploader.js", "Fx.ProgressBar.js", "FancyUpload2.js", "upload_form"
     

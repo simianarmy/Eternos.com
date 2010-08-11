@@ -1,11 +1,28 @@
 %h2 Share your Memento with your friends & family by sending them this URL
 
-%form
-  %input#linking-code{:size => 100, :value=>"#{memento_url(@memento.uuid)}"}
-  #d_clip_button
+#memento-linking-code
+  %form#linking-code-form
+    %input#linking-code{:size => 70, :value=>"#{memento_url(@memento.uuid)}"}
+    #d_clip_button
+    
+  <a id="ck_email" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/email.gif" /></a>
+  <a id="ck_facebook" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/facebook.gif" /></a>
+  <a id="ck_twitter" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/twitter.gif" /></a>
+  <a id="ck_sharethis" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/sharethis.gif" />ShareThis</a>
   
 :javascript
   // Copy-to-clipboard code
   var clip = new ZeroClipboard.Client();
+  var mem_url = '#{memento_url(@memento.uuid, :r=>'st')}';
   clip.glue( 'd_clip_button' );
-  clip.setText( $('linking-code').value );
+  clip.setText( mem_url );
+  var shared_object = SHARETHIS.addEntry({
+    title: 'Watch my movie!',
+    summary: 'Check out my Memento: #{escape_javascript(@memento.title)}',
+    url: mem_url
+  });
+
+  shared_object.attachButton(document.getElementById("ck_sharethis"));
+  shared_object.attachChicklet("email", document.getElementById("ck_email"));
+  shared_object.attachChicklet("facebook", document.getElementById("ck_facebook"));
+  shared_object.attachChicklet("twitter", document.getElementById("ck_twitter"));

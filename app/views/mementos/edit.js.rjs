@@ -3,4 +3,6 @@ if @error
   page.flash_and_fade 'flash_notice'
 else
   page << "editor.load('#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});"
+  page['memento_title'].value = @memento.title
+  page.replace_html 'shareit', :partial => 'share_form', :object => @memento
 end

@@ -1,14 +1,14 @@
 # $Id$
 
 class MementosController < MemberHomeController
-  layout 'mementos', :only => 'new'
+  layout 'mementos', :only => ['new', 'index']
   
   #skip_before_filter :load_member_home_presenter
   
   def new  
     @memento = current_user.mementos.new
     @mementos = current_user.mementos.descend_by_created_at
-    @max_listed = 15
+    @max_listed = 10
   end
   
   def create
@@ -32,6 +32,14 @@ class MementosController < MemberHomeController
         end
       }
     end
+  end
+  
+  def index
+    @memento = current_user.mementos.new
+    @mementos = current_user.mementos.descend_by_created_at
+    @max_listed = @mementos.size # Don't display 'previous' list in layout
+    
+    render :action => 'new'
   end
   
   # Public view of memento movie - load it & play!
