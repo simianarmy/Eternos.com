@@ -3,7 +3,10 @@
 class MementosController < MemberHomeController
   layout 'mementos', :only => ['new', 'index']
   
-  #skip_before_filter :load_member_home_presenter
+  skip_before_filter :login_required, :only => [:show]
+  skip_before_filter :check_roles, :only => [:show]
+  skip_before_filter :set_facebook_connect_session, :only => [:show]
+  skip_before_filter :load_member_home_presenter, :only => [:show]
   
   def new  
     @memento = current_user.mementos.new
