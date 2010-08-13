@@ -55,7 +55,7 @@ vertical-align:middle;
 	/* container dimensions */
 	display:block;
 	width:720px;
-	height:480px;
+	height:500px;
 	
 	/* make play button centerered horizontally */ 
 	text-align:center;
@@ -74,9 +74,9 @@ vertical-align:middle;
 
 #movie_player {
 	width: 580px;
-	height: 420px;
+	height: 410px;
 	/* padding will show the surroundings even when the player is loaded */
-	padding:30px 65px 30px 65px;
+	padding:40px 65px 30px 65px;
 }
 
 #movie_info {
@@ -490,4 +490,40 @@ H3.memento-details {
 	height: 32px;
 }
 
+/* Mementos Player page */
+
+.memento-player { width: 725px; margin: 0 auto;}
+.memento-player H1 { font-size: 20px; font-weight: normal; color: #02419E; border-bottom: 1px dashed #CCCCCC; margin: 0 0 15px 0; padding: 0 0 8px 0; text-align: center}
+.memento-player H3 { color: #7A7A7A; font-size: 12px; text-align: center;}
+.memento-player-bottom { width: 500px; margin: 0 auto; color: #666666; font-size: 11px;}
+.memento-player-bottom H4 { color: #000000; text-align: center; font-size: 26px; font-weight: normal;  border-bottom: 1px dashed #CCCCCC; margin: 0 0 15px 0; padding: 25px 0 8px 0;}
+.memento-player-bottom FORM { width: 285px; float: left; margin: 0 30px 0 0; padding: 0}
+.memento-player-bottom label { display:block; float:left; font-size:12px; font-weight:bold; margin-right:12px; padding-top:6px; width:65px; }
+.memento-player-bottom input[type="text"], .memento-player-bottom input[type="password"] {
+background:url("/images/bg_input.gif") repeat-x scroll 0 0 transparent;
+border:1px solid #CCCCCC;
+color:#907777;
+font-family:Arial,Helvetica,sans-serif;
+padding:5px;
+width:185px;
+}
+.memento-player-bottom input[type="submit"] {
+background:url("/images/button-signup.gif") no-repeat scroll 0 0 transparent;
+border:medium none;
+color:#FFFFFF;
+cursor:pointer;
+font-family:Arial,Helvetica,sans-serif;
+font-size:20px;
+font-weight:bold;
+height:50px;
+padding:0;
+width:197px;
+}
+.memento-player-bottom em {
+font-size:11px;
+font-style:normal;
+text-align:right;
+}
+.memento-player-bottom #facebook-signup { float: left; width: 170px;}
+.memento-player-bottom A { font-size: 11px; color: #5EC0EA; text-decoration: none}
 

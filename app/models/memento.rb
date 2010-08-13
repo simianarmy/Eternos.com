@@ -22,7 +22,7 @@ class Memento < ActiveRecord::Base
   end
   
   def set_uuid
-    self.uuid = UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, "eternos.com").to_s
+    self.uuid = UUIDTools::UUID.timestamp_create().to_s
   end
 end
 

@@ -12,12 +12,13 @@ var ArtifactSelectionAdapter = function() {
 	// Parses string from json object into artifact data, adds to 
 	// selection
 	that.loadFromJSON = function(json) {
+		var slide, placeholder;
 		console.log("Got url " + json.url);
 		
 		// Create new slide object similar to ArtifactSelection
 		slide = jQuery('<div></div>');
 		if (json.mediaType === 'html') {
-			slide.userHtml = json.html;
+			slide[0].userHtml = json.html;
 		} else {
 			slide.attr('src', json.url);
 			slide.attr('content_id', json.cid);
@@ -27,7 +28,7 @@ var ArtifactSelectionAdapter = function() {
 				slide[0].text_description = json.caption;
 			}
 		}
-		artifacts.unshift(slide[0]);
+		artifacts.push(slide[0]);
 	};
 	
 	that.getSize = function() {
@@ -36,13 +37,15 @@ var ArtifactSelectionAdapter = function() {
 	};
 	
 	that.getArtifacts = function() {
-		return artifacts;
+		// Always return artifacts array with extra placeholder at end
+		return artifacts.concat({});
 	};
 		
 	that.init = function() {
 		artifacts = new Array();
-		// Add placeholder to represent "drag here" box
-		artifacts.push({});
+		// Add placeholder
+		//artifacts.push({});
+		
 		return this;
 	};
 	return that;
@@ -57,10 +60,10 @@ var SoundtrackAdapter = function() {
 		console.log("Loading audio: " + json.url);
 		
 		// Use json object as sound object
-		json.src = json.url;
+		json.source = json.url;
 		json.content_id = json.cid;
 		
-		sountrack.addAudio(json);
+		soundtrack.addAudio(json);
 	};
 	
 	// Delegators

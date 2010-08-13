@@ -108,7 +108,8 @@ class MementosController < MemberHomeController
         if cid = sound['cid']
           if c = current_user.contents.find(cid)
             Rails.logger.debug "Found content object: #{c.id}"
-            sound.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url||c.content_icon})
+            sound.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url||c.content_icon, 
+              :duration => c.duration_seconds})
           end
         end
         

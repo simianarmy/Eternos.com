@@ -855,11 +855,6 @@ var AudioPicker = function() {
 		tabs = jQuery(tabsSelector).tabs('div.panes2 > div');
 		currentPane = tabs.getPanes().eq(0);
 		
-		soundManager.onready(function(oStatus) {
-			if (!oStatus.success) {
-				mementoFlash.error('Error initializing sound...please reload the page.');
-			}
-		});
 		currentPane.load(tabs.getTabs().eq(0).attr("href"));
 		this.panesReady = true;
 		
@@ -905,6 +900,7 @@ var Soundtrack = function() {
 	function addAudio(sound) {
 		selection.push(sound);
 	};
+	that.addAudio = addAudio;
 	
 	// Updates description of tracks in list
 	// Takes optional div for text update area
@@ -983,14 +979,14 @@ var Soundtrack = function() {
 	
 	// Returns total duration of sountrack in seconds
 	that.getDuration = function() {
-		var duration;
-		return selection.inject(0, function(acc, audio) {
+		var duration = selection.inject(0, function(acc, audio) {
 			if ((duration = audio.duration) !== null) {
 				return acc + parseFloat(duration, 10).toFixed(2);
 			} else {
 				return acc;
 			}
 		});
+		return duration;
 	};
 	
 	// Loads soundtrack from json data
@@ -999,7 +995,7 @@ var Soundtrack = function() {
 		// Use json object as sound object
 		json.src = json.url;
 		json.content_id = json.cid;
-		
+
 		addAudio(json);
 		updateSelectionText();
 		editor.getMovieCreator().movieUpdated();
@@ -1394,7 +1390,11 @@ var MovieGenerator = function() {
 			api: true
 		});
 		*/
-		
+		soundManager.onready(function(oStatus) {
+			if (!oStatus.success) {
+				mementoFlash.error('Error initializing sound...please reload the page.');
+			}
+		});
 		// Setup movie to start after lightview opens & stops if it closes
 		document.observe('lightview:opened', function() {
 			that.preview();
