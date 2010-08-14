@@ -248,9 +248,12 @@ var FancyUpload2 = new Class({
 				this.options.object_ids.value += (json.get('id') + ',');
 			
 			if (this.options.showThumbnails) {
-				thumb = json.get('thumbnail')
+				thumb = json.get('thumbnail');
+				// Don't screw up view with really long filenames
+				filename = json.get('filename').truncate(20);
+				
 				this.log("thumbnail = " + thumb);
-				file.info.set('html', (thumb ? '<img src="' + thumb + '">' : json.get('filename')));
+				file.info.set('html', (thumb ? '<img src="' + thumb + '">' : filename));
 			}
 		} else {
 			file.element.addClass('file-failed');
