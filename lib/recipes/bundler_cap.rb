@@ -20,8 +20,8 @@ namespace :bundler do
   end
 
   task :bundle_new_release do
-    #bundler.symlink_vendor
-    run("cd #{release_path} && bundle install")
+    bundler.symlink_vendor
+    run("cd #{release_path} && /usr/bin/bundle install")
   end
 end
 

@@ -118,8 +118,9 @@ class BackupSource < ActiveRecord::Base
   end
   
   # add this backup source to backup queue
+  # TODO: CAN'T DO THIS UNLESS WE CAN CONNECT TO REMOTE RABBITMQ
   def backup
-    EternosBackup::BackupJobPublisher.add_source(self)
+    #EternosBackup::BackupJobPublisher.add_source(self)
   end
   
   def next_backup_at
