@@ -6,12 +6,13 @@ require 'tempfile'
 require 'system_timer'
 
 module ScreenCapture
-  @@capturer = '/usr/local/bin/CutyCapt' 
-  CutyCaptOpts =  '--max-wait=15000' # 15 seconds max.
+  ScreenCapBin = 'CutyCapt'
+  @@capturer = "/usr/local/bin/#{ScreenCapBin}" 
+  BinOpts =  '--max-wait=15000' # 15 seconds max.
   mattr_reader :capturer
   
   class << self
-    @@timeout_seconds = 1.minute
+    @@timeout_seconds = 2.minutes # Shouldn't take longer than this
     
     # Takes screencap and saves to file, returns filename
     def capture(url, ext='png')
@@ -22,10 +23,11 @@ module ScreenCapture
       puts "saving screencap to #{@out}..."
       begin
         SystemTimer.timeout_after(@@timeout_seconds) {
-          system "DISPLAY=localhost:1.0 #{capturer} #{CutyCaptOpts} --url='#{url}' --out=#{@out}"
+          system "DISPLAY=localhost:1.0 #{capturer} #{BinOpts} --url='#{url}' --out=#{@out}"
         }
       rescue Timeout::Error => e
-        puts "Timeout saving screencap (#{@@timeout_seconds} s. max): #{e.message}"
+        puts "Timeout saving screencap (#{@@timeout_seconds} s. max): #{e.message}..killing process"
+        system "pkill #{ScreenCapBin}"
         @out = nil
       ensure
         tmp.delete

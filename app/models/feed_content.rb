@@ -28,6 +28,7 @@ class FeedContent < ActiveRecord::Base
   # Take screecapture of site & saves image file
   def save_screencap
     if (s = ScreenCapture.capture(feed_entry.url)) && File.exist?(s)
+      puts "Saving screencap file #{s} to s3"
       self.screencap = File.new(s)
       self.size = File.size(s)
       self.save # save to start s3 upload

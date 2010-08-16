@@ -21,7 +21,7 @@ set :scm, 'subversion'
 # your SCM below:
 # set :scm, :subversion
 
-set :stages, %w(development staging production utility)
+set :stages, %w(development staging production production-rackspace utility)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
