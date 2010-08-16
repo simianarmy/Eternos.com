@@ -5,8 +5,8 @@ require 'facebook_desktop'
 class FacebookBackupController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  before_filter :load_facebook_app_session
-  #before_filter :load_backup_source
+  before_filter :create_new_session
+  before_filter :load_backup_source
   layout 'dialog'
     
   #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
