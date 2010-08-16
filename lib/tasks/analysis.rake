@@ -225,11 +225,14 @@ namespace :analysis do
   desc "Calculates users' text data word frequencies"
   task :update_fulltext => :environment do
     include FullText
+    
+    @expiration_days = 30
+    
     # Global database connection
     @conn = ActiveRecord::Base.connection
     # Text frequency counter object
     @freq_analyzer = FullText::Frequency.new
-    
+      
     users = if ENV['USER_ID']
       [ User.find(ENV['USER_ID']) ]
     else
@@ -237,8 +240,15 @@ namespace :analysis do
     end
     # Per-user task
     users.each do |u|
+      # Don't do the work if recently updated .. too expensive to run more than a few times 
+      # per month
+      if rt = RawText.find_by_user_id(u.id)
+        if (Time.now - rt.updated_at) < @expiration_days.days
+          puts "Updated < #{@expiration_days} days ago...skipping"
+          next
+        end
+      end
       text = user_text_dump(u)
-
       unless text.blank?
         # stats = analyze_myisam_fulltext(text)
         stats = @freq_analyzer.generate_hash(text)

@@ -19,6 +19,12 @@ default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 #default_run_options[:pty] = true # required for svn+ssh:// andf git:// sometimes
 
+namespace :deploy do
+  task :more_symlink_shared, :roles => [:web] do
+    run "ln -nfs #{shared_path}/config/sphinx.yml #{release_path}/config/sphinx.yml"
+  end
+end
+
 before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink_shared", "deploy:minify_js"
 after "deploy:symlink", "deploy:publish_robots_file"
@@ -27,6 +33,7 @@ after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:update_crontab"
 
 after "deploy:symlink", "deploy:symlink_shared"
+after "deploy:symlink_shared", "deploy:more_symlink_shared"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
 after "deploy:symlink", "deploy:start_daemons"
 #after "deploy:symlink", "deploy:sendmail"
