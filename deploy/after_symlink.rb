@@ -1,5 +1,6 @@
 
 task :symlink_shared do
+  puts "HERE FUCK?"
   fetch(:shared_configs).each do |config|
     run "ln -nfs #{shared_path}/config/#{config} #{current_path}/config/#{config}"
   end
