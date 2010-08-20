@@ -70,6 +70,7 @@ ETERNOS.user_id       = #{current_user.id};
 ETERNOS.tl_start_date = '#{@tl_start_date}';
 ETERNOS.tl_end_date   = '#{@tl_end_date}';
 ETERNOS.fake_timeline = #{@fake ? 'true' : 'false'};
+ETERNOS.loadingBoxTimeoutSeconds = 30;
 
 document.observe('dom:loaded', function() {
   drawETimeline();

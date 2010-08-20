@@ -158,25 +158,54 @@ class AccountsController < ApplicationController
     end
   end
 
-  # Signup info sent from affiliates 
+  # Signup info sent from affiliates.
+  # The only paramater guaranteed to be sent is email address, so have to fill in
+  # random / default values for required attributes
   def aff_create
-    Rails.logger.debug "IN AFF CREATE FOR USER #{@user.full_name} - #{@user.login}"
+    Rails.logger.debug "IN AFF CREATE FOR USER #{@user.inspect}"
 
     @user.registration_required = false
-    @user.password_confirmation = @user.password
+    
+    if !@user.password.blank?
+      @user.password_confirmation = @user.password
+    else
+      @user.password_confirmation = @user.password = User::PlaceholderPassword
+    end
+    # Use stub for name if necessary
+    if params[:user][:first_name].blank?
+      @user.first_name = 'first name'
+    end
+    if params[:user][:last_name].blank?
+      @user.last_name = 'last name'
+    end
     @user.build_profile(params[:user][:profile])
     @success = true
     @account.name = @user.full_name
 
-    begin
-      if @account.save
-        @user.register!
-        @user.activate!
-      else
-        Rails.logger.warn "Error in aff_create: #{@account.errors.to_json}"
+    if @account.save        
+      # Check for address
+      if params[:address_book] && (addr = params[:address_book][:address_attributes])
+        # Check for optional state & country values
+        if (state = addr.delete(:state)) && !state.blank?
+          if region = Region.find_by_name(state.downcase)
+            params[:address_book][:address_attributes][:region_id] = region.id
+            params[:address_book][:address_attributes][:country_id] = region.country.id
+          end
+        elsif (cc = addr.delete(:country_code)) && !cc.blank?
+          if country = Country.find_by_alpha_2_code(cc.downcase)
+            params[:address_book][:address_attributes][:country_id] = country.id
+          end
+        end
+        params[:address_book][:address_attributes][:location_type] = Address::Home
+        @user.address_book.update_attributes(params[:address_book])
       end
-    rescue
+
+      @user.register!
+      @user.activate!
+    else
+      Rails.logger.warn "Error in aff_create: #{@account.errors.to_json}"
     end
+
     respond_to do |format|
       format.html {
         render :nothing => true, :status => :ok

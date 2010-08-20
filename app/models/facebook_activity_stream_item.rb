@@ -53,6 +53,10 @@ class FacebookActivityStreamItem < ActivityStreamItem
         else
           d['src']
         end
+      # Check for preview_img attribute in video hash
+      elsif d['video']['preview_img']
+        d['video']['preview_img']
+      # Otherwise use source_url as last resort
       else 
         d['video']['source_url']
       end
