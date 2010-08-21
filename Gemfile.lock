@@ -45,9 +45,9 @@ specs:
 - net-ssh: 
     version: 2.0.23
 - net-scp: 
-    version: 1.0.2
+    version: 1.0.3
 - net-sftp: 
-    version: 2.0.4
+    version: 2.0.5
 - net-ssh-gateway: 
     version: 1.0.1
 - capistrano: 
@@ -89,17 +89,17 @@ specs:
 - ezcrypto: 
     version: 0.7.2
 - facebooker: 
-    version: 1.0.74
+    version: 1.0.75
 - faker: 
     version: 0.3.1
 - gdata: 
     version: 1.1.1
 - haml: 
-    version: 3.0.16
+    version: 3.0.17
 - hashie: 
     version: 0.2.2
 - hirb: 
-    version: 0.3.2
+    version: 0.3.3
 - httparty: 
     version: 0.5.2
 - image_science: 
@@ -129,7 +129,7 @@ specs:
 - mocha: 
     version: 0.9.8
 - oauth: 
-    version: 0.4.1
+    version: 0.4.2
 - moomerman-twitter_oauth: 
     version: 0.2.1
 - mysqlplus: 
@@ -158,8 +158,6 @@ specs:
     version: 2.0.0
 - rio: 
     version: 0.4.2
-- rmagick: 
-    version: 2.12.2
 - rspec: 
     version: 1.3.0
 - rspec-rails: 
@@ -195,12 +193,12 @@ specs:
 - twitter: 
     version: 0.9.7
 - tzinfo: 
-    version: 0.3.22
+    version: 0.3.23
 - uuidtools: 
     version: 2.1.1
 - webrat: 
     version: 0.7.1
-hash: 5658b67f2044785fc4d8e8f7ac69d6cbd0d845e6
+hash: 8e2b719f3ae9c644409489961a447c9799fe5587
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
@@ -211,19 +209,7 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  faker: 
-    version: ">= 0"
-    group: 
-    - :test
-  ruby-debug: 
-    version: ">= 0"
-    group: 
-    - :test
-  spork: 
-    version: ">= 0"
-    group: 
-    - :test
-  ezcrypto: 
+  moomerman-twitter_oauth: 
     version: ">= 0"
     group: 
     - :default
@@ -231,10 +217,22 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  moomerman-twitter_oauth: 
+  ezcrypto: 
     version: ">= 0"
     group: 
     - :default
+  spork: 
+    version: ">= 0"
+    group: 
+    - :test
+  ruby-debug: 
+    version: ">= 0"
+    group: 
+    - :test
+  faker: 
+    version: ">= 0"
+    group: 
+    - :test
   SystemTimer: 
     version: ">= 0"
     group: 
@@ -243,15 +241,7 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  oauth: 
-    version: ">= 0"
-    group: 
-    - :default
-  httparty: 
-    version: ">= 0"
-    group: 
-    - :default
-  facebooker: 
+  nokogiri: 
     version: ">= 0"
     group: 
     - :default
@@ -259,7 +249,15 @@ dependencies:
     version: = 2.3.4
     group: 
     - :default
-  nokogiri: 
+  facebooker: 
+    version: ">= 0"
+    group: 
+    - :default
+  httparty: 
+    version: ">= 0"
+    group: 
+    - :default
+  oauth: 
     version: ">= 0"
     group: 
     - :default
@@ -271,27 +269,27 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  rio: 
-    version: ">= 0"
-    group: 
-    - :default
-  haml: 
-    version: ">= 0"
-    group: 
-    - :default
-  rspec: 
-    version: ">= 0"
-    group: 
-    - :test
-  bullet: 
-    version: ">= 0"
-    group: 
-    - :development
   mash: 
     version: ">= 0"
     group: 
     - :default
-  javan-whenever: 
+  bullet: 
+    version: ">= 0"
+    group: 
+    - :development
+  rspec: 
+    version: ">= 0"
+    group: 
+    - :test
+  haml: 
+    version: ">= 0"
+    group: 
+    - :default
+  rio: 
+    version: ">= 0"
+    group: 
+    - :default
+  hashie: 
     version: ">= 0"
     group: 
     - :default
@@ -299,7 +297,7 @@ dependencies:
     version: ">= 2.9.8"
     group: 
     - :production
-  hashie: 
+  javan-whenever: 
     version: ">= 0"
     group: 
     - :default
@@ -311,19 +309,11 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  mime-types: 
+  right_aws: 
     version: ">= 0"
     group: 
     - :default
-  crack: 
-    version: ">= 0"
-    group: 
-    - :default
-  mocha: 
-    version: ">= 0"
-    group: 
-    - :test
-  active_presenter: 
+  image_science: 
     version: ">= 0"
     group: 
     - :default
@@ -331,11 +321,19 @@ dependencies:
     version: = 0.6.7
     group: 
     - :default
-  image_science: 
+  active_presenter: 
     version: ">= 0"
     group: 
     - :default
-  right_aws: 
+  mocha: 
+    version: ">= 0"
+    group: 
+    - :test
+  crack: 
+    version: ">= 0"
+    group: 
+    - :default
+  mime-types: 
     version: ">= 0"
     group: 
     - :default
@@ -347,31 +345,15 @@ dependencies:
     version: ">= 0"
     group: 
     - :test
-  rmagick: 
-    version: = 2.12.2
-    group: 
-    - :default
   thinking-sphinx: 
     version: ">= 0"
     group: 
     - :default
-  mysqlplus: 
+  ruby-growl: 
     version: ">= 0"
     group: 
-    - :default
-  larch: 
-    version: ">= 0"
-    group: 
-    - :default
-  eventmachine: 
-    version: ">= 0"
-    group: 
-    - :default
-  webrat: 
-    version: ">= 0"
-    group: 
-    - :test
-  hirb: 
+    - :development
+  deadweight: 
     version: ">= 0"
     group: 
     - :development
@@ -379,35 +361,23 @@ dependencies:
     version: = 1.2.1
     group: 
     - :default
-  deadweight: 
+  hirb: 
     version: ">= 0"
     group: 
     - :development
-  ruby-growl: 
-    version: ">= 0"
-    group: 
-    - :development
-  pauldix-feedzirra: 
-    version: ">= 0"
-    group: 
-    - :default
-  mdalessio-dryopteris: 
-    version: ">= 0"
-    group: 
-    - :default
-  markevans-block_helpers: 
-    version: ">= 0"
-    group: 
-    - :default
-  database_cleaner: 
+  webrat: 
     version: ">= 0"
     group: 
     - :test
-  jnunemaker-columbus: 
+  eventmachine: 
     version: ">= 0"
     group: 
     - :default
-  lockfile: 
+  larch: 
+    version: ">= 0"
+    group: 
+    - :default
+  mysqlplus: 
     version: ">= 0"
     group: 
     - :default
@@ -415,7 +385,47 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
+  lockfile: 
+    version: ">= 0"
+    group: 
+    - :default
+  jnunemaker-columbus: 
+    version: ">= 0"
+    group: 
+    - :default
+  database_cleaner: 
+    version: ">= 0"
+    group: 
+    - :test
+  markevans-block_helpers: 
+    version: ">= 0"
+    group: 
+    - :default
+  mdalessio-dryopteris: 
+    version: ">= 0"
+    group: 
+    - :default
+  pauldix-feedzirra: 
+    version: ">= 0"
+    group: 
+    - :default
   ruby-stemmer: 
+    version: ">= 0"
+    group: 
+    - :default
+  daemons: 
+    version: ">= 0"
+    group: 
+    - :default
+  capistrano: 
+    version: = 2.5.10
+    group: 
+    - :default
+  cucumber-rails: 
+    version: ">= 0"
+    group: 
+    - :test
+  after_commit: 
     version: ">= 0"
     group: 
     - :default
@@ -423,27 +433,11 @@ dependencies:
     version: = 2.4.0
     group: 
     - :default
-  after_commit: 
-    version: ">= 0"
-    group: 
-    - :default
-  cucumber-rails: 
-    version: ">= 0"
-    group: 
-    - :test
-  capistrano: 
-    version: = 2.5.10
-    group: 
-    - :default
-  daemons: 
-    version: ">= 0"
-    group: 
-    - :default
   RubyInline: 
     version: ">= 0"
     group: 
     - :default
-  aws-s3: 
+  hpricot: 
     version: ">= 0"
     group: 
     - :default
@@ -451,7 +445,7 @@ dependencies:
     version: = 0.9.25
     group: 
     - :default
-  hpricot: 
+  aws-s3: 
     version: ">= 0"
     group: 
     - :default
@@ -463,11 +457,11 @@ dependencies:
     version: ">= 0"
     group: 
     - :default
-  cucumber: 
-    version: ">= 0"
-    group: 
-    - :test
   gdata: 
     version: ">= 0"
     group: 
     - :default
+  cucumber: 
+    version: ">= 0"
+    group: 
+    - :test
