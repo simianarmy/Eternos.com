@@ -6,6 +6,10 @@ role :app, "72.3.253.143"
 role :web, "72.3.253.143"
 role :db,  "72.3.253.143", :primary => true
 
+set :repository, 'git@github.com:simianarmy/Eternos.com.git'
+set :scm, :git
+set :branch, :master
+
 #before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink_shared", "deploy:minify_js"
 #after "deploy:symlink", "deploy:publish_robots_file"

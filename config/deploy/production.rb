@@ -10,7 +10,7 @@ set :user, "deploy"
 set :repository, 'git@github.com:simianarmy/Eternos.com.git'
 set :scm, :git
 set :branch, :master
-#set :deploy_via, :remote_cache
+set :deploy_via, :remote_cache
 # This will execute the Git revision parsing on the *remote* server rather than locally
 set :real_revision, 			lambda { source.query_revision(revision) { |cmd| capture(cmd) } }
 # comment out if it gives you trouble. newest net/ssh needs this set.
@@ -28,7 +28,7 @@ after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:update_crontab"
 
 after "deploy:symlink", "deploy:symlink_shared"
-after "deploy:symlink_shared", "deploy:more_symlink_shared"
+
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
 after "deploy:symlink", "deploy:start_daemons"
 #after "deploy:symlink", "deploy:sendmail"
