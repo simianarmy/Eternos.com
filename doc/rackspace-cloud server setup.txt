@@ -18,9 +18,12 @@ sudo yum install httpd-devel\
   mysql-server\ 
   mysql-devel\
   automake autoconf libtool make\
-  libxml libxml-devel libxslt libxslt-devel\
-  ImageMagick ImageMagick-devel
-  
+  libxml libxml-devel libxslt libxslt-devel
+
+ImageMagick (for ruby RMagick gem): http://rmagick.rubyforge.org/install2-linux.html
+> sudo yum install libjpeg-devel libpng-devel glib2-devel fontconfig-devel zlib-devel libwmf-devel freetype-devel libtiff-devel
+Download & install from source
+
 Ruby 1.8.7:
 sudo mkdir /usr/local/src
   cd /usr/local/src
