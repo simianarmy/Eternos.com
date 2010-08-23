@@ -128,7 +128,7 @@ namespace :deploy do
   
   desc "Installs CutyCapt"
   task :install_cutycapt, :roles => :app do
-    sudo "yum -y install Xorg xorg-x11-server-Xvfb xorg-x11-fonts* gperf flex gtk-doc glib2-devel gstreamer-devel gstreamer-plugins-base-devel dbus-devel"
+    sudo "yum -y install subversion Xorg xorg-x11-server-Xvfb xorg-x11-fonts* gperf flex gtk-doc glib2-devel gstreamer-devel gstreamer-plugins-base-devel dbus-devel mesa-libGL-devel.i386 mesa-libGLU-devel.i386 libmng-devel.i386"
     sudo "rpm -Uvh ftp://ftp.pramberger.at/systems/linux/contrib/rhel5/i386/qt45-4.5.2-1.el5.pp.i386.rpm; true"
     sudo "rpm -Uvh ftp://ftp.pramberger.at/systems/linux/contrib/rhel5/i386/qt45-config-4.5.2-1.el5.pp.i386.rpm; true"
     sudo "rpm -Uvh ftp://ftp.pbone.net/mirror/ftp.pramberger.at/systems/linux/contrib/rhel5/i386/qt45-sqlite-4.5.2-1.el5.pp.i386.rpm; true"

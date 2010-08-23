@@ -1,0 +1,29 @@
+This doc contains instructions on how to setup a server with the required software for running the 
+Eternos site screencapper daemon.
+
+OS: Assumes CentOS 5.5 system or equivalent
+
+CutyCapt:
+Install QT4.5 or above:
+rpm -ivh http://software.freivald.com/centos/software.freivald.com-1.0.0-1.noarch.rpm
+yum update fontconfig fontconfig-devel qt4 qt4-devel qt4-doc qt4-postgresql qt4-odbc qt4-sqlite qt-creator
+
+* should install in /usr/lib/qt4 or /usr/lib64/qt4 depending on the server arch.
+
+cd /usr/local/src; \
+svn co https://cutycapt.svn.sourceforge.net/svnroot/cutycapt cutycapt; \
+cd cutycapt/CutyCapt; \
+<qt4path>/bin/qmake; \
+make
+sudo cp /usr/local/src/cutycapt/CutyCapt/CutyCapt /usr/local/bin
+
+Xvfb:
+yum install xorg-x11-server-Xvfb.x86_64
+Run with:
+  Xvfb :1 -screen 0 1024x768x24 &
+  
+Eternos app:
+See document: "rackspace-cloud server setup.txt"
+
+Add cron entry:
+0 */3 * * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake backup:ensure_feed_screencaps 2>/dev/null

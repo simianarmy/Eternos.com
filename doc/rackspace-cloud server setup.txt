@@ -6,6 +6,7 @@ Add deploy user to group wheel
 Add wheel to visudo with ALL permissions
 update system with yum
 
+INSTALL THESE FIRST!!
 System libs:
 sudo yum install httpd-devel\
   openssl-devel\
@@ -18,11 +19,16 @@ sudo yum install httpd-devel\
   mysql-server\ 
   mysql-devel\
   automake autoconf libtool make\
-  libxml libxml-devel libxslt libxslt-devel
+  libxml libxml-devel libxslt libxslt-devel\
+  readline readline-devel\
+  rabbitmq-server
 
 ImageMagick (for ruby RMagick gem): http://rmagick.rubyforge.org/install2-linux.html
 > sudo yum install libjpeg-devel libpng-devel glib2-devel fontconfig-devel zlib-devel libwmf-devel freetype-devel libtiff-devel
 Download & install from source
+
+ImageScience: http://seattlerb.rubyforge.org/ImageScience.html
+  Add -fPIC to Makefile compiler flag if requested
 
 Ruby 1.8.7:
 sudo mkdir /usr/local/src
@@ -56,6 +62,9 @@ Install with yum
 Configure Apache ServerName
 Add port 80 to firewall
 
+Passenger
+> sudo gem install passenger
+
 Install app software:
 
 Add epel rpm distro:
@@ -66,8 +75,7 @@ git:
 
 Generate ssh public key on server & add to GitHub
 
-Ruby 1.8.7
-rubygems (for gem/bundler)
+RabbitMQ:
 
 Eternos.com:
 Each command will require some additional work on the target server, usually dealing 
