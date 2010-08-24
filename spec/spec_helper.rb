@@ -9,6 +9,8 @@ require File.expand_path('../config/environment', File.dirname(__FILE__))
 require 'spec/autorun'
 require 'spec/rails'
 require 'rspec_rails_mocha'
+require "email_spec/helpers"
+require "email_spec/matchers"
 require 'fixjour'
 require "tempfile"
 require "test/unit"
@@ -30,8 +32,6 @@ Spork.prefork do
   # need to restart spork for it take effect.
   # This file is copied to ~/spec when you run 'ruby script/generate rspec'
   # from the project root directory.
-  
-  
   Spec::Runner.configure do |config|
     # If you're not using ActiveRecord you should remove these
     # lines, delete config/database.yml and disable :active_record
@@ -78,6 +78,8 @@ Spork.prefork do
     end
 
     config.include(Fixjour) # This will add the builder methods to your ExampleGroups and not pollute Object
+    config.include(EmailSpec::Helpers)
+    config.include(EmailSpec::Matchers)
   end
 
   # spec'ing workling from http://blog.zerosum.org/2008/10/4/testing-workling-with-rspec

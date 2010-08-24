@@ -169,14 +169,14 @@ class AccountsController < ApplicationController
     if !@user.password.blank?
       @user.password_confirmation = @user.password
     else
-      @user.password_confirmation = @user.password = User::PlaceholderPassword
+      @user.password_confirmation = @user.password = @user.generated_password = User.generate_password
     end
     # Use stub for name if necessary
     if params[:user][:first_name].blank?
-      @user.first_name = 'first name'
+      @user.first_name = 'New'
     end
     if params[:user][:last_name].blank?
-      @user.last_name = 'last name'
+      @user.last_name = 'Member'
     end
     @user.build_profile(params[:user][:profile])
     @success = true

@@ -22,6 +22,7 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     
     @subject          += @@Subjects[:signup_notification]
+    @body[:passwd]    = user.generated_password
     @body[:name]      = user.full_name || 'Eternos user'
     @body[:url]       = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
     @body[:facebook]  = !user.facebook_id.nil?

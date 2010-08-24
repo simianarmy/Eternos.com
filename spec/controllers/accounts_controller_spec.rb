@@ -7,6 +7,10 @@ describe AccountsController do
         {:email => Faker::Internet.email}
       end
       
+      def post_info
+        post :aff_create, @params.merge({:user => required_params})
+      end
+      
       fixtures :subscriptions, :subscription_plans
       
       before(:each) do 
@@ -15,19 +19,19 @@ describe AccountsController do
       
       it "should create an account with just an email address" do
         lambda {
-          post :aff_create, @params.merge({:user => required_params})
+          post_info
         }.should change(User, :count).by(1)
       end
       
-      it "should assign a placeholder password only if none sent" do
-        post :aff_create, @params.merge({:user => required_params})
-        assigns[:account].user.password.should == User::PlaceholderPassword
+      it "should assign a random password only if none sent" do
+        post_info
+        assigns[:user].generated_password.should_not be_blank
         post :aff_create, @params.merge({:user => required_params.merge({:password => 'fooshnick'})})
         assigns[:account].user.password.should == 'fooshnick'
       end
       
       it "should assign a placeholder name only if none sent" do
-        post :aff_create, @params.merge({:user => required_params})
+        post_info
         assigns[:account].user.first_name.should == 'first name'
         post :aff_create, @params.merge({:user => required_params.merge({:first_name => 'douchenick'})})
         assigns[:account].user.first_name.should == 'douchenick'
@@ -64,6 +68,11 @@ describe AccountsController do
           }}))
           assigns[:account].user.address_book.addresses.should have(1).thing
         end
+      end
+      
+      it "should receive a signup notification email" do
+        post_info
+        unread_emails_for(assigns[:user].email).should have(1).item
       end
     end
   end
