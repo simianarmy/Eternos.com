@@ -72,7 +72,8 @@
       
       #artifact_editor.hidden
         %p.mementos-p
-          You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished.
+          You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished
+          == (#{@max_caption_length} character maximum).
         .editor-body
           %form#save_desc{:action=>'#'}
             = text_area_tag :description, "Describe the image/video shown on the right in this area, then press 'Save'", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
@@ -154,4 +155,5 @@
   MEMENTO.preview_win_height = 490;
   MEMENTO.player_width = 480;
   MEMENTO.player_height = 266;
+  MEMENTO.maxCaptionLength = #{@max_caption_length};
   

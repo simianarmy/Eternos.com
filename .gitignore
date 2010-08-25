@@ -1,0 +1,9 @@
+log/*.log
+tmp/**/*
+.DS_Store
+config/*.yml
+config/*.yml.deploy*
+public/javascripts/cache
+public/assets
+.bundle
+vendor/cache

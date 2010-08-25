@@ -483,9 +483,11 @@ var ArtifactSelection = function() {
 		// Add slide action links code & click handlers
 		jQuery(artifact).append(
 			jQuery('<div id="artifact-hover-menu-items"></div>').append(
-				'<a href="#" class="remove_slide">remove</a>').append(
-					artifact.userHtml ? ' | <a href="#editor.html" class="edit_slide">edit</a>' : '')
-			);
+					artifact.userHtml ? 
+						'<a href="#editor.html" class="edit_slide">edit</a>' : 
+						'<a href="#" class="caption_slide">caption</a>'
+			).append(' | <a href="#" class="remove_slide">remove</a>')
+		);
 	
 		// Move 'drop-here' box to the end
 		drophere.remove();
@@ -495,12 +497,10 @@ var ArtifactSelection = function() {
 		selectionScroller.reload().end();
 
 		if (!artifact.userHtml) {
-			jQuery(artifact).hover(function() {
-				showArtifactEditForm(this);
+			jQuery('.caption_slide').click(function(evt) {
+				evt.preventDefault();
+				showArtifactEditForm(this.up('.artifact'));
 				selectedArtifact = this; // Make it the selected item
-			},
-			function() {
-				// On hover out
 			});
 		}
 		
@@ -561,7 +561,8 @@ var ArtifactSelection = function() {
 	// Displays form for adding text description to an artifact
 	function showArtifactEditForm(artifact) {
 		var node;
-		$('artifact_editor').removeClassName('hidden');
+		
+		jQuery('#artifact_editor').removeClass('hidden');
 
 		// Populate with existing text description
 		if ((artifact.text_description !== undefined) & (artifact.text_description !== null)) {
@@ -740,8 +741,7 @@ var ArtifactSelection = function() {
 		});
 
 		// Setup description input
-		jQuery('#artifact_description').addClass("idleField");
-		jQuery('#artifact_description').focus(function() {
+		jQuery('#artifact_description').addClass("idleField").focus(function() {
 			jQuery(this).removeClass("idleField").addClass("focusField");
 			if (this.value == this.defaultValue) {
 				this.value = '';
@@ -755,7 +755,8 @@ var ArtifactSelection = function() {
 			if (jQuery.trim(this.value) == '') {
 				this.value = (this.defaultValue ? this.defaultValue : '');
 			}
-		});
+		}).maxChar(MEMENTO.maxCaptionLength);
+		
 		/*
 		jQuery('#artifact_description').blur(function() {
 			jQuery(this).removeClass("focusField").addClass("idleField");

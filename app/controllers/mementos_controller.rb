@@ -5,13 +5,14 @@ class MementosController < MemberHomeController
   
   skip_before_filter :login_required, :only => [:show]
   skip_before_filter :check_roles, :only => [:show]
-  skip_before_filter :set_facebook_connect_session, :only => [:show]
-  skip_before_filter :load_member_home_presenter, :only => [:show]
+  skip_before_filter :set_facebook_connect_session, :only => [:show, :new_content]
+  skip_before_filter :load_member_home_presenter, :only => [:show, :new_content]
   
   def new  
     @memento = current_user.mementos.new
     @mementos = current_user.mementos.descend_by_created_at
     @max_listed = 10
+    @max_caption_length = 165
   end
   
   def create
