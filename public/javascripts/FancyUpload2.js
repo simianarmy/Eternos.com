@@ -10,6 +10,13 @@
  */
 // MooTools
 
+String.prototype.truncate = function(length, truncation) {
+  length = length || 30;
+  truncation = $defined(truncation) ? truncation : '...';
+  return this.length > length ?
+    this.slice(0, length - truncation.length) + truncation : String(this);
+};
+
 var FancyUpload2 = new Class({
 
 	Extends: Swiff.Uploader,
@@ -29,7 +36,8 @@ var FancyUpload2 = new Class({
 		fileCreate: null, // creates file element after select
 		fileUpload: null, // called when file is opened for upload, allows to modify the upload options (2nd argument) for every upload
 		fileComplete: null, // updates the file element to completed state and gets the response (2nd argument)
-		fileRemove: null // removes the element
+		fileRemove: null, // removes the element,
+		maxFilenameLength: 40
 		/**
 		 * Events:
 		 * onBrowse, onSelect, onAllSelect, onCancel, onBeforeOpen, onOpen, onProgress, onComplete, onError, onAllComplete
@@ -81,7 +89,7 @@ var FancyUpload2 = new Class({
 		file = this.getFile(file);
 		file.element.addClass('file-uploading');
 		this.currentProgress.cancel().set(0);
-		this.currentTitle.set('html', 'File Progress "{name}"'.substitute(file) );
+		this.currentTitle.set('html', 'File Progress ' + file.name.truncate(this.options.maxFilenameLength) );
 	},
 
 	onProgress: function(file, current, overall) {
@@ -140,7 +148,8 @@ var FancyUpload2 = new Class({
 		this.status.removeClass('file-uploading');
 	
 		if (this.files.some(function(f) { return f.content_id && (f.content_id>0); })) {
-			document.id('action-links').empty();
+			// Call this to remove the upload link
+			// document.id('action-links').empty();
 			if (this.options.next_step) {
 				this.currentText.set('html', '');
 				this.options.next_step.setStyle('display', ''); 
@@ -231,7 +240,7 @@ var FancyUpload2 = new Class({
 					}.bind(this)
 				}
 			}),
-			new Element('span', {'class': 'file-name', 'html': file.name}),
+			new Element('span', {'class': 'file-name', 'html': file.name.truncate(this.options.maxFilenameLength)}),
 			file.info
 		).inject(this.list);
 	},
@@ -250,10 +259,10 @@ var FancyUpload2 = new Class({
 			if (this.options.showThumbnails) {
 				thumb = json.get('thumbnail');
 				// Don't screw up view with really long filenames
-				filename = json.get('filename').truncate(20);
+				filename = json.get('filename').truncate(this.options.maxFilenameLength);
 				
 				this.log("thumbnail = " + thumb);
-				file.info.set('html', (thumb ? '<img src="' + thumb + '">' : filename));
+				file.info.set('html', (thumb ? '<img src="' + thumb + '">' : filename.truncate(this.options.maxFilenameLength)));
 			}
 		} else {
 			file.element.addClass('file-failed');

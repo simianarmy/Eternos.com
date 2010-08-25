@@ -7,5 +7,5 @@
 
 - form_remote_for(@object, :url => @form_url || create_content_path_with_session_information, :html => { :id => "new_content", :multipart => true } ) do |f|
   = render :partial => 'contents/upload_form', :locals => {:f => f, :simple => true}
+%p
 
-  
