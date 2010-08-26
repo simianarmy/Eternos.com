@@ -53,12 +53,14 @@ var flash_and_fade = function(id, message) {
 
 var mementoFlash = function() {
 	// Private functions
-	function showMessage(message) {
-		flash_and_fade('flash_notice', message);
+	function showMessage(message, div) {
+		if (!div) div = 'flash_notice';
+		flash_and_fade(div, message);
 	};
 
-	function showError(message) {
-		flash_and_fade('flash_error', message);
+	function showError(message, div) {
+		if (!div) div = 'flash_error';
+		flash_and_fade(div, message);
 	};
 	
 	return {
@@ -499,8 +501,8 @@ var ArtifactSelection = function() {
 		if (!artifact.userHtml) {
 			jQuery('.caption_slide').click(function(evt) {
 				evt.preventDefault();
-				showArtifactEditForm(this.up('.artifact'));
-				selectedArtifact = this; // Make it the selected item
+				selectedArtifact = this.up('.artifact');
+				showArtifactEditForm(selectedArtifact);
 			});
 		}
 		
@@ -590,7 +592,6 @@ var ArtifactSelection = function() {
 		if (selectedArtifact !== null) {
 			selectedArtifact.text_description = $('artifact_description').value;
 		}
-		mementoFlash.message('saved');
 	};
 	
 	// Removes all but the drophere div
@@ -743,18 +744,22 @@ var ArtifactSelection = function() {
 		// Setup description input
 		jQuery('#artifact_description').addClass("idleField").focus(function() {
 			jQuery(this).removeClass("idleField").addClass("focusField");
+			
 			if (this.value == this.defaultValue) {
 				this.value = '';
 			}
 			if (this.value != this.defaultValue) {
 				this.select();
 			}
-		},
-		function() {
+		}).blur(function() {
 			jQuery(this).removeClass("focusField").addClass("idleField");
+			mementoFlash.message('saved', 'caption_notice');
+			
 			if (jQuery.trim(this.value) == '') {
 				this.value = (this.defaultValue ? this.defaultValue : '');
-			}
+			} 
+		}).keyup(function() {
+			saveArtifactDescription();
 		}).maxChar(MEMENTO.maxCaptionLength);
 		
 		/*
@@ -872,7 +877,8 @@ var Soundtrack = function() {
 	var dropTarget,
 		dropTargetDiv,
 		ogDropareaHtml = '',
-		currentAudio = null;
+		currentAudio = null,
+		state = 'off';
 	
 	// on audio dropped into droptarget
 	function onAudioAdded(draggable, droparea) {
@@ -946,8 +952,11 @@ var Soundtrack = function() {
 	that.play = function() {
 		var sounds;
 		
+		if (state === 'playing') return;
+		
 		if (currentAudio !== null) {
 			currentAudio.play();
+			state = 'playing';
 		} else {
 			if (this.getSize() > 0) {
 				sounds = getTracks();
@@ -959,6 +968,7 @@ var Soundtrack = function() {
 				});
 				console.log("Playing audio!");
 				currentAudio.play();
+				state = 'playing';
 			}
 		}
 	};
@@ -969,12 +979,14 @@ var Soundtrack = function() {
 			currentAudio.stop();
 			currentAudio = null;
 		}
+		state = 'off';
 	};
 	
 	that.pause = function() {
 		if (currentAudio !== null) {
 			console.log("Pausing audio!");
 			currentAudio.pause();
+			state = 'paused';
 		}
 	};
 	
@@ -1051,7 +1063,7 @@ var movieInfo = function() {
 
 var MovieGenerator = function() {
 	var that = {};
-
+	var mediaTypes = {image: 'image', video: 'video', html: 'html', audio: 'audio'};
 	var artifacts, soundtrack, expose, seconds_per_frame, 
 		DefaultSecondsPerFrame = 5,
 		initCaptionBoxWidth = '80%',
@@ -1079,7 +1091,7 @@ var MovieGenerator = function() {
 						scaling: 'orig',
 						// by default clip lasts 5 seconds 
 						duration: getAvgDurationPerSlide(),
-						mediaType: 'image',
+						mediaType: mediaTypes.image,
 						cid: item.readAttribute('content_id')
 					};
 					console.log("Adding image or video: " + src);
@@ -1087,7 +1099,7 @@ var MovieGenerator = function() {
 					clip = {
 						url: src,
 						scaling: 'fit',
-						mediaType: 'video',
+						mediaType: mediaTypes.video,
 						cid: item.readAttribute('content_id')
 					};
 					console.log("Adding video: " + src);
@@ -1105,7 +1117,7 @@ var MovieGenerator = function() {
 					url: "/images/black.jpg",
 					textId: 'text_' + i,
 					duration: getAvgDurationPerSlide(),
-					mediaType: 'html',
+					mediaType: mediaTypes.html,
 					// Have to decode html for Flowplayer or plugin won't load
 					html: getHTMLEncode(item.userHtml)
 				};
@@ -1211,10 +1223,19 @@ var MovieGenerator = function() {
 					console.log("clip type: " + clip.mediaType);
 					console.log("clip cid: " + clip.cid);
 					
+					// Handle audio 
 					if (isFirstSlide(playlist, clip)) {
 						//expose.load();
 						// If there is a soundtrack, start it
-						soundtrack.play();
+						if (clip.mediaType !== mediaTypes.video) {
+							soundtrack.play();
+						}
+					} else {
+						if (clip.mediaType === mediaTypes.video) {
+							soundtrack.pause();
+						} else {
+							soundtrack.play();
+						}
 					}
 					// get access to a configured plugin
 					

@@ -72,13 +72,15 @@
       
       #artifact_editor.hidden
         %p.mementos-p
-          You can write about your Memento and what events are taking place. Make sure to click “Save” once you are finished
+          You can write about your Memento and what events are taking place.  Text will auto-save.
+          %br
           == (#{@max_caption_length} character maximum).
         .editor-body
+          #caption_notice.success_notice{:style => "display: none;"}
           %form#save_desc{:action=>'#'}
-            = text_area_tag :description, "Describe the image/video shown on the right in this area, then press 'Save'", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
-            %br
-            %input#j-button003{:type => 'submit', :value => 'Save'} 
+            = text_area_tag :description, "Describe the image/video shown on the right in this area.", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+            /-%br
+            /-%input#j-button003{:type => 'submit', :value => 'Save'} 
           #editor_notice.success_notice.hidden
           #arti_preview
             #arti_preview_img
@@ -151,8 +153,8 @@
   var MEMENTO = {};
   MEMENTO.width = #{@memento_width};
   MEMENTO.height = #{@memento_height};
-  MEMENTO.preview_win_width = 730;
-  MEMENTO.preview_win_height = 490;
+  MEMENTO.preview_win_width = 750;
+  MEMENTO.preview_win_height = 520;
   MEMENTO.player_width = 480;
   MEMENTO.player_height = 266;
   MEMENTO.maxCaptionLength = #{@max_caption_length};
