@@ -10,6 +10,12 @@ set :repository, 'git@github.com:simianarmy/Eternos.com.git'
 set :scm, :git
 set :branch, :master
 
+namespace :deploy do
+  task :minify_js, :roles => [:app] do
+    run "cd #{release_path} && rake js:min RAILS_ENV=staging"
+  end
+end
+
 #before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink_shared", "deploy:minify_js"
 #after "deploy:symlink", "deploy:publish_robots_file"
@@ -20,5 +26,5 @@ after "deploy:symlink_shared", "deploy:minify_js"
 after "deploy:symlink", "deploy:symlink_shared"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
 #after "deploy:symlink", "deploy:start_daemons"
-after "deploy:symlink", "deploy:sendmail"
+#after "deploy:symlink", "deploy:sendmail"
 #after "deploy:symlink", "deploy:install_sitemaps"

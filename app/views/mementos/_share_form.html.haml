@@ -2,7 +2,7 @@
 
 #memento-linking-code
   %form#linking-code-form
-    %input#linking-code{:size => 70, :value=>"#{memento_url(@memento.uuid)}"}
+    %input#linking-code{:size => 80, :value=>"#{memento_url(@memento.uuid)}"}
     #d_clip_button
     
   <a id="ck_email" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/email.gif" /></a>
@@ -11,13 +11,14 @@
   <a id="ck_sharethis" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/sharethis.gif" />ShareThis</a>
   
 :javascript
+  $('linking-code').observe('click', function(e) { e.target.select(); });
   // Copy-to-clipboard code
   var clip = new ZeroClipboard.Client();
   var mem_url = '#{memento_url(@memento.uuid, :r=>'st')}';
   clip.glue( 'd_clip_button' );
   clip.setText( mem_url );
   var shared_object = SHARETHIS.addEntry({
-    title: 'Watch my movie!',
+    title: 'Watch my Eternos.com Memento movie',
     summary: 'Check out my Memento: #{escape_javascript(@memento.title)}',
     url: mem_url
   });

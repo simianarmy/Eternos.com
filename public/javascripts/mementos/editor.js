@@ -1067,7 +1067,7 @@ var MovieGenerator = function() {
 	var artifacts, soundtrack, expose, seconds_per_frame, 
 		DefaultSecondsPerFrame = 5,
 		initCaptionBoxWidth = '80%',
-		initCaptionBoxHeight = 40,
+		initCaptionBoxHeight = 60,
 		totalPlaytime,
 		slideInfoMap = new Hash();
 
