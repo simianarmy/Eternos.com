@@ -217,6 +217,15 @@ li .handle {
 	width: 75%;
 }
 
+/* Text artifact input form */
+#wysiwyg_form .editor
+{
+	width: 75%;
+	padding: 10px;
+	outline: none;
+	font: 20px "Lucida Grande", Arial, sans-serif;
+}
+
 /* Artifact description input form */
 #artifact_description
 {

@@ -1,0 +1,5 @@
+if @errors
+  page.flash_and_fade 'memento-save-error-notice'
+else
+  page.flash_and_fade 'memento-save-notice'
+end

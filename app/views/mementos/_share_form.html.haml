@@ -2,9 +2,14 @@
 
 #memento-linking-code
   %form#linking-code-form
-    %input#linking-code{:size => 80, :value=>"#{memento_url(@memento.uuid)}"}
-    #d_clip_button
-    
+    #line{:style => "float: left;"}
+      #in{:style => "float: left;"}
+        %input#linking-code{:size => 100, :value=>"#{memento_url(@memento.uuid)}"}
+      #d_clip_button{:style => "float: right;"}
+    .clear
+%p.mementos-p Use the buttons below to share from your favorite social network!
+
+#sharethis
   <a id="ck_email" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/email.gif" /></a>
   <a id="ck_facebook" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/facebook.gif" /></a>
   <a id="ck_twitter" class="stbar chicklet" href="javascript:void(0);"><img src="http://w.sharethis.com/chicklets/twitter.gif" /></a>
@@ -17,6 +22,7 @@
   var mem_url = '#{memento_url(@memento.uuid, :r=>'st')}';
   clip.glue( 'd_clip_button' );
   clip.setText( mem_url );
+  // Sharethis code
   var shared_object = SHARETHIS.addEntry({
     title: 'Watch my Eternos.com Memento movie',
     summary: 'Check out my Memento: #{escape_javascript(@memento.title)}',

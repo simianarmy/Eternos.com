@@ -19,6 +19,10 @@ default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 #default_run_options[:pty] = true # required for svn+ssh:// andf git:// sometimes
 
+desc "Restart web server"
+deploy.task :restart, :roles => :web do
+  sudo "/etc/init.d/nginx reload"
+end
 
 before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink_shared", "deploy:minify_js"

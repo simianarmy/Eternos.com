@@ -23,7 +23,7 @@ String.prototype.paramValue = function( key )
 // Trying various string escaping functions to display captions safely.
 // So far only removing quotes & apostrophes completely works.
 function getHTMLEncode(t) {
-	return t.replace(/'/g, "").replace(/"/g, "").replace(/&#39;/g, "").replace(/&quot;/g, "");
+	return t.replace(/'/g, "").replace(/"/g, "").replace(/&#39;/g, "").replace(/&quot;/g, "").replace(/&/g, 'and');
 }
 
 // Handy string escaping/unescape functions for passing text inputs from forms to 
@@ -156,12 +156,21 @@ var MementoEditor = function() {
 	}
 	
 	// Submits Memento to form action for saving
-	that.save = function() {
+	that.save = function(form) {
+		if (artifactSelection.isEmpty()) {
+			alert('You must add at least one artifact to create a Memento!');
+			return false;
+		}
+		var title = $('memento_title');
+		if ((title.value === '') || (title.value == title.readAttribute('defaultValue'))) {
+			alert('Please enter a title for your Memento');
+			return false;
+		}
 		// Get data from movieGenerator
 	 	var data = this.getMovieCreator().getFormData();
 		var qs = $H(data).toQueryString();
 
-		$('save-memento-form').request({method: "POST",  
+		$('save-memento-form').request({method: form.method,  
 			parameters: qs
 		});
 		// Post to create action
@@ -169,10 +178,14 @@ var MementoEditor = function() {
 	};
 	
 	// Loads Mememto from JSON data
-	that.load = function(title, slides_json, sounds_json) {
+	that.load = function(id, title, slides_json, sounds_json) {
 		console.log("Loading memento '" + title + "'");
 		artifactSelection.clearItems();
 		soundtrack.clearItems();
+		
+		// Set form values
+		$('memento_id').value = id;
+		$('memento_title').value = title;
 		
 		console.log("Loading slides from JSON");
 
@@ -189,7 +202,7 @@ var MementoEditor = function() {
 	// Call to initialize
 	that.init = function() {
 		// Create wysiwyg widget 1st
-		textSlideEditor = TextEditor.init();
+		textSlideEditor = TextEditor.init({wysiwyg: false});
 		artifactPicker = ArtifactPicker.init(artifactViewerId, tabsSelector);
 		audioPicker = AudioPicker.init(audioTabsSelector);
 		artifactSelection = ArtifactSelection.init(droppablesId, textSlideEditor);
@@ -214,31 +227,41 @@ var TextEditor = function() {
 	var that = {};
 
 	var editor = null,
-		selector = 'textarea.editor',
 		editMode = false,
+		options = {},
 		initSaveButtonValue;
 
+	function setTextValue(txt) {
+		if (options.wysiwyg) {
+			editor.setData(jQuery('#wysiwyg_instructions').html());
+		} else {
+			$('textinput').value = txt;
+		}
+	}
 	function load() {
-		editor.setData(jQuery('#wysiwyg_instructions').html());
 		editMode = false;
 		jQuery('#save_wysiwyg').attr('value', initSaveButtonValue);
 	};
 	that.load = load;
 	
 	function edit(contents) {
-		editor.setData(contents);
+		setTextValue(contents);
 		editMode = true;
 		jQuery('#save_wysiwyg').attr('value', 'Save');
 	}
 	that.edit = edit;
 	
 	function clear() {
-		editor.setData('');
+		setTextValue('');
 	};
 	that.clear = clear;
 	
 	function getContents() {
-		return editor.getData();
+		if (options.wysiwyg) {
+			return editor.getData();
+		} else {
+			return $('textinput').value;
+		}
 	};
 	that.getContents = getContents;
 	
@@ -256,22 +279,30 @@ var TextEditor = function() {
 		return editMode;
 	};
 
-	that.init = function() {
-		// Setup wysiwyg editor
-		jQuery('form#wysiwyg_form textarea.editor').ckeditor(function() {
-			/* callback code */
-			editor = this;
-		},
-		mementosCKEditorConfig());
+	that.init = function(opts) {
+		options = Object.extend({wysiwyg: false}, opts||{});
 		
+		if (options.wysiwig) {
+			// Setup wysiwyg editor
+			jQuery('form#wysiwyg_form textarea.editor').ckeditor(function() {
+				// callback code
+				editor = this;
+			},
+			mementosCKEditorConfig());
+		} else {
+			// No-op
+		}
 		initSaveButtonValue = jQuery('#save_wysiwyg').attr('value');
+		
 		jQuery('#clear_wysiwyg').click(function() {
 			clear();
 		});
+		
 		return this;
 	};
 	return that;
 } ();
+
 
 // Artifact picker object
 var ArtifactPicker = function() {
@@ -640,6 +671,10 @@ var ArtifactSelection = function() {
 	
 	that.getSize = function() {
 		return selectionScroller.getItems().size();
+	};
+	
+	that.isEmpty = function() {
+		return (this.getSize() <= 1);
 	};
 	
 	// Programmatically add artifacts (non drag&drop)
@@ -1069,6 +1104,7 @@ var MovieGenerator = function() {
 		initCaptionBoxWidth = '80%',
 		initCaptionBoxHeight = 60,
 		totalPlaytime,
+		player,
 		slideInfoMap = new Hash();
 
 	// Creates playlist array for Flowplayer from selected artifacts
@@ -1205,13 +1241,17 @@ var MovieGenerator = function() {
 	that.preview = function() {
 		var playlist = generatePlaylist();
 		var text, boxWidth = initCaptionBoxWidth, boxHeight = initCaptionBoxHeight;
-		var animateTextBoxOpenOptions;
-		animateTextBoxOpenOptions = {width: boxWidth, height: boxHeight};
+		var animateTextBoxOpenOptions, captionTextStyles, textSlideStyles, plugin;
+		// TODO: This should bet set in an external css file
+		animateTextBoxOpenOptions = {width: boxWidth, height: boxHeight, bottom: 5};
+		captionTextStyles = {backgroundColor: '#112233'};
+		textSlideStyles = {backgroundColor:'#333333', border:'1px solid #ffffff'};
 		
 		if (playlist.size() === 0) {
 			return;
 		}
-		flowplayer('movie_player', FlowplayerSwfUrl, {
+		
+		player = flowplayer('movie_player', FlowplayerSwfUrl, {
 			//log: { level: 'debug' },
 			key: FLOWPLAYER_PRODUCT_KEY,
 			clip: {
@@ -1219,6 +1259,7 @@ var MovieGenerator = function() {
 				onStart: function(clip) {
 					console.log("on clip " + clip.url);
 					console.log("clip text: " + clip.caption);
+					console.log("clip html: " + clip.html);
 					console.log("clip duration: " + clip.duration);
 					console.log("clip type: " + clip.mediaType);
 					console.log("clip cid: " + clip.cid);
@@ -1239,24 +1280,27 @@ var MovieGenerator = function() {
 					}
 					// get access to a configured plugin
 					
-					var plugin = this.getPlugin("content");
+					plugin = this.getPlugin("content");
 					
 					if ((text = clip.caption) !== undefined) {
 						if (text === '') {
 							boxWidth = boxHeight = 1;
 						}
 						plugin.animate(animateTextBoxOpenOptions, function() {
+							this.css(captionTextStyles);
 							this.setHtml(clip.caption);
 						});
 						//$('slide_caption').innerHTML = slideInfoMap[clip.url];
 						//$('slide_caption').show();
 					} else if (clip.html !== undefined) {
-						plugin.animate({width: "100%", height: "100%"}, function() {
-							this.setHtml(clip.html);
+						plugin.animate({width: "85%", height: "85%", top:30, bottom:30}, function() {
+							this.css(textSlideStyles);
+							this.setHtml('<p class="html">' + clip.html + '</p>');
 						});
 					} else {
 						// Hide content plugin
-						plugin.animate({width: 1, height: 1}, function() {
+						plugin.animate({width: 1, height: 1, bottom: 5}, function() {
+							this.css(captionTextStyles);
 							this.setHtml('');
 						});
 					}	
@@ -1270,7 +1314,8 @@ var MovieGenerator = function() {
 				onLastSecond: function(clip) {
 					// If at end of movie...
 					if (isLastSlide(playlist, clip)) {
-						this.getPlugin("content").animate({width: boxWidth, height: boxHeight}, function() {
+						this.getPlugin("content").animate({top: 30, width: boxWidth, height: boxHeight}, function() {
+							this.css(captionTextStyles);
 							this.setHtml('<a href="http://eternos.com/?ref=memento">THIS PRESENTATION WAS CREATED USING THE ETERNOS.COM MEMENTO EDITOR</a>');
 						});
 						soundtrack.stop();
@@ -1313,7 +1358,7 @@ var MovieGenerator = function() {
 			onMouseOut: function() {
 				//this.getPlugin("content").setHtml('Mouse moved away. Please visit Finland someday.');
 			},
-
+			
 			plugins: {
 				// Turn off controls
 				controls: null,
@@ -1381,6 +1426,14 @@ var MovieGenerator = function() {
 							fontFamily: 'Arial',
 							textAlign: 'center',
 							color: '#ffffff'
+						},
+						'.html': {
+							fontSize: 20,
+							fontFamily: 'verdana,arial,helvetica',
+							fontWeight: 'bold',
+							textAlign: 'center',
+							borderRadius: 10,
+							textDecoration: 'none'
 						}
 					}					
 				}
@@ -1401,10 +1454,10 @@ var MovieGenerator = function() {
 	};
 	
 	that.init = function(artis, sounds) {
-		artifacts = artis;
-		soundtrack = sounds;
-		
-		totalPlaytime = 0;
+		artifacts 	= artis;
+		soundtrack 	= sounds;
+		player 			= null;
+		totalPlaytime 		= 0;
 		seconds_per_frame = 0;
 		/*
 		expose = jQuery("#preview_pane").expose({
@@ -1423,6 +1476,8 @@ var MovieGenerator = function() {
 		});
 		document.observe('lightview:hidden', function() {
 			that.stop();
+			// CLEAR FLOWPLAYER HTML, NO OTHER WAY TO UNLOAD THE OBJECT!
+			$('movie_player').update();
 			jQuery('#save-button').removeClass('hidden');
 		});
 		

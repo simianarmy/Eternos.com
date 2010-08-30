@@ -11,9 +11,8 @@ var mementosCKEditorConfig = function() {
 		skin : 'kama',
 		uiColor : "#EFF5FF",
 		toolbar : [
-		['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink'],
+		['Bold', '-', 'Link', 'Unlink'],
 		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-		['Styles','Format','Font','FontSize', '-', 'TextColor','BGColor']
 		]
 	};
 };

@@ -138,14 +138,18 @@
       #preview_pane{:style => "display: none;"}
         #movie_pane.theme-default
           #movie_player
+            
       %p &nbsp;
       #save-button
         %p.mementos-p
           %strong When you are finished creating your Memento, enter a title then press 'Save' to share!
-        #memento-save-notice.notice{:style => "display: none;"}
+        #memento-save-notice{:style => "display: none;"}
+        /-.clear
+        /-#memento-save-error-notice.notice{:style => "display: none;"}
         - form_for @memento, :html => {:id => 'save-memento-form'} do |f|
+          = f.hidden_field :id
           = f.text_field :title, :defaultValue => "Enter a title", :class => 'withHint'
-          %input#memento_save_button{:type => 'submit', :value => 'SAVE & SHARE', :onclick => "editor.save(); return false;"}
+          %input#memento_save_button{:type => 'submit', :value => 'SAVE & SHARE', :onclick => "editor.save(this.form); return false;"}
       %p &nbsp;
       #shareit
         

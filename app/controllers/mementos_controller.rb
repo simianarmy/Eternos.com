@@ -7,12 +7,11 @@ class MementosController < MemberHomeController
   skip_before_filter :check_roles, :only => [:show]
   skip_before_filter :set_facebook_connect_session, :only => [:show, :new_content]
   skip_before_filter :load_member_home_presenter, :only => [:show, :new_content]
+  before_filter :set_constants
   
   def new  
     @memento = current_user.mementos.new
     @mementos = current_user.mementos.descend_by_created_at
-    @max_listed = 10
-    @max_caption_length = 165
   end
   
   def create
@@ -59,6 +58,39 @@ class MementosController < MemberHomeController
     create_memento_json
   end
   
+  # Save changes to existing memento
+  def update
+    if params[:memento][:id]
+      begin
+        @memento = Memento.find_by_uuid(params[:memento][:id])
+        @memento.update_attributes!(params[:memento])
+        
+        if params[:slide]
+          @memento.slides = params[:slide]
+        end
+        if params[:audio]
+          @memento.soundtrack = params[:audio]
+        end
+        @memento.save
+      rescue
+        @errors = $!
+      end
+    end
+
+    respond_to do |format|
+      format.js {
+        if @memento && @memento.errors.any?
+          flash[:error] = @errors = @memento.errors.full_messages.join('<br/>')
+        elsif @errors
+          flash[:error] = @errors
+        else
+          flash[:notice] = "Memento saved!"
+        end
+        Rails.logger.debug "Flash values = #{flash.inspect}"
+      }
+    end
+  end
+    
   def new_content
     @object = @content = current_user.contents.new
     
@@ -77,6 +109,11 @@ class MementosController < MemberHomeController
     @videos = contents.web_videos
     @audio  = contents.audio
     @music  = contents.music
+  end
+  
+  def set_constants
+    @max_listed = 10
+    @max_caption_length = 165
   end
   
   # Convert to js-compatible data structure

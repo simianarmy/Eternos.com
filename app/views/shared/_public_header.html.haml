@@ -1,13 +1,13 @@
 = link_to(image_tag('logo.png', :border => "0"),  root_path)
 %ul
   %li{:class => (controller.controller_name == 'home') ? 'active' : 'inact'}
-    = link_to 'Home', '/'
+    = link_to 'Home', root_url
     %span
   %li{:class => (controller.action_name == 'what') ? 'active' : 'inact'}
-    = link_to 'What is Eternos?', '/about/what'
+    = link_to 'What is Eternos?', what_about_url
     %span
   %li{:class => (controller.controller_name == 'about' && controller.action_name == 'index') ? 'active' : 'inact'}
-    = link_to 'About', about_path
+    = link_to 'About', about_url
     %span
   %li{:class => (@blog || (controller.action_name == 'blog')) ? 'active' : 'inact'}
     = link_to 'Our Blog', '/blog/'

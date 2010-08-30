@@ -1,9 +1,9 @@
-#wysiwyg_instructions.hidden
-  %span{:style=>"text-align: center"}
-    You can add a text-only slide with this editor...<br/>
-    Just write your message here & click the Save button.
-<form id="wysiwyg_form" method="POST">
-%textarea.editor{:name => "slidecontent"}
+%p.mementos-p
+  You can add a text-only slide with this editor...<br/>
+  Just write your message here & click the green button.
+<form id="wysiwyg_form" name="text-slide", action="javascript:void(0);">
+%textarea#textinput.editor{:name => "slidecontent", :rows => '5'}
+%br
 %input#save_wysiwyg{:type => 'submit', :value => 'Add to Movie'} 
 %input#clear_wysiwyg{:type => 'button', :value => 'Clear'} 
 </form>

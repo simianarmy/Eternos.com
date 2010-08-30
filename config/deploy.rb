@@ -59,12 +59,6 @@ namespace :deploy do
     #run "RAILS_ENV=#{stage} god load #{current_path}/config/daemons.god"
     #run "RAILS_ENV=#{stage} god start eternos_#{stage}"
   end
-
-  desc "Restart web server"
-  task :restart, :roles => :web do
-    run "cd #{current_path} && rake RAILS_ENV=#{stage} tmp:cache:clear"
-    run "touch #{current_path}/tmp/restart.txt"
-  end
   
   desc "Symlink shared configs and folders on each release."
   task :symlink_shared do

@@ -1,8 +1,11 @@
 page << "spinner.unload();"
 if @error
-  page.flash_and_fade 'flash_notice'
+  page.flash_and_fade 'memento-save-error-notice'
 else
-  page << "editor.load('#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});"
-  page['memento_title'].value = @memento.title
+  page << "editor.load('#{@memento.uuid}', '#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});"
+  # Switch form to call 'update' action
+  page['save-memento-form'].action = memento_path(@memento)
+  page['save-memento-form'].method = 'put'
   page.replace_html 'shareit', :partial => 'share_form', :object => @memento
+  page.visual_effect :highlight, 'save-button', :duration => 5.0
 end

@@ -1,5 +1,6 @@
 if @memento.new_record?
-  page.flash_and_fade 'memento-save-notice', :duration => 10
+  page.flash_and_fade 'memento-save-error-notice', :duration => 10
 else
   page.replace_html 'shareit', :partial => 'share_form', :object => @memento
+  page.visual_effect :highlight, 'shareit', :duration => 5.0
 end
