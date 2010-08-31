@@ -183,20 +183,22 @@ class AccountsController < ApplicationController
     @account.name = @user.full_name
 
     if @account.save        
-      # Check for address
+      # Check for any permutation of address params
       if params[:address_book] && (addr = params[:address_book][:address_attributes])
         # Check for optional state & country values
-        if (state = addr.delete(:state)) && !state.blank?
+        if (state = params[:address_book][:address_attributes].delete(:state)) && !state.blank?
           if region = Region.find_by_name(state.downcase)
             params[:address_book][:address_attributes][:region_id] = region.id
             params[:address_book][:address_attributes][:country_id] = region.country.id
           end
-        elsif (cc = addr.delete(:country_code)) && !cc.blank?
+        elsif (cc = params[:address_book][:address_attributes].delete(:country_code)) && !cc.blank?
           if country = Country.find_by_alpha_2_code(cc.downcase)
             params[:address_book][:address_attributes][:country_id] = country.id
           end
         end
-        params[:address_book][:address_attributes][:location_type] = Address::Home
+        # Set defaults
+        params[:address_book][:address_attributes][:street_1] ||= 'no street address'
+        params[:address_book][:address_attributes][:location_type] ||= Address::Home
         @user.address_book.update_attributes(params[:address_book])
       end
 

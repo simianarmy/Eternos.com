@@ -32,7 +32,7 @@ describe AccountsController do
       
       it "should assign a placeholder name only if none sent" do
         post_info
-        assigns[:account].user.first_name.should == 'first name'
+        assigns[:account].user.first_name.should == 'New'
         post :aff_create, @params.merge({:user => required_params.merge({:first_name => 'douchenick'})})
         assigns[:account].user.first_name.should == 'douchenick'
       end
@@ -67,6 +67,29 @@ describe AccountsController do
             :address_attributes => {:postal_code => "123", :street_1 => 'fun town', :city => 'shooberg', :country_code => "US"}
           }}))
           assigns[:account].user.address_book.addresses.should have(1).thing
+        end
+        
+        it "should save correct address without street address param" do
+          post :aff_create, @params.merge({:user => required_params}.merge({:address_book => {
+            :address_attributes => {:postal_code => "123", :city => 'shooberg', :country_code => "US"}
+          }}))
+          assigns[:account].user.address_book.addresses.first.city.should == 'shooberg'
+        end
+        
+        it "should save correct address with country code and country id" do
+          post :aff_create, @params.merge({:user => required_params}.merge({:address_book => {
+            :address_attributes => {:postal_code => "123", :city => 'shooberg', :country_code => "US", :country_id => 840}
+          }}))
+          assigns[:account].user.address_book.addresses.first.should be_valid
+        end
+        
+        it "should save correct address with country code and country id and region id" do
+          post :aff_create, @params.merge({:user => required_params}.merge({:address_book => {
+            :address_attributes => {:postal_code => "123", :city => 'shooberg', :country_id => 840,
+              :region_id => 4163}
+          }}))
+          assigns[:account].user.address_book.addresses.first.should be_valid
+          assigns[:account].user.address_book.addresses.first.region_id.should == 4163
         end
       end
       
