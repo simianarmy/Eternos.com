@@ -150,7 +150,7 @@ class Video < Content
             'time' => 2),
       },
       #{ 'notify' => encoding_callback_url }
-      { 'notify' => encoding_callback_url(:host => 'staging.eternos.com')}
+      { 'notify' => encoding_callback_url(:host => ENCODING_DOT_COM_POSTBACK_HOST)}
       # Alternatively you could also:
       #{ 'notify' => "marc@eternos.com" }
     )
