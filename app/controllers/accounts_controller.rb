@@ -165,12 +165,13 @@ class AccountsController < ApplicationController
     Rails.logger.debug "IN AFF CREATE FOR USER #{@user.inspect}"
 
     @user.registration_required = false
-    
-    if !@user.password.blank?
-      @user.password_confirmation = @user.password
-    else
-      @user.password_confirmation = @user.password = @user.generated_password = User.generate_password
-    end
+
+    # GENERATE A PASSWORD 
+    pwd = User.generate_password
+    @user.generated_password = pwd
+    @user.password = pwd
+    @user.password_confirmation = pwd
+
     # Use stub for name if necessary
     if params[:user][:first_name].blank?
       @user.first_name = 'New'
