@@ -159,7 +159,7 @@ module ScottBarron                   #:nodoc:
         end
 
         def run_transition_action(action)
-          Symbol === action ? self.method(action).call : action.call(self)
+          Symbol === action ? self.method(action).untaint.call : action.call(self)
         end
         private :run_transition_action
       end

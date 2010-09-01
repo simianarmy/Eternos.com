@@ -91,6 +91,20 @@ describe AccountsController do
           assigns[:account].user.address_book.addresses.first.should be_valid
           assigns[:account].user.address_book.addresses.first.region_id.should == 4163
         end
+        
+        it "should just work darnit" do
+          post :aff_create, @params.merge({:user => required_params}.merge({
+            :profile => {'birthday(1i)' => "1979", 'birthday(2i)' => "01", 'birthday(ei)' => "01",
+              :gender => "female"}, 
+            :first_name => 'test', :last_name => 'best',
+            :address_book => {
+              :address_attributes => {
+                :city => "Kent", :country_code => "US", :postal_code => "11111", :state => "Washington"
+              }
+            }
+          }))
+          debugger
+        end
       end
       
       it "should receive a signup notification email" do

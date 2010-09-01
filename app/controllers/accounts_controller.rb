@@ -185,16 +185,21 @@ class AccountsController < ApplicationController
     if @account.save        
       # Check for any permutation of address params
       if params[:address_book] && (addr = params[:address_book][:address_attributes])
-        # Check for optional state & country values
-        if (state = params[:address_book][:address_attributes].delete(:state)) && !state.blank?
-          if region = Region.find_by_name(state.downcase)
-            params[:address_book][:address_attributes][:region_id] = region.id
-            params[:address_book][:address_attributes][:country_id] = region.country.id
-          end
-        elsif (cc = params[:address_book][:address_attributes].delete(:country_code)) && !cc.blank?
-          if country = Country.find_by_alpha_2_code(cc.downcase)
-            params[:address_book][:address_attributes][:country_id] = country.id
-          end
+        # Check for & remove optional state & country values
+        region = nil
+        state = params[:address_book][:address_attributes].delete(:state)
+        cc = params[:address_book][:address_attributes].delete(:country_code)
+        
+        # If US-based state, we can get region & country right away
+        if state && !state.blank? &&
+          region = Region.find_by_name(state.downcase)
+          params[:address_book][:address_attributes][:region_id] = region.id
+          params[:address_book][:address_attributes][:country_id] = region.country.id
+        end
+        # Otherwise check for optional country code parameter
+        if region.nil? && !cc.blank? &&
+          country = Country.find_by_alpha_2_code(cc.downcase)
+          params[:address_book][:address_attributes][:country_id] = country.id
         end
         # Set defaults
         params[:address_book][:address_attributes][:street_1] ||= 'no street address'
