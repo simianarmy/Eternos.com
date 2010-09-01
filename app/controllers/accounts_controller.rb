@@ -178,6 +178,16 @@ class AccountsController < ApplicationController
     if params[:user][:last_name].blank?
       @user.last_name = 'Member'
     end
+    # Check & delete phone number from attributes - it will kill build_profile
+    if @user.profile.cellphone
+      # Build new phone number attributes out of cellphone string
+      params[:address_book] ||= {}
+      params[:address_book].merge!({
+        :new_phone_number_attributes => [{
+          :phone_type => PhoneNumber::PhoneTypes['Mobile'],
+          :number => @user.profile.cellphone
+        }]})
+    end
     @user.build_profile(params[:user][:profile])
     @success = true
     @account.name = @user.full_name
@@ -189,7 +199,6 @@ class AccountsController < ApplicationController
         region = nil
         state = params[:address_book][:address_attributes].delete(:state)
         cc = params[:address_book][:address_attributes].delete(:country_code)
-        
         # If US-based state, we can get region & country right away
         if state && !state.blank? &&
           region = Region.find_by_name(state.downcase)
@@ -204,6 +213,9 @@ class AccountsController < ApplicationController
         # Set defaults
         params[:address_book][:address_attributes][:street_1] ||= 'no street address'
         params[:address_book][:address_attributes][:location_type] ||= Address::Home
+      end
+      
+      if params[:address_book]
         @user.address_book.update_attributes(params[:address_book])
       end
 

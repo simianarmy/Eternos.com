@@ -3,6 +3,9 @@
 class Profile < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
   
+  # virtual attribute
+  attr_accessor :cellphone 
+  
   with_options :dependent => :destroy do |m|
     m.has_many :careers, :class_name => 'Job'
     m.has_many :schools

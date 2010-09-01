@@ -92,18 +92,28 @@ describe AccountsController do
           assigns[:account].user.address_book.addresses.first.region_id.should == 4163
         end
         
-        it "should just work darnit" do
-          post :aff_create, @params.merge({:user => required_params}.merge({
-            :profile => {'birthday(1i)' => "1979", 'birthday(2i)' => "01", 'birthday(ei)' => "01",
-              :gender => "female"}, 
-            :first_name => 'test', :last_name => 'best',
-            :address_book => {
-              :address_attributes => {
-                :city => "Kent", :country_code => "US", :postal_code => "11111", :state => "Washington"
-              }
-            }
-          }))
-          debugger
+        it "should allow full address" do
+          post :aff_create, @params.merge({:user => required_params.merge({
+            :profile => {
+              'birthday(1i)' => "1979", 'birthday(2i)' => "01", 'birthday(3i)' => "01", :gender => "female"
+            }, 
+            :first_name => 'test', :last_name => 'best'
+            })}.merge({
+              :address_book => {
+                :address_attributes => {
+                  :city => "Kent", :country_code => "US", :postal_code => "11111", :state => "Washington"
+                }
+                }}))
+           assigns[:account].user.address_book.addresses.should have(1).thing
+        end
+        
+        it "should save cellphone in address_book" do
+          post :aff_create, @params.merge({:user => required_params.merge({
+            :profile => {'birthday(1i)' => "1979", 'birthday(2i)' => "01", 'birthday(3i)' => "01",
+              :gender => "female", :cellphone => '123-3322'}, 
+            :first_name => 'test', :last_name => 'best'
+          })})
+          assigns[:account].user.address_book.phone_numbers.should have(1).thing
         end
       end
       
