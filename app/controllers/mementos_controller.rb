@@ -3,10 +3,10 @@
 class MementosController < MemberHomeController
   layout 'mementos', :only => ['new', 'index']
   
-  skip_before_filter :login_required, :only => [:show]
-  skip_before_filter :check_roles, :only => [:show]
-  skip_before_filter :set_facebook_connect_session, :only => [:show, :new_content]
-  skip_before_filter :load_member_home_presenter, :only => [:show, :new_content]
+  before_filter :login_required, :except => [:show]
+  before_filter :check_roles, :except => [:show]
+  before_filter :set_facebook_connect_session, :except => [:show, :new_content]
+  before_filter :load_member_home_presenter, :except => [:show, :new_content]
   before_filter :set_constants
   
   def new  
@@ -128,7 +128,7 @@ class MementosController < MemberHomeController
         # Load slide content object data if any
         Rails.logger.debug "Parsed params: #{slide.inspect}"
         if cid = slide['cid']
-          if c = current_user.contents.find(cid)
+          if c = Content.find(cid)
             Rails.logger.debug "Found content object: #{c.id}"
             slide.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url||c.content_icon})
           end
@@ -144,7 +144,7 @@ class MementosController < MemberHomeController
         # Load audio content object data if any
         Rails.logger.debug "Parsed params: #{sound.inspect}"
         if cid = sound['cid']
-          if c = current_user.contents.find(cid)
+          if c = Content.find(cid)
             Rails.logger.debug "Found content object: #{c.id}"
             sound.merge!({:url => c.player_url, :thumb_url => c.thumbnail_url||c.content_icon, 
               :duration => c.duration_seconds})
@@ -154,7 +154,8 @@ class MementosController < MemberHomeController
         @sounds << sound
       end
       Rails.logger.debug "Audio: #{@sounds.inspect}"
-    rescue
+    rescue Exception => e
+      Rails.logger.error "Exception in create_memento_json! #{e.class} #{e.message}"
       flash[:error] = @error = "Sorry, we were not able to load this Memento!"
     end
   end

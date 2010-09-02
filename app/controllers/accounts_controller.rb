@@ -167,10 +167,9 @@ class AccountsController < ApplicationController
     @user.registration_required = false
 
     # GENERATE A PASSWORD 
-    pwd = User.generate_password
-    @user.generated_password = pwd
-    @user.password = pwd
-    @user.password_confirmation = pwd
+    @pwd = User.generate_password
+    @user.generated_password = @pwd
+    @user.password = @user.password_confirmation = @pwd
 
     # Use stub for name if necessary
     if params[:user][:first_name].blank?
@@ -220,6 +219,10 @@ class AccountsController < ApplicationController
         @user.address_book.update_attributes(params[:address_book])
       end
 
+      # SHIT'S WEIRD YO...MAYBE THIS WILL FIX IT?
+      @user.password = @user.password_confirmation = @pwd
+      @user.save!
+      
       @user.register!
       @user.activate!
     else
