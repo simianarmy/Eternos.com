@@ -1,5 +1,5 @@
 # $Id$
-require "bundler/capistrano"
+#require "bundler/capistrano"
 require 'capistrano/ext/multistage'
 
 set :application, "eternos"
