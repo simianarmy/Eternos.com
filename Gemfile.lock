@@ -211,6 +211,7 @@ DEPENDENCIES
   image_science
   javan-whenever
   jnunemaker-columbus
+  json_pure (= 1.4.6)
   larch
   lockfile
   markevans-block_helpers
