@@ -7,5 +7,6 @@ public/javascripts/cache
 public/assets
 .bundle
 vendor/cache
+vendor/bundle
 log
 tmp

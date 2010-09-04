@@ -10,16 +10,16 @@ unless defined? DaemonKit
   # From http://tomafro.net/2009/11/a-rails-template-for-gem-bundler
   # CAUTION: MAY NOT WORK ON YOUR OS
   
-  require File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle", "environment"))
+  #require File.expand_path(File.join(File.dirname(__FILE__), "..", ".bundle", "environment"))
 
   begin
     require 'rubygems'
-    require 'bundler'
+    require "bundler"
   rescue LoadError
     raise "YOU'RE FUCKED!  BUNDLER HATES YOU!!!"
   end
 
-  if Gem::Version.new(Bundler::VERSION) <= Gem::Version.new("0.9.20")
+  if Gem::Version.new(Bundler::VERSION) <= Gem::Version.new("0.9.24")
     raise RuntimeError, "Your bundler version is too old." +
      "Run `gem install bundler` to upgrade."
   end
@@ -30,7 +30,7 @@ unless defined? DaemonKit
     Bundler.setup
   rescue Bundler::GemNotFound
     raise RuntimeError, "Bundler couldn't find some gems." +
-      "Did you run `bundle install`?"
+    "Did you run `bundle install`?"
   end
   
 end # defined? DaemonKit

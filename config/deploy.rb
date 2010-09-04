@@ -1,4 +1,6 @@
 # $Id$
+require "bundler/capistrano"
+require 'capistrano/ext/multistage'
 
 set :application, "eternos"
 set :domain, "#{application}.com"
@@ -23,7 +25,7 @@ set :scm, 'subversion'
 
 set :stages, %w(development staging production production-rackspace utility)
 set :default_stage, "staging"
-require 'capistrano/ext/multistage'
+
 
 ssh_options[:paranoid] = false
 default_run_options[:pty] = true

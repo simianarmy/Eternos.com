@@ -4,6 +4,7 @@
 #clear_sources
 
 #source :gemcutter
+source "http://rubygems.org"
 source 'http://gemcutter.org'
 source "http://gems.github.com"
 
@@ -43,7 +44,6 @@ gem 'active_presenter'
 gem 'after_commit'
 gem 'amqp', '0.6.7'
 gem 'aws-s3'
-gem 'bundler', '0.9.25'
 gem 'crack'
 gem 'daemons'
 gem 'eventmachine'
@@ -58,6 +58,7 @@ gem 'httparty'
 gem 'image_science'
 gem 'javan-whenever'
 gem 'jnunemaker-columbus'
+gem 'json_pure', '1.4.6'
 gem 'larch'
 gem 'lockfile'
 gem 'markevans-block_helpers'
