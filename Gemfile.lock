@@ -7,7 +7,6 @@ GEM
     RubyInline (3.8.6)
       ZenTest (~> 4.3)
     SystemTimer (1.2)
-    ZenTest (4.4.0)
     actionmailer (2.3.4)
       actionpack (= 2.3.4)
     actionpack (2.3.4)
