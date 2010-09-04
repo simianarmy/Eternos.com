@@ -13,15 +13,18 @@ Welcome, <%= @name %>!
 <br/>
 <br/>
  Your login info:
+ 
 <br/>
 <% if @facebook %>
  Simply click the Facebook Connect button on the login page to enter the site.
 <% else %>
  Login: <%= @login %>
+ 
 <% end %>
 <br/>
 <% if @passwd %>
  Password: <%= @passwd %>
+ 
 <% else %>
  Password: Type the password you used to create your account.
 <% end %>

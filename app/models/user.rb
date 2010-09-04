@@ -101,7 +101,8 @@ class User < ActiveRecord::Base
   GuestRole         = 'Guest'
  
   def self.generate_password
-    ActiveSupport::SecureRandom.base64(8)
+    # STRIP OUT NON-ALPHA CHARACTERS THAT WOULDN'T DISPLAY IN SOME HTML EMAILS!
+    ActiveSupport::SecureRandom.base64(10).gsub(/[^a-zA-Z0-9]/, '')
   end
   
   #find the user in the database, first by the facebook user id and if that fails through the email hash
