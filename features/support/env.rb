@@ -9,7 +9,6 @@ require 'spork'
  
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "cucumber"
-  ENV['RUNNING_CUCUMBER'] = '1'
   require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
   
   require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
@@ -18,24 +17,20 @@ Spork.prefork do
   require 'cucumber/rails/active_record'
   require 'cucumber/web/tableish'
 
-  require 'email_spec/cucumber'
-  require 'spec/expectations'
-  require 'fixjour'
+
   require 'webrat'
   require 'webrat/core/matchers'
 
-  require File.expand_path(File.dirname(__FILE__) + "/../../spec/fixjour_builders.rb")
-  require File.expand_path(File.dirname(__FILE__) + "/../../spec/content_spec_helper.rb")
+  require 'email_spec/cucumber'
+  require 'fixjour'
+  require 'faker'
   
   Webrat.configure do |config|
     config.mode = :rails
     config.open_error_files = false # Set to true if you want error pages to pop up in the browser
   end
   
-  World(Fixjour)
-  World(ContentSpecHelper)
 
-  Fixture_path = File.expand_path(File.dirname(__FILE__)) + '/../../spec/fixtures/'
 end
  
 Spork.each_run do
@@ -63,7 +58,6 @@ Spork.each_run do
   # subsequent scenarios. If you do this, we recommend you create a Before
   # block that will explicitly put your database in a known state.
   Cucumber::Rails::World.use_transactional_fixtures = true
-  
   # How to clean your database when transactions are turned off. See
   # http://github.com/bmabey/database_cleaner for more info.
   if defined?(ActiveRecord::Base)
@@ -74,4 +68,3 @@ Spork.each_run do
     end
   end
 end
-

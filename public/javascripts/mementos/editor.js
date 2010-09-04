@@ -42,13 +42,16 @@ function htmlDecode(input){
 }
 
 var flash_and_fade = function(id, message) {
-	$(id).innerHTML = message;
-	$(id).show();
+	var el = $(id);
+	if (el) {
+		el.innerHTML = message;
+		el.show();
 
-	setTimeout(function() {
-		new Effect.Fade(id);
-	},
-	5000);
+		setTimeout(function() {
+			new Effect.Fade(id);
+		},
+		5000);
+	}
 };
 
 var mementoFlash = function() {

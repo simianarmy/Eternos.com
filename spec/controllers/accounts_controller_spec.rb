@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AccountsController do
+  ActionController::Integration::Session
+  
   describe "on create affiliate account post" do
     describe "with required parameters" do
       def required_params
@@ -23,11 +25,9 @@ describe AccountsController do
         }.should change(User, :count).by(1)
       end
       
-      it "should assign a random password only if none sent" do
+      it "should assign a random password" do
         post_info
         assigns[:user].generated_password.should_not be_blank
-        post :aff_create, @params.merge({:user => required_params.merge({:password => 'fooshnick'})})
-        assigns[:account].user.password.should == 'fooshnick'
       end
       
       it "should assign a placeholder name only if none sent" do
@@ -120,6 +120,15 @@ describe AccountsController do
       it "should receive a signup notification email" do
         post_info
         unread_emails_for(assigns[:user].email).should have(1).item
+      end
+      
+      it "should allow user to login with generated password" do
+        post_info
+        user = assigns[:user]
+        pwd = user.generated_password
+        debugger
+        post_via_redirect "user_sessions/new", :user_session => {:login => user.login, :password => pwd}
+        response.should redirect_to member_home_url
       end
     end
   end

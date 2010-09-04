@@ -9,7 +9,7 @@ Given /^I am not a member$/ do
 end
 
 Given /^I am logged in/ do
-  Then "I login"
+  login
 end
 
 Given /^I am not logged in$/ do
@@ -17,7 +17,7 @@ Given /^I am not logged in$/ do
 end
 
 When /^I login$/ do
-  login_as(@me || create_member)
+  login
 end
 
 Given /^I login as (.*)$/ do |email|
@@ -26,6 +26,7 @@ Given /^I login as (.*)$/ do |email|
   end
   login_as(@me)
 end
+
 
 Given /^(.*) is logged in$/ do |email|
   Given "the user #{email} exists" 

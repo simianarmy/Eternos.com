@@ -9,7 +9,7 @@
   %p
     %label Password: 
     = f.password_field :password, {:id => "password-created2"}
-  %p{:align=>"right"}= submit_tag 'submit', :value => 'login', :class => "login verification"
+  %p{:align=>"right"}= submit_tag 'submit', :value => 'login', :class => "login verification", :id => "login_button"
 %p 
   %label &nbsp;
   = check_box_tag 'user_session[remember_me]'
