@@ -59,15 +59,22 @@ namespace :backup do
     ContentUploader.upload_all
   end
   
+  
+  
   desc "Make sure all blog entries have screencaps"
   task :ensure_feed_screencaps => :environment do
     MessageQueue.start do
       Thread.abort_on_exception = true
       t1 = Thread.new do
-        FeedEntry.find_each do |fe|
-          unless fe.screencap_url
-            puts "FeedEntry #{fe.id} missing screencap...saving"
-            (fe.feed_content || fe.create_feed_content).save_screencap 
+        if ENV['FEED_ENTRY_ID']
+          if fe = FeedEntry.find(ENV['FEED_ENTRY_ID'])
+            fe.ensure_screencap
+          else
+            puts "No FeedEntry found."
+          end
+        else
+          FeedEntry.find_each do |fe|
+            fe.ensure_screencap
           end
         end
       end # Thread.new

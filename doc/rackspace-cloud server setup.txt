@@ -84,3 +84,11 @@ with permissions or missing system software.  Check the cap output for details.
 > cap <stage> deploy:setup
 > cap <stage> deploy:cold
 > cap <stage> deploy
+
+Paperclip:
+
+In environment.rb, make sure path is set to 'identify' command:
+
+config.after_initialize do
+  Paperclip.options[:command_path] = "/usr/local/bin"
+end

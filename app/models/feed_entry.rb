@@ -81,6 +81,13 @@ class FeedEntry < ActiveRecord::Base
     feed.feed_url.member
   end
   
+  def ensure_screencap
+    unless screencap_url
+      puts "FeedEntry #{id} missing screencap.  Attempting to create from #{url}..."
+      (feed_content || create_feed_content).save_screencap 
+    end
+  end
+  
   protected
   
   def save_contents

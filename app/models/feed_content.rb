@@ -7,7 +7,7 @@ class FeedContent < ActiveRecord::Base
   belongs_to :feed_entry
   
   has_attached_file :screencap, 
-  :styles => { :thumb => "300x300" },
+  :styles => { :thumb => ["300x300>", :png] },
   :storage => :s3,
   # Parse credentials into hash on load since file might disappear after deploy
   # when this file is used by non-Rails apps (ie. backup daemons)
@@ -29,9 +29,10 @@ class FeedContent < ActiveRecord::Base
   def save_screencap
     if (s = ScreenCapture.capture(feed_entry.url)) && File.exist?(s)
       puts "Saving screencap file #{s} to s3"
-      self.screencap = File.new(s)
+      self.screencap = File.open(s)
       self.size = File.size(s)
-      self.save # save to start s3 upload
+      self.save! # save to start s3 upload, raise error on any Paperclip validation error
+      puts "Saved to bucket: #{self.screencap.url}"
       File.delete(s)
     end
   end
