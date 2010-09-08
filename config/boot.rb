@@ -50,13 +50,16 @@ module Rails
 
   class GemBoot < Boot
     def load_initializer
+      puts "*** Initializing Rails using GemBoot"
       self.class.load_rubygems
       load_rails_gem
+      # MAKE SURE ANOTHER GEM ISN'T GOING TO CLOBBER THIS!
       require 'initializer'
     end
 
     def load_rails_gem
       if version = self.class.gem_version
+        puts "*** GemBoot: Loading rails version #{version}"
         gem 'rails', version
       else
         gem 'rails'

@@ -49,19 +49,29 @@
 // For ajax busy spinner
 var spinner = function() {
 	var ctrl = null;
+	//test for MSIE x.x;
+	var isIE = (/MSIE (\d+\.\d+);/.test(navigator.userAgent));
 	
 	function load(element) {
-		if (ctrl == null) {
-			if (typeof element === 'string') {
-				element = document.getElementById(element);
-			}
+		if (typeof element === 'string') {
+			element = document.getElementById(element);
+		}
+		if (isIE) {
+			element.addClassName('loading');
+			ctrl = element;
+		} else if (ctrl === null) {
 			ctrl = getBusyOverlay(element);
 		}
 	}
 	function unload() {
 		try {
 			if (ctrl) {
-				ctrl.remove(); delete ctrl;
+				if (isIE) {
+					ctrl.removeClassName('loading');
+				} else {
+					ctrl.remove();
+				}
+				delete ctrl;
 			} 
 		} catch(e) {};
 		ctrl = null;

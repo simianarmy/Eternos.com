@@ -236,3 +236,6 @@ div.draggable {
   
 }
 
+.loading {
+	background: url(/images/ajax-loader.gif) no-repeat center; 
+}

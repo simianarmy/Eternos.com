@@ -28,9 +28,12 @@ unless defined? DaemonKit
     # Set up load paths for all bundled gems
     ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
     Bundler.setup
+    puts "*** Bundler.setup called with Gemfile at #{ENV["BUNDLE_GEMFILE"]}"
   rescue Bundler::GemNotFound
     raise RuntimeError, "Bundler couldn't find some gems." +
     "Did you run `bundle install`?"
   end
   
-end # defined? DaemonKit
+else # defined? DaemonKit
+  puts "*** Using DaemonKit!"
+end

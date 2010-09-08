@@ -392,7 +392,9 @@ var ArtifactPicker = function() {
 					} else if (true || currentPane.is(":empty")) {
 						// load it with a page specified in the tab's href attribute
 						spinner.load('type_list');
-						currentPane.load(this.getTabs().eq(i).attr("href"));
+						currentPane.load(this.getTabs().eq(i).attr("href"), null, function() {
+							spinner.unload();
+						});
 					} 
 				}
 			}
@@ -889,7 +891,9 @@ var AudioPicker = function() {
 					} else {
 						// load it with a page specified in the tab's href attribute
 						spinner.load('pane3');
-						currentPane.load(this.getTabs().eq(i).attr("href"));
+						currentPane.load(this.getTabs().eq(i).attr("href"), null, function() {
+							spinner.unload();
+						});
 					} 
 				}
 			}
