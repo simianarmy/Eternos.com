@@ -4,7 +4,7 @@ class AccountsController < ApplicationController
   require_role "Member", :except => [:new, :create, :fb_create, :aff_create, :billing, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
 
-  before_filter :set_facebook_connect_session, :except => [:aff_create]
+  before_filter :set_facebook_connect_session
   before_filter :build_user, :only => [:new, :create, :fb_create, :aff_create]
   before_filter :build_plan, :only => [:new, :create, :fb_create, :aff_create]
   before_filter :load_billing, :only => [ :new, :create, :fb_create, :aff_create, :billing, :paypal]
@@ -218,9 +218,6 @@ class AccountsController < ApplicationController
       if params[:address_book]
         @user.address_book.update_attributes(params[:address_book])
       end
-
-      # SHIT'S WEIRD YO...MAYBE THIS WILL FIX IT?
-      @user.password = @user.password_confirmation = @pwd
       @user.save!
       
       @user.register!

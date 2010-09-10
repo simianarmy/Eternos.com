@@ -135,10 +135,14 @@ class User < ActiveRecord::Base
   # We hen use the email hash in the database to later identify a user from Facebook with a local user
   def register_user_to_fb
     if AppConfig.register_users_to_facebook
-      users = {:email => email, :account_id => id}
-      Facebooker::User.register([users])
-      self.email_hash = Facebooker::User.hash_email(email)
-      save(false)
+      begin # DON'T LET FACEBOOK FUCK UP NEW USERS
+        users = {:email => email, :account_id => id}
+        Facebooker::User.register([users])
+        self.email_hash = Facebooker::User.hash_email(email)
+        save(false)
+      rescue Exception => e
+        Rails.logger.warn "Facebook barfed in User.register_user_to_fb: #{e.message}"
+      end
     end
     true
   end

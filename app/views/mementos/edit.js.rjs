@@ -3,9 +3,13 @@ if @error
   page.flash_and_fade 'memento-save-error-notice'
 else
   page << "editor.load('#{@memento.uuid}', '#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});"
+  
   # Switch form to call 'update' action
-  page['save-memento-form'].action = memento_path(@memento)
-  page['save-memento-form'].method = 'put'
+  page['save-memento-form'].action = "/mementos/#{@memento.id}/update"
+  
+  # THIS WON'T WORK IN IE!!
+  #page['save-memento-form'].method = 'put'
+
   page.replace_html 'shareit', :partial => 'share_form', :object => @memento
   page.visual_effect :highlight, 'save-button', :duration => 5.0
 end

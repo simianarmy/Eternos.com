@@ -520,7 +520,7 @@ var ArtifactSelection = function() {
 		});
 		// Add slide action links code & click handlers
 		jQuery(artifact).append(
-			jQuery('<div id="artifact-hover-menu-items"></div>').append(
+			jQuery('<div class="artifact-hover-menu-items"></div>').append(
 					artifact.userHtml ? 
 						'<a href="#editor.html" class="edit_slide">edit</a>' : 
 						'<a href="#" class="caption_slide">caption</a>'
@@ -1473,7 +1473,13 @@ var MovieGenerator = function() {
 		});
 		*/
 		soundManager.onready(function(oStatus) {
-			if (!oStatus.success) {
+			// Notify listener that audio is ready to be played - very important for 
+			// player page that loads & plays editor very quickly!
+			// Using this custom event allows the player page to wait for audio support
+			// to be fully loaded before beginning playback
+			if (oStatus.success) {
+				$('movie_player').fire('audio:ready', {});
+			} else {
 				mementoFlash.error('Error initializing sound...please reload the page.');
 			}
 		});

@@ -1,0 +1,20 @@
+#!/bin/bash
+case $1 in
+  start)
+    path_original=$PATH
+    PATH=/usr/local/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/deploy/bin
+    cd /var/www/eternos.com/current/
+    /usr/bin/env HOME=/home/deploy RAILS_ENV=production /usr/local/bin/bundle exec /var/www/eternos.com/current/script/workling_client start
+    PATH=$path_original
+    ;;
+  stop)
+    path_original=$PATH
+    PATH=/usr/local/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/deploy/bin
+    cd /var/www/eternos.com/current/
+    /usr/bin/env HOME=/home/deploy RAILS_ENV=production /usr/local/bin/bundle exec /var/www/eternos.com/current/script/workling_client stop
+    PATH=$path_original
+    ;;
+  *)
+    echo "Usage: workling-wrapper {start|stop}" ;;
+esac
+exit 0

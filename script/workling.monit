@@ -1,0 +1,4 @@
+check process workling with pidfile /var/www/eternos.com/shared/log/workling.pid
+  start program = "/usr/local/bin/workling-wrapper start" with timeout 60 seconds
+  stop program = "/usr/local/bin/workling-wrapper stop"
+  group eternos

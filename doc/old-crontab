@@ -1,0 +1,26 @@
+# FIND OUT WHY GMAIL DUMPS THESE!
+#0 1 * * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake reports:backup:all >> /var/www/eternos.com/current/log/cron.log 2>&1
+#0 2 * * * cd /var/www/eternos.com_staging/current && RAILS_ENV=staging /usr/bin/env rake reports:backup:jobs >> /var/www/eternos.com_staging/current/log/cron.log 2>&1
+
+# Run normal backup jobs frequently
+#15 */2 * * * cd /var/www/eternos.com/current && RAILS_ENV=production DATASET=0 MAX=500 /usr/bin/env rake backup:run_scheduled >> /var/www/eternos.com/shared/log/backup_scheduler.log 2>&1
+# Run long backup jobs daily
+#45 */2 * * * cd /var/www/eternos.com/current && RAILS_ENV=production DATASET=1 MAX=500 /usr/bin/env rake backup:run_scheduled >> /var/www/eternos.com/shared/log/backup_scheduler.log 2>&1
+# Run backups for new accounts to keep actives up
+#0 */5 * * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake backup:run_recent_accounts CREATED_DAYS_AGO=3
+#0 */3 * * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake backup:ensure_feed_screencaps 2>/dev/null
+
+# Save pending backups to file for munin
+#30 * * * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake backup:print_pending_jobs 2>&1
+
+# Rebuild thinking_sphinx index
+#0 */4 * * * cd /var/www/eternos.com_staging/current && RAILS_ENV=staging /usr/bin/env rake ts:index >> /dev/null 2>&1 
+0 */4 * * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake ts:index >> /dev/null 2>&1 
+
+# Remove facebook duplicate records until permanent solution found
+#0 0 * * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake db:strip_fb_as_dupes
+
+# Calculate word frequencies
+#0 3 */2 * * cd /var/www/eternos.com/current && RAILS_ENV=production /usr/bin/env rake analysis:update_fulltext
+
+# End Whenever generated tasks for: eternos

@@ -27,14 +27,16 @@
         %h1== Memento: #{@memento.title}
         
         %h3== Created by #{@memento.member.full_name} on #{@memento.created_at.strftime('%x')}
-    		
+        #loading-indicator
+          %h3 
+            %strong LOADING MEMENTO...PLEASE WAIT
         #movie_pane.theme-default
           #movie_player
-        
+              
         #flash_notice.notice{:style => "display: none;"}
         
         .memento-player-bottom
-          %h4 Create Your Own Eternos Memento Now, Simply Sign-Up Below!
+          %h4 Create Your Own Eternos Memento Now, Simply Sign-Up For Free!
           = render :partial => 'accounts/short_form', :locals => {:plan => AppConfig.default_plan} 
           
     = render :partial => 'shared/site_footer' unless @hide_footer

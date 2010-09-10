@@ -98,7 +98,7 @@ ActionController::Routing::Routes.draw do |map|
       :sort => :post, :create_from_selection => :post 
     }
   end
-  map.resources :mementos, :collection => {:new_content => :get}
+  map.resources :mementos, :member => {:update => :post}, :collection => {:new_content => :get}
   map.resources :addresses, :collection => { :country_regions => :get }
   map.resources :trustees, :collection => { :confirmation => [:get, :post] }
   map.resource :about, :controller => 'about', :member => {

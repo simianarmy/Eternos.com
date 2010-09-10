@@ -1,0 +1,50 @@
+Eternos user metrics collection HOWTO.
+
+This document describes every marketing metric and how to obtain the data using the Rails framework.
+These stats will be collected and presented to Marketing & Sales Team via visual representations.
+
+Logins: 
+  users.last_login_at - timestamp of last login
+  users.failed_login_count - count of failed logins (invalid username/password)
+  users.login_count - running count of logins
+  
+# Active Users per 24 hour period:
+  Member.last_request_at_gt(24.hours.ago).size
+
+# Emails sent:
+  user_mailings db table (you can break it down by type using the 'subject' attribute)
+
+Registrations (Customers who completed the registration process last 31 days):
+  = new users.  You can use the named_scope:
+ Member.active.size
+with extra time parameters to limit the results
+
+Activations (Customers who had activity 3 to 10 days after they registered. Measures only customers that registered the last 31 days):
+ = new users who have added 1+ backup site.  You can use the named_scope:
+ Member.active.with_sources with date delimiters
+ 
+Activation/Registrations:
+  See #s above
+  
+% Retained 30+ Days:
+  % Users that have data sources that are still backing up 30+ days after registration date.
+  = Retained 30+ days / Total Actives
+  Total Actives = Member.active.with_sources.all.uniq.size
+  To find out if a user's data source is still active, check each user's backup sources using the 
+  member.backup_sources association
+  
+  Use backup_sources.latest_day_backed_up db attribute to find the most recent backup date for each backup source.
+  Note: backup_source_jobs table contains the most up-to-date details on each backup source's recent backup jobs.  Study it's structure for an idea of how backup job data is stored.
+  
+% Retained 90+ Days
+  = Retained 90+ days / Total Actives
+  
+
+  
+
+  
+
+
+  
+
+

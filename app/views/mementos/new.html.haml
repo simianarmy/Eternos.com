@@ -130,7 +130,7 @@
               <input id="j-button002" type="submit" value="Clear Slides" />      
             %form.clear_sounds                                                              
               <input id="j-button002" type="submit" value="Clear Audio" />       
-			  
+            
           <span id="movie_info"></span>
           <span id="movie_duration"></span>
       .clear
@@ -150,9 +150,10 @@
           = f.hidden_field :id
           = f.text_field :title, :defaultValue => "Enter a title", :class => 'withHint'
           %input#memento_save_button{:type => 'submit', :value => 'SAVE & SHARE'}
+          = link_to 'Start Over', new_memento_path, :confirm => 'Are you sure?'
       %p &nbsp;
       #shareit
-        
+  
 :javascript
   var MEMENTO = {};
   MEMENTO.width = #{@memento_width};
