@@ -54,6 +54,20 @@ var flash_and_fade = function(id, message) {
 	}
 };
 
+// Override spinner object
+var arti_spinner = function() {
+	var load = function() {
+		$('artifact-loading-bar').show();
+	}
+	var unload = function() {
+		$('artifact-loading-bar').hide();
+	}
+	return {
+		load: load,
+		unload: unload
+	};
+}();
+
 var mementoFlash = function() {
 	// Private functions
 	function showMessage(message, div) {
@@ -132,7 +146,7 @@ var MementoEditor = function() {
 	
 	// Cleanup/Edit functions
 	that.refreshSelector = function() {
-		spinner.unload();
+		arti_spinner.unload();
 		artifactViewPopulated();
 		artifactPicker.refresh();
 		audioPicker.refresh();
@@ -391,12 +405,12 @@ var ArtifactPicker = function() {
 						// Upload Pane - do nothing
 					} else if (true || currentPane.is(":empty")) {
 						// load it with a page specified in the tab's href attribute
-						spinner.load('type_list');
+						arti_spinner.load();
 						currentPane.load(this.getTabs().eq(i).attr("href"), null, function() {
-							spinner.unload();
+							arti_spinner.unload();
 						});
 					} 
-				}
+				} 
 			}
 		}); 
 		// tabs cacheing fucks up page refreshes
@@ -513,19 +527,22 @@ var ArtifactSelection = function() {
 	function addArtifact(artifact) {
 		var drophere = getArtifacts().last();
 		var items = selectionScroller.getItemWrap();
+		var editClass = artifact.userHtml ? 'edit_slide' : 'caption_slide';
 		
 		// Make sure to create a draggable on the new element to keep drag&drop ordering support
 		new Draggable(artifact, {
 			revert: true
 		});
-		// Add slide action links code & click handlers
+		// Add slide action icons & click handlers
 		jQuery(artifact).append(
-			jQuery('<div class="artifact-hover-menu-items"></div>').append(
-					artifact.userHtml ? 
-						'<a href="#editor.html" class="edit_slide">edit</a>' : 
-						'<a href="#" class="caption_slide">caption</a>'
-			).append(' | <a href="#" class="remove_slide">remove</a>')
+			'<span class="artifact-hover-menu-item-edit ' + editClass + 
+			'"></span><span class="artifact-hover-menu-item-delete remove_slide"></span>'
 		);
+		jQuery(artifact).hover(function() {
+			jQuery(this).children("span").fadeIn(200); 
+		}, function() {
+			jQuery(this).children("span").fadeOut(200); 
+		});
 	
 		// Move 'drop-here' box to the end
 		drophere.remove();
@@ -890,9 +907,9 @@ var AudioPicker = function() {
 						// Upload Pane - do nothing
 					} else {
 						// load it with a page specified in the tab's href attribute
-						spinner.load('pane3');
+						$('audio-loading-bar').show();
 						currentPane.load(this.getTabs().eq(i).attr("href"), null, function() {
-							spinner.unload();
+							$('audio-loading-bar').hide();
 						});
 					} 
 				}

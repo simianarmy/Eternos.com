@@ -1,6 +1,6 @@
 .decoration_item[item]
   - album_link = item.cover_photo ? image_tag(item.cover_photo.thumbnail_url) : item.name
-  = link_to_remote(album_link, :url => album_url, :method => 'get', :update => 'artifacts_expanded_view', :loading => "spinner.load('type_list')", :complete => "spinner.unload()")
+  = link_to_remote(album_link, :url => album_url, :method => 'get', :update => 'artifacts_expanded_view', :loading => "arti_spinner.load()", :complete => "arti_spinner.unload()")
   
   %br
   %span.title= truncate(item.name, :length => 20)

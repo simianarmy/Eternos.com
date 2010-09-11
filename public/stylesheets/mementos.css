@@ -267,18 +267,32 @@ li .handle {
   border: solid 1px #6C6;
 }
 
-/* Action links for scroller items */
-.artifact-hover-menu-items {
+/* Action icons for scroller items */
+span.artifact-hover-menu-item-edit {
 	display:none;
-	list-style:none;
-	margin:0px auto;
-	position: relative;
-	padding-top: 5px;
-	bottom: 6px;
-	/* text-decoration: underline; */
-	font-size: 12px;
+	background-image:url(/images/edit-icon-24x24.png);
+	background-repeat:no-repeat; 
+	width:24px; 
+	height:24px;
+	position:absolute; 
+	left:5px; 
+	bottom:5px;
 }
 
+/* Action icons for scroller items */
+span.artifact-hover-menu-item-delete {
+	display:none;
+	list-style:none;
+	background-image:url(/images/delete-icon-24x24.png);
+	background-repeat:no-repeat; 
+	width:24px; 
+	height:24px;
+	position:absolute; 
+	right:5px; 
+	bottom:5px;
+}
+
+/*
 .artifact-hover-menu-items li {
 	float:left;
 	margin:0px auto;
@@ -289,7 +303,7 @@ li .handle {
 	text-decoration: underline;
 	font-size: 10px;
 }
-
+*/
 #save_wysiwyg {
 	/* width: auto; */
 }
