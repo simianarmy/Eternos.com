@@ -1,4 +1,3 @@
-page << "spinner.unload();"
 if @error
   page.flash_and_fade 'memento-save-error-notice'
 else

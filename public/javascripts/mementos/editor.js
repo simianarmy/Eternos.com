@@ -403,7 +403,7 @@ var ArtifactPicker = function() {
 						//textSlideEditor.load();
 					} else if (jQuery(currentPane).attr('id') == TimelineUploadPaneId) {
 						// Upload Pane - do nothing
-					} else if (true || currentPane.is(":empty")) {
+					} else {
 						// load it with a page specified in the tab's href attribute
 						arti_spinner.load();
 						currentPane.load(this.getTabs().eq(i).attr("href"), null, function() {
@@ -412,10 +412,12 @@ var ArtifactPicker = function() {
 					} 
 				} 
 			}
-		}); 
-		// tabs cacheing fucks up page refreshes
+		});
+		// tabs cacheing fucks up page refreshes..don't use history plugin!
 		//.history();
-		tabs = jQuery(tabsSelector).tabs('div.panes1 > div');
+		
+		// Get api object (for jQueryTools v. 1.2.4)
+		tabs = jQuery(tabsSelector).data().tabs;
 		currentPane = tabs.getPanes().eq(0);
 		currentPane.load(tabs.getTabs().eq(0).attr("href"));
 		panesReady = true;
@@ -446,7 +448,7 @@ var ArtifactPicker = function() {
 	
 	// Update selector pane
 	that.refresh = function() {
-		var scroller;
+		var scroller, api;
 		var pane = currentPane;
 		
 		// Make all artifacts draggable
@@ -455,11 +457,20 @@ var ArtifactPicker = function() {
 		// Create scrollable object for draggables if found on page
 		scroller = jQuery(pane).find('.scrollable');
 		if (scroller) {
-			jQuery(scroller).scrollable({
+			api = jQuery(scroller).scrollable({
+				// Config options here
+				prev: '.left',
+				next: '.right',
+				speed: 100,
 				size: 5,
-				hoverClass: 'hoverActive'
-			});//.navigator().mousewheel();
-
+				api: true
+			});
+			// This doesn't always work??
+			if (api) {
+				api.begin();
+			}
+			//jQuery(scroller).scrollable().begin();
+			
 			jQuery(scroller).find('.decoration_item').hover(function(el) {
 				onArtifactMouseover(el);
 			});
@@ -493,7 +504,7 @@ var ArtifactSelection = function() {
 		// from the dragged element & hiding the cloned draggable element
 		// Currently only applies to videos
 		if (jQuery(selectedArtifact).css('position') == 'absolute') {
-			newSlide = jQuery(newSlideDiv()).append(selectedArtifact.innerHTML);
+			newSlide = newSlideDiv().append(selectedArtifact.innerHTML);
 			draggable.hide();
 			
 			selectedArtifact = newSlide[0];
@@ -533,6 +544,8 @@ var ArtifactSelection = function() {
 		new Draggable(artifact, {
 			revert: true
 		});
+		
+		//jQuery('body').append(artifact);
 		// Add slide action icons & click handlers
 		jQuery(artifact).append(
 			'<span class="artifact-hover-menu-item-edit ' + editClass + 
@@ -546,11 +559,16 @@ var ArtifactSelection = function() {
 	
 		// Move 'drop-here' box to the end
 		drophere.remove();
-		items.append(artifact);
-		selectionScroller.reload().end();
-		items.append(drophere);
-		selectionScroller.reload().end();
+		// Add new element & drop here box 
+		selectionScroller.addItem(artifact);
+		selectionScroller.addItem(drophere);
+		
 
+		// Try to scroll to a good position near end of scroller
+		if (selectionScroller.getSize() > 4) {
+			selectionScroller.seekTo(selectionScroller.getSize()-3);
+		}
+		
 		if (!artifact.userHtml) {
 			jQuery('.caption_slide').click(function(evt) {
 				evt.preventDefault();
@@ -600,7 +618,13 @@ var ArtifactSelection = function() {
 	
 	// Returns div html for a new slide
 	function newSlideDiv() {
-		return '<div class="decoration_item artifact text"></div>';
+		return jQuery('<div/>', {
+			// quote class for IE's awesomeness
+			'class': "decoration_item artifact text",
+			click: function() {
+			   // alert('fuck shit');
+			  }
+			});
 	}
 	
 	// Show slide links
@@ -654,7 +678,7 @@ var ArtifactSelection = function() {
 		for (i = 0; i < size - 1; i++) {
 			items[i].remove();
 		}
-		selectionScroller.reload();
+		selectionScroller.begin();
 		hideActionLinks();
 		hideArtifactEditForm();
 		onMovieUpdated();
@@ -708,7 +732,7 @@ var ArtifactSelection = function() {
 	
 	// Add html slide
 	that.addHtmlSlide = function(html) {
-		var slide = jQuery(newSlideDiv()).append('<img src="/javascripts/timeline/icons/doc.png" width="20" height="20" border="0"/>');
+		var slide = newSlideDiv().append('<img src="/javascripts/timeline/icons/doc.png" width="20" height="20" border="0"/>');
 		slide[0].userHtml = html;
 		
 		addArtifact(slide[0]);
@@ -738,7 +762,7 @@ var ArtifactSelection = function() {
 	that.loadFromJSON = function(json) {
 		console.log("Got url " + json.url);
 		// Create new slide div
-		slide = jQuery(newSlideDiv()).css('position', 'relative');
+		slide = newSlideDiv().css('position', 'relative');
 		if (json.mediaType === 'html') {	
 			this.addHtmlSlide(json.html);
 		} else {
@@ -774,6 +798,7 @@ var ArtifactSelection = function() {
 			accept: ['video', 'photo', 'video_thumb']
 			//containment: 'artifact_picker'
 		});
+		
 		// Make sortables container
 		Sortable.create('item_list', {
 			tag: 'div',
@@ -785,13 +810,16 @@ var ArtifactSelection = function() {
 		});
 
 		// initialize scrollable widget & save object
-		jQuery(selectionId).scrollable({
-			item: 'div',
+		selectionScroller = jQuery(selectionId).scrollable({
+			// Config options here
+			prev: '.left',
+			next: '.right',
+			speed: 100,
+			size: 5,
 			clickable: true,
-			activeClass: 'active',
-			hoverClass: 'hoverActive'
-		}).navigator();
-		selectionScroller = jQuery(selectionId).scrollable();
+			api: true
+		});
+		selectionScroller.begin();
 		
 		// Setup click handlers
 		$$('form.clear_slides').each(function(f) {
@@ -917,7 +945,7 @@ var AudioPicker = function() {
 		}); 
 		// tabs cacheing fucks up page refreshes
 		//.history();
-		tabs = jQuery(tabsSelector).tabs('div.panes2 > div');
+		tabs = jQuery(tabsSelector).data().tabs;
 		currentPane = tabs.getPanes().eq(0);
 		
 		currentPane.load(tabs.getTabs().eq(0).attr("href"));

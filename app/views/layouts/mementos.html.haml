@@ -58,10 +58,11 @@
           <p>&nbsp;</p>
           %h1 Previous Mementos
           %p
+          #memento-loading-bar{:style => "display: none;"}= image_tag "progress-bar.gif"
           %ul#mementos-list
             - @mementos[0..@max_listed-1].each do |m|
               %li
-                == #{link_to_remote(truncate(m.title, :max_length => 30), :url => edit_memento_path(m), :method => 'get', :loading => "spinner.load('memento-editor');")}
+                = link_to_remote(truncate(m.title, :max_length => 30), :url => edit_memento_path(m), :method => 'get', :loading => "$('memento-loading-bar').show()", :complete => "$('memento-loading-bar').hide()")
                 %br
                 %span== created #{time_ago_in_words(m.created_at)} ago
             - if @mementos.size > @max_listed
@@ -79,8 +80,8 @@
           
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
-    
-    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "jQuery/jquery.maxchars", "application_jquery", "prototype", "scriptaculous",  "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'inlineplayer', 'dragdrop', 'dragdropextra', 'ZeroClipboard', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'mementos/editor', 'cvi_busy_lib'
+    /= javascript_include_tag "jQuery/jquerytools-1.1.2.min", 
+    = javascript_include_tag "jquery.tools.min", "jQuery/jquery.maxchars", "application_jquery", "prototype", "scriptaculous",  "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'inlineplayer', 'dragdrop', 'dragdropextra', 'ZeroClipboard', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'mementos/editor'
     /= javascript_include_tag 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'wysiwyg'
     /= javascript_include_tag "mootools-1.2.4-core-yc", "Swiff.Uploader.js", "Fx.ProgressBar.js", "FancyUpload2.js", "upload_form"
     

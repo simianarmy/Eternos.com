@@ -161,7 +161,7 @@ CUTYCAPT
   end
   
   task :minify_js, :roles => [:app] do
-    run "cd #{release_path} && rake js:min RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake js:min RAILS_ENV=production"
   end
 end
 
