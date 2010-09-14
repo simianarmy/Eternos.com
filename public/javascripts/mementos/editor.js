@@ -539,6 +539,14 @@ var ArtifactSelection = function() {
 		var drophere = getArtifacts().last();
 		var items = selectionScroller.getItemWrap();
 		var editClass = artifact.userHtml ? 'edit_slide' : 'caption_slide';
+		var inner, links, 
+			artiEditLinks = '<span class="artifact-hover-menu-item-edit ' + editClass + 
+		'"></span><span class="artifact-hover-menu-item-delete remove_slide"></span>';
+		
+		// artifact needs an id for IE 
+		if (Prototype.Browser.IE) {
+			jQuery(artifact).attr('id', artifact.uniqueID);
+		}
 		
 		// Make sure to create a draggable on the new element to keep drag&drop ordering support
 		new Draggable(artifact, {
@@ -547,10 +555,9 @@ var ArtifactSelection = function() {
 		
 		//jQuery('body').append(artifact);
 		// Add slide action icons & click handlers
-		jQuery(artifact).append(
-			'<span class="artifact-hover-menu-item-edit ' + editClass + 
-			'"></span><span class="artifact-hover-menu-item-delete remove_slide"></span>'
-		);
+		if (!Prototype.Browser.IE) {
+			jQuery(artifact).append(artiEditLinks);
+		}
 		jQuery(artifact).hover(function() {
 			jQuery(this).children("span").fadeIn(200); 
 		}, function() {
@@ -563,30 +570,36 @@ var ArtifactSelection = function() {
 		selectionScroller.addItem(artifact);
 		selectionScroller.addItem(drophere);
 		
+		// If IE, click handlers won't work on icons, use Prototip tooltip library 
+		// as a workaround.
+		// TODO: Find out why clicks don't work!
+		if (Prototype.Browser.IE) {
+			inner = jQuery('<div/>', {
+				'class': "ttlinks",
+				id: 'tt:' + artifact.id
+			});
+			links = jQuery('#arti-tooltip').clone().append(inner.append(artiEditLinks)).html();
 
+			new Tip(artifact, links,
+				{
+					fixed: true,
+					hook: {
+						tip: 'topMiddle',
+						target: 'bottomMiddle'
+					},
+					stem: 'topMiddle',
+					width: 'auto',
+					//hideOn: { element: 'tip', event: 'mouseout' }
+					hideOn: false,
+					hideAfter: 0.1
+				}
+			);
+		}
+		
 		// Try to scroll to a good position near end of scroller
 		if (selectionScroller.getSize() > 4) {
 			selectionScroller.seekTo(selectionScroller.getSize()-3);
-		}
-		
-		if (!artifact.userHtml) {
-			jQuery('.caption_slide').click(function(evt) {
-				evt.preventDefault();
-				selectedArtifact = this.up('.artifact');
-				showArtifactEditForm(selectedArtifact);
-			});
-		}
-		
-		jQuery('.remove_slide').click(function(evt) {
-			removeArtifact(this.up('.artifact'));
-			evt.preventDefault();
-		});
-		
-		jQuery('.edit_slide').click(function(evt) {
-			editSlideHtml(this.up('.artifact'));
-			evt.preventDefault();
-		});
-		
+		}		
 	};
 	// Edit html slide action
 	function editSlideHtml(artifact) {
@@ -786,8 +799,24 @@ var ArtifactSelection = function() {
 		}
 	};
 	
+	// init helper - finds a target artifact div associated with the clicked link
+	function getClickArtifact(el) {
+		var ttlinks, ttid;
+		
+		if (Prototype.Browser.IE) {
+			ttlinks = el.up('.ttlinks');
+			ttid = ttlinks.id.split(':')[1];
+			selectedArtifact = $(ttid);
+		} else {
+			selectedArtifact = el.up('.artifact');
+		}
+		return selectedArtifact;
+	};
+	
 	// Init function - takes artifact selection dom id
 	that.init = function(droppablesId, editor) {
+		var ttlinks, ttid;
+		
 		selectionId = '#' + droppablesId + ' .scrollable';
 		textEditor = editor;
 		
@@ -847,15 +876,27 @@ var ArtifactSelection = function() {
 			saveArtifactDescription();
 		}).maxChar(MEMENTO.maxCaptionLength);
 		
-		/*
-		jQuery('#artifact_description').blur(function() {
-			jQuery(this).removeClass("focusField").addClass("idleField");
-			if (jQuery.trim(this.value) == ''){
-				this.value = (this.defaultValue ? this.defaultValue : '');
-			}
+
+		// Setup artifact 'slide' click handlers, for everyone but IE
+		
+		// For html slide editing
+		jQuery('.caption_slide').live('click', function(evt) {
+			evt.preventDefault();
+			showArtifactEditForm(getClickArtifact(this));
 		});
-		*/
+		// To remove a slide
+		jQuery('.remove_slide').live('click', function(evt) {
+			removeArtifact(getClickArtifact(this));
+			evt.preventDefault();
+		});
+		// To caption a slide
+		jQuery('.edit_slide').live('click', function(evt) {
+			editSlideHtml(getClickArtifact(this));
+			evt.preventDefault();
+		});
+	
 		// Setup description save button click handler
+		// Now in Prototype!  I love using multiple frameworks..
 		$('save_desc').observe('submit', function(e) {
 			e.stop();
 			saveArtifactDescription();

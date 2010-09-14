@@ -9,9 +9,10 @@
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos Members - " + h(yield(:title) || "Memento Creator")
 
-    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'scrollable', 'scrollable-navig', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'soundmanager-ui', 'inlineplayer', 'mementos'
+    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'scrollable', 'scrollable-navig', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'soundmanager-ui', 'inlineplayer', 'mementos'
+      
     = javascript_include_tag 'soundmanager2'
-     
+    
     <script type="text/javascript" src="http://w.sharethis.com/button/sharethis.js#publisher=a30d1209-bf76-4100-b37d-6d0477b5fabd&amp;type=website&amp;popup=true&amp;post_services=email%2Cfacebook%2Ctwitter%2Cgbuzz%2Cmyspace%2Cdigg%2Csms%2Cwindows_live%2Cdelicious%2Cstumbleupon%2Creddit%2Cgoogle_bmarks%2Clinkedin%2Cbebo%2Cybuzz%2Cblogger%2Cyahoo_bmarks%2Cmixx%2Ctechnorati%2Cfriendfeed%2Cpropeller%2Cwordpress%2Cnewsvine&amp;button=false"></script>
     <style type="text/css">
     body {font-family:helvetica,sans-serif;font-size:12px;}
@@ -20,6 +21,8 @@
     </style>
    
     = yield(:head)
+    /[if lte IE 8]
+      = stylesheet_link_tag 'mementos/iefix'
     / end bundle
   %body
     .header
@@ -81,7 +84,7 @@
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
     /= javascript_include_tag "jQuery/jquerytools-1.1.2.min", 
-    = javascript_include_tag "jquery.tools.min", "jQuery/jquery.maxchars", "application_jquery", "prototype", "scriptaculous",  "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'inlineplayer', 'dragdrop', 'dragdropextra', 'ZeroClipboard', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'mementos/editor'
+    = javascript_include_tag "jquery.tools.min", "jQuery/jquery.maxchars", "application_jquery", "prototype", "scriptaculous",  "prototip2.1.0.1/js/prototip", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'inlineplayer', 'dragdrop', 'dragdropextra', 'ZeroClipboard', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'mementos/editor'
     /= javascript_include_tag 'ckeditor/ckeditor.js', 'ckeditor/adapters/jquery.js', 'wysiwyg'
     /= javascript_include_tag "mootools-1.2.4-core-yc", "Swiff.Uploader.js", "Fx.ProgressBar.js", "FancyUpload2.js", "upload_form"
     

@@ -52,6 +52,7 @@
       .clear 
       /- required for pageplayer.js
       = render :partial => 'shared/audio_controls'
+      
       #slideshow_droptarget
         #scrollable_decorations
           %p.mementos-p 
@@ -70,6 +71,9 @@
         
         #arti_preview_details.instructions.hidden
       
+      #arti-tooltip.hidden
+        .ttiptext Edit caption or Remove
+        
       #artifact_editor.hidden
         %p.mementos-p
           You can write about your Memento and what events are taking place.  Text will auto-save.
