@@ -51,8 +51,14 @@ module S3Buckets
       end
       
       # Returns full url to Amazon resource using relative protocol trick
-      def url(key)
-        '//s3.amazonaws.com/' + eternos_bucket_name + '/' + key
+      def url(key, options={})
+        # Requires a connection to get an expiring url
+        if options[:private]
+          S3Connection.new
+          url_for(key, eternos_bucket_name, :expires_in => 10.seconds)
+        else  # Or just return a fixed string
+          '//s3.amazonaws.com/' + eternos_bucket_name + '/' + key
+        end
       end
       
       # Returns url to Amazon resource with aws key/secret

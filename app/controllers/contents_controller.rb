@@ -8,7 +8,7 @@ class ContentsController < ApplicationController
   before_filter :login_required
   require_role "Member"
   before_filter :load_member_home_presenter, :except => [:create]
-  #skip_before_filter :verify_authenticity_token, :only => [:create]
+  skip_before_filter :verify_authenticity_token, :only => [:create]
 
   layout 'member_page', :only => [:new, :create, :edit_selection]
   

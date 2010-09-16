@@ -18,7 +18,7 @@ class AjaxFileUpload
       end
     rescue Exception => e
       result = upload_error_response("Unexpected Error Uploading #{file.filename}")
-      RAILS_DEFAULT_LOGGER.error "Exception saving file from upload: #{e.to_s}"
+      RAILS_DEFAULT_LOGGER.error "Exception saving file from upload: #{e.to_s} #{e.backtrace}"
     end
     result
   end

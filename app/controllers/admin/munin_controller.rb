@@ -174,6 +174,49 @@ RESP
   
     render :inline => response, :status => :ok
   end
+
+  def user_usage
+    @date = params[:date]
+    @date = {'(1i)' => Date.current.year, '(2i)' => Date.current.month, '(3i)' => Date.current.day} unless @date
+    @date = Date.civil(@date['(1i)'].to_i, @date['(2i)'].to_i, @date['(3i)'].to_i)
+    month_before = @date - 31 
+#            (@date.month == 1) ?
+#            {'(1i)' => @date.year - 1, '(2i)' => 12} :
+#            {'(1i)' => @date.year, '(2i)' => @date.month - 1}
+#    month_before['(3i)'] = @date.day
+#    begin
+#      month_before = Date.civil(month_before['(1i)'],month_before['(2i)'],month_before['(3i)'])
+#    rescue
+#      month_before['(3i)'] -= 1
+#      retry
+#    end
+    d_str = [month_before,@date].map {|d| "'" + d.strftime('%Y-%m-%d') + " 00:00:00'"}
+
+    date_limit = lambda {|field| "#{field}>=#{d_str[0]} AND #{field}<#{d_str[1]}"}
+    div_0 = lambda {|a,b| b.zero? ? 0 : (a * 100 / b.to_f)}
+    retained = lambda do |days|
+      'SELECT user_id, MAX(latest_day_backed_up) AS l, DATE(users.created_at) AS r ' +
+              'FROM backup_sources INNER JOIN users ON users.id=backup_sources.user_id ' +
+              'GROUP BY user_id ' +
+              'HAVING DATEDIFF(l,r) >= ' + days.to_s
+    end
+
+    date_limit_users = date_limit.call('users.created_at')
+    registrations = Member.active.all(:conditions => date_limit_users).size
+    activations = Member.active.with_sources.all(:conditions => date_limit_users).size
+    retained30 = Member.find_by_sql(retained.call(30)).size
+    retained90 = Member.find_by_sql(retained.call(90)).size
+    total_actives = Member.active.with_sources.all(:select => 'DISTINCT users.id').size
+    
+    stats = []
+#    stats.push ['registrations',registrations]
+#    stats.push ['activations',activations]
+    stats.push ['a_r',div_0.call(activations,registrations)]
+    stats.push ['p_retained30',div_0.call(retained30,total_actives)]
+    stats.push ['p_retained90',div_0.call(retained90,total_actives)]
+
+    render :text => stats.map {|stat| stat[0] + ' = ' + stat[1].to_s}.join("\n")
+  end
    
   protected
   

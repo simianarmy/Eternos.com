@@ -189,20 +189,21 @@ class Content < ActiveRecord::Base
     thumbnails.first
   end
   
-  def cdn_url_with_protocol
-    if u = cdn_url
+  def cdn_url_with_protocol(opts={})
+    if u = cdn_url(opts)
       "http:#{u}"
     end
   end
   
   # Returns URL to cloud or CDN without protocol, ie: //domain.com/path
-  def cdn_url
-    S3Buckets::MediaBucket.url(s3_key) if s3_key
+  def cdn_url(opts={})
+    S3Buckets::MediaBucket.url(s3_key, opts) if s3_key
   end
   
-  def player_url
+   
+  def player_url(opts={})
     if s3_key
-      cdn_url_with_protocol
+      cdn_url_with_protocol opts
     else
       public_filename
     end
@@ -223,18 +224,18 @@ class Content < ActiveRecord::Base
   end
 
   # Returns absolute URL to content
-  def absolute_url(request)
-    cdn_url || (request.protocol + request.host_with_port + public_filename)
+  def absolute_url(request, opts={})
+    cdn_url(opts) || (request.protocol + request.host_with_port + public_filename)
   end
   
-  def url
-    cdn_url or public_filename
+  def url(opts={})
+    cdn_url(opts) or public_filename
   end
   
   # Url to preview image
   # Override in child classes if preview thumbnails exist
-  def preview_url
-    url
+  def preview_url(opts={})
+    url(opts)
   end
     
   def dated

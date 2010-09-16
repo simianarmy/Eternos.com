@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+#
+# $Id$
+# Munin plugin
+# Counts total backup items by type
+
+REQUEST_URI = 'http://eternos.local/admin/munin/user_usage?api=FL1mFl4mAlamB'
+DATA_LABELS = %w( a_r p_retained30 p_retained90 )
+
+def output_config
+  puts <<-END
+graph_category Eternos.com
+graph_title User usage stats
+graph_vlabel percent
+
+a_r.label Activations/Registrations
+p_retained30.label % Retained 30+ Days
+p_retained90.label % Retained 90+ Days
+END
+  exit 0
+end
+
+def output_values
+  status = `curl -s #{REQUEST_URI}`
+
+  unless $?.success?
+    $stderr.puts "failed executing user_usage"
+    exit 1
+  end
+  DATA_LABELS.each do |value|
+    status =~ /#{value}\s+=\s+(\d+)/
+    puts "#{value}.value #{$1}"
+  end
+
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end

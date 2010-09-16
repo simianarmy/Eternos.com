@@ -84,7 +84,7 @@ describe S3Connection do
           upload_image
           @s3.key.should_not be_nil
         end
-
+          
         describe "with public acl" do
           it "stored object should be accessible via url" do
             upload_image
@@ -92,6 +92,7 @@ describe S3Connection do
             Curl::Easy.perform(@s3.url).body_str.should_not match(/AccessDenied/)
           end
         end
+        
       end
     end
   end
