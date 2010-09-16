@@ -495,16 +495,20 @@ var ArtifactSelection = function() {
 	// Called when artifact dropped on selector area
 	function onArtifactAdded(draggable, droparea) {
 		var newSlide, duration;
-
-		// Save artifact for other actions 
+		
+		// Save artifact for other actions - cloning may be better?
 		selectedArtifact = draggable;
+		
+		// Save classes for IE
+		jQuery(selectedArtifact).addClass(draggable.className);
 		
 		// superghosting: draggable fix in dragdropextra.js fails when dropped into Scrollable...
 		// workaround by creating a new slide 
 		// from the dragged element & hiding the cloned draggable element
 		// Currently only applies to videos
 		if (jQuery(selectedArtifact).css('position') == 'absolute') {
-			newSlide = newSlideDiv().append(selectedArtifact.innerHTML);
+			newSlide = newSlideDiv().append(selectedArtifact.innerHTML).addClass('video');
+			
 			draggable.hide();
 			
 			selectedArtifact = newSlide[0];
@@ -1214,7 +1218,7 @@ var MovieGenerator = function() {
 			// If slide contains artifact
 			item = slides[i];
 			if (((src = item.readAttribute('src')) !== undefined) && (src !== null)) {
-				if ((item.readAttribute('mediaType') === 'image') || (item.id.match('photo') !== null)) {
+				if ((item.readAttribute('mediaType') === 'image') || (item.className.match('photo') !== null)) {
 					clip = {
 						url: src,
 						scaling: 'orig',
@@ -1224,7 +1228,7 @@ var MovieGenerator = function() {
 						cid: item.readAttribute('content_id')
 					};
 					console.log("Adding image or video: " + src);
-				} else if ((item.readAttribute('mediaType') === 'video') || (item.id.match('video') !== null)) {
+				} else if ((item.readAttribute('mediaType') === 'video') || (item.className.match('video') !== null)) {
 					clip = {
 						url: src,
 						scaling: 'fit',
