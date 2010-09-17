@@ -30,7 +30,8 @@ class UploadsWorker < Workling::Base
       content.update_attribute(:s3_key, s3.key)    
       content.finish_cloud_upload!
       # Might as well remove from disk - might leave attachment_fu/paperclip extras though.
-      FileUtils.rm content.full_filename
+      # THIS FUCKS THE UPLOADER IMAGE DISPLAY CODE
+      #FileUtils.rm content.full_filename
     rescue 
       logit 'UploadsWorker', "Exception uploading to S3: #{$!}"
       content.cloud_upload_error $!.to_s

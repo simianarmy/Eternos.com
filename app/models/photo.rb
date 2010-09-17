@@ -88,8 +88,8 @@ class Photo < Content
     unless collection_id
       # Only create collection if we can access the owner id
       if self.owner
-        self.collection = Album.find_or_create_by_name(:name => Date.today.to_s, 
-          :user_id => self.owner.id, :cover_id => self.id)
+        self.collection = Album.find_or_create_by_name_and_user_id(Date.today.to_s, self.owner.id)
+        self.collection.cover_id = self.id
         self.collection.increment! :size
         save(false)
       end
