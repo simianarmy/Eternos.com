@@ -65,12 +65,29 @@ namespace :js do
     minify(collection, cache_dir)
   end
 
+  # HELPER TO BUILD JS MIN COLLECTION HASH
+  def js_min_collection_val(files, prefix_dir)
+    files.map do |f|
+      if prefix_dir.nil?
+        f
+      else
+        prefix_dir + f
+      end
+    end
+  end
+  
   desc "Minify javascript libraries for production environment"
   task :min_lib => :environment do
-
+    
     lib_cache_dir = 'public/javascripts/cache/'
     lib_global_dir = 'public/javascripts/'
 
+    # DEFINE DEFAULT JAVASCRIPT FILES HERE
+    Default_files = %W(
+      prototype.js
+      application.js
+    )
+    
     # list of library js to minify by namespace
     collection = {
       "#{lib_cache_dir}public.js" => [
