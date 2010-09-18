@@ -129,6 +129,18 @@ var MementoEditor = function() {
 			mementoFlash.error('You must enter some text before it can be added your movie!');
 		}
 	}
+	
+	// Takes 1-based index, shows & hides appropriate wizard step headings
+	function displayWizardTabText(index) {
+		var showStep = 'step' + index;
+		$$('.accordiontab').each(function(t) {
+			if (t.id === showStep) {
+				t.show();
+			} else {
+				t.hide();
+			}
+		});
+	}
 	// Public functions
 	
 	// Accessor functions
@@ -216,8 +228,36 @@ var MementoEditor = function() {
 		});
 	};
 	
+	// Displays a #step tab in the wizard
+	that.gotoWizardStep = function(step) {
+		mainTabs.click(step-1);
+	};
+	
 	// Call to initialize
 	that.init = function() {
+		// Create wizard tabs
+		mainTabs = jQuery("#accordion").tabs("#accordion div.memento-pane", {
+      tabs: 'div.accordiontab', 
+      effect: 'slide', 
+      initialIndex: 0, 
+      api: true
+    });
+		// Setup wizard functionality
+		mainTabs.onBeforeClick(function(event, index) {
+			if (index > 0) {
+				// Make sure timeline is not empty
+				if (artifactSelection.isEmpty()) {
+					mementoFlash.error("Your timeline is empty!", 'step-notice-' + index);
+					return false;
+				} 
+			}
+    });
+		jQuery('.next').click(function(e) {
+			mainTabs.next();
+		});
+		jQuery('.previous').click(function(e) {
+			mainTabs.prev();
+		});
 		// Create wysiwyg widget 1st
 		textSlideEditor = TextEditor.init({wysiwyg: false});
 		artifactPicker = ArtifactPicker.init(artifactViewerId, tabsSelector);
@@ -846,11 +886,11 @@ var ArtifactSelection = function() {
 	};
 	
 	// Init function - takes artifact selection dom id
-	that.init = function(droppablesId, editor) {
+	that.init = function(droppablesId, aTextEditor) {
 		var ttlinks, ttid;
 		
 		selectionId = '#' + droppablesId + ' .scrollable';
-		textEditor = editor;
+		textEditor = aTextEditor;
 		
 		// Make selection a drop target
 		Droppables.add('selection-scroller', {
@@ -884,7 +924,11 @@ var ArtifactSelection = function() {
 		
 		// Setup click handlers
 		$$('form.clear_slides').each(function(f) {
-			f.observe('submit', function(e) { e.stop(); clearItems(); });
+			f.observe('submit', function(e) { 
+				e.stop(); 
+				clearItems(); 
+				editor.gotoWizardStep(1);
+			});
 		});
 
 		// Setup description input
@@ -1196,7 +1240,12 @@ var Soundtrack = function() {
 			});
 		
 			$$('form.clear_sounds').each(function(f) {
-				f.observe('submit', function(e) { e.stop(); clearItems(); });
+				f.observe('submit', function(e) { 
+					e.stop(); 
+					clearItems(); 
+					// Open soundtrack tab
+					editor.gotoWizardStep(2);
+				});
 			});
 		}
 		return this;

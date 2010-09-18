@@ -13,11 +13,11 @@
 
 .login1_right.login1-mid.login2-mid
   #accordion
-    %h1.accordiontab.current Start by selecting &amp; dragging artifacts into the Memento Timeline
-  
+    .accordiontab.current
     #artifact_picker.memento-pane{:style => "display:block"}
+      %h1#step1 Step 1. Add your artifacts to the Memento Timeline
       %p.mementos-p 
-        Select one of the tabs to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
+        Click the media tabs below to view your artifacts.  Once you find the desired artifacts, simply <b>drag the them to the box below</b> (the Memento Timeline). Add as many as you like!
     
       #type_list
         %ul#artifact-tabs.tabs-like-header
@@ -39,7 +39,7 @@
           %li.artitype
             = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + '<strong>Upload Files</strong>', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>600, :height=>500
             %span &nbsp;
-        <form class="clear_slides"><input id="j-button001" type="submit" value="Clear Slides" /></form>
+        <form class="clear_slides"><input class="red-button-right" type="submit" value="Clear Slides" /></form>
       #artifact_view
         #artifact-loading-bar= image_tag "progress-bar.gif"
         .panes1
@@ -76,26 +76,32 @@
         
       #artifact_editor{:style => "display: none;"}
         %p.mementos-p
-          You can write about your Memento and what events are taking place.  Text will auto-save.
+          You can write about your Memento and what events are taking place.  
+          %br
+          Your input will be displayed along with this artifact.
           %br
           == (#{@max_caption_length} character maximum).
         #editor-body
           #caption_notice.success_notice{:style => "display: none;"}
           %form#save_desc{:action=>'#'}
-            = text_area_tag :description, "Describe the image/video shown on the right in this area.", :maxlength => '165', :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+            = text_area_tag :description, "", :maxlength => '165', :rows => '3', :id => 'artifact_description', :onclick => 'this.select();', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
             %br
             #characters-remaining
-            /-%br
-            /-%input#j-button003{:type => 'submit', :value => 'Save'} 
+            %input.green-button{:type => 'submit', :value => 'Save'} 
+            %input.red-button{:type => 'submit', :value => 'Cancel'}    
           #arti_preview
             #arti_preview_img
           .clear
           #editor_notice.success_notice.hidden
           
       .clear
+      #step-notice-1.flash-error{:style => "display:none;"}
       %p &nbsp;
-    %h1.accordiontab Next, Click Here to add MP3 audio tracks (optional)
+      %input.next.green-button{:type => 'submit', :value => 'Next >>'}
+      .clear
+    .accordiontab
     #soundtrack.memento-pane
+      %h1#step2 Step 2.  Click Here to add MP3 audio tracks.
       .soundtrack
         %ul#soundtrack-tabs.tabs-like-header
           %li.artitype
@@ -107,7 +113,7 @@
             = link_to_lightview image_tag('icon-j-upload.png', :width=>"22", :height=>"22") + '<strong>Upload Files</strong>', new_content_mementos_path, {}, {:rel => "'iframe'"}, :width=>600, :height=>500
             %span &nbsp;
         %form.clear_sounds
-          <input id="j-button001" type="submit" value="Clear Audio" />
+          <input class="red-button-right" type="submit" value="Clear Audio" />
         #audio-loading-bar{:style => "display: none;"}= image_tag "progress-bar.gif"
         .panes2
           #audiopane1{:style => "display: block"}
@@ -118,11 +124,17 @@
 
         #soundtrack-selection
           = image_tag content_icon_path + 'audio.png', :size => '20x20'
-          Drag audio files here to create your movie soundtrack.
-        .clear
+          Drag an audio file here to create your movie soundtrack.
+      .clear
+      #step-notice-2.flash-error{:style => "display:none;"}
       %p &nbsp;
-    %h1.accordiontab Finally, Click Here to Preview and Share Your Memento!
+      .prevnext
+        %input.previous.green-button{:type => 'submit', :value => '<< Back'}
+        %input.next.green-button{:type => 'submit', :value => 'Next >>'}
+      .clear
+    .accordiontab
     #preview.mementos-preview.memento-pane
+      %h1#step3 Step 3.  Preview, Save & Share Your Memento!
       %h3.memento-details
         <strong>Timeline Options</strong><span><strong>Memento Details</strong>
       %p.mementos-p 
@@ -134,11 +146,11 @@
         %li
           #slideshow_info
             %form#do_preview
-              <input id="j-button003" type="submit" value="Preview Memento" />
+              <input class="green-button" type="submit" value="Preview Memento" />
             %form.clear_slides                                                              
-              <input id="j-button002" type="submit" value="Clear Slides" />      
+              <input class="red-button" type="submit" value="Clear Slides" />      
             %form.clear_sounds                                                              
-              <input id="j-button002" type="submit" value="Clear Audio" />       
+              <input class="red-button" type="submit" value="Clear Audio" />       
             
           <span id="movie_info"></span>
           <span id="movie_duration"></span>
@@ -162,6 +174,8 @@
           = link_to 'Start Over', new_memento_path, :confirm => 'Are you sure?'
       %p &nbsp;
       #shareit
+      %p &nbsp;
+      %input.previous.green-button{:type => 'submit', :value => '<< Back'}
   
 :javascript
   var MEMENTO = {};

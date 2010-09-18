@@ -7,6 +7,16 @@ margin-right:10px;
 vertical-align:middle;
 }
 
+.flash-error {
+	background-color: #FCC;
+  border: solid 1px #C66;
+	padding: 5px;
+	font-size: 14px;
+}
+
+input.next {
+	margin: 5px;
+}
 
 #artifact_picker {
 }
@@ -428,7 +438,7 @@ UL.tabs-like-header { margin: 15px 0 0 0; padding: 0; border-bottom: 1px solid #
 .tabs-like-header .artitype .current { color: #02419E}
 
 
-#j-button001 {
+#j-button001, input[type="submit"].red-button-right {
 	background:url(/images/button-logout.gif) no-repeat scroll 0 0 transparent;
 	border:medium none;
 	color:#FFFFFF;
@@ -441,7 +451,7 @@ UL.tabs-like-header { margin: 15px 0 0 0; padding: 0; border-bottom: 1px solid #
 	width:76px; float: right; position: relative; margin-top: -35px;
 }
 
-#j-button002 {
+#j-button002, input[type="submit"].red-button {
 	background:url(/images/button-logout.gif) no-repeat scroll 0 0 transparent;
 	border:medium none;
 	color:#FFFFFF;
@@ -454,7 +464,7 @@ UL.tabs-like-header { margin: 15px 0 0 0; padding: 0; border-bottom: 1px solid #
 	width:76px; float: left; margin: 0 0 0 3px;
 }
 
-#j-button003 {
+#j-button003, input[type="submit"].green-button {
 	background:url(/images/button-green.gif) no-repeat scroll 0 0 transparent;
 	border:medium none;
 	color:#FFFFFF;

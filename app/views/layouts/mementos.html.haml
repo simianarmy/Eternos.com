@@ -91,7 +91,7 @@
     :javascript
       var FlowplayerSwfUrl = '#{video_player_swf_url}';
       var FLOWPLAYER_PRODUCT_KEY = '#{FLOWPLAYER_PRODUCT_KEY}';
-      var editor, artifactPicker;
+      var editor, artifactPicker, mainTabs;
 
       window._token = '#{form_authenticity_token}';
       soundManager.debugMode = true;
@@ -99,6 +99,5 @@
       ZeroClipboard.setMoviePath( '/swf/ZeroClipboard.swf' );
             
       jQuery(document).ready(function() {
-        jQuery("#accordion").tabs("#accordion div.memento-pane", {tabs: 'h1.accordiontab', effect: 'slide', initialIndex: 0});
         editor = MementoEditor.init();
       });
