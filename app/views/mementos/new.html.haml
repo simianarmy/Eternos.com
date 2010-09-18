@@ -83,12 +83,12 @@
           == (#{@max_caption_length} character maximum).
         #editor-body
           #caption_notice.success_notice{:style => "display: none;"}
-          %form#save_desc{:action=>'#'}
+          %form#save_desc
             = text_area_tag :description, "", :maxlength => '165', :rows => '3', :id => 'artifact_description', :onclick => 'this.select();', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
             %br
             #characters-remaining
-            %input.green-button{:type => 'submit', :value => 'Save'} 
-            %input.red-button{:type => 'submit', :value => 'Cancel'}    
+            %input.green-button{:type => 'submit', :name => 'submit', :value => 'Save'} 
+            %input.red-button{:type => 'submit', :name => 'submit', :value => 'Cancel'}    
           #arti_preview
             #arti_preview_img
           .clear

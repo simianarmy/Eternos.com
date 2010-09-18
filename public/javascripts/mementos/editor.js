@@ -948,10 +948,11 @@ var ArtifactSelection = function() {
 			if (jQuery.trim(this.value) == '') {
 				this.value = (this.defaultValue ? this.defaultValue : '');
 			} 
-		}).keyup(function() {
+		});
+		/*.keyup(function() {
 			saveArtifactDescription();
 		});
-		/*.maxChar(MEMENTO.maxCaptionLength, {
+		.maxChar(MEMENTO.maxCaptionLength, {
 			indicator: 'characters-remaining'
 		});*/
 		
@@ -975,12 +976,16 @@ var ArtifactSelection = function() {
 			editSlideHtml(getClickArtifact(this));
 			evt.preventDefault();
 		});
-	
+
 		// Setup description save button click handler
 		// Now in Prototype!  I love using multiple frameworks..
-		$('save_desc').observe('submit', function(e) {
-			e.stop();
-			saveArtifactDescription();
+		jQuery('#save_desc').live('submit', function(evt) {
+			evt.preventDefault();
+			if (jQuery(this).children('[name=submit]').val() === 'Save') {
+				saveArtifactDescription();
+			}
+			// Close the tip window (close all)
+			Tips.hideAll();
 		});
 		$('do_preview').observe('click', function(e) {
 			e.stop();
@@ -1096,7 +1101,7 @@ var Soundtrack = function() {
 		var obj = {};
 		
 		if (that.getSize() >= 1) {
-			alert('Only one audio track is supported at the moment!');
+			alert("Only one audio track is supported at the moment!  Click the 'Clear Audio' button to remove the current track.");
 			return;
 		}
 		if ((source = draggable.readAttribute('src')) !== null) {
@@ -1134,6 +1139,8 @@ var Soundtrack = function() {
 	
 	// Removes all sounds
 	function clearItems() {
+		var sounds;
+
 		// Remove the audio from soundManger's cache
 		// Otherwise it will play the same sound even if the source changes
 		if (that.getSize() > 0) {
@@ -1147,10 +1154,9 @@ var Soundtrack = function() {
 	
 	// Returns list of track sources
 	function getTracks() {
-		var source;
 		return selection.map(function(audio) {
 			return audio.source;
-		});
+    });
 	};
 	that.getTracks = getTracks;
 	
@@ -1175,7 +1181,7 @@ var Soundtrack = function() {
 		} else {
 			if (this.getSize() > 0) {
 				sounds = this.getTrackData();
-			
+
 				currentAudio = soundManager.createSound({
 					id: parseInt(sounds[0].cid),
 				  url: sounds[0].source,
