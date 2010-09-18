@@ -516,7 +516,7 @@ var ArtifactSelection = function() {
 			copyArtifactAttributes(selectedArtifact, draggable);			
 		}
 		addArtifact(selectedArtifact);
-		showArtifactEditForm(selectedArtifact);
+		//showArtifactEditForm(selectedArtifact);
 		
 		onMovieUpdated();
 	};
@@ -655,10 +655,10 @@ var ArtifactSelection = function() {
 	};
 	
 	// Displays form for adding text description to an artifact
-	function showArtifactEditForm(artifact) {
-		var node;
+	function showArtifactEditForm(artifact, el) {
+		var node, tipOffset, width, stem;
 		
-		jQuery('#artifact_editor').removeClass('hidden');
+		//jQuery('#artifact_editor').removeClass('hidden');
 
 		// Populate with existing text description
 		if ((artifact.text_description !== undefined) & (artifact.text_description !== null)) {
@@ -673,6 +673,34 @@ var ArtifactSelection = function() {
 			$('arti_preview_details').removeClassName('hidden');
 			$('arti_preview_details').innerHTML = node.innerHTML;
 		}
+		// Determine tooltip orientation based on mouse position
+		tipOffset = el.cumulativeOffset().left;
+		width = win_dimension()[0];
+		console.log("tip offset = " + tipOffset + ", window width = " + width);
+		if (tipOffset > (width / 2)) {
+			stem = 'topRight';
+			hook = {
+				target: 'bottomLeft',
+				tip: 'topRight'
+			};
+		} else {
+			stem = 'topLeft';
+			hook = {};
+		}
+		console.log("step = " + stem);
+		new Tip(el, $('artifact_editor').innerHTML, 
+			{
+				title: 'Add caption',
+				fixed: true,
+				stem: stem,
+				hook: hook,
+				width: 'auto',
+				closeButton: true,
+				hideOn: false
+			}
+		);
+		// The secret to showing it the 1st time
+		el.prototip.show();
 	};
 
 	// Hides artifact caption editor
@@ -878,15 +906,20 @@ var ArtifactSelection = function() {
 			} 
 		}).keyup(function() {
 			saveArtifactDescription();
-		}).maxChar(MEMENTO.maxCaptionLength);
+		});
+		/*.maxChar(MEMENTO.maxCaptionLength, {
+			indicator: 'characters-remaining'
+		});*/
 		
 
 		// Setup artifact 'slide' click handlers, for everyone but IE
 		
 		// For html slide editing
-		jQuery('.caption_slide').live('click', function(evt) {
-			evt.preventDefault();
-			showArtifactEditForm(getClickArtifact(this));
+		jQuery('.caption_slide').live('hover', function(evt) {
+			//evt.preventDefault();
+			if (!this.prototip) {
+				showArtifactEditForm(getClickArtifact(this), this);
+			}
 		});
 		// To remove a slide
 		jQuery('.remove_slide').live('click', function(evt) {

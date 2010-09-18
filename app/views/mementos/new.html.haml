@@ -74,20 +74,24 @@
       #arti-tooltip.hidden
         .ttiptext Edit caption or Remove
         
-      #artifact_editor.hidden
+      #artifact_editor{:style => "display: none;"}
         %p.mementos-p
           You can write about your Memento and what events are taking place.  Text will auto-save.
           %br
           == (#{@max_caption_length} character maximum).
-        .editor-body
+        #editor-body
           #caption_notice.success_notice{:style => "display: none;"}
           %form#save_desc{:action=>'#'}
-            = text_area_tag :description, "Describe the image/video shown on the right in this area.", :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+            = text_area_tag :description, "Describe the image/video shown on the right in this area.", :maxlength => '165', :rows => '3', :id => 'artifact_description', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
+            %br
+            #characters-remaining
             /-%br
             /-%input#j-button003{:type => 'submit', :value => 'Save'} 
-          #editor_notice.success_notice.hidden
           #arti_preview
             #arti_preview_img
+          .clear
+          #editor_notice.success_notice.hidden
+          
       .clear
       %p &nbsp;
     %h1.accordiontab Next, Click Here to add MP3 audio tracks (optional)

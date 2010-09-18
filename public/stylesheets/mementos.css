@@ -207,14 +207,36 @@ li .handle {
 	height: 75px;
 }
 
+/* Artifact caption area */
 #artifact_editor {
-	position: relative;
 	height: 200px;
+}
+
+#editor-body {
+	float: left;
 }
 
 #artifact_editor form {
 	float: left;
-	width: 75%;
+}
+
+#arti_preview {
+	width: 100px;
+	margin-left: 5px;
+	float: right;
+}
+
+#save_desc {
+	float: left;
+	width: 450px;
+}
+
+#artifact_description
+{
+	width: 95%;
+	padding: 5px;
+	outline: none;
+	font: 20px "Lucida Grande", Arial, sans-serif;
 }
 
 /* Text artifact input form */
@@ -224,21 +246,6 @@ li .handle {
 	padding: 10px;
 	outline: none;
 	font: 20px "Lucida Grande", Arial, sans-serif;
-}
-
-/* Artifact description input form */
-#artifact_description
-{
-	width: 100%;
-	padding: 10px;
-	outline: none;
-	font: 20px "Lucida Grande", Arial, sans-serif;
-}
-
-#arti_preview {
-	width: 100px;
-	margin-left: 5px;
-	float: right;
 }
 
 .instructions {
