@@ -9,7 +9,10 @@ module ContentCollections
     # Returns all albums (collections) owned by a user
     def photo_albums
       self.contents.photos.collections.map(&:collection).compact.uniq.reject do |al| 
-          (al.owner != self) || (al.num_items == 0) || al.name.nil?
+        # ENSURE THAT ALBUM BELONGS TO US!
+        (al.owner != self) || 
+        # EXTRA CHECKS FOR EMPTY OR UNTITLED ALBUMS NECESSARY??
+        (al.size == 0) || al.name.nil?
       end
     end
   end

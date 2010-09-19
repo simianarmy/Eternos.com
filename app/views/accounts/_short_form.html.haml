@@ -26,8 +26,19 @@
 #facebook-signup
   %p
   %strong Or sign up with your Facebook account
-  %p= fb_login_and_redirect(new_account_url(:plan => AppConfig.default_plan, :fb => true, :protocol => 'https'), :size => :medium, :background => :white, :length => :short)
-  -# <a href="#" onclick="FB.Connect.requireSession(); return false;" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"><span id="RES_ID_fb_login_text" class="FBConnectButton_Text">Signup with Facebook</span></a>
+  %p
+    <a id="fb-signup" href="#" class="fbconnect_login_button FBConnectButton FBConnectButton_Small"><span id="RES_ID_fb_login_text" class="FBConnectButton_Text">SIGN UP</span></a>
+  
+  -# Old facebook "connect" button code - used Facebook servers to serve connect button image but too slow!
+  -#%p= fb_login_and_redirect(new_account_url(:plan => AppConfig.default_plan, :fb => true, :protocol => 'https'), :size => :medium, :background => :white, :length => :short)
+
+  = form_tag(new_account_url(:plan => AppConfig.default_plan, :fb => true, :protocol => 'https'), :id => 'signup_with_facebook_form')
+  :javascript
+    document.getElementById('fb-signup').onclick = function() {
+      FB.Connect.requireSession(function(response) {
+        $('signup_with_facebook_form').submit();
+      });
+    };
 %p.home01
   %em *By proceeding, you confirm that your are over 13 years of age and accept the 
   = link_to 'Privacy', privacy_about_path, :target => "_new"
@@ -35,8 +46,9 @@
   = link_to 'Terms', terms_about_path, :target => "_new"
   <br /><br /> 
   = render :partial => 'shared/mcafee_secure'
+-# Does anyone have sharethis stats??  why are we using this if we're not tracking performance???
+-#= render :partial => 'shared/addthis' unless local_assigns.has_key?(:page) && (page == 'mementos')
   
-= render :partial => 'shared/addthis'
 
 
 

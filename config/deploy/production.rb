@@ -9,7 +9,7 @@ set :deploy_to, "/data/Eternos_www"
 set :user, "deploy"
 set :repository, 'git@github.com:simianarmy/Eternos.com.git'
 set :scm, :git
-set :branch, :master
+set :branch, ENV['branch'] || :master
 set :deploy_via, :remote_cache
 # This will execute the Git revision parsing on the *remote* server rather than locally
 set :real_revision, 			lambda { source.query_revision(revision) { |cmd| capture(cmd) } }

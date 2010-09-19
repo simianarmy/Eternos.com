@@ -29,3 +29,5 @@ Add firewall opening to AMQP port (specify source networks)
 Startup:
 
 Install custom .monit scripts to /etc/monit.d (use sudo)
+
+Monit email alerts SMTP configuration in /etc/monit.d/alerts.monitrc

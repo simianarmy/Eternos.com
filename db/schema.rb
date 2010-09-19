@@ -547,6 +547,7 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
     t.date    "start_at"
     t.date    "end_at"
     t.text    "notes"
+    t.boolean "current_job", :null => false, :default => false
   end
 
   add_index "jobs", ["profile_id"], :name => "index_jobs_on_profile_id"

@@ -1134,6 +1134,12 @@ var Soundtrack = function() {
 	
 	// Removes all sounds
 	function clearItems() {
+		// Remove the audio from soundManger's cache
+		// Otherwise it will play the same sound even if the source changes
+		if (that.getSize() > 0) {
+			sounds = that.getTrackData();
+			soundManager.destroySound(sounds[0].cid);
+		}
 		selection.clear();
 		dropTargetDiv.html(ogDropareaHtml);
 	};
@@ -1168,11 +1174,11 @@ var Soundtrack = function() {
 			state = 'playing';
 		} else {
 			if (this.getSize() > 0) {
-				sounds = getTracks();
+				sounds = this.getTrackData();
 			
 				currentAudio = soundManager.createSound({
-					id: "memento_soundtrack",
-				  url: sounds[0],
+					id: parseInt(sounds[0].cid),
+				  url: sounds[0].source,
 				  volume: 50
 				});
 				console.log("Playing audio!");

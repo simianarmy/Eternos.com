@@ -110,11 +110,8 @@ var MementoPlayer = function() {
 		
 	// Play from json data
 	that.play = function() {
-		// Wait for audio ready custom event so that soundtrack playback works correctly
-		$('movie_player').observe('audio:ready', function() {
-			$('loading-indicator').hide();
-			movieGenerator.preview();
-		});
+		$('loading-indicator').hide();
+		movieGenerator.preview();
 	};
 	
 	// Initialize minimal setup
@@ -135,7 +132,10 @@ var MementoPlayer = function() {
 			soundtrack.loadFromJSON(json);
 			movieGenerator.movieUpdated();
 		});
-		
+		// Wait for audio ready custom event so that soundtrack playback works correctly
+		document.observe('audio:ready', function() {
+			that.play();
+		});
 		return this;
 	};
 
