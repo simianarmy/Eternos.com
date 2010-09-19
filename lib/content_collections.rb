@@ -10,7 +10,7 @@ module ContentCollections
     def photo_albums
       self.contents.photos.collections.map(&:collection).compact.uniq.reject do |al| 
         # ENSURE THAT ALBUM BELONGS TO US!
-        (al.user_id != self.id) || 
+        (al.owner != self) || 
         # EXTRA CHECKS FOR EMPTY OR UNTITLED ALBUMS NECESSARY??
         (al.size == 0) || al.name.nil?
       end

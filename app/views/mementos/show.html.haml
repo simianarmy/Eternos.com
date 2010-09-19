@@ -49,8 +49,10 @@
     :javascript
       var FlowplayerSwfUrl = '#{video_player_swf_url}';
       var FLOWPLAYER_PRODUCT_KEY = '#{FLOWPLAYER_PRODUCT_KEY}';
-      var editor;
+      var editor, memPlayer;
       
       jQuery(document).ready(function() {
-        mem = MementoPlayer.init('#{escape_javascript(@memento.title)}', #{@slides.to_json}, #{@sounds.to_json});
+        memPlayer = MementoPlayer.init('#{escape_javascript(@memento.title)}', 
+          #{@slides.to_json}, 
+          #{@sounds.to_json});
       });
