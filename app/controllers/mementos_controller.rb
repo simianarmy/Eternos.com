@@ -47,8 +47,17 @@ class MementosController < MemberHomeController
   
   # Public view of memento movie - load it & play!
   def show
-    @memento = Memento.find_by_uuid(params[:id])
-    create_memento_json
+    if @memento = Memento.find_by_uuid(params[:id])
+      create_memento_json
+    end
+    
+    respond_to do |format|
+      format.html {
+        unless @memento
+          render_404 && return 
+        end
+      }
+    end
   end
   
   # Load memento from db into editor
@@ -65,12 +74,9 @@ class MementosController < MemberHomeController
         @memento = Memento.find_by_uuid(params[:memento][:id])
         @memento.update_attributes!(params[:memento])
         
-        if params[:slide]
-          @memento.slides = params[:slide]
-        end
-        if params[:audio]
-          @memento.soundtrack = params[:audio]
-        end
+        @memento.slides = params[:slide]
+        @memento.soundtrack = params[:audio]
+        
         @memento.save
       rescue
         @errors = $!

@@ -1,0 +1,2 @@
+page.replace_html 'shareit', :partial => 'share_form', :object => @memento
+page.visual_effect :highlight, 'shareit', :duration => 5.0
