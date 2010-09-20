@@ -8,31 +8,37 @@ role :web, '184.73.167.220'
 role :db,  '184.73.167.220'
 
 set :user, "deploy" 
+set :repository, 'git@github.com:simianarmy/Eternos.com.git'
+set :scm, :git
+set :branch, ENV['branch'] || :master
+set :deploy_via, :remote_cache
+
 set :rails_env, "production"
 
 namespace :deploy do
+  task :restart do
+    run "sudo monit restart workling"
+  end
+  
   task :start do
     # do nothing - override default
   end
 
   desc "Stops work daemons"
   task :stop_daemons, :roles => [:app] do
-    #thinking_sphinx.stop
-    #run "god stop eternos_#{stage}"
-    # Try to prevent too many worklings god/deploy bug
-    #run "god unmonitor eternos-workling_#{stage}"
+    run "sudo monit stop workling"
   end
 
   desc "Restarts any work daemons"
   task :start_daemons, :roles => [:app] do
-    #run "cd #{current_path} && rake god:generate RAILS_ENV=#{stage}"
-    #run "RAILS_ENV=#{stage} god load #{current_path}/config/daemons.god"
-    #run "RAILS_ENV=#{stage} god start eternos_#{stage}"
+    run "sudo monit start workling"
   end
   
   task :migrate, :roles => [:db] do
   end
 end
 
+before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink", "deploy:symlink_shared"
+after "deploy:symlink", "deploy:start_daemons"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
