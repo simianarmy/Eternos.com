@@ -45,9 +45,13 @@ var datePickerController = (function datePickerController() {
 						javascriptPath			= '/javascripts';
         
         void function() {
-                var scriptFiles = document.getElementsByTagName('head')[0].getElementsByTagName('script'),                    
-                    scriptInner = scriptFiles[scriptFiles.length - 1].innerHTML.replace(/[\n\r\s\t]+/g, " ").replace(/^\s+/, "").replace(/\s+$/, ""),                    
-                    json        = parseJSON(scriptInner);                
+                var scriptFiles = document.getElementsByTagName('head')[0].getElementsByTagName('script');
+                var scriptInner, json;
+
+ 								if (scriptFiles === undefined || (scriptFiles.length === 0)) return;
+
+								scriptInner = scriptFiles[scriptFiles.length - 1].innerHTML.replace(/[\n\r\s\t]+/g, " ").replace(/^\s+/, "").replace(/\s+$/, "");
+                json        = parseJSON(scriptInner);                
                
                 if(typeof json === "object" && !("err" in json)) {                          
                         affectJSON(json);
