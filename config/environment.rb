@@ -9,7 +9,7 @@
 RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
 
 # REQUIRED BEFORE BOOT WHEN USING AWESOME bundle exec ... !
-ENV['INLINEDIR'] = File.join(RAILS_ROOT, 'tmp', 'ruby_inline')
+ENV['INLINEDIR'] ||= File.join(RAILS_ROOT, 'tmp', 'ruby_inline')
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
