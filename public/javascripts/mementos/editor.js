@@ -238,7 +238,7 @@ var MementoEditor = function() {
 		// Create wizard tabs
 		mainTabs = jQuery("#accordion").tabs("#accordion div.memento-pane", {
       tabs: 'div.accordiontab', 
-      effect: 'slide', 
+      //effect: 'slide', 
       initialIndex: 0, 
       api: true
     });
@@ -642,7 +642,7 @@ var ArtifactSelection = function() {
 		
 		// Try to scroll to a good position near end of scroller
 		if (selectionScroller.getSize() > 4) {
-			selectionScroller.seekTo(selectionScroller.getSize()-3);
+			selectionScroller.seekTo(selectionScroller.getSize()-4);
 		}		
 	};
 	// Edit html slide action
@@ -698,13 +698,9 @@ var ArtifactSelection = function() {
 	function showArtifactEditForm(artifact, el) {
 		var node, tipOffset, width, stem;
 		
-		//jQuery('#artifact_editor').removeClass('hidden');
-
-		// Populate with existing text description
-		if ((artifact.text_description !== undefined) & (artifact.text_description !== null)) {
-			$('artifact_description').value = artifact.text_description;
-		} else {
-			$('artifact_description').value = $('artifact_description').defaultValue;
+		// Just kill the old one if it exists - conflicting with textarea
+		if (el.prototip) {
+			el.prototip.remove();
 		}
 		if (((node = artifact.down('img')) !== null) && (node !== undefined)) {
 			$('arti_preview_img').innerHTML = '<img src="' + node.src + '"/>';
@@ -713,10 +709,23 @@ var ArtifactSelection = function() {
 			$('arti_preview_details').removeClassName('hidden');
 			$('arti_preview_details').innerHTML = node.innerHTML;
 		}
+		// Populate textarea with existing text description
+		//console.log("current artifact description: " + artifact.text_description);
+		//console.log("reading from artifact: " + artifact.id);
+		if ((artifact.text_description !== undefined) && (artifact.text_description !== null) &&
+			(artifact.text_description !== "")) {
+			$('artifact_description').value = artifact.text_description;
+		} else {
+			// Don't bother with default text
+			// $('artifact_description').value = $('artifact_description').readAttribute('defaultValue');
+			$('artifact_description').value = '';
+		}
+		$('artifact_description').innerHTML = $('artifact_description').value;
+		
 		// Determine tooltip orientation based on mouse position
 		tipOffset = el.cumulativeOffset().left;
 		width = win_dimension()[0];
-		console.log("tip offset = " + tipOffset + ", window width = " + width);
+		
 		if (tipOffset > (width / 2)) {
 			stem = 'topRight';
 			hook = {
@@ -727,11 +736,11 @@ var ArtifactSelection = function() {
 			stem = 'topLeft';
 			hook = {};
 		}
-		console.log("step = " + stem);
 		new Tip(el, $('artifact_editor').innerHTML, 
 			{
 				title: 'Add caption',
 				fixed: true,
+				showOn: 'click',
 				stem: stem,
 				hook: hook,
 				width: 'auto',
@@ -750,9 +759,10 @@ var ArtifactSelection = function() {
 	};
 	
 	// Saves artifact caption editor contents
-	function saveArtifactDescription() {
+	function saveArtifactDescription(desc) {
 		if (selectedArtifact !== null) {
-			selectedArtifact.text_description = $('artifact_description').value;
+			//console.log("Saving to artifact: " + selectedArtifact.id);
+			selectedArtifact.text_description = desc;
 		}
 	};
 	
@@ -932,22 +942,15 @@ var ArtifactSelection = function() {
 		});
 
 		// Setup description input
-		jQuery('#artifact_description').addClass("idleField").focus(function() {
+		jQuery('#artifact_description').addClass("idleField").live('focus', function() {
 			jQuery(this).removeClass("idleField").addClass("focusField");
-			
-			if (this.value == this.defaultValue) {
-				this.value = '';
-			}
-			if (this.value != this.defaultValue) {
+
+			if (this.value === this.defaultValue) {
 				this.select();
 			}
-		}).blur(function() {
+		});
+		jQuery('#artifact_description').live('blur', function() {
 			jQuery(this).removeClass("focusField").addClass("idleField");
-			mementoFlash.message('saved', 'caption_notice');
-			
-			if (jQuery.trim(this.value) == '') {
-				this.value = (this.defaultValue ? this.defaultValue : '');
-			} 
 		});
 		/*.keyup(function() {
 			saveArtifactDescription();
@@ -960,11 +963,11 @@ var ArtifactSelection = function() {
 		// Setup artifact 'slide' click handlers, for everyone but IE
 		
 		// For html slide editing
-		jQuery('.caption_slide').live('hover', function(evt) {
-			//evt.preventDefault();
-			if (!this.prototip) {
-				showArtifactEditForm(getClickArtifact(this), this);
-			}
+		jQuery('.caption_slide').live('click', function(evt) {
+			var artifact = getClickArtifact(this);
+			
+			showArtifactEditForm(artifact, this);
+			evt.preventDefault();
 		});
 		// To remove a slide
 		jQuery('.remove_slide').live('click', function(evt) {
@@ -981,8 +984,11 @@ var ArtifactSelection = function() {
 		// Now in Prototype!  I love using multiple frameworks..
 		jQuery('#save_desc').live('submit', function(evt) {
 			evt.preventDefault();
-			if (jQuery(this).children('[name=submit]').val() === 'Save') {
-				saveArtifactDescription();
+			if (this.m_submit.value === 'Save') {
+				saveArtifactDescription(this.description.value);
+			} else {
+				// Cancelling, throw away latest edit
+				
 			}
 			// Close the tip window (close all)
 			Tips.hideAll();

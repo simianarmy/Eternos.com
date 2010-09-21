@@ -84,11 +84,12 @@
         #editor-body
           #caption_notice.success_notice{:style => "display: none;"}
           %form#save_desc
+            = hidden_field_tag 'm_submit'
             = text_area_tag :description, "", :maxlength => '165', :rows => '3', :id => 'artifact_description', :onclick => 'this.select();', :defaultValue => "Write about this artifact here.  When you are finished, click Save."
             %br
             #characters-remaining
-            %input.green-button{:type => 'submit', :name => 'submit', :value => 'Save'} 
-            %input.red-button{:type => 'submit', :name => 'submit', :value => 'Cancel'}    
+            %input.green-button{:type => 'submit', :name => 'submit', :value => 'Save', :onclick => 'this.form.m_submit.value = this.value;'} 
+            %input.red-button{:type => 'submit', :name => 'submit', :value => 'Cancel', :onclick => 'this.form.m_submit.value = this.value;'}    
           #arti_preview
             #arti_preview_img
           .clear
@@ -128,7 +129,7 @@
       .clear
       #step-notice-2.flash-error{:style => "display:none;"}
       %p &nbsp;
-      .prevnext
+      #prevnext
         %input.previous.green-button{:type => 'submit', :value => '<< Back'}
         %input.next.green-button{:type => 'submit', :value => 'Next >>'}
       .clear
