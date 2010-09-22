@@ -38,6 +38,20 @@ namespace :db do
     puts "Total duplicates found: #{total_dupes}"
     puts "Total duplicates deleted: #{total_deleted}"
   end
+  
+  desc "Trims & optimizes large tables"
+  task :optimize_tables => :environment do
+    cutoff = 1.month.ago
+    tables = %W( backup_jobs backup_source_jobs sessions)
+    conn = ActiveRecord::Base.connection
+    
+    tables.each do |t|
+      puts "pruning records older than #{cutoff}."
+      conn.execute("DELETE FROM #{t} WHERE created_at < '#{cutoff}'")
+      puts "optimizing table #{t}."
+      conn.execute("OPTIMIZE TABLE #{t}")
+    end
+  end
 end
 
   

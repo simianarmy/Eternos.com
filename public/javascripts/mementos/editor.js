@@ -4,6 +4,8 @@
 
 // Helper functions
 
+var IE_COMPAT_MODE = true;
+
 // Untested: from http://forums.devshed.com/javascript-development-115/convert-seconds-to-minutes-seconds-386816.html
 String.prototype.pad = function(l, s){
     return (l -= this.length) > 0
@@ -599,7 +601,7 @@ var ArtifactSelection = function() {
 		
 		//jQuery('body').append(artifact);
 		// Add slide action icons & click handlers
-		if (!Prototype.Browser.IE) {
+		if (! (IE_COMPAT_MODE && Prototype.Browser.IE)) {
 			jQuery(artifact).append(artiEditLinks);
 		}
 		jQuery(artifact).hover(function() {
@@ -617,7 +619,7 @@ var ArtifactSelection = function() {
 		// If IE, click handlers won't work on icons, use Prototip tooltip library 
 		// as a workaround.
 		// TODO: Find out why clicks don't work!
-		if (Prototype.Browser.IE) {
+		if (IE_COMPAT_MODE && Prototype.Browser.IE) {
 			inner = jQuery('<div/>', {
 				'class': "ttlinks",
 				id: 'tt:' + artifact.id
@@ -677,11 +679,8 @@ var ArtifactSelection = function() {
 	function newSlideDiv() {
 		return jQuery('<div/>', {
 			// quote class for IE's awesomeness
-			'class': "decoration_item artifact text",
-			click: function() {
-			   // alert('fuck shit');
-			  }
-			});
+			'class': "decoration_item artifact text"
+		});
 	}
 	
 	// Show slide links
@@ -885,7 +884,7 @@ var ArtifactSelection = function() {
 	function getClickArtifact(el) {
 		var ttlinks, ttid;
 		
-		if (Prototype.Browser.IE) {
+		if (IE_COMPAT_MODE && Prototype.Browser.IE) {
 			ttlinks = el.up('.ttlinks');
 			ttid = ttlinks.id.split(':')[1];
 			selectedArtifact = $(ttid);
@@ -898,6 +897,7 @@ var ArtifactSelection = function() {
 	// Init function - takes artifact selection dom id
 	that.init = function(droppablesId, aTextEditor) {
 		var ttlinks, ttid;
+		var catch_caption_form_submit;
 		
 		selectionId = '#' + droppablesId + ' .scrollable';
 		textEditor = aTextEditor;
@@ -980,19 +980,23 @@ var ArtifactSelection = function() {
 			evt.preventDefault();
 		});
 
+		catch_caption_form_submit = function(evt) {
+			var form = jQuery(evt.target).closest('form');
+			evt.preventDefault();
+			
+			if (form[0].m_submit.value === 'Save') {
+				saveArtifactDescription(form[0].description.value);
+			} 
+			// Close all tooltip windows
+			Tips.hideAll();
+		};
+		
 		// Setup description save button click handler
 		// Now in Prototype!  I love using multiple frameworks..
-		jQuery('#save_desc').live('submit', function(evt) {
-			evt.preventDefault();
-			if (this.m_submit.value === 'Save') {
-				saveArtifactDescription(this.description.value);
-			} else {
-				// Cancelling, throw away latest edit
-				
-			}
-			// Close the tip window (close all)
-			Tips.hideAll();
-		});
+		jQuery('#save_desc').live('submit', catch_caption_form_submit);
+		// FOR IE live()/SUBMIT NOT WORKING
+		jQuery("#save_desc input[type=submit]").live("click", catch_caption_form_submit);
+		
 		$('do_preview').observe('click', function(e) {
 			e.stop();
 			togglePreview(this);
