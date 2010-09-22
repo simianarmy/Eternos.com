@@ -4,6 +4,8 @@
 
 // Helper functions
 
+var IE_COMPAT_MODE = true;
+
 // Untested: from http://forums.devshed.com/javascript-development-115/convert-seconds-to-minutes-seconds-386816.html
 String.prototype.pad = function(l, s){
     return (l -= this.length) > 0
@@ -238,7 +240,7 @@ var MementoEditor = function() {
 		// Create wizard tabs
 		mainTabs = jQuery("#accordion").tabs("#accordion div.memento-pane", {
       tabs: 'div.accordiontab', 
-      effect: 'slide', 
+      //effect: 'slide', 
       initialIndex: 0, 
       api: true
     });
@@ -599,7 +601,7 @@ var ArtifactSelection = function() {
 		
 		//jQuery('body').append(artifact);
 		// Add slide action icons & click handlers
-		if (!Prototype.Browser.IE) {
+		if (! (IE_COMPAT_MODE && Prototype.Browser.IE)) {
 			jQuery(artifact).append(artiEditLinks);
 		}
 		jQuery(artifact).hover(function() {
@@ -617,7 +619,7 @@ var ArtifactSelection = function() {
 		// If IE, click handlers won't work on icons, use Prototip tooltip library 
 		// as a workaround.
 		// TODO: Find out why clicks don't work!
-		if (Prototype.Browser.IE) {
+		if (IE_COMPAT_MODE && Prototype.Browser.IE) {
 			inner = jQuery('<div/>', {
 				'class': "ttlinks",
 				id: 'tt:' + artifact.id
@@ -642,7 +644,7 @@ var ArtifactSelection = function() {
 		
 		// Try to scroll to a good position near end of scroller
 		if (selectionScroller.getSize() > 4) {
-			selectionScroller.seekTo(selectionScroller.getSize()-3);
+			selectionScroller.seekTo(selectionScroller.getSize()-4);
 		}		
 	};
 	// Edit html slide action
@@ -677,11 +679,8 @@ var ArtifactSelection = function() {
 	function newSlideDiv() {
 		return jQuery('<div/>', {
 			// quote class for IE's awesomeness
-			'class': "decoration_item artifact text",
-			click: function() {
-			   // alert('fuck shit');
-			  }
-			});
+			'class': "decoration_item artifact text"
+		});
 	}
 	
 	// Show slide links
@@ -698,13 +697,9 @@ var ArtifactSelection = function() {
 	function showArtifactEditForm(artifact, el) {
 		var node, tipOffset, width, stem;
 		
-		//jQuery('#artifact_editor').removeClass('hidden');
-
-		// Populate with existing text description
-		if ((artifact.text_description !== undefined) & (artifact.text_description !== null)) {
-			$('artifact_description').value = artifact.text_description;
-		} else {
-			$('artifact_description').value = $('artifact_description').defaultValue;
+		// Just kill the old one if it exists - conflicting with textarea
+		if (el.prototip) {
+			el.prototip.remove();
 		}
 		if (((node = artifact.down('img')) !== null) && (node !== undefined)) {
 			$('arti_preview_img').innerHTML = '<img src="' + node.src + '"/>';
@@ -713,10 +708,23 @@ var ArtifactSelection = function() {
 			$('arti_preview_details').removeClassName('hidden');
 			$('arti_preview_details').innerHTML = node.innerHTML;
 		}
+		// Populate textarea with existing text description
+		//console.log("current artifact description: " + artifact.text_description);
+		//console.log("reading from artifact: " + artifact.id);
+		if ((artifact.text_description !== undefined) && (artifact.text_description !== null) &&
+			(artifact.text_description !== "")) {
+			$('artifact_description').value = artifact.text_description;
+		} else {
+			// Don't bother with default text
+			// $('artifact_description').value = $('artifact_description').readAttribute('defaultValue');
+			$('artifact_description').value = '';
+		}
+		$('artifact_description').innerHTML = $('artifact_description').value;
+		
 		// Determine tooltip orientation based on mouse position
 		tipOffset = el.cumulativeOffset().left;
 		width = win_dimension()[0];
-		console.log("tip offset = " + tipOffset + ", window width = " + width);
+		
 		if (tipOffset > (width / 2)) {
 			stem = 'topRight';
 			hook = {
@@ -727,11 +735,11 @@ var ArtifactSelection = function() {
 			stem = 'topLeft';
 			hook = {};
 		}
-		console.log("step = " + stem);
 		new Tip(el, $('artifact_editor').innerHTML, 
 			{
 				title: 'Add caption',
 				fixed: true,
+				showOn: 'click',
 				stem: stem,
 				hook: hook,
 				width: 'auto',
@@ -750,9 +758,10 @@ var ArtifactSelection = function() {
 	};
 	
 	// Saves artifact caption editor contents
-	function saveArtifactDescription() {
+	function saveArtifactDescription(desc) {
 		if (selectedArtifact !== null) {
-			selectedArtifact.text_description = $('artifact_description').value;
+			//console.log("Saving to artifact: " + selectedArtifact.id);
+			selectedArtifact.text_description = desc;
 		}
 	};
 	
@@ -875,7 +884,7 @@ var ArtifactSelection = function() {
 	function getClickArtifact(el) {
 		var ttlinks, ttid;
 		
-		if (Prototype.Browser.IE) {
+		if (IE_COMPAT_MODE && Prototype.Browser.IE) {
 			ttlinks = el.up('.ttlinks');
 			ttid = ttlinks.id.split(':')[1];
 			selectedArtifact = $(ttid);
@@ -888,6 +897,7 @@ var ArtifactSelection = function() {
 	// Init function - takes artifact selection dom id
 	that.init = function(droppablesId, aTextEditor) {
 		var ttlinks, ttid;
+		var catch_caption_form_submit;
 		
 		selectionId = '#' + droppablesId + ' .scrollable';
 		textEditor = aTextEditor;
@@ -932,26 +942,20 @@ var ArtifactSelection = function() {
 		});
 
 		// Setup description input
-		jQuery('#artifact_description').addClass("idleField").focus(function() {
+		jQuery('#artifact_description').addClass("idleField").live('focus', function() {
 			jQuery(this).removeClass("idleField").addClass("focusField");
-			
-			if (this.value == this.defaultValue) {
-				this.value = '';
-			}
-			if (this.value != this.defaultValue) {
+
+			if (this.value === this.defaultValue) {
 				this.select();
 			}
-		}).blur(function() {
+		});
+		jQuery('#artifact_description').live('blur', function() {
 			jQuery(this).removeClass("focusField").addClass("idleField");
-			mementoFlash.message('saved', 'caption_notice');
-			
-			if (jQuery.trim(this.value) == '') {
-				this.value = (this.defaultValue ? this.defaultValue : '');
-			} 
-		}).keyup(function() {
+		});
+		/*.keyup(function() {
 			saveArtifactDescription();
 		});
-		/*.maxChar(MEMENTO.maxCaptionLength, {
+		.maxChar(MEMENTO.maxCaptionLength, {
 			indicator: 'characters-remaining'
 		});*/
 		
@@ -959,11 +963,11 @@ var ArtifactSelection = function() {
 		// Setup artifact 'slide' click handlers, for everyone but IE
 		
 		// For html slide editing
-		jQuery('.caption_slide').live('hover', function(evt) {
-			//evt.preventDefault();
-			if (!this.prototip) {
-				showArtifactEditForm(getClickArtifact(this), this);
-			}
+		jQuery('.caption_slide').live('click', function(evt) {
+			var artifact = getClickArtifact(this);
+			
+			showArtifactEditForm(artifact, this);
+			evt.preventDefault();
 		});
 		// To remove a slide
 		jQuery('.remove_slide').live('click', function(evt) {
@@ -975,13 +979,24 @@ var ArtifactSelection = function() {
 			editSlideHtml(getClickArtifact(this));
 			evt.preventDefault();
 		});
-	
+
+		catch_caption_form_submit = function(evt) {
+			var form = jQuery(evt.target).closest('form');
+			evt.preventDefault();
+			
+			if (form[0].m_submit.value === 'Save') {
+				saveArtifactDescription(form[0].description.value);
+			} 
+			// Close all tooltip windows
+			Tips.hideAll();
+		};
+		
 		// Setup description save button click handler
 		// Now in Prototype!  I love using multiple frameworks..
-		$('save_desc').observe('submit', function(e) {
-			e.stop();
-			saveArtifactDescription();
-		});
+		jQuery('#save_desc').live('submit', catch_caption_form_submit);
+		// FOR IE live()/SUBMIT NOT WORKING
+		jQuery("#save_desc input[type=submit]").live("click", catch_caption_form_submit);
+		
 		$('do_preview').observe('click', function(e) {
 			e.stop();
 			togglePreview(this);
@@ -1096,7 +1111,7 @@ var Soundtrack = function() {
 		var obj = {};
 		
 		if (that.getSize() >= 1) {
-			alert('Only one audio track is supported at the moment!');
+			alert("Only one audio track is supported at the moment!  Click the 'Clear Audio' button to remove the current track.");
 			return;
 		}
 		if ((source = draggable.readAttribute('src')) !== null) {
@@ -1134,6 +1149,8 @@ var Soundtrack = function() {
 	
 	// Removes all sounds
 	function clearItems() {
+		var sounds;
+
 		// Remove the audio from soundManger's cache
 		// Otherwise it will play the same sound even if the source changes
 		if (that.getSize() > 0) {
@@ -1147,10 +1164,9 @@ var Soundtrack = function() {
 	
 	// Returns list of track sources
 	function getTracks() {
-		var source;
 		return selection.map(function(audio) {
 			return audio.source;
-		});
+    });
 	};
 	that.getTracks = getTracks;
 	
@@ -1175,7 +1191,7 @@ var Soundtrack = function() {
 		} else {
 			if (this.getSize() > 0) {
 				sounds = this.getTrackData();
-			
+
 				currentAudio = soundManager.createSound({
 					id: parseInt(sounds[0].cid),
 				  url: sounds[0].source,

@@ -15,7 +15,7 @@ vertical-align:middle;
 }
 
 input.next {
-	margin: 5px;
+	margin-left: 5px;
 }
 
 #artifact_picker {
@@ -192,6 +192,10 @@ input.next {
 
 .gridsquare {
 	text-align: center;
+}
+
+#prevnext {
+	vertical-align: top;
 }
 
 li .handle {
