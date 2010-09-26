@@ -26,16 +26,20 @@ set :scm, 'subversion'
 set :stages, %w(development staging production production-rackspace utility)
 set :default_stage, "staging"
 
+set :repository, 'git@github.com:simianarmy/Eternos.com.git'
+set :scm, :git
+set :branch, ENV['branch'] || :master
+# fast_remote_cache strategy - http://github.com/37signals/fast_remote_cache/tree 
+set :deploy_via, :fast_remote_cache
+# This will execute the Git revision parsing on the *remote* server rather than locally
+set :real_revision, 			lambda { source.query_revision(revision) { |cmd| capture(cmd) } }
 
 ssh_options[:paranoid] = false
 default_run_options[:pty] = true
 set :user, "mmauger"            # defaults to the currently logged in user
 set :use_sudo, false
-# fast_remote_cache strategy - http://github.com/37signals/fast_remote_cache/tree 
-set :deploy_via, :export #:fast_remote_cache
 set :copy_exclude, %w(features spec doc stories test tmp)
 set :group_writable, false
-
 set :keep_releases, 3
 set :dos2unix, "/usr/bin/dos2unix"
 

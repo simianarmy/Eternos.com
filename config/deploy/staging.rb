@@ -6,10 +6,6 @@ role :app, "72.3.253.143"
 role :web, "72.3.253.143"
 role :db,  "72.3.253.143", :primary => true
 
-set :repository, 'git@github.com:simianarmy/Eternos.com.git'
-set :scm, :git
-set :branch, :master
-
 namespace :deploy do
   task :minify_js, :roles => [:app] do
     run "cd #{release_path} && rake js:min RAILS_ENV=staging"

@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+# 
+# $Id$
+# Munin plugin
+# Counts features used 
+
+REQUEST_URI = 'http://beta.eternos.com/admin/munin/feature_usage?api=FL1mFl4mAlamB'
+DATA_LABELS = %w( Memento Trustee )
+
+def output_config
+  puts <<-END
+graph_category Eternos.com
+graph_title feature usage stats
+graph_vlabel count
+
+Memento.label Mementos created
+Trustee.label Trustees added
+END
+  exit 0
+end
+
+def output_values
+  status = `curl -s #{REQUEST_URI}`
+  
+  unless $?.success?
+    $stderr.puts "failed executing eternos-users"
+    exit 1
+  end
+  DATA_LABELS.each do |feat|
+    status =~ /#{feat}\s+=\s+(\d+)/
+    puts "#{feat}.value #{$1}"
+  end
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end
