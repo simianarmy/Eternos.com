@@ -380,6 +380,8 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
     t.string   "encodingid"
     t.datetime "deleted_at"
   end
+  add_index "contents", ["type"], :contents => "index_contents_on_type"
+  add_index "contents", ["user_id"], :contents => "index_contents_on_user"
 
   create_table "countries", :force => true do |t|
     t.string "name"
@@ -674,6 +676,7 @@ ActiveRecord::Schema.define(:version => 20100430054932) do
     t.string   "state"
     t.string   "s3_key"
   end
+  add_index "photo_thumbnails", ["parent_id"], :name => "index_photo_thumbnails_on_parent_id"
 
   create_table "plugin_schema_info", :id => false, :force => true do |t|
     t.string  "plugin_name"

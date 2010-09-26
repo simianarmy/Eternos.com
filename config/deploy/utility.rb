@@ -17,7 +17,7 @@ set :rails_env, "production"
 
 namespace :deploy do
   task :restart do
-    run "sudo monit restart workling"
+    run "sudo monit restart httpd"
   end
   
   task :start do

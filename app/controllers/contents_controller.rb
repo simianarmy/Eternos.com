@@ -33,10 +33,11 @@ class ContentsController < ApplicationController
   def index
     @content_type = params[:type]
     key = Digest::MD5.hexdigest("content:#{current_user.id}:#{@content_type}")
-    @contents = Rails.cache.fetch(key, :expires_in => 10.minutes, :force => session[:refresh_images]) {
+    refresh = force_cache_reload?(:images) || force_cache_reload?(:timelineed) || session[:refresh_images]
+    @contents = Rails.cache.fetch(key, :expires_in => 10.minutes, :force => refresh) {
       case @content_type
       when 'albums'
-        current_user.photo_albums.reject{|album| album.photos.empty?}.sort {|a,b| b.start_date <=> a.start_date}
+        current_user.photo_albums.reject{|album| album.num_items==0}.sort {|a,b| b.start_date <=> a.start_date}
         #current_user.contents.photo_albums.map(&:collection)
       when 'web_videos'
         current_user.contents.web_videos
