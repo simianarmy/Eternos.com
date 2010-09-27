@@ -4,7 +4,7 @@
 # Munin plugin
 # Counts features used 
 
-REQUEST_URI = 'http://beta.eternos.com/admin/munin/feature_usage?api=FL1mFl4mAlamB'
+REQUEST_URI = 'http://eternos.local/admin/munin/feature_usage?api=FL1mFl4mAlamB'
 DATA_LABELS = %w( Memento Trustee )
 
 def output_config

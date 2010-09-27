@@ -433,6 +433,13 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
 
   add_index "elements", ["story_id"], :name => "index_elements_on_story_id"
 
+  create_table "email_blacklists", :force => true do |t|
+    t.text     "email", :null => false
+    t.datetime "created_at", :null => false
+  end
+  # TODO: add fulltext index in migration
+  #add_index "email_blacklists", ["email"], :name => "index_email_blacklists_on_email"
+  
   create_table "facebook_contents", :force => true do |t|
     t.integer  "profile_id", :null => false
     t.text     "friends"

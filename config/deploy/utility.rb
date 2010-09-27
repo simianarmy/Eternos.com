@@ -8,16 +8,12 @@ role :web, '184.73.167.220'
 role :db,  '184.73.167.220'
 
 set :user, "deploy" 
-set :repository, 'git@github.com:simianarmy/Eternos.com.git'
-set :scm, :git
-set :branch, ENV['branch'] || :master
-set :deploy_via, :remote_cache
 
 set :rails_env, "production"
 
 namespace :deploy do
   task :restart do
-    run "sudo monit restart httpd"
+    run "sudo monit restart workling"
   end
   
   task :start do

@@ -29,10 +29,11 @@ set :default_stage, "staging"
 set :repository, 'git@github.com:simianarmy/Eternos.com.git'
 set :scm, :git
 set :branch, ENV['branch'] || :master
+set :deploy_via, :remote_cache
 # fast_remote_cache strategy - http://github.com/37signals/fast_remote_cache/tree 
-set :deploy_via, :fast_remote_cache
+#set :deploy_via, :fast_remote_cache
 # This will execute the Git revision parsing on the *remote* server rather than locally
-set :real_revision, 			lambda { source.query_revision(revision) { |cmd| capture(cmd) } }
+#set :real_revision, 			lambda { source.query_revision(revision) { |cmd| capture(cmd) } }
 
 ssh_options[:paranoid] = false
 default_run_options[:pty] = true
