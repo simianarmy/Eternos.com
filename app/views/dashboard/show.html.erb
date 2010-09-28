@@ -23,7 +23,7 @@
     <% end %>
 <% end %>
 
-<% table_info_part('Back Up Stats') do %>
+<% table_info_part('Backup Data') do %>
     <% content_tag(:tr) do %>
         <%= td_thead_tag(116, 'Albums', true) %>
         <%= td_thead_tag(116, 'Photos', true) %>
@@ -46,6 +46,9 @@
         <%= content_tag(:td, @backup_data[:tweets], :align => 'center') %>
         <%= content_tag(:td, @backup_data[:total], :align => 'center') %>
     <% end %>
+<% end %>
+
+<% table_info_part('Backup Status') do %>
 <% end %>
 
 <% if false %>
