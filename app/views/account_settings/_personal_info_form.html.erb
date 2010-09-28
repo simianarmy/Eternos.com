@@ -13,6 +13,7 @@
   			  <% end %>
   			  Fields marked with a <font style="color: red;">*</font> must be filled in.
   			</div>
+  			 <div id="notice"></div>
     	  </td>
       </tr>
       <tr>
@@ -29,6 +30,7 @@
       <%= render :partial => 'profiles/personal_info_form', :locals => {:address_book => settings.address_book, :profile => settings.profile, :basic_view => setup} %>
       
       <%= render :partial => 'account_settings/security_questions', :locals => {:security_questions => settings.security_questions} %>
+      
       <tr>
         <td><%= submit_tag("Save") %></td>
       </tr>

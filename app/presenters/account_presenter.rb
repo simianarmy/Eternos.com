@@ -5,7 +5,7 @@ class AccountPresenter < Presenter
   
   delegate :phone_numbers, :to => :address_book
   attr_accessor :address_book, :profile, :new_address_book, :new_profile, :security_questions,
-    :errors, :params
+    :params
   
   def initialize(user, fb_session, params)
     @user = user

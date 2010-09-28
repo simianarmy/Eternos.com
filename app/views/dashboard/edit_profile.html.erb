@@ -1,0 +1,11 @@
+<div id="profile-content">
+  <%= render :partial => 'account_settings/personal_info_form', :locals => {
+    :settings => @personal_settings, :completed_steps => 2, :setup => false
+  } %>
+</div>
+<%= javascript_tag "
+  document.observe('dom:loaded', function() {
+    datePickerController.create();
+  });
+"  
+%>

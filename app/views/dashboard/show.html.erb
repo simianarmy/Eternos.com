@@ -6,7 +6,7 @@
     <% content_tag(:tr) do %>
         <%= td_thead_tag(148, 'User Name') %>
         <%= td_thead_tag(125, 'Email', true) %>
-        <%= td_thead_tag(166, 'Address') %>
+        <%= td_thead_tag(166, 'Birth Date') %>
         <%= td_thead_tag(145, 'Account Status', true) %>
         <%= td_thead_tag(136) %>
     <% end %>
@@ -16,27 +16,35 @@
         <% end %>
         <%= content_tag(:td, current_user.email, :align => 'center') %>
         <% content_tag(:td) do %>
-            <%= current_user.address_book.home_address %>
+            <%= current_user.profile.birthday.to_date %>
         <% end %>
         <%= content_tag(:td, current_user.state.to_s.capitalize, :align => 'center') %>
         <%= td_edit_button({:action => 'edit_profile'}) %>
     <% end %>
 <% end %>
 
-<% table_info_part('Back Up Settings') do %>
+<% table_info_part('Back Up Stats') do %>
     <% content_tag(:tr) do %>
-        <%= td_thead_tag(132, 'Data Used') %>
-        <%= td_thead_tag(116, '# of Photos', true) %>
-        <%= td_thead_tag(131, '# of Videos', true) %>
+        <%= td_thead_tag(116, 'Albums', true) %>
+        <%= td_thead_tag(116, 'Photos', true) %>
+        <%= td_thead_tag(131, 'Videos', true) %>
+        <%= td_thead_tag(116, 'Audio', true) %>
+        <%= td_thead_tag(116, 'Emails', true) %>
+        <%= td_thead_tag(116, 'RSS Items', true) %>
+        <%= td_thead_tag(116, 'Facebook Items', true) %>
+        <%= td_thead_tag(116, 'Twitter Items', true) %>
         <%= td_thead_tag(205, 'Total Items Backed Up', true) %>
-        <%= td_thead_tag(136) %>
     <% end %>
     <% content_tag(:tr) do %>
-        <%= content_tag(:td, bytes_to_human(@backup_data[:size])) %>
+        <%= content_tag(:td, @backup_data[:albums], :align => 'center') %>
         <%= content_tag(:td, @backup_data[:photos], :align => 'center') %>
         <%= content_tag(:td, @backup_data[:videos], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:audio], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:emails], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:rss], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:fb], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:tweets], :align => 'center') %>
         <%= content_tag(:td, @backup_data[:total], :align => 'center') %>
-        <%= td_edit_button('#') %>
     <% end %>
 <% end %>
 
@@ -56,7 +64,8 @@
         <% end %>
         <%= content_tag(:td, 'Visa (...4752)', :align => 'center') %>
         <%= content_tag(:td, 'Active', :align => 'center') %>
-        <%= td_edit_button('#') %>
+        <%= #td_edit_button('#') 
+        %>
     <% end %>
 <% end %>
 <% end %>
