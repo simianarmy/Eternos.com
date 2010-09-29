@@ -8,23 +8,8 @@ class DashboardController < ApplicationController
   ssl_required :all # Way nicer than specifying each frickin action
   
   def show
-    @user = current_user
-    @days_signed = (Date.current - @user.created_at.to_date + 1).to_i.to_s
-    @backup_data = {:size => 0, :photos => 0, :videos => 0, :emails => 0, 
-      :tweets => 0, :fb => 0, :rss => 0, :total => 0}
-
-    @backup_data[:albums] = @user.photo_albums.size
-    @backup_data[:photos] = @user.contents.photos.count
-    @backup_data[:videos] = @user.contents.all_video.count
-    @backup_data[:audio] = @user.contents.all_audio.count
-    @backup_data[:tweets] = @user.activity_stream.items.twitter.count
-    @backup_data[:fb] = @user.activity_stream.items.facebook.count
-    @backup_data[:rss] = FeedEntry.belonging_to_user(@user.id).count
-    @backup_data[:emails] = BackupEmail.belonging_to_user(@user.id).count
-    @backup_data[:total] = @backup_data.values.sum
-    
-    @backup_sources = @user.backup_sources.size
-    @active_backup_sources = @user.backup_sources.active.size
+    @dashboard = DashboardPresenter.new(current_user)
+    @backup_data = @dashboard.backup_data_counts
   end
 
   def edit_profile

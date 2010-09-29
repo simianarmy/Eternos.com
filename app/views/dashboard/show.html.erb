@@ -12,13 +12,13 @@
     <% end %>
     <% content_tag(:tr) do %>
         <% content_tag(:td) do %>
-            <%= current_user.full_name %> <br/> <%= content_tag(:em, "Member For: #{@days_signed} days") %>
+            <%= @dashboard.user_name %> <br/> <%= content_tag(:em, "Member For: #{@dashboard.days_signed_up} days") %>
         <% end %>
         <%= content_tag(:td, current_user.email, :align => 'center') %>
         <% content_tag(:td) do %>
-            <%= current_user.profile.birthday.to_date %>
+            <%= @dashboard.birthday %>
         <% end %>
-        <%= content_tag(:td, current_user.state.to_s.capitalize, :align => 'center') %>
+        <%= content_tag(:td, @dashboard.account_state, :align => 'center') %>
         <%= td_edit_button({:action => 'edit_profile'}) %>
     <% end %>
 <% end %>
@@ -49,6 +49,22 @@
 <% end %>
 
 <% table_info_part('Backup Status') do %>
+  <% content_tag(:tr) do %>
+    <%= td_thead_tag(116, 'Backup Site', true) %>
+    <%= td_thead_tag(116, 'Added on', true) %>
+    <%= td_thead_tag(116, 'Most Recent Backup', true) %>
+    <%= td_thead_tag(116, 'Status', true) %>
+    <%= td_thead_tag(116, 'Options', true) %>
+  <% end %>
+  <% @dashboard.backup_sites.each do |bs| %>
+    <% content_tag(:tr) do %>
+       <%= content_tag(:td, bs.description, :align => 'left') %>
+       <%= content_tag(:td, bs.created_at.to_date, :align => 'center') %>
+       <%= content_tag(:td, bs.last_backup_at.to_date, :align => 'center') %>
+       <%= content_tag(:td, bs.active? ? 'OK' : 'User Action Required', :align => 'center') %>
+       <%= content_tag(:td, link_to('Add More', account_setup_path(:step => 0))) %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <% if false %>

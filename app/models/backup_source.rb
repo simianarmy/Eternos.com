@@ -184,7 +184,7 @@ class BackupSource < ActiveRecord::Base
   def do_backed_up
     self.update_attributes(:needs_initial_scan => false, 
       :last_backup_at => Time.now.utc,
-      :latest_day_backed_up => Date.today)
+      :latest_day_backed_up => Date.today.utc)
   end
   
 end
