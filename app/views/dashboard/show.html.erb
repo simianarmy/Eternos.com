@@ -56,7 +56,7 @@
     <%= td_thead_tag(116, 'Status', true) %>
     <%= td_thead_tag(116, 'Options', true) %>
   <% end %>
-  <% @dashboard.backup_sites.sort(&:created_at).each do |bs| %>
+  <% @dashboard.backup_sites.each do |bs| %>
     <% content_tag(:tr) do %>
        <%= content_tag(:td, bs[:description], :align => 'left') %>
        <%= content_tag(:td, bs[:created_at], :align => 'center') %>

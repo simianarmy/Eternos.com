@@ -17,9 +17,9 @@ class DashboardPresenter < Presenter
     @backup_sites = user.backup_sources.map do |bs|
       status = if bs.active?
         'OK'
-      elsif auth_required?
+      elsif bs.auth_required?
         'Authentication Required'
-      elsif backup_broken?
+      elsif bs.backup_broken?
         'Too many failed attempts'
       else
         'Inactive'
@@ -29,7 +29,7 @@ class DashboardPresenter < Presenter
         :created_at => bs.created_at.to_date,
         :last_backup_at => (bs.latest_backup ? bs.latest_backup.finished_at : bs.last_backup_at).to_date,
         :status => status}
-    end
+    end.sort_by {|bs| bs[:created_at]}
     Rails.logger.debug "backup sites: #{@backup_sites.inspect}"
   end
   
