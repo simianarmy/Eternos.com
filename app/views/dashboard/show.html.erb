@@ -68,15 +68,27 @@
 <% end %>
 
 <h1>Mail Options</h1>
-  <p>
-    <%= check_box_tag :weekly_email %> Email me weekly backup stats
-  </p>
-  <p>
-    <%= check_box_tag :monthly_email %> Email me monthly backup stats
-  </p>
-  <p>
-    <%= check_box_tag :newsletter %> Send me monthly newsletter
-  </p>
+<p class="mail_option">
+  <%= check_box_tag :weekly_email, "1", @email_lists[:weekly_stats], 
+    :onclick => remote_function(
+      :url => { :controller => :email_lists, :action => :update },
+      :with => "'email_list[name]=weekly_stats&email_list[is_enabled]='+this.checked" ) 
+    %> Email me weekly backup stats
+</p>
+<p class="mail_option">
+  <%= check_box_tag :monthly_email, "1", @email_lists[:monthly_stats],
+    :onclick => remote_function(
+      :url => { :controller => :email_lists, :action => :update },
+      :with => "'email_list[name]=monthly_stats&email_list[is_enabled]='+this.checked" ) 
+    %> Email me monthly backup stats
+</p>
+<p class="mail_option">
+  <%= check_box_tag :newsletter, "1", @email_lists[:newsletter],
+      :onclick => remote_function(
+        :url => { :controller => :email_lists, :action => :update },
+        :with => "'email_list[name]=newsletter&email_list[is_enabled]='+this.checked" ) 
+    %> Send me monthly newsletter
+</p>
 
 
 <% if false %>

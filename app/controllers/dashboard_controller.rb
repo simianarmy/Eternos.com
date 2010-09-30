@@ -10,6 +10,10 @@ class DashboardController < ApplicationController
   def show
     @dashboard = DashboardPresenter.new(current_user)
     @backup_data = @dashboard.backup_data_counts
+    @email_lists = Hash.new(false)
+    current_user.email_lists.each do |el|
+      @email_lists[el.name.to_sym] = el.is_enabled
+    end
   end
 
   def edit_profile

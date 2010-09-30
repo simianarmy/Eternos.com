@@ -19,6 +19,7 @@ class Member < User
     m.has_many :backup_sites, :through => :backup_sources
     m.has_many :security_questions
     m.has_many :mementos
+    m.has_many :email_lists
     m.has_one :activity_stream
     m.has_one :backup_state
   end
