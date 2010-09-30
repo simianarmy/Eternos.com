@@ -62,7 +62,10 @@
        <%= content_tag(:td, bs[:created_at], :align => 'center') %>
        <%= content_tag(:td, bs[:last_backup_at], :align => 'center') %>
        <%= content_tag(:td, bs[:status], :align => 'center') %>
-       <%= content_tag(:td, link_to('Add More', account_setup_path(:step => 0))) %>
+       <%= content_tag(:td, '' ) %>
+    <% end %>
+    <% content_tag(:tr) do %>
+      <%= content_tag(:td, link_to('Add More', account_setup_path(:step => 0))) %>
     <% end %>
   <% end %>
 <% end %>

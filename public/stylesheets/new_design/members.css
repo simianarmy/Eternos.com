@@ -82,6 +82,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #acct_settings { margin-top: -15px;}
 #acct_settings A { color: #6D6D6D; text-decoration: none; display: block; width: 131px; height: 37px; padding: 20px 0 0 10px; font-weight: bold;}
 #acct_settings A:hover { font-weight: bold;  background: url(/images/blue-button.gif) no-repeat;}
+#acct_settings A.active { font-weight: bold;  background: url(/images/blue-button.gif) no-repeat;}
 #acct_settings LI { margin: 0 0 -15px 0; padding: 0;}
 .login1_right HR { clear: both;  margin: 20px 0; padding: 0; border: none; border-top: 1px dashed #cccccc; height: 1px;}
 

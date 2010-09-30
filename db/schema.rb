@@ -445,6 +445,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "name", :null => false
     t.boolean  "is_enabled", :null => false, :default => false
   end
+  add_index "email_lists", "user_id"
   
   create_table "facebook_contents", :force => true do |t|
     t.integer  "profile_id", :null => false
@@ -691,8 +692,6 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "s3_key"
     t.string   "state"
   end
-  add_index "photo_thumbnails", ["parent_id"], :name => "index_photo_thumbnails_on_parent_id"
-
   add_index "photo_thumbnails", ["parent_id"], :name => "index_photo_thumbnails_on_parent_id"
 
   create_table "plugin_schema_info", :id => false, :force => true do |t|
