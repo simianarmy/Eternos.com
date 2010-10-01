@@ -17,6 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :image_gallery, :controller => 'image_gallery', :only => [:show], :member => {:albums => :get}
   map.resource :user_search, :controller => 'user_search'
   map.resource :dashboard, :controller => 'dashboard'
+  map.resource :unsubscribe, :controller => 'unsubscribe'
   
   # regular resources
   map.resources :timeline_events, :collection => {

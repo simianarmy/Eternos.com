@@ -1,8 +1,8 @@
 # $Id$
 
 class MementosController < MemberHomeController
-  layout 'mementos', :only => ['new', 'index']
-  
+  layout :mementos_layout
+
   before_filter :login_required, :except => [:show]
   before_filter :check_roles, :except => [:show]
   before_filter :set_facebook_connect_session, :except => [:show, :new_content]
@@ -50,7 +50,8 @@ class MementosController < MemberHomeController
     if @memento = Memento.find_by_uuid(params[:id])
       create_memento_json
     end
-    
+
+    @is_memento = true
     respond_to do |format|
       format.html {
         unless @memento
@@ -108,7 +109,12 @@ class MementosController < MemberHomeController
   end
   
   protected
-  
+
+  def mementos_layout
+    ['new','index'].include?(params[:action]) ? 'mementos' :
+          (params[:action] == 'show' ? 'mementos_show' : nil)
+  end
+
   def load_artifacts
     contents = current_user.contents
     @albums = contents.photo_albums

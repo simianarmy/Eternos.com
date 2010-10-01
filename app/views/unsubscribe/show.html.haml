@@ -1,0 +1,12 @@
+%h1== Unsubscribe
+
+%h3== Enter your email address to unsubscribe from Eternos' mailing lists
+
+- form_for @email, :url => {:action => 'create'} do |f|
+  .mail-form
+    %label{:for => 'email'}== Email:
+    = f.text_field :email
+    = f.submit 'Unsubscribe'
+  - if flash[:error]
+    .error
+      = flash[:error]

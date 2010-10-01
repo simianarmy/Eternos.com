@@ -1,0 +1,32 @@
+!!!
+%html{html_attrs('en'), 'xmlns:fb' => "http://www.facebook.com/2008/fbml"}
+  %head
+    %link{:rel=>"shortcut icon", :type=>"image/vnd.microsoft.icon", :href=>"#{image_path 'favicon.ico'}"}
+    %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
+    %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
+    %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=iso-8859-1"}
+    %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
+    %meta{:name=>"description", :content=>"#{meta_descriptions}"}
+    %title= "Eternos Memento Player"
+    /[if lte IE 7]
+      = stylesheet_link_tag "new_design/styleie7.css"
+    /[if lte IE 6]
+      = stylesheet_link_tag "new_design/styleie6.css"
+
+    - stylesheet 'new_design/style.css', 'mementos'
+    = stylesheet_link_tag 'unsubscribe.css' if @is_unsubscribe 
+    = yield(:head)
+
+  %body
+    .header
+      %div
+        = link_to(image_tag('logo.png', :border => "0"),  root_path)
+
+    <!-- start content -->
+    .content.memento-player
+      %fieldset
+        = yield
+
+    = render :partial => 'shared/site_footer' unless @hide_footer
+
+    = render :partial => 'show_javascript' if @is_memento
