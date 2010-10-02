@@ -37,6 +37,10 @@ module LayoutHelper
     content_for(:head) { stylesheet_link_tag(*args) }
   end
   
+  def inner_stylesheet(*args)  
+    content_for(:inner_head) { stylesheet_link_tag(*args) }
+  end
+  
   def js_include(place, *args)
     Rails.logger.debug "JS INCLUDES: #{args.inspect}"
     p = place.to_sym

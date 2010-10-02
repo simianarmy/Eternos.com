@@ -13,20 +13,20 @@
     /[if lte IE 6]
       = stylesheet_link_tag "new_design/styleie6.css"
 
-    - stylesheet 'new_design/style.css', 'mementos'
-    = stylesheet_link_tag 'unsubscribe.css' if @is_unsubscribe 
+    = stylesheet_link_tag 'new_design/style.css', 'application.css'
+    
     = yield(:head)
-
+    
   %body
     .header
       %div
+        = render :partial => 'shared/home_login_form', :locals => {:hide => @hide_login}
         = link_to(image_tag('logo.png', :border => "0"),  root_path)
 
     <!-- start content -->
-    .content.memento-player
+    #content.page-content.content
       %fieldset
         = yield
 
     = render :partial => 'shared/site_footer' unless @hide_footer
 
-    = render :partial => 'show_javascript' if @is_memento

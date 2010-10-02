@@ -1,7 +1,7 @@
 # $Id$
 
 class MementosController < MemberHomeController
-  layout :mementos_layout
+  layout 'mementos', :only => [:new, :index]
 
   before_filter :login_required, :except => [:show]
   before_filter :check_roles, :except => [:show]
@@ -25,7 +25,6 @@ class MementosController < MemberHomeController
     end
     @memento.save
 
-    
     respond_to do |format|
       format.js {
         if @memento.errors
@@ -51,11 +50,12 @@ class MementosController < MemberHomeController
       create_memento_json
     end
 
-    @is_memento = true
     respond_to do |format|
       format.html {
         unless @memento
           render_404 && return 
+        else
+          render :layout => 'public_notabs'
         end
       }
     end
@@ -109,11 +109,6 @@ class MementosController < MemberHomeController
   end
   
   protected
-
-  def mementos_layout
-    ['new','index'].include?(params[:action]) ? 'mementos' :
-          (params[:action] == 'show' ? 'mementos_show' : nil)
-  end
 
   def load_artifacts
     contents = current_user.contents

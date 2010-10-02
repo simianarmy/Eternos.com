@@ -1,0 +1,14 @@
+Hello <%= @name %>
+
+Your Eternos account statistics for the <%= @period %> of <%= @date_range %>:
+
+<% if @num_errors > 0 %>
+  -<%= @num_errors %> errors were encountered, <%= link_to 'click here', @error_link %> to learn more.
+<% end %>
+-<%= @num_facebook_items %> Facebook feed entries were archived.
+-<%= @num_tweets %> Tweets were archived.
+-<%= @num_photos %> photos were archived.
+-<%= @num_emails %> emails were archived.
+-<%= @num_rss_items %> RSS Feed items were archived.
+
+

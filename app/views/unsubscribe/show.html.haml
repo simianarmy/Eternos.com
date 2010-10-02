@@ -1,12 +1,12 @@
-%h1== Unsubscribe
+#unsubscribe{:style=>"text-align:center;"}
+  %h1== Unsubscribe
 
-%h3== Enter your email address to unsubscribe from Eternos' mailing lists
+  %h3== Enter your email address to unsubscribe from Eternos' mailing lists
 
-- form_for @email, :url => {:action => 'create'} do |f|
-  .mail-form
-    %label{:for => 'email'}== Email:
-    = f.text_field :email
-    = f.submit 'Unsubscribe'
-  - if flash[:error]
-    .error
-      = flash[:error]
+  .notice= show_flash_messages
+
+  - form_for @email, :url => {:action => 'create'} do |f|
+    #mail-form{:style => "text-align:center;"}
+      %label{:for => 'email'}== Email:
+      = f.text_field :email
+      = f.submit 'Unsubscribe'

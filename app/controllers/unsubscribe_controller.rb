@@ -1,5 +1,5 @@
 class UnsubscribeController < ApplicationController
-  layout 'mementos_show'
+  layout 'public_notabs'
   before_filter {|controller| controller.instance_variable_set('@is_unsubscribe',true) }
 
   def show
@@ -7,16 +7,21 @@ class UnsubscribeController < ApplicationController
   end
 
   def create
-    @email = EmailBlacklist.new(:email => params[:email_blacklist][:email])
-    if @email.save
-      redirect_to :action => 'save'
-    else
-      flash[:error] = 'Error in e-mail: ' + @email.errors[:email]
-      return render('show')
+    @email = EmailBlacklist.new(params[:email_blacklist])
+    
+    respond_to do |format|
+      format.html {
+        # Make sure this is an existing email address to prevent hacking
+        # Don't raise error if email already in blacklist, just confirm success
+        if !@email.email.blank? && 
+          (EmailBlacklist.find_by_email(@email.email) || User.email_eq(@email.email).empty?)
+          # Do not warn if no match - pretend like it succeeded
+        elsif not @email.save
+          flash[:error] = 'Error unsubscribing: ' + @email.errors[:email]
+          render :action => 'show'
+        end
+      }
     end
   end
 
-  def save
-  end
-  
 end

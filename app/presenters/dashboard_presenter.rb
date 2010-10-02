@@ -24,10 +24,15 @@ class DashboardPresenter < Presenter
       else
         'Inactive'
       end
+      last_backup_date = if dt = (bs.latest_backup ? bs.latest_backup.finished_at : bs.last_backup_at)
+        dt.to_date
+      else
+        'None'
+      end
       # Return simple hash with backup source info
       {:description => bs.description,
         :created_at => bs.created_at.to_date,
-        :last_backup_at => (bs.latest_backup ? bs.latest_backup.finished_at : bs.last_backup_at).to_date,
+        :last_backup_at => last_backup_date,
         :status => status}
     end.sort_by {|bs| bs[:created_at]}
     Rails.logger.debug "backup sites: #{@backup_sites.inspect}"
