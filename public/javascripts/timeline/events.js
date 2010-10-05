@@ -267,25 +267,60 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSource, {
 	initialize: function($super, s) {
 		this.source = 'Facebook';
+		this.comments = [];
 		$super(s);
 	},
 	getCommentsCount: function() {
-		var comments = '', count = 0;
-		if (this.attributes.comment_thread != null) {
-			count = this.attributes.comment_thread.size();
+		var count = 0;
+		
+		this.getComments();
+		if (this.comments.length > 0) {
+			count = this.comments.length;
 			comments = this._getSmallTooltipLine(count + " " + ((count == 1) ? 'Comment' : 'Comments'));
 		}
 		return comments;
 	},
+	// Fills class comments array, returns all comments as string
 	getComments: function() {
-		var comments = '';
+		var comments = '', arr = [], tmp, comm;
+		
+		this.comments.clear();
+		
 		if (this.attributes.comment_thread != null) {
-			$A(this.attributes.comment_thread).each(function(c) {
+			// Handle B.S. Ruby/Rails JSON formatting which seems to change everytime 
+			// I fucking update a gem!
+			// Fix fucked up string by converting into the JSON array Rails *used to* return
+			if (typeof(this.attributes.comment_thread) === 'string') {
+				// Split unserialized but not jsonized FacebookComment objects
+				$A(this.attributes.comment_thread.split('- !map:FacebookComment')).each(function(map) {
+					if (map.match('username:')) {
+						comm = {};
+						tmp = map.split("\n");
+						$A(tmp).each(function(m) {
+							if (m.match('username:')) {
+								comm.username = m.split(':')[1];
+							} else if (m.match('user_pic:')) {
+								comm.user_pic = m.split('_pic:')[1];
+							} else if (m.match('text:')) {
+								comm.text = m.split(':')[1];
+							}
+						});
+						arr.push(comm);
+					}
+				});
+			} else if (typeof(this.attributes.comment_thread) === 'object') {
+				arr = this.attributes.comment_thread;
+			} else {
+				// Can't convert nonsense into comments array..fail
+				;
+			}
+			$A(arr).each(function(c) {
+				this.comments.push(c); // Save each comment in internal array
 				comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
 					author: (c.username ? c.username : 'You'),
 					thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
 					comment: c.text});
-				});
+				}.bind(this));
 			comments = this._getSmallTooltipLine('Comments: ' + comments);
 		}
 		return comments;

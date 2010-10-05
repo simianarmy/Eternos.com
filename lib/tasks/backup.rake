@@ -186,4 +186,30 @@ namespace :backup do
     end
     puts "#{count} failed backup sources"
   end
+  
+  desc "Shows backup status for a single user"
+  task :user_status => :environment do
+    unless login = ENV['LOGIN']
+      puts "Usage: rake backup:user_status LOGIN=email@address"
+      exit
+    end
+    unless m = User.email_eq(login).first
+      puts "Could not find a user with login: #{login}"
+      exit
+    end
+    puts "Backup State: "
+    puts m.backup_state.inspect
+    puts 
+    puts "Recent jobs: "
+    m.backup_sources.each do |bs|
+      puts "SOURCE ID = #{bs.id}"
+      puts bs.description
+      if job = bs.latest_backup
+        puts job.inspect
+      else
+        puts "None"
+      end
+    end
+  end
+    
 end

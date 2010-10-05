@@ -33,7 +33,7 @@ class Feed < ActiveRecord::Base
     # to only fetch those new entries
     if entries.any?
       feed = Feedzirra::Feed.update(create_feed_for_update)
-      add_entries(feed.new_entries) if valid_parse_result(feed) && feed.updated?
+      add_entries(feed.new_entries) if valid_parse_result(feed) && !feed.is_a?(Array) && feed.updated?
     else
       # Fetch whole feed (may not be entire feed - depends on source)
       feed = auth_feed || Feedzirra::Feed.fetch_and_parse(feed_url_s)
