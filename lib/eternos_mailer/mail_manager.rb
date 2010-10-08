@@ -58,7 +58,7 @@ module EternosMailer
       attr_writer :recipients
     
       def initialize(limit=0)
-        @limit      = limit
+        @limit      = limit.nil? ? 0 : limit
         @sent       = 0
         @recipients = []
       end
@@ -66,16 +66,22 @@ module EternosMailer
       # Sends email to list of users using passed block as delivery method
       def send(&block)
         @recipients.each do |user|
+          puts "Sending email to user #{user.id}."
           begin
-            block.call(user)
+            if ::EternosMailer.dry_run_mode
+              puts "dry_run_mode = true...not sending."
+            else
+              block.call(user) 
+              puts "delivered."
+              sleep(2) # Some smtp servers will block us if we send too many too fast (Google Apps)
+            end
             @sent += 1
-            sleep(2) # Some smtp servers will block us if we send too many too fast (Google Apps)
           rescue Timeout::Error => e
             Rails.logger.error e.message
           rescue Exception => e
             Rails.logger.error e.message
           end
-          break if (@limit) > 0 && (@sent >= @limit)
+          break if (@limit > 0) && (@sent >= @limit)
         end
         @sent
       end

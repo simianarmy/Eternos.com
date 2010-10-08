@@ -32,18 +32,23 @@ DESC
     # Mailer for members who have not added any backup sources
     desc "Sends email notification to accounts that do not have any backup sources added"
     task :notify_account_setup_incomplete => :environment do
-      mailing = MailManager::Mailing.new(:account_setup_reminder, ENV['CUTOFF_DAYS'])
-      mailer = MailManager::BatchMailer.new(ENV['MAX'])
-      cutoff = 14
+      require 'eternos_mailer/mail_manager'
+      EternosMailer.dry_run_mode = true unless ENV['DO_IT'] # FORCE ENV SET TO GUARD AGAINST STUPIDITY
+
+      mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
+      mailer = EternosMailer::MailManager::BatchMailer.new(ENV['MAX'])
+      cutoff = ENV['MIN_ACTIVE_DAYS'] || 14 # WAIT AT LEAST 2 WEEKS FROM JOIN DATE BEFORE BUGGING THEM
+      puts "Only emailing members > #{cutoff} days old"
       
-      mailer.recipients = Member.active.select do |user|
-        user.backup_sources.active.empty? && ((Time.now - user.activated_at) > cutoff) && 
-        mailing.allowed?(user.email)
+      mailer.recipients = Member.active.activated_at_lt(cutoff.days.ago).select do |user|
+        user.backup_sources.empty? && mailing.allowed?(user.email)
       end
-      sent = mailer.send do |user|
-        Rails.logger.info "#{user.id} has not completed account setup...sending reminder email"
-        user.deliver_account_setup_reminder!
+      mark = Benchmark.realtime do
+        @num_sent = mailer.send do |user|
+          #user.deliver_account_setup_reminder! 
+        end
       end
+      puts "#{@num_sent} emails sent in #{mark} secs."
     end
     
     # Mailer for members who have not added any backup sources
