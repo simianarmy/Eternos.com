@@ -1,13 +1,13 @@
 class UnsubscribeController < ApplicationController
   layout 'public_notabs'
-  before_filter {|controller| controller.instance_variable_set('@is_unsubscribe',true) }
 
   def show
     @email = EmailBlacklist.new
   end
 
   def create
-    @email = EmailBlacklist.new(params[:email_blacklist])
+    address = params[:email] || params[:email_blacklist][:email]
+    @email = EmailBlacklist.new(:email => address)
     
     respond_to do |format|
       format.html {

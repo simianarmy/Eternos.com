@@ -57,8 +57,10 @@ module EternosMailer
       attr_reader :sent
       attr_writer :recipients
     
-      def initialize(limit=0)
-        @limit      = limit.nil? ? 0 : limit
+      def initialize(options={})
+        @limit      = (options[:max] || 0).to_i
+        @dry_run    = options[:dry_run] || false
+        @debug      = options[:debug] || false
         @sent       = 0
         @recipients = []
       end
@@ -68,9 +70,8 @@ module EternosMailer
         @recipients.each do |user|
           puts "Sending email to user #{user.id}."
           begin
-            if ::EternosMailer.dry_run_mode
-              puts "dry_run_mode = true...not sending."
-            else
+            unless @dry_run || ::EternosMailer.dry_run_mode
+              puts user.email if @debug
               block.call(user) 
               puts "delivered."
               sleep(2) # Some smtp servers will block us if we send too many too fast (Google Apps)

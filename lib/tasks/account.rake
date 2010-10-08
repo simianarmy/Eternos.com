@@ -15,6 +15,8 @@ namespace :account do
     Inactive = member for > cutoff days but no backup sites or no backup data for > cutoff days
 DESC
     task :notify_inactive => :environment do
+      require 'eternos_mailer/mail_manager'
+      
       mailing = MailManager::Mailing.new(:inactive_notification, ENV['CUTOFF_DAYS'])
       mailer = MailManager::BatchMailer.new(ENV['MAX'])
       cutoff = 14
@@ -33,19 +35,23 @@ DESC
     desc "Sends email notification to accounts that do not have any backup sources added"
     task :notify_account_setup_incomplete => :environment do
       require 'eternos_mailer/mail_manager'
-      EternosMailer.dry_run_mode = true unless ENV['DO_IT'] # FORCE ENV SET TO GUARD AGAINST STUPIDITY
-
-      mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
-      mailer = EternosMailer::MailManager::BatchMailer.new(ENV['MAX'])
+      
+      dry_run = !(ENV['DO_IT'] == '1') # FORCE ENV SET TO GUARD AGAINST STUPIDITY
+      puts "Dry run only" if dry_run
+      
       cutoff = ENV['MIN_ACTIVE_DAYS'] || 14 # WAIT AT LEAST 2 WEEKS FROM JOIN DATE BEFORE BUGGING THEM
       puts "Only emailing members > #{cutoff} days old"
+      
+      mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
+      mailer = EternosMailer::MailManager::BatchMailer.new(:max => ENV['MAX'], 
+        :dry_run => dry_run, :debug => ENV['DEBUG'])
       
       mailer.recipients = Member.active.activated_at_lt(cutoff.days.ago).select do |user|
         user.backup_sources.empty? && mailing.allowed?(user.email)
       end
       mark = Benchmark.realtime do
         @num_sent = mailer.send do |user|
-          #user.deliver_account_setup_reminder! 
+          user.deliver_account_setup_reminder! 
         end
       end
       puts "#{@num_sent} emails sent in #{mark} secs."

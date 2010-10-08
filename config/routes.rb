@@ -18,6 +18,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :user_search, :controller => 'user_search'
   map.resource :dashboard, :controller => 'dashboard'
   map.resource :unsubscribe, :controller => 'unsubscribe'
+  # Unsubscribe route for mailer sites like Sendgrid
+  map.connect 'sg_unsubscribe', :controller => 'unsubscribe', :action => 'create'
   
   # regular resources
   map.resources :timeline_events, :collection => {
