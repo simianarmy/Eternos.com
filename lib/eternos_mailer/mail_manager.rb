@@ -54,14 +54,16 @@ module EternosMailer
     # Sends bulk emails
     
     class BatchMailer
-      attr_reader :sent
+      attr_reader :sent, :run_time
       attr_writer :recipients
     
       def initialize(options={})
         @limit      = (options[:max] || 0).to_i
         @dry_run    = options[:dry_run] || false
         @debug      = options[:debug] || false
+        @verbose    = options[:verbose] || false
         @sent       = 0
+        @run_time   = 0
         @recipients = []
       end
     
@@ -72,8 +74,8 @@ module EternosMailer
           begin
             unless @dry_run || ::EternosMailer.dry_run_mode
               puts user.email if @debug
-              block.call(user) 
-              puts "delivered."
+              @run_time += Benchmark.realtime { block.call(user) }
+              puts "delivered." if @debug
               sleep(2) # Some smtp servers will block us if we send too many too fast (Google Apps)
             end
             @sent += 1
@@ -86,7 +88,11 @@ module EternosMailer
         end
         @sent
       end
-    end    
-  end # BatchMailer
+      
+      def print_summary
+        puts "#{sent} emails sent in #{run_time} secs."
+      end
+    end # class BatchMailer
+  end # module MailManager
 
-end # EternosMailer
+end # module EternosMailer

@@ -274,6 +274,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "auth_password2_enc"
     t.string   "auth_login2_enc"
     t.string   "backup_state",           :default => "pending", :null => false
+    t.integer  "error_notifications_sent", :null => false, :default => 0
   end
 
   add_index "backup_sources", ["backup_site_id"], :name => "index_backup_sources_on_backup_site_id"

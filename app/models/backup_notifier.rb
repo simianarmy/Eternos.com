@@ -4,13 +4,37 @@ class BackupNotifier < ActionMailer::Base
   layout nil
   include MailHistory
   
+  @@Subjects = {
+    :timeline_ready => 'Backup Data Ready',
+    :backup_errors => 'Your Backup Has Errors'
+  }
+  
+  def self.subject(action)
+    @@Subjects[action.to_sym]
+  end
+  
   def timeline_ready(member)
-    @from         = AppConfig['from_email']
-    @recipients   = member.email
+    setup_email(member)
     @subject      = "Your #{AppConfig['app_name']} Timeline is ready!"
-    @sent_on      = Time.now
-    @content_type = "text/html"
+   
     add_category_header "Backup Data Ready"
   end
   
+  def backup_errors(member, backup_source, error_desc)
+    setup_email(member)
+    @subject  = "Error Backing Up Account"
+    @backup_site = backup_source.description
+    @error_description = error_desc
+    
+    add_category_header "Backup Errors"
+  end
+  
+  protected
+  
+  def setup_email(member)
+    @from         = AppConfig['from_email']
+    @recipients   = member.email
+    @sent_on      = Time.now
+    @content_type = "text/html"
+  end
 end

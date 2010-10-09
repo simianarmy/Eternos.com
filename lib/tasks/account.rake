@@ -9,6 +9,18 @@ namespace :account do
   
   # ACCOUNT EMAIL NOTIFICATION TASKS
   namespace :mailer do 
+    # Parse common env variables
+    def parse_env
+      @dry_run = !(ENV['DO_IT'] == '1') # FORCE ENV SET TO GUARD AGAINST STUPIDITY
+      puts "Dry run only" if @dry_run
+      
+      @cutoff = ENV['MIN_ACTIVE_DAYS'] || 14 # WAIT AT LEAST 2 WEEKS FROM JOIN DATE BEFORE BUGGING THEM
+      puts "Only emailing members > #{@cutoff} days old"
+      
+      @max = ENV['MAX']
+      @debug = ENV['DEBUG']
+    end
+    
     # TODO: This is incomplete...figure out what it will be do!
     desc =<<DESC 
     Notifies inactive accounts that they have an account with us.
@@ -36,31 +48,27 @@ DESC
     task :notify_account_setup_incomplete => :environment do
       require 'eternos_mailer/mail_manager'
       
-      dry_run = !(ENV['DO_IT'] == '1') # FORCE ENV SET TO GUARD AGAINST STUPIDITY
-      puts "Dry run only" if dry_run
-      
-      cutoff = ENV['MIN_ACTIVE_DAYS'] || 14 # WAIT AT LEAST 2 WEEKS FROM JOIN DATE BEFORE BUGGING THEM
-      puts "Only emailing members > #{cutoff} days old"
-      
+      parse_env
       mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
-      mailer = EternosMailer::MailManager::BatchMailer.new(:max => ENV['MAX'], 
-        :dry_run => dry_run, :debug => ENV['DEBUG'])
+      mailer = EternosMailer::MailManager::BatchMailer.new(:max => @max, 
+        :dry_run => @dry_run, 
+        :debug => @debug)
       
-      mailer.recipients = Member.active.activated_at_lt(cutoff.days.ago).select do |user|
+      mailer.recipients = Member.active.activated_at_lt(@cutoff.days.ago).select do |user|
         user.backup_sources.empty? && mailing.allowed?(user.email)
       end
-      mark = Benchmark.realtime do
-        @num_sent = mailer.send do |user|
-          user.deliver_account_setup_reminder! 
-        end
-      end
-      puts "#{@num_sent} emails sent in #{mark} secs."
+      mailer.send { |user| user.deliver_account_setup_reminder! }
+      mailer.print_summary
     end
     
     # Mailer for members who have not added any backup sources
     desc "Sends email notification to accounts that have too many backup errors"
-    task :notify_account_setup_incomplete => :environment do
-      # TODO: IMPLEMENT THIS
+    task :notify_backup_errors => :environment do
+      require 'eternos_mailer/mail_manager'
+
+      mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
+      mailer = EternosMailer::MailManager::BatchMailer.new(:max => ENV['MAX'], 
+        :dry_run => dry_run, :debug => ENV['DEBUG'])
     end
     
   end
