@@ -34,7 +34,7 @@ namespace :deploy do
   end
 end
 
-before "deploy:update_code", "deploy:stop_daemons"
+#before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink", "deploy:symlink_shared"
-after "deploy:symlink", "deploy:start_daemons"
+#after "deploy:symlink", "deploy:start_daemons"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"

@@ -20,11 +20,14 @@ class BackupNotifier < ActionMailer::Base
     add_category_header "Backup Data Ready"
   end
   
-  def backup_errors(member, backup_source, error_desc)
+  def backup_errors(member, sources)
     setup_email(member)
     @subject  = "Error Backing Up Account"
-    @backup_site = backup_source.description
-    @error_description = error_desc
+    @errors = sources.map do |bs| 
+      {:source => bs.description, 
+        :error => bs.latest_error_text, 
+        :fix => bs.error_fix_text}
+    end
     
     add_category_header "Backup Errors"
   end

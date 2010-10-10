@@ -14,14 +14,25 @@ class UserSessionsController < ApplicationController
     @user_session    = UserSession.new
   end
 
-  # Here to catch weird redirect to index bug
+  # User gets routed here sometimes from improper request methods
   def index
-    #@user_session    = UserSession.new
-    #render :action => :new
-    redirect_to member_home_path
+    # Handle bookmarked or otherwise incorrect GETs to the login action
+    if request.method == :get
+      redirect_to login_path
+    else
+      redirect_to member_home_path
+    end
+  end
+
+  def show
+    redirect_to login_path
   end
   
   def create
+    # Handle bookmarked or otherwise incorrect GETs to the login action
+    if request.method == :get
+      redirect_to(login_path) && return
+    end
     @user_session    = UserSession.new(params[:user_session])
     
     if @user_session.save

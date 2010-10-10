@@ -9,16 +9,17 @@ namespace :account do
   
   # ACCOUNT EMAIL NOTIFICATION TASKS
   namespace :mailer do 
-    # Parse common env variables
+    # Parse common env variables, return as options hash
     def parse_env
-      @dry_run = !(ENV['DO_IT'] == '1') # FORCE ENV SET TO GUARD AGAINST STUPIDITY
-      puts "Dry run only" if @dry_run
+      dry_run = !(ENV['DO_IT'] == '1') # FORCE ENV SET TO GUARD AGAINST STUPIDITY
+      puts "Dry run only" if dry_run
       
-      @cutoff = ENV['MIN_ACTIVE_DAYS'] || 14 # WAIT AT LEAST 2 WEEKS FROM JOIN DATE BEFORE BUGGING THEM
-      puts "Only emailing members > #{@cutoff} days old"
+      cutoff = ENV['MIN_ACTIVE_DAYS'] || 14 # WAIT AT LEAST 2 WEEKS FROM JOIN DATE BEFORE BUGGING THEM
+      puts "Only emailing members > #{cutoff} days old"
       
-      @max = ENV['MAX']
-      @debug = ENV['DEBUG']
+      max = ENV['MAX']
+      debug = ENV['DEBUG']
+      {:dry_run => dry_run, :cutoff => cutoff, :max => max, :debug => debug}
     end
     
     # TODO: This is incomplete...figure out what it will be do!
@@ -37,7 +38,7 @@ DESC
         user.backup_state.inactive?(cutoff) && ((Time.now - user.activated_at) > cutoff) && 
         mailing.allowed?(user.email)
       end
-      sent = mailer.send do |user|
+      mailer.send do |user|
         Rails.logger.info "#{user.id} is inactive...sending email"
         user.deliver_inactive_notification!
       end
@@ -48,11 +49,9 @@ DESC
     task :notify_account_setup_incomplete => :environment do
       require 'eternos_mailer/mail_manager'
       
-      parse_env
+      mail_opts = parse_env
       mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
-      mailer = EternosMailer::MailManager::BatchMailer.new(:max => @max, 
-        :dry_run => @dry_run, 
-        :debug => @debug)
+      mailer = EternosMailer::MailManager::BatchMailer.new mail_opts
       
       mailer.recipients = Member.active.activated_at_lt(@cutoff.days.ago).select do |user|
         user.backup_sources.empty? && mailing.allowed?(user.email)
@@ -66,11 +65,23 @@ DESC
     task :notify_backup_errors => :environment do
       require 'eternos_mailer/mail_manager'
 
-      mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
-      mailer = EternosMailer::MailManager::BatchMailer.new(:max => ENV['MAX'], 
-        :dry_run => dry_run, :debug => ENV['DEBUG'])
+      mailing = EternosMailer::MailManager::Mailing.new(:backup_errors)
+      mailer = EternosMailer::MailManager::BatchMailer.new parse_env
+      
+      mailer.recipients = Member.active.with_sources.select do |user|
+        # Pick user if any active backup source is "broken"
+        mailing.allowed?(user.email) &&
+        user.backup_sources.any? {|bs| bs.active? && bs.backup_broken? }
+      end
+      # Determine backup source & errors to pass to mailer action
+      mailer.send do |user|
+        bad_sources = user.backup_sources.select { |bs| 
+          bs.active? && bs.backup_broken?
+        }
+        BackupNotifier.deliver_backup_errors!(user, bad_sources)
+      end
+      mailer.print_summary
     end
-    
   end
   
   desc "run housekeeping tasks on accounts (run daily)"
