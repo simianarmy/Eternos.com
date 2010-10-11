@@ -1000,7 +1000,8 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "subject",    :null => false
     t.datetime "sent_at",    :null => false
   end
-
+  add_index "user_mailings", ["recipients"], :name => "index_user_mailings_on_recipients"
+  
   create_table "users", :force => true do |t|
     t.string   "login",                                                          :null => false
     t.string   "email",                                                          :null => false

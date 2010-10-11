@@ -1,7 +1,7 @@
 # $Id$
 
 class BackupNotifier < ActionMailer::Base
-  layout nil
+  layout 'email'
   include MailHistory
   
   @@Subjects = {
@@ -24,6 +24,7 @@ class BackupNotifier < ActionMailer::Base
     setup_email(member)
     @subject  = "Error Backing Up Your Accounts"
     @errors = sources
+    
     add_category_header "Backup Errors"
   end
   

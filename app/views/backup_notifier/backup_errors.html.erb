@@ -1,0 +1,27 @@
+Hello <%= name %>
+
+You are receiving this email because the following errors were encountered by Eternos.com
+while archiving your data:
+
+<% errors.each do |e| %>
+  Account: <%= e.description %>
+  
+  Error summary: <%= e.short_error %>
+  
+  --------------
+  
+<% end %>
+
+In order to fix these errors, you should login to your Eternos.com account and 
+navigate to the Account Setup page here <%= account_setup_link %>
+
+You can also remove any accounts that you no longer wish to archive from this page.
+
+Tips on fixing account backup problems:
+
+- Make sure that all the authentication information is correct for all of your 
+accounts.  You can always enter your authentication information again & save in case you are not sure.
+
+You will receive a total of 3 error notifications per account.  If no action is taken 
+and we continue to encounter errors archiving your accounts, we will simply remove them 
+from your list of accounts to backup.
