@@ -53,7 +53,7 @@ DESC
       mailing = EternosMailer::MailManager::Mailing.new(:account_setup_reminder)
       mailer = EternosMailer::MailManager::BatchMailer.new mail_opts
       
-      mailer.recipients = Member.active.activated_at_lt(@cutoff.days.ago).select do |user|
+      mailer.recipients = Member.active.activated_at_lt(mail_opts[:cutoff].days.ago).select do |user|
         user.backup_sources.empty? && mailing.allowed?(user.email)
       end
       mailer.send { |user| user.deliver_account_setup_reminder! }
@@ -73,10 +73,13 @@ DESC
         mailing.allowed?(user.email) &&
         user.backup_sources.any? {|bs| bs.active? && bs.backup_broken? }
       end
-      # Determine backup source & errors to pass to mailer action
       mailer.send do |user|
+        # Determine backup source & errors to pass to mailer action
+        # Collect error descriptions & actions into array
         bad_sources = user.backup_sources.select { |bs| 
           bs.active? && bs.backup_broken?
+        }.map { |bs|
+          EternosBackup::BackupSourceError.new bs
         }
         BackupNotifier.deliver_backup_errors!(user, bad_sources)
       end

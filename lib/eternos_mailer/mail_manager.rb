@@ -42,9 +42,9 @@ module EternosMailer
       # Checks if mailings table to determine if mailing can be sent to this user
       def allowed?(email)
         # Check Do-not-mail list
-        not (EmailBlacklist.find_by_email(email) && 
-          # Check recent mailing time for this email/subject
-          (u = UserMailing.most_recent_by_email_and_subject(email, subject)) && 
+        return false if EmailBlacklist.find_by_email(email)
+        # Check recent mailing time for this email/subject
+        not ((u = UserMailing.most_recent_by_email_and_subject(email, subject)) && 
           (u.sent_at >= cutoff_time))
       end
     end # MailManager
