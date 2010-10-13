@@ -50,6 +50,8 @@ class AccountsController < ApplicationController
   #   save payment info
 
   def create
+    Job # For dev mode / LoadError
+    
     @account.affiliate = SubscriptionAffiliate.find_by_token(cookies[:affiliate]) unless cookies[:affiliate].blank?
 
     # Taken from users controller to support email activation

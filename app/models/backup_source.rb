@@ -9,7 +9,9 @@ class BackupSource < ActiveRecord::Base
   has_many :backup_source_jobs
   
   @@max_consecutive_failed_backups  = 25 # Should be about 1 day's worth
+  @@max_notification_alerts = 3 # Max number of error emails to send 
   cattr_reader :max_consecutive_failed_backups
+  cattr_reader :max_notification_alerts
   
   #after_create :cb_after_create_init_backup
   # The new hotness
@@ -138,10 +140,21 @@ class BackupSource < ActiveRecord::Base
     count
   end
   
+  # Helper to determine if this source has backup problems that should be reported
+  def requires_error_alert?
+    active? && 
+    (self.error_notifications_sent < max_notification_alerts) &&
+    backup_broken?
+  end
+  
   def backup_broken?
     consecutive_failed_backup_jobs >= self.max_consecutive_failed_backups
   end
   
+  def sent_error_alert
+    inc(:error_notifications_sent)
+  end
+    
   # Delegates backup completion info to the source owner
   def on_backup_complete(info={})
     member.backup_finished!(info)

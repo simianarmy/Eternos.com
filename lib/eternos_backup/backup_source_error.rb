@@ -7,7 +7,7 @@ module EternosBackup
   
   class BackupSourceError
     attr_reader :source
-    delegate :description => :source
+    delegate :description, :sent_error_alert => :source
     
     def initialize(source)
       @source = source
@@ -42,5 +42,6 @@ module EternosBackup
     def fix_suggestion
       # TODO: IMPLEMENT ME
     end
+    
   end
 end

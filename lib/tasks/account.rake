@@ -71,17 +71,19 @@ DESC
       mailer.recipients = Member.active.with_sources.select do |user|
         # Pick user if any active backup source is "broken"
         mailing.allowed?(user.email) &&
-        user.backup_sources.any? {|bs| bs.active? && bs.backup_broken? }
+        user.backup_sources.any? {|bs| bs.requires_error_alert? }
       end
+      puts "Found #{mailer.recipients.size} recipients"
       mailer.send do |user|
         # Determine backup source & errors to pass to mailer action
         # Collect error descriptions & actions into array
         bad_sources = user.backup_sources.select { |bs| 
-          bs.active? && bs.backup_broken?
+          bs.active? && bs.backup_broken? && bs.can_send_alert?
         }.map { |bs|
           EternosBackup::BackupSourceError.new bs
         }
         BackupNotifier.deliver_backup_errors!(user, bad_sources)
+        bad_sources.map(&:sent_error_alert)
       end
       mailer.print_summary
     end

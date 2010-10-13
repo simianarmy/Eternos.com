@@ -3,26 +3,18 @@
 class BackupNotifier < ActionMailer::Base
   layout 'email'
   include MailHistory
-  
-  @@Subjects = {
-    :timeline_ready => 'Backup Data Ready',
-    :backup_errors => 'Your Backup Has Errors'
-  }
-  
-  def self.subject(action)
-    @@Subjects[action.to_sym]
-  end
+  include EternosMailer::Subjects
   
   def timeline_ready(member)
     setup_email(member)
-    @subject      = "Your #{AppConfig['app_name']} Timeline is ready!"
+    @subject      = subject_from_sym(:timeline_ready)
    
     add_category_header "Backup Data Ready"
   end
   
   def backup_errors(member, sources)
     setup_email(member)
-    @subject  = "Error Backing Up Your Accounts"
+    @subject  = subject_from_sym(:backup_errors)
     @errors = sources
     
     add_category_header "Backup Errors"

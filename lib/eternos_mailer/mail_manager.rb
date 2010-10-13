@@ -12,8 +12,31 @@ module EternosMailer
   # Set this to tru to see counts of emails that would be sent for target 
   # mailing
   @@counts_only   = false
-  
+
   mattr_accessor :dry_run_mode, :counts_only
+  
+  # Contains mailer subject constants and lookup helper methods
+  module Subjects
+    # Constant hash of mail subject symbol => subject strings
+    # Including classes use this for setting the mailer subject.
+    # Access strings via the subject() method
+    @@Subjects = {
+      :signup_notification    => 'Activate Your Eternos.com Account',
+      :activation             => 'Your account has been activated!',
+      :invitation             => 'Invitation From Eternos.com',
+      :inactive_notification  => 'Inactive Account Notice',
+      :account_setup_reminder => 'Complete your Eternos.com Account Setup',
+      :friend_invitation      => 'Invitation to Eternos.com',
+      :timeline_ready         => 'Your Eternos Timeline is ready!',
+      :backup_errors          => 'Your Backup Has Errors'
+    }
+  
+  
+    # Lookup email subject string by title (ideally title = mailer action)
+    def subject_from_sym(action)
+      @@Subjects[action.to_sym]
+    end
+  end
   
   # MailManager module
   #
@@ -32,10 +55,12 @@ module EternosMailer
     # Encapsulates email sending to a user for some subject
     #
     class Mailing
-      attr_reader :cutoff_time, :subject
-    
+      include EternosMailer::Subjects
+      
+      attr_reader :cutoff_time
+      
       def initialize(subject_sym, cutoff_date=nil)
-        @subject      = UserMailer.subject(subject_sym)
+        @subject      = subject_from_sym(subject_sym)
         @cutoff_time  = cutoff_date || MailManager.default_min_days_between_emails.days.ago.utc
       end
     
@@ -44,7 +69,7 @@ module EternosMailer
         # Check Do-not-mail list
         return false if EmailBlacklist.find_by_email(email)
         # Check recent mailing time for this email/subject
-        not ((u = UserMailing.most_recent_by_email_and_subject(email, subject)) && 
+        not ((u = UserMailing.most_recent_by_email_and_subject(email, @subject)) && 
           (u.sent_at >= cutoff_time))
       end
     end # MailManager
@@ -55,7 +80,7 @@ module EternosMailer
     
     class BatchMailer
       attr_reader :sent, :run_time
-      attr_writer :recipients
+      attr_accessor :recipients
     
       def initialize(options={})
         @limit      = (options[:max] || 0).to_i
