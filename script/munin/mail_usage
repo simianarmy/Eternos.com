@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+#
+# $Id$
+# Munin plugin
+# Counts total backup items by type
+
+REQUEST_URI = 'http://eternos.local/admin/munin/mail_usage?api=FL1mFl4mAlamB'
+
+def output_config
+  schema_url = REQUEST_URI + '\&schema'
+  schema = `curl -s #{schema_url}`
+  
+  unless $?.success?
+    $stderr.puts "failed executing mail_usage"
+    exit 1
+  end
+
+  puts 'graph_category Eternos.com'
+  puts 'graph_title Mail usage stats'
+  puts 'graph_vlabel count'
+
+  schema.scan(/^l_[a-f0-9]+\.label.*?$/) do |label|
+    puts label
+  end
+  exit 0
+end
+
+def output_values
+  status = `curl -s #{REQUEST_URI}`
+
+  unless $?.success?
+    $stderr.puts "failed executing mail_usage"
+    exit 1
+  end
+
+  status.scan(/^l_[a-f0-9]+\.value.*?$/) do |value|
+    puts value  
+  end
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end
