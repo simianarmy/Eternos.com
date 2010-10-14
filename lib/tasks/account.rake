@@ -78,7 +78,7 @@ DESC
         # Determine backup source & errors to pass to mailer action
         # Collect error descriptions & actions into array
         bad_sources = user.backup_sources.select { |bs| 
-          bs.active? && bs.backup_broken? && bs.can_send_alert?
+          bs.active? && bs.backup_broken? && bs.requires_error_alert? 
         }.map { |bs|
           EternosBackup::BackupSourceError.new bs
         }

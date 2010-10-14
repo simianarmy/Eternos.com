@@ -67,7 +67,6 @@ module RoleRequirementSystem
     # This is the core of RoleRequirement.  Here is where it discerns if a user can access a controller or not./
     def user_authorized_for?(user, params = {}, binding = self.binding)
       
-      
       return true unless Array===self.role_requirements
       self.role_requirements.each{| role_requirement|
         roles = role_requirement[:roles]
