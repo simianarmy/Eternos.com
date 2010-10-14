@@ -64,7 +64,8 @@ class ApplicationController < ActionController::Base
     # Create home presenter object
     @settings = MemberHomePresenter.new(current_user)
   end
-  
+
+  # THIS DOESN'T WORK..
   def send_protected_content(path, type)
     # send_file with :x_sendfile => true option FAILS
     response.headers['X-Sendfile'] = path

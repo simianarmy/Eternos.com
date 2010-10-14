@@ -49,6 +49,12 @@ class UserSessionsController < ApplicationController
       set_facebook_connect_session
       if facebook_session 
         if user = User.find_by_fb_user(facebook_session.user)
+          # Make sure facebook session user == any login params
+          if !@user_session.login.blank? && (user.login != @user_session.login)
+            flash[:error] = I18n.t('user_sessions.new.login_failed')
+            render(:action => :new) && return 
+          end
+          # Otherwise auto-login with user matching facebook session
           UserSession.create(user)
           if user.has_backup_data?
             redirect_to member_home_url

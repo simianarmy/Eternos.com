@@ -152,7 +152,7 @@ class BackupSource < ActiveRecord::Base
   end
   
   def sent_error_alert
-    inc(:error_notifications_sent)
+    increment!(:error_notifications_sent)
   end
     
   # Delegates backup completion info to the source owner

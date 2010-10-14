@@ -1,0 +1,17 @@
+<% title "Backup Error Codes" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% for backup_error_code in @backup_error_codes %>
+    <tr>
+      <td><%=h backup_error_code.description %></td>
+      <td><%= link_to "Show", backup_error_code %></td>
+      <td><%= link_to "Edit", edit_backup_error_code_path(backup_error_code) %></td>
+      <td><%= link_to "Destroy", backup_error_code, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Backup Error Code", new_backup_error_code_path %></p>

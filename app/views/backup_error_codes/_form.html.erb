@@ -1,0 +1,16 @@
+<%= error_messages_for :backup_error_code %>
+<% form_for @backup_error_code do |f| %>
+  <p>
+    <%= f.label :code %><br />
+    <%= f.text_field :code, :size => 4 %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label :fix_hint %><br />
+    <%= f.text_area :fix_hint %>
+  </p>
+  <p><%= f.submit "Submit" %></p>
+<% end %>

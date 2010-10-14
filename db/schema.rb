@@ -137,6 +137,12 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
 
   add_index "backup_emails", ["backup_source_id"], :name => "index_backup_emails_on_backup_source_id"
 
+  create_table "backup_error_codes", :force => true do |t|
+    t.integer "code", :null => false
+    t.string "description", :null => false
+    t.text "fix_hint"
+  end
+  
   create_table "backup_job_archives", :force => true do |t|
     t.datetime "started_at"
     t.datetime "finished_at"

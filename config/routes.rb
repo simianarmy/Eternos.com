@@ -1,6 +1,8 @@
 # $Id$
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :backup_error_codes
+
   
   # Singleton resources
   map.resource :account_setup, :controller => 'account_setup', :member => {

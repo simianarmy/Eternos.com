@@ -1,0 +1,19 @@
+<% title "Backup Error" %>
+
+<p>
+  <strong>Code:</strong>
+  <%= @backup_error_code.code %>
+</p>
+<p>
+  <strong>Description:</strong>
+  <%= h @backup_error_code.description %>
+</p>
+<p>
+  <strong>Fix:</strong>
+  <%= h @backup_error_code.fix_hint %>
+</p>
+<p>
+  <%= link_to "Edit", edit_backup_error_code_path(@backup_error_code) %> |
+  <%= link_to "Destroy", @backup_error_code, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", backup_error_codes_path %>
+</p>
