@@ -219,6 +219,31 @@ RESP
     end
     render :text => @stats.map {|stat| stat[0] + ' = ' + stat[1].to_s}.join("\n")
   end
+
+  def mail_usage
+    #cache = MemCache.new MEMCACHED_OPTIONS
+    #cache.servers = MEMCACHED_HOST
+    key = 'munin_mails_stats'
+    
+    unless output = Rails.cache.get(key)
+      output = UserMailing.connection.select_all(
+              'SELECT IF(subject LIKE \'%Check out Eternos.com%\', \'Check out Eternos.com\', ' +
+                      'IF(subject LIKE \'%Daily backup storage stats%\', \'Daily backup storage stats\', ' +
+                      'IF(subject LIKE \'%Daily backup jobs data%\', \'Daily backup jobs data\', subject))) as sbj, ' +
+                      'COUNT(*) as c FROM user_mailings GROUP BY sbj'
+      )
+      output.push({'sbj' => 'Emails in blacklist', 'c' => EmailBlacklist.count})
+      Rails.cache.set(key,output,1.hour)
+    end
+
+    output.each_index {|k| output[k]['md5'] = 'l_' + Digest::MD5.hexdigest(output[k]['sbj']) }
+    
+    if params.key?('schema')
+      render :text => output.map{|mail| mail['md5'] + '.label ' + mail['sbj'] }.join("\n")
+    else
+      render :text => output.map{|mail| mail['md5'] + '.value ' + mail['c'].to_s }.join("\n")
+    end
+  end
   
   protected
   
