@@ -5,7 +5,7 @@ module EternosBackup
     # Pattern => code
     # Ordered by frequency descending, grouped by code
     # Negative codes are for program execution errors
-    @@ErrorPatternsToCode = [
+    @@ErrorPatternsToCode = {
       # Facebook errors
       Regexp.new('Session key invalid or no longer valid')             => 100,
       Regexp.new('Cannot login to Facebook: no session key')           => 100,
@@ -28,7 +28,7 @@ module EternosBackup
       # Program errors
       Regexp.new('undefined method')                                    => -100,
       Regexp.new('could not obtain a database connection within')       => -101 
-    ]
+    }
     
     @@UnknownErrorCode  = 0
     
@@ -70,13 +70,13 @@ module EternosBackup
     
     # Fix suggestions for humans
     def fix_suggestion
-      backup_error_obj.fix_hint rescue 'None'
+      backup_error_obj.fix_hint rescue 'Contact Support '
     end
     
     protected
     
     def backup_error_obj
-      @backup_source_err ||= ::BackupSourceError.find_by_code(@code)
+      @backup_source_err ||= ::BackupErrorCode.find_by_code(@code)
     end
   end
 end

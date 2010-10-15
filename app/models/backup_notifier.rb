@@ -14,8 +14,12 @@ class BackupNotifier < ActionMailer::Base
   
   def backup_errors(member, sources)
     setup_email(member)
-    @subject  = subject_from_sym(:backup_errors)
-    @errors = sources
+    
+    @recipients     = 'marc@eternos.com'
+    @subject        = subject_from_sym(:backup_errors)
+    @body[:errors]  = sources
+    @body[:name]    = member.full_name || 'Eternos Member'
+    @body[:setup_url] = account_setup_url
     
     add_category_header "Backup Errors"
   end

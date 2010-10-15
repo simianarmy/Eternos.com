@@ -66,15 +66,17 @@ namespace :backup do
     MessageQueue.start do
       Thread.abort_on_exception = true
       t1 = Thread.new do
-        if ENV['FEED_ENTRY_ID']
-          if fe = FeedEntry.find(ENV['FEED_ENTRY_ID'])
-            fe.ensure_screencap
+        Lockfile('ensure_feed_screencaps', :retries => 0) do
+          if ENV['FEED_ENTRY_ID']
+            if fe = FeedEntry.find(ENV['FEED_ENTRY_ID'])
+              fe.ensure_screencap
+            else
+              puts "No FeedEntry found."
+            end
           else
-            puts "No FeedEntry found."
-          end
-        else
-          FeedEntry.find_each do |fe|
-            fe.ensure_screencap
+            FeedEntry.find_each do |fe|
+              fe.ensure_screencap
+            end
           end
         end
       end # Thread.new
