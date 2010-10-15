@@ -24,7 +24,9 @@ config.action_mailer.delivery_method = :smtp
 # Setup memcached connection
 config.after_initialize do
   # So that Passenger can find the identify command
-  Paperclip.options[:command_path] = "/usr/local/bin"
+  # Comment out for production b/c it keeps changing & it should find the system default /usr/bin!!
+  #Paperclip.options[:command_path] = "/usr/local/bin"
+  Paperclip.options[:swallow_stderr] = false
 end
 
 #config.log_level = :debug
