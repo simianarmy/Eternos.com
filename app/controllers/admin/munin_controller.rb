@@ -221,6 +221,7 @@ RESP
   end
 
   def mail_usage
+<<<<<<< HEAD
     #cache = MemCache.new MEMCACHED_OPTIONS
     #cache.servers = MEMCACHED_HOST
     key = 'munin_mails_stats'
