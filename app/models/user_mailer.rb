@@ -41,7 +41,6 @@ class UserMailer < ActionMailer::Base
   def inactive_notification(user)
     setup_email(user)
     
-    @recipients   = 'marc@eternos.com'
     @subject      += subject_from_sym :inactive_notification
     @body[:name]  = user.full_name || 'Eternos user'
     @body[:link]  = account_setup_url(:id => user.perishable_token)
