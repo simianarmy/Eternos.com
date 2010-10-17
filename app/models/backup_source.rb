@@ -91,7 +91,7 @@ class BackupSource < ActiveRecord::Base
   #   end
   
   def login_failed!(error) 
-    update_attributes(:last_login_attempt_at => Time.now, :auth_error => error)
+    update_attributes(:last_login_attempt_at => Time.now.utc, :auth_error => error)
   end
   
   def logged_in!
@@ -198,6 +198,7 @@ class BackupSource < ActiveRecord::Base
     self.update_attributes(:needs_initial_scan => false, 
       :last_backup_at => Time.now.utc,
       :latest_day_backed_up => Date.today.utc)
+    save(false) # Save w/out validations
   end
   
 end
