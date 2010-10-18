@@ -19,6 +19,8 @@ namespace :account do
       
       max = ENV['MAX']
       debug = ENV['DEBUG']
+      puts "max: #{max}" if debug
+      
       {:dry_run => dry_run, :cutoff => cutoff, :max => max, :debug => debug}
     end
     

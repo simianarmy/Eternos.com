@@ -1,0 +1,32 @@
+Hello <%= @name %>
+<br/>
+<p>
+You are receiving this email because the following errors were encountered by Eternos.com<br/>
+while archiving your data:
+</p>
+<% @errors.each do |e| %>
+  <p/>
+  <strong>Account:</strong> <%= e.description %>
+  <br/>
+  <strong>Error Description:</strong> <%= e.short_error %>
+  <br/>
+  <strong>Suggestion:</strong> <%= e.fix_suggestion %>
+  <br/>
+  --------------
+<% end %>
+<p/>
+<br/>
+In order to fix these errors, you should login to your Eternos.com account and 
+navigate to the Account Setup page <%= link_to 'here', @setup_url %> or copy & paste the link 
+below into your browser:
+<br/>
+<%= @setup_url %>
+<p/>
+You can also remove any accounts that you no longer wish to archive from this page.
+<p/>
+<br/>
+You will receive a total of 3 error notifications per account.  If no action is taken <br/>
+and we continue to encounter errors archiving your accounts, we will simply remove them <br/>
+from your list of accounts to backup.
+<p/>
+
