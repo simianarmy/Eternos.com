@@ -1,11 +1,11 @@
 %h1 Account Features
 %ul#acct_settings
-  %li= link_to 'Create Mementos', new_memento_path, :class => members_tab_class_active?('mementos')
   %li= link_to 'Dashboard', dashboard_path, :class => members_tab_class_active?('dashboard')
   %li= link_to 'Upload', new_content_path, :class => members_tab_class_active?('contents')
   %li= link_to 'Profile', account_settings_path, :id => 'account-setting', :class => members_tab_class_active?('account_settings')
   /-%li= recording_popup_link 'Video Journal'
-  %li= link_to 'Life Key', trustees_path, :class => members_tab_class_active?('trustees')
   %li= link_to_lightview 'Images', image_gallery_path, {}, {:rel => "'iframe'"}, {:autosize => false, :height => '800', :width => '800'}
+  %li= link_to 'Create Mementos', new_memento_path, :class => members_tab_class_active?('mementos')
+  %li= link_to 'Life Key', trustees_path, :class => members_tab_class_active?('trustees')
   %li= link_to 'Invite Friends', account_setup_path(:step => 2)
 <p>&nbsp;</p>
