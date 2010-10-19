@@ -139,6 +139,7 @@ namespace :js do
           "#{lib_global_dir}effects.js",
           "#{lib_global_dir}controls.js",
           "#{lib_global_dir}slider.js",
+          "#{lib_global_dir}prototip2.1.0.1/js/prototip.js",
           "#{lib_global_dir}lightview2.5.2.1/js/lightview.js",
           "#{lib_global_dir}flowplayer-3.1.4.min.js",
           "#{lib_global_dir}flowplayer.playlist-3.0.7.js",
