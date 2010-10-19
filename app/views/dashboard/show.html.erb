@@ -19,7 +19,9 @@
             <%= @dashboard.birthday %>
         <% end %>
         <%= content_tag(:td, @dashboard.account_state, :align => 'center') %>
-        <%= td_edit_button({:action => 'edit_profile'}) %>
+        <td>
+          <%= link_to 'Edit Profile', account_settings_path, :id => 'account-setting' %>
+        </td>
     <% end %>
 <% end %>
 
@@ -66,7 +68,9 @@
     <% end %>
   <% end %>
   <% content_tag(:tr) do %>
-    <%= content_tag(:td, link_to('Add More', account_setup_path(:step => 0))) %>
+    <td colspan="5">
+      <%= link_to('Add More Accounts to Archive', account_setup_path(:step => 0)) %>
+    </td>
   <% end %>
 <% end %>
 

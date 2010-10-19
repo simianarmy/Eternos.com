@@ -8,6 +8,8 @@ role :app, "184.106.217.211"
 role :web, "184.106.217.211"
 role :db, "184.106.217.211", :primary => true
 
+set :bundle_cmd, "/usr/local/bin/bundle"
+
 namespace :deploy do
   task :restart do
     run "touch #{current_path}/tmp/restart.txt"
