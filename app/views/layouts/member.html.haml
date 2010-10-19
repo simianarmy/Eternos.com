@@ -8,22 +8,23 @@
     %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
     %meta{:name=>"description", :content=>"#{meta_descriptions}"}
     %title= "Eternos Members - " + h(yield(:title) || "Member Home")
-
-
+    
     - load_jquery_prototype_compat_mode
-    - use_prototip
-    - use_lightview
-    - use_lowpro
-    - use_timeline
-    - use_busy
-    - use_flashplayer
-    - javascript 'login', 'member_home'
-    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix'
+    /- use_prototip
+    /- use_lightview
+    /- use_lowpro
+    /- use_timeline
+    /- use_busy
+    /- use_flashplayer
+    /- javascript 'login', 'member_home'
+    - stylesheet 'application', 'new_design/members', 'new_design/misc-fix', 'timeline', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'soundmanager-ui', 'inlineplayer', :cache => "cache/member_home"
     
     = yield(:head)
     = yield(:js_libs)
     /- FIX: Doesn't work when put at bottom of <body>
-    = yield(:javascript)
+    /= yield(:javascript)
+    = javascript_include_tag "prototip2.1.0.1/js/prototip", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2', 'inlineplayer', 'application', "lowpro", "defaultvalueactsashint", "behaviors", "date", "inflection", 'login', 'member_home', :cache => 'cache/member_home'
+    = javascript_include_tag "timeline/timeline_ajax/simile-ajax-api.js", "timeline/timeline_js/timeline-api.js", "timeline_helper"
     = javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds}; ETERNOS.debug = #{Rails.env == 'development' ? 'true' : 'false'};"
     / end bundle
   %body
@@ -57,7 +58,7 @@
           
     = render :partial => 'shared/site_footer' unless @hide_footer
     = render :partial => 'shared/get_satisfaction' unless @hide_feedback
-
+    
     - if @facebook_session
       = fb_connect_javascript_tag
       = init_fb_connect "XFBML"
