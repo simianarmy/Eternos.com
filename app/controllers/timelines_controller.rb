@@ -3,9 +3,11 @@
 require 'timeline_request_response'
 require 'benchmark_helper'
 
-class TimelinesController < MemberHomeController
-  before_filter :login_required, :except => [:search]
-  require_role ['Guest', 'Member'], :for_all_except => :search
+class TimelinesController < ApplicationController
+  before_filter :login_required, :except => [:search, :tag_cloud]
+  require_role ['Guest', 'Member'], :for_all_except => [:search, :tag_cloud]
+  before_filter :set_facebook_connect_session, :except => [:search, :tag_cloud]
+  before_filter :load_member_home_presenter, :except => [:search, :tag_cloud]
   
   ssl_required :blank # Dummy action so that all actions forced to non-ssl
   
