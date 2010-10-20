@@ -220,36 +220,23 @@ RESP
     render :text => @stats.map {|stat| stat[0] + ' = ' + stat[1].to_s}.join("\n")
   end
 
+  include EternosMailer::Subjects
   def mail_usage
-    include EternosMailer::Subjects
-    
+
+    sbj_hash = lambda {|sbj| 'l_' + Digest::MD5.hexdigest(sbj)}
+
+    return render(:text => values.map{|sbj| sbj_hash.call(sbj) + '.label ' + sbj }.join("\n")) if params.key?('schema')
+
     key = 'munin_mails_stats'
-    
-    output = Rails.cache.read(key, :expires => 1.hour) do
-      res = {}
-      EternosMailer::Subjects.values.each do |val|
-        res[val] = UserMailing.subject_like(val).count
+    Rails.cache.clear
+    output = Rails.cache.fetch(key, :expires_in => 1.hour) do
+      values.inject({'Emails in blacklist' => EmailBlacklist.count}) do |result,val|
+        result[val] = UserMailing.subject_like(val).count
+        result
       end
-      res
-    end
-              # output = UserMailing.connection.select_all(
-      #               'SELECT IF(subject LIKE \'%Check out Eternos.com%\', \'Check out Eternos.com\', ' +
-      #                       'IF(subject LIKE \'%Daily backup storage stats%\', \'Daily backup storage stats\', ' +
-      #                       'IF(subject LIKE \'%Daily backup jobs data%\', \'Daily backup jobs data\', subject))) as sbj, ' +
-      #                       'COUNT(*) as c FROM user_mailings GROUP BY sbj'
-      #       )
-      
-      output.push({'sbj' => 'Emails in blacklist', 'c' => EmailBlacklist.count})
-      Rails.cache.write(key, output)
     end
 
-    output.each_index {|k| output[k]['md5'] = 'l_' + Digest::MD5.hexdigest(output[k]['sbj']) }
-    
-    if params.key?('schema')
-      render :text => output.map{|mail| mail['md5'] + '.label ' + mail['sbj'] }.join("\n")
-    else
-      render :text => output.map{|mail| mail['md5'] + '.value ' + mail['c'].to_s }.join("\n")
-    end
+    render :text => output.map{|sbj,c| sbj_hash.call(sbj) + '.value ' + c.to_s}.join("\n")
   end
   
   protected
