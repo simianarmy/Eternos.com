@@ -2,7 +2,7 @@
 #
 # Admin munin controller
 
-class Admin::MuninController < ApplicationController
+class Admin::MuninController < ActionController::Base 
   @@API_KEY = 'FL1mFl4mAlamB' # Password to match requests against
   @@MuninSampleInterval = 5.minutes
   
@@ -221,19 +221,26 @@ RESP
   end
 
   def mail_usage
-    #cache = MemCache.new MEMCACHED_OPTIONS
-    #cache.servers = MEMCACHED_HOST
+    include EternosMailer::Subjects
+    
     key = 'munin_mails_stats'
     
-    unless output = Rails.cache.get(key)
-      output = UserMailing.connection.select_all(
-              'SELECT IF(subject LIKE \'%Check out Eternos.com%\', \'Check out Eternos.com\', ' +
-                      'IF(subject LIKE \'%Daily backup storage stats%\', \'Daily backup storage stats\', ' +
-                      'IF(subject LIKE \'%Daily backup jobs data%\', \'Daily backup jobs data\', subject))) as sbj, ' +
-                      'COUNT(*) as c FROM user_mailings GROUP BY sbj'
-      )
+    output = Rails.cache.read(key, :expires => 1.hour) do
+      res = {}
+      EternosMailer::Subjects.values.each do |val|
+        res[val] = UserMailing.subject_like(val).count
+      end
+      res
+    end
+              # output = UserMailing.connection.select_all(
+      #               'SELECT IF(subject LIKE \'%Check out Eternos.com%\', \'Check out Eternos.com\', ' +
+      #                       'IF(subject LIKE \'%Daily backup storage stats%\', \'Daily backup storage stats\', ' +
+      #                       'IF(subject LIKE \'%Daily backup jobs data%\', \'Daily backup jobs data\', subject))) as sbj, ' +
+      #                       'COUNT(*) as c FROM user_mailings GROUP BY sbj'
+      #       )
+      
       output.push({'sbj' => 'Emails in blacklist', 'c' => EmailBlacklist.count})
-      Rails.cache.set(key,output,1.hour)
+      Rails.cache.write(key, output)
     end
 
     output.each_index {|k| output[k]['md5'] = 'l_' + Digest::MD5.hexdigest(output[k]['sbj']) }
