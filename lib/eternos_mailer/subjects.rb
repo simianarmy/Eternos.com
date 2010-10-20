@@ -14,8 +14,11 @@ module EternosMailer
       :timeline_ready         => 'Your Eternos Timeline is ready!',
       :backup_errors          => 'Problems archiving your data'
     }
-  
-  
+    
+    def values
+      @@Subjects.values
+    end
+    
     # Lookup email subject string by title (ideally title = mailer action)
     def subject_from_sym(action)
       @@Subjects[action.to_sym]
