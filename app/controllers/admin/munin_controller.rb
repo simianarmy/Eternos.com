@@ -225,12 +225,12 @@ RESP
 
     sbj_hash = lambda {|sbj| 'l_' + Digest::MD5.hexdigest(sbj)}
 
-    return render(:text => values.map{|sbj| sbj_hash.call(sbj) + '.label ' + sbj }.join("\n")) if params.key?('schema')
+    return render(:text => subjects.map{|sbj| sbj_hash.call(sbj) + '.label ' + sbj }.join("\n")) if params.key?('schema')
 
     key = 'munin_mails_stats'
-    Rails.cache.clear
+    #Rails.cache.clear
     output = Rails.cache.fetch(key, :expires_in => 1.hour) do
-      values.inject({'Emails in blacklist' => EmailBlacklist.count}) do |result,val|
+      subjects.inject({'Emails in blacklist' => EmailBlacklist.count}) do |result,val|
         result[val] = UserMailing.subject_like(val).count
         result
       end

@@ -15,7 +15,7 @@ module EternosMailer
       :backup_errors          => 'Problems archiving your data'
     }
     
-    def values
+    def subjects
       @@Subjects.values
     end
     
