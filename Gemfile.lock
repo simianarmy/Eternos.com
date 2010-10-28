@@ -90,8 +90,6 @@ GEM
       nokogiri (> 0.0.0)
     memcache-client (1.8.5)
     mime-types (1.16)
-    mocha (0.9.8)
-      rake
     moomerman-twitter_oauth (0.2.1)
       json (>= 1.1.2)
       mime-types (>= 1.15)
@@ -220,7 +218,6 @@ DEPENDENCIES
   mdalessio-dryopteris
   memcache-client
   mime-types
-  mocha
   moomerman-twitter_oauth
   mysqlplus
   newrelic_rpm (>= 2.9.8)
@@ -232,7 +229,6 @@ DEPENDENCIES
   right_aws
   rio
   rmagick (= 2.12.2)
-  rspec
   rspec-rails
   ruby-debug
   ruby-growl

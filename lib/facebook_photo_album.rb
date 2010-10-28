@@ -25,8 +25,7 @@ end
 
 class FacebookPhoto < BackupPhotoProxy
   attr_reader :photo
-  attr_accessor :tags
-  
+  attr_accessor :tags, :comments
   alias_attribute :id, :pid
   alias_attribute :source_url, :src_big
   

@@ -26,10 +26,9 @@ group :test do
   # bundler requires these gems while running tests
   gem 'webrat'
   gem 'cucumber'
-  gem 'rspec'
+#  gem 'rspec'
   gem 'rspec-rails'
   gem 'ruby-debug'
-  gem 'mocha'
   gem 'faker'
   gem 'spork'
   gem 'cucumber-rails'

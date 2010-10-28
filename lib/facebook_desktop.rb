@@ -7,6 +7,16 @@
 
 require 'facebooker'
 
+# Add missing attributes to Facebooker models
+module Facebooker
+  class Album
+    populating_attr_accessor :object_id, :edit_link, :can_upload, :type, :modified_major
+  end
+  class Photo
+    populating_attr_accessor :object_id
+  end
+end
+
 module FacebookDesktopApp
   @@config_path = File.join(RAILS_ROOT, 'config', 'facebooker_desktop.yml')
   

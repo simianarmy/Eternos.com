@@ -1,4 +1,4 @@
-class BackupErrorCodesController < AdminController
+class BackupErrorCodesController < AdminsController
   
   
   def index

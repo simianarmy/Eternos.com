@@ -104,5 +104,14 @@ DESC
     end
     User.find(id).destroy
   end
+  
+  desc "Searches for users by email"
+  task :find_user => :environment do
+    unless login=ENV['LOGIN']
+      puts "Usage rake account:find_user LOGIN=..."
+      exit
+    end
+    User.login_like(login).each {|u| puts u.inspect}
+  end
 end
       
