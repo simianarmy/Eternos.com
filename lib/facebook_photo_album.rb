@@ -6,6 +6,34 @@
 require 'lib/backup_content_proxy'
 require 'facebooker'
 
+
+# Backup Comment format using BackupObjectCommentProxy object
+class FacebookObjectComment < BackupObjectCommentProxy
+  def initialize(comm)
+    raise InvalidCommentClassError unless comm.respond_to?(:text)
+    @comment = comm
+  end
+  
+  def title
+  end
+  
+  def created_at
+    Time.at(@comment.time)
+  end
+  
+  def commenter_data
+    @comment.user_data
+  end
+  
+  def comment
+    @comment.text
+  end
+  
+  def external_id
+    @comment.xid
+  end
+end
+
 class FacebookPhotoAlbum < BackupPhotoAlbumProxy
   attr_reader :album
   
@@ -24,10 +52,8 @@ class FacebookPhotoAlbum < BackupPhotoAlbumProxy
 end
 
 class FacebookPhoto < BackupPhotoProxy
-  attr_reader :photo
-  attr_accessor :tags, :comments
-  alias_attribute :id, :pid
-  alias_attribute :source_url, :src_big
+  attr_reader :photo, :comments
+  attr_accessor :tags
   
   def initialize(p)
     raise InvalidPhotoClassError unless p.class == Facebooker::Photo
@@ -48,5 +74,12 @@ class FacebookPhoto < BackupPhotoProxy
   
   def modified_at
     nil # not supported by facebook
+  end
+  
+  # Converts facebook comments array to standard format for Comment object
+  def comments=(fb_comments)
+    @comments = fb_comments.map do |comm|
+      FacebookObjectComment.new comm
+    end
   end
 end

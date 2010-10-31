@@ -15,6 +15,9 @@ module Facebooker
   class Photo
     populating_attr_accessor :object_id
   end
+  class Comment
+    populating_attr_accessor :username
+  end
 end
 
 module FacebookDesktopApp

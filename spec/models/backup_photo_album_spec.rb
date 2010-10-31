@@ -1,8 +1,10 @@
 # $Id$
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../facebook_spec_helper')
 
 describe BackupPhotoAlbum do
+  include FacebookSpecHelper
   include FacebookerSpecHelper
   include FacebookPhotoAlbumSpecHelper
   
@@ -73,8 +75,9 @@ describe BackupPhotoAlbum do
       
       describe "association" do
         it "should save collection of photo objects" do
-          @backup.backup_photos.expects(:import).with(@photo)
-          @backup.save_photos([@photo])
+          lambda {
+            @backup.save_photos([@photo])
+          }.should change(@backup.backup_photos, :count).by(1)
         end
       
         it "should save new photos" do
@@ -110,6 +113,22 @@ describe BackupPhotoAlbum do
           @photo.tags = @tags = %w[foo, foo shoo]
           @backup.save_photos([@photo])
           @backup.backup_photos.first.tags.should == @tags
+        end
+        
+        describe "with photo comments" do
+          describe "from facebook" do
+            def photo_with_comments
+              returning(new_photo) do |p|
+                p.comments = [fb_comment]
+              end
+            end
+          
+            it "should save comments in backup photo object" do
+              p = photo_with_comments
+              @backup.save_photos [p]
+              @backup.backup_photos.first.comments.should have(1).thing
+            end
+          end
         end
       end
       

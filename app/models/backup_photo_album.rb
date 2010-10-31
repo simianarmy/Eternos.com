@@ -4,7 +4,14 @@ class BackupPhotoAlbum < ActiveRecord::Base
   belongs_to :backup_source
   has_many :backup_photos, :dependent => :destroy do
     def import(photo)
-      create({:source_photo_id => photo.id.to_s}.merge(photo.to_h))
+      create({:source_photo_id => photo.id.to_s}.merge(photo.to_h)) do |p|
+        # Add any comments to object
+        if photo.comments
+          photo.comments.each do |comm|
+            p.add_comment Comment.new(comm.to_h.merge(:commentable => p))
+          end
+        end
+      end
     end
   end
   has_many :content_photos, :through => :backup_photos, :source => :photo

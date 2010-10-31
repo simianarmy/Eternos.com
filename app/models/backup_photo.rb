@@ -10,6 +10,7 @@ class BackupPhoto < ActiveRecord::Base
   serialize :tags
   xss_terminate :except => [ :tags ]
   acts_as_archivable :on => :added_at
+  acts_as_commentable
   acts_as_state_machine :initial => :pending_download
   
   state :pending_download

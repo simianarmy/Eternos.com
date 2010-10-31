@@ -8,9 +8,20 @@ class Comment < ActiveRecord::Base
   # NOTE: Comments belong to a user
   belongs_to :author, :class_name => 'User', :foreign_key => 'user_id'
   
-  validates_existence_of :author, :message => "You must be logged in to comment"
+  # To store any extra info on the commenter, for Facebook & others
+  serialize :commenter_data
+  
+  #validates_existence_of :author, :message => "You must be logged in to comment"
   validates_presence_of :commentable, :message => "Nothing to comment on"
   validates_presence_of :comment, :message => "Please enter a comment"
+  
+  # Editable attributes for BackupContentProxy objects
+  @@editableAttributes = [:created_at, :title, :comment, :commenter_data, :external_id]
+  cattr_reader :editableAttributes
+  
+  def self.db_attributes
+    editableAttributes
+  end
   
   # Helper class method to lookup all comments assigned
   # to all commentable types for a given user.

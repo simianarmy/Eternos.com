@@ -339,10 +339,13 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.integer  "commentable_id"
     t.string   "commentable_type"
     t.integer  "user_id",                        :default => 0,  :null => false
+    t.text     "commenter_data"
+    t.string   "external_id"
   end
 
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
-
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable"
+  
   create_table "content_accessors", :force => true do |t|
     t.integer  "content_authorization_id"
     t.integer  "user_id"

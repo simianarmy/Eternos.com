@@ -40,3 +40,16 @@ class BackupPhotoProxy
     @photo
   end
 end
+
+class BackupObjectCommentProxy
+  include BackupContentProxy
+  class InvalidCommentClassError < StandardError; end
+  
+  def db_attributes
+    Comment.db_attributes
+  end
+  
+  def obj
+    @comment
+  end
+end
