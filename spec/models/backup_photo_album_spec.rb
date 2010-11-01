@@ -128,6 +128,12 @@ describe BackupPhotoAlbum do
               @backup.save_photos [p]
               @backup.backup_photos.first.comments.should have(1).thing
             end
+            
+            it "should save commenter data in backup photo comment's serialized attribute" do
+              p = photo_with_comments
+              @backup.save_photos [p]
+              @backup.backup_photos.first.comments.first.commenter_data['username'].should == p.comments.first.user_data['username']
+            end
           end
         end
       end

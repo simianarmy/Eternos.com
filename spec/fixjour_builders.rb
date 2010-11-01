@@ -124,6 +124,10 @@ Fixjour  do
     klass.new(:name => Faker::Lorem.words(1).first, :user_id => 0)
   end
   
+  define_builder(Comment) do |klass, overrides|
+    klass.new(:title => Faker::Lorem.sentence, :comment => Faker::Lorem.sentence)
+  end
+  
   define_builder(Content) do |klass, overrides|
     overrides.process(:type) do |type|
       overrides[:data] = case type

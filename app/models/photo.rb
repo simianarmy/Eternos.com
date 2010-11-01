@@ -37,7 +37,7 @@ class Photo < Content
   
   serialize_with_options do
     methods :start_date, :url, :thumbnail_url
-    only :id, :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description, :collection_id
+    only :id, :size, :type, :title, :filename, :width, :height, :taken_at, :content_type, :description, :collection_id, :comments
   end
   
   serialize_with_options(:gallery) do

@@ -39,7 +39,7 @@ describe BackupPhoto do
       
       before(:each) do
         File.cp File.dirname(__FILE__) + '/../../public/images/bigtest.jpg', 
-          @tempfile = Test::Unit::TestCase.fixture_path + 'crap.jpg'
+          @tempfile = ActiveSupport::TestCase.fixture_path + 'crap.jpg'
         puts "Tempfile => #{@tempfile}"
         @photo.stubs(:source_url).returns(@tempfile)
         # RIO::Rio.expects(:rio).at_least(2).returns(@rio = mock('Rio'))
@@ -80,6 +80,14 @@ describe BackupPhoto do
       it "should assign photo's backup photo album to photo object collection attribute" do
         @photo.starting_download!
         @photo.reload.photo.collection.should == @photo.backup_photo_album
+      end
+      
+      it "should assign comments to photo object" do
+        @photo.add_comment(create_comment(:commentable => @photo, :commenter_data => {:foo => 1}))
+        @photo.starting_download!
+        comm = @photo.reload.photo.comments.first
+        comm.commentable.should == @photo.photo
+        comm.commenter_data['foo'].should == 1
       end
     end
   end   

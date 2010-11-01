@@ -85,7 +85,8 @@ class BackupPhoto < ActiveRecord::Base
         :temp_path => File.new(@filename),
         :tag_list => tags || '',
         :taken_at => added_at,
-        :collection => backup_photo_album
+        :collection => backup_photo_album,
+        :comments => self.comments # Copy comments objects to Photo
       )
       save!
       @img.delete if @img && @img.exist?

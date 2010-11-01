@@ -18,7 +18,7 @@ class FacebookObjectComment < BackupObjectCommentProxy
   end
   
   def created_at
-    Time.at(@comment.time)
+    Time.at(@comment.time.to_i) rescue nil
   end
   
   def commenter_data

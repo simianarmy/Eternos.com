@@ -196,7 +196,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   add_index "backup_photo_albums", ["source_album_id"], :name => "index_backup_photo_albums_on_source_album_id"
 
   create_table "backup_photos", :force => true do |t|
-    t.integer  "backup_photo_album_id", :null => false
+    t.integer  "backup_photo_album_id"
     t.string   "source_photo_id",       :null => false
     t.integer  "content_id"
     t.datetime "created_at"
