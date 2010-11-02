@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "location"
     t.string   "modified"
     t.datetime "deleted_at"
+    t.datetime "last_metadata_update"
   end
 
   add_index "backup_photo_albums", ["backup_source_id"], :name => "index_backup_photo_albums_on_backup_source_id"

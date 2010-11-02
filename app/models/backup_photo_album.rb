@@ -26,6 +26,9 @@ class BackupPhotoAlbum < ActiveRecord::Base
   acts_as_taggable
   acts_as_commentable
   
+  cattr_accessor :metadata_synch_interval_seconds
+  @@metadata_synch_interval_seconds = 1.day
+  
   alias_method :photos, :backup_photos
   
   serialize_with_options(:gallery) do
@@ -124,6 +127,11 @@ class BackupPhotoAlbum < ActiveRecord::Base
     (album.modified.to_i > self.modified.to_i) || (album.size.to_i != self.size)
   end
   
+  # Determines if this album needs to synch its metadata
+  def needs_metadata_synch?
+    (Time.now.utc - last_metadata_update) >= metadata_synch_interval_seconds
+  end
+  
   # Save album properies & any associated photos
   def save_album(album, new_photos=nil)
     if update_attributes(album.to_h)
@@ -150,10 +158,19 @@ class BackupPhotoAlbum < ActiveRecord::Base
       end
     end
     
-    # Add all new photos
+    # Add or update new photos
     new_photos.each do |p|
-      backup_photos.import(p) unless existing_photo_ids.include?(p.id)
+      if existing_photo_ids.include?(p.id)
+        # Update with any new metadata
+        if !p.comments.nil?
+          backup_photos.find {|bp| bp.source_photo_id == p.id}.synch_comments p.comments
+        end
+      else
+        # Add to album, with any tags & comments
+        backup_photos.import(p)  
+      end
     end
+    update_attribute(:last_metadata_update, Time.now.utc)
   end
 
   # Earliest photo's date or album create date or some reasonable default

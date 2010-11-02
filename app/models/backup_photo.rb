@@ -88,15 +88,20 @@ class BackupPhoto < ActiveRecord::Base
         :collection => backup_photo_album,
         :comments => self.comments # Copy comments objects to Photo
       )
+      Rails.logger.debug "Creating Photo from backup: #{self.photo.inspect}..."
       save!
       @img.delete if @img && @img.exist?
     rescue Exception => e
-      logger.debug "Error in backup photo download: #{e.class} #{e.message}"
+      logger.debug "Error in backup photo download: #{e.class} #{e.message} #{e.backtrace}"
       puts "Error in backup photo download: #{e.class} #{e.message}"
       update_attribute(:download_error, $!)
     end    
   end
 
+  def synch_comments(photo_comments)
+    Rails.logger.debug "***Synching backup photo comments: #{photo_comments}"
+  end
+  
   protected
   
   def download_photo
