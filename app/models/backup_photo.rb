@@ -98,8 +98,27 @@ class BackupPhoto < ActiveRecord::Base
     end    
   end
 
-  def synch_comments(photo_comments)
+  def synch_backup_comments(photo_comments)
+    return if photo_comments.nil? || photo_comments.empty?
     Rails.logger.debug "***Synching backup photo comments: #{photo_comments}"
+    objects_to_add = if comments.nil? || comments.empty?
+      photo_comments
+    else
+      most_recent_comment_at = comments.last.created_at
+      photo_comments.find_all{|p| p.created_at > most_recent_comment_at}
+    end
+    objects_to_add.each do |comm|
+      add_backup_comment comm
+    end
+  end
+  
+  def add_backup_comment(comm)
+    add_comment convert_backup_comment(comm)
+  end
+  
+  # Converts backup comment object to a Comment object
+  def convert_backup_comment(comm)
+    Comment.new(comm.to_h.merge(:commentable => self))
   end
   
   protected

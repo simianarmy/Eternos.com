@@ -18,7 +18,11 @@ module Facebooker
   class Comment
     populating_attr_accessor :username
   end
+  class Group
+    populating_attr_accessor :icon, :pic_square, :version
+  end
 end
+
 
 module FacebookDesktopApp
   @@config_path = File.join(RAILS_ROOT, 'config', 'facebooker_desktop.yml')

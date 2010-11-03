@@ -10,6 +10,7 @@ module EternosBackup
   module SiteData
     General                 = 0 # Default - all data
     FacebookOtherWallPosts  = 1 # User's posts on friends' walls
+    FacebookPhotoComments   = 2 # What it says
     
     class << self
       def defaultDataSet

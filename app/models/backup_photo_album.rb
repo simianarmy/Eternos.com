@@ -8,7 +8,7 @@ class BackupPhotoAlbum < ActiveRecord::Base
         # Add any comments to object
         if photo.comments
           photo.comments.each do |comm|
-            p.add_comment Comment.new(comm.to_h.merge(:commentable => p))
+            p.add_backup_comment comm
           end
         end
       end
@@ -25,9 +25,6 @@ class BackupPhotoAlbum < ActiveRecord::Base
   acts_as_time_locked
   acts_as_taggable
   acts_as_commentable
-  
-  cattr_accessor :metadata_synch_interval_seconds
-  @@metadata_synch_interval_seconds = 1.day
   
   alias_method :photos, :backup_photos
   
@@ -127,9 +124,11 @@ class BackupPhotoAlbum < ActiveRecord::Base
     (album.modified.to_i > self.modified.to_i) || (album.size.to_i != self.size)
   end
   
-  # Determines if this album needs to synch its metadata
+  # Determines if this album needs to synch its metadata with a backup source
   def needs_metadata_synch?
-    (Time.now.utc - last_metadata_update) >= metadata_synch_interval_seconds
+    !last_metadata_update || 
+      ((Time.now.utc - last_metadata_update) >= 
+        EternosBackup::DataSchedules.min_backup_interval(EternosBackup::SiteData::FacebookPhotoComments))
   end
   
   # Save album properies & any associated photos
@@ -163,7 +162,13 @@ class BackupPhotoAlbum < ActiveRecord::Base
       if existing_photo_ids.include?(p.id)
         # Update with any new metadata
         if !p.comments.nil?
-          backup_photos.find {|bp| bp.source_photo_id == p.id}.synch_comments p.comments
+          Rails.logger.debug "LOOKING FOR BACKUP PHOTO BY SOURCE PHOTO ID FOR COMMENTS SYNC: #{p.id}"
+          bp = backup_photos.find_by_source_photo_id(p.id) rescue nil
+          if bp
+            bp.synch_backup_comments(p.comments) 
+          else
+            Rails.logger.warn "NO BACKUP PHOTO FOUND??"
+          end
         end
       else
         # Add to album, with any tags & comments
