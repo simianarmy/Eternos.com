@@ -4,6 +4,9 @@ require 'fileutils'
 module ContentUploader
   # Ensures any unsaved asset on filesystem is saved to cloud.  
   # Deletes assets once they are confirmed as saved to cloud.
+  # FIXME:
+  # Required because AMQP is not good way to pass messages, need 
+  # more "robust" (synchronous?) message queue system.
   class << self
     @@max = 500
     def upload_all
@@ -43,7 +46,15 @@ module ContentUploader
                 c.stage!
               end
             else
-              logit "Content record not found!"
+              logit "Content record not found..."
+              # What to do??  Best to look for owning BackupPhoto & tell it to retry
+              bps = BackupPhoto.source_url_like(fname)
+              if bps && bps.any?
+                logit "Retrying download"
+                bps.first.download
+              else
+                logit "BackupPhoto for #{f} not found!"
+              end
             end
           end
         end
