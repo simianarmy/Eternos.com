@@ -94,8 +94,7 @@ class BackupPhoto < ActiveRecord::Base
       save!
       @img.delete if @img && @img.exist?
     rescue Exception => e
-      logger.debug "Error in backup photo download: #{e.class} #{e.message} #{e.backtrace}"
-      puts "Error in backup photo download: #{e.class} #{e.message}"
+      logger.debug "Error in backup photo download: #{e.class} #{e.message}"
       update_attribute(:download_error, $!)
     end    
   end

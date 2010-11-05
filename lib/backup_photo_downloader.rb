@@ -20,9 +20,11 @@ module BackupPhotoDownloader
           # but not from command line...obviously env paths..
           # using shuffle method code as work-around
           BackupPhoto.needs_download.sort_by {rand}[0..max.to_i].each do |bp|
-            logit "Downloading backup photo #{bp.id}..."
-            download_photo bp
-            sleep(0.5) # Don't flood source with download requests, and allow em to publish
+            unless bp.photo
+              logit "Downloading backup photo #{bp.id}..."
+              download_photo bp
+              sleep(0.5) # Don't flood source with download requests, and allow em to publish
+            end
           end
           logit "Ending backup photo downloads"
         end

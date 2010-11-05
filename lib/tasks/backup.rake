@@ -25,8 +25,11 @@ namespace :backup do
   
   desc "Download new backup photos"
   task :download_photos => :environment do
-    count = ENV['COUNT'] || 100
-    BackupPhotoDownloader.run count.to_i
+    if count = ENV['COUNT']
+      BackupPhotoDownloader.run count.to_i
+    else
+      BackupPhotoDownloader.run
+    end
   end
   
   desc "Ensure backup photos properly saved" 
@@ -58,8 +61,6 @@ namespace :backup do
     require 'content_uploader'
     ContentUploader.upload_all
   end
-  
-  
   
   desc "Make sure all blog entries have screencaps"
   task :ensure_feed_screencaps => :environment do
