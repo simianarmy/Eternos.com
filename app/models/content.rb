@@ -44,18 +44,14 @@ class Content < ActiveRecord::Base
   # Disable cloud upload on create
   attr_writer :no_upload
   
-  # Define start_date for serializing.  Define in child classes if start_date
-  # should return a different column value than the ones shown
-  def start_date
-    taken_at || created_at 
-  end
-  
   before_create :set_title
   # TODO: Make this work w/ attachment_fu
   before_create :set_content_type_by_content
   before_destroy :delete_from_cloud
   
+  include BackupObjectComment
   include CommonDateScopes
+  
   named_scope :recordings, :conditions => {:is_recording => true}
   named_scope :photos, :conditions => {:type => 'Photo'}
   named_scope :web_videos, :conditions => {:type => 'WebVideo'}
@@ -113,10 +109,6 @@ class Content < ActiveRecord::Base
     end
   end
 
-  def detect_mimetype(data)
-    self.class.detect_mimetype(data)
-  end
-  
   # From mime-types gem - added as class methods here as helper 
   # for class factory
   def self.detect_mimetype(data_or_filename)
@@ -133,6 +125,16 @@ class Content < ActiveRecord::Base
   end
   
   # Instance methods
+  
+  def detect_mimetype(data)
+    self.class.detect_mimetype(data)
+  end
+  
+  # Define start_date for serializing.  Define in child classes if start_date
+  # should return a different column value than the ones shown
+  def start_date
+    taken_at || created_at 
+  end
   
   def validate
     errors.add(:member, "You must be logged in") unless owner

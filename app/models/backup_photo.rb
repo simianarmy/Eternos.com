@@ -33,8 +33,10 @@ class BackupPhoto < ActiveRecord::Base
   include AfterCommit::ActiveRecord
   after_commit_on_create :download_photo
   
+  include BackupObjectComment
   include TimelineEvents
   include CommonDateScopes
+  
   named_scope :needs_download, :conditions => { :state => ['pending_download', 'failed_download'] }
   named_scope :belonging_to_source, lambda { |id| 
     {
@@ -100,25 +102,14 @@ class BackupPhoto < ActiveRecord::Base
 
   def synch_backup_comments(photo_comments)
     return if photo_comments.nil? || photo_comments.empty?
+    
     Rails.logger.debug "***Synching backup photo comments: #{photo_comments}"
-    objects_to_add = if comments.nil? || comments.empty?
-      photo_comments
+    # If content photo object exists, comments should be synched with it, not this object
+    if photo
+      photo.synch_backup_photo_comments(photo_comments)
     else
-      most_recent_comment_at = comments.last.created_at
-      photo_comments.find_all{|p| p.created_at > most_recent_comment_at}
+      synch_backup_photo_comments(photo_comments)
     end
-    objects_to_add.each do |comm|
-      add_backup_comment comm
-    end
-  end
-  
-  def add_backup_comment(comm)
-    add_comment convert_backup_comment(comm)
-  end
-  
-  # Converts backup comment object to a Comment object
-  def convert_backup_comment(comm)
-    Comment.new(comm.to_h.merge(:commentable => self))
   end
   
   protected

@@ -53,7 +53,7 @@ module FacebookProxyObjects
     def comments=(fb_comments)
       return if fb_comments.nil?
       @comments = fb_comments.map do |comm|
-        ::FacebookObjectComment.new comm
+        FacebookObjectComment.new comm
       end
     end
   end
