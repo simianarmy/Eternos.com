@@ -24,4 +24,9 @@ module ContentSpecHelper
    def attachment_processed?(content)
       not content.read_attribute(:saved_attachment).nil?
    end
+   
+   def stub_uploads(content)
+     content.stubs(:upload).returns(true)
+     PhotoThumbnail.any_instance.stubs(:upload).returns(true)
+   end
 end

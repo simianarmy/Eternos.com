@@ -1,14 +1,27 @@
 # $Id$
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.dirname(__FILE__) + '/../../lib/facebook_photo_album'
+require File.expand_path(File.dirname(__FILE__) + '/../facebook_spec_helper')
 
 describe BackupPhoto do
-  describe "Facebook" do
-     include FacebookPhotoAlbumSpecHelper
-     include FacebookerSpecHelper
-  end
+  include FacebookProxyObjectSpecHelper
+  include FacebookerSpecHelper
+  include FacebookSpecHelper
    
+  # This method is required because Fixjour can't handle creating objects 
+  # with associations unless the database structure is setup with nil columns allowed/not allowed. 
+  # Either way, that is stupid.
+  def create_backup_photo_for_real
+    returning(new_backup_photo) do |p|
+      p.backup_photo_album = create_backup_photo_album(:backup_source => create_backup_source)
+      p.save
+      # Setup source file and stub url
+      File.cp File.dirname(__FILE__) + '/../../public/images/bigtest.jpg', 
+        @tempfile = ActiveSupport::TestCase.fixture_path + 'crap.jpg'
+      p.stubs(:source_url).returns(@tempfile)
+    end
+  end
+
   describe "on create" do
     before(:each) do 
       @photo = new_backup_photo(:source_url => 'http://farm4.static.flickr.com/3320/3232136826_b3eed8916b.jpg?v=0')
@@ -36,19 +49,20 @@ describe BackupPhoto do
       # Stub rio method
       def rio(file)
       end
-      
+        
       before(:each) do
-        File.cp File.dirname(__FILE__) + '/../../public/images/bigtest.jpg', 
-          @tempfile = ActiveSupport::TestCase.fixture_path + 'crap.jpg'
-        puts "Tempfile => #{@tempfile}"
-        @photo.stubs(:source_url).returns(@tempfile)
+        @photo = create_backup_photo_for_real
+        
         # RIO::Rio.expects(:rio).at_least(2).returns(@rio = mock('Rio'))
         #         @rio.stubs(:<).returns(@rio)
         #         @rio.stubs(:bytes).returns(100)
         #         @rio.expects(:remove)
-        @photo.save
       end
-    
+
+      it "photo should always belong to a backup photo album" do
+        @photo.backup_photo_album.should_not be_nil
+      end
+      
       it "file should be added as a Photo object to member media collection" do
         lambda {
           @photo.starting_download!
@@ -82,12 +96,38 @@ describe BackupPhoto do
         @photo.reload.photo.collection.should == @photo.backup_photo_album
       end
       
-      it "should assign comments to photo object" do
-        @photo.add_comment(create_comment(:commentable => @photo, :commenter_data => {:foo => 1}))
-        @photo.starting_download!
-        comm = @photo.reload.photo.comments.first
-        comm.commentable.should == @photo.photo
-        comm.commenter_data['foo'].should == 1
+      describe "photo with comments" do
+        before(:each) do 
+          @photo.add_comment(create_comment(:commentable => @photo, :commenter_data => {:foo => 1}))
+        end
+        
+        it "should assign comments to photo object" do
+          @photo.starting_download!
+          comm = @photo.reload.photo.comments.first
+          comm.commentable.should == @photo.photo
+          comm.commenter_data['foo'].should == 1
+        end
+      end
+    end
+  end
+  
+  describe "on update" do
+    def create_proxy_fb_comment
+      new_proxy_fb_comment(fb_comment)
+    end
+    
+    before(:each) do
+      @photo = create_backup_photo_for_real
+      @photo.starting_download!
+      @photo.reload
+    end
+    
+    describe "synching backup comments" do
+      it "should only synch backup comments to photo object's list" do
+        comments = [create_proxy_fb_comment]
+        @photo.photo.expects(:synch_backup_photo_comments).with(comments)
+        @photo.expects(:synch_backup_photo_comments).never
+        @photo.synch_backup_comments(comments)
       end
     end
   end   

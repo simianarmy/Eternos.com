@@ -65,7 +65,7 @@ describe Content do
   describe "on create" do 
     before(:each) do
       @content = new_content(:type => :photo)
-      @content.stubs(:upload).returns(true)
+      stub_uploads(@content)
     end
 
     it "should create object" do
@@ -97,19 +97,27 @@ describe Content do
   describe "after create" do
     before(:each) do
       @content = new_content(:type => :photo)
+      stub_uploads(@content)
     end
     
     with_transactional_fixtures :off do    
       it "should upload the file to cloud storage" do
-        @content.expects(:upload)
+        @content.expects(:start_upload)
         @content.save
       end
+    end
+    
+    it "should allow comments to be assigned" do
+      @content.comments = [create_comment(:commentable => @content)]
+      @content.save
+      @content.reload.comments.should_not be_empty
     end
   end
 
   describe"on update" do
     before(:each) do
       @content = create_content(:type => :photo)
+      stub_uploads(@content)
     end
 
     with_transactional_fixtures :off do
@@ -123,7 +131,7 @@ describe Content do
   describe "create with document" do
     before(:each) do
       @content = create_content(:type => :text)
-      @content.stubs(:upload).returns(true)
+      stub_uploads(@content)
     end
   
     it "should not be thumbnailable" do
@@ -140,7 +148,7 @@ describe Content do
  
     before(:each) do
       @content = create_content(:type => :text)
-      @content.stubs(:upload).returns(true)
+      stub_uploads(@content)
     end
   
     it "association should be valid" do
@@ -205,7 +213,7 @@ describe Content, "create with audio" do
   
   before(:each) do
     @content = create_content(:type => :audio)
-    @content.stubs(:upload).returns(true)
+    stub_uploads(@content)
   end
   
   it "should be an object of the correct class" do
@@ -220,7 +228,7 @@ describe Content, "on image destroy" do
   
   before(:each) do
     @content = create_content(:type => :photo)
-    @content.stubs(:upload).returns(true)
+    stub_uploads(@content)
   end
   
   it "should delete files on disk" do

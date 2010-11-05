@@ -432,13 +432,17 @@ module FacebookerSpecHelper
   end
 end
 
-module FacebookPhotoAlbumSpecHelper
+module FacebookProxyObjectSpecHelper
   def new_album(album=new_facebooker_album)
-    FacebookPhotoAlbum.new(album)
+    FacebookProxyObjects::FacebookPhotoAlbum.new(album)
   end
 
   def new_photo(photo=new_facebooker_photo)
-    FacebookPhoto.new(photo)
+    FacebookProxyObjects::FacebookPhoto.new(photo)
+  end
+  
+  def new_proxy_fb_comment(comm)
+    FacebookProxyObjects::FacebookObjectComment.new(comm)
   end
 end
 

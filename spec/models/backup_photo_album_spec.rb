@@ -6,7 +6,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../facebook_spec_helper')
 describe BackupPhotoAlbum do
   include FacebookSpecHelper
   include FacebookerSpecHelper
-  include FacebookPhotoAlbumSpecHelper
+  include FacebookProxyObjectSpecHelper
+  
   
   before(:each) do
     @source = create_backup_source
