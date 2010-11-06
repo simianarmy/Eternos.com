@@ -26,4 +26,14 @@ namespace :fix do
       end
     end
   end
+  
+  desc 'Assign backup photos\' comments to their associated photo objects'
+  task :fix_unsynched_backup_photo_comments => :environment do
+    Comment.commentable_type_eq('BackupPhoto').all(:group => :commentable_id).each do |comm|
+      if (bp = comm.commentable) && bp.photo
+        puts "Saving comments from backup photo #{bp.id} to photo object"
+        bp.photo.comments = bp.comments
+      end
+    end
+  end   
 end

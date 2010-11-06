@@ -102,17 +102,26 @@ RESP
         
   # Backup errors in last 24 hours
   def backup_job_errors
-    errs = Hash.new(0)
-    errs[:none] = 0
-    BackupSourceJob.finished_at_gt(munin_start_time).find(:all, :conditions => ['error_messages != ?', '']).each do |job|
-      errs[job.error_messages.to_s] += 1
-    end
-    response = ""
-    errs.each do |k,v|
-      response += "#{k} = #{v.to_i}\n"
+    err_code_lookup = {}
+    errs_by_desc = BackupErrorCode.all.inject(Hash.new(0)) do |res, err|
+      # Save err code => description 
+      err_code_lookup[err.code] = err.description
+      res[err.description] = 0
+      res
     end
     
-    render :inline => response, :status => :ok
+    return render(:inline => err_code_lookup.values.map{|err| md5_str(err) + '.label ' + err }.join("\n")) if params.key?('schema')
+    
+    # Collect backup errors by code/count
+    BackupSourceJob.finished_at_gt(munin_start_time).find(:all, :conditions => ['error_messages != ?', '']).each do |job|
+      code = EternosBackup::BackupErrors.lookup_error_code(job.error_messages.first)
+      if err_code_lookup[code]
+        errs_by_desc[err_code_lookup[code]] += 1
+      else
+        errs_by_desc['unknown'] += 1
+      end
+    end
+    render :inline => errs_by_desc.map{|err,c| md5_str(err) + '.value ' + c.to_s}.join("\n"), :status => :ok
   end
   
   def facebook_session_errors
@@ -122,7 +131,7 @@ RESP
     render :inline => response, :status => :ok
   end
   
-  # Returns backup data storage sizes & counts
+  # Returns backup data type counts
   def backup_items
     facebook_records = FacebookActivityStreamItem.count
     twitter_records = TwitterActivityStreamItem.count
@@ -133,6 +142,7 @@ RESP
     rss_entries = FeedEntry.count
     rss_feeds = Feed.count
     emails = BackupEmail.count
+    content_comments = Comment.commentable_type_eq('Content').count
     
     response =<<RESP
 facebook = #{facebook_records}
@@ -142,6 +152,7 @@ picasa_photos = #{picasa_photos}
 rss_items = #{rss_entries}
 rss_feeds = #{rss_feeds}
 emails = #{emails}
+content_comments = #{content_comments}
 RESP
 
     render :inline => response, :status => :ok
@@ -253,5 +264,9 @@ RESP
   
   def munin_start_time
     Time.now.utc - @@MuninSampleInterval
+  end
+  
+  def md5_str(str)
+    'l_' + Digest::MD5.hexdigest(str)
   end
 end

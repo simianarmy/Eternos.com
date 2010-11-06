@@ -4,16 +4,26 @@
 # Munin plugin
 # Counts running backup jobs
 
-REQUEST_URI = 'http://dev.eternos.com/admin/munin/backup_job_errors?api=FL1mFl4mAlamB'
+REQUEST_URI = 'http://eternos.local/admin/munin/backup_job_errors?api=FL1mFl4mAlamB'
 
 def output_config
+  schema_url = REQUEST_URI + '\&schema=1'
+  schema = `curl -s #{schema_url}`
+  
+  unless $?.success?
+    $stderr.puts "failed executing backup_errors"
+    exit 1
+  end
+  
   puts <<-END
 graph_category Eternos.com
-graph_title backup errors last 24 hours
+graph_title backup errors
 graph_vlabel count
-
-errors.label Errors
 END
+
+  schema.scan(/^l_[a-f0-9]+\.label.*?$/) do |label|
+    puts label
+  end
   exit 0
 end
 
@@ -25,7 +35,9 @@ def output_values
     exit 1
   end
   
-  puts "errors.value #{status.strip}"
+  status.scan(/^l_[a-f0-9]+\.value.*?$/) do |value|
+    puts value  
+  end
 end
 
 if ARGV[0] == "config"
