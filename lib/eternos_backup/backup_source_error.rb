@@ -31,6 +31,7 @@ module EternosBackup
     }
     
     @@UnknownErrorCode  = 0
+    mattr_reader :UnknownErrorCode
     
     # Tries to match error string against pattern db to find error code
     def lookup_error_code(err)

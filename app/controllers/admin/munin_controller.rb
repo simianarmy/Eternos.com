@@ -2,6 +2,8 @@
 #
 # Admin munin controller
 
+require 'lib/eternos_backup/backup_source_error'
+
 class Admin::MuninController < ActionController::Base 
   @@API_KEY = 'FL1mFl4mAlamB' # Password to match requests against
   @@MuninSampleInterval = 5.minutes
@@ -101,8 +103,9 @@ RESP
   end
         
   # Backup errors in last 24 hours
+  include EternosBackup::BackupErrors
   def backup_job_errors
-    err_code_lookup = {}
+    err_code_lookup = {EternosBackup::BackupErrors.UnknownErrorCode => 'Unknown'}
     errs_by_desc = BackupErrorCode.all.inject(Hash.new(0)) do |res, err|
       # Save err code => description 
       err_code_lookup[err.code] = err.description
@@ -114,11 +117,11 @@ RESP
     
     # Collect backup errors by code/count
     BackupSourceJob.finished_at_gt(munin_start_time).find(:all, :conditions => ['error_messages != ?', '']).each do |job|
-      code = EternosBackup::BackupErrors.lookup_error_code(job.error_messages.first)
+      code = lookup_error_code(job.error_messages.first) || EternosBackup::BackupErrors.UnknownErrorCode
       if err_code_lookup[code]
         errs_by_desc[err_code_lookup[code]] += 1
       else
-        errs_by_desc['unknown'] += 1
+        errs_by_desc['Unknown'] += 1
       end
     end
     render :inline => errs_by_desc.map{|err,c| md5_str(err) + '.value ' + c.to_s}.join("\n"), :status => :ok
