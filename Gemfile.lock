@@ -151,7 +151,7 @@ GEM
     rubyforge (2.0.4)
       json_pure (>= 1.1.7)
     rvideo (0.9.3)
-    searchlogic (2.3.4)
+    searchlogic (2.3.16)
       activerecord (>= 2.0.0)
     shared-mime-info (0.1)
     shuber-attr_encrypted (1.0.8)
@@ -239,7 +239,7 @@ DEPENDENCIES
   ruby-hmac
   ruby-stemmer
   rvideo
-  searchlogic (= 2.3.4)
+  searchlogic (= 2.3.16)
   shared-mime-info
   shuber-attr_encrypted
   spork

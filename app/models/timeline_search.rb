@@ -11,6 +11,7 @@ class TimelineSearch
     :facebook   => :get_facebook_items,
     :photos     => :get_images,
     :media      => :get_media,
+    :content_comments => :get_content_comments,
     :blog       => :get_feed_items,
     :profile    => [:get_durations]
   }
@@ -100,6 +101,9 @@ class TimelineSearch
     # Note that Photo needs a special not_deleted named_scope since using
     # deleted_at_null in the chain crashes
     date_query Photo.user_id_eq(@member.id).not_deleted.with_thumbnails.searchlogic
+    # Seeing if newer searchlogic fixes above
+    #query Photo.user_id_eq(@member.id).with_thumbnails.searchlogic
+    #query Photo.user_id_eq(@member.id).with_thumbnails.searchlogic
   end
   
   def get_emails
@@ -108,6 +112,38 @@ class TimelineSearch
   
   def get_feed_items
     query FeedEntry.belonging_to_user(@member.id).include_content.searchlogic
+  end
+  
+  # In order to display comments independently of their 'commentable' object
+  def get_content_comments
+    # Searchlogic >= 2.4:
+    # Hurray for searchlogic polymorphic association support!
+    # BOO for random occurrences of 'The error occurred while evaluating nil.call!' !
+    # Call date_query directly b/c we don't have deleted_at column in comments table
+    #date_query Comment.commentable_content_type_user_id_eq(@member.id).searchlogic
+    
+    # Use explicit join combined with searchlogic-generated dates
+    # query will look like this:
+    # SELECT `comments`.* FROM `comments` 
+    # INNER JOIN `contents` ON `contents`.id = `comments`.commentable_id 
+    # AND `comments`.commentable_type = 'Content' 
+    # WHERE (((comments.created_at >= '2010-10-01') 
+    # AND (comments.created_at <= '2010-11-30')) 
+    # AND (contents.user_id = 178)) 
+    
+    # Tell generators not to execute the query
+    srch = without_executing_query do
+      date_query Comment.searchlogic
+    end
+    srch.find(:all, :joins => "INNER JOIN contents ON contents.id = comments.commentable_id AND comments.commentable_type = 'Content'", 
+      :conditions => {'contents.user_id' => @member.id})
+  end
+  
+  def without_executing_query(&block)
+    @no_execute = true
+    res = block.call
+    @no_execute = false
+    res
   end
   
   # Helper for searching by type (constant or string)
@@ -155,7 +191,8 @@ class TimelineSearch
     else
       # Date range query
       # Only doing it this way cuz Searchlogic can't handle my between_dates named_scope
-      search.after(@start_date).before(@end_date).all
+      s = search.after(@start_date).before(@end_date)
+      @no_execute ? s : s.all
     end
   end
   
@@ -182,7 +219,7 @@ class TimelineSearch
   # Returns as array
   def proximity_search(search, direction)
     (direction == 'past') ? search.before(@start_date).sorted_desc(true) : search.after(@start_date).sorted(true)
-    [search.first].compact
+    @no_execute ? search : [search.first].compact
   end
   
   # Removes potential duplicate media by checking which actions were executed 

@@ -16,19 +16,19 @@ module CommonDateScopes
       named_scope :before, lambda {|date|
         { 
           #:conditions => ["(#{self.archivable_attribute.to_s} IS NULL) OR (DATE(#{self.archivable_attribute.to_s}) <= ?)", 
-          :conditions => ["#{self.archivable_attribute.to_s} <= ?", date] 
+          :conditions => ["#{self.table_name}.#{self.archivable_attribute.to_s} <= ?", date] 
         }
       }
       named_scope :after, lambda {|date|
         { 
-          :conditions => ["#{self.archivable_attribute.to_s} >= ?", date] 
+          :conditions => ["#{self.table_name}.#{self.archivable_attribute.to_s} >= ?", date] 
         }
       }
       named_scope :sorted, lambda {
-        { :order => "#{self.archivable_attribute.to_s} ASC" }
+        { :order => "#{self.table_name}.#{self.archivable_attribute.to_s} ASC" }
       }
       named_scope :sorted_desc, lambda {
-        { :order => "#{self.archivable_attribute.to_s} DESC" }
+        { :order => "#{self.table_name}.#{self.archivable_attribute.to_s} DESC" }
       }
     end
   end
@@ -44,13 +44,13 @@ module CommonDurationScopes
 
       named_scope :before_duration, lambda { |end_date|
         {
-          :conditions => ["(#{self.end_archivable_attribute.to_s} IS NULL) AND (DATE(#{self.archivable_attribute.to_s}) <= ?)", end_date]
+          :conditions => ["(#{self.table_name}.#{self.end_archivable_attribute.to_s} IS NULL) AND (DATE(#{self.table_name}.#{self.archivable_attribute.to_s}) <= ?)", end_date]
         }
       }
       named_scope :in_dates, lambda { |start_date, end_date|
         {
-          :conditions => ["(#{self.archivable_attribute.to_s} >= ? AND #{self.end_archivable_attribute.to_s} <= ?) OR " +
-            "((#{self.end_archivable_attribute.to_s} IS NULL) AND (#{self.archivable_attribute.to_s} <= ?) AND (DATE(NOW()) > ?))",
+          :conditions => ["(#{self.table_name}.#{self.archivable_attribute.to_s} >= ? AND #{self.table_name}.#{self.end_archivable_attribute.to_s} <= ?) OR " +
+            "((#{self.table_name}.#{self.end_archivable_attribute.to_s} IS NULL) AND (#{self.table_name}.#{self.archivable_attribute.to_s} <= ?) AND (DATE(NOW()) > ?))",
             start_date, end_date,
             end_date, start_date]
           }

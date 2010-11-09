@@ -15,6 +15,12 @@ class Comment < ActiveRecord::Base
   validates_presence_of :commentable, :message => "Nothing to comment on"
   validates_presence_of :comment, :message => "Please enter a comment"
   
+  acts_as_archivable
+  
+  include TimelineEvents
+	include CommonDateScopes
+  include CommonDurationScopes
+  
   # Editable attributes for BackupContentProxy objects
   @@editableAttributes = [:created_at, :title, :comment, :commenter_data, :external_id]
   cattr_reader :editableAttributes
