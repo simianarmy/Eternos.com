@@ -103,7 +103,6 @@ class TimelineSearch
     date_query Photo.user_id_eq(@member.id).not_deleted.with_thumbnails.searchlogic
     # Seeing if newer searchlogic fixes above
     #query Photo.user_id_eq(@member.id).with_thumbnails.searchlogic
-    #query Photo.user_id_eq(@member.id).with_thumbnails.searchlogic
   end
   
   def get_emails
@@ -122,20 +121,16 @@ class TimelineSearch
     # Call date_query directly b/c we don't have deleted_at column in comments table
     #date_query Comment.commentable_content_type_user_id_eq(@member.id).searchlogic
     
-    # Use explicit join combined with searchlogic-generated dates
-    # query will look like this:
-    # SELECT `comments`.* FROM `comments` 
-    # INNER JOIN `contents` ON `contents`.id = `comments`.commentable_id 
-    # AND `comments`.commentable_type = 'Content' 
-    # WHERE (((comments.created_at >= '2010-10-01') 
-    # AND (comments.created_at <= '2010-11-30')) 
-    # AND (contents.user_id = 178)) 
+    # FEATURE SWITCH FOR TESTING ONLY
+    Rails.logger.debug AppConfig.timeline_fb_comment_accounts.inspect
+    return unless AppConfig.timeline_fb_comment_accounts && AppConfig.timeline_fb_comment_accounts.include?(@member.id)
     
     # Tell generators not to execute the query
     srch = without_executing_query do
       date_query Comment.searchlogic
     end
-    srch.find(:all, :joins => "INNER JOIN contents ON contents.id = comments.commentable_id AND comments.commentable_type = 'Content'", 
+    srch.find(:all, 
+      :joins => "INNER JOIN contents ON contents.id = comments.commentable_id AND comments.commentable_type = 'Content'", 
       :conditions => {'contents.user_id' => @member.id})
   end
   

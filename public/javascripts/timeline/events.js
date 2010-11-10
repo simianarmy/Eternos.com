@@ -432,6 +432,29 @@ var ETLAudioEventSource = Class.create(ETLEventSource, {
 		});
 	}
 });
+// Comment event
+var ETLCommentEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.comment;
+		$super(s);
+	},
+	getPreviewHtml: function($super) {
+		// Just facebook commments for now, don't worry about showing 
+		// commentable object yet.
+		comment_author = 'Unknown';
+		author_pic = null;
+		
+		if (this.attributes.commenter_data) {
+			comment_author = this.attributes.commenter_data.username;
+			author_pic = this.attributes.commenter_data.pic_url;
+		}
+		return ETemplates.tooltipTemplates.facebook_comment.evaluate({
+			author: comment_author,
+			thumb: (author_pic ? '<img align="left" src="' + author_pic + '"/>' : ''),
+			comment: this.attributes.comment});
+	}
+});
+
 //////////////////////////////////////////////////////
 //
 // Profile events
@@ -556,7 +579,8 @@ var ETEvent = {
 		{type: "medical", display_text: "Medical&nbsp;Data", display_text_plural: "Medical&nbsp;Data", icon: "medic-data.png"},
 		{type: "medical_condition", display_text: "Medical Condition", display_text_plural: "Medical Conditions", icon: "medic-cond.png"},
 		{type: "job", display_text: "Job", display_text_plural: "Jobs", icon: "job"}, 
-		{type: "address", display_text: "Address", display_text_plural: "Addresses", icon: "address.png"}
+		{type: "address", display_text: "Address", display_text_plural: "Addresses", icon: "address.png"},
+		{type: "comment", display_text: "Comment", display_text_plural: "Comments", icon: "facebook.gif"}
 	],
 	
 	// Class factory function - returns ETLEventSource child class object based on passed type string
@@ -592,6 +616,8 @@ var ETEvent = {
 				SimileAjax.includeJavascriptFiles(document, '/javascripts/', ['soundmanager2-nodebug-jsmin.js', 'inlineplayer.js']);
 			}
 			return new ETLAudioEventSource(data);
+		} else if (type === "comment") {
+			return new ETLCommentEventSource(data);
 		} else if (type === "job") {
 			return new ETLJobEventSource(data);
 		} else if (type === "address") {	

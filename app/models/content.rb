@@ -37,7 +37,7 @@ class Content < ActiveRecord::Base
   
   serialize_with_options do
     methods :url, :thumbnail_url
-    only :size, :type, :title, :filename, :width, :height, :taken_at, :description
+    only :size, :type, :title, :filename, :width, :height, :taken_at, :description, :comments
   end
   
   # Virtual attributes

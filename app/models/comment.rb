@@ -5,16 +5,16 @@ class Comment < ActiveRecord::Base
   # want user to vote on the quality of comments.
   #acts_as_voteable
   
-  # NOTE: Comments belong to a user
+  # Comments written by a user, but not always (if created off-site)
   belongs_to :author, :class_name => 'User', :foreign_key => 'user_id'
   
   # To store any extra info on the commenter, for Facebook & others
   serialize :commenter_data
   
-  #validates_existence_of :author, :message => "You must be logged in to comment"
   validates_presence_of :commentable, :message => "Nothing to comment on"
   validates_presence_of :comment, :message => "Please enter a comment"
   
+  # Timeline & search stuff
   acts_as_archivable
   
   include TimelineEvents

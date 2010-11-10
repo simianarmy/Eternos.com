@@ -221,6 +221,9 @@ var ETemplates = function() {
 			return new Template('<div class="tooltip_as">' + tooltipItemViewLink('#{author}#{message}#{media}') + 
 				'#{time}#{source}<div class="comment_thread">#{comments}</div>#{likes}</div>');
 		} (),
+		comment: function() {
+			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}</div><div class="clearboth"></div></div>');
+		} (),
 		facebook_comment: function() {
 			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}</div><div class="clearboth"></div></div>');
 		} (),

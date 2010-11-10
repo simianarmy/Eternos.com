@@ -79,7 +79,7 @@ gem 'ruby-hmac'
 gem 'RubyInline'
 gem 'ruby-stemmer'
 gem 'rvideo'
-gem 'searchlogic', '2.3.16'
+gem 'searchlogic', '2.3.16' # Can't go higher than this without breaking timeline search
 gem 'shared-mime-info'
 gem 'shuber-attr_encrypted'
 gem 'SystemTimer'

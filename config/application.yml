@@ -31,6 +31,8 @@ development:
   s3_staging_dir: /tmp
   ffmpeg_path: /opt/local/bin/ffmpeg
   register_users_to_facebook: false
+  timeline_fb_comment_accounts:
+    - 178
   
 test:
   <<: *default_settings
