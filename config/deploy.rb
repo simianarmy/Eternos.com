@@ -17,8 +17,6 @@ set :repository,
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
 
-set :scm, 'subversion'
-
 # If you aren't using Subversion to manage your source code, specify
 # your SCM below:
 # set :scm, :subversion

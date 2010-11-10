@@ -19,6 +19,18 @@ deploy.task :restart, :roles => :web do
   sudo "/etc/init.d/nginx reload"
 end
 
+deploy.task :user_confirmation_for_production_deployment, roles => :app do
+  message = "You are deploying to PRODUCTION. continue(y/n):"
+  answer = Capistrano::CLI.ui.ask(message)   
+  abort "deployment to production was stopped" unless answer == 'y'
+end
+
+# Uncomment this whenever bundle install fails, which is almost always.
+# Some solutions: rm vendor/cache in install dir before running.
+#bundle.task :install {}
+
+# This is what asks you if you're sure you want to deploy to production?!?!?
+before "deploy:update_code", "deploy:user_confirmation_for_production_deployment"
 before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink_shared", "deploy:minify_js"
 after "deploy:symlink", "deploy:publish_robots_file"
