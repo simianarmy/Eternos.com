@@ -122,8 +122,7 @@ class TimelineSearch
     #date_query Comment.commentable_content_type_user_id_eq(@member.id).searchlogic
     
     # FEATURE SWITCH FOR TESTING ONLY
-    Rails.logger.debug AppConfig.timeline_fb_comment_accounts.inspect
-    return unless AppConfig.timeline_fb_comment_accounts && AppConfig.timeline_fb_comment_accounts.include?(@member.id)
+    return unless AppConfig['timeline_fb_comment_accounts'] && AppConfig['timeline_fb_comment_accounts'].include?(@member.id)
     
     # Tell generators not to execute the query
     srch = without_executing_query do
