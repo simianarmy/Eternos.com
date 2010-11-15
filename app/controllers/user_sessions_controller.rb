@@ -3,10 +3,10 @@
 # Authlogic sessions controller
 
 class UserSessionsController < ApplicationController
-  ssl_required :new, :new_password, :save_password
+  ssl_required :new, :choose_password, :save_password
   ssl_allowed :create, :destroy
   
-  before_filter :require_no_user, :only => [:new, :create, :new_password]
+  before_filter :require_no_user, :only => [:new, :create, :choose_password, :save_password]
   before_filter :require_user, :only => :destroy
   
   
