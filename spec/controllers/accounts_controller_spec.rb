@@ -119,16 +119,24 @@ describe AccountsController do
       
       it "should receive a signup notification email" do
         post_info
-        unread_emails_for(assigns[:user].email).should have(1).item
+        unread_emails_for(assigns[:user].email).size.should == 1
+      end
+      
+      it "should receive an activation email with a link to the password entry page" do
+        post_info
+        # Don't know why we have to double uri-escape the email address, but that's how it 
+        # shows up in these test emails...
+        choose_pwd_link = Regexp.new(/choose_password/)
+        
+        email = open_last_email_for(assigns[:user].email)
+        links_in_email(email).find_all { |link| choose_pwd_link.match link }.should_not be_empty
       end
       
       it "should allow user to login with generated password" do
         post_info
         user = assigns[:user]
         pwd = user.generated_password
-        debugger
-        post_via_redirect "user_sessions/new", :user_session => {:login => user.login, :password => pwd}
-        response.should redirect_to member_home_url
+        UserSession.create(:login => user.login, :password => pwd).should be_true
       end
     end
   end
