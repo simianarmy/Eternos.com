@@ -6,7 +6,10 @@
 
 require 'rubygems'
 require 'spork'
- 
+require 'email_spec/cucumber'
+require 'fixjour'
+require 'faker'
+
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "cucumber"
   require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
