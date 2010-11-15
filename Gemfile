@@ -28,6 +28,7 @@ group :test do
   gem 'cucumber'
   gem 'rspec', '1.3.1'
   gem 'rspec-rails', '1.3.3'
+  gem 'capybara'
   gem 'mocha'
   gem 'ruby-debug'
   gem 'faker'

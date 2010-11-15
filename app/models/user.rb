@@ -95,6 +95,8 @@ class User < ActiveRecord::Base
   
   #Member.active.find_all(&:has_backup_data?).size
   
+  COREG_PASSWORD_PLACEHOLDER = 'COREG_TMP4SS_SL00P'
+  
   # Roles
   AdminRole         = 'Admin'
   MemberRole        = 'Member'
@@ -145,6 +147,10 @@ class User < ActiveRecord::Base
       end
     end
     true
+  end
+  
+  def using_coreg_password?
+    password && (password == COREG_PASSWORD_PLACEHOLDER)
   end
   
   def facebook_user?

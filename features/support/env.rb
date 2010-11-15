@@ -18,19 +18,25 @@ Spork.prefork do
   require 'cucumber/web/tableish'
 
 
-  require 'webrat'
-  require 'webrat/core/matchers'
-
-  require 'email_spec/cucumber'
-  require 'fixjour'
-  require 'faker'
+  require 'capybara/rails'
+  require 'capybara/cucumber'
+  require 'capybara/session'
+  require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
+  # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
+  # order to ease the transition to Capybara we set the default here. If you'd
+  # prefer to use XPath just remove this line and adjust any selectors in your
+  # steps to use the XPath syntax.
+  Capybara.default_selector = :css
   
-  Webrat.configure do |config|
-    config.mode = :rails
-    config.open_error_files = false # Set to true if you want error pages to pop up in the browser
+  Capybara.app_host = "http://dev.eternos.com"
+  Capybara.default_driver = :selenium
+  Capybara.register_driver :selenium do |app|
+    Capybara::Driver::Selenium.new(app,
+      :browser => :local)
+      #:url => "http://192.168.1.127:4444/wd/hub",
+      #:desired_capabilities => :internet_explorer)
   end
   
-
 end
  
 Spork.each_run do

@@ -15,7 +15,7 @@ class UserMailer < ActionMailer::Base
     @body[:facebook]  = !user.facebook_id.nil?
     @body[:login]     = user.login
     # If co-reg user, add link to special login page
-    if user.generated_password
+    if user.password == User::COREG_PASSWORD_PLACEHOLDER
       @body[:choose_passwd_login_url]    = choose_password_user_sessions_url
     end
     add_category_header "Activation Request" 

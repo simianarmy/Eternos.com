@@ -90,10 +90,10 @@ class UserSessionsController < ApplicationController
     sanitize_credentials
     
     # If user login matches record and passwords match, save password to user account and log them in
-    if @user = User.email_eq(params[:user_session][:login])
+    if (@user = User.find_by_login(params[:user_session][:login])) && @user.using_coreg_password?
       if !params[:user_session][:password].blank? && 
         (params[:user_session][:password] == params[:password_confirmation])
-        @user.password = user.password_confirmation = params[:user_session][:password]
+        @user.password = @user.password_confirmation = params[:user_session][:password]
         @user.save
       end    
     end

@@ -22,4 +22,29 @@ describe UserSessionsController do
       response.should redirect_to account_setup_url
     end
   end
+  
+  # TODO: 
+  # Cuke this process
+  describe "on coreg user" do
+    before(:each) do
+      @request.env['HTTPS'] = 'on'
+      @user = make_member(valid_user_attributes_with_password)
+      @user.password = @user.password_confirmation = User::COREG_PASSWORD_PLACEHOLDER
+      @user.save
+    end
+    
+    it "should display choose password page on get" do
+      get :choose_password
+      assigns[:user_session].should_not be_nil
+    end
+    
+    it "should save new password if login matches coreg user" do
+      @user.password.should == User::COREG_PASSWORD_PLACEHOLDER
+      passwd = 'foobar1'
+      post :save_password, :user_session => {:login => @user.login, :password => passwd}, 
+        :password_confirmation => passwd
+      response.should redirect_to account_setup_url
+      assigns[:user].password.should == passwd
+    end
+  end
 end

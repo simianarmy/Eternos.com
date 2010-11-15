@@ -167,9 +167,11 @@ class AccountsController < ApplicationController
     Rails.logger.debug "IN AFF CREATE FOR USER #{@user.inspect}"
     
     # GENERATE A PASSWORD 
-    @pwd = User.generate_password
-    @user.generated_password = @pwd
-    @user.password = @user.password_confirmation = @pwd
+    #@pwd = User.generate_password
+    #@user.generated_password = @pwd
+    #@user.password = @user.password_confirmation = @pwd
+    # Set stub password
+    @user.password = @user.password_confirmation = User::COREG_PASSWORD_PLACEHOLDER
     
     # Use stub for name if necessary
     if params[:user][:first_name].blank?
@@ -220,7 +222,7 @@ class AccountsController < ApplicationController
       end
       # Save with exceptions to validate addresses
       @user.save!
-          
+      
       # Log raw passwords for the login bug 
       Rails.logger.error "user #{@user.email} password: #{@user.password}"
       

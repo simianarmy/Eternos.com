@@ -4,9 +4,9 @@ Welcome, <%= @name %>!
  Thank you for creating an Eternos.com account!
 <br/>
 <br/>
-<% unless @passwd %>
 You are one step away from creating your Eternos.com social web archive. 
-Simply click on the link below to activate your account, or copy the following 
+<% unless @choose_passwd_login_url %>
+Simply <%= link_to 'Click here', @url %> to activate your account, or copy the following 
 URL and paste it into your browser:
 <br/>
 <br/>
@@ -25,7 +25,7 @@ URL and paste it into your browser:
 <% end %>
 <br/>
 <% if @choose_passwd_login_url %>
- <%= link_to 'Click here', @choose_passwd_login_url %> to choose a password and login, or copy 
+ Simply <%= link_to 'Click here', @choose_passwd_login_url %> to choose a password and login, or copy 
  the following URL and paste it into your browser:
 
 <br/>
@@ -39,7 +39,7 @@ Your Homepage: <%= link_to member_home_url, member_home_url %>
 <p/>
 <br/>
 Once you confirm your account with the preceding link, you will be ready to 
-add backup sources (Facebook, Twitter, Gmail, Picasa, etc) and begin archiving 
+add backup sources (Facebook, Twitter, Gmail, Picasa, Blogs) and begin archiving 
 your online interaction for posterity. 
 <p/>
 

@@ -25,9 +25,10 @@ describe AccountsController do
         }.should change(User, :count).by(1)
       end
       
-      it "should assign a random password" do
+      it "should assign a placeholder password" do
         post_info
-        assigns[:user].generated_password.should_not be_blank
+        #assigns[:user].generated_password.should_not be_blank
+        assigns[:user].password.should == User::COREG_PASSWORD_PLACEHOLDER
       end
       
       it "should assign a placeholder name only if none sent" do
@@ -126,18 +127,22 @@ describe AccountsController do
         post_info
         # Don't know why we have to double uri-escape the email address, but that's how it 
         # shows up in these test emails...
-        choose_pwd_link = Regexp.new(/choose_password/)
+        activation_link = Regexp.new(/\/activate\/\w+/)
+        choose_pwd_link = Regexp.new(/\/choose_password$/)
         
-        email = open_last_email_for(assigns[:user].email)
-        links_in_email(email).find_all { |link| choose_pwd_link.match link }.should_not be_empty
+        links = links_in_email(open_last_email_for(assigns[:user].email))
+        debugger
+        # No activation links!
+        links.select { |link| activation_link.match link }.should be_empty
+        links.select { |link| choose_pwd_link.match link }.should_not be_empty
       end
       
-      it "should allow user to login with generated password" do
-        post_info
-        user = assigns[:user]
-        pwd = user.generated_password
-        UserSession.create(:login => user.login, :password => pwd).should be_true
-      end
+      # it "should allow user to login with generated password" do
+      #         post_info
+      #         user = assigns[:user]
+      #         pwd = user.generated_password
+      #         UserSession.create(:login => user.login, :password => pwd).should be_true
+      #       end
     end
   end
 end
