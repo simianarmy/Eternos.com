@@ -222,6 +222,9 @@ class AccountsController < ApplicationController
       end
       @user.save!
       
+      # Log raw passwords for the login bug 
+      Rails.logger.error "user #{@user.email} password: #{@user.password}"
+            
       @user.register!
       @user.activate!
     else
