@@ -33,6 +33,7 @@ class UserSessionsController < ApplicationController
     if request.method == :get
       redirect_to(login_path) && return
     end
+    sanitize_credentials
     @user_session    = UserSession.new(params[:user_session])
     
     if @user_session.save
@@ -46,6 +47,7 @@ class UserSessionsController < ApplicationController
         #redirect_to member_home_path
       end
     else
+      Rails.logger.error "Login failed! #{params.inspect}"
       set_facebook_connect_session
       if facebook_session 
         if user = User.find_by_fb_user(facebook_session.user)
@@ -75,5 +77,16 @@ class UserSessionsController < ApplicationController
   def destroy
     current_user_session.try(:destroy)
     redirect_to new_user_session_url
+  end
+  
+  protected
+  
+  #  Strip whitespace from credentials - login failures can be caused by this from 
+  # co-reg emails with passwords in them that contain invisible newlines or something!
+  def sanitize_credentials
+    if params[:user_session]
+      params[:user_session][:login].strip!
+      params[:user_session][:password].strip!
+    end
   end
 end
