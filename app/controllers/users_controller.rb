@@ -6,6 +6,8 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :require_no_user, :only => [:new, :create]
   
+  include EternosMailer::Subjects
+  
   # render new.rhtml
   def new
     @user = User.new(:invitation_token => params[:invitation_token])
@@ -43,7 +45,7 @@ class UsersController < ApplicationController
         @user.email_activation_received!
       end
       # Check if this email already sent once
-      unless UserMailing.count_by_email_and_subject(@user.email, UserMailer.subject(:activation)) > 0
+      unless UserMailing.count_by_email_and_subject(@user.email, subject_from_sym(:activation)) > 0
         UserMailer.deliver_activation!(@user)
       end
       
