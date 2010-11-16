@@ -25,10 +25,9 @@ describe AccountsController do
         }.should change(User, :count).by(1)
       end
       
-      it "should assign a placeholder password" do
+      it "should assign a special placeholder password" do
         post_info
-        #assigns[:user].generated_password.should_not be_blank
-        assigns[:user].password.should == User::COREG_PASSWORD_PLACEHOLDER
+        assigns[:user].should be_using_coreg_password
       end
       
       it "should assign a placeholder name only if none sent" do
@@ -118,11 +117,6 @@ describe AccountsController do
         end
       end
       
-      it "should receive a signup notification email" do
-        post_info
-        unread_emails_for(assigns[:user].email).size.should == 1
-      end
-      
       it "should receive an activation email with a link to the password entry page" do
         post_info
         # Don't know why we have to double uri-escape the email address, but that's how it 
@@ -131,8 +125,7 @@ describe AccountsController do
         choose_pwd_link = Regexp.new(/\/choose_password$/)
         
         links = links_in_email(open_last_email_for(assigns[:user].email))
-        debugger
-        # No activation links!
+
         links.select { |link| activation_link.match link }.should be_empty
         links.select { |link| choose_pwd_link.match link }.should_not be_empty
       end

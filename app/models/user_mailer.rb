@@ -14,7 +14,8 @@ class UserMailer < ActionMailer::Base
     @body[:url]       = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
     @body[:facebook]  = !user.facebook_id.nil?
     @body[:login]     = user.login
-    # If co-reg user, add link to special login page
+    
+    # If co-reg user, add link to special password-setting login page
     if user.using_coreg_password?
       @body[:choose_passwd_login_url]    = choose_password_user_sessions_url
     end

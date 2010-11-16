@@ -95,15 +95,18 @@ class UserSessionsController < ApplicationController
         (params[:user_session][:password] == params[:password_confirmation])
         @user.password = @user.password_confirmation = params[:user_session][:password]
         @user.save
+        
+        @user_session = UserSession.new(@user.reload)
+        if @user_session.save
+          flash[:notice] = "Welcome, #{@user.name}"
+          redirect_to account_setup_url
+
+          return false
+        end
       end    
     end
-    @user_session    = UserSession.new(params[:user_session])
-    if @user_session.save
-      flash[:notice] = "Welcome, #{@user_session.user.name}"
-      redirect_to account_setup_url
-      
-      return false
-    end
+    @user_session = UserSession.new
+    
     flash[:error] = "Invalid login or passwords do not match.  Please check your input and try again."
     render :action => :choose_password
   end

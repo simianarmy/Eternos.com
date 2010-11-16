@@ -30,7 +30,11 @@ describe UserSessionsController do
       @request.env['HTTPS'] = 'on'
       @user = make_member(valid_user_attributes_with_password)
       @user.password = @user.password_confirmation = User::COREG_PASSWORD_PLACEHOLDER
-      @user.save
+      @user.save!
+    end
+    
+    it "should have coreg user password" do
+      @user.should be_using_coreg_password
     end
     
     it "should display choose password page on get" do
@@ -39,12 +43,48 @@ describe UserSessionsController do
     end
     
     it "should save new password if login matches coreg user" do
-      @user.password.should == User::COREG_PASSWORD_PLACEHOLDER
       passwd = 'foobar1'
       post :save_password, :user_session => {:login => @user.login, :password => passwd}, 
         :password_confirmation => passwd
       response.should redirect_to account_setup_url
       assigns[:user].password.should == passwd
+    end
+    
+    it "should fail if login not a coreg user" do
+      normal_user = make_member(valid_user_attributes_with_password)
+      passwd = 'foobar1'
+      post :save_password, :user_session => {:login => normal_user.login, :password => passwd}, 
+        :password_confirmation => passwd
+      response.should render_template(:choose_password)
+      flash[:error].should_not be_empty
+    end
+    
+    it "should fail with blank passwords" do
+      post :save_password, :user_session => {:login => @user.login, :password => ''}, 
+        :password_confirmation => ''
+      response.should render_template(:choose_password)
+      flash[:error].should_not be_empty
+    end
+    
+    it "should fail if passwords don't match" do
+      passwd = 'foobar1'
+      post :save_password, :user_session => {:login => @user.login, :password => passwd}, 
+        :password_confirmation => 'foobar2'
+      response.should render_template(:choose_password)
+      flash[:error].should_not be_empty
+    end
+    
+    it "should fail if either password is empty" do
+      passwd = 'foobar1'
+      post :save_password, :user_session => {:login => @user.login, :password => passwd}, 
+        :password_confirmation => ''
+      response.should render_template(:choose_password)
+      flash[:error].should_not be_empty
+      
+      post :save_password, :user_session => {:login => @user.login, :password => ''}, 
+        :password_confirmation => passwd
+      response.should render_template(:choose_password)
+      flash[:error].should_not be_empty
     end
   end
 end

@@ -6,9 +6,6 @@
 
 require 'rubygems'
 require 'spork'
-require 'email_spec/cucumber'
-require 'fixjour'
-require 'faker'
 
 Spork.prefork do
   ENV["RAILS_ENV"] ||= "cucumber"
@@ -33,12 +30,12 @@ Spork.prefork do
   
   Capybara.app_host = "http://dev.eternos.com"
   Capybara.default_driver = :selenium
-  Capybara.register_driver :selenium do |app|
-    Capybara::Driver::Selenium.new(app,
-      :browser => :local)
-      #:url => "http://192.168.1.127:4444/wd/hub",
-      #:desired_capabilities => :internet_explorer)
-  end
+  # Capybara.register_driver :selenium do |app|
+  #     Capybara::Driver::Selenium.new(app,
+  #       :browser => :local)
+  #       #:url => "http://192.168.1.127:4444/wd/hub",
+  #       #:desired_capabilities => :internet_explorer)
+  #   end
   
 end
  

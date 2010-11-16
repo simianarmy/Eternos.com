@@ -13,12 +13,14 @@ module NavigationHelpers
     when /the new co_registration page/
       new_co_registration_path
 
-
     when /the home\s?page/
       root_path
       
     when /the login page/
       login_path
+    
+    when /the choose password page/
+      choose_password_user_sessions_path
       
     when /the account setup page/
       account_setup_path

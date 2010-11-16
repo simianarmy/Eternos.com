@@ -150,7 +150,9 @@ class User < ActiveRecord::Base
   end
   
   def using_coreg_password?
-    password && (password == COREG_PASSWORD_PLACEHOLDER)
+    # Before object saved, value is in password attribute only
+    (!password.nil? && (password == COREG_PASSWORD_PLACEHOLDER)) ||
+    valid_password?(COREG_PASSWORD_PLACEHOLDER)
   end
   
   def facebook_user?
