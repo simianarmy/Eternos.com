@@ -11,6 +11,7 @@ role :web, "184.106.217.211"
 role :db, "184.106.217.211", :primary => true
 
 set :bundle_cmd, "/usr/local/bin/bundle"
+set :branch, "dev"
 
 namespace :deploy do
   task :restart do
@@ -25,7 +26,7 @@ end
 #after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons
 #after "deploy:symlink", "deploy:update_crontab"
 
-#after "deploy:symlink", "deploy:symlink_shared"
+after "deploy:symlink", "deploy:symlink_shared"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
 #after "deploy:symlink", "deploy:start_daemons"
 #after "deploy:symlink", "deploy:sendmail"
