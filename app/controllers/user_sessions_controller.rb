@@ -3,10 +3,10 @@
 # Authlogic sessions controller
 
 class UserSessionsController < ApplicationController
-  ssl_required :new
+  ssl_required :new, :choose_password, :save_password
   ssl_allowed :create, :destroy
   
-  before_filter :require_no_user, :only => [:new, :create]
+  before_filter :require_no_user, :only => [:new, :create, :choose_password, :save_password]
   before_filter :require_user, :only => :destroy
   
   
@@ -33,6 +33,7 @@ class UserSessionsController < ApplicationController
     if request.method == :get
       redirect_to(login_path) && return
     end
+
     sanitize_credentials
     @user_session    = UserSession.new(params[:user_session])
     
@@ -79,6 +80,37 @@ class UserSessionsController < ApplicationController
     redirect_to new_user_session_url
   end
   
+  # Should only be called from co-reg email links
+  def choose_password
+    @user_session    = UserSession.new
+  end
+  
+  # Called from choose password form
+  def save_password
+    sanitize_credentials
+    
+    # If user login matches record and passwords match, save password to user account and log them in
+    if (@user = User.find_by_login(params[:user_session][:login])) && @user.using_coreg_password?
+      if !params[:user_session][:password].blank? && 
+        (params[:user_session][:password] == params[:password_confirmation])
+        @user.password = @user.password_confirmation = params[:user_session][:password]
+        @user.save
+        
+        @user_session = UserSession.new(@user.reload)
+        if @user_session.save
+          flash[:notice] = "Welcome, #{@user.name}"
+          redirect_to account_setup_url
+
+          return false
+        end
+      end    
+    end
+    @user_session = UserSession.new
+    
+    flash[:error] = "Invalid login or passwords do not match.  Please check your input and try again."
+    render :action => :choose_password
+  end
+
   protected
   
   #  Strip whitespace from credentials - login failures can be caused by this from 

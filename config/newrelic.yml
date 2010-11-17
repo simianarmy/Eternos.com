@@ -177,12 +177,18 @@ development:
   # http://localhost:3000/newrelic
   developer: true
 
-test:
+test: &TEST
   <<: *default_settings
   # It almost never makes sense to turn on the agent when running
   # unit, functional or integration tests or the like.
   enabled: false
 
+cucumber:
+  <<: *TEST
+
+culerity:
+  <<: *TEST
+  
 # Turn on the agent in production for 24x7 monitoring.  NewRelic
 # testing shows an average performance impact of < 5 ms per
 # transaction, you you can leave this on all the time without

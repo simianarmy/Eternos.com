@@ -5,7 +5,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))
 require 'spec/autorun'
 require 'spec/rails'
-
+require "spec/mocks" 
 
 # Uncomment the next line to use webrat's matchers
 #require 'webrat/integrations/rspec-rails'
@@ -81,13 +81,13 @@ Spec::Runner.configure do |config|
   # == Notes
   #
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
-  
+   
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
   config.before(:each) do
     full_example_description = "#{self.class.description} #{@method_name}"
     Rails::logger.info("\n\n#{full_example_description}\n#{'-' * (full_example_description.length)}")
   end
-
+  
   config.include(Fixjour) # This will add the builder methods to your ExampleGroups and not pollute Object
   config.include(EmailSpec::Helpers)
   config.include(EmailSpec::Matchers)

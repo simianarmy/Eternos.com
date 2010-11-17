@@ -10,11 +10,15 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     
     @subject          += subject_from_sym :signup_notification
-    @body[:passwd]    = user.generated_password
     @body[:name]      = user.full_name || 'Eternos user'
     @body[:url]       = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
     @body[:facebook]  = !user.facebook_id.nil?
     @body[:login]     = user.login
+    
+    # If co-reg user, add link to special password-setting login page
+    if user.using_coreg_password?
+      @body[:choose_passwd_login_url]    = choose_password_user_sessions_url(:protocol => 'https')
+    end
     add_category_header "Activation Request" 
   end
   
