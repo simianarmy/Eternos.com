@@ -17,7 +17,7 @@ class UserMailer < ActionMailer::Base
     
     # If co-reg user, add link to special password-setting login page
     if user.using_coreg_password?
-      @body[:choose_passwd_login_url]    = choose_password_user_sessions_url
+      @body[:choose_passwd_login_url]    = choose_password_user_sessions_url(:protocol => 'https')
     end
     add_category_header "Activation Request" 
   end

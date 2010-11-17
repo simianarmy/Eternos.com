@@ -20,7 +20,7 @@ module NavigationHelpers
       login_path
     
     when /the choose password page/
-      choose_password_user_sessions_path
+      choose_password_user_sessions_path(:protocol => 'https')
       
     when /the account setup page/
       account_setup_path
