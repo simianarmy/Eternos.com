@@ -21,7 +21,8 @@ config.action_controller.perform_caching             = false
 # Disable request forgery protection in test environment
 config.action_controller.allow_forgery_protection    = false
 
-ASSET_HOST              = "dev.eternos.com"
+#ASSET_HOST              = "dev.eternos.com"
+ASSET_HOST              = "staging.eternos.com"
 REGISTER_USER_TO_FACEBOOK_ENABLED = false
 
 # Tell Action Mailer not to deliver emails to the real world.
