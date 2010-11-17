@@ -195,19 +195,19 @@ RESP
   def user_usage
     div_0 = lambda {|a,b| b.zero? ? 0 : (a * 100 / b.to_f)}
     retained = lambda do |days|
-      'SELECT user_id, MAX(latest_day_backed_up) AS l, DATE(users.created_at) AS r ' +
+      'SELECT COUNT(*) FROM (SELECT user_id, MAX(latest_day_backed_up) AS l, DATE(users.created_at) AS r ' +
               'FROM backup_sources INNER JOIN users ON users.id=backup_sources.user_id ' +
               "WHERE users.created_at > '#{days.days.ago.to_s(:db)}' " +
               'GROUP BY user_id ' +
-              'HAVING DATEDIFF(l,r) <= ' + days.to_s
+              'HAVING DATEDIFF(l,r) <= ' + days.to_s + ') t'
     end
 
-    registrations = Member.active.all.size
-    activations = Member.active.with_sources.all.size
-    activations_30 = Member.active.created_at_gt(1.month.ago).with_sources.all.size
-    activations_90 = Member.active.created_at_gt(3.months.ago).with_sources.all.size
-    retained30 = Member.find_by_sql(retained.call(30)).size
-    retained90 = Member.find_by_sql(retained.call(90)).size
+    registrations = Member.active.count
+    activations = Member.active.with_sources.count
+    activations_30 = Member.active.created_at_gt(1.month.ago).with_sources.count
+    activations_90 = Member.active.created_at_gt(3.months.ago).with_sources.count
+    retained30 = Member.count_by_sql(retained.call(30))
+    retained90 = Member.count_by_sql(retained.call(90))
     
     stats = []
 
