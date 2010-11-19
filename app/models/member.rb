@@ -3,6 +3,7 @@ class Member < User
   has_many :loved_ones, :through => :relationships, :source => :guest, :uniq => true
   has_many :invitations, :foreign_key => 'sender_id', :dependent => :destroy
   has_many :guest_invitations, :foreign_key => 'sender_id', :dependent => :destroy
+  belongs_to :facebook_user, :class => 'Member', :foreign_key => 'facebook_uid'
   
   with_options :foreign_key => 'user_id' do |m|
     m.has_many :relationships, :class_name => 'GuestRelationship'

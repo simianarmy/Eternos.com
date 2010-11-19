@@ -108,9 +108,12 @@ class FacebookBackupController < ApplicationController
   end
   
   def load_backup_source
-    @backup_source = current_user.backup_sources.facebook.first 
-    @backup_source ||= current_user.backup_sources.create(
-      :backup_site => BackupSite.find_by_name(BackupSite::Facebook))
+    # TODO: LOAD FACEBOOK ACCOUNT USING THE FACEBOOK SESSION KEY!
+    @backup_source = current_user.backup_sources.facebook.find_by_auth_login(@session.user.id)
+    @backup_source ||= FacebookAccount.new(:user_id => current_user.id,
+      :backup_site_id => BackupSite.find_by_name(BackupSite::Facebook).id,
+      :auth_login => @session.user.id
+    )
   end
   
   def save_authorization

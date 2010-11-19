@@ -35,5 +35,15 @@ namespace :fix do
         bp.photo.comments = bp.comments
       end
     end
-  end   
+  end  
+  
+  desc 'Update facebook backup source records to FacebookAccount STI class'
+  task :convert_fb_backup_sources_to_facebook_account => :environment do
+    # Can't use named scope, returns read-only objects.  Instead get ids and iterate with find
+    bs_ids = BackupSource.facebook.map(&:id)
+    BackupSource.find(:all, bs_ids).each do |bs|
+      bs[:type] = 'FacebookAccount'
+      bs.save(false)
+    end
+  end
 end
