@@ -7,7 +7,7 @@ class FacebookBackupController < ApplicationController
   before_filter :login_required
   require_role "Member"
   before_filter :set_facebook_desktop_session
-  before_filter :load_backup_source
+  before_filter :load_backup_source, :except => [:authorized]
   layout 'dialog'
     
   #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
@@ -45,7 +45,8 @@ class FacebookBackupController < ApplicationController
           # DEPRECATED:
           #current_user.update_attribute(:facebook_uid, fb_session['uid'])
           #current_user.set_facebook_session_keys(fb_session['session_key'], fb_session['secret'])
-
+          load_facebook_account_backup_source(fb_session['uid'])
+          
           # Save session key & secret to facebook account record
           if fb_session['session_key'] && fb_session['secret']
             @backup_source.set_facebook_session_keys(fb_session['session_key'], fb_session['secret'])
@@ -80,8 +81,7 @@ class FacebookBackupController < ApplicationController
     revoke_permissions
     
     # Remove session keys
-    current_user.set_facebook_session_keys(nil, nil)
-    @backup_source.update_attribute(:auth_confirmed, false)
+    @backup_source.reset_authorization
     
     flash[:notice] = "Facebook account removed from Eternos Backup."
     
@@ -103,8 +103,7 @@ class FacebookBackupController < ApplicationController
   def destroy
     revoke_permissions
     
-    @backup_source.update_attribute(:auth_confirmed, false)
-    current_user.set_facebook_session_keys(nil, nil)
+    @backup_source.reset_authorization
 
     flash[:notice] = "Successfully removed from Facebook backup."
     respond_to do |format|
@@ -117,17 +116,22 @@ class FacebookBackupController < ApplicationController
   
   def load_backup_source
     begin
+      # Load appropriate facebook account for this user
       login_facebook_account
-      @backup_source = FacebookAccount.find_by_auth_login(@facebook_session.user.id)
-      @backup_source ||= FacebookAccount.new(:user_id => current_user.id,
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Facebook).id,
-        :auth_login => @facebook_session.user.id
-      )
+      # Load or create backup source corresponding to this facebook account
+      load_facebook_account_backup_source(@facebook_session.user.id)
     rescue Facebooker::Session::MissingOrInvalidParameter => e
       flash[:error] = "There was a problem obtaining your Facebook account session: #{e.message}"
       redirect_to account_setup_path
       return
     end
+  end
+  
+  def load_facebook_account_backup_source(fb_id)
+    @backup_source = FacebookAccount.find_by_auth_login(fb_id)
+    @backup_source ||= FacebookAccount.new(:user_id => current_user.id,
+      :backup_site_id => BackupSite.find_by_name(BackupSite::Facebook).id,
+      :auth_login => fb_id)
   end
   
   def save_authorization
@@ -163,6 +167,8 @@ class FacebookBackupController < ApplicationController
     end
   end
   
+  # Use the facebook session object to login the correct facebook account based on the 
+  # user's facebook id setting or a passed parameter
   def login_facebook_account
     FacebookAccountManager.login_with_session(@facebook_session, current_user, 
       params[:account_id] || current_user.facebook_id)

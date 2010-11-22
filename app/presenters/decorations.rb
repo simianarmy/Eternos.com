@@ -11,11 +11,10 @@ module BackupSourceActivation
   def get_activations(user)
     backup_sources = user.backup_sources
     if backup_sources.any?
-      if @facebook_account = backup_sources.facebook.first
-        @facebook_confirmed = @facebook_account.confirmed?
-      else
-        @facebook_confirmed = false
-      end
+      @facebook_accounts = backup_sources.facebook
+      @facebook_account = @facebook_accounts.first
+      @facebook_confirmed = @facebook_accounts && @facebook_accounts.any? { |t| t.confirmed? }
+      
       @twitter_accounts = backup_sources.twitter
       @twitter_account   = @twitter_accounts.first
       @twitter_confirmed = @twitter_accounts && @twitter_accounts.any? {|t| t.confirmed?}

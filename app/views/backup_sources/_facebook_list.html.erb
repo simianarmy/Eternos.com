@@ -1,0 +1,16 @@
+<% unless list.blank? %>
+  <div id="result-facebook-account">
+    <table>
+      <% list.each do |fb| %>
+        <tr>
+          <td>
+            Currently backing up <font style="font-weight: bold"><%= fb.title %>'s</font> Facebook Account
+          </td>
+          <td>
+            <%= link_to 'Stop Backing Up', cancel_facebook_backup_path(:account_id => fb.account_id) %>
+          </td>
+        </tr>
+      <% end %>
+    </table
+  </div>
+<% end %>

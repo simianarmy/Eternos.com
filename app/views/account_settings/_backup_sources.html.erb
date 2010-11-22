@@ -20,21 +20,8 @@
   <!-- Facebook Pane -->
   <div class="pane network-login-box" id="facebook-form-box" style="display:block">
     <div id="facebook-box">
-      <% if settings.facebook_user %>
-        <div id="result-facebook-account">
-          Currently backing up <font style="font-weight: bold"><%= settings.facebook_user %>'s</font> Facebook Account
-          <br/>
-          <span>
-            <% if settings.facebook_pic && !request.ssl? %>
-              <%= image_tag settings.facebook_pic %>
-            <% end %>
-          </span>
-          <br/>
-          <%= link_to 'Revoke Backup Permissions', cancel_facebook_backup_path %>
-        </div>
-      <% else %>
         <div id="facebook_blurb">
-          Simply <b>click on the Facebook button</b> below to begin saving your Facebook photos, profile, friends &amp; posts (including friend messages).
+          Simply <b>click on the Facebook button</b> below to add a Facebook account to Back Up.  You can add as many Facebook accounts as you want.  
         </div>
         <div class="fb-btn1">
           <%= link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), settings.fb_login_url %>
@@ -44,7 +31,11 @@
           Facebook requires that you grant permissions to the <b>Eternos Backup</b> application.  
         </span>
         <%= link_to 'help', image_path("fbapp/perms-popup-sample.jpg"), :class => 'lightview' %>
-      <% end %>
+        <p/>
+        <br/>
+        <div id="result-facebook-accounts">
+          <%= render :partial => 'backup_sources/facebook_list', :locals => {:list => settings.facebook_accounts } %>
+        </div>
     </div>
   </div>
   
