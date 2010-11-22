@@ -161,7 +161,9 @@ class FacebookBackupController < ApplicationController
   def revoke_permissions
     # Send Facebook revoke authorization 
     begin
-      @facebook_session.post('facebook.auth.revokeAuthorization', :uid => @facebook_session.user.id)
+      fb_id = @facebook_session.user.id
+      Rails.logger.error "User #{current_user.id} is removing Facebook Backup account #{fb_id}"
+      @facebook_session.post('facebook.auth.revokeAuthorization', :uid => fb_id)
     rescue Exception => e
       flash[:error] = "We encountered an error removing our app from your Facebook account (#{e.message}).  Please try again."
     end
@@ -170,6 +172,7 @@ class FacebookBackupController < ApplicationController
   # Use the facebook session object to login the correct facebook account based on the 
   # user's facebook id setting or a passed parameter
   def login_facebook_account
+    Rails.logger.debug "In login_facebook_account"
     FacebookAccountManager.login_with_session(@facebook_session, current_user, 
       params[:account_id] || current_user.facebook_id)
   end

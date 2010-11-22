@@ -15,6 +15,7 @@ module FacebookAccountManager
         end
       end
       if session_key
+        Rails.logger.debug "session.connect for #{uid} with key #{session_key}"
         session.connect(session_key, uid, nil, session_secret)
       end
     end

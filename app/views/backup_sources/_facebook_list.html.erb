@@ -3,12 +3,15 @@
     <table>
       <% list.each do |fb| %>
         <tr>
-          <td>
-            Currently backing up <font style="font-weight: bold"><%= fb.title %>'s</font> Facebook Account
-          </td>
-          <td>
-            <%= link_to 'Stop Backing Up', cancel_facebook_backup_path(:account_id => fb.account_id) %>
-          </td>
+          <% if fb.active? %>
+            <% if fb.confirmed? %>
+              <%= render :partial => 'backup_sources/facebook_account_active', :locals => {:account => fb} %>
+            <% else %>
+              <%= render :partial => 'backup_sources/facebook_account_needs_auth', :locals => {:account => fb} %>
+            <% end %>
+          <% else %>
+            <%= render :partial => 'facebook_account-needs-activation', :locals => {:account => fb} %>
+          <% end %>
         </tr>
       <% end %>
     </table

@@ -1,0 +1,6 @@
+<td>
+  <font style="font-weight: bold"><%= account.title %></font> - Disabled
+</td>
+<td>
+  <%= link_to 'Enable', authorize_facebook_backup_path(:account_id => account.account_id) %>
+</td>

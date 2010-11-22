@@ -23,10 +23,8 @@
         <div id="facebook_blurb">
           Simply <b>click on the Facebook button</b> below to add a Facebook account to Back Up.  You can add as many Facebook accounts as you want.  
         </div>
-        <div class="fb-btn1">
-          <%= link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), settings.fb_login_url %>
-          <br/>
-        </div>
+        <%= render :partial => "backup_sources/authorize_fb_account_button", :locals => {:auth_url => settings.fb_login_url} %>
+        
         <span style="font-size: x-small">
           Facebook requires that you grant permissions to the <b>Eternos Backup</b> application.  
         </span>
