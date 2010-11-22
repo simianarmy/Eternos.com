@@ -132,12 +132,6 @@ class Member < User
     true
   end
   
-  def set_facebook_session_keys(session_key, secret_key='')
-    self.facebook_session_key = session_key
-    self.facebook_secret_key = secret_key
-    save(false)
-  end
-  
   def authenticated_for_facebook_desktop?
     not (facebook_id.blank? || facebook_session_key.blank? || facebook_secret_key.blank?)
   end

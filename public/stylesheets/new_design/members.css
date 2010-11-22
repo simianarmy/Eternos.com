@@ -191,3 +191,8 @@ width:197px;
 .account-personal-form label { display:block; float:left; font-size:12px; font-weight:bold; margin-right:12px; padding-top:6px; width:85px; text-align: right; }
 .account-personal-form STRONG { color: red; font-size: 16px;}
 .account-personal-form .message { background: #F1F1F1; border-bottom: 1px solid #D5D5D5; padding: 9px; margin: 0 0 25px 0;}
+
+/* Account setup */
+#accordion p.account-setup-accordion-icon {
+	cursor:pointer;
+}

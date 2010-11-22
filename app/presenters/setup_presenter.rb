@@ -3,6 +3,8 @@
 # Presenter class for account_setup & account_settings controller views
 # Contains common methods for both controllers
 
+require 'facebook_account_manager'
+
 class SetupPresenter < AccountPresenter
   attr_accessor :active_step, :completed_steps, :any_activated,
     :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, :fb_login_url,
@@ -22,16 +24,23 @@ class SetupPresenter < AccountPresenter
     if @facebook_confirmed
       begin
         Rails.logger.debug "FETCHING FACEBOOK USER INFO.."
-        @user.facebook_session_connect @fb_session
-        @fb_session.user.populate(:pic_small, :name) if @fb_session.verify_permissions
-        
-        @facebook_user = @fb_session.user.name
-        Rails.logger.debug @fb_session.user.pic_small
-        @facebook_pic = @fb_session.user.pic_small
-      rescue Facebooker::Session::SessionExpired => e
-        RAILS_DEFAULT_LOGGER.error "load_backup_sources: #{e.class} #{e.message}"
+        FacebookAccountManager.login_with_session(@fb_session, @user, 
+          @user.facebook_id)
+
+        if @fb_session.verify_permissions
+          @fb_session.user.populate(:pic_small, :name) 
+          @facebook_user = @fb_session.user.name
+          @facebook_pic = @fb_session.user.pic_small
+        else
+          Rails.logger.error "BACKUP SOURCE CONFIRMED, BUT verify_permissions FALSE!"
+          @facebook_confirmed = false
+        end
+      rescue Facebooker::Session::SessionExpired, Facebooker::Session::IncorrectSignature => e
+        RAILS_DEFAULT_LOGGER.error "Error in load_facebook_user_info: #{e.class} #{e.message}"
+        @facebook_confirmed = false
+        @facebook_user = @facebook_pic = nil
       rescue Exception => e
-        RAILS_DEFAULT_LOGGER.error "load_backup_sources: #{e.class} #{e.message}"
+        RAILS_DEFAULT_LOGGER.error "Error in load_facebook_user_info: #{e.class} #{e.message}"
       end
     end
   end

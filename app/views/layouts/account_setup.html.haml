@@ -10,7 +10,7 @@
     %title= "Eternos Members - " + h(yield(:title) || "Setup Your Account")
     / bundle do
     /#- stylesheet 'member', 'screen', 'application' #, 'new_member/style'
-    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix', '/javascripts/lightview2.5.2.1/css/lightview.css'
+    - stylesheet 'application', 'account_settings', 'new_design/members', 'new_design/misc-fix', '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip'
     <!--[if lte IE 7]>
     <link href="/css/styleie7.css" rel="stylesheet" type="text/css" />
     <![endif]-->
@@ -60,7 +60,7 @@
         jQuery(function() { 
           jQuery('#accordion').tabs('#accordion div.pane', {tabs: 'p', effect: 'slide', initialIndex: 0});
         });
-    = javascript_include_tag "prototype", "scriptaculous", "effects", "controls", 'application', 'login', 'account_setup', :cache => "cache/account_setup"
+    = javascript_include_tag "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", 'application', 'login', 'lowpro', 'behaviors', 'account_setup', :cache => "cache/account_setup"
     - if @facebook_session
       = fb_connect_javascript_tag
       = init_fb_connect "XFBML"
