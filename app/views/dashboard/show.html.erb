@@ -27,15 +27,16 @@
 
 <% table_info_part('Backup Data') do %>
     <% content_tag(:tr) do %>
-        <%= td_thead_tag(116, 'Albums', true) %>
-        <%= td_thead_tag(116, 'Photos', true) %>
-        <%= td_thead_tag(131, 'Videos', true) %>
-        <%= td_thead_tag(116, 'Audio', true) %>
-        <%= td_thead_tag(116, 'Emails', true) %>
-        <%= td_thead_tag(116, 'RSS Items', true) %>
+        <%= td_thead_tag(100, 'Albums', true) %>
+        <%= td_thead_tag(100, 'Photos', true) %>
+        <%= td_thead_tag(100, 'Videos', true) %>
+        <%= td_thead_tag(100, 'Audio', true) %>
+        <%= td_thead_tag(100, 'Emails', true) %>
+        <%= td_thead_tag(116, 'Feed Items', true) %>
         <%= td_thead_tag(116, 'Facebook Items', true) %>
         <%= td_thead_tag(116, 'Twitter Items', true) %>
-        <%= td_thead_tag(205, 'Total Items', true) %>
+        <%= td_thead_tag(116, 'Media Comments', true) %>
+        <%= td_thead_tag(105, 'Total', true) %>
     <% end %>
     <% content_tag(:tr) do %>
         <%= content_tag(:td, @backup_data[:albums], :align => 'center') %>
@@ -46,6 +47,7 @@
         <%= content_tag(:td, @backup_data[:rss], :align => 'center') %>
         <%= content_tag(:td, @backup_data[:fb], :align => 'center') %>
         <%= content_tag(:td, @backup_data[:tweets], :align => 'center') %>
+        <%= content_tag(:td, @backup_data[:media_comments], :align => 'center') %>
         <%= content_tag(:td, @backup_data[:total], :align => 'center') %>
     <% end %>
 <% end %>

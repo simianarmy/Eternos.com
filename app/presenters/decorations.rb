@@ -39,14 +39,15 @@ end
 module BackupSourceHistory
   
   def get_data_counts(user)
-    returning Hash.new({:size => 0, :photos => 0, :videos => 0, :emails => 0, 
-      :tweets => 0, :fb => 0, :rss => 0, :total => 0}) do |data|
+    returning Hash.new(0) do |data|
       data[:albums] = user.photo_albums.size
       data[:photos] = user.contents.photos.count
       data[:videos] = user.contents.all_video.count
       data[:audio] = user.contents.all_audio.count
       data[:tweets] = user.activity_stream.items.twitter.count
       data[:fb] = user.activity_stream.items.facebook.count
+      data[:media_comments] = Comment.count(:joins => "INNER JOIN contents ON contents.id = comments.commentable_id AND comments.commentable_type = 'Content'", 
+        :conditions => {'contents.user_id' => user.id})
       data[:rss] = FeedEntry.belonging_to_user(user.id).count
       data[:emails] = BackupEmail.belonging_to_user(user.id).count
       data[:total] = data.values.sum
