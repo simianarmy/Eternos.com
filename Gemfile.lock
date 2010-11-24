@@ -113,6 +113,9 @@ GEM
     mime-types (1.16)
     mocha (0.9.9)
       rake
+    mogli (0.0.16)
+      hashie (>= 0.2.0)
+      httparty (>= 0.4.3)
     moomerman-twitter_oauth (0.2.1)
       json (>= 1.1.2)
       mime-types (>= 1.15)
@@ -257,6 +260,7 @@ DEPENDENCIES
   memcache-client
   mime-types
   mocha
+  mogli
   moomerman-twitter_oauth
   mysqlplus
   newrelic_rpm (>= 2.9.8)
