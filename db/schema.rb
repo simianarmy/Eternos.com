@@ -481,24 +481,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string "page_id", :null => false
     t.string "name", :null => false
     t.text "url", :null => false
-    t.text "pic_square"
-    t.text "pic_url"
-    t.text "pic_large"
-    t.string "page_type"
-    t.string "website"
-    t.text "location"
-    t.text "operating_hours"
-    t.text "bio"
-    t.text "hometown"
-    t.text "music_genre"
-    t.string "record_label"
-    t.text "influences"
-    t.string "founded"
-    t.text "company_overview"
-    t.text "mission"
-    t.text "products"
-    t.text "tv_film_data"
-    t.integer "fan_count"
+    t.text "page_data"
   end
   add_index "facebook_pages", ["page_id"]
   
