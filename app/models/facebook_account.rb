@@ -16,4 +16,16 @@ class FacebookAccount < BackupSource
     self.auth_confirmed = false
     set_facebook_session_keys(nil, nil)
   end
+  
+  # Takes array of Facebooker::Page objects and saves page and relationship
+  def save_administered_pages(admined_pages)
+    return unless admined_pages && admined_pages.respond_to?(:each)
+    admined_pages.each do |p|
+      if fb_page = pages.find_by_page_id(p.page_id)
+        fb_page.synch_with_proxy(p)
+      else
+        pages << FacebookPage.create_from_proxy(p)
+      end
+    end
+  end    
 end

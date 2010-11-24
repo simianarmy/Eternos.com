@@ -157,6 +157,14 @@ Fixjour  do
       :friends => Faker::Lorem.paragraph)
   end
   
+  define_builder(FacebookPage) do |klass, overrides|
+    klass.new(
+      :page_id => rand % 1000,
+      :name => Faker::Name.name,
+      :url => Faker::Internet.domain
+    )
+  end
+  
   define_builder(Family) do |klass, overrides|
     klass.new(
       :profile => new_profile,
