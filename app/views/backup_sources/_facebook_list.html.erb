@@ -1,19 +1,21 @@
 <% unless list.blank? %>
   <div id="result-facebook-account">
+    <p>
+    <b>Accounts Added:</b>
+    </p>
     <table>
-      <% list.each do |fb| %>
+      <% fb = list.first %>
         <tr>
-          <% if fb.active? %>
-            <% if fb.confirmed? %>
-              <%= render :partial => 'backup_sources/facebook_account_active', :locals => {:account => fb} %>
-            <% else %>
-              <%= render :partial => 'backup_sources/facebook_account_needs_auth', :locals => {:account => fb} %>
-            <% end %>
+        <% if fb.active? %>
+          <% if fb.confirmed? %>
+            <%= render :partial => 'backup_sources/facebook_account_active', :locals => {:settings => settings, :account => fb} %>
           <% else %>
-            <%= render :partial => 'facebook_account-needs-activation', :locals => {:account => fb} %>
+            <%= render :partial => 'backup_sources/facebook_account_needs_auth', :locals => {:settings => settings, :account => fb} %>
           <% end %>
-        </tr>
-      <% end %>
+        <% else %>
+          <%= render :partial => 'facebook_account-needs-activation', :locals => {:settings => settings, :account => fb} %>
+        <% end %>
+      </tr>
     </table
   </div>
 <% end %>

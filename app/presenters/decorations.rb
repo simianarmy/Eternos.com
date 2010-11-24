@@ -11,7 +11,8 @@ module BackupSourceActivation
   def get_activations(user)
     backup_sources = user.backup_sources
     if backup_sources.any?
-      @facebook_accounts = backup_sources.facebook.select {|bs| bs.account_id }
+      # Limit to one fb account per user for now...
+      @facebook_accounts = FacebookAccountManager.facebook_accounts_for(user)
       @facebook_account = @facebook_accounts.first
       @facebook_confirmed = @facebook_accounts && @facebook_accounts.any? { |t| t.confirmed? }
       

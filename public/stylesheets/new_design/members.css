@@ -196,3 +196,7 @@ width:197px;
 #accordion p.account-setup-accordion-icon {
 	cursor:pointer;
 }
+#result-facebook-account table td {
+	padding: 10px;
+}
+

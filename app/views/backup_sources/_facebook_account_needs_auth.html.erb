@@ -1,6 +1,6 @@
 <td>
-  <font style="font-weight: bold"><%= account.title %></font> - Requires Authorization
+  <font style="font-weight: bold"><%= account.title %></font> 
 </td>
 <td>
-  <%= link_to 'Start Backing Up', 'Some link to log out current account first!' %>
+  <span style="color:red;">Requires Authorization</span> - <%= link_to 'Enable', settings.fb_login_url %>
 </td>

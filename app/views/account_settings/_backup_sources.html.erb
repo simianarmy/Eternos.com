@@ -21,7 +21,7 @@
   <div class="pane network-login-box" id="facebook-form-box" style="display:block">
     <div id="facebook-box">
         <div id="facebook_blurb">
-          Simply <b>click on the Facebook button</b> below to add a Facebook account to Back Up.  You can add as many Facebook accounts as you want.  
+          Simply <b>click on the button</b> below to backup up your Facebook account.
         </div>
         <%= render :partial => "backup_sources/authorize_fb_account_button", :locals => {:auth_url => settings.fb_login_url} %>
         
@@ -32,7 +32,7 @@
         <p/>
         <br/>
         <div id="result-facebook-accounts">
-          <%= render :partial => 'backup_sources/facebook_list', :locals => {:list => settings.facebook_accounts } %>
+          <%= render :partial => 'backup_sources/facebook_list', :locals => {:settings => settings, :list => settings.facebook_accounts } %>
         </div>
     </div>
   </div>

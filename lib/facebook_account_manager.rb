@@ -19,5 +19,10 @@ module FacebookAccountManager
         session.connect(session_key, uid, nil, session_secret)
       end
     end
+    
+    # Returns facebook accounts belonging to a user, ordered by creation date
+    def facebook_accounts_for(user)
+      user.backup_sources.facebook.sort_by(&:created_at)
+    end
   end
 end
