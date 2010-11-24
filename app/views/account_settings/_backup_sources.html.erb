@@ -1,8 +1,10 @@
+<h1>Add the online accounts that you would like us to backup for you.</h1>
+<%= render :partial => 'account_settings/security_blurb' %>
+<div class="clear:both;></div>
+<br/>
 <%= show_flash_messages :fade => 15 %>
 <div id="notice" class="flash_notice"></div>
 
-<h1>Add the online accounts that you would like us to backup for you.</h1>
-<%= render :partial => 'account_settings/security_blurb' %>
 <br/>
 <p>Eternos currently provides backup services for:</p>
 
@@ -11,40 +13,32 @@
 <div id="rss_notice" class="flash_notice"></div>
 
 <div id="accordion">
-  <p class="current"><%= image_tag '2nd-facebook.gif', :id => "fb-button", :class => settings.facebook_confirmed ? 'active2' : "" %> 
+  <p class="current account-setup-accordion-icon">
+    <%= image_tag '2nd-facebook.gif', :id => "fb-button", :class => settings.facebook_confirmed ? 'active2' : "" %> 
     <strong>Facebook:</strong> Back up all Photos, Wall posts, Comments, Friends, &amp; Groups.
   </p>
   <!-- Facebook Pane -->
   <div class="pane network-login-box" id="facebook-form-box" style="display:block">
     <div id="facebook-box">
-      <% if settings.facebook_user %>
-        <div id="result-facebook-account">
-          Currently backing up <font style="font-weight: bold"><%= settings.facebook_user %>'s</font> Facebook Account
-          <br/>
-          <span>
-            <% if settings.facebook_pic && !request.ssl? %>
-              <%= image_tag settings.facebook_pic %>
-            <% end %>
-          </span>
-          <br/>
-          <%= link_to 'Revoke Backup Permissions', cancel_facebook_backup_path %>
-        </div>
-      <% else %>
         <div id="facebook_blurb">
-          Simply click on the Facebook button below to begin saving your Facebook photos, profile, friends &amp; posts (including friend messages).
+          Simply <b>click on the button</b> below to backup up your Facebook account.
         </div>
-        <div class="fb-btn1">
-          <%= link_to image_tag("facebook-backup/fb-btn.gif", :border => 0), settings.fb_login_url %>
-          <br/>
-        </div>
+        <%= render :partial => "backup_sources/authorize_fb_account_button", :locals => {:auth_url => settings.fb_login_url} %>
+        
         <span style="font-size: x-small">
-          Facebook requires that you grant permissions to our Backup Application.  
+          Facebook requires that you grant permissions to the <b>Eternos Backup</b> application.  
         </span>
-      <% end %>
+        <%= link_to 'help', image_path("fbapp/perms-popup-sample.jpg"), :class => 'lightview' %>
+        <p/>
+        <br/>
+        <div id="result-facebook-accounts">
+          <%= render :partial => 'backup_sources/facebook_list', :locals => {:settings => settings, :list => settings.facebook_accounts } %>
+        </div>
     </div>
   </div>
   
-  <p><%= image_tag '2nd-twitter.gif', :id => "twitter-button", :class => settings.twitter_confirmed ? 'active2' : 'twitter-btn' %>
+  <p class="account-setup-accordion-icon">
+    <%= image_tag '2nd-twitter.gif', :id => "twitter-button", :class => settings.twitter_confirmed ? 'active2' : 'twitter-btn' %>
     <strong>Twitter:</strong> Back up all your tweets.
   </p>
   <!-- Twitter Pane -->
@@ -62,7 +56,8 @@
       </div>
   </div>
   
-  <p><%= image_tag '2nd-rss.gif', :id => "rss-button", :class => settings.rss_confirmed ? 'active2' : 'rss-btn' %> 
+  <p class="account-setup-accordion-icon">
+    <%= image_tag '2nd-rss.gif', :id => "rss-button", :class => settings.rss_confirmed ? 'active2' : 'rss-btn' %> 
     <strong>RSS Feeds &amp; Blogs:</strong> Back up feed entries text &amp; html, including screen captures of the pages.
   </p>
   <!-- RSS Pane -->
@@ -99,7 +94,8 @@
     </div>
   </div>
 
-  <p><%= image_tag '2nd-gmail.gif', :id => "gmail-button", :class => settings.gmail_confirmed ? 'active2' : 'gmail-btn' %> 
+  <p class="account-setup-accordion-icon">
+    <%= image_tag '2nd-gmail.gif', :id => "gmail-button", :class => settings.gmail_confirmed ? 'active2' : 'gmail-btn' %> 
     <strong>Gmail Accounts</strong>: Store and archive multiple Gmail Accounts (IMAP only).
   </p>
   <!-- Gmail Pane -->
@@ -107,7 +103,8 @@
     <%= render :partial => 'account_settings/gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => settings.current_gmail, :email_accounts => settings.email_accounts} %>
   </div>
   
-  <p><%= image_tag '2nd-picasa.gif', :id => "picasa-button", :class => settings.picasa_confirmed ? 'active2' : 'picasa-btn' %> 
+  <p class="account-setup-accordion-icon">
+    <%= image_tag '2nd-picasa.gif', :id => "picasa-button", :class => settings.picasa_confirmed ? 'active2' : 'picasa-btn' %> 
     <strong>Picasa Web Albums:</strong>  Preserve all your Picasa Web photo albums. 
   </p>			
   <!-- Picasa Pane -->

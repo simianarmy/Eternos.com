@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "source_url"
     t.text     "liked_by"
     t.string   "attribution"
+    t.integer  "facebook_page_id"
   end
 
   add_index "activity_stream_items", ["activity_stream_id", "published_at", "guid"], :name => "index_unique_stream_hash"
@@ -476,6 +477,37 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
 
   add_index "facebook_ids", ["facebook_uid"], :name => "index_facebook_ids_on_facebook_uid"
 
+  create_table "facebook_pages", :force => true do |t|
+    t.string "page_id", :null => false
+    t.string "name", :null => false
+    t.text "url", :null => false
+    t.text "pic_square"
+    t.text "pic_url"
+    t.text "pic_large"
+    t.string "page_type"
+    t.string "website"
+    t.text "location"
+    t.text "operating_hours"
+    t.text "bio"
+    t.text "hometown"
+    t.text "music_genre"
+    t.string "record_label"
+    t.text "influences"
+    t.string "founded"
+    t.text "company_overview"
+    t.text "mission"
+    t.text "products"
+    t.text "tv_film_data"
+    t.integer "fan_count"
+  end
+  add_index "facebook_pages", ["page_id"]
+  
+  create_table "facebook_page_admins", :force => true, :id => false do |t|
+    t.integer "facebook_page_id", :null => false
+    t.integer "facebook_account_id", :null => false
+  end
+  add_index "facebook_page_admins", ["facebook_account_id"]
+  
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
     t.string   "name"
