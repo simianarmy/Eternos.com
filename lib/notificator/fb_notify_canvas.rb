@@ -1,6 +1,10 @@
 module Notificator
-  class FbPublisher < FbActor
+  class FbNotifyCanvas < Actor
 
+    def target= id
+      @target = Mogli::FbAppUser.new(id)
+    end
+    
     def notify
       set_logger_target
       
