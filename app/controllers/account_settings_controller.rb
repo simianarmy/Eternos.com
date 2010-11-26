@@ -384,7 +384,7 @@ class AccountSettingsController < MemberHomeController
     end
   end
 
-  def merge_with_facebook
+  def merge_with_facebookass
     if facebook_session && (fb_user = facebook_session.user)
       current_user.link_fb_connect(fb_user.id) if current_user.facebook_id.nil?
       begin
