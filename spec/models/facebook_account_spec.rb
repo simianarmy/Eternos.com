@@ -24,6 +24,13 @@ describe FacebookAccount do
     end
     
     describe "on save_administered_pages" do
+      it "should not raise an error if the page is invalid" do
+        @pages.first.stubs(:page_url).returns(nil)
+        lambda {
+          @acc.save_administered_pages(@pages)
+        }.should_not raise_error
+      end
+      
       it "should create an associated page record for each unique facebooker page" do
         lambda {
           @acc.save_administered_pages(@pages)

@@ -29,8 +29,9 @@ class FacebookAccount < BackupSource
         # synch and save association to existing page
         fb_page.synch_with_proxy(page)
         pages << fb_page
-      else # Otherwise create and save 
-        pages << FacebookPage.create_from_proxy(page)
+      else # Otherwise create and save
+        pg = FacebookPage.create_from_proxy(page)
+        pages << pg if pg.valid?
       end
     end
   end    

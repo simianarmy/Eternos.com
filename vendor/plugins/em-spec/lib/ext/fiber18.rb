@@ -55,7 +55,7 @@ unless defined? Fiber
     end
   end
 else
-  require 'fiber'
+#    require 'fiber'
 end
 
 if __FILE__ == $0
