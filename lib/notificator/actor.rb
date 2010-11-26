@@ -14,10 +14,11 @@ module Notificator
 
     def target= id
       @target = Target.new id
+      set_logger_target true
     end
 
-    def set_logger_target
-      @logger.target = @target unless @logger.target?
+    def set_logger_target force = false
+      @logger.target = @target unless !force && @logger.target?
     end
 
     def before_notify

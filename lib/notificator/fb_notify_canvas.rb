@@ -3,6 +3,7 @@ module Notificator
 
     def target= id
       @target = Mogli::FbAppUser.new(id)
+      set_logger_target true
     end
     
     def notify
