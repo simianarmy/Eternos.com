@@ -151,6 +151,12 @@ Fixjour  do
       :owner => overrides[:owner] || new_member)
   end
   
+  define_builder(FacebookAccount) do |klass, overrides|
+    obj = klass.new
+    obj.type = 'FacebookAccount'
+    obj
+  end
+  
   define_builder(FacebookContent) do |klass, overrides|
     klass.new(
       :profile => new_profile, 

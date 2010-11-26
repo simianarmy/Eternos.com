@@ -31,6 +31,9 @@ group :test do
   gem 'faker'
   gem 'spork'
   gem 'database_cleaner'
+  gem 'autotest-growl'
+  gem 'autotest-rails'
+  gem 'redgreen'
 end
 
 group :cucumber do
