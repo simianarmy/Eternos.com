@@ -1,12 +1,9 @@
 module Notificator
-  class FbPublisher < Actor
-
-    def target= id
-      @target = Mogli::FbAppUser.new(id)
-    end
+  class FbPublisher < FbActor
 
     def notify
-
+      set_logger_target
+      
       resp = @target.dashboard_addNews({
               'news' => [{
                       'message' => 'You are allowed to use',
