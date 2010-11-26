@@ -7,4 +7,13 @@ namespace :notify do
     worker = Notificator::Spreader.new ids, Notificator::FbNotifyCanvas.new
     worker.notify
   end
+
+
+  desc "Sends reports to users"
+  task :report => :environment do
+    Member.emailable.each do |user|
+      
+    end
+  end
+
 end

@@ -45,6 +45,10 @@ class Member < User
     :joins => :backup_sources,
     :group => 'users.id'
   }
+  named_scope :emailable, {
+    :joins => "LEFT JOIN email_blacklists ON users.email = email_blacklists.email",
+    :conditions => { 'email_blacklists.email' => nil }
+  }
   
   def self.from_facebook(facebook_id)
     find_by_facebook_uid(facebook_id)
