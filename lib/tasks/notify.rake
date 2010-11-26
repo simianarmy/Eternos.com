@@ -4,7 +4,7 @@ namespace :notify do
   task :send => :environment do
     ids = FacebookId.all(:conditions => {:joined => false}, :select => 'facebook_uid').map{|obj| obj.facebook_uid.to_i}
 
-    worker = Notificator::Spreader.new ids, Notificator::FbUser, Notificator::FbPublisher.new
+    worker = Notificator::Spreader.new ids, Notificator::FbPublisher.new
     worker.notify
   end
 end
