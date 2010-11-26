@@ -13,8 +13,8 @@ namespace :notify do
   task :report => :environment do
     users = Member.all(:conditions => {'id' => 17783}) #Member.emailable.all
     
-    actor = Notificator::ReportActor.new
-    actor.logger = Notificator::ReportLogger.new
+    actor = Notificator::Report::Actor.new
+    actor.logger = Notificator::Report::Logger.new
     
     worker = Notificator::Spreader.new users, actor
     worker.notify

@@ -21,6 +21,15 @@ module Mogli
       response['dashboard_addNews_response']
     end
 
+    def user_hasAppPermission permission, callback = nil
+      params = {
+              'uid' => @id,
+              'ext_perm' => permission
+      }
+      params['callback'] = callback unless callback.nil?
+      @@client.old_api('users.hasAppPermission', params)
+    end
+
     def to_s
       @id.to_s
     end
