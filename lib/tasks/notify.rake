@@ -11,9 +11,8 @@ namespace :notify do
 
   desc "Sends reports to users"
   task :report => :environment do
-    Member.emailable.each do |user|
-      
-    end
+    worker = Notificator::Spreader.new Member.emailable.all, Notificator::ReportActor.new
+    worker.notify
   end
 
 end
