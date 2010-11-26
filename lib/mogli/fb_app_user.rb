@@ -17,7 +17,8 @@ module Mogli
     def dashboard_addNews params
       return nil if !params.key?('news')
       params['uid'] = @id
-      @@client.old_api('dashboard.addNews', params)
+      response = @@client.old_api('dashboard.addNews', params)
+      response['dashboard_addNews_response']
     end
 
     def to_s

@@ -9,7 +9,7 @@ module Notificator
     def notify
       set_logger_target
       
-      resp = @target.dashboard_addNews({
+      news_id = @target.dashboard_addNews({
               'news' => [{
                       'message' => 'You are allowed to use',
                       'action_link' => {
@@ -19,7 +19,7 @@ module Notificator
               }]
       })
 
-      logger.info 'Message id: ' + resp['dashboard_addNews_response'].inspect
+      logger.info 'Message id: ' + news_id.to_s
     end
   end
 end
