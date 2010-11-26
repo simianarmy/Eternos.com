@@ -23,6 +23,9 @@ GEM
       activerecord (< 3.0.0)
     amqp (0.6.7)
       eventmachine (>= 0.12.4)
+    autotest-growl (0.2.6)
+    autotest-rails (4.1.0)
+      ZenTest
     aws-s3 (0.6.2)
       builder
       mime-types
@@ -156,6 +159,7 @@ GEM
       activesupport (= 2.3.4)
       rake (>= 0.8.3)
     rake (0.8.7)
+    redgreen (1.2.2)
     riddle (1.1.0)
     right_aws (2.0.0)
       right_http_connection (>= 1.2.1)
@@ -224,6 +228,8 @@ DEPENDENCIES
   active_presenter
   after_commit
   amqp (= 0.6.7)
+  autotest-growl
+  autotest-rails
   aws-s3
   bullet
   capistrano (= 2.5.10)
@@ -269,6 +275,7 @@ DEPENDENCIES
   packr
   pauldix-feedzirra
   rails (= 2.3.4)
+  redgreen
   right_aws
   rio
   rmagick (= 2.12.2)

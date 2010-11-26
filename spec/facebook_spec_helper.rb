@@ -36,4 +36,13 @@ module FacebookSpecHelper
       }
       )
   end
+  
+  def create_facebooker_page
+    stub('Facebooker::Page', 
+      :page_id => rand(100).to_s,
+      :name => Faker::Lorem.words(1),
+      :page_url => Faker::Internet.domain_name,
+      :location => 'somewhere'
+      )
+  end
 end

@@ -20,11 +20,17 @@ class FacebookAccount < BackupSource
   # Takes array of Facebooker::Page objects and saves page and relationship
   def save_administered_pages(admined_pages)
     return unless admined_pages && admined_pages.respond_to?(:each)
-    admined_pages.each do |p|
-      if fb_page = pages.find_by_page_id(p.page_id)
-        fb_page.synch_with_proxy(p)
-      else
-        pages << FacebookPage.create_from_proxy(p)
+    admined_pages.each do |page|
+      # If page in account's list
+      if fb_page = pages.find_by_page_id(page.page_id)
+        fb_page.synch_with_proxy(page)
+      # or if it exists
+      elsif fb_page = FacebookPage.find_by_page_id(page.page_id)
+        # synch and save association to existing page
+        fb_page.synch_with_proxy(page)
+        pages << fb_page
+      else # Otherwise create and save 
+        pages << FacebookPage.create_from_proxy(page)
       end
     end
   end    

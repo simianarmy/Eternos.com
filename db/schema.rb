@@ -482,6 +482,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string "name", :null => false
     t.text "url", :null => false
     t.text "page_data"
+    t.timestamps
   end
   add_index "facebook_pages", ["page_id"]
   
