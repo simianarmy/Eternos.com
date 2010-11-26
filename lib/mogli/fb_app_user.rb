@@ -27,7 +27,8 @@ module Mogli
               'ext_perm' => permission
       }
       params['callback'] = callback unless callback.nil?
-      @@client.old_api('users.hasAppPermission', params)
+      response = @@client.old_api('users.hasAppPermission', params)
+      response['users_hasAppPermission_response']
     end
 
     def to_s

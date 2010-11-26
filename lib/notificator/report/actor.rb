@@ -15,7 +15,7 @@ module Notificator
         # Sending with FB's api
         @logger.info "Sending dashboard news"
         fb_user = Mogli::FbAppUser.new(@target.id.facebook_uid)
-        resp = fb_user.dashboard_addNews({
+        news_id = fb_user.dashboard_addNews({
                 'news' => [
                         {'message' => "Albums: #{backup_data[:albums]}, Photos: #{backup_data[:photos]}, Videos: #{backup_data[:videos]}, Audio: #{backup_data[:audio]}"},
                         {'message' => "Emails: #{backup_data[:emails]}, Feed Items: #{backup_data[:rss]}, Facebook Items: #{backup_data[:fb]}"},
@@ -25,7 +25,7 @@ module Notificator
                         }
                 ]
         })
-        @logger.info "Dashboard news id: " + resp['dashboard_addNews_response']
+        @logger.info "Dashboard news id: " + news_id
         # Sending with FB's api
 
         # OR
