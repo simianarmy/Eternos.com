@@ -6,7 +6,7 @@ module Notificator
       end
 
       def after
-        puts 'Backups sent'
+        puts 'Backups sent to user' + (@target.nil? ? '' : (': ' + @target.to_s))
       end
     end
   end

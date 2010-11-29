@@ -1,9 +1,15 @@
 module Notificator
   module Report
     class Actor < Notificator::Actor
+      @period = 'weekly'
+
       def target= member
         @target = Report::Target.new(member)
         set_logger_target true
+      end
+
+      def period= period
+        @period = period
       end
 
       def notify
@@ -31,6 +37,10 @@ module Notificator
         # OR
 
         # Sending email stats
+        @logger.info "Sending email news"
+        ActionMailer::Base.delivery_method = :test
+        UserMailer.deliver_backup_stats(@target.id, backup_data, @period)
+        @logger.info "Email was sent"
         # Sending email stats
       end
     end
