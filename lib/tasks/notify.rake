@@ -11,8 +11,14 @@ namespace :notify do
 
   desc "Sends reports to users"
   task :report, [:period] => :environment do |t, args|
-    users = Member.all(:conditions => {'id' => 17783}) #Member.emailable.all
-    
+    default_period = 'weekly'
+    args.with_defaults(:period => default_period)
+    users = Member.
+            emailable.
+            unupdated_since(args.period == default_period ? (Time.now.to_date - 6) : ((Time.now.to_date << 1) + 1)).
+            reportable(args.period).
+            all(:readonly => false)
+
     actor = Notificator::Report::Actor.new
     actor.period = args.period
     actor.logger = Notificator::Report::Logger.new
