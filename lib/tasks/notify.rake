@@ -10,10 +10,11 @@ namespace :notify do
 
 
   desc "Sends reports to users"
-  task :report => :environment do
+  task :report, [:period] => :environment do |t, args|
     users = Member.all(:conditions => {'id' => 17783}) #Member.emailable.all
     
     actor = Notificator::Report::Actor.new
+    actor.period = args.period
     actor.logger = Notificator::Report::Logger.new
     
     worker = Notificator::Spreader.new users, actor
