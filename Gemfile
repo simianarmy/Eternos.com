@@ -34,6 +34,7 @@ group :test do
   gem 'autotest-growl'
   gem 'autotest-rails'
   gem 'redgreen'
+  gem 'moqueue'
 end
 
 group :cucumber do

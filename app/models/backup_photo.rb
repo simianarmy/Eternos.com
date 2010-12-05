@@ -99,15 +99,15 @@ class BackupPhoto < ActiveRecord::Base
     end    
   end
 
-  def synch_backup_comments(photo_comments)
+  def synch_comments(photo_comments)
     return if photo_comments.nil? || photo_comments.empty?
     
     Rails.logger.debug "***Synching backup photo comments: #{photo_comments}"
     # If content photo object exists, comments should be synched with it, not this object
     if photo
-      photo.synch_backup_photo_comments(photo_comments)
+      photo.synch_backup_comments(photo_comments)
     else
-      synch_backup_photo_comments(photo_comments)
+      synch_backup_comments(photo_comments)
     end
   end
   

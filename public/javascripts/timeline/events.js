@@ -286,9 +286,21 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 		
 		this.comments.clear();
 		
-		if (this.attributes.comment_thread != null) {
-			// Handle B.S. Ruby/Rails JSON formatting which seems to change everytime 
-			// I fucking update a gem!
+		// Object can contain up to 3 different data structures for comments!
+		// The most recent is a real array of Comment objects (preferred)
+		if (this.attributes.comments !== null) {
+			this.attributes.comments.each(function(c) {
+				if (c.comment !== '') {
+					arr.push({username: c.commenter_data.username,
+						user_pic: c.commenter_data.pic_url,
+						text: c.comment,
+						posted: c.created_at
+					});
+				}
+			});
+		} else if (this.attributes.comment_thread != null) {
+			// Older comment data structures are in the comment_thread serialized column.
+			// There are 2 possible variants.
 			// Fix fucked up string by converting into the JSON array Rails *used to* return
 			if (typeof(this.attributes.comment_thread) === 'string') {
 				// Split unserialized but not jsonized FacebookComment objects
@@ -311,18 +323,19 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 			} else if (typeof(this.attributes.comment_thread) === 'object') {
 				arr = this.attributes.comment_thread;
 			} else {
-				// Can't convert nonsense into comments array..fail
-				;
+				// error!
 			}
-			$A(arr).each(function(c) {
-				this.comments.push(c); // Save each comment in internal array
-				comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
-					author: (c.username ? c.username : 'You'),
-					thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
-					comment: c.text});
-				}.bind(this));
-			comments = this._getSmallTooltipLine('Comments: ' + comments);
 		}
+		// Format each processed comment
+		$A(arr).each(function(c) {
+			this.comments.push(c); // Save each comment in internal array
+			comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
+				author: (c.username ? c.username : 'You'),
+				thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
+				comment: c.text});
+			}.bind(this));
+			comments = this._getSmallTooltipLine('Comments: ' + comments);
+		
 		return comments;
 	},
 	getLikes: function() {

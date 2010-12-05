@@ -123,6 +123,8 @@ GEM
       json (>= 1.1.2)
       mime-types (>= 1.15)
       oauth (>= 0.3.1)
+    moqueue (0.1.4)
+      amqp
     mysqlplus (0.1.2)
     net-scp (1.0.3)
       net-ssh (>= 1.99.1)
@@ -268,6 +270,7 @@ DEPENDENCIES
   mocha
   mogli
   moomerman-twitter_oauth
+  moqueue
   mysqlplus
   newrelic_rpm (>= 2.9.8)
   nokogiri

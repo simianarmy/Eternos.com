@@ -14,6 +14,9 @@ require "spec/mocks"
 # in ./support/ and its subdirectories.
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
+# For mislav's mock_model fix
+#require File.expand_path(File.join(File.dirname(__FILE__), "support/rspec_rails_mocha.rb"))
+
 ### STUFF FROM OLDER spec_helpers
 require 'spork'
 require "email_spec/helpers"
@@ -96,6 +99,8 @@ Spork.prefork do
     config.include(Fixjour) # This will add the builder methods to your ExampleGroups and not pollute Object
     config.include(EmailSpec::Helpers)
     config.include(EmailSpec::Matchers)
+    # Trying to keep mock_model!
+    config.include RSpec::Rails::Mocha
   end
 end
 
