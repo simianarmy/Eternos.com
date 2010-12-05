@@ -29,7 +29,6 @@
           Facebook requires that you grant permissions to the <b>Eternos Backup</b> application.  
         </span>
         <%= link_to 'help', image_path("fbapp/perms-popup-sample.jpg"), :class => 'lightview' %>
-        <p/>
         <br/>
         <div id="result-facebook-accounts">
           <%= render :partial => 'backup_sources/facebook_list', :locals => {:settings => settings, :list => settings.facebook_accounts } %>

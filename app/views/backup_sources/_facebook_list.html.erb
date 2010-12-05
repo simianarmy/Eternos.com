@@ -1,8 +1,7 @@
 <% unless list.blank? %>
   <div id="result-facebook-account">
-    <p>
+    <br/>
     <b>Accounts Added:</b>
-    </p>
     <table>
       <% fb = list.first %>
         <tr>
@@ -16,6 +15,6 @@
           <%= render :partial => 'facebook_account-needs-activation', :locals => {:settings => settings, :account => fb} %>
         <% end %>
       </tr>
-    </table
+    </table>
   </div>
 <% end %>
