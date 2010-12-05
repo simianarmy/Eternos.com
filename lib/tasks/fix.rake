@@ -46,4 +46,19 @@ namespace :fix do
       bs.save(false)
     end
   end
+  
+  desc 'Imports facebook auth credentials from members table to FacebookAccount record'
+  task :import_fb_backup_auth_creds_to_facebook_account => :environment do
+    bs_ids = BackupSource.facebook.map(&:id)
+    BackupSource.find(:all, bs_ids).each do |bs|
+      next unless user = bs.member
+      bs[:type] ||= 'FacebookAccount'
+      if bs.auth_token.blank? || bs.auth_secret.blank?
+        bs.auth_login ||= user.facebook_id
+        bs.set_facebook_session_keys(user.facebook_session_key, user.facebook_secret_key)
+      end
+      bs.save(false)
+      puts "Saved fb account with fb creds: #{bs.inspect}"
+    end
+  end
 end
