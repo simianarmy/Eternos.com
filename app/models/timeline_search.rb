@@ -11,6 +11,7 @@ class TimelineSearch
     :facebook   => :get_facebook_items,
     :photos     => :get_images,
     :media      => :get_media,
+    :activity_stream_comments => :get_activity_stream_comments,
     :content_comments => :get_content_comments,
     :blog       => :get_feed_items,
     :profile    => [:get_durations]
@@ -111,6 +112,20 @@ class TimelineSearch
   
   def get_feed_items
     query FeedEntry.belonging_to_user(@member.id).include_content.searchlogic
+  end
+  
+  def get_activity_stream_comments
+    # Tell generators not to execute the query
+    srch = without_executing_query do
+      date_query Comment.searchlogic
+    end
+    join_str = %Q( INNER JOIN activity_stream_items ON activity_stream_items.id = comments.commentable_id 
+    AND comments.commentable_type = 'ActivityStreamItem' 
+    INNER JOIN activity_streams ON activity_streams.id = activity_stream_items.activity_stream_id )
+    
+    srch.find(:all, 
+      :joins => join_str,
+      :conditions => {'activity_streams.id' => @member.activity_stream.id})
   end
   
   # In order to display comments independently of their 'commentable' object
