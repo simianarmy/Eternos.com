@@ -19,12 +19,12 @@
     - elsif item.url
       = link_to item.url, item.url, :target => '_new'
     .clearboth
-    %p== #{h item.message}
-    - if item.comment_thread
+    %p== #{h item.message}  
+    - if item.has_comments?
       .comment_thread[item]
         %span.detail Comments:
         %br
-        = render :partial => 'facebook_activity_stream_items/comment_thread_item', :collection => item.comment_thread
+        = render :partial => 'facebook_activity_stream_items/comment_thread_item', :collection => item.get_comments
   %p.detail
     - if item.liked_by
       == Liked by: #{item.liked_by.join(', ')}

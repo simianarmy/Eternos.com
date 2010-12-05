@@ -1,7 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe ActivityStreamItem do
+describe FacebookActivityStreamItem do
   include ActivityStreamProxySpecHelper
+
   
   it "should create a new instance given valid attributes" do
     lambda {
@@ -55,17 +56,18 @@ describe ActivityStreamItem do
     
     describe "with sync_from_proxy" do
       it "should return nil object if unique" do
-        @as.items.facebook.sync_from_proxy!(@proxy) {|s| nil}.should be_nil
+        @as.items.facebook.find_by_guid(@proxy.id).should be_nil
       end
 
-      it "should update record if found" do
-        @proxy.comments = ['foo', 'foo']
+      it "should synch some but not all attributes" do
         FacebookActivityStreamItem.create_from_proxy!(@as.id, @proxy)
-        obj = @as.items.facebook.sync_from_proxy!(@proxy) do |scope|
-          scope.find_by_guid(@proxy.id)
-        end
+        @proxy.author = 'foobz man'
+        @proxy.message = 'i edited myself'
+        obj = @as.items.facebook.find_by_guid(@proxy.id)
+        obj.sync_from_proxy!(@proxy)
         obj.reload.should_not be_nil
-        obj.comment_thread.should == @proxy.comments
+        obj.author.should == @proxy.author
+        obj.message.should_not == @proxy.message
       end
       
       it "should scope find query to member's activity stream" do
@@ -93,17 +95,33 @@ describe ActivityStreamItem do
     
     describe "with comments" do
       before(:each) do
-        @item = FacebookActivityStreamItem.create_from_proxy!(@as.id, create_facebook_stream_proxy_item_with_comments)
+        @proxy = create_facebook_stream_proxy_item_with_comments(2)
+        @item = FacebookActivityStreamItem.create_from_proxy!(@as.id, @proxy)
       end
       
-      it "should return comment thread as array of hashes" do
-        @item.comment_thread.should_not be_empty
-        @item.comment_thread.all?{|c| !c['text'].blank?}.should be_true
+      it "should save comment thread as Comment objects" do
+        item = FacebookActivityStreamItem.find(@item.id)
+        item.comments.should_not be_empty
+        item.comments.should be_a Array
+        item.comments.first.should be_a Comment
+        item.comments.each_with_index do |c, i| 
+          c.comment.should == @proxy.comments[i].text
+          c.commenter_data.should_not be_empty
+        end
       end
       
-      it "should convert comments array to json" do
+      it "should be able to convert comments array to json" do
         json = @item.to_json
-        ActiveSupport::JSON.decode(json)['comment_thread'].should_not be_blank
+        ActiveSupport::JSON.decode(json)['comments'].should_not be_empty
+      end
+      
+      
+      it "should update the comment thread if new comments were added" do
+        obj = @as.items.facebook.find_by_guid(@proxy.id)
+        lambda {
+          @proxy.comments << new_proxy_fb_comment(facebook_backup_comment)
+          obj.sync_from_proxy!(@proxy)    
+        }.should change(obj.comments, :size).by(1)
       end
     end
     
@@ -302,28 +320,6 @@ describe ActivityStreamItem do
     it "should find with named scope" do
       @item.save
       ActivityStreamItem.facebook.find(@item.id).should == @item
-    end
-  end
-  
-  describe "twitter item" do
-    before(:each) do
-      @item = new_activity_stream_item :type => 'TwitterActivityStreamItem', :activity_stream => @as
-      @proxy = create_stream_proxy_item
-    end
-    
-    it "should have twitter type" do
-      @item.should be_a TwitterActivityStreamItem
-    end
-    
-    it "should create a new instance from a proxy object" do
-      @item = TwitterActivityStreamItem.create_from_proxy! @as.id, @proxy
-      @item.activity_type.should == 'status'
-      @item.message.should == @proxy.message
-    end
-    
-    it "should find with named scope" do
-      @item.save
-      ActivityStreamItem.twitter.find(@item.id).should == @item
     end
   end
 end

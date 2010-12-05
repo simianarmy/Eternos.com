@@ -116,14 +116,16 @@ Rails::Initializer.run do |config|
   }
   
   config.after_initialize do
-    Qusion.start
-    # Ensure EM reactor is running
-    RAILS_DEFAULT_LOGGER.info "=> Launching Workling..."
-    # Setup workling
-    Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
-    Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
-    Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
-    RAILS_DEFAULT_LOGGER.info "=> done"
+    unless RAILS_ENV == 'test'
+      Qusion.start
+      # Ensure EM reactor is running
+      RAILS_DEFAULT_LOGGER.info "=> Launching Workling..."
+      # Setup workling
+      Workling::Remote.invoker = Workling::Remote::Invokers::EventmachineSubscriber
+      Workling::Remote.dispatcher = Workling::Remote::Runners::ClientRunner.new
+      Workling::Remote.dispatcher.client = Workling::Clients::AmqpClient.new
+      RAILS_DEFAULT_LOGGER.info "=> done"
+    end
     
     # Set ActionMailer host for url_for
     ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain

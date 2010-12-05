@@ -22,21 +22,6 @@ module FacebookSpecHelper
     stub('Facebooker::EducationHistory')
   end
   
-  def fb_comment
-    stub('FacebookBackup::FacebookComment', 
-      :xid => '123',
-      :fromid => 111,
-      :time => Time.now.to_i,
-      :text => Faker::Lorem.sentence,
-      :id => '112',
-      :user_data => {
-        :username => 'bob',
-        :user_pic => Faker::Internet.domain_name,
-        :profile_url => Faker::Internet.domain_name
-      }
-      )
-  end
-  
   def create_facebooker_page
     stub('Facebooker::Page', 
       :page_id => rand(100).to_s,
