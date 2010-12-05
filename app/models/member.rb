@@ -45,6 +45,21 @@ class Member < User
     :joins => :backup_sources,
     :group => 'users.id'
   }
+  named_scope :emailable, {
+    :joins => "LEFT JOIN email_blacklists ON users.email = email_blacklists.email",
+    :conditions => { 'email_blacklists.email' => nil }
+  }
+  named_scope :unupdated_since, lambda { |date| {
+    :conditions => ['(last_reported IS NULL) OR (last_reported < ?)', date.nil? ? '0000-00-00 00:00:00' : Time.parse(date.to_s).strftime('%Y-%m-%d 00:00:00')]
+  } }
+  named_scope :reportable, lambda { |period| {
+    :joins => :email_lists,
+    :conditions => [
+            'email_lists.name = ? AND email_lists.is_enabled = ?',
+            (period == 'weekly') ? 'weekly_stats' : 'monthly_stats',
+            true
+    ]
+  } }
   
   def self.from_facebook(facebook_id)
     find_by_facebook_uid(facebook_id)

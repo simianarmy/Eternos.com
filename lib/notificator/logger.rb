@@ -2,9 +2,14 @@ module Notificator
   class Logger
     @target = nil
 
-    def set_target target
+    def target= target
       @target = target
     end
+
+    def target?
+      !@target.nil?
+    end
+
     def before
       puts (@target.nil? ? '' : (@target.to_s + ': ')) + 'performing new target'
     end

@@ -1062,6 +1062,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.boolean  "always_sync_with_facebook"
     t.integer  "setup_step",                              :default => 0,         :null => false
     t.integer  "facebook_referrer",         :limit => 8
+    t.datetime "last_reported"
   end
 
   add_index "users", ["email"], :name => "users_email_index"
