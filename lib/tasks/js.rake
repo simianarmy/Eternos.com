@@ -110,6 +110,9 @@ namespace :js do
         "#{lib_global_dir}scriptaculous.js",
         "#{lib_global_dir}effects.js",
         "#{lib_global_dir}controls.js",
+        "#{lib_global_dir}lightview2.5.2.1/js/lightview.js",
+        "#{lib_global_dir}lowpro.js",
+        "#{lib_global_dir}behaviors.js",
         "#{lib_global_dir}application.js", 
         "#{lib_global_dir}login.js", 
         "#{lib_global_dir}account_setup.js"
