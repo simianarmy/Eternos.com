@@ -39,7 +39,7 @@ class FacebookBackupController < ApplicationController
     else
       begin
         fb_session = ActiveSupport::JSON.decode(params[:session])
-        Rails.logger.debug "Session json = " + fb_session.inspect
+        Rails.logger.info "Session json = " + fb_session.inspect
     
         if fb_session['uid']
           # DEPRECATED:
@@ -128,7 +128,21 @@ class FacebookBackupController < ApplicationController
   end
   
   def load_facebook_account_backup_source(fb_id)
-    @backup_source = FacebookAccount.find_by_auth_login(fb_id)
+    sources = FacebookAccount.auth_login_eq(fb_id)
+    if sources.any?
+      # If we match more than one backup source for an account id - we gotta find the right user!
+      # If there is no user...use most recent?
+      if sources.size > 1
+        if @current_user
+          @backup_source = sources.detect {|s| s.user_id == @current_user.id }
+        else
+          raise "ERROR!  More than one Facebook account with the same ID!"
+        end
+      else
+        @backup_source = sources.first
+      end
+    end
+    # Create new source if none found
     @backup_source ||= FacebookAccount.new(:user_id => current_user.id,
       :backup_site_id => BackupSite.find_by_name(BackupSite::Facebook).id,
       :auth_login => fb_id)
