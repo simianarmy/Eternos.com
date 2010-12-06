@@ -69,7 +69,10 @@ class BackupPhotoAlbum < ActiveRecord::Base
     indexes location
     
     # attributes
-    has backup_source_id, created_at, updated_at
+    has backup_source_id 
+    # commenting out date attributes until I can fix backup system crash:
+    # undefined method `to_i' for Fri, 22 May 2009 01:31:05 +0000:DateTime
+    #has created_at, updated_at
     
     where "deleted_at IS NULL"
   end
