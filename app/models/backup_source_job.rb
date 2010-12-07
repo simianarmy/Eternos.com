@@ -33,8 +33,9 @@ class BackupSourceJob < ActiveRecord::Base
     t = Time.now.utc
     update_attribute(:finished_at, t)
     # Save errors counts
-    errs = error_messages
-    BackupJobError.increment_errors_count(*errs) if errs
+    if errs = error_messages
+      BackupJobError.increment_errors_count(*errs)
+    end
     backup_source.backup_complete!
     on_finish :errors => errs, :messages => messages
   end

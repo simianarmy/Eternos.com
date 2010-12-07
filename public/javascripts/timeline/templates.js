@@ -225,7 +225,7 @@ var ETemplates = function() {
 			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}</div><div class="clearboth"></div></div>');
 		} (),
 		facebook_comment: function() {
-			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}</div><div class="clearboth"></div></div>');
+			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}#{time}</div><div class="clearboth"></div></div>');
 		} (),
 		facebook_video: function() {
 			return new Template('<a href="#{video_url}" class="lightview"><img src="#{thumbnail_url}" border="0"/></a><br/>#{title}<br/>#{video_source}<br/>#{description}');

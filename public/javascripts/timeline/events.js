@@ -140,7 +140,7 @@ var ETLEventSource = Class.create({
 		// TODO: Optimize - Date.parseExact is slow
 		// try to parse iso datetime
 		if (!date) { return null; }
-		return date.toISODate();
+		return new Date(date);
 	},
 	// Helper to generate 1-line tooltip contents
 	_getSmallTooltipLine: function(text) {
@@ -294,10 +294,10 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 					arr.push({username: c.commenter_data.username,
 						user_pic: c.commenter_data.pic_url,
 						text: c.comment,
-						posted: c.created_at
+						posted: new Date(c.created_at).toLocaleDateString()
 					});
 				}
-			});
+			}.bind(this));
 		} else if (this.attributes.comment_thread != null) {
 			// Older comment data structures are in the comment_thread serialized column.
 			// There are 2 possible variants.
@@ -332,10 +332,13 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 			comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
 				author: (c.username ? c.username : 'You'),
 				thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
-				comment: c.text});
+				comment: c.text, 
+				time: c.posted ? this._getSmallTooltipLine(c.posted) : ''
+				});
 			}.bind(this));
+		if (comments !== '') {
 			comments = this._getSmallTooltipLine('Comments: ' + comments);
-		
+		}
 		return comments;
 	},
 	getLikes: function() {
@@ -464,7 +467,9 @@ var ETLCommentEventSource = Class.create(ETLEventSource, {
 		return ETemplates.tooltipTemplates.facebook_comment.evaluate({
 			author: comment_author,
 			thumb: (author_pic ? '<img align="left" src="' + author_pic + '"/>' : ''),
-			comment: this.attributes.comment});
+			comment: this.attributes.comment,
+			time: this.getEventTimeHtml()
+			});
 	}
 });
 
