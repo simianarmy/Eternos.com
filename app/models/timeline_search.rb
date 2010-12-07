@@ -121,11 +121,14 @@ class TimelineSearch
     end
     join_str = %Q( INNER JOIN activity_stream_items ON activity_stream_items.id = comments.commentable_id 
     AND comments.commentable_type = 'ActivityStreamItem' 
-    INNER JOIN activity_streams ON activity_streams.id = activity_stream_items.activity_stream_id )
+    INNER JOIN activity_streams ON activity_streams.id = activity_stream_items.activity_stream_id 
+    )
     
     srch.find(:all, 
       :joins => join_str,
-      :conditions => {'activity_streams.id' => @member.activity_stream.id})
+      :conditions => ["(activity_streams.id = ?) AND (DATE(activity_stream_items.published_at) <> DATE(comments.created_at))",
+        @member.activity_stream.id]
+    )
   end
   
   # In order to display comments independently of their 'commentable' object
