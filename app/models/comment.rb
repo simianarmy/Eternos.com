@@ -21,6 +21,14 @@ class Comment < ActiveRecord::Base
 	include CommonDateScopes
   include CommonDurationScopes
   
+  # For serializing to json
+  ETComment = Struct.new("ETComment", :comment, :title, :created_at, :commenter_data)
+  
+  serialize_with_options do
+    methods :earlier_comments
+    except :commentable_id, :commentable_type, :user_id, :external_id
+  end
+  
   # Editable attributes for BackupContentProxy objects
   @@editableAttributes = [:created_at, :title, :comment, :commenter_data, :external_id]
   cattr_reader :editableAttributes
@@ -65,4 +73,39 @@ class Comment < ActiveRecord::Base
   def author=(object)
     write_attribute(:user_id, object.id) if object
   end
+  
+  # Returns commment thread of this comment in any order.  Up to the caller
+  # to sort the results
+  # shortcut for acts_as_commentable's find_comments_for class method
+  def thread
+    commentable.try(:comments)
+  end
+  
+  # Returns all comments in comment thread before this one
+  def thread_before
+    return unless commentable
+    commentable.comments.created_at_lt(created_at)
+  end
+  
+  # Returns all comments in comment thread after this one
+  def thread_after
+    return unless commentable
+    commentable.comments.created_at_gt(created_at)
+  end
+  
+  protected
+  
+  # Helper for serializing to JSON so that thread_before is not called 
+  # recursively by serialize_with_options.
+  # It returns the results of thread_before as structs instead of Comment objects.
+  # These will automatically be serialized as-is
+  def earlier_comments
+    
+    if comms = thread_before
+      comms.map do |c| 
+        ETComment.new(c.comment, c.title, c.created_at, c.commenter_data)
+      end
+    end
+  end
+  
 end
