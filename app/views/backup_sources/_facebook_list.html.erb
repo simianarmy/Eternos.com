@@ -12,7 +12,7 @@
             <%= render :partial => 'backup_sources/facebook_account_needs_auth', :locals => {:settings => settings, :account => fb} %>
           <% end %>
         <% else %>
-          <%= render :partial => 'facebook_account-needs-activation', :locals => {:settings => settings, :account => fb} %>
+          <%= render :partial => 'backup_sources/facebook_account_needs_activation', :locals => {:settings => settings, :account => fb} %>
         <% end %>
       </tr>
     </table>

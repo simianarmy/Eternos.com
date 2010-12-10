@@ -146,10 +146,9 @@ var ETLEventItems = Class.create({
 	// Generates tooltip html for all types.  Used by both event list & timeline icons
 	// TODO:  create a Tooltip module / classes
 	getTooltipContents: function() {
-		var i, count, item, listId = this._getItemID(),
+		var i, idx, count, item, listId = this._getItemID(),
 			view_all_url, html = '';
 		var collectionIds = new Array();
-		var winHeight = getWinHeight();
 
 		if (this.num == 0) {
 			// this should never happen
@@ -161,9 +160,13 @@ var ETLEventItems = Class.create({
 			return ETemplates.eventListTemplates.mediaTooltip.evaluate({
 				id: ETemplates.tooltipTemplateID(listId, 'media'),
 				playlist: this._getMediaItemsPlaylistHtml()
-			});
+			});		
+		} else if (this.first.isComment()) {
+			html = '<div class="tooltip_all_container">' + 
+				this._generateCommentTooltipContents();
 		} else {
-			// Images & the rest handled below
+			// Images & the rest handled below.
+			// Determine max items to display and container type
 			if (this.first.isArtifact()) {
 				count = Math.min(this.MaxArtifactTooltipItems, this.num);
 				html = '<div class="tooltip_arti_container">';
@@ -171,18 +174,21 @@ var ETLEventItems = Class.create({
 				count = Math.min(this.MaxTooltipItems, this.num);
 				html = '<div class="tooltip_all_container">';
 			}
-			for (i = 0; i < count; i++) {
-				item = this.items[i];
+			// Generate html for each event source in the collection
+			for (idx=0; idx<count; idx++) {
+				item = this.items[idx];
+				item.firstItem = (idx === 0); // can't pass to getPreviewHtml??
 				if (item.attributes.collection_id) {
 					collectionIds.push(item.attributes.collection_id);
 				}
 				item.menuLinks = this._itemMenuLinks(item);
 				html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate(
-				Object.extend({
-					details_win_height: winHeight,
-					content: item.getPreviewHtml()
-				},
-				this._itemMenuLinks(item)));
+					Object.extend({
+						details_win_height: getWinHeight(),
+						content: item.getPreviewHtml()
+					},
+					this._itemMenuLinks(item))
+				);
 			}
 			// Add link to view all
 			if (count < this.num) {
@@ -201,6 +207,45 @@ var ETLEventItems = Class.create({
 		html += '</div>';
 		this.tooltipHtml = html;
 		return this.tooltipHtml;
+	},
+	// Custom content tooltip generator for comments
+	_generateCommentTooltipContents: function() {
+		var html = '';
+		var threads = new Array();
+		var i, comment, tid;
+		
+		for (idx=0; idx<this.num; idx++) {
+			comment = this.items[idx];
+			// Get the comment's thread id and check if its thread has already been created
+			tid = ETERNOS.commentsManager.gen_key(comment);
+			if (threads.include(tid)) {
+				ETDebug.log("comment's thread already generated...skipping");
+				continue;
+			}
+			// Generate the comments full thread
+			html += this._generateCommentThreadContents(tid, comment);
+			
+			// Save thread to list so that we don't repeat it
+			threads.push(tid);
+		}
+		return html;
+	},
+	_generateCommentThreadContents: function(thread_id, comment) {
+		// Now we need the thread's original parent.  From that we can fetch 
+		// the full comments list.
+		var html = '<div class="comment_thread">';
+		var root = ETERNOS.commentsManager.getCommentRoot(comment);
+		if (root) {
+			html += ETemplates.eventListTemplates.eventItemTooltipItem.evaluate(
+				Object.extend({
+					details_win_height: getWinHeight(),
+					content: root.getPreviewHtml()
+				},
+				this._itemMenuLinks(root))
+			);
+		}
+		html += '</div>';
+		return html;
 	},
 	populate: function() {
 		// Need to format the link so all content will be displayed

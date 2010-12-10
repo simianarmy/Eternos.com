@@ -124,11 +124,16 @@ class TimelineSearch
     INNER JOIN activity_streams ON activity_streams.id = activity_stream_items.activity_stream_id 
     )
     
-    srch.find(:all, 
+    res = srch.find(:all, 
       :joins => join_str,
       :conditions => ["(activity_streams.id = ?) AND (DATE(activity_stream_items.published_at) <> DATE(comments.created_at))",
         @member.activity_stream.id]
     )
+    # Collect and add every comment's commentable object for comment threads displays
+    if res.any?
+      res += ActivityStreamItem.find(res.map(&:commentable_id)).uniq
+    end
+    res
   end
   
   # In order to display comments independently of their 'commentable' object

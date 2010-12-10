@@ -27,6 +27,16 @@ var ETLEventSource = Class.create({
 	isVideo: function() {
 		return ETEvent.isVideo(this.type);
 	},
+	isComment: function(type) {
+		return ETEvent.isComment(this.type);
+	},
+	hasComments: function(type) {
+		if (this.attributes.comments) {
+			ETDebug.dump(this.attributes.comments);
+			return (this.attributes.comments.length > 0);
+		}
+		return false;
+	},
 	isDuration: function() {
 		return (this.end_date_obj != null) && (this.start_date_obj !== this.end_date_obj);
 	},
@@ -139,8 +149,13 @@ var ETLEventSource = Class.create({
 	_parseEventDateString: function(date) {
 		// TODO: Optimize - Date.parseExact is slow
 		// try to parse iso datetime
+		var ret;
 		if (!date) { return null; }
-		return new Date(date);
+		ret = Date.parse(date);
+		if (!ret) {
+			ret = date.toISODate();
+		}
+		return ret;
 	},
 	// Helper to generate 1-line tooltip contents
 	_getSmallTooltipLine: function(text) {
@@ -448,17 +463,37 @@ var ETLAudioEventSource = Class.create(ETLEventSource, {
 		});
 	}
 });
+
 // Comment event
 var ETLCommentEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
 		this.previewTemplate = ETemplates.tooltipTemplates.comment;
+		this.thread_id = null;
 		$super(s);
 	},
-	getPreviewHtml: function($super) {
+	getPreviewHtml: function(idx) {
 		// Just facebook commments for now, don't worry about showing 
 		// commentable object yet.
-		comment_author = 'Unknown';
-		author_pic = null;
+		var comment_author = 'Unknown';
+		var author_pic = null;
+		var thread, i, t_comments = '';
+		
+		if (this.firstItem || commentThreads.isFirstCommentInThread(this.thread_id, this)) {
+			thread = commentThreads.getThread(this.thread_id);
+			// Get the html for thread prior to 1st
+			t_comments = thread[0]._getPriorCommentsHtml();
+			// and add this comment to html
+			t_comments += this._getSingleCommentPreviewHtml();
+
+			return t_comments;
+		} else {
+			return this._getSingleCommentPreviewHtml();
+		}
+	},
+	// Does not do thread check
+	_getSingleCommentPreviewHtml: function() {
+		var comment_author = 'Unknown';
+		var author_pic = null;
 		
 		if (this.attributes.commenter_data) {
 			comment_author = this.attributes.commenter_data.username;
@@ -470,6 +505,22 @@ var ETLCommentEventSource = Class.create(ETLEventSource, {
 			comment: this.attributes.comment,
 			time: this.getEventTimeHtml()
 			});
+	},
+	// Parses earlier comments object into html
+	_getPriorCommentsHtml: function() {
+		var i, comments = '';
+		
+		if (this.attributes.earlier_comments) {
+			$A(this.attributes.earlier_comments).each(function(c) {
+				comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
+					author: c.commenter_data ? c.commenter_data.username : 'Unknown',
+					thumb: (c.commenter_data.pic_url ? '<img align="left" src="' + c.commenter_data.pic_url + '"/>' : ''),
+					comment: c.comment,
+					time: new Date(c.created_at).toLocaleDateString()
+					});
+			});
+		}
+		return comments;
 	}
 });
 
@@ -667,6 +718,9 @@ var ETEvent = {
 	isVideo: function(type) {
 		return (type === 'web_video');
 	},
+	isComment: function(type) {
+		return (type === 'comment');
+	},
 	getSourceIcon: function(type) {
 		return this.itemTypes.find(function(t) { return type === t.type; }).icon;
 	},
@@ -675,13 +729,60 @@ var ETEvent = {
 	}
 };
 
-// Utility functions - may move these to utility file if useful
-if (String.prototype.urlToLink == null) {
-	String.prototype.urlToLink = function() {
-		var t = this;
-		t = t.replace(/((www\.|(http|https|ftp|news|file)+\:\/\/)[_.a-zA-Z0-9-]+\.[_a-zA-Z0-9\/_:@=.+?,##%&~-]*[^.|\'|\# |!|\(|?|,| |>|<|;|\)])/g, '$1');
-		t = t.replace('href="www', 'href="http://www');
-		t = t.replace(/((www\.|(http|https|ftp|news|file))+:\/\/[^ ]+)/g, '<div class="tooltip_link"><a href="$1" target="_new" rel="nofollow">$1</a></div>');
-		return t;
-	};
-}
+////////////////////////////////////////////////////////////////////////////////////////
+//
+// ETLCommentManager
+//
+// Helper for managing comments threads for all event types
+// Necessary to group related comments into a thread in order to properly display
+// in popups.  Since comments are created individually, an external container
+// must store the relationships.
+
+var ETLCommentManager = Class.create({
+	initialize: function() {
+		this.threads = new Hash();
+		this.roots = new Hash();
+	},
+	// Adds comment to thread - assumes uniqueness?
+	addToThread: function(comment) {
+		var key = this.gen_key(comment);
+		if (!this.threads[key]) {
+			this.threads[key] = new Array();
+		}
+		this.threads[key].push(comment);
+		return key;
+	},
+	getThread: function(id) {
+		return this.threads[id];
+	},
+	isFirstCommentInThread: function(id, comment) {
+		if (this.threads[id]) {
+			return this.threads[id][0] == comment;
+		}
+		return false;
+	},
+	addRootSource: function(src) {
+		ETDebug.log("Adding root comment source " + src.type);
+		this.roots.set(this._gen_key(this._get_root_type_str(src.type), src.getID()), src);
+	},
+	getCommentRoot: function(comment) {
+		return this.roots.get(this.gen_key(comment));
+	},
+	gen_key: function(comment) {
+		return this._gen_key(comment.attributes.commentable_type, comment.attributes.commentable_id);
+	},
+	_gen_key: function(type, id) {
+		return [type, id].join(':');
+	},
+	_get_root_type_str: function(type) {
+		// Do a little bit of type string coercion just to save my brain
+		if (["facebook_activity_stream_item", "twitter_activity_stream_item"].include(type)) {
+			type = "ActivityStreamItem";
+		}
+		return type;
+	}
+});
+// Just create a global to the ETERNOS namespace, it doesn't belong to any 
+// one object
+ETERNOS.commentsManager = new ETLCommentManager();
+

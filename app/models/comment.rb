@@ -22,11 +22,12 @@ class Comment < ActiveRecord::Base
   include CommonDurationScopes
   
   # For serializing to json
-  ETComment = Struct.new("ETComment", :comment, :title, :created_at, :commenter_data)
+  ETComment = Struct.new("ETComment", :comment, :title, :created_at, :commenter_data, 
+    :comentable_id, :commentable_type)
   
   serialize_with_options do
     methods :earlier_comments
-    except :commentable_id, :commentable_type, :user_id, :external_id
+    except :user_id, :external_id
   end
   
   # Editable attributes for BackupContentProxy objects
@@ -100,10 +101,9 @@ class Comment < ActiveRecord::Base
   # It returns the results of thread_before as structs instead of Comment objects.
   # These will automatically be serialized as-is
   def earlier_comments
-    
     if comms = thread_before
       comms.map do |c| 
-        ETComment.new(c.comment, c.title, c.created_at, c.commenter_data)
+        ETComment.new(c.comment, c.title, c.created_at, c.commenter_data, commentable.id, commentable.type)
       end
     end
   end

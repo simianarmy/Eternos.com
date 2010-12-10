@@ -159,7 +159,7 @@ class BackupSource < ActiveRecord::Base
   def on_backup_complete(info={})
     unless info[:errors]
       # Reset error notification count after succesful backups
-      backup_source.update_attribute(:error_notifications_sent, 0)
+      update_attribute(:error_notifications_sent, 0)
     end
     member.backup_finished!(info)
   end
