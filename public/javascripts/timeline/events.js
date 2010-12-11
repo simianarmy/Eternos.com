@@ -14,6 +14,7 @@ var ETLEventSource = Class.create({
 		this.end_date_str 				= s.end_date;
 		this.start_date_obj 			= this._getStartDateObj(); // Create this now for sorts
 		this.end_date_obj					= this._getEndDateObj();
+		this.comments 						= [];
 	},
 	isArtifact: function() {
 		return ETEvent.isArtifact(this.type); 
@@ -166,124 +167,6 @@ var ETLEventSource = Class.create({
 	},
 	_evalTemplate: function(opts) {
 		return this.previewTemplate.evaluate(this._templateOpts(opts));
-	}
-});
-
-// Photo event
-var ETLPhotoEventSource = Class.create(ETLEventSource, {
-	initialize: function($super, s) {
-		this.previewTemplate = ETemplates.tooltipTemplates.image;
-		$super(s);
-	},
-	isArtifact: function() {
-		return true;
-	},
-	getPreviewHtml: function() {
-		var caption = '';
-		if (this.attributes.caption !== undefined) {
-			caption = this.attributes.caption;
-		} else if (this.attributes.description !== undefined) {
-			caption = this.attributes.description;
-		}
-		return this._evalTemplate({
-			thumbnail_url: this.attributes.thumbnail_url, 
-			img_url: this.attributes.url,
-			caption: caption
-		});
-	}
-});
-
-var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
-	initialize: function($super, s) {
-		this.previewTemplate = ETemplates.tooltipTemplates.activity_stream_item;
-		$super(s);
-	},
-	getSource: function() {
-		var source = '';
-		if (this.isMedia()) {
-			source = this._getSmallTooltipLine('Source: ' + this.source);
-		} else if (this.attributes.attribution != null) {
-			source = this._getSmallTooltipLine('Source: ' + this.attributes.attribution);
-		}
-		return source;
-	},
-	getEventMediaHtml: function() {
-		var media = '', url = '', thumb = '';
-		
-		if (this.isMedia() && ((url = this.getURL()) != null)) {
-			if (this.attributes.parsed_attachment_data.type == "video") {
-				attached = this.attributes.parsed_attachment_data;
-				// Use caption, name, description
-				media = '<br/>' + ETemplates.tooltipTemplates.facebook_video.evaluate({
-					video_url: this.getURL(),
-					thumbnail_url: this.getThumbnailURL(),
-					title: attached.name,
-					video_source: attached.caption,
-					description: attached.description
-				});
-			} else {
-				media += '<br/><a href="' + url + '" class="lightview">';
-
-				if (((thumb = this.getThumbnailURL()) != null) && (thumb !== url)) {
-					media += '<img src="' + thumb + '"/>';
-				} else {
-					media += 'View ' + this.getDisplayTitle();
-				}
-				media += '</a>';
-			}
-		} else if (this.attributes.parsed_attachment_data && 
-				(this.attributes.parsed_attachment_data.src != null) &&
-				(typeof this.attributes.parsed_attachment_data.src == "string")) {
-				media += '<br/><img src="' + this.attributes.parsed_attachment_data.src + '"/>';
-		}
-		// Debug attributes:
-		// media += print_r(this.attributes); //'';
-		return media;
-	},
-	getMessage: function() {
-		var thumb, msg = '';
-		
-		
-		if (this.attributes.message != null) {
-			msg = this.attributes.message.urlToLink();
-		} else if (this.attributes.url != null) {
-			msg = this.attributes.url.urlToLink();
-		}
-		// Add any attachment link data (might fuck up existing layouts...)
-		// Getting complicated b/c we have to include artifacts here
-		if (this.attributes.parsed_attachment_data && 
-			(this.attributes.parsed_attachment_data.name != null) &&
-			(typeof this.attributes.parsed_attachment_data.name == "string")) {
-			if (this.attributes.parsed_attachment_data.type == "link") {
-				attached = this.attributes.parsed_attachment_data;
-				// Use caption, name, description
-				msg = '<br/>' + ETemplates.tooltipTemplates.facebook_link.evaluate({
-					url: attached.href,
-					title: attached.name,
-					caption: attached.caption,
-					description: attached.description
-				});
-			} 
-		}
-		return msg;
-	},
-	getPreviewHtml: function() {
-		
-		return this._evalTemplate(Object.extend({
-			message: this.getMessage(),
-			author: this.getEventAuthorHtml(),
-			time: this.getEventTimeHtml(),
-			source: this.getSource(),
-			media: this.getEventMediaHtml()
-		}, this.getPreviewExtras() || {}));
-	}
-});
-// Facebook event
-var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSource, {
-	initialize: function($super, s) {
-		this.source = 'Facebook';
-		this.comments = [];
-		$super(s);
 	},
 	getCommentsCount: function() {
 		var count = 0;
@@ -355,6 +238,123 @@ var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSo
 			comments = this._getSmallTooltipLine('Comments: ' + comments);
 		}
 		return comments;
+	}
+});
+
+// Photo event
+var ETLPhotoEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.image;
+		$super(s);
+	},
+	isArtifact: function() {
+		return true;
+	},
+	getPreviewHtml: function() {
+		var caption = '';
+		if (this.attributes.caption !== undefined) {
+			caption = this.attributes.caption;
+		} else if (this.attributes.description !== undefined) {
+			caption = this.attributes.description;
+		}
+		return this._evalTemplate({
+			thumbnail_url: this.attributes.thumbnail_url, 
+			img_url: this.attributes.url,
+			caption: caption,
+			comments: this.getComments()
+		});
+	}
+});
+
+var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.activity_stream_item;
+		$super(s);
+	},
+	getSource: function() {
+		var source = '';
+		if (this.isMedia()) {
+			source = this._getSmallTooltipLine('Source: ' + this.source);
+		} else if (this.attributes.attribution != null) {
+			source = this._getSmallTooltipLine('Source: ' + this.attributes.attribution);
+		}
+		return source;
+	},
+	getEventMediaHtml: function() {
+		var media = '', url = '', thumb = '';
+		
+		if (this.isMedia() && ((url = this.getURL()) != null)) {
+			if (this.attributes.parsed_attachment_data.type == "video") {
+				attached = this.attributes.parsed_attachment_data;
+				// Use caption, name, description
+				media = '<br/>' + ETemplates.tooltipTemplates.facebook_video.evaluate({
+					video_url: this.getURL(),
+					thumbnail_url: this.getThumbnailURL(),
+					title: attached.name,
+					video_source: attached.caption,
+					description: attached.description
+				});
+			} else {
+				media += '<br/><a href="' + url + '" class="lightview">';
+
+				if (((thumb = this.getThumbnailURL()) != null) && (thumb !== url)) {
+					media += '<img src="' + thumb + '"/>';
+				} else {
+					media += 'View ' + this.getDisplayTitle();
+				}
+				media += '</a>';
+			}
+		} else if (this.attributes.parsed_attachment_data && 
+				(this.attributes.parsed_attachment_data.src != null) &&
+				(typeof this.attributes.parsed_attachment_data.src == "string")) {
+				media += '<br/><img src="' + this.attributes.parsed_attachment_data.src + '"/>';
+		}
+		// Debug attributes:
+		// media += print_r(this.attributes); //'';
+		return media;
+	},
+	getMessage: function() {
+		var thumb, msg = '';
+		
+		if (this.attributes.message != null) {
+			msg = this.attributes.message.urlToLink();
+		} else if (this.attributes.url != null) {
+			msg = this.attributes.url.urlToLink();
+		}
+		// Add any attachment link data (might fuck up existing layouts...)
+		// Getting complicated b/c we have to include artifacts here
+		if (this.attributes.parsed_attachment_data && 
+			(this.attributes.parsed_attachment_data.name != null) &&
+			(typeof this.attributes.parsed_attachment_data.name == "string")) {
+			if (this.attributes.parsed_attachment_data.type == "link") {
+				attached = this.attributes.parsed_attachment_data;
+				// Use caption, name, description
+				msg = '<br/>' + ETemplates.tooltipTemplates.facebook_link.evaluate({
+					url: attached.href,
+					title: attached.name,
+					caption: attached.caption,
+					description: attached.description
+				});
+			} 
+		}
+		return msg;
+	},
+	getPreviewHtml: function() {
+		
+		return this._evalTemplate(Object.extend({
+			message: this.getMessage(),
+			author: this.getEventAuthorHtml(),
+			time: this.getEventTimeHtml(),
+			source: this.getSource(),
+			media: this.getEventMediaHtml()
+		}, this.getPreviewExtras() || {}));
+	}
+});
+// Facebook event
+var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSource, {
+	initialize: function($super, s) {
+		this.source = 'Facebook';
+		$super(s);
 	},
 	getLikes: function() {
 		var likes = '', count = 0;
@@ -441,7 +441,8 @@ var ETLVideoEventSource = Class.create(ETLEventSource, {
 			title: this.attributes.title,
 			message: this.attributes.description || this.attributes.title,
 			duration: this._getSmallTooltipLine(this.attributes.duration),
-			time: this.getEventTimeHtml()
+			time: this.getEventTimeHtml(),
+			comments: this.getComments()
 		});
 	}
 });
@@ -459,7 +460,8 @@ var ETLAudioEventSource = Class.create(ETLEventSource, {
 			filename: this.attributes.filename,
 			description: this.attributes.description,
 			duration: this.attributes.duration,
-			duration_s: this.attributes.duration_to_s
+			duration_s: this.attributes.duration_to_s,
+			comments: this.getComments()
 		});
 	}
 });
@@ -478,17 +480,7 @@ var ETLCommentEventSource = Class.create(ETLEventSource, {
 		var author_pic = null;
 		var thread, i, t_comments = '';
 		
-		if (this.firstItem || commentThreads.isFirstCommentInThread(this.thread_id, this)) {
-			thread = commentThreads.getThread(this.thread_id);
-			// Get the html for thread prior to 1st
-			t_comments = thread[0]._getPriorCommentsHtml();
-			// and add this comment to html
-			t_comments += this._getSingleCommentPreviewHtml();
-
-			return t_comments;
-		} else {
-			return this._getSingleCommentPreviewHtml();
-		}
+		return this._getSingleCommentPreviewHtml();
 	},
 	// Does not do thread check
 	_getSingleCommentPreviewHtml: function() {
@@ -775,9 +767,11 @@ var ETLCommentManager = Class.create({
 		return [type, id].join(':');
 	},
 	_get_root_type_str: function(type) {
-		// Do a little bit of type string coercion just to save my brain
+		// We have to coerce commentable_type to match the sti base class, capitalized
 		if (["facebook_activity_stream_item", "twitter_activity_stream_item"].include(type)) {
 			type = "ActivityStreamItem";
+		} else if (["photo", "audio", "video"].include(type)) {
+			type = "Content";
 		}
 		return type;
 	}

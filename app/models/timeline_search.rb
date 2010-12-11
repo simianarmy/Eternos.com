@@ -52,17 +52,21 @@ class TimelineSearch
     @methods
   end
   
+  # Performs search and returns results as collection of TimelineEvents
   def results
     # do search 
+    events = []
     search_methods.each do |meth|
       RAILS_DEFAULT_LOGGER.debug "calling #{meth}..."
       if res = self.send(meth)
         RAILS_DEFAULT_LOGGER.debug "#{meth} returned #{res.size} items"
-        res.each {|res| add_events(res)}
+        events += res
       end
     end
     RAILS_DEFAULT_LOGGER.debug "Done fetching items."
-    remove_duplicates
+    # Conver to unique list of timeline event objects
+    post_process_results(events)
+    @events
   end
   
   def num_results
@@ -252,6 +256,11 @@ class TimelineSearch
       RAILS_DEFAULT_LOGGER.debug "events after rejecting: #{@events.size}"
     end
     @events
+  end
+  
+  def post_process_results(results)
+    results.uniq.each {|res| add_events(res)}
+    remove_duplicates
   end
   
   private

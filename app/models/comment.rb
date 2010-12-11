@@ -24,9 +24,9 @@ class Comment < ActiveRecord::Base
   # For serializing to json
   ETComment = Struct.new("ETComment", :comment, :title, :created_at, :commenter_data, 
     :comentable_id, :commentable_type)
-  
+    
   serialize_with_options do
-    methods :earlier_comments
+    #methods :earlier_comments
     except :user_id, :external_id
   end
   
@@ -100,6 +100,7 @@ class Comment < ActiveRecord::Base
   # recursively by serialize_with_options.
   # It returns the results of thread_before as structs instead of Comment objects.
   # These will automatically be serialized as-is
+  # UNUSED - LEAVING AS EXAMPLE OF STRUCT USAGE
   def earlier_comments
     if comms = thread_before
       comms.map do |c| 
