@@ -524,7 +524,6 @@ var ETimeline = function(opts) {
 			this.firstBandPixels = 0;
 			this.theme = null;
 			this.eventSource = new Timeline.DefaultEventSource();
-			this.commentsManager = new ETLCommentManager();
 			this.currentDate = null;
 			this.tlMinDate = null;
 			this.tlMaxDate = null;
