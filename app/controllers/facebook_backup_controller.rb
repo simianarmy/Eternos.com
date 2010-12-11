@@ -153,6 +153,7 @@ class FacebookBackupController < ApplicationController
     current_user.completed_setup_step(2)
     # Run backup & update confirmation status on 1st check
     @backup_source.confirmed!
+    @backup_source.reload # Make sure views can see updates
   end
   
   # Checks if user has required facebook permissions
