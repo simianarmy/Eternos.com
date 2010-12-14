@@ -132,14 +132,11 @@ class FacebookBackupController < ApplicationController
     if sources.any?
       # If we match more than one backup source for an account id - we gotta find the right user!
       # If there is no user...use most recent?
-      if sources.size > 1
-        if @current_user
-          @backup_source = sources.detect {|s| s.user_id == @current_user.id }
-        else
-          raise "ERROR!  More than one Facebook account with the same ID!"
-        end
+      if @current_user
+        @backup_source = sources.detect {|s| s.user_id == @current_user.id }
       else
-        @backup_source = sources.first
+        # If none of them match the current user, create a new backup source for them
+        Rails.logger.warn "WARNING!  More than one Facebook account with the same ID!"
       end
     end
     # Create new source if none found

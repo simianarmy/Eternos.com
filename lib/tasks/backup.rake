@@ -190,6 +190,20 @@ namespace :backup do
     puts "#{count} failed backup sources"
   end
   
+  desc "Count recent successful backups by type"
+  task :count_recent_backups_by_type => :environment do
+    unless type = ENV['TYPE']
+      puts "pass site name in TYPE parameter"
+      puts "options: #{BackupSite.names.join('|')}"
+      exit
+    end
+    total_jobs = 0
+    failed_jobs = 0
+    good_jobs = 0
+    errors_by_kind = Hash.new(0)
+    BackupSourceJob.finished_at_gt(1.day.ago).backup_source_type(site).each do |bsj|
+      total_jobs += 1
+    
   desc "Shows backup status for a single user"
   task :user_status => :environment do
     unless login = ENV['LOGIN']
