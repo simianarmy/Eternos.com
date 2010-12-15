@@ -3,12 +3,13 @@
 # Module providing wrapper around Google Data API gdata gem
 
 module GoogleBackup
+  GDATA_AUTHSUB_PEM_FILE = 'gdatarsacert.pem'
+  
   module Auth
     class Base
       attr_reader :client
       
       def authsub_url
-        #@client.authsub_private_key = PRIVATE_KEY
         @client.authsub_url(@next_url, @secure, @sess)
       end
       
@@ -16,11 +17,18 @@ module GoogleBackup
       
       # Private constructor - must instantiate using child class
       def initialize(options={})
-        #PRIVATE_KEY = '/path/to/private_key.pem'
         @next_url = options[:callback_url] 
-        @secure = false  # set secure = true for signed AuthSub requests
         @sess = true
-        @client.authsub_token = options[:auth_token] if options[:auth_token]
+        @secure = true  # set secure = true for signed AuthSub requests
+        if options[:auth_token]
+          @client.authsub_token = options[:auth_token] 
+          # Set private key when upgrading token to session
+          @client.authsub_private_key = private_key
+        end
+      end
+      
+      def private_key
+        File.join(Rails.root, 'config', GDATA_AUTHSUB_PEM_FILE)
       end
     end
     

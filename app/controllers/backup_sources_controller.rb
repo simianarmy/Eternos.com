@@ -10,7 +10,7 @@ class BackupSourcesController < ApplicationController
   
   ssl_allowed :add_twitter, :remove_twitter_account,
     :add_picasa, :remove_picasa_account,
-    :add_feed_url, :remove_url
+    :add_feed_url, :remove_url, :picasa_auth, :twitter_auth
     
   def index
     @need_setup = current_user.need_backup_setup?
