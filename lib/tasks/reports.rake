@@ -28,7 +28,6 @@ namespace :reports do
       errors_by_kind = Hash.new(0)
       processed_sources = {}
       BackupSourceJob.finished_at_gt(1.day.ago).backup_source_backup_site_name_eq(site).each do |bsj|
-        next if processed_sources[bsj.backup_source_id]
         total_jobs += 1
         if bsj.successful?
           good_jobs += 1

@@ -3,7 +3,8 @@
 # Module providing wrapper around Google Data API gdata gem
 
 module GoogleBackup
-  GDATA_AUTHSUB_PEM_FILE = 'gdatarsacert.pem'
+  GDATA_AUTHSUB_PEM_FILE = 'eternos.com_gdataprivkey.pem'
+  SECURE_AUTHSUB_ENABLED = false
   
   module Auth
     class Base
@@ -19,16 +20,18 @@ module GoogleBackup
       def initialize(options={})
         @next_url = options[:callback_url] 
         @sess = true
-        @secure = true  # set secure = true for signed AuthSub requests
+        @secure = SECURE_AUTHSUB_ENABLED  # set secure = true for signed AuthSub requests
         if options[:auth_token]
           @client.authsub_token = options[:auth_token] 
           # Set private key when upgrading token to session
-          @client.authsub_private_key = private_key
+          @client.authsub_private_key = private_key if @secure
         end
       end
       
       def private_key
-        File.join(Rails.root, 'config', GDATA_AUTHSUB_PEM_FILE)
+        pk_file = File.join(Rails.root, 'config', GDATA_AUTHSUB_PEM_FILE)
+        Rails.logger.info "Gdata private key file: #{pk_file}"
+        pk_file
       end
     end
     

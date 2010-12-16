@@ -155,12 +155,20 @@ class BackupSource < ActiveRecord::Base
     increment!(:error_notifications_sent)
   end
     
+  def update_last_backup_times
+    update_attributes(:last_backup_at => Time.now.utc,
+      :latest_day_backed_up => Date.today)
+    save(false)
+  end
+  
   # Delegates backup completion info to the source owner
   def on_backup_complete(info={})
     unless info[:errors]
       # Reset error notification count after succesful backups
       update_attribute(:error_notifications_sent, 0)
     end
+    update_last_backup_times
+    
     member.backup_finished!(info)
   end
   
@@ -199,10 +207,8 @@ class BackupSource < ActiveRecord::Base
   # Called by state machine entering :backed_up
   # Updates source backup related attributes
   def do_backed_up
-    self.update_attributes(:needs_initial_scan => false, 
-      :last_backup_at => Time.now.utc,
-      :latest_day_backed_up => Date.today)
-    save(false) # Save w/out validations
+    self.update_attributes(:needs_initial_scan => false)
+    update_last_backup_times
   end
   
 end

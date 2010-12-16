@@ -70,6 +70,20 @@ module EternosBackup
         end
       end
       
+      # Calculates estimated next backup run time for some backup source (and optional data set)
+      # TODO: update for dataset support
+      def next_source_backup_at(bs, ds=EternosBackup::SiteData.defaultDataSet)
+        if bs.active?
+          scheduled = if bs.last_backup_at
+            bs.last_backup_at + default_run_interval
+          elsif source_scheduled_for_backup?(bs, ds)
+            next_run_time
+          end
+          # Don't schedule for sometime in the past
+          (scheduled.nil? || (scheduled <= Time.now.utc)) ? next_run_time : scheduled
+        end
+      end
+      
       protected
       
       # Determines if a backup source can be scheduled for backup
@@ -103,20 +117,6 @@ module EternosBackup
       def cutoff_time(ds=EternosBackup::SiteData.defaultDataSet)
         min_interval = EternosBackup::DataSchedules.min_backup_interval(ds) || default_run_interval
         Time.now.utc - min_interval
-      end
-
-      # Calculates estimated next backup run time for some backup source (and optional data set)
-      # TODO: update for dataset support
-      def next_source_backup_at(bs, ds=EternosBackup::SiteData.defaultDataSet)
-        if bs.active?
-          scheduled = if bs.last_backup_at
-            bs.last_backup_at + default_run_interval
-          elsif source_scheduled_for_backup?(bs, ds)
-            next_run_time
-          end
-          # Don't schedule for sometime in the past
-          (scheduled.nil? || (scheduled <= Time.now.utc)) ? next_run_time : scheduled
-        end
       end
 
       # next top of the hour
