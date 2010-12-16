@@ -147,6 +147,7 @@ require 'facebook_user_profile'
 require 'message_queue'
 require 'mail_history'
 require 'content_collections'
+require 'eternos_backup'
 # For saas
 require 'association_proxy'
 # 3rd party libs 

@@ -1,19 +1,25 @@
 # $Id$
+# Production deploy recipes
 
 set :deploy_to, "/var/www/#{domain}_staging"
+set :user, "deploy"
+set :rails_env, "staging"
 
-role :app, "72.3.253.143"
-role :web, "72.3.253.143"
-role :db,  "72.3.253.143", :primary => true
+role :app, "184.106.217.211"
+role :web, "184.106.217.211"
+role :db, "184.106.217.211", :primary => true
+
+set :bundle_cmd, "/usr/local/bin/bundle"
+set :branch, "dev"
 
 namespace :deploy do
-  task :minify_js, :roles => [:app] do
-    run "cd #{release_path} && rake js:min RAILS_ENV=staging"
+  task :restart do
+    run "touch #{current_path}/tmp/restart.txt"
   end
 end
 
 #before "deploy:update_code", "deploy:stop_daemons"
-after "deploy:symlink_shared", "deploy:minify_js"
+#after "deploy:symlink_shared", "deploy:minify_js"
 #after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:google_analytics"
 #after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons
