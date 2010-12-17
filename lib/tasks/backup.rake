@@ -37,6 +37,7 @@ namespace :backup do
     BackupPhotoDownloader.fix_photos
   end
   
+  desc "Removes already uploaded files from s3 staging directory"
   task :cleanup_local_assets => :environment do
     Content.s3_key_not_nil.find_each do |c|
       remove_file(c.full_filename)
@@ -44,6 +45,40 @@ namespace :backup do
     PhotoThumbnail.s3_key_not_nil.find_each do |thumb|
       remove_file(thumb.full_filename)
     end
+  end
+  
+  desc "Moves content files from backup back to cloud staging directory. \
+  Used when a portion of the staging directory must be moved when a disk fills up."
+  task :move_orphaned_assets =>  :environment do
+    unless dir = ENV['STAGING_DIR']
+      puts "Specify the staging directory path with STAGING_DIR="
+      exit
+    end
+    max = (ENV['MAX'] || 1000).to_i
+    count =0
+    Dir.glob(File.join(dir, '**', '*.*')).each do |f|
+      puts f
+      next unless matched = f.match(/.+\/0+(\d+)\/(\d+)\/.+$/)
+      id = matched[1] + matched[2]
+      puts "Content id: #{id}"
+      
+      c = Content.find(id) rescue nil
+      if c && c.s3_key.nil?
+        path = c.public_filename
+        path.gsub!(/assets\//, '')
+        filepath = File.join(dir, path)
+        puts "Checking #{filepath}"
+        if File.exists?(filepath)
+          FileUtils::Verbose.mkdir_p File.dirname(c.full_filename)
+          FileUtils::Verbose.mv filepath, c.full_filename
+          count += 1
+        else
+          puts "no source file for #{c.id}"
+        end
+      end
+      break if count >= max
+    end
+    puts "Processed #{count} files"
   end
   
   desc "Ensure thumbnails properly created"
