@@ -102,7 +102,9 @@ class TimelinesController < ApplicationController
         render :json => @response # Will call as_json??
       }
       # html for debug view
-      format.html
+      format.html {
+        render :layout => false
+      }
     end
   end
   

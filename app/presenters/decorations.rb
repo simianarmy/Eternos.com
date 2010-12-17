@@ -11,11 +11,11 @@ module BackupSourceActivation
   def get_activations(user)
     backup_sources = user.backup_sources
     if backup_sources.any?
-      if @facebook_account = backup_sources.facebook.first
-        @facebook_confirmed = @facebook_account.confirmed?
-      else
-        @facebook_confirmed = false
-      end
+      # Limit to one fb account per user for now...
+      @facebook_accounts = FacebookAccountManager.facebook_accounts_for(user)
+      @facebook_account = @facebook_accounts.first
+      @facebook_confirmed = @facebook_accounts && @facebook_accounts.any? { |t| t.confirmed? }
+      
       @twitter_accounts = backup_sources.twitter
       @twitter_account   = @twitter_accounts.first
       @twitter_confirmed = @twitter_accounts && @twitter_accounts.any? {|t| t.confirmed?}
@@ -40,14 +40,15 @@ end
 module BackupSourceHistory
   
   def get_data_counts(user)
-    returning Hash.new({:size => 0, :photos => 0, :videos => 0, :emails => 0, 
-      :tweets => 0, :fb => 0, :rss => 0, :total => 0}) do |data|
+    returning Hash.new(0) do |data|
       data[:albums] = user.photo_albums.size
       data[:photos] = user.contents.photos.count
       data[:videos] = user.contents.all_video.count
       data[:audio] = user.contents.all_audio.count
       data[:tweets] = user.activity_stream.items.twitter.count
       data[:fb] = user.activity_stream.items.facebook.count
+      data[:media_comments] = Comment.count(:joins => "INNER JOIN contents ON contents.id = comments.commentable_id AND comments.commentable_type = 'Content'", 
+        :conditions => {'contents.user_id' => user.id})
       data[:rss] = FeedEntry.belonging_to_user(user.id).count
       data[:emails] = BackupEmail.belonging_to_user(user.id).count
       data[:total] = data.values.sum

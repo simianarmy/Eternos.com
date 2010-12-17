@@ -19,5 +19,6 @@ describe "ActsAsCommentable" do
 
   it "should respond to add_comment" do
     @object.should respond_to(:add_comment)
+  end
 end
 

@@ -99,9 +99,7 @@ var ETemplates = function() {
 		};
 	}();
 	that.defaultTooltipWidth =function(type) {
-		if (type === 'photo') {
-			return '180px';
-		} else if (type === 'web_video') {
+		if (type === 'web_video') {
 			return '480px';
 		} else {
 			return '350px';
@@ -225,7 +223,7 @@ var ETemplates = function() {
 			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}</div><div class="clearboth"></div></div>');
 		} (),
 		facebook_comment: function() {
-			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}</div><div class="clearboth"></div></div>');
+			return new Template('<div class="comment_thread_item"><div class="comment_text">#{thumb}<font style="font-weight: bold">#{author} said:</font> #{comment}#{time}</div><div class="clearboth"></div></div>');
 		} (),
 		facebook_video: function() {
 			return new Template('<a href="#{video_url}" class="lightview"><img src="#{thumbnail_url}" border="0"/></a><br/>#{title}<br/>#{video_source}<br/>#{description}');
@@ -234,17 +232,17 @@ var ETemplates = function() {
 			return new Template('<a href="#{url}" target="_new">#{title}</a><br/>#{caption}<br/>#{description}');
 		} (),
 		image: function() {
-			return new Template('<div class="tooltip_img"><a href="#{img_url}" class="lightview"><img src="#{thumbnail_url}"></a><br/>#{caption}</div>');
+			return new Template('<div class="tooltip_img"><a href="#{img_url}" class="lightview"><img src="#{thumbnail_url}"></a><br/>#{caption}<div class="comment_thread">#{comments}</div></div>');
 		} (),
 		feed: function() {
 			return new Template('<div class="tooltip_feed"><a href="#{screencap_url}" class="lightview" onclick="Tips.hideAll(); return true;"><img src="#{preview_thumb}" width="100" height="100" style="float: left"/></a>' +
 				tooltipItemViewLink('#{message}') + '#{source}#{time}</div>');
 		} (),
 		video: function() {
-			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="clearboth"></div>');
+			return new Template('<div class="tooltip_video"><a class="video_thumb lightview" href="##{id}" rel="inline" title="#{title}"><img src="#{thumbnail_url}" width="#{thumb_width}" height="#{thumb_height}" alt="Click to view" style="float:left"></a><div class="video_player" id="#{id} url="#{video_url} rel="{hidden: true, autoPlay: true, filename: false}"></div>#{message}#{duration}#{time}</div><div class="comment_thread">#{comments}</div><div class="clearboth"></div>');
 		} (),
 		audio: function() {
-			return new Template('<div class="tooltip_audio"><ul class="graphic"><li><a href="#{url}" duration="#{duration}" id="#{id}">#{title} (#{duration_s})</a><br/>#{filename}<br/>#{description}</li></ul></div>');
+			return new Template('<div class="tooltip_audio"><ul class="graphic"><li><a href="#{url}" duration="#{duration}" id="#{id}">#{title} (#{duration_s})</a><br/>#{filename}<br/>#{description}<div class="comment_thread">#{comments}</div></li></ul></div>');
 		} (),
 		email: function() {
 			return new Template('<div class="tooltip_email">' + tooltipItemViewLink('#{subject}') +

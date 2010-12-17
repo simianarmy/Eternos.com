@@ -95,6 +95,8 @@ class User < ActiveRecord::Base
   
   #Member.active.find_all(&:has_backup_data?).size
   
+  COREG_PASSWORD_PLACEHOLDER = 'COREG_TMP4SS_SL00P'
+  
   # Roles
   AdminRole         = 'Admin'
   MemberRole        = 'Member'
@@ -147,6 +149,12 @@ class User < ActiveRecord::Base
     true
   end
   
+  def using_coreg_password?
+    # Before object saved, value is in password attribute only
+    (!password.nil? && (password == COREG_PASSWORD_PLACEHOLDER)) ||
+    valid_password?(COREG_PASSWORD_PLACEHOLDER)
+  end
+  
   def facebook_user?
     return !facebook_id.nil? && facebook_id > 0
   end
@@ -173,10 +181,6 @@ class User < ActiveRecord::Base
   # getting logged in after being created until they complete the signup process.
   def confirmed?
     live?
-  end
-  
-  def facebook_session_connect(session)
-    session.connect(facebook_session_key, facebook_id, nil, facebook_secret_key)
   end
   
   def email_registration_required?

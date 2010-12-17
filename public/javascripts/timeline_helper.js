@@ -122,7 +122,11 @@ var ETimeline = function(opts) {
 		// Add event source to collection keyed by event date
 		addSource: function(source) {
 			this.sources.push(source);
-
+			
+			// Save if source has comments (for use by ETLEventItems)
+			if (source.hasComments()) {
+				ETERNOS.commentsManager.addRootSource(source);
+			}
 			if (source.isDuration()) {
 				// Check duration cache for existing value, skip if found
 				if (!this.durations[tooltipGenerator.key(source)]) {
@@ -391,7 +395,8 @@ var ETimeline = function(opts) {
 			this.jsonEvents = {};
 		}
 	});
-
+	
+	
 	////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Eternos Timeline Search. init: timeline object and {startDate: 'sring date', endDate: 'string date', options: Object}
@@ -519,7 +524,6 @@ var ETimeline = function(opts) {
 			this.firstBandPixels = 0;
 			this.theme = null;
 			this.eventSource = new Timeline.DefaultEventSource();
-
 			this.currentDate = null;
 			this.tlMinDate = null;
 			this.tlMaxDate = null;
@@ -839,7 +843,7 @@ var ETimeline = function(opts) {
 			this.timeline.showLoadingMessage();
 			// Make sure shit gets turned off in case of IE fuckup.
 			// at least 10 secs. should be long enough
-			setTimeout(function() { tl.hideLoading(); }, ETERNOS.loadingBoxTimeout * 1000);
+			setTimeout(function() { tl.hideLoading(); }, ETERNOS.loadingBoxTimeoutSeconds * 1000);
 		},
 		hideLoading: function() {
 			ETDebug.log('hideLoading');

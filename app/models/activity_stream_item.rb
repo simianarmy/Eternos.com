@@ -15,6 +15,8 @@ class ActivityStreamItem < ActiveRecord::Base
   
   include TimelineEvents
   include CommonDateScopes
+  include BackupObjectComment
+  
   named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
   named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
   named_scope :with_attachment, :conditions => ['attachment_data IS NOT ?', nil]
@@ -49,16 +51,24 @@ class ActivityStreamItem < ActiveRecord::Base
       :author         => p.author,
       :source_url     => p.source_url,
       :attribution    => p.attribution,
-      :comment_thread => p.comments,
+      #:comment_thread => p.comments,
       :liked_by       => p.likers)
+    # Synch any comments
+    synch_backup_comments(p.comments) if p.comments && p.comments.any?
   end
   
   def needs_sync?(p)
-    self.comment_thread != p.comments || self.liked_by != p.likers
+    #self.comment_thread != p.comments || 
+    self.comments != p.comments ||
+    self.liked_by != p.likers
   end
   
-  def self.create_from_proxy!(activity_stream_id, item)
-    create!({:activity_stream_id => activity_stream_id}.merge(proxy_to_attributes(item)))
+  def self.create_from_proxy!(activity_stream_id, proxy)
+    create!({:activity_stream_id => activity_stream_id}.merge(proxy_to_attributes(proxy))) do |new_item|
+      if proxy.comments && proxy.comments.any?
+        new_item.synch_backup_comments(proxy.comments)
+      end
+    end
   end
   
   # Converts proxy object to hash containing table column to value pairs
@@ -74,13 +84,43 @@ class ActivityStreamItem < ActiveRecord::Base
     :activity_type    => item.activity_type,
     :attachment_data  => item.attachment_data,
     :attachment_type  => item.attachment_type,
-    :comment_thread   => item.comments,
+    #:comment_thread   => item.comments,
     :liked_by         => item.likers
     }
   end
 
+  # Helper class method to convert Comment object or comment_thread structure to 
+  # a common data format
+  def self.normalize_comment_data(obj)
+    returning(Hashie::Mash.new) do |c|
+      if obj.respond_to?(:commenter_data)
+        c.username    = obj.commenter_data['username']
+        c.user_pic     = obj.commenter_data['pic_url']
+        c.profile_url = obj.commenter_data['profile_url']
+        c.comment     = obj.comment
+        c.posted_at   = obj.created_at
+      elsif obj.respond_to?(:user_pic)
+        c.username    = obj.username
+        c.user_pic     = obj.user_pic
+        c.profile_url = obj.profile_url
+        c.comment     = obj.text
+        c.posted_at   = Time.at(obj.time.to_i)
+      end
+    end
+  end
+  
   def bytes
     message.length + (attachment_data ? attachment_data.length : 0)
+  end
+  
+  # Helpers to handle dual comments storage structure (comment_thread col. & comments has_many assoc.)
+  def has_comments?
+    comments.any? || comment_thread
+  end
+  
+  def get_comments
+    # Comments association has priority over serialized column data
+    comments.any? ? comments : comment_thread
   end
   
   # Override these in child classes

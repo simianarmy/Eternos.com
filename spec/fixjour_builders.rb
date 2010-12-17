@@ -151,10 +151,24 @@ Fixjour  do
       :owner => overrides[:owner] || new_member)
   end
   
+  define_builder(FacebookAccount) do |klass, overrides|
+    obj = klass.new
+    obj.type = 'FacebookAccount'
+    obj
+  end
+  
   define_builder(FacebookContent) do |klass, overrides|
     klass.new(
       :profile => new_profile, 
       :friends => Faker::Lorem.paragraph)
+  end
+  
+  define_builder(FacebookPage) do |klass, overrides|
+    klass.new(
+      :page_id => rand % 1000,
+      :name => Faker::Name.name,
+      :url => Faker::Internet.domain
+    )
   end
   
   define_builder(Family) do |klass, overrides|

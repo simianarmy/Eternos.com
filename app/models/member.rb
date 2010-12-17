@@ -3,6 +3,7 @@ class Member < User
   has_many :loved_ones, :through => :relationships, :source => :guest, :uniq => true
   has_many :invitations, :foreign_key => 'sender_id', :dependent => :destroy
   has_many :guest_invitations, :foreign_key => 'sender_id', :dependent => :destroy
+  belongs_to :facebook_user, :class => 'Member', :foreign_key => 'facebook_uid'
   
   with_options :foreign_key => 'user_id' do |m|
     m.has_many :relationships, :class_name => 'GuestRelationship'
@@ -44,6 +45,21 @@ class Member < User
     :joins => :backup_sources,
     :group => 'users.id'
   }
+  named_scope :emailable, {
+    :joins => "LEFT JOIN email_blacklists ON users.email = email_blacklists.email",
+    :conditions => { 'email_blacklists.email' => nil }
+  }
+  named_scope :unupdated_since, lambda { |date| {
+    :conditions => ['(last_reported IS NULL) OR (last_reported < ?)', date.nil? ? '0000-00-00 00:00:00' : Time.parse(date.to_s).strftime('%Y-%m-%d 00:00:00')]
+  } }
+  named_scope :reportable, lambda { |period| {
+    :joins => :email_lists,
+    :conditions => [
+            'email_lists.name = ? AND email_lists.is_enabled = ?',
+            (period == 'weekly') ? 'weekly_stats' : 'monthly_stats',
+            true
+    ]
+  } }
   
   def self.from_facebook(facebook_id)
     find_by_facebook_uid(facebook_id)
@@ -129,12 +145,6 @@ class Member < User
   
   def member?
     true
-  end
-  
-  def set_facebook_session_keys(session_key, secret_key='')
-    self.facebook_session_key = session_key
-    self.facebook_secret_key = secret_key
-    save(false)
   end
   
   def authenticated_for_facebook_desktop?

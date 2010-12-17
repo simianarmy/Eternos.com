@@ -71,7 +71,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':anywhere/flashrecorder.xml', :controller => 'recordings', 
     :action => 'flashrecorder', :format => 'xml'
   
-  map.resources :user_sessions, :comments, :content_authorizations, :documents, 
+  map.resources :user_sessions, :collection => {:choose_password => :get, :save_password => :post}
+  
+  map.resources :comments, :content_authorizations, :documents, 
     :audio, :musics, :videos, :web_videos, :photos, :invitations, :address_books, 
     :guests, :recordings, :guest_invitations, :password_resets,
     :jobs, :families, :medicals, :medical_conditions, :relationships

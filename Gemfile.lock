@@ -23,6 +23,9 @@ GEM
       activerecord (< 3.0.0)
     amqp (0.6.7)
       eventmachine (>= 0.12.4)
+    autotest-growl (0.2.6)
+    autotest-rails (4.1.0)
+      ZenTest
     aws-s3 (0.6.2)
       builder
       mime-types
@@ -37,6 +40,18 @@ GEM
       net-ssh-gateway (>= 1.0.0)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
+    capybara (0.4.0)
+      celerity (>= 0.7.9)
+      culerity (>= 0.2.4)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      selenium-webdriver (>= 0.0.27)
+      xpath (~> 0.1.2)
+    celerity (0.8.2)
+    childprocess (0.1.4)
+      ffi (~> 0.6.3)
     chronic (0.2.3)
       hoe (>= 1.2.1)
     columnize (0.3.1)
@@ -49,18 +64,25 @@ GEM
       term-ansicolor (~> 1.0.4)
     cucumber-rails (0.3.2)
       cucumber (>= 0.8.0)
+    culerity (0.2.12)
     daemons (1.1.0)
     database_cleaner (0.5.2)
     deadweight (0.1.3)
       hpricot
     diff-lcs (1.1.2)
     eventmachine (0.12.10)
+    eventmachine (0.12.10-java)
     ezcrypto (0.7.2)
     facebooker (1.0.75)
       json_pure (>= 1.0.0)
     faker (0.3.1)
+    ffi (0.6.3)
+      rake (>= 0.8.7)
+    ffi (0.6.3-java)
     gdata (1.1.1)
     gherkin (2.1.5)
+      trollop (~> 1.16.2)
+    gherkin (2.1.5-java)
       trollop (~> 1.16.2)
     haml (3.0.18)
     hashie (0.4.0)
@@ -70,6 +92,7 @@ GEM
       rake (>= 0.8.7)
       rubyforge (>= 2.0.3)
     hpricot (0.8.2)
+    hpricot (0.8.2-java)
     httparty (0.6.1)
       crack (= 0.1.8)
     image_science (1.2.1)
@@ -77,6 +100,7 @@ GEM
       chronic (>= 0.2.3)
     jnunemaker-columbus (0.1.2)
     json (1.4.6)
+    json (1.4.6-java)
     json_pure (1.4.6)
     larch (1.0.2)
       highline (~> 1.5.0)
@@ -92,10 +116,15 @@ GEM
     mime-types (1.16)
     mocha (0.9.9)
       rake
+    mogli (0.0.16)
+      hashie (>= 0.2.0)
+      httparty (>= 0.4.3)
     moomerman-twitter_oauth (0.2.1)
       json (>= 1.1.2)
       mime-types (>= 1.15)
       oauth (>= 0.3.1)
+    moqueue (0.1.4)
+      amqp
     mysqlplus (0.1.2)
     net-scp (1.0.3)
       net-ssh (>= 1.99.1)
@@ -106,6 +135,8 @@ GEM
       net-ssh (>= 1.99.1)
     newrelic_rpm (2.12.3)
     nokogiri (1.4.3.1)
+    nokogiri (1.4.3.1-java)
+      weakling (>= 0.0.3)
     oauth (0.4.3)
     oyster (0.9.4)
     packr (3.1.0)
@@ -130,6 +161,7 @@ GEM
       activesupport (= 2.3.4)
       rake (>= 0.8.3)
     rake (0.8.7)
+    redgreen (1.2.2)
     riddle (1.1.0)
     right_aws (2.0.0)
       right_http_connection (>= 1.2.1)
@@ -150,9 +182,15 @@ GEM
     ruby-stemmer (0.8.2)
     rubyforge (2.0.4)
       json_pure (>= 1.1.7)
+    rubyzip (0.9.4)
     rvideo (0.9.3)
     searchlogic (2.3.16)
       activerecord (>= 2.0.0)
+    selenium-webdriver (0.1.0)
+      childprocess (= 0.1.4)
+      ffi (~> 0.6.3)
+      json_pure
+      rubyzip
     shared-mime-info (0.1)
     shuber-attr_encrypted (1.0.8)
       shuber-eigenclass (>= 1.0.1)
@@ -173,13 +211,17 @@ GEM
       oauth
     tzinfo (0.3.23)
     uuidtools (2.1.1)
+    weakling (0.0.4-java)
     webrat (0.7.1)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
       rack-test (>= 0.5.3)
     xml-simple (1.0.12)
+    xpath (0.1.2)
+      nokogiri (~> 1.3)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
@@ -188,13 +230,18 @@ DEPENDENCIES
   active_presenter
   after_commit
   amqp (= 0.6.7)
+  autotest-growl
+  autotest-rails
   aws-s3
   bullet
   capistrano (= 2.5.10)
   capistrano-ext (= 1.2.1)
+  capybara
+  celerity
   crack
   cucumber
   cucumber-rails
+  culerity
   daemons
   database_cleaner
   deadweight
@@ -221,7 +268,9 @@ DEPENDENCIES
   memcache-client
   mime-types
   mocha
+  mogli
   moomerman-twitter_oauth
+  moqueue
   mysqlplus
   newrelic_rpm (>= 2.9.8)
   nokogiri
@@ -229,6 +278,7 @@ DEPENDENCIES
   packr
   pauldix-feedzirra
   rails (= 2.3.4)
+  redgreen
   right_aws
   rio
   rmagick (= 2.12.2)

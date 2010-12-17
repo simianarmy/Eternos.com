@@ -7,6 +7,7 @@ Feature: Membership
     create_subscription_plans
   end
   
+  @free
   Scenario: Create Free Account
     Given I am not a member
     And I go to the homepage
@@ -24,6 +25,7 @@ Feature: Membership
     Then I should see "Account Created"
     And I should receive a welcome email
   
+  @paid
   Scenario: Create Basic Paid Account
     Given I am on the choose account page
     # Requires JS
@@ -38,3 +40,15 @@ Feature: Membership
     Then I should see "Billed!"
     And I should receive a welcome email
     
+  @coreg
+  @culerity
+  Scenario: Create Account from coreg page
+    Given I submit my info from the coreg page
+    Then  I should receive an email containing my login instructions
+    Then I should see "Click here" in the email
+    When I follow "Click here" in the email
+    Then I should be on the choose password page
+    When I enter my password and email and submit the form
+    Then I should be on the account setup page
+    And I should see "Welcome"
+      

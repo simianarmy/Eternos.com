@@ -165,14 +165,14 @@ class AccountsController < ApplicationController
   # random / default values for required attributes
   def aff_create
     Rails.logger.debug "IN AFF CREATE FOR USER #{@user.inspect}"
-
-    @user.registration_required = false
-
+    
     # GENERATE A PASSWORD 
-    @pwd = User.generate_password
-    @user.generated_password = @pwd
-    @user.password = @user.password_confirmation = @pwd
-
+    #@pwd = User.generate_password
+    #@user.generated_password = @pwd
+    #@user.password = @user.password_confirmation = @pwd
+    # Set stub password
+    @user.password = @user.password_confirmation = User::COREG_PASSWORD_PLACEHOLDER
+    
     # Use stub for name if necessary
     if params[:user][:first_name].blank?
       @user.first_name = 'New'
@@ -220,9 +220,19 @@ class AccountsController < ApplicationController
       if params[:address_book]
         @user.address_book.update_attributes(params[:address_book])
       end
+      # Save with exceptions to validate addresses
       @user.save!
       
+      # Log raw passwords for the login bug 
+      Rails.logger.error "user #{@user.email} password: #{@user.password}"
+
+      # Auto-register them
       @user.register!
+      
+      # Set this to true even though we manually register the user, so that their 
+      # registration settings are turned off in when we call activate!
+      @user.registration_required = true
+      
       @user.activate!
     else
       Rails.logger.warn "Error in aff_create: #{@account.errors.to_json}"

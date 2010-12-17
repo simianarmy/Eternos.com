@@ -14,6 +14,7 @@ var ETLEventSource = Class.create({
 		this.end_date_str 				= s.end_date;
 		this.start_date_obj 			= this._getStartDateObj(); // Create this now for sorts
 		this.end_date_obj					= this._getEndDateObj();
+		this.comments 						= [];
 	},
 	isArtifact: function() {
 		return ETEvent.isArtifact(this.type); 
@@ -26,6 +27,16 @@ var ETLEventSource = Class.create({
 	},
 	isVideo: function() {
 		return ETEvent.isVideo(this.type);
+	},
+	isComment: function(type) {
+		return ETEvent.isComment(this.type);
+	},
+	hasComments: function(type) {
+		if (this.attributes.comments) {
+			ETDebug.dump(this.attributes.comments);
+			return (this.attributes.comments.length > 0);
+		}
+		return false;
 	},
 	isDuration: function() {
 		return (this.end_date_obj != null) && (this.start_date_obj !== this.end_date_obj);
@@ -139,8 +150,13 @@ var ETLEventSource = Class.create({
 	_parseEventDateString: function(date) {
 		// TODO: Optimize - Date.parseExact is slow
 		// try to parse iso datetime
+		var ret;
 		if (!date) { return null; }
-		return date.toISODate();
+		ret = Date.parse(date);
+		if (!ret) {
+			ret = date.toISODate();
+		}
+		return ret;
 	},
 	// Helper to generate 1-line tooltip contents
 	_getSmallTooltipLine: function(text) {
@@ -151,6 +167,77 @@ var ETLEventSource = Class.create({
 	},
 	_evalTemplate: function(opts) {
 		return this.previewTemplate.evaluate(this._templateOpts(opts));
+	},
+	getCommentsCount: function() {
+		var count = 0;
+		
+		this.getComments();
+		if (this.comments.length > 0) {
+			count = this.comments.length;
+			comments = this._getSmallTooltipLine(count + " " + ((count == 1) ? 'Comment' : 'Comments'));
+		}
+		return comments;
+	},
+	// Fills class comments array, returns all comments as string
+	getComments: function() {
+		var comments = '', arr = [], tmp, comm;
+		
+		this.comments.clear();
+		
+		// Object can contain up to 3 different data structures for comments!
+		// The most recent is a real array of Comment objects (preferred)
+		if (this.attributes.comments !== null) {
+			this.attributes.comments.each(function(c) {
+				if (c.comment !== '') {
+					arr.push({username: c.commenter_data.username,
+						user_pic: c.commenter_data.pic_url,
+						text: c.comment,
+						posted: new Date(c.created_at).toLocaleDateString()
+					});
+				}
+			}.bind(this));
+		} else if (this.attributes.comment_thread != null) {
+			// Older comment data structures are in the comment_thread serialized column.
+			// There are 2 possible variants.
+			// Fix fucked up string by converting into the JSON array Rails *used to* return
+			if (typeof(this.attributes.comment_thread) === 'string') {
+				// Split unserialized but not jsonized FacebookComment objects
+				$A(this.attributes.comment_thread.split('- !map:FacebookComment')).each(function(map) {
+					if (map.match('username:')) {
+						comm = {};
+						tmp = map.split("\n");
+						$A(tmp).each(function(m) {
+							if (m.match('username:')) {
+								comm.username = m.split(':')[1];
+							} else if (m.match('user_pic:')) {
+								comm.user_pic = m.split('_pic:')[1];
+							} else if (m.match('text:')) {
+								comm.text = m.split(':')[1];
+							}
+						});
+						arr.push(comm);
+					}
+				});
+			} else if (typeof(this.attributes.comment_thread) === 'object') {
+				arr = this.attributes.comment_thread;
+			} else {
+				// error!
+			}
+		}
+		// Format each processed comment
+		$A(arr).each(function(c) {
+			this.comments.push(c); // Save each comment in internal array
+			comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
+				author: (c.username ? c.username : 'You'),
+				thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
+				comment: c.text, 
+				time: c.posted ? this._getSmallTooltipLine(c.posted) : ''
+				});
+			}.bind(this));
+		if (comments !== '') {
+			comments = this._getSmallTooltipLine('Comments: ' + comments);
+		}
+		return comments;
 	}
 });
 
@@ -173,7 +260,8 @@ var ETLPhotoEventSource = Class.create(ETLEventSource, {
 		return this._evalTemplate({
 			thumbnail_url: this.attributes.thumbnail_url, 
 			img_url: this.attributes.url,
-			caption: caption
+			caption: caption,
+			comments: this.getComments()
 		});
 	}
 });
@@ -228,7 +316,6 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 	getMessage: function() {
 		var thumb, msg = '';
 		
-		
 		if (this.attributes.message != null) {
 			msg = this.attributes.message.urlToLink();
 		} else if (this.attributes.url != null) {
@@ -267,63 +354,7 @@ var ETLActivityStreamEventSource = Class.create(ETLEventSource, {
 var ETLFacebookActivityStreamEventSource = Class.create(ETLActivityStreamEventSource, {
 	initialize: function($super, s) {
 		this.source = 'Facebook';
-		this.comments = [];
 		$super(s);
-	},
-	getCommentsCount: function() {
-		var count = 0;
-		
-		this.getComments();
-		if (this.comments.length > 0) {
-			count = this.comments.length;
-			comments = this._getSmallTooltipLine(count + " " + ((count == 1) ? 'Comment' : 'Comments'));
-		}
-		return comments;
-	},
-	// Fills class comments array, returns all comments as string
-	getComments: function() {
-		var comments = '', arr = [], tmp, comm;
-		
-		this.comments.clear();
-		
-		if (this.attributes.comment_thread != null) {
-			// Handle B.S. Ruby/Rails JSON formatting which seems to change everytime 
-			// I fucking update a gem!
-			// Fix fucked up string by converting into the JSON array Rails *used to* return
-			if (typeof(this.attributes.comment_thread) === 'string') {
-				// Split unserialized but not jsonized FacebookComment objects
-				$A(this.attributes.comment_thread.split('- !map:FacebookComment')).each(function(map) {
-					if (map.match('username:')) {
-						comm = {};
-						tmp = map.split("\n");
-						$A(tmp).each(function(m) {
-							if (m.match('username:')) {
-								comm.username = m.split(':')[1];
-							} else if (m.match('user_pic:')) {
-								comm.user_pic = m.split('_pic:')[1];
-							} else if (m.match('text:')) {
-								comm.text = m.split(':')[1];
-							}
-						});
-						arr.push(comm);
-					}
-				});
-			} else if (typeof(this.attributes.comment_thread) === 'object') {
-				arr = this.attributes.comment_thread;
-			} else {
-				// Can't convert nonsense into comments array..fail
-				;
-			}
-			$A(arr).each(function(c) {
-				this.comments.push(c); // Save each comment in internal array
-				comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
-					author: (c.username ? c.username : 'You'),
-					thumb: (c.username ? '<img align="left" src="' + c.user_pic + '"/>' : ''),
-					comment: c.text});
-				}.bind(this));
-			comments = this._getSmallTooltipLine('Comments: ' + comments);
-		}
-		return comments;
 	},
 	getLikes: function() {
 		var likes = '', count = 0;
@@ -410,7 +441,8 @@ var ETLVideoEventSource = Class.create(ETLEventSource, {
 			title: this.attributes.title,
 			message: this.attributes.description || this.attributes.title,
 			duration: this._getSmallTooltipLine(this.attributes.duration),
-			time: this.getEventTimeHtml()
+			time: this.getEventTimeHtml(),
+			comments: this.getComments()
 		});
 	}
 });
@@ -428,21 +460,32 @@ var ETLAudioEventSource = Class.create(ETLEventSource, {
 			filename: this.attributes.filename,
 			description: this.attributes.description,
 			duration: this.attributes.duration,
-			duration_s: this.attributes.duration_to_s
+			duration_s: this.attributes.duration_to_s,
+			comments: this.getComments()
 		});
 	}
 });
+
 // Comment event
 var ETLCommentEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
 		this.previewTemplate = ETemplates.tooltipTemplates.comment;
+		this.thread_id = null;
 		$super(s);
 	},
-	getPreviewHtml: function($super) {
+	getPreviewHtml: function(idx) {
 		// Just facebook commments for now, don't worry about showing 
 		// commentable object yet.
-		comment_author = 'Unknown';
-		author_pic = null;
+		var comment_author = 'Unknown';
+		var author_pic = null;
+		var thread, i, t_comments = '';
+		
+		return this._getSingleCommentPreviewHtml();
+	},
+	// Does not do thread check
+	_getSingleCommentPreviewHtml: function() {
+		var comment_author = 'Unknown';
+		var author_pic = null;
 		
 		if (this.attributes.commenter_data) {
 			comment_author = this.attributes.commenter_data.username;
@@ -451,7 +494,25 @@ var ETLCommentEventSource = Class.create(ETLEventSource, {
 		return ETemplates.tooltipTemplates.facebook_comment.evaluate({
 			author: comment_author,
 			thumb: (author_pic ? '<img align="left" src="' + author_pic + '"/>' : ''),
-			comment: this.attributes.comment});
+			comment: this.attributes.comment,
+			time: this.getEventTimeHtml()
+			});
+	},
+	// Parses earlier comments object into html
+	_getPriorCommentsHtml: function() {
+		var i, comments = '';
+		
+		if (this.attributes.earlier_comments) {
+			$A(this.attributes.earlier_comments).each(function(c) {
+				comments += ETemplates.tooltipTemplates.facebook_comment.evaluate({
+					author: c.commenter_data ? c.commenter_data.username : 'Unknown',
+					thumb: (c.commenter_data.pic_url ? '<img align="left" src="' + c.commenter_data.pic_url + '"/>' : ''),
+					comment: c.comment,
+					time: new Date(c.created_at).toLocaleDateString()
+					});
+			});
+		}
+		return comments;
 	}
 });
 
@@ -649,6 +710,9 @@ var ETEvent = {
 	isVideo: function(type) {
 		return (type === 'web_video');
 	},
+	isComment: function(type) {
+		return (type === 'comment');
+	},
 	getSourceIcon: function(type) {
 		return this.itemTypes.find(function(t) { return type === t.type; }).icon;
 	},
@@ -657,13 +721,62 @@ var ETEvent = {
 	}
 };
 
-// Utility functions - may move these to utility file if useful
-if (String.prototype.urlToLink == null) {
-	String.prototype.urlToLink = function() {
-		var t = this;
-		t = t.replace(/((www\.|(http|https|ftp|news|file)+\:\/\/)[_.a-zA-Z0-9-]+\.[_a-zA-Z0-9\/_:@=.+?,##%&~-]*[^.|\'|\# |!|\(|?|,| |>|<|;|\)])/g, '$1');
-		t = t.replace('href="www', 'href="http://www');
-		t = t.replace(/((www\.|(http|https|ftp|news|file))+:\/\/[^ ]+)/g, '<div class="tooltip_link"><a href="$1" target="_new" rel="nofollow">$1</a></div>');
-		return t;
-	};
-}
+////////////////////////////////////////////////////////////////////////////////////////
+//
+// ETLCommentManager
+//
+// Helper for managing comments threads for all event types
+// Necessary to group related comments into a thread in order to properly display
+// in popups.  Since comments are created individually, an external container
+// must store the relationships.
+
+var ETLCommentManager = Class.create({
+	initialize: function() {
+		this.threads = new Hash();
+		this.roots = new Hash();
+	},
+	// Adds comment to thread - assumes uniqueness?
+	addToThread: function(comment) {
+		var key = this.gen_key(comment);
+		if (!this.threads[key]) {
+			this.threads[key] = new Array();
+		}
+		this.threads[key].push(comment);
+		return key;
+	},
+	getThread: function(id) {
+		return this.threads[id];
+	},
+	isFirstCommentInThread: function(id, comment) {
+		if (this.threads[id]) {
+			return this.threads[id][0] == comment;
+		}
+		return false;
+	},
+	addRootSource: function(src) {
+		ETDebug.log("Adding root comment source " + src.type);
+		this.roots.set(this._gen_key(this._get_root_type_str(src.type), src.getID()), src);
+	},
+	getCommentRoot: function(comment) {
+		return this.roots.get(this.gen_key(comment));
+	},
+	gen_key: function(comment) {
+		return this._gen_key(comment.attributes.commentable_type, comment.attributes.commentable_id);
+	},
+	_gen_key: function(type, id) {
+		return [type, id].join(':');
+	},
+	_get_root_type_str: function(type) {
+		// We have to coerce commentable_type to match the sti base class, capitalized
+		if (["facebook_activity_stream_item", "twitter_activity_stream_item"].include(type)) {
+			type = "ActivityStreamItem";
+		} else if (["photo", "audio", "video"].include(type)) {
+			type = "Content";
+		}
+		return type;
+	}
+});
+// Just create a global to the ETERNOS namespace, it doesn't belong to any 
+// one object
+ETERNOS.commentsManager = new ETLCommentManager();
+

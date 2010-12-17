@@ -21,7 +21,8 @@ config.action_controller.perform_caching             = false
 # Disable request forgery protection in test environment
 config.action_controller.allow_forgery_protection    = false
 
-ASSET_HOST              = "dev.eternos.com"
+#ASSET_HOST              = "dev.eternos.com"
+ASSET_HOST              = "staging.eternos.com"
 REGISTER_USER_TO_FACEBOOK_ENABLED = false
 
 # Tell Action Mailer not to deliver emails to the real world.
@@ -31,4 +32,6 @@ config.action_mailer.delivery_method = :test
 
 config.cache_store = nil
 
+config.gem 'rspec',            :lib => false, :version => '>=1.3.0' unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec'))
 config.gem 'rspec-rails', :version => '>= 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+config.gem 'spork',            :lib => false, :version => '>=0.7.5' unless File.directory?(File.join(Rails.root, 'vendor/plugins/spork'))

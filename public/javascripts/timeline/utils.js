@@ -117,6 +117,15 @@ String.prototype.toISODate = function() {
 	}
 	return dt;
 };
+if (String.prototype.urlToLink == null) {
+	String.prototype.urlToLink = function() {
+		var t = this;
+		t = t.replace(/((www\.|(http|https|ftp|news|file)+\:\/\/)[_.a-zA-Z0-9-]+\.[_a-zA-Z0-9\/_:@=.+?,##%&~-]*[^.|\'|\# |!|\(|?|,| |>|<|;|\)])/g, '$1');
+		t = t.replace('href="www', 'href="http://www');
+		t = t.replace(/((www\.|(http|https|ftp|news|file))+:\/\/[^ ]+)/g, '<div class="tooltip_link"><a href="$1" target="_new" rel="nofollow">$1</a></div>');
+		return t;
+	};
+}
 // Timeline-wide debug flag
 var DEBUG_BOX = false; // show debug in box
 // Timeline debug module

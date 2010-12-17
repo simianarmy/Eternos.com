@@ -16,6 +16,7 @@ ssh_options[:forward_agent] = true
 
 desc "Restart web server"
 deploy.task :restart, :roles => :web do
+  sudo "monit restart memcache_11211"
   sudo "/etc/init.d/nginx reload"
 end
 

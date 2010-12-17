@@ -74,6 +74,7 @@ namespace :db do
     BackupSite.create(:name => 'gmail')
     BackupSite.create(:name => 'flickr')
     BackupSite.create(:name => 'blog')
+    BackupSite.create(:name => 'picasa')
   end
 
   desc "Fill subscription related tables"

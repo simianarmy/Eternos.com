@@ -24,15 +24,33 @@ end
 
 group :test do
   # bundler requires these gems while running tests
-  gem 'webrat'
-  gem 'cucumber'
   gem 'rspec', '1.3.1'
   gem 'rspec-rails', '1.3.3'
   gem 'mocha'
   gem 'ruby-debug'
   gem 'faker'
   gem 'spork'
+  gem 'database_cleaner'
+  gem 'autotest-growl'
+  gem 'autotest-rails'
+  gem 'redgreen'
+  gem 'moqueue'
+end
+
+group :cucumber do
+  gem 'rspec', '1.3.1'
+  gem 'rspec-rails', '1.3.3'
+  gem 'mocha'
+  gem 'ruby-debug'
+  gem 'faker'
+  gem 'spork'
+  gem 'database_cleaner'
+  gem 'webrat'
+  gem 'cucumber'
   gem 'cucumber-rails'
+  gem 'capybara'
+  gem 'celerity'
+  gem 'culerity'
   gem 'database_cleaner'
 end
 
@@ -66,6 +84,7 @@ gem 'mash'
 gem 'mdalessio-dryopteris'
 gem 'memcache-client'
 gem 'mime-types'
+gem 'mogli'
 gem 'moomerman-twitter_oauth'
 gem 'mysqlplus'
 gem 'nokogiri'

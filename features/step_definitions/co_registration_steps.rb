@@ -1,3 +1,5 @@
+World(EternosMailer::Subjects)
+
 # STUBS
 Given /^the following co_registrations:$/ do |co_registrations|
   CoRegistration.create!(co_registrations.hashes)
@@ -17,21 +19,23 @@ end
 # REAL CODE
 
 Given /^I submit my info from the coreg page$/ do
-  post '/accounts/aff_create', {:plan => 'Free', :user => {:email => Faker::Internet.email}}
+  post '/accounts/aff_create', {:plan => 'Free', :user => {:email => @email_addr = Faker::Internet.email}}
 end
 
-Then /I should receive an email containing my login credentials/ do
-  open_last_email
+Then /I should receive an email containing my login instructions/ do
+  open_email(@email_addr)
+  current_email.should have_subject(Regexp.new(subject_from_sym(:signup_notification)))
   if current_email.body =~ /login: (\S+)/i
     @login = $1
   end
-  if current_email.body =~ /password: (\S+)/i
-    @password = $1
-  end
-  @login.should_not be_blank
-  @password.should_not be_blank
+  @login.should_not be_blank  
+  @login.should == @email_addr
 end
   
-When /^I login with my email credentials$/ do
-  login_with_credentials @login, @password
+When /^I enter my password and email and submit the form$/ do 
+  passwd = 'fl00bz0m'
+  fill_in('user_session[login]', :with => @login)
+  fill_in('user_session[password]', :with => passwd)
+  fill_in('password_confirmation', :with => passwd)
+  click_button "Save"
 end

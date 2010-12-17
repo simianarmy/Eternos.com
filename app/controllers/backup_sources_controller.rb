@@ -10,7 +10,7 @@ class BackupSourcesController < ApplicationController
   
   ssl_allowed :add_twitter, :remove_twitter_account,
     :add_picasa, :remove_picasa_account,
-    :add_feed_url, :remove_url
+    :add_feed_url, :remove_url, :picasa_auth, :twitter_auth
     
   def index
     @need_setup = current_user.need_backup_setup?
@@ -99,8 +99,10 @@ class BackupSourcesController < ApplicationController
       if session[:token] = gdata_client.auth_handler.upgrade()
         gdata_client.authsub_token = auth_token = session[:token] 
         RAILS_DEFAULT_LOGGER.debug "AuthSub token upgraded to #{auth_token}"
-        # Fetch the account title from google
-        title = picasa_client.account_title
+        
+        # Fetch the account title from google, using new client object
+        info_client = GoogleBackup::Auth::Picasa.new :auth_token => auth_token
+        title = info_client.account_title
         RAILS_DEFAULT_LOGGER.debug "Account title from google: #{title}"
         
         #Create new backup source

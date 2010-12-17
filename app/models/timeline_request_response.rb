@@ -27,6 +27,7 @@ class TimelineRequestResponse
   
   def execute
     @results ||= search_events
+    @results ||= []
     @response.merge!(:resultCount => @results.size,
       :results => @results,
       :status => @status,

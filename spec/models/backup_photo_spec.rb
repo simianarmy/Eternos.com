@@ -125,9 +125,9 @@ describe BackupPhoto do
     describe "synching backup comments" do
       it "should only synch backup comments to photo object's list" do
         comments = [create_proxy_fb_comment]
-        @photo.photo.expects(:synch_backup_photo_comments).with(comments)
-        @photo.expects(:synch_backup_photo_comments).never
-        @photo.synch_backup_comments(comments)
+        @photo.photo.expects(:synch_backup_comments).with(comments)
+        @photo.expects(:synch_backup_comments).never
+        @photo.synch_comments(comments)
       end
     end
   end   

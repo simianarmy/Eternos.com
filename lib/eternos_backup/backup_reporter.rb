@@ -38,7 +38,7 @@ module EternosBackup
           total[s] = total_avg[s] = latest[s] = latest_avg[s] = 0
         end
         
-        backup_items = %w( ActivityStreamItem BackupPhotoAlbum Content BackupEmail Feed FeedEntry )
+        backup_items = %w( ActivityStreamItem BackupPhotoAlbum FacebookPage Content Comment BackupEmail Feed FeedEntry )
         backup_items.each do |bi|
           key = bi.tableize.to_sym
           klass = bi.constantize

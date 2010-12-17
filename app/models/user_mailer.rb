@@ -10,11 +10,15 @@ class UserMailer < ActionMailer::Base
     setup_email(user)
     
     @subject          += subject_from_sym :signup_notification
-    @body[:passwd]    = user.generated_password
     @body[:name]      = user.full_name || 'Eternos user'
     @body[:url]       = "http://#{AppConfig.base_domain}/activate/#{user.activation_code}"
     @body[:facebook]  = !user.facebook_id.nil?
     @body[:login]     = user.login
+    
+    # If co-reg user, add link to special password-setting login page
+    if user.using_coreg_password?
+      @body[:choose_passwd_login_url]    = choose_password_user_sessions_url(:protocol => 'https')
+    end
     add_category_header "Activation Request" 
   end
   
@@ -81,6 +85,27 @@ class UserMailer < ActionMailer::Base
     sent_on       Time.now
     content_type  "text/plain"
     add_category_header "Test"
+  end
+
+  def backup_stats(user, backups, period = 'weekly')
+    setup_email(user)
+    @name = user.full_name
+    if (period == 'weekly') then
+      @period = 'week'
+      start_time = Time.now.to_date - 6
+    else
+      #monthly
+      @period = 'month'
+      start_time = (Time.now.to_date << 1) + 1
+    end
+    format_date = lambda {|date| Date::ABBR_MONTHNAMES[date.month] + ' ' + date.day.to_s }
+    @date_range = format_date.call(start_time) + ' - ' + format_date.call(Time.now.to_date)
+    @num_errors = 0
+    @num_facebook_items = backups[:fb]
+    @num_tweets = backups[:tweets]
+    @num_photos = backups[:photos]
+    @num_emails = backups[:emails]
+    @num_rss_items = backups[:rss]
   end
   
   protected

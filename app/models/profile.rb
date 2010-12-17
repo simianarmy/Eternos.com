@@ -59,12 +59,14 @@ class Profile < ActiveRecord::Base
      :pic_small_with_logo, :pic_square_with_logo]
       
   def sync_with_facebook(fb_user, fb_info)
+    return false unless fb_user && fb_info
+    
     self.political_views  = fb_info[:political] unless fb_info[:political].blank?
     self.religion         = fb_info[:religion] unless fb_info[:religion].blank?
     self.facebook_data    = fb_info
     
-    sync_career_from_facebook(fb_user.work_history) if fb_user.work_history.any?
-    sync_education_from_facebook(fb_user.education_history) if fb_user.education_history.any?
+    sync_career_from_facebook(fb_user.work_history) if fb_user.work_history.try(:any?)
+    sync_education_from_facebook(fb_user.education_history) if fb_user.education_history.try(:any?)
     # if fb_info[:pic].any? && !self.photo
     #       TempFile.new(File.basename(fb_info[:pic])) do |tmp|
     #         rio(fb_info[:pic]).binmode > rio(tmp.path)

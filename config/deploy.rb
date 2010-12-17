@@ -44,7 +44,7 @@ set :dos2unix, "/usr/bin/dos2unix"
 
 # THIS B.S. IS SUPPOSED TO WORK
 set :bundle_cmd, "/usr/bin/bundle"
-set :bundle_without,      [:development, :test]
+set :bundle_without,      [:development, :test, :cucumber]
 
 set :shared_configs, %w[ amazon_s3.yml amqp.yml amqp-backup.yml database.yml email.yml facebooker.yml 
   facebooker_desktop.yml gateway.yml key.yml paypal.yml twitter_oauth.yml workling.yml ]
@@ -164,7 +164,7 @@ CUTYCAPT
   end
   
   task :minify_js, :roles => [:app] do
-    run "cd #{release_path} && bundle exec rake js:min RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake js:min RAILS_ENV=#{stage}"
   end
 end
 

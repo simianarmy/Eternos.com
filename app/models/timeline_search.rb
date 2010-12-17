@@ -11,6 +11,7 @@ class TimelineSearch
     :facebook   => :get_facebook_items,
     :photos     => :get_images,
     :media      => :get_media,
+    :activity_stream_comments => :get_activity_stream_comments,
     :content_comments => :get_content_comments,
     :blog       => :get_feed_items,
     :profile    => [:get_durations]
@@ -51,17 +52,21 @@ class TimelineSearch
     @methods
   end
   
+  # Performs search and returns results as collection of TimelineEvents
   def results
     # do search 
+    events = []
     search_methods.each do |meth|
       RAILS_DEFAULT_LOGGER.debug "calling #{meth}..."
       if res = self.send(meth)
         RAILS_DEFAULT_LOGGER.debug "#{meth} returned #{res.size} items"
-        res.each {|res| add_events(res)}
+        events += res
       end
     end
     RAILS_DEFAULT_LOGGER.debug "Done fetching items."
-    remove_duplicates
+    # Conver to unique list of timeline event objects
+    post_process_results(events)
+    @events
   end
   
   def num_results
@@ -113,6 +118,28 @@ class TimelineSearch
     query FeedEntry.belonging_to_user(@member.id).include_content.searchlogic
   end
   
+  def get_activity_stream_comments
+    # Tell generators not to execute the query
+    srch = without_executing_query do
+      date_query Comment.searchlogic
+    end
+    join_str = %Q( INNER JOIN activity_stream_items ON activity_stream_items.id = comments.commentable_id 
+    AND comments.commentable_type = 'ActivityStreamItem' 
+    INNER JOIN activity_streams ON activity_streams.id = activity_stream_items.activity_stream_id 
+    )
+    
+    res = srch.find(:all, 
+      :joins => join_str,
+      :conditions => ["(activity_streams.id = ?) AND (DATE(activity_stream_items.published_at) <> DATE(comments.created_at))",
+        @member.activity_stream.id]
+    )
+    # Collect and add every comment's commentable object for comment threads displays
+    if res.any?
+      res += ActivityStreamItem.find(res.map(&:commentable_id)).uniq
+    end
+    res
+  end
+  
   # In order to display comments independently of their 'commentable' object
   def get_content_comments
     # Searchlogic >= 2.4:
@@ -122,8 +149,7 @@ class TimelineSearch
     #date_query Comment.commentable_content_type_user_id_eq(@member.id).searchlogic
     
     # FEATURE SWITCH FOR TESTING ONLY
-    Rails.logger.debug AppConfig.timeline_fb_comment_accounts.inspect
-    return unless AppConfig.timeline_fb_comment_accounts && AppConfig.timeline_fb_comment_accounts.include?(@member.id)
+    #return unless AppConfig['timeline_fb_comment_accounts'] && AppConfig['timeline_fb_comment_accounts'].include?(@member.id)
     
     # Tell generators not to execute the query
     srch = without_executing_query do
@@ -230,6 +256,11 @@ class TimelineSearch
       RAILS_DEFAULT_LOGGER.debug "events after rejecting: #{@events.size}"
     end
     @events
+  end
+  
+  def post_process_results(results)
+    results.uniq.each {|res| add_events(res)}
+    remove_duplicates
   end
   
   private
