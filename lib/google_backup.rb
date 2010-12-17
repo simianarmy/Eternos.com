@@ -4,7 +4,7 @@
 
 module GoogleBackup
   GDATA_AUTHSUB_PEM_FILE = 'eternos.com_gdataprivkey.pem'
-  SECURE_AUTHSUB_ENABLED = false
+  SECURE_AUTHSUB_ENABLED = true
   
   module Auth
     class Base
