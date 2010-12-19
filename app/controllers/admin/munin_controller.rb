@@ -2,8 +2,6 @@
 #
 # Admin munin controller
 
-require 'lib/eternos_backup/backup_source_error'
-
 class Admin::MuninController < ActionController::Base 
   @@API_KEY = 'FL1mFl4mAlamB' # Password to match requests against
   @@MuninSampleInterval = 5.minutes
