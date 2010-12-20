@@ -66,7 +66,7 @@
        <%= content_tag(:td, bs[:created_at], :align => 'center') %>
        <%= content_tag(:td, bs[:last_backup_at], :align => 'center') %>
        <%= content_tag(:td, bs[:status], :align => 'center') %>
-       <%= content_tag(:td, '' ) %>
+       <%= content_tag(:td, (bs[:status] == 'OK') ? '' : link_to('Edit settings', account_setup_path(:step => 0)) ) %>
     <% end %>
   <% end %>
   <% content_tag(:tr) do %>
