@@ -165,7 +165,7 @@ class BackupSource < ActiveRecord::Base
   def on_backup_complete(info={})
     unless info[:errors]
       # Reset error notification count after succesful backups
-      update_attribute(:error_notifications_sent, 0)
+      update_attributes(:error_notifications_sent => 0, :auth_error => nil)
     end
     update_last_backup_times
     
@@ -204,7 +204,7 @@ class BackupSource < ActiveRecord::Base
   
   # Returns string description of current backup status
   def backup_status_desc
-    status = if auth_required?
+    status = if !confirmed?
       'Authentication Required'
     elsif active?
       if lb = latest_backup
