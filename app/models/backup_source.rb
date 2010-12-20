@@ -204,9 +204,7 @@ class BackupSource < ActiveRecord::Base
   
   # Returns string description of current backup status
   def backup_status_desc
-    status = if backup_broken?
-      'Too many failed attempts'
-    elsif auth_required?
+    status = if auth_required?
       'Authentication Required'
     elsif active?
       if lb = latest_backup
@@ -217,6 +215,10 @@ class BackupSource < ActiveRecord::Base
     else
       'Inactive'
     end
+    if (status == 'Failed') &&  backup_broken?
+      status = EternosBackup::BackupSourceError.new(self).short_error
+    end
+    status
   end
   
   def last_backup_date
