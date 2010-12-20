@@ -101,8 +101,8 @@ module FacebookDesktopApp
     # Checks if associated user can query 'friends' list.  If not, then session 
     # is incorrect (or secret key, or user doesn't exist anymore, etc.)
     def verify_permissions
-      user.friends
-      true
+      user.has_permissions? FacebookDesktopApp.backup_permissions
+#      user.friends
     rescue 
       @errors = $!
       false

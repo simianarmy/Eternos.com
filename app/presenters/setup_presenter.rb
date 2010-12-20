@@ -26,15 +26,17 @@ class SetupPresenter < AccountPresenter
       begin
         Rails.logger.debug "FETCHING FACEBOOK ACCOUNT USERNAMES.."
         @facebook_accounts.each do |fb|
-          unless fb.title
-            Rails.logger.debug "fetching name for account #{fb.account_id}"
-            FacebookAccountManager.login_with_session(@fb_session, @user, 
-              fb.account_id)
-            if @fb_session.verify_permissions
-              @fb_session.user.populate(:pic_small, :name) 
-              fb.title = @fb_session.user.name
-              fb.save(false)
-            end
+          Rails.logger.debug "fetching name for account #{fb.account_id}"
+          FacebookAccountManager.login_with_session(@fb_session, @user, 
+          fb.account_id)
+
+          if @fb_session.verify_permissions
+            @fb_session.user.populate(:pic_small, :name) 
+            fb.title = @fb_session.user.name
+            fb.save(false)
+          else
+            @facebook_confirmed = false
+            @facebook_user = @facebook_pic = nil
           end
         end
       rescue Facebooker::Session::SessionExpired, Facebooker::Session::IncorrectSignature => e
