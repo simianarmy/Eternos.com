@@ -18,7 +18,7 @@ class DashboardPresenter < Presenter
       # Return simple hash with backup source info
       {:description => bs.description,
         :created_at => bs.created_at.to_date,
-        :last_backup_at => last_backup_date,
+        :last_backup_at => bs.last_backup_date,
         :status => bs.backup_status_desc
       }
     end.sort_by {|bs| bs[:created_at]}
