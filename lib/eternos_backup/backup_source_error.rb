@@ -23,7 +23,7 @@ module EternosBackup
       # Rss errors
       
       # Email errors
-      Regexp.new('Net::IMAP::NoResponseError: Invalid credentials')    => 400,
+      Regexp.new('Net::IMAP::NoResponseError:\s+Invalid credentials')    => 400,
       
       # Program errors
       Regexp.new('undefined method')                                    => -100,
