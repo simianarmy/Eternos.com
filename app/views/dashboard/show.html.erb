@@ -39,34 +39,41 @@
         <%= td_thead_tag(105, 'Total', true) %>
     <% end %>
     <% content_tag(:tr) do %>
-        <%= content_tag(:td, @backup_data[:albums], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:photos], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:videos], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:audio], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:emails], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:rss], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:fb], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:tweets], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:media_comments], :align => 'center') %>
-        <%= content_tag(:td, @backup_data[:total], :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:albums]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:photos]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:videos]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:audio]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:emails]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:rss]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:fb]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:tweets]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:media_comments]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:total]), :align => 'center') %>
     <% end %>
 <% end %>
 
 <% table_info_part('Backup Status') do %>
   <% content_tag(:tr) do %>
     <%= td_thead_tag(116, 'Backup Site', true) %>
-    <%= td_thead_tag(116, 'Added on', true) %>
+    <%= td_thead_tag(116, 'Added', true) %>
     <%= td_thead_tag(116, 'Most Recent Backup', true) %>
     <%= td_thead_tag(116, 'Status', true) %>
     <%= td_thead_tag(116, 'Options', true) %>
   <% end %>
   <% @dashboard.backup_sites.each do |bs| %>
     <% content_tag(:tr) do %>
-       <%= content_tag(:td, bs[:description], :align => 'left') %>
+      <% content_tag(:td, :align => 'left') do %>
+        <div style="float:left; padding-right:3px;">
+          <%= backup_icon(bs[:site], '16x16', true) %>
+        </div>
+        <div>
+          <%= bs[:description] %>
+        </div>
+       <% end %>
        <%= content_tag(:td, bs[:created_at], :align => 'center') %>
        <%= content_tag(:td, bs[:last_backup_at], :align => 'center') %>
        <%= content_tag(:td, bs[:status], :align => 'center') %>
-       <%= content_tag(:td, (bs[:status] == 'OK') ? '' : link_to('Edit settings', account_setup_path(:step => 0)) ) %>
+       <%= content_tag(:td, (bs[:status] == 'OK') ? '' : link_to('Edit settings', account_setup_path(:step => 0, :site => bs[:site])) ) %>
     <% end %>
   <% end %>
   <% content_tag(:tr) do %>

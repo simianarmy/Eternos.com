@@ -19,7 +19,8 @@ class DashboardPresenter < Presenter
       {:description => bs.description,
         :created_at => bs.created_at.to_date,
         :last_backup_at => bs.last_backup_date,
-        :status => bs.backup_status_desc
+        :status => bs.backup_status_desc,
+        :site => bs.backup_site.name
       }
     end.sort_by {|bs| bs[:created_at]}
     Rails.logger.debug "backup sites: #{@backup_sites.inspect}"
