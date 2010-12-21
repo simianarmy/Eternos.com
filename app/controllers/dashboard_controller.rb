@@ -39,15 +39,4 @@ class DashboardController < ApplicationController
     end
   end    
       
-  def regions
-    @regions = params['c_id'].empty? ? [] : Region.find(:all,
-                           :conditions => {:country_id => params['c_id']},
-                           :order => :name).map{|reg| {:name => reg.name, :id => reg.id}}
-    @regions.unshift({:name => params['c_id'].empty? ? '&lt;Select country&gt;' : '&lt;Select region&gt;', :id => nil})
-    @curr_reg = @regions.select {|reg| reg[:id].to_s == params[:curr]}.first
-    @curr_reg = @curr_reg[:id] if @curr_reg
-    respond_to do |format|
-      format.html {render :layout => false}
-    end
-  end
 end
