@@ -41,7 +41,9 @@ class Feed < ActiveRecord::Base
       add_entries(feed.entries) if valid_parse_result(feed)
     end
     # Save latest feed attributes for updates
-    update_attributes(:etag => feed.etag, :last_modified => feed.last_modified, :feed_url_s => feed.feed_url) if valid_parse_result(feed)
+    if valid_parse_result(feed)
+      update_attributes(:etag => feed.etag, :last_modified => feed.last_modified, :feed_url_s => feed.feed_url)
+    end
   end
   
   # Add all unsaved feed entries
@@ -54,7 +56,7 @@ class Feed < ActiveRecord::Base
   end
   
   def valid_parse_result(feed)
-    !(feed.nil? || feed.is_a?(Fixnum))
+    !(feed.nil? || feed.is_a?(Fixnum) || feed.is_a?(Array))
   end
   
   private
