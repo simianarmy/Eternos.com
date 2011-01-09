@@ -13,15 +13,15 @@
 
 <div class="header">
     <form action="/login" class="new_user_session" id="new_user_session" method="post">
-      No account yet? &nbsp; <a href="signup.html">Sign-Up Now!</a> &nbsp; &nbsp;
+      No account yet? &nbsp; <%= link_to 'Sign-Up Now!', url_for(:controller => 'accounts') %> &nbsp; &nbsp;
       <input name="commit" type="submit" value="Login" />
     </form>
     <a href="index.html"><img src="/images/vault/logo.png" alt="Sync.Eternos" /></a>
 	  <ul>
-		<li class="active"><a href="index.html">Overview</a><span></span></li>
-		<li class="inact"><%= link_to 'Why Sync', url_for(:action => 'why') %><span></span></li>
-		<li class="inact"><%= link_to 'Services', url_for(:action => 'services') %><span></span></li>
-		<li class="inact"><%= link_to 'Getting Started', url_for(:action => 'signup') %><span></span></li>
+		<li class="active"><a href="/">Overview</a><span></span></li>
+		<li class="inact"><%= link_to 'Why Sync', url_for(:controller => 'home', :action => 'why') %><span></span></li>
+		<li class="inact"><%= link_to 'Services', url_for(:controller => 'home', :action => 'services') %><span></span></li>
+		<li class="inact"><%= link_to 'Getting Started', url_for(:controller => 'accounts') %><span></span></li>
 	  </ul>
 </div>
 
