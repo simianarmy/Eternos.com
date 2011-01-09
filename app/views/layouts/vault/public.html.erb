@@ -8,20 +8,21 @@
 	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+<%= yield(:head) %>
 </head>
 <body>
 
 <div class="header">
     <form action="/login" class="new_user_session" id="new_user_session" method="post">
-      No account yet? &nbsp; <%= link_to 'Sign-Up Now!', url_for(:controller => 'accounts') %> &nbsp; &nbsp;
+      No account yet? &nbsp; <%= link_to 'Sign-Up Now!', '/accounts/new' %> &nbsp; &nbsp;
       <input name="commit" type="submit" value="Login" />
     </form>
-    <a href="index.html"><img src="/images/vault/logo.png" alt="Sync.Eternos" /></a>
+    <a href="index.html"><img src="/images/vault/logo.png" alt="Vault.Eternos" /></a>
 	  <ul>
 		<li class="active"><a href="/">Overview</a><span></span></li>
-		<li class="inact"><%= link_to 'Why Sync', url_for(:controller => 'home', :action => 'why') %><span></span></li>
+		<li class="inact"><%= link_to 'Why Vault', url_for(:controller => 'home', :action => 'why') %><span></span></li>
 		<li class="inact"><%= link_to 'Services', url_for(:controller => 'home', :action => 'services') %><span></span></li>
-		<li class="inact"><%= link_to 'Getting Started', url_for(:controller => 'accounts') %><span></span></li>
+		<li class="inact"><%= link_to 'Getting Started', "/accounts/new" %><span></span></li>
 	  </ul>
 </div>
 
@@ -47,7 +48,7 @@
 			</li>
 			<li>
 				<ul>
-					<li><a href="#">sign-up</a></li>
+					<li><a href="/accounts/new">sign-up</a></li>
 					<li><%= link_to 'terms of use', '/about/terms' %></li>
 					<li><%= link_to 'privacy policy', '/about/privacy' %></li>
 					<li><a href="#">press release</a></li>

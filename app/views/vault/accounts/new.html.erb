@@ -1,3 +1,7 @@
+<% stylesheet 'application' %>
+<% javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" %>
+<% hide_login_box %>
+
 <fieldset class="content">
 	<div class="content-left">
         <div class="myBox get-started01">
@@ -15,56 +19,62 @@
     </div>
 	<div class="content-box">
 		<h1>Please choose your account type</h1>
-		<% form_tag(:action => "step2") do |f| %>
+		<%= custom_form_error_header if @user.errors.any? %>
+		<% error_handling_form_for @user, :url => {:action => 'create'}, 
+		  :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
+      <%= hidden_field_tag 'plan', @plan.name %>
         <ul class="form-ul">
             <li>
-                <label>Login Name<br />
-                <input type="text" /></label>
-                <em>Your login will be part of the URL for your website.</em>
+                <%= f.text_field 'login' %>
+                <em>some copy here</em>
             </li>
             <li>
-                <label>Password<br />
-                <input type="password" /></label>
+                <%= f.password_field 'password' %>
                 <em>Select a password to protect your account.</em>
             </li>
             <li>
-                <label>Email Address<br />
-                <input type="text" /></label>
-                <em>Your eail will only be used for account notifications.</em>
+                <%= f.text_field 'email' %>
+                <em>some copy here.</em>
             </li>
         </ul>
         
-		<ul class="form-ul">
+		    <ul class="form-ul">
             <li>
-                <label>Your Name<br />
-                <input type="text" /></label>
-                <em>Your login will be part of the URL for your website.</em>
+                <%= f.text_field 'full_name' %>
+                <em>some copy here</em>
             </li>
             <li>
-                <label>Company Name<br />
-                <input type="text" /></label>
-                <em>Select a password to proect your account.</em>
+                <p>
+                <label>Company Name</label><br />
+                <%= text_field_tag 'company_name' %>
+                </p>
+                <em>some copy here</em>
             </li>
             <li>
-                <label>Phone Number<br />
-                <input type="text" /></label>
-                <em>Your eail will only be used for account notifications.</em>
+              <p>
+                <label>Phone Number</label><br />
+                <%= text_field_tag 'phone_number' %>
+              </p>
+                <em>some copy here</em>
             </li>
         </ul>
         
-		<ul class="form-ul2">
+		    <ul class="form-ul2">
             <li>
-                <label>Enter Authentication Code<br />
-                <input type="text" /></label>
-                <img src="/images/vault/captcha.gif" width="222" height="47" />
-                <em>Your login will be part of the URL for your website.</em>
+              <p>
+                <label>Enter Authentication Code</label><br/>
+                <%= recaptcha_tags :ssl => request.ssl? %>
+                </p>
+                <em>some copy here.</em>
             </li>
         </ul>
         <p class="p1">
 		    <input type="submit" value="Choose Account Type" id="yellow-button3" />        
-        <a href="#">Already Have An Account? Click Here</a><br />
-        <input type="checkbox" checked="checked" /> <em>I accept the <a href="#">Terms and Conditions</a></em>
+        <a href="/login">Already Have An Account? Click Here</a><br />
+        <%= f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @terms_accepted} %>
+        I accept the 
+        <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
         </p>
-        <% end %>
+    <% end %>
 	</div>
 </fieldset>
