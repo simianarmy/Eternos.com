@@ -1,0 +1,130 @@
+<fieldset class="content">
+	<div class="content-left">
+        <div class="myBox get-started01 get-started02">
+            <h2><img src="images/grey-arrow.gif" width="13" height="19" /> Account Information</h2>
+            <p>Backing up your Google Apps data is easy. Just enter your Google Apps Domain and login credentials. Next select which accounts you want to backup and an email is sent to confirm participation. We take it from there. You will get regular emails confirming when your backups have completed. </p>
+        </div>
+        <div class="myBox get-started01 get-started02">
+            <h2><img src="images/grey-arrow.gif" width="13" height="19" />  Account Options &amp; Type</h2>
+            <p>Backing up your Google Apps data is easy. Just enter your Google Apps Domain and login credentials. Next select which accounts you want to backup and an email is sent to confirm participation. We take it from there. You will get regular emails confirming when your backups have completed. </p>
+        </div>  
+        <div class="myBox get-started01">
+            <h2><img src="images/grey-arrow.gif" width="13" height="19" />  Initial account setup</h2>
+            <p>Backing up your Google Apps data is easy. Just enter your Google Apps Domain and login credentials. Next select which accounts you want to backup and an email is sent to confirm participation. We take it from there. You will get regular emails confirming when your backups have completed. </p>
+        </div>          
+    </div>
+	<div class="content-box">
+		<h1>Choose your services to backup</h1>
+        <div id="accordion">
+          <p class="account-setup-accordion-icon current"> 
+          <img src="images/2nd-facebook.gif" id="fb-button" class="" alt="2nd-facebook" align="middle" /> <strong>Facebook:</strong> Back up all Photos, Wall posts, Comments, Friends, &amp; Groups. </p>
+          <!-- Facebook Pane -->
+          <div style="display: block;" id="facebook-form-box" class="pane network-login-box">
+            <div id="facebook-box">
+              <div id="facebook_blurb"> Simply <b>click on the button</b> below to backup up your Facebook account. </div>
+              <div class="fb-btn1"> <a href="http://www.facebook.com/login.php?api_key=43939b7016411de08f5791c9ea6e0273&amp;connect_display=popup&amp;v=1.0&amp;return_session=true&amp;fbconnect=true&amp;req_perms=publish_stream,offline_access,read_stream,read_mailbox,user_about_me,user_activities,user_birthday,user_education_history,user_events,user_groups,user_hometown,user_interests,user_likes,user_location,user_notes,user_online_presence,user_photo_video_tags,user_photos,user_relationships,user_religion_politics,user_status,user_videos,user_website,user_work_history,read_friendlists&amp;next=http%3A%2F%2Feternos.com%2Ffacebook_backup%2Fauthorized&amp;next_cancel=http%3A%2F%2Feternos.com%2Ffacebook_backup%2Fcancel"><img border="0" src="images/fb-btn.gif" alt="Fb-btn"></a> <br>
+              </div>
+              <span style="font-size: x-small;"> Facebook requires that you grant permissions to the <b>Eternos Backup</b> application. </span> <a class="lightview" href="https://assets.eternos.com/images/fbapp/perms-popup-sample.jpg?1292395270">help</a> <br>
+              <div id="result-facebook-accounts"> </div>
+            </div>
+          </div>
+          
+          <p class="account-setup-accordion-icon"> <img src="images/2nd-twitter.gif" id="twitter-button" alt="2nd-twitter" align="middle" /> <strong>Twitter:</strong> Back up all your tweets. </p>
+          <!-- Twitter Pane -->
+          <div class="pane network-login-box" style="display: none;">
+            <div id="twitter-box">
+              <div id="twitter_blurb"> Simply click the "Sign in with Twitter" button below to begin saving your Tweets.  Add as many Twitter accounts as you want. <br>
+              </div>
+              <a href="/backup_sources/add_twitter"><img src="https://assets.eternos.com/images/twitter_button_3_lo.gif?1292395270" alt="Twitter_button_3_lo"></a>
+              <div id="result-twitter-accounts"> </div>
+            </div>
+          </div>
+          
+          <p class="account-setup-accordion-icon"> <img src="images/2nd-rss.gif" alt="2nd-rss" align="middle" /> <strong>RSS Feeds &amp; Blogs:</strong> Back up feed entries text &amp; html, including screen captures of the pages. </p>
+          <!-- RSS Pane -->
+          <div class="pane network-login-box" style="display: none;">
+            <div id="rss-box">
+              <div id="rss_blurb"> Add your blogs here and we will begin backing them up every day. <br>
+                If you don't have a blog of your own, we recommend that you add your favorite blog here in order to put your life in context to current events. <br>
+                <br>
+              </div>
+              <img src="images/rss-top.png" alt="Rss-top" />
+              <div class="rss-box">
+                <form onsubmit="new Ajax.Request('/backup_sources/add_feed_url', {asynchronous:true, evalScripts:true, onComplete:function(request){$('progress-bar').hide(); updateStep('/account_settings/66/completed_steps', 0);}, onLoading:function(request){$('progress-bar').show();}, parameters:Form.serialize(this)}); return false;" method="post" action="/backup_sources/add_feed_url">
+                  <div style="margin: 0pt; padding: 0pt; display: inline;">
+                    <input type="hidden" value="LT1T173OJjpcKuaSnOBruT+Y9HgzJOAPsH6dezN5udo=" name="authenticity_token">
+                  </div>
+                  <table align="left" class="table-form5">
+                    <tbody>
+                      <tr>
+                        <td valign="center" class="coll-form8">URL</td>
+                        <td valign="center" class="coll-form2">:</td>
+                        <td valign="center" class="coll-form9"><input type="text" size="30" name="feed_url[rss_url]" id="feed_url_rss_url" class="textbox7">
+                          <input type="submit" value="Add Feed" name="commit" id="feed_url_submit" class="submit-btn4"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </form>
+              </div>
+              <img src="images/fb-box-footer.gif" alt="Fb-box-footer" />
+              <div id="result-urls"> </div>
+            </div>
+          </div>
+          
+          <p class="account-setup-accordion-icon"> <img src="images/2nd-gmail.gif" alt="2nd-gmail" align="middle" /> <strong>Gmail Accounts</strong>: Store and archive multiple Gmail Accounts (IMAP only). </p>
+          <!-- Gmail Pane -->
+          <div class="pane" style="display: none;">
+            <div id="gmail-box">
+              <div id="gmail_blurb"> <span style=""><font style="font-weight: bold;">IMPORTANT</font>: Gmail is currently the only online email provider we support.  However, you can now easily migrate other online email accounts such as Hotmail and Yahoo to your Gmail account for us to backup.  Read more here: <a target="_new" href="http://gmailblog.blogspot.com/2009/05/import-your-mail-and-contacts-from.html">Google Blog announcement</a> and <a target="_new" href="http://mail.google.com/support/bin/answer.py?answer=117173">Gmail Migration Directions</a>. </span> <br>
+                <br>
+              </div>
+              <form onsubmit="new Ajax.Request('https://eternos.com/gmail_accounts?method=post', {asynchronous:true, evalScripts:true, onComplete:function(request){$('progress-bar').hide(); updateStep('/account_settings/66/completed_steps', 0);}, onLoading:function(request){$('progress-bar').show();}, parameters:Form.serialize(this)}); return false;" method="post" id="backup_email_address" action="https://eternos.com/gmail_accounts?method=post">
+                <div style="margin: 0pt; padding: 0pt; display: inline;">
+                  <input type="hidden" value="LT1T173OJjpcKuaSnOBruT+Y9HgzJOAPsH6dezN5udo=" name="authenticity_token">
+                </div>
+                <table cellspacing="0" cellpadding="0" border="0" class="table1">
+                  <tbody>
+                    <tr>
+                      <td class="titlebox1" colspan="3">Gmail Account Credentials</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td valign="center" class="coll-form7">Email</td>
+                      <td valign="center" class="coll-form2">:</td>
+                      <td valign="center" class="coll-form3">&nbsp;
+                        <input type="text" value="" size="30" name="email[email]" id="email_email"></td>
+                    </tr>
+                    <tr>
+                      <td valign="center" class="coll-form7">Password</td>
+                      <td valign="center" class="coll-form2">:</td>
+                      <td valign="center" class="coll-form3">&nbsp;
+                        <input type="password" size="30" name="email[password]" id="email_password"></td>
+                    </tr>
+                    <tr>
+                      <td width="100%" align="right" colspan="3"><input type="submit" value="Backup" style="display: none;" name="commit" id="button_submit">
+                        <input type="button" onclick="$('button_submit').click()" class="submit-btn5" value="Add Account"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+              <div id="result-email-contacts"> </div>
+            </div>
+          </div>
+          
+          <p class="account-setup-accordion-icon"> <img src="images/2nd-picasa.gif" alt="2nd-picasa" align="middle" /> <strong>Picasa Web Albums:</strong> Preserve all your Picasa Web photo albums. </p>
+          <!-- Picasa Pane -->
+          <div class="pane network-login-box" style="display: none;">
+            <div id="picasa-box">
+              <div id="picasa_blurb"></div>
+              <a href="/backup_sources/add_picasa">Click Here</a> to add a new Picasa Web Albums account
+              <div id="result-picasa-accounts"> </div>
+            </div>
+          </div>
+        </div>
+        <!-- End accordion -->
+      
+        
+	</div>
+</fieldset>

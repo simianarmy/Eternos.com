@@ -250,7 +250,7 @@ class ApplicationController < ActionController::Base
     include DecorationsHelper
   end
   
-  private
+  protected
   
   def clear_js_include_cache
     LayoutHelper.clear_js_cache
@@ -365,6 +365,11 @@ class ApplicationController < ActionController::Base
     return false
   end
   
+  def current_subdomain
+    sub = request.subdomains.first
+    sub ? sub : 'www'
+  end
+  
   def dynamic_layout
     @layout = if request.xhr? 
       nil
@@ -375,6 +380,11 @@ class ApplicationController < ActionController::Base
     else
       'public'
     end
+    # Layouts further divided by site subdomain: www vs vault
+    if current_subdomain == 'vault'
+      @layout = 'vault/' + @layout
+    end
+    @layout
   end
   
   def localize

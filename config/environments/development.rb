@@ -32,7 +32,7 @@ config.action_controller.asset_host = Proc.new { |source, request|
   # No host if url starts with relative protocol string '//'
   unless source.starts_with?('//')
     (request ? request.protocol : 'http://') + 
-    (request ? request.host : 'dev.eternos.com') + 
+    (request ? request.host : 'www.eternos.local') + 
     ((port && FACEBOOK_TUNNELLING) ? ':' + port.to_s : "")
   end
 }

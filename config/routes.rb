@@ -2,7 +2,6 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :backup_error_codes
-
   
   # Singleton resources
   map.resource :account_setup, :controller => 'account_setup', :member => {
@@ -185,15 +184,22 @@ ActionController::Routing::Routes.draw do |map|
   end
   # End SaaS Kit routes
   
+  # vault subdomain routes
+  map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
+    sub.with_options(:namespace => "vault/") do |vault|
+      vault.resources :accounts
+      vault.root :controller => 'home'
+    end
+  end
+  
   # Static partials for WordPress blog
   map.header_partial 'static/blog_header', :controller => 'home', :action => 'blog_header_partial'
   map.footer_partial 'static/blog_footer', :controller => 'home', :action => 'blog_footer_partial'
   
+  # encoding.com routes
   map.encoding_callback 'encoding_cb', :controller => 'encodings', :action => 'callback'
   
   # Facebook routes
-    
-  # FUCKING BULLSHIT
   #map.facebook_home '', :controller => 'facebook', :action => 'index', :conditions=>{:canvas=>true}  
   map.facebook_home '/', :controller => 'home', :action => 'index'
   map.home ':page', :controller => 'home', :action => 'show'
