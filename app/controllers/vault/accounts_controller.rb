@@ -14,8 +14,8 @@ class Vault::AccountsController < ApplicationController
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
   before_filter :require_no_user, :only => [:new, :create, :canceled]
   
-  ssl_required :billing, :cancel, :new, :create, :plans
-  ssl_allowed :thanks, :canceled, :paypal
+  #ssl_required :billing, :cancel, :new, :create, :plans
+  #ssl_allowed :thanks, :canceled, :paypal
 
   def new
     @terms_accepted = true
