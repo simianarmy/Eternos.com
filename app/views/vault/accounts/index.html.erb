@@ -15,7 +15,7 @@
     </div>
 	<div class="content-box">
 		<h1>Please choose your account type</h1>
-		<form method="post" action="getting-started2.html">
+		<% form_tag(:action => "step2") do |f| %>
         <ul class="form-ul">
             <li>
                 <label>Login Name<br />
@@ -61,10 +61,10 @@
             </li>
         </ul>
         <p class="p1">
-		<input type="submit" value="Choose Account Type" id="yellow-button3" />        
+		    <input type="submit" value="Choose Account Type" id="yellow-button3" />        
         <a href="#">Already Have An Account? Click Here</a><br />
         <input type="checkbox" checked="checked" /> <em>I accept the <a href="#">Terms and Conditions</a></em>
         </p>
-        </form>
+        <% end %>
 	</div>
 </fieldset>
