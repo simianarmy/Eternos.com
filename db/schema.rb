@@ -16,6 +16,8 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "full_domain"
+    t.string   "company_name"
+    t.string   "phone_number"
     t.string   "state"
     t.datetime "deleted_at"
   end

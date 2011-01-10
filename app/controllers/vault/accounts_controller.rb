@@ -33,8 +33,6 @@ class Vault::AccountsController < ApplicationController
   #   save payment info
 
   def create
-    Job # For dev mode / LoadError
-    
     @account.affiliate = SubscriptionAffiliate.find_by_token(cookies[:affiliate]) unless cookies[:affiliate].blank?
 
     # Taken from users controller to support email activation
@@ -47,13 +45,6 @@ class Vault::AccountsController < ApplicationController
     # Using email registration?
     @user.registration_required = false
     
-    # if @account.needs_payment_info?
-    #       @address.first_name = @creditcard.first_name
-    #       @address.last_name = @creditcard.last_name
-    #       @account.address = @address
-    #       @account.creditcard = @creditcard
-    #     end
-
     # Some subscriptions use Captcha in signup form
     @hide_errors = params[:hide_errors]
 
@@ -64,35 +55,15 @@ class Vault::AccountsController < ApplicationController
     Rails.logger.debug "Account user #{@account.user.inspect}"
     Rails.logger.debug "Profile: #{@user.profile.inspect}"
     
-    if @success && @account.save
+    if @success && @account.save && @user.profile.save
       Rails.logger.debug "Profile: #{@user.profile.inspect}"
-      if !@user.profile.save # WHY IS THIS EVEN NEEDED?
-        Rails.logger.debug "ERROR SAVING PROFILE: " + @user.profile.errors.full_messages.to_s
-      end
-      
-      unless @user.email_registration_required?
-        @user.register!
-        
-        if @account.needs_payment_info?
-          # display billing page
-          @subscription = @account.subscription
-          flash[:domain] = @account.domain
-          # Save account id for next action's load_subscription()
-          session[:account_id] = @account.id
-          render :action => 'billing'
-        else
-          # redirect to account setup with autologin token
-          @user.activate! # unless @user.email_registration_required?
-          flash_redirect "Your account has been created.", account_setup_url(:id => @user.reload.perishable_token)
-          return false
-        end
-      else
-        # Force logout for email confirmation requirement
-        cookies.delete :auth_token
-      end
+      @user.register!
+      @user.activate!
+      # Save account id for next action's load_subscription()
+      session[:account_id] = @account.id
     else # @account not saved
       @terms_accepted = @user.terms_of_service == "1"
-      @invitation_token = params[:user][:invitation_token]
+      @invitation_token = params[:user][:invitation_token] rescue nil
       render :action => :new
     end
   end
@@ -107,6 +78,17 @@ class Vault::AccountsController < ApplicationController
     @plan = @subscription.subscription_plan
   end
 
+  def choose_plan
+    if @account.needs_payment_info?
+      # display billing page
+      @subscription = @account.subscription
+      flash[:domain] = @account.domain
+      # Save account id for next action's load_subscription()
+      session[:account_id] = @account.id
+      render :action => 'billing'
+    end
+  end
+  
   def update
     @user = @account.admin
     @plan = @subscription.subscription_plan
@@ -128,6 +110,12 @@ class Vault::AccountsController < ApplicationController
     if request.post?
       @plan = @subscription.subscription_plan
       if params[:paypal].blank?
+        
+        #       @address.first_name = @creditcard.first_name
+        #       @address.last_name = @creditcard.last_name
+        #       @account.address = @address
+        #       @account.creditcard = @creditcard
+        
         @address.first_name = @creditcard.first_name
         @address.last_name = @creditcard.last_name
 
@@ -251,7 +239,7 @@ class Vault::AccountsController < ApplicationController
   end
 
   def build_user
-    @account ||= Account.new
+    @account ||= Account.new(params[:account])
     @account.user = @user = User.new(params[:user])
     pattrs = params[:user][:profile] rescue {}
     @user.build_profile(pattrs)

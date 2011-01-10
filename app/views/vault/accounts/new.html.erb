@@ -25,17 +25,17 @@
       <%= hidden_field_tag 'plan', @plan.name %>
         <ul class="form-ul">
             <li>
-                <%= f.text_field 'login' %>
-                <em>some copy here</em>
+                <%= f.text_field 'email' %>
+                <em>Your email will be used to login.</em>
             </li>
             <li>
                 <%= f.password_field 'password' %>
                 <em>Select a password to protect your account.</em>
             </li>
-            <li>
-                <%= f.text_field 'email' %>
-                <em>some copy here.</em>
-            </li>
+             <li>
+                  <%= f.password_field 'password_confirmation' %>
+                  <em>Confirm your password.</em>
+              </li>
         </ul>
         
 		    <ul class="form-ul">
@@ -43,20 +43,22 @@
                 <%= f.text_field 'full_name' %>
                 <em>some copy here</em>
             </li>
+            <% fields_for @account do |af| %>
             <li>
                 <p>
                 <label>Company Name</label><br />
-                <%= text_field_tag 'company_name' %>
+                <%= af.text_field :company_name %>
                 </p>
                 <em>some copy here</em>
             </li>
             <li>
               <p>
                 <label>Phone Number</label><br />
-                <%= text_field_tag 'phone_number' %>
+                <%= af.text_field :phone_number %>
               </p>
                 <em>some copy here</em>
             </li>
+            <% end %>
         </ul>
         
 		    <ul class="form-ul2">
