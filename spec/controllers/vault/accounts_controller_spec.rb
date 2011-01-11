@@ -30,16 +30,26 @@ describe Vault::AccountsController do
     describe "without required parameters" do
       before(:each) do 
         @params = {:plan => 'Free'}
+        controller.stubs(:verify_recaptcha).returns(true)
       end
       
-      it "should display the signup form with errors" do
+      it "should display the signup form with errors unless all required parameters are entered" do
         post :create, {}
         response.should render_template(:new)
         assigns[:user].errors.should_not be_empty
+        params = @params.merge(required_params)
+        params[:account][:phone_number] = nil
+        post :create, @params
+        response.should render_template(:new)
+        assigns[:account].errors.should_not be_empty
       end
     end
     
     describe "with required parameters" do  
+      before(:each) do
+        controller.stubs(:verify_recaptcha).returns(true)
+      end
+      
       describe "with terms of service not accepted" do
         before(:each) do 
           @params = {:plan => 'Free'}
@@ -76,7 +86,34 @@ describe Vault::AccountsController do
           post_info
           response.should render_template(:create)
         end
+        
+        it "should assign member role to the user" do
+          post_info
+          assigns[:user].should be_member
+        end
       end
     end
+      
+    describe "without valid captcha" do
+      before(:each) do 
+        controller.stubs(:verify_recaptcha).returns(false)
+        @params = {:plan => 'Free', :user => {:terms_of_service => true}}
+      end
+      
+      it "should not create an account even when required params filled" do
+        post_info
+        response.should render_template(:new)
+      end
+    end
+  end
+  
+  describe "choosing an account plan" do
+    before(:each) do
+      @params = {:plan => 'Free', :user => {:terms_of_service => true}}
+      controller.stubs(:verify_recaptcha).returns(true)
+      post_info
+    end
+    
+    
   end
 end

@@ -61,7 +61,7 @@ a {
 }
 
 select.input-error,
-input.input-error,
+input.input-error, 
 textarea.input-error {
   border-top: 2px solid #BC100E;
   border-left: 2px solid #BC100E;

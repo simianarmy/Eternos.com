@@ -18,6 +18,7 @@ class Vault::AccountsController < ApplicationController
   #ssl_allowed :thanks, :canceled, :paypal
 
   def new
+    session[:account_id] = nil
     @terms_accepted = true
     
     if params[:invitation_token]
@@ -48,18 +49,26 @@ class Vault::AccountsController < ApplicationController
     # Some subscriptions use Captcha in signup form
     @hide_errors = params[:hide_errors]
 
-    @success = using_captcha_in_signup?(@account) ? verify_recaptcha(:model => @account) : true
+    @success = verify_recaptcha(:model => @account)
     @account.name = @user.full_name
     
+    # Do custom validation of account fields
+    if @account.company_name.blank?
+      @account.errors.add(:company_name, "Please enter your company name")
+    end
+    if @account.phone_number.blank?
+      @account.errors.add(:phone_number, "Please enter a contact phone number")
+    end
     Rails.logger.debug "Creating account #{@account.inspect}"
     Rails.logger.debug "Account user #{@account.user.inspect}"
     Rails.logger.debug "Profile: #{@user.profile.inspect}"
     
     if @success && @account.save && @user.profile.save
-      Rails.logger.debug "Profile: #{@user.profile.inspect}"
       @user.register!
       @user.activate!
-      # Save account id for next action's load_subscription()
+      # Auto-login..this better work as advertised!
+      UserSession.create(@user, true)
+      # Set session for choose_plan
       session[:account_id] = @account.id
     else # @account not saved
       @terms_accepted = @user.terms_of_service == "1"
@@ -239,10 +248,16 @@ class Vault::AccountsController < ApplicationController
   end
 
   def build_user
+    if session[:account_id]
+      @account = Account.find_by_id(session[:account_id])
+      Rails.logger.debug "Got account from session id: #{@account.inspect}"
+    end
     @account ||= Account.new(params[:account])
-    @account.user = @user = User.new(params[:user])
-    pattrs = params[:user][:profile] rescue {}
-    @user.build_profile(pattrs)
+    unless @account.user
+      @account.user = @user = User.new(params[:user])
+      pattrs = params[:user][:profile] rescue {}
+      @user.build_profile(pattrs)
+    end
   end
 
   def build_plan
