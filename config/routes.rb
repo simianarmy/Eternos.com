@@ -188,6 +188,7 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
     sub.with_options(:namespace => "vault/") do |vault|
       vault.resources :accounts
+      vault.resources :account_setup, :controller => 'vault/account_setup', :member => {:show => :get}
       vault.root :controller => 'home'
     end
   end

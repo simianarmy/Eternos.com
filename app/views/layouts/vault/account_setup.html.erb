@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Home</title>
+<link href="/stylesheets/vault/style.css" rel="stylesheet" type="text/css" />
+<!--[if lte IE 7]>
+	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+<%= yield(:head) %>
+</head>
+<body>
+
+<div class="header">
+    <form action="/login" class="new_user_session" id="new_user_session" method="post">
+      No account yet? &nbsp; <%= link_to 'Sign-Up Now!', '/accounts/new' %> &nbsp; &nbsp;
+      <input name="commit" type="submit" value="Login" />
+    </form>
+    <a href="index.html"><img src="/images/vault/logo.png" alt="Vault.Eternos" /></a>
+	  <ul>
+		<li class="active"><a href="/">Overview</a><span></span></li>
+		<li class="inact"><%= link_to 'Why Vault', url_for(:controller => 'home', :action => 'why') %><span></span></li>
+		<li class="inact"><%= link_to 'Services', url_for(:controller => 'home', :action => 'services') %><span></span></li>
+		<li class="inact"><%= link_to 'Getting Started', "/accounts/new" %><span></span></li>
+	  </ul>
+</div>
+
+<%= yield %>
+
+<div class="footer">
+	<fieldset>
+		<ul>
+			<li>
+				<ul>
+					<li><%= link_to 'Facebook', "#{request.protocol}www.facebook.com/pages/Eternoscom/134291337425", :target => '_new' %></li>
+					<li><%= link_to 'follow us on Twitter', "#{request.protocol}twitter.com/TeamEternos", :target => '_new' %></li>
+				</ul>
+			</li>
+			<li>
+				<ul>
+					<li><%= link_to 'what is eternos?', '/about/what' %></li>
+					<li><%= link_to 'about us', '/about' %></li>
+					<li><a href="http://blog.eternos.com">blog</a></li>
+					<li><%= link_to 'contact us', '/about/contact' %></li>
+					<li><%= link_to 'site map', '/about/sitemap' %></li>
+				</ul>
+			</li>
+			<li>
+				<ul>
+					<li><a href="/accounts/new">sign-up</a></li>
+					<li><%= link_to 'terms of use', '/about/terms' %></li>
+					<li><%= link_to 'privacy policy', '/about/privacy' %></li>
+					<li><a href="#">press release</a></li>
+					<!--<li><a href="#">careers</a></li>-->
+				</ul>
+			</li>
+		</ul>
+		<p>&copy;2009 Eon Digital Preservation, Inc. All Rights Reserved.</p>
+	</fieldset>
+</div>
+<%= javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery" %>
+<%= javascript_tag "
+  // Accordion  setup 
+  jQuery(function() { 
+    jQuery('#accordion').tabs('#accordion div.pane', {tabs: 'p', effect: 'slide', initialIndex: 0});
+  });"
+%>
+<%= javascript_include_tag "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", 'application', 'login', 'lowpro', 'behaviors', 'account_setup', :cache => "cache/account_setup" %>
+
+</body>
+</html>

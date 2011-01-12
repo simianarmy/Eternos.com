@@ -12,7 +12,7 @@ class Vault::AccountsController < ApplicationController
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update]
   before_filter :load_discount, :only => [ :plans, :plan, :new, :create]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
-  before_filter :require_no_user, :only => [:new, :create, :canceled]
+  before_filter :check_logged_in, :only => [:new, :create, :canceled]
   
   #ssl_required :billing, :cancel, :new, :create, :plans
   #ssl_allowed :thanks, :canceled, :paypal
@@ -55,9 +55,11 @@ class Vault::AccountsController < ApplicationController
     # Do custom validation of account fields
     if @account.company_name.blank?
       @account.errors.add(:company_name, "Please enter your company name")
+      @success = false
     end
     if @account.phone_number.blank?
       @account.errors.add(:phone_number, "Please enter a contact phone number")
+      @success = false
     end
     Rails.logger.debug "Creating account #{@account.inspect}"
     Rails.logger.debug "Account user #{@account.user.inspect}"
@@ -322,7 +324,7 @@ class Vault::AccountsController < ApplicationController
   end
 
   def check_logged_in      
-    redirect_to member_home_url if current_user
+    redirect_to url_for(:controller => 'vault/account_setup') if current_user
   end
 
   def using_captcha_in_signup?(account)
