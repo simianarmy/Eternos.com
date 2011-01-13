@@ -7,6 +7,7 @@
 	<div class="content-box">
 	
 		<h1>Please choose your account type</h1>
+		<%= show_flash_messages %>
 		<% error_handling_form_for @user, :url => {:action => 'create'}, 
 		  :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
       <%= hidden_field_tag 'plan', @plan.name %>

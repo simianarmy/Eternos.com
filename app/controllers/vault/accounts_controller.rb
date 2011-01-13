@@ -49,7 +49,9 @@ class Vault::AccountsController < ApplicationController
     # Some subscriptions use Captcha in signup form
     @hide_errors = params[:hide_errors]
 
-    @success = verify_recaptcha(:model => @account)
+    unless @success = verify_recaptcha(:model => @account)
+      flash[:error] = "Invalid CAPTCHA entry.  Please try again."
+    end
     @account.name = @user.full_name
     
     # Do custom validation of account fields
