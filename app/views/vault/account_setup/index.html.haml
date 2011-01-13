@@ -1,9 +1,0 @@
-%fieldset.content
-  = render :partial => 'vault/accounts/left_content', :locals => {:step => 3}
-  .content-box
-    %h1 Choose your services to backup
-
-  = render :partial => 'account_settings/backup_sources', :locals => {:settings => @settings, :completed_steps => @completed_steps, :setup => true}
-  <p>&nbsp;</p>
-  = link_to 'Save & Continue', member_home_path
-

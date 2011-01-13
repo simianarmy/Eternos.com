@@ -8,6 +8,8 @@ class AccountSetupController < ApplicationController
   before_filter :load_completed_steps
   before_filter :load_facebook_app_session
   before_filter :load_presenter
+   
+  layout :subdomain_layout
   
   ssl_required :all
   
@@ -101,7 +103,17 @@ class AccountSetupController < ApplicationController
   end
 
   protected
-
+  
+  # Determine layout for public or corporate user
+  def subdomain_layout
+    @layout = 'account_setup'
+    # Layouts further divided by site subdomain: www vs vault
+    if current_subdomain == 'vault'
+      @layout = 'vault/' + @layout
+    end
+    @layout
+  end
+  
   # Check for one-time access token in user account & logs in user if found
   # Used for Facebook app Canvas / App server single-sign on
   def load_fb_user_using_perishable_token

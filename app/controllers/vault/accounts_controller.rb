@@ -324,7 +324,7 @@ class Vault::AccountsController < ApplicationController
   end
 
   def check_logged_in      
-    redirect_to url_for(:controller => 'vault/account_setup') if current_user
+    redirect_to account_setup_path if current_user
   end
 
   def using_captcha_in_signup?(account)
