@@ -296,6 +296,7 @@ class AccountsController < ApplicationController
         end
       end
     end
+    render :layout => 'public'
   end
 
   # Handle the redirect return from PayPal
