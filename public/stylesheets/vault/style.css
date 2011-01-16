@@ -1,3 +1,4 @@
+/* Vault public pages */
 BODY { background: url(/images/vault/bg-body.gif) repeat-x; font: 14px Arial, Helvetica, sans-serif; color: #5B5B5B; margin: 0; padding: 0}
 IMG { border: none;}
 A { outline: none}
@@ -38,6 +39,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .sub-header P { float: left; clear: right; margin: 0; padding: 0 0 20px 0}
 .sub-header P, .sub-header H2 {width: 550px;}
 .sub-header EM A { color: #037BBE; font-size: 12px; font-weight: bold; font-style: normal; display: block; margin: 8px 0 0 0}
+
 #yellow-button { background: url(/images/vault/bg-yellow-button.gif) no-repeat; display: block; color: #FFFFFF; float: left; text-decoration: none; width: 297px; height: 33px; padding-top: 12px; margin:-7px 25px 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button2 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 36px; padding-top: 12px; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
@@ -45,6 +47,8 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .myBox { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 
 .content { width: 988px; margin: 0 auto}
+.left { margin:0 0 25px 0; float: left; width: 315px}
+
 .h3link { background: #F1F6FB; border: 1px solid #E4E4E4; margin: 0 0 25px 0; padding: 15px 0; text-align: center; text-transform: uppercase; font-size: 22px;}
 .h3link A { text-decoration: none; color: #797979;}
 
@@ -67,6 +71,9 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 .protect { border-top: 1px solid #D6D6D6; clear: both; float: none; padding: 35px 0 10px 85px; font-size: 13px; background: url(/images/vault/bg-protect.gif) no-repeat top left;}
 
+.content-box H1 , .left H1, .left H2 { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
+.content-box h1 EM { float: right; font-style: normal; font-size: 12px; font-weight: normal; color: #5B5B5B; padding-top: 6px;}
+.content-box h1 EM A { background: #E7E7E7; color: #5B5B5B; text-decoration: none; text-transform: capitalize; padding: 3px 8px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-left: 5px;}
 .content-box { width: 655px; float: left; margin-left: 15px;}
 .content-box H3 { margin: 30px 0 20px 0; padding: 0 0 0 0; text-transform: uppercase; font-size: 18px; color: #037BBE;}
 P { line-height: 20px;}
@@ -122,3 +129,22 @@ P { line-height: 20px;}
 .titlebox1 { background: #6694E3; color: white; font:bold 12px arial; ; height: 20px; padding: 2px 0 0 5px; width: 100%; }
 .submit-btn5 { background: url(/images/vault/submit2.gif) no-repeat 0 0; border: none; color: black; display: block; font-family: arial; font-size: 11px; height: 20px; margin: 8px 5px 2px 10px; text-align: center; text-decoration: none; cursor: pointer; width: 84px; }
 .submit-btn5:hover { background: url(/images/vault/submit2.gif) no-repeat 0 -20px; color: #fff; cursor: pointer}
+
+/* Dashboard */
+.sync-report { margin: 0; padding: 0; list-style: none; display: table; width: 660px; border-bottom: 1px dotted #DDDDDD; font-size: 12px;}
+.sync-report LI { float: left; width: 73px; padding-bottom: 15px; text-align: center; font-weight: bold}
+.sync-report LI STRONG { display: block; background: #F4F4F4; height: 35px; padding-top: 15px; margin-bottom: 12px;}
+
+.home-archive { margin: 0 0 40px 0; padding: 0; list-style: none; font-size: 12px;}
+.home-archive LI { margin-bottom: 15px;}
+.home-archive LI A { color: #0432FF;}
+.home-archive LI EM { color: #4775B9; font-style: normal}
+.home P { font-size: 12px;}
+.home .message01 { font-size: 11px; background: #FFFFF1}
+#active_network-add { background: url(/images/icon-add-more.gif) no-repeat center left; color: #000000; font-size: 12px; margin-right: 10px; padding: 5px 0 10px 30px; position: relative; top: -15px;}
+
+.search LABEL { font-size: 16px; font-weight: bold}
+.search input[type="text"] { border: 2px solid #D3D3D3; width: 301px; padding: 5px 2px; margin: 15px 0}
+.search input[type="submit"] { background: url("/images/vault/bg_login-button.gif") no-repeat 0 0; border: none; color: #FFFFFF; cursor: pointer; font: bold 16px Arial,Helvetica,sans-serif; height: 30px; padding: 0; width: 76px; cursor: pointer; float: right}
+.search EM { font-size: 10px; font-style: normal}
+

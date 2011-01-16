@@ -286,6 +286,10 @@ module LayoutHelper
     (controller.controller_name == page) ? 'active' : 'inact'
   end
   
+  def public_tab_class_active?(action)
+    (controller.action_name == action) ? 'active' : 'inact'
+  end
+  
   private
   
   def js_min_unless_dev(js)

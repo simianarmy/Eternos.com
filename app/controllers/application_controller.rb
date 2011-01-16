@@ -370,11 +370,6 @@ class ApplicationController < ActionController::Base
     return false
   end
   
-  def current_subdomain
-    sub = request.subdomains.first
-    sub ? sub : 'www'
-  end
-  
   def dynamic_layout
     @layout = if request.xhr? 
       nil

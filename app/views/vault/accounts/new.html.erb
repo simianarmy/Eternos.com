@@ -8,45 +8,23 @@
 	
 		<h1>Please choose your account type</h1>
 		<%= show_flash_messages %>
-		<% error_handling_form_for @user, :url => {:action => 'create'}, 
+		<% semantic_form_for @account, :url => {:action => 'create'}, 
 		  :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
       <%= hidden_field_tag 'plan', @plan.name %>
         <ul class="form-ul">
-            <li>
-                <%= f.text_field 'email' %>
-                <em>Your email will be used to login.</em>
-            </li>
-            <li>
-                <%= f.password_field 'password' %>
-                <em>Select a password to protect your account.</em>
-            </li>
-             <li>
-                  <%= f.password_field 'password_confirmation' %>
-                  <em>Confirm your password.</em>
-              </li>
+          <% f.semantic_fields_for :user do |user| %>
+              <%= user.input 'email', :hint => 'Your email will be used to login' %>
+              <%= user.input 'password' %>
+              <%= user.input 'password_confirmation', :type => 'password' %>
+          <% end %>
         </ul>
         
 		    <ul class="form-ul">
-            <li>
-                <%= f.text_field 'full_name' %>
-                <em>some copy here</em>
-            </li>
-            <% fields_for @account do |af| %>
-            <li>
-                <p>
-                <label>Company Name</label><br />
-                <%= af.text_field :company_name %>
-                </p>
-                <em>some copy here</em>
-            </li>
-            <li>
-              <p>
-                <label>Phone Number</label><br />
-                <%= af.text_field :phone_number %>
-              </p>
-                <em>some copy here</em>
-            </li>
-            <% end %>
+		      <% f.semantic_fields_for :user do |user| %>
+            <%= user.input 'full_name' %>
+          <% end %>
+          <%= f.input :company_name %>
+          <%= f.input :phone_number %>
         </ul>
         
 		    <ul class="form-ul2">
@@ -57,19 +35,18 @@
             </li>
         </ul>
         <div style="clear:both;"></div>
-        
-            <p>
-              <%= f.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @terms_accepted} %>
-              I accept the 
-              <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
-            </p>
+        <p>
+          <% f.semantic_fields_for :user do |user| %>
+            <%= user.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @terms_accepted} %>
+          I accept the 
+          <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
+          <% end %>
+        </p>
 
-              <p class="p1">
-  		          <input type="submit" value="Choose Account Type" id="yellow-button3" />        
-                <a href="/login">Already Have An Account? Click Here</a><br />
-              </p>
-
-          
+        <p class="p1">
+            <input type="submit" value="Choose Account Type" id="yellow-button3" />        
+            <a href="/login">Already Have An Account? Click Here</a><br />
+        </p>
     <% end %>
 	</div>
 </fieldset>

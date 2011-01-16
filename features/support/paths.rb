@@ -10,6 +10,9 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+    when /the new vault_dashboard page/
+      new_vault_dashboard_path
+
     when /the new co_registration page/
       new_co_registration_path
 
@@ -42,6 +45,9 @@ module NavigationHelpers
 
     when /the member homepage/
       member_home_path
+      
+    when /the vault member dashboard/
+      vault_dashboard_path
 
     when /the upload file page/
       new_content_path

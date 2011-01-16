@@ -49,9 +49,14 @@ module BackupSourceHistory
       data[:fb] = user.activity_stream.items.facebook.count
       data[:media_comments] = Comment.count(:joins => "INNER JOIN contents ON contents.id = comments.commentable_id AND comments.commentable_type = 'Content'", 
         :conditions => {'contents.user_id' => user.id})
+      data[:stream_comments] = Comment.count(:joins => "INNER JOIN activity_stream_items ON activity_stream_items.id = comments.commentable_id 
+        AND comments.commentable_type = 'ActivityStreamItem' 
+        INNER JOIN activity_streams ON activity_streams.id = activity_stream_items.activity_stream_id",
+        :conditions => {'activity_streams.id' => user.activity_stream.id})
       data[:rss] = FeedEntry.belonging_to_user(user.id).count
       data[:emails] = BackupEmail.belonging_to_user(user.id).count
       data[:total] = data.values.sum
+      data[:total_comments] = data[:stream_comments] + data[:media_comments]
     end
   end
 end

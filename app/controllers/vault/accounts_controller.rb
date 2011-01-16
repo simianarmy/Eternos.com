@@ -17,6 +17,8 @@ class Vault::AccountsController < ApplicationController
   #ssl_required :billing, :cancel, :new, :create, :plans
   #ssl_allowed :thanks, :canceled, :paypal
 
+  layout 'vault/public'
+  
   def new
     session[:account_id] = nil
     @terms_accepted = true
@@ -257,10 +259,13 @@ class Vault::AccountsController < ApplicationController
       Rails.logger.debug "Got account from session id: #{@account.inspect}"
     end
     @account ||= Account.new(params[:account])
-    unless @account.user
-      @account.user = @user = User.new(params[:user])
-      pattrs = params[:user][:profile] rescue {}
-      @user.build_profile(pattrs)
+    if @account.new_record?
+      @account.user = @user = User.new
+      if params[:account] && params[:account][:user]
+        @user.update_attributes(params[:account][:user])
+        pattrs = params[:account][:user][:profile] rescue {}
+        @user.build_profile(pattrs)
+      end
     end
   end
 

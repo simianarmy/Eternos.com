@@ -11,54 +11,19 @@
 <%= yield(:head) %>
 </head>
 <body>
+  <div class="header">
+      <%= render :partial => 'shared/home_login_form' %>
+      <%= link_to image_tag('vault/logo.png'), root_path %>
+  	  <ul>
+  		<li class="<%= public_tab_class_active?('index') %>"><a href="/">Overview</a><span></span></li>
+  		<li class="<%= public_tab_class_active?('why') %>"><%= link_to 'Why Vault', url_for(:action => 'why') %><span></span></li>
+  		<li class="<%= public_tab_class_active?('services') %>"><%= link_to 'Services', url_for(:action => 'services') %><span></span></li>
+  		<li class="<%= members_tab_class_active?('accounts') %>"><%= link_to 'Getting Started', "/accounts/new" %><span></span></li>
+  	  </ul>
+  </div>
 
-<div class="header">
-    <form action="/login" class="new_user_session" id="new_user_session" method="post">
-      No account yet? &nbsp; <%= link_to 'Sign-Up Now!', '/accounts/new' %> &nbsp; &nbsp;
-      <input name="commit" type="submit" value="Login" />
-    </form>
-    <a href="index.html"><img src="/images/vault/logo.png" alt="Vault.Eternos" /></a>
-	  <ul>
-		<li class="active"><a href="/">Overview</a><span></span></li>
-		<li class="inact"><%= link_to 'Why Vault', url_for(:controller => 'home', :action => 'why') %><span></span></li>
-		<li class="inact"><%= link_to 'Services', url_for(:controller => 'home', :action => 'services') %><span></span></li>
-		<li class="inact"><%= link_to 'Getting Started', "/accounts/new" %><span></span></li>
-	  </ul>
-</div>
+  <%= yield %>
 
-<%= yield %>
-
-<div class="footer">
-	<fieldset>
-		<ul>
-			<li>
-				<ul>
-					<li><%= link_to 'Facebook', "#{request.protocol}www.facebook.com/pages/Eternoscom/134291337425", :target => '_new' %></li>
-					<li><%= link_to 'follow us on Twitter', "#{request.protocol}twitter.com/TeamEternos", :target => '_new' %></li>
-				</ul>
-			</li>
-			<li>
-				<ul>
-					<li><%= link_to 'what is eternos?', '/about/what' %></li>
-					<li><%= link_to 'about us', '/about' %></li>
-					<li><a href="http://blog.eternos.com">blog</a></li>
-					<li><%= link_to 'contact us', '/about/contact' %></li>
-					<li><%= link_to 'site map', '/about/sitemap' %></li>
-				</ul>
-			</li>
-			<li>
-				<ul>
-					<li><a href="/accounts/new">sign-up</a></li>
-					<li><%= link_to 'terms of use', '/about/terms' %></li>
-					<li><%= link_to 'privacy policy', '/about/privacy' %></li>
-					<li><a href="#">press release</a></li>
-					<!--<li><a href="#">careers</a></li>-->
-				</ul>
-			</li>
-		</ul>
-		<p>&copy;2009 Eon Digital Preservation, Inc. All Rights Reserved.</p>
-	</fieldset>
-</div>
-
+  <%= render :partial => 'shared/vault_footer' %>
 </body>
 </html>
