@@ -378,12 +378,12 @@ class ApplicationController < ActionController::Base
     elsif current_user && !current_user.role.nil?
       current_user.role.downcase
     else
-      'public'
+      'home'
     end
     Rails.logger.debug "Dyamic layout = #{@layout}"
     # Layouts further divided by site subdomain: www vs vault
     if current_subdomain == 'vault'
-      @layout = 'vault/' + @layout
+      @layout = 'vault/public/' + @layout
     end
     @layout
   end

@@ -3,7 +3,7 @@ class Vault::DashboardController < ApplicationController
   require_role "Member"
   before_filter :load_member_home_presenter
 
-  layout 'vault/dashboard'
+  layout 'vault/private/dashboard'
 
   ssl_required :all
 

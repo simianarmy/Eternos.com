@@ -46,7 +46,7 @@ module NavigationHelpers
     when /the member homepage/
       member_home_path
       
-    when /the vault member dashboard/
+    when /the vault dashboard page/
       vault_dashboard_path
 
     when /the upload file page/

@@ -17,7 +17,7 @@ class Vault::AccountsController < ApplicationController
   #ssl_required :billing, :cancel, :new, :create, :plans
   #ssl_allowed :thanks, :canceled, :paypal
 
-  layout 'vault/public'
+  layout :set_layout
   
   def new
     session[:account_id] = nil
@@ -249,6 +249,14 @@ class Vault::AccountsController < ApplicationController
 
   protected
 
+  def set_layout
+    if %( new create ).include?(action_name)
+      'vault/public/home'
+    else
+      'vault/private/account'
+    end
+  end
+  
   def load_object
     @obj = @account = current_account
   end
@@ -331,7 +339,13 @@ class Vault::AccountsController < ApplicationController
   end
 
   def check_logged_in      
-    redirect_to account_setup_path if current_user
+    if current_user
+      if current_user.setup_step == 0
+        redirect_to account_setup_path 
+      else
+        redirect_to vault_dashboard_path
+      end
+    end
   end
 
   def using_captcha_in_signup?(account)

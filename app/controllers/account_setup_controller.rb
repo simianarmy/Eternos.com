@@ -106,10 +106,16 @@ class AccountSetupController < ApplicationController
   
   # Determine layout for public or corporate user
   def subdomain_layout
-    @layout = 'account_setup'
     # Layouts further divided by site subdomain: www vs vault
     if current_subdomain == 'vault'
-      @layout = 'vault/' + @layout
+      # Further divided into public & logged-in layouts
+      if current_user.setup_step == 0
+        @layout = 'vault/public/account_setup'
+      else
+        @layout = 'vault/private/account_setup'
+      end
+    else
+      @layout = 'account_setup'
     end
     @layout
   end

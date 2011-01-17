@@ -1,7 +1,7 @@
 # $Id$
 class Vault::HomeController < ApplicationController
   #before_filter :redirect_if_logged_in, :only => :index
-  layout 'vault/public'
+  layout 'vault/public/home'
   
   def new
     @user = User.new
@@ -12,7 +12,6 @@ class Vault::HomeController < ApplicationController
   
   def show
     @hide_feedback = true
-    render :action => params[:page]
   end
   
   def why

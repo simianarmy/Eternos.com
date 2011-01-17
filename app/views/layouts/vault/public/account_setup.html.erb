@@ -16,12 +16,12 @@
 
 <div class="header">
     <%= render :partial => 'shared/home_login_form' %>
-    <%= link_to image_tag('vault/logo.png'), root_path %>
+    <%= link_to image_tag('vault/logo.png'), vault_home_path %>
 	  <ul>
-			<li class="<%= public_tab_class_active?('index') %>"><a href="/">Overview</a><span></span></li>
-  		<li class="<%= public_tab_class_active?('why') %>"><%= link_to 'Why Vault', url_for(:controller=>'vault/home', :action=>'why') %><span></span></li>
-  		<li class="<%= public_tab_class_active?('services') %>"><%= link_to 'Services', url_for(:controller=>'vault/home', :action=>'service') %><span></span></li>
-		<li class="active"><%= link_to 'Getting Started', "/accounts/new" %><span></span></li>
+			<li class="<%= public_tab_class_active?('index') %>"><%= link_to 'Overview', vault_home_path %><span></span></li>
+  		<li class="<%= public_tab_class_active?('why') %>"><%= link_to 'Why Vault', why_vault_home_path %><span></span></li>
+  		<li class="<%= public_tab_class_active?('services') %>"><%= link_to 'Services', services_vault_home_path %><span></span></li>
+		<li class="active"><%= link_to 'Getting Started', new_vault_account_path %><span></span></li>
 	  </ul>
 </div>
 
