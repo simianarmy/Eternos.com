@@ -149,7 +149,7 @@ class TimelinesController < ApplicationController
   #     end
   #   end
   def ensure_subdomain
-    redirect_to '/vdashboard' if current_subdomain == 'vault'
+    redirect_to vault_dashboard_path if current_subdomain == 'vault'
   end
   
   def find_host

@@ -250,7 +250,7 @@ class Vault::AccountsController < ApplicationController
   protected
 
   def set_layout
-    if %( new create ).include?(action_name)
+    if %W( new create ).include?(action_name)
       'vault/public/home'
     else
       'vault/private/account'
