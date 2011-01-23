@@ -6,4 +6,5 @@ require 'faker'
 
 Before do
   DatabaseCleaner.clean
+  Vault::AccountsController.any_instance.stub(:verify_recaptcha).returns(true)
 end

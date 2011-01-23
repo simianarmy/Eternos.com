@@ -6,6 +6,7 @@ require 'benchmark_helper'
 class TimelinesController < ApplicationController
   before_filter :login_required, :except => [:search, :tag_cloud]
   require_role ['Guest', 'Member'], :for_all_except => [:search, :tag_cloud]
+  before_filter :ensure_subdomain
   before_filter :set_facebook_connect_session, :except => [:search, :tag_cloud]
   before_filter :load_member_home_presenter, :except => [:search, :tag_cloud]
   
@@ -147,6 +148,9 @@ class TimelinesController < ApplicationController
   #       super
   #     end
   #   end
+  def ensure_subdomain
+    redirect_to vault_dashboard_path if current_subdomain == 'vault'
+  end
   
   def find_host
     @host = current_user.get_host

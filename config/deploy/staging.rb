@@ -10,7 +10,7 @@ role :web, "184.106.217.211"
 role :db, "184.106.217.211", :primary => true
 
 set :bundle_cmd, "/usr/local/bin/bundle"
-set :branch, "dev"
+set :branch, ENV['branch'] || :dev
 
 namespace :deploy do
   task :restart do

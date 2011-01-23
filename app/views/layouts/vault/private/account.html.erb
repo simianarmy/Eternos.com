@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>Home</title>
+  <% stylesheet 'application', 'prototip' %>
+  <%= yield(:head)  %>
+  <link href="/stylesheets/vault/style.css" rel="stylesheet" type="text/css" />
+  <!--[if lte IE 7]>
+  	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
+  <![endif]-->
+  <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+</head>
+<body>
+  <div class="header">
+    <%= render :partial => 'shared/home_login_form' %>
+    <%= link_to image_tag('vault/logo.png'), root_path %>
+  	<ul>
+  		<li class="inact"><%= link_to 'Home', vault_dashboard_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Account Setup', account_setup_path %><span></span></li>
+  		<li class="active"><%= link_to 'Billing', billing_vault_account_path %><span></span></li>
+  	</ul>
+  </div>
+  <fieldset class="content">
+  	<div class="content-box home">
+  		<%= yield %>
+  	</div>
+  </fieldset>
+  <%= render :partial => 'shared/vault_footer' %>
+  <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "effects", "controls", "lowpro", "defaultvalueactsashint", "behaviors" %>
+</body>
+</html>

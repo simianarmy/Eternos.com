@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
       ActionController::UnknownAction, ActionController::UnknownController,
       ActionController::InvalidAuthenticityToken, :with => :render_404
     rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+    rescue_from Facebooker::Session::IncorrectSignature, :with => :invalid_facebook_signature
     rescue_from RuntimeError, :with => :render_500
   end
   
@@ -50,6 +51,10 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :fb_sig_friends
   
   layout :dynamic_layout
+
+  def invalid_facebook_signature
+    redirect_to logout_url 
+  end
 
   # Required for Facebooker integration
   def verify_authenticity_token
@@ -250,7 +255,7 @@ class ApplicationController < ActionController::Base
     include DecorationsHelper
   end
   
-  private
+  protected
   
   def clear_js_include_cache
     LayoutHelper.clear_js_cache
@@ -373,8 +378,14 @@ class ApplicationController < ActionController::Base
     elsif current_user && !current_user.role.nil?
       current_user.role.downcase
     else
-      'public'
+      'home'
     end
+    Rails.logger.debug "Dyamic layout = #{@layout}"
+    # Layouts further divided by site subdomain: www vs vault
+    if current_subdomain == 'vault'
+      @layout = 'vault/public/' + @layout
+    end
+    @layout
   end
   
   def localize

@@ -1,0 +1,34 @@
+<ul class="sync-report">
+  <li>
+    	<strong>Albums</strong><%= number_with_delimiter(@backup_data[:albums]) %>
+    </li>
+	<li>
+    	<strong>Photos</strong><%= number_with_delimiter(@backup_data[:photos]) %>
+    </li>
+	<li>
+    	<strong>Videos</strong><%= number_with_delimiter(@backup_data[:videos]) %>
+    </li>
+	<li>
+    	<strong>Audio</strong><%= number_with_delimiter(@backup_data[:audio]) %>
+    </li>                       
+	<li>
+    	<strong>Emails</strong><%= number_with_delimiter(@backup_data[:emails]) %>
+    </li>                       
+</ul>
+<ul class="sync-report">
+  <li>
+    	<strong>Feed Items</strong><%= number_with_delimiter(@backup_data[:rss]) %>
+    </li>                       
+  <li>
+    	<strong>Facebook Items</strong><%= number_with_delimiter(@backup_data[:fb]) %>
+    </li>                                  
+  <li>
+  	<strong>Twitter Items</strong><%= number_with_delimiter(@backup_data[:tweets]) %>
+  </li>
+  <li>
+      <strong>Comments</strong><%= number_with_delimiter(@backup_data[:total_comments]) %>
+  </li>                    
+	<li>
+    	<strong>Total</strong><%= number_with_delimiter(@backup_data[:total]) %>
+  </li>                                                                                     
+</ul>

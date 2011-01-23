@@ -21,6 +21,13 @@ module Facebooker
   class Group
     populating_attr_accessor :icon, :pic_square, :version
   end
+  class MessageThread
+    populating_attr_accessor :folder_id, :viewer_id
+    
+    class Message::Attachment
+      populating_attr_accessor :media, :tagged_ids, :properties, :fb_object_id, :fb_object_type
+    end
+  end
 end
 
 

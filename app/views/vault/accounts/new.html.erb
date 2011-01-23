@@ -1,0 +1,52 @@
+<% stylesheet 'application' %>
+<% javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" %>
+<% hide_login_box %>
+
+<fieldset class="content">
+	<%= render :partial => 'left_content', :locals => {:step => 1} %>
+	<div class="content-box">
+	
+		<h1>Please choose your account type</h1>
+		<%= show_flash_messages %>
+		<% semantic_form_for @account, :url => {:action => 'create'}, 
+		  :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
+      <%= hidden_field_tag 'plan', @plan.name %>
+        <ul class="form-ul">
+          <% f.semantic_fields_for :user do |user| %>
+              <%= user.input 'email', :hint => 'Your email will be used to login' %>
+              <%= user.input 'password' %>
+              <%= user.input 'password_confirmation', :type => 'password' %>
+          <% end %>
+        </ul>
+        
+		    <ul class="form-ul">
+		      <% f.semantic_fields_for :user do |user| %>
+            <%= user.input 'full_name' %>
+          <% end %>
+          <%= f.input :company_name %>
+          <%= f.input :phone_number %>
+        </ul>
+        
+		    <ul class="form-ul2">
+            <li>
+                <label>Enter Authentication Code</label><br/>
+                <%= recaptcha_tags :ssl => request.ssl? %>
+              <em>some copy here.</em>
+            </li>
+        </ul>
+        <div style="clear:both;"></div>
+        <p>
+          <% f.semantic_fields_for :user do |user| %>
+            <%= user.check_box :terms_of_service, {:id => 'terms_of_service', :checked => @terms_accepted} %>
+          I accept the 
+          <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
+          <% end %>
+        </p>
+
+        <p class="p1">
+            <input type="submit" value="Choose Account Type" id="yellow-button3" />        
+            <a href="/login">Already Have An Account? Click Here</a><br />
+        </p>
+    <% end %>
+	</div>
+</fieldset>

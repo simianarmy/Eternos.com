@@ -16,6 +16,8 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "full_domain"
+    t.string   "company_name"
+    t.string   "phone_number"
     t.string   "state"
     t.datetime "deleted_at"
   end
@@ -491,6 +493,35 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.integer "facebook_account_id", :null => false
   end
   add_index "facebook_page_admins", ["facebook_account_id"]
+  
+  create_table "facebook_threads", :force => true do |t|
+    t.integer :facebook_account_id, :null => false
+    t.integer :message_thread_id, :limit => 8, :null => false
+    t.integer :folder_id, :null => false
+    t.integer :parent_thread_id
+    t.string :parent_message_id
+    t.integer :fb_object_id, :limit => 8, :null => false, :default => 0
+    t.string :subject 
+    t.text :recipients
+    t.boolean :unread, :null => false, :default => true
+    t.integer :message_count, :null => false, :default => 0
+    t.datetime :last_message_at
+    t.timestamps
+  end
+  add_index :facebook_threads, [:message_thread_id]
+  add_index :facebook_threads, [:facebook_account_id, :folder_id, :message_thread_id], :unique => true, 
+    :name => 'index_facebook_threads_on_facebook_account_folder_message_thread'
+  
+  create_table "facebook_messages", :force => true do |t|
+    t.integer :facebook_thread_id, :null => false
+    t.string :message_id, :null => false
+    t.integer :author_id, :limit => 8, :null => false
+    t.text :body
+    t.text :attachment
+    t.timestamps
+  end
+  add_index :facebook_messages, [:message_id]
+  add_index :facebook_messages, [:facebook_thread_id]
   
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
@@ -969,6 +1000,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string "name", :null => false
   end
 
+  
   create_table "time_locks", :force => true do |t|
     t.integer "lockable_id"
     t.string  "lockable_type"

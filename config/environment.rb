@@ -136,7 +136,7 @@ Rails::Initializer.run do |config|
     default_url_options[:host] = AppConfig.base_domain
   end
 end
-
+      
 # Load email config
 require 'load_email_configuration'
 # custom libs
