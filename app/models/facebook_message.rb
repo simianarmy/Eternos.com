@@ -2,12 +2,16 @@
 
 class FacebookMessage < ActiveRecord::Base
   belongs_to :facebook_thread, :counter_cache => 'message_count'
-  belongs_to :facebook_account
-  belongs_to :owner, :class_name => 'Member'
   
   serialize :attachment
   
   validates_presence_of :message_id, :author_id
+  
+  # thinking_sphinx
+  define_index do
+    indexes :body
+    has created_at
+  end
   
   # Builds new object from Facebooker::MessageThread::Message object
   # TODO: Convert it to a proxy object before passing

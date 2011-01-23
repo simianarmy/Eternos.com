@@ -37,7 +37,6 @@ class BackupEmail < ActiveRecord::Base
   #     only :id, :sender
   #     methods :start_date, :subject
   #   end
-  acts_as_archivable :on => :received_at
   acts_as_saved_to_cloud
   
   before_destroy :delete_s3_contents

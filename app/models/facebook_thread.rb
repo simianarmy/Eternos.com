@@ -1,19 +1,26 @@
 # Copy of Facebooker::MessageThread class modified for BackupSource use
 
 class FacebookThread < ActiveRecord::Base
-  belongs_to :facebook_account
+  belongs_to :facebook_account, :foreign_key => 'backup_source_id'
   belongs_to :parent_thread, :foreign_key => 'thread_id', :class_name => 'FacebookThread'
   has_many :messages, :class_name => 'FacebookMessage', :dependent => :destroy
+  has_one :member, :through => :facebook_account
   
   serialize :recipients
-  validates_presence_of :facebook_account_id, :message_thread_id
+  validates_presence_of :backup_source_id, :message_thread_id
+  
+  # thinking_sphinx
+  define_index do
+    indexes :subject
+    has created_at
+  end
   
   # Creates thread and associated messages from FacebookMessageThread data
   def self.save_thread!(account_id, message_thread)
     Rails.logger.debug "Creating thread from: #{message_thread.inspect}"
     # Create the thread object
     thread = self.create!({:message_thread_id => message_thread.id, 
-      :facebook_account_id => account_id,
+      :backup_source_id => account_id,
       :recipients => message_thread.recipients
       }.merge(build_attributes_from_proxy(message_thread)))
     Rails.logger.debug "Created thread = #{thread.inspect}"

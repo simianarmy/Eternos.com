@@ -3,7 +3,7 @@
 class FacebookAccount < BackupSource
   has_many :facebook_page_admins
   has_many :pages, :through =>:facebook_page_admins, :source => :facebook_page
-  has_many :message_threads, :class_name => 'FacebookThread'
+  has_many :message_threads, :class_name => 'FacebookThread', :foreign_key => 'backup_source_id'
   
   alias_attribute :account_id, :auth_login
   

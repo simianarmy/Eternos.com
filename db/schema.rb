@@ -495,7 +495,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   add_index "facebook_page_admins", ["facebook_account_id"]
   
   create_table "facebook_threads", :force => true do |t|
-    t.integer :facebook_account_id, :null => false
+    t.integer :backup_source_id, :null => false
     t.integer :message_thread_id, :limit => 8, :null => false
     t.integer :folder_id, :null => false
     t.integer :parent_thread_id
@@ -509,8 +509,8 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.timestamps
   end
   add_index :facebook_threads, [:message_thread_id]
-  add_index :facebook_threads, [:facebook_account_id, :folder_id, :message_thread_id], :unique => true, 
-    :name => 'index_facebook_threads_on_facebook_account_folder_message_thread'
+  add_index :facebook_threads, [:backup_source_id, :folder_id, :message_thread_id], :unique => true, 
+    :name => 'index_facebook_threads_on_backup_source_folder_message_thread'
   
   create_table "facebook_messages", :force => true do |t|
     t.integer :facebook_thread_id, :null => false
