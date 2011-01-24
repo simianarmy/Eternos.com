@@ -1,9 +1,11 @@
 class Account < ActiveRecord::Base
-  
+
   has_many :users, :dependent => :destroy
   has_one :subscription, :dependent => :destroy
   has_many :subscription_payments
-
+  
+  accepts_nested_attributes_for :users
+  
   # From saas subscription project - not using subdomains yet
   #validates_format_of :domain, :with => /\A[a-zA-Z][a-zA-Z0-9]*\Z/
   #validates_exclusion_of :domain, :in => %W( support blog www billing help api #{AppConfig['admin_subdomain']} ), :message => "The domain <strong>{{value}}</strong> is not available."
@@ -14,7 +16,7 @@ class Account < ActiveRecord::Base
   validate_on_create :valid_payment_info?
   validate_on_create :valid_subscription?
   
-  attr_accessible :name, :domain, :user, :plan, :plan_start, :creditcard, :address, :company_name, :phone_number
+  attr_accessible :name, :domain, :user, :users_attributes, :plan, :plan_start, :creditcard, :address, :company_name, :phone_number
   attr_accessor :user, :plan, :plan_start, :creditcard, :address, :affiliate
   
   after_create :create_admin
@@ -104,12 +106,9 @@ class Account < ActiveRecord::Base
     
     # An account must have an associated user to be the administrator
     def valid_user?
-      if !@user
-        errors.add_to_base("Missing user information")
-      elsif !@user.valid?
-        @user.errors.full_messages.each do |err|
-          errors.add_to_base(err)
-        end
+      u = @user ? @user : users.first
+      if !u || !u.valid?
+        errors.add_to_base("Missing or invalid user information")
       end
     end
     

@@ -51,25 +51,41 @@ class Vault::AccountsController < ApplicationController
     # Some subscriptions use Captcha in signup form
     @hide_errors = params[:hide_errors]
 
-    unless @success = verify_recaptcha(:model => @account)
-      flash[:error] = "Invalid CAPTCHA entry.  Please try again."
-    end
+    @account.user ||= @user
     @account.name = @user.full_name
     
     # Do custom validation of account fields
+    
     if @account.company_name.blank?
       @account.errors.add(:company_name, "Please enter your company name")
-      @success = false
     end
     if @account.phone_number.blank?
       @account.errors.add(:phone_number, "Please enter a contact phone number")
-      @success = false
     end
+    
     Rails.logger.debug "Creating account #{@account.inspect}"
     Rails.logger.debug "Account user #{@account.user.inspect}"
     Rails.logger.debug "Profile: #{@user.profile.inspect}"
     
-    if @success && @account.save && @user.profile.save
+    @success = false
+    begin
+      Account.transaction do
+        @user.profile ||= Profile.new
+        @account.save!
+        unless verify_recaptcha(:model => @user)
+          flash[:error] = "Invalid CAPTCHA entry.  Please try again."
+          raise "Captcha error"
+        end
+        @success = true
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      flash[:error] = "There are errors in your input.  Please correct them and try again"
+      Rails.logger.error "#{e.class} #{e.message}"
+    rescue Exception => e
+      Rails.logger.error "#{e.class} #{e.message}"      
+    end
+    
+    if @success
       @user.register!
       @user.activate!
       # Auto-login..this better work as advertised!
@@ -77,6 +93,16 @@ class Vault::AccountsController < ApplicationController
       # Set session for choose_plan
       session[:account_id] = @account.id
     else # @account not saved
+      # Need to reload it otherwise form action will be update!?
+      # Happens on transaction ROLLBACK
+      unless @account.new_record?
+        @account = Account.new(params[:account])
+        if @account.users.any?
+          @user = @account.users.first
+        else
+          @account.user = @user = @account.users.build
+        end
+      end
       @terms_accepted = @user.terms_of_service == "1"
       @invitation_token = params[:user][:invitation_token] rescue nil
       render :action => :new
@@ -267,13 +293,12 @@ class Vault::AccountsController < ApplicationController
       Rails.logger.debug "Got account from session id: #{@account.inspect}"
     end
     @account ||= Account.new(params[:account])
-    if @account.new_record?
-      @account.user = @user = User.new
-      if params[:account] && params[:account][:user]
-        @user.update_attributes(params[:account][:user])
-        pattrs = params[:account][:user][:profile] rescue {}
-        @user.build_profile(pattrs)
-      end
+    
+    # Accounts have users & user attribute..confusing! Build and/or fetch 1st user
+    if @account.users.any?
+      @user = @account.users.first
+    else
+      @account.user = @user = @account.users.build
     end
   end
 

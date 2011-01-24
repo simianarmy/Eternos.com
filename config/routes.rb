@@ -189,7 +189,7 @@ ActionController::Routing::Routes.draw do |map|
     sub.resource :vault_home, :controller => 'vault/home', :collection => { :why => :get, :services => :get }
     sub.resource :vault_account, :controller => 'vault/accounts', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
     sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'
-    sub.root :controller => 'vault/home', :action => :index
+    sub.root :controller => 'vault/home', :action => :show
   end
   
   # Static partials for WordPress blog
