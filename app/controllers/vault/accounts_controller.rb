@@ -21,7 +21,7 @@ class Vault::AccountsController < ApplicationController
   
   def new
     session[:account_id] = nil
-    @terms_accepted = true
+    @terms_of_service = true
     
     if params[:invitation_token]
       @invitation_token = params[:invitation_token]
@@ -103,7 +103,7 @@ class Vault::AccountsController < ApplicationController
           @account.user = @user = @account.users.build
         end
       end
-      @terms_accepted = @user.terms_of_service == "1"
+      @terms_of_service = @user.terms_of_service == "1"
       @invitation_token = params[:user][:invitation_token] rescue nil
       render :action => :new
     end

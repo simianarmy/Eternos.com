@@ -11,16 +11,16 @@
 		<% semantic_form_for @account, :url => {:action => 'create'}, 
 		  :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
 		  <%= show_flash_messages %>
-
+      <% f.semantic_fields_for :users do |user| %>
       <%= hidden_field_tag 'plan', @plan.name %>
         <ul class="form-ul3">
-          <% f.semantic_fields_for :users do |user| %>
+          
             <%= user.input 'email', :hint => 'Your email will be used to login' %>
             <%= user.input 'password' %>
             <%= user.input 'password_confirmation', :type => 'password' %>
             <%= user.input 'first_name' %>
             <%= user.input 'last_name' %>
-          <% end %>
+          
           <%= f.input :company_name %>
           <%= f.input :phone_number %>
         
@@ -28,7 +28,7 @@
           <li>
             <label>Enter Authentication Code</label><br/>
             <%= recaptcha_tags :ssl => request.ssl? %>
-            <em>some copy here.</em>
+            <em></em>
           </li>
           <li>
     				<p align="center">
@@ -38,7 +38,8 @@
     			</li>
           <li>
       
-            <%= check_box_tag 'user[terms_of_service]', {:id => 'terms_of_service', :checked => @terms_accepted} %>
+            <%= check_box_tag 'account[users_attributes][0][terms_of_service]', "1", (@terms_of_service == true), 
+              {:id => 'terms_of_service'} %>
               I accept the 
             <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
             <p> 
@@ -47,6 +48,7 @@
           	<%= render :partial => 'shared/mcafee_secure' %>
           </li>
         </ul>
+        <% end %>
     <% end %>
 	</div>
 </fieldset>
