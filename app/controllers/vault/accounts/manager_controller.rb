@@ -1,6 +1,6 @@
 # Code copied from AccountsController 
 
-class Vault::AccountsController < ApplicationController
+class Vault::Accounts::ManagementController < ApplicationController
   include ModelControllerMethods
 
   require_role "Member", :except => [:new, :create, :billing, :plans, :canceled, :thanks]

@@ -187,7 +187,8 @@ ActionController::Routing::Routes.draw do |map|
   # vault subdomain routes
   map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
     sub.resource :vault_home, :controller => 'vault/home', :collection => { :why => :get, :services => :get }
-    sub.resource :vault_account, :controller => 'vault/accounts', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
+    sub.resource :account_registration, :controller => 'vault/accounts/registration', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any}
+    sub.resource :account_management, :controller => 'vault/accounts/manager', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
     sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'
     sub.root :controller => 'vault/home', :action => :show
   end
