@@ -1,0 +1,86 @@
+/- title 'Payment Information'
+- hide_login_box
+
+
+/.yui-g
+.content.what
+  %fieldset
+    .what01
+      %h1 Payment Information
+      %br
+      - if @subscription.state == 'trial'
+        - if @subscription.next_renewal_at > Time.now
+          %h3= "Subscription: " + site_account_plan(@plan)
+          %br
+          %p
+            Your trial account will expire in 
+            = pluralize(@subscription.trial_days, 'day', 'days')
+            , at which time you will no longer have access to your account.  To maintain access to your account, enter your credit card information below.  Your first charge will happen on 
+            = @subscription.next_renewal_at.to_s(:long_day) + '.'
+        - else
+          %p
+            Your trial account has expired.  To regain access to your account, enter your credit card information below.  Your first charge will happen immediately, and you will be billed monthly thereafter.
+      - elsif @user && @user.pending?
+        /%h3= "You have selected " + site_account_plan(@plan)
+        %h3 Your account info has been saved.
+        %p 
+          Simply enter your payment details below to finish creating your Eternos account.
+      %p
+        %span{:style=>"font-weight: bold"}
+          Your account will be billed $9.99 per month as a recurring charge.
+        %br
+        = render :partial => 'shared/mcafee_secure'
+        
+      %br
+      - if not @account.needs_payment_info?
+        #plan-info
+          %p 
+            Plan:
+            = @subscription.subscription_plan.name 
+            = '(' + link_to('Change plan', '/account/plan') + ')'
+          - if @subscription.state == 'trial'
+            %p 
+              Trial expiration date:
+              = @subscription.next_renewal_at.to_s(:long_day)
+          - else
+            - if @subscription.amount > 0
+              %p 
+                Next charge date:
+                = @subscription.next_renewal_at.to_s(:long_day)
+              %p
+                Next charge amount:
+                = number_to_currency @subscription.amount
+              %p
+                Current payment method:
+                = @subscription.paypal? ? 'PayPal' : "#{@subscription.card_number} / #{@subscription.card_expiration}"
+      - else
+        - form_for :creditcard, @creditcard, :url => { :action => 'billing' } do |f|
+          = render :partial => 'shared/credit_card_form', :locals => {:f => f}
+          / - submit_or_cancel account_path, 'Update billing information'
+          #secure_submit
+            = submit_tag :submit, :value => "Continue", :class => "submit sign-up"
+       
+            %p.small * Payments will appear as EON Digital Preservation, INC. on your billing statement.
+        
+      %p
+        %br
+        %span.bold
+          Any questions before you sign up?
+        %br
+        If you have questions about Eternos or the sign up process just 
+        = link_to 'submit a support request', '/support'
+        and we’ll get right back to you.
+    
+        %br
+        %span.bold
+          Got terms of service and privacy policies?
+        %br
+        Here are our 
+        = link_to 'Terms of Service', '/about/terms', :target => '_new'
+        , 
+        = link_to 'Refund Policy', '/about/refund', :target => '_new'
+        , and our
+        = link_to 'Privacy Policy', '/about/privacy', :target => '_new'
+    
+
+    

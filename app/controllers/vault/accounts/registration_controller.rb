@@ -91,6 +91,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
       UserSession.create(@user, true)
       # Set session for choose_plan
       session[:account_id] = @account.id
+      flash[:notice] = 'Your account info has been saved.'
     else # @account not saved
       # Need to reload it otherwise form action will be update!?
       # Happens on transaction ROLLBACK
