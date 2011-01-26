@@ -1,116 +1,24 @@
 # Code copied from AccountsController 
 
-class Vault::Accounts::ManagementController < ApplicationController
+class Vault::Accounts::ManagerController < ApplicationController
   include ModelControllerMethods
 
-  require_role "Member", :except => [:new, :create, :billing, :plans, :canceled, :thanks]
+  require_role "Member", :except => [:billing, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
 
-  before_filter :build_user, :only => [:new, :create]
-  before_filter :build_plan, :only => [:new, :create]
-  before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
+  before_filter :load_billing, :only => [:billing, :paypal]
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update]
-  before_filter :load_discount, :only => [ :plans, :plan, :new, :create]
+  before_filter :load_discount, :only => [ :plans, :plan]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
-  before_filter :check_logged_in, :only => [:new, :create, :canceled]
+  before_filter :check_logged_in, :only => [:canceled]
   
   #ssl_required :billing, :cancel, :new, :create, :plans
   #ssl_allowed :thanks, :canceled, :paypal
 
   layout :set_layout
-  
-  def new
-    session[:account_id] = nil
-    @terms_of_service = true
-    
-    if params[:invitation_token]
-      @invitation_token = params[:invitation_token]
-    end
-    
-  end
-
-  # 1 or 2-step process
-  # For Free plans, save login info and done
-  # For paying plans, 
-  #   save login info
-  #   save payment info
-
-  def create
-    @account.affiliate = SubscriptionAffiliate.find_by_token(cookies[:affiliate]) unless cookies[:affiliate].blank?
-
-    # Taken from users controller to support email activation
-    cookies.delete :auth_token
-    # protects against session fixation attacks, wreaks havoc with 
-    # request forgery protection.
-    # uncomment at your own risk
-    # reset_session
-
-    # Using email registration?
-    @user.registration_required = false
-    
-    # Some subscriptions use Captcha in signup form
-    @hide_errors = params[:hide_errors]
-
-    @account.user ||= @user
-    @account.name = @user.full_name
-    
-    # Do custom validation of account fields
-    
-    if @account.company_name.blank?
-      @account.errors.add(:company_name, "Please enter your company name")
-    end
-    if @account.phone_number.blank?
-      @account.errors.add(:phone_number, "Please enter a contact phone number")
-    end
-    
-    Rails.logger.debug "Creating account #{@account.inspect}"
-    Rails.logger.debug "Account user #{@account.user.inspect}"
-    Rails.logger.debug "Profile: #{@user.profile.inspect}"
-    
-    @success = false
-    begin
-      Account.transaction do
-        @user.profile ||= Profile.new
-        @account.save!
-        unless verify_recaptcha(:model => @user)
-          flash[:error] = "Invalid CAPTCHA entry.  Please try again."
-          raise "Captcha error"
-        end
-        @success = true
-      end
-    rescue ActiveRecord::RecordInvalid => e
-      flash[:error] = "There are errors in your input.  Please correct them and try again"
-      Rails.logger.error "#{e.class} #{e.message}"
-    rescue Exception => e
-      Rails.logger.error "#{e.class} #{e.message}"      
-    end
-    
-    if @success
-      @user.register!
-      @user.activate!
-      # Auto-login..this better work as advertised!
-      UserSession.create(@user, true)
-      # Set session for choose_plan
-      session[:account_id] = @account.id
-    else # @account not saved
-      # Need to reload it otherwise form action will be update!?
-      # Happens on transaction ROLLBACK
-      unless @account.new_record?
-        @account = Account.new(params[:account])
-        if @account.users.any?
-          @user = @account.users.first
-        else
-          @account.user = @user = @account.users.build
-        end
-      end
-      @terms_of_service = @user.terms_of_service == "1"
-      @invitation_token = params[:user][:invitation_token] rescue nil
-      render :action => :new
-    end
-  end
     
   def show
-    return redirect_to(member_home_path)
+    
     #@plan = @subscription.subscription_plan
   end
 
@@ -276,39 +184,11 @@ class Vault::Accounts::ManagementController < ApplicationController
   protected
 
   def set_layout
-    if %W( new create ).include?(action_name)
-      'vault/public/home'
-    else
-      'vault/private/account'
-    end
+    'vault/private/account'
   end
   
   def load_object
     @obj = @account = current_account
-  end
-
-  def build_user
-    if session[:account_id]
-      @account = Account.find_by_id(session[:account_id])
-      Rails.logger.debug "Got account from session id: #{@account.inspect}"
-    end
-    @account ||= Account.new(params[:account])
-    
-    # Accounts have users & user attribute..confusing! Build and/or fetch 1st user
-    if @account.users.any?
-      @user = @account.users.first
-    else
-      @account.user = @user = @account.users.build
-    end
-  end
-
-  def build_plan
-    unless @plan = SubscriptionPlan.find_by_name(params[:plan])
-      @plan = SubscriptionPlan.find_by_name(AppConfig.default_plan)
-    end
-    @plan.discount = load_discount
-    @account.plan = @plan
-    @use_captcha = using_captcha_in_signup?(@account)
   end
 
   def redirect_url
@@ -342,11 +222,6 @@ class Vault::Accounts::ManagementController < ApplicationController
     admin?
   end 
 
-  def activate_and_redirect_to(redirect_path)
-    @user.activate! # unless @user.email_registration_required?
-    flash_redirect "Your account has been created.", redirect_path
-  end
-
   # Override application_controller.rb current_account to handle newly created account
   # which has not been activated or logged in yet
   def current_account
@@ -373,7 +248,4 @@ class Vault::Accounts::ManagementController < ApplicationController
     end
   end
 
-  def using_captcha_in_signup?(account)
-    true
-  end
 end
