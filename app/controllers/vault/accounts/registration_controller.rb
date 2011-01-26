@@ -1,7 +1,7 @@
 # Code copied from AccountsController 
 
 class Vault::Accounts::RegistrationController < ApplicationController
-  #include ModelControllerMethods
+  include ModelControllerMethods
 
   require_role "Member", :except => [:new, :create, :billing, :plans, :thanks]
 
@@ -222,6 +222,12 @@ class Vault::Accounts::RegistrationController < ApplicationController
   def load_subscription
     @subscription = current_account.subscription
     @plan = @subscription.subscription_plan
+    # Choosing plan comes after create action.  We already saved a default plan 
+    # to the account's subscription, but they may have choosed a different one
+    if params[:plan] && (params[:plan] != @plan.name) && (plan = SubscriptionPlan.find_by_name(params[:plan]))
+      @plan = @subscription.subscription_plan = plan
+      @subscription.save
+    end
   end
 
   # Load the discount by code, but not if it's not available

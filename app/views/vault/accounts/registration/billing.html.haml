@@ -1,23 +1,26 @@
 = render :partial => 'left_content', :locals => {:step => 2}
+
 .content-box.billing
   %h1 Payment Information
   /%h3= "You have selected " + site_account_plan(@plan)
-  %h2 Your account info has been saved.
+  %h2 Your account details has been saved.
   %p 
     Simply enter your payment details below to finish creating your Eternos account.
+  %h1
+    Subscription Plan: 
+    = @plan.to_s
   %p
     %strong
-      Your account will be billed XX per month as a recurring charge.
-    %br
-    = render :partial => 'shared/mcafee_secure'
-  %p &nbsp;
+      Your account will be billed once per month as a recurring charge.
+  = render :partial => 'shared/mcafee_secure'
   
-  - form_for :creditcard, @creditcard, :url => { :action => 'billing' } do |f|
+  - semantic_form_for :creditcard, @creditcard, :url => { :action => 'billing' } do |f|
     = render :partial => 'credit_card_form', :locals => {:f => f}
     / - submit_or_cancel account_path, 'Update billing information'
-    = submit_tag :submit, :value => "Continue", :class => "submit sign-up"
-    %p.small * Payments will appear as EON Digital Preservation, INC. on your billing statement.
-    
+    %p.p1
+      = submit_tag :submit, :value => "Continue", :class => "submit sign-up", :id => "yellow-button3"
+      %em * Payments will appear as EON Digital Preservation, INC. on your billing statement.
+  
   %p &nbsp;
   %p
     %strong
