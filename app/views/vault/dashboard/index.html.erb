@@ -1,53 +1,67 @@
-<h1>Your Vault report</h1>
-<%= render :partial => 'dashboard/backup_stats_table' %>
+<div class='flash_notice' id='notice'></div>
+<%= show_flash_messages :fade => 30 %>
+
+<h1>Vault Backup Summary</h1>
+<ul>
+  <li>Total Items Saved XX (XX / day)</li>
+  <li>Total Size XX (XX / day)</li>
+  <li>Last backup finished at</li>
+</ul>
+
+<h1>Backup Status</h1>
+<% if @dashboard.backup_sites.any? %>
+  <table border="0" cellpadding="0" cellspacing="0"> 
+    <thead>
+      <tr> 
+      <th align="center" class="thead" ><strong>Backup Site</strong></td> 
+      <th align="center" class="thead"><strong>Added</strong></td> 
+      <th align="center" class="thead"><strong>Most Recent Backup</strong></td> 
+      <th align="center" class="thead"><strong>Status</strong></td> 
+      <th align="center" class="thead"><strong>Options</strong></td> 
+      </tr>
+    </thead>
+    <tbody>
+  <% @dashboard.backup_sites.each do |bs| %>
+    <tr>
+      <% content_tag(:td, :align => 'left') do %>
+        <div style="float:left; padding-right:3px;">
+          <%= backup_icon(bs[:site], '16x16', true) %>
+        </div>
+        <div>
+          <%= bs[:description] %>
+        </div>
+      <% end %>
+      <%= content_tag(:td, bs[:created_at], :align => 'center') %>
+      <%= content_tag(:td, bs[:last_backup_at], :align => 'center') %>
+      <%= content_tag(:td, bs[:status], :align => 'center') %>
+      <%= content_tag(:td, (bs[:status] == 'OK') ? '' : link_to('Edit settings', account_setup_path(:step => 0, :site => bs[:site])) ) %>
+    </tr>
+  <% end %>
+    </tbody>
+  </table>
+<% end %>
+<%= link_to('Add More Accounts to Archive', account_setup_path(:step => 0)) %>
+
 <p>&nbsp;</p>
-<div id="search-results"></div>
+<div id="back-to-events-button" class="back-events" style="display:none;"><a href="javascript:void(0);" onclick="onShowEvents();">Show Events</a></div>
+
 <div id="monthly-archive">    
   <h1>Latest archived items <em>Filters | <a href="#">All</a> <a href="#">Facebook</a> <a href="#">Twitter</a> <a href="#">Emails</a></em></h1>
-  <ol class="home-archive">
-  	<li>
-      	<img src="images/icon-fb.gif" width="20" height="20" align="bottom" />
-      	<a href="#">Lorem Ipsum</a><br />
-           ssd; fhdlkf ;sdlhf ds;lkhfdlkshyh 9pq8wyfsdfhsdlkjf hsdlkf hsdlkfldsk fhlksdfh dsl<br />
-           <em>2009-10-31, 18:33:39 UTC</em>
-      </li>
-  	<li>
-      	<img src="images/icon-twit.gif" width="20" height="20" align="bottom" />
-      	<a href="#">Lorem Ipsum</a><br />
-           ssd; fhdlkf ;sdlhf ds;lkhfdlkshyh 9pq8wyfsdfhsdlkjf hsdlkf hsdlkfldsk fhlksdfh dsl<br />
-           <em>2009-10-31, 18:33:39 UTC</em>
-      </li>            
-  	<li>
-      	<img src="images/icon-twit.gif" width="20" height="20" align="bottom" />
-      	<a href="#">Lorem Ipsum</a><br />
-           ssd; fhdlkf ;sdlhf ds;lkhfdlkshyh 9pq8wyfsdfhsdlkjf hsdlkf hsdlkfldsk fhlksdfh dsl<br />
-           <em>2009-10-31, 18:33:39 UTC</em>
-      </li>            
-  	<li>
-      	<img src="images/icon-twit.gif" width="20" height="20" align="bottom" />
-      	<a href="#">Lorem Ipsum</a><br />
-           ssd; fhdlkf ;sdlhf ds;lkhfdlkshyh 9pq8wyfsdfhsdlkjf hsdlkf hsdlkfldsk fhlksdfh dsl<br />
-           <em>2009-10-31, 18:33:39 UTC</em>
-      </li>            
-  	<li>
-      	<img src="images/icon-twit.gif" width="20" height="20" align="bottom" />
-      	<a href="#">Lorem Ipsum</a><br />
-           ssd; fhdlkf ;sdlhf ds;lkhfdlkshyh 9pq8wyfsdfhsdlkjf hsdlkf hsdlkfldsk fhlksdfh dsl<br />
-           <em>2009-10-31, 18:33:39 UTC</em>
-      </li>            
-  	<li>
-      	<img src="images/icon-twit.gif" width="20" height="20" align="bottom" />
-      	<a href="#">Lorem Ipsum</a><br />
-           ssd; fhdlkf ;sdlhf ds;lkhfdlkshyh 9pq8wyfsdfhsdlkjf hsdlkf hsdlkfldsk fhlksdfh dsl<br />
-           <em>2009-10-31, 18:33:39 UTC</em>
-      </li>            
-  	<li>
-      	<img src="images/icon-twit.gif" width="20" height="20" align="bottom" />
-      	<a href="#">Lorem Ipsum</a><br />
-           ssd; fhdlkf ;sdlhf ds;lkhfdlkshyh 9pq8wyfsdfhsdlkjf hsdlkf hsdlkfldsk fhlksdfh dsl<br />
-           <em>2009-10-31, 18:33:39 UTC</em>
-      </li>                                                                        
-  </ol>
-  <p><a href="#">Show Events before this month</a> | <a href="#">Show Events after this month</a></p>
+  <div id="search-results">
+  </div>
 </div>
-<p class="message01">If you have any problems, suggestions, or concerns with our service please use the "FEEDBACK" button that is along the right side of this page. We welcome any feedback you might have!</p>
+<%= javascript_tag "
+  document.observe('dom:loaded', function() {
+    new Ajax.Updater('search-results', 
+      '#{search_vault_dashboard_path}', {
+        asynchronous:true, 
+        evalScripts:true, 
+        method:'get', 
+        onComplete:function(request){spinner.unload(); onSearchComplete();}, 
+        onLoading:function(request){spinner.load('events')}, 
+        parameters:'terms=*'
+    });
+  });
+" %>
+
+

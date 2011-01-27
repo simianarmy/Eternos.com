@@ -380,6 +380,7 @@ class ApplicationController < ActionController::Base
     else
       'home'
     end
+    return nil unless @layout
     Rails.logger.debug "Dyamic layout = #{@layout}"
     # Layouts further divided by site subdomain: www vs vault
     if current_subdomain == 'vault'

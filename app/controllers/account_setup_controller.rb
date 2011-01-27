@@ -22,7 +22,7 @@ class AccountSetupController < ApplicationController
     if @active_step <= 1
       load_online
       @content_page = 'backup_sources'
-    elsif @active_step == 2
+    elsif @active_step == 2 && current_subdomain != 'vault'
       # Get list of facebook ids of friends that have joined after invites from this user
       @already_invited = current_user.facebook_id ? 
         Member.find_all_by_facebook_referrer(current_user.facebook_id).map(&:facebook_id).compact : []

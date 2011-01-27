@@ -11,4 +11,22 @@ class Vault::DashboardController < ApplicationController
     @dashboard = DashboardPresenter.new(current_user)
     @backup_data = @dashboard.backup_data_counts
   end
+  
+  def search
+    @results = []
+    unless params[:terms].blank?
+      BenchmarkHelper.rails_log("sphinx search for #{params[:terms]}") do
+        @results = UserSearch.new(current_user).execute(params[:terms]).compact
+      end
+    end
+    
+    respond_to do |format|
+      format.html { 
+        render :layout => false
+      }
+    end
+  end
+  
+  protected
+  
 end

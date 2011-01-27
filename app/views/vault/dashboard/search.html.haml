@@ -1,0 +1,6 @@
+#search-results
+  - if @results.any?
+    = render :partial => 'user_search/result', :collection => @results
+  - else
+    No data found
+#search-results-footer
