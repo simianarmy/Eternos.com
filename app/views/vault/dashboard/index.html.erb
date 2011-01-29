@@ -52,21 +52,38 @@
 <div id="back-to-events-button" class="back-events" style="display:none;"><a href="javascript:void(0);" onclick="onShowEvents();">Show Events</a></div>
 
 <div id="monthly-archive">    
-  <h1>Latest archived items <em>Filters | <a href="#">All</a> <a href="#">Facebook</a> <a href="#">Twitter</a> <a href="#">Emails</a></em></h1>
+  <h1>Latest archived items 
+  <em>Filters | 
+  <%= link_to_function 'Latest', "searchArchive();" %> 
+  <%= link_to_function 'All', "searchFilter('all')" %>
+  <%= link_to_function 'Facebook', "searchFilter('fb')" %>
+  <%= link_to_function 'Twitter', "searchFilter('tw')" %>
+  <%= link_to_function 'RSS', "searchFilter('rss')" %>
+  <!--
+  <%= link_to_function 'Email', "searchFilter('em')" %>
+  -->
+  </em>
+  </h1>
   <div id="search-results">
   </div>
 </div>
 <%= javascript_tag "
-  document.observe('dom:loaded', function() {
+  // Search the archive for latest or by term
+  function searchArchive(terms) {
+    var t = terms || '';
     new Ajax.Updater('search-results', 
       '#{search_vault_dashboard_path}', {
         asynchronous:true, 
         evalScripts:true, 
         method:'get', 
         onComplete:function(request){spinner.unload(); onSearchComplete();}, 
-        onLoading:function(request){spinner.load('events')}, 
-        parameters:'terms='
+        onLoading:function(request){spinner.load('search-results')}, 
+        parameters:'terms=' + t
     });
+  }
+  
+  document.observe('dom:loaded', function() {
+    searchArchive();
   });
 " %>
 

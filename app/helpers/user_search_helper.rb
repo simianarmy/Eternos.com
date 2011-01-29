@@ -44,15 +44,18 @@ module UserSearchHelper
     icon || 'BROKEN'
   end
   
-  def search_title(obj)
-    title = if obj.respond_to?(:title) && !obj.title.blank?
+  def search_title_text(obj)
+    if obj.respond_to?(:title) && !obj.title.blank?
       obj.excerpts.title
     elsif obj.respond_to?(:name) && !obj.name.blank?
       obj.excerpts.name
     else
       obj.to_str.humanize.singularize    
     end
-    search_details_link(title, obj)
+  end
+  
+  def search_title(obj)
+    search_details_link(search_title_text(obj), obj)
   end
   
   def search_summary(obj)
@@ -70,9 +73,9 @@ module UserSearchHelper
   
   def search_date(obj)
     if obj.respond_to?(:start_date)
-      obj.start_date.to_s 
+      obj.start_date.strftime("%c")
     elsif obj.respond_to?(:created_at)
-      obj.created_at.to_s
+      obj.created_at.strftime("%c")
     else
       ""
     end

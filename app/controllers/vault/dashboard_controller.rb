@@ -1,7 +1,7 @@
 class Vault::DashboardController < ApplicationController
   before_filter :login_required
   require_role "Member"
-  before_filter :load_member_home_presenter
+  before_filter :load_member_home_presenter, :only => [:index]
 
   layout 'vault/private/dashboard'
 

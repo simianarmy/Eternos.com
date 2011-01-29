@@ -6,6 +6,22 @@ class UserSearch
   attr_reader :results
   attr_accessor :user
    
+  SearchObjects = {
+    'ActivityStreamItem'  => :backup_source_id,
+    'Address'             => :user_id,
+    'BackupEmail'         => :backup_source_id,
+    'BackupPhotoAlbum'    => :backup_source_id,
+    'Content'             => :user_id,
+    'FacebookMessage'     => :backup_source_id,
+    'Family'              => :profile_id,
+    'Feed'                => :backup_source_id,
+    'FeedEntry'           => :feed_id,
+    'Job'                 => :profile_id,
+    'Medical'             => :profile_id,
+    'MedicalCondition'    => :profile_id,
+    'School'              => :profile_id
+  }
+  
   def initialize(user)
     @user = user
     @results = []
@@ -19,18 +35,44 @@ class UserSearch
   # => options: alternative attributes search hash
   def execute(terms, options={})
     reset
-    search_with = options.any? ? options : sphinx_attributes
-    RAILS_DEFAULT_LOGGER.debug "searching with attributes: #{search_with.inspect}"
-    @results = ThinkingSphinx.search terms, :with => search_with
+    if terms.blank? # Searching with attributes only
+      @results = attribute_search(options)
+    else
+      RAILS_DEFAULT_LOGGER.debug "searching for #{terms}"
+      SearchObjects.each do |obj, attribute|
+        @results += obj.constantize.search terms, :with => gen_attribute(attribute)
+      end
+    end
+    @results
   end
 
+  def attribute_search(attributes)
+    RAILS_DEFAULT_LOGGER.debug "searching for attributes #{attributes.inspect}"
+    @results = ThinkingSphinx.search "", :with => attributes
+  end
+  
   def reset
     @results.clear
   end
   
   protected
   
+  def gen_attribute(attribute)
+    case attribute
+    when :user_id
+      {:user_id => @user.id}
+    when :backup_source_id
+      @bs ||= @user.backup_sources
+      {:backup_source_id => collect_sphinx_attributes(@bs)}
+    when :profile_id
+      {:profile_id => @user.profile.id}
+    when :feed_id
+      {:feed_id => collect_sphinx_attributes(@user.backup_sources.blog.map{|b| b.feed})}
+    end
+  end
+  
   def sphinx_attributes
+    # DEPRECATED: TURNS OUT YOU CAN'T SELECT WITH ORs ON ATTRIBUTES IN SPHINX!
     @attributes ||= {
       :user_id => @user.id,
       :profile_id => @user.profile.id,

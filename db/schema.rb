@@ -519,6 +519,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.integer :author_id, :limit => 8, :null => false
     t.text :body
     t.text :attachment
+    t.integer :backup_source_id
     t.timestamps
   end
   add_index :facebook_messages, [:message_id]

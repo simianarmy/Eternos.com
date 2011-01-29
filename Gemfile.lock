@@ -302,7 +302,7 @@ DEPENDENCIES
   spork
   subdomain-fu
   taf2-curb
-  thinking-sphinx
+  thinking-sphinx (~> 1.3.20)
   twitter
   tzinfo
   uuidtools

@@ -1,6 +1,14 @@
+- unless @search_terms.empty?
+  #search-results-header
+    .results-title
+      %strong== Search results for '#{@search_terms}'
+    .results-stats
+      %strong= pluralize(@results.size, 'hit')
+    %p
+#results-config
 #search-results
   - if @results.any?
-    = render :partial => 'user_search/result', :collection => @results
+    = render :partial => 'search_item', :collection => @results
   - else
     No data found
 #search-results-footer
