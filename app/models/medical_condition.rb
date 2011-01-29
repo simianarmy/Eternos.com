@@ -24,6 +24,6 @@ class MedicalCondition < ActiveRecord::Base
     indexes treatment
     indexes notes
     
-    has profile_id, diagnosis_date, treatment_start_on, treatment_end_on
+    has profile_id, diagnosis_date, treatment_start_on, treatment_end_on, created_at
   end
 end

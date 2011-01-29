@@ -79,6 +79,10 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 P { line-height: 20px;}
 .content-box-IMG { margin: 0 15px 5px 0}
 
+.gray-rounded-box {
+	background:#F2F2F2; border:1px solid; border-radius: 5px;
+}
+
 .service-ul { margin: 0; padding: 0; list-style: none;}
 .service-ul IMG { float: left; margin:0 18px 0 0;}
 
@@ -148,3 +152,6 @@ P { line-height: 20px;}
 .search input[type="submit"] { background: url("/images/vault/bg_login-button.gif") no-repeat 0 0; border: none; color: #FFFFFF; cursor: pointer; font: bold 16px Arial,Helvetica,sans-serif; height: 30px; padding: 0; width: 76px; cursor: pointer; float: right}
 .search EM { font-size: 10px; font-style: normal}
 
+.backup-sites-table table thead tr {
+	background: #F2F2F2
+}

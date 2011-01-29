@@ -2,20 +2,23 @@
 <%= show_flash_messages :fade => 30 %>
 
 <h1>Vault Backup Summary</h1>
-<ul>
-  <li>Total Items Saved XX (XX / day)</li>
-  <li>Total Size XX (XX / day)</li>
-  <li>Last backup finished at</li>
-</ul>
-
+<div class="gray-rounded-box">
+  <ul style="list-style: none;">
+    <li>Sites backed up: <%= @dashboard.backup_sites.count %></li>
+    <li>Total Objects Saved: <%= number_with_delimiter(@backup_data[:total]) %></li>
+    <li>Last backup finished at: <%= @backup_data[:last_backup_finished_at].strftime("%c") %></li>
+  </ul>
+</div>
+<br/>
 <h1>Backup Status</h1>
 <% if @dashboard.backup_sites.any? %>
-  <table border="0" cellpadding="0" cellspacing="0"> 
+<div class="backup-sites-table">
+  <table border="0" cellpadding="5" cellspacing="0" width="100%"> 
     <thead>
       <tr> 
-      <th align="center" class="thead" ><strong>Backup Site</strong></td> 
+      <th align="center" class="thead" width="30%"><strong>Backup Site</strong></td> 
       <th align="center" class="thead"><strong>Added</strong></td> 
-      <th align="center" class="thead"><strong>Most Recent Backup</strong></td> 
+      <th align="center" class="thead"><strong>Last Backup</strong></td> 
       <th align="center" class="thead"><strong>Status</strong></td> 
       <th align="center" class="thead"><strong>Options</strong></td> 
       </tr>
@@ -31,17 +34,20 @@
           <%= bs[:description] %>
         </div>
       <% end %>
-      <%= content_tag(:td, bs[:created_at], :align => 'center') %>
-      <%= content_tag(:td, bs[:last_backup_at], :align => 'center') %>
+      <%= content_tag(:td, bs[:created_at].strftime("%x"), :align => 'center') %>
+      <%= content_tag(:td, bs[:last_backup_at].strftime("%x"), :align => 'center') %>
       <%= content_tag(:td, bs[:status], :align => 'center') %>
-      <%= content_tag(:td, (bs[:status] == 'OK') ? '' : link_to('Edit settings', account_setup_path(:step => 0, :site => bs[:site])) ) %>
+      <%= content_tag(:td, (bs[:status] == 'OK') ? '' : 
+        link_to('Settings', account_setup_path(:step => 0, :site => bs[:site])) ) %>
     </tr>
   <% end %>
     </tbody>
   </table>
+</div>
 <% end %>
-<%= link_to('Add More Accounts to Archive', account_setup_path(:step => 0)) %>
-
+<p>
+<%= link_to('Add More Accounts', account_setup_path(:step => 0)) %>
+</p>
 <p>&nbsp;</p>
 <div id="back-to-events-button" class="back-events" style="display:none;"><a href="javascript:void(0);" onclick="onShowEvents();">Show Events</a></div>
 
@@ -59,7 +65,7 @@
         method:'get', 
         onComplete:function(request){spinner.unload(); onSearchComplete();}, 
         onLoading:function(request){spinner.load('events')}, 
-        parameters:'terms=*'
+        parameters:'terms='
     });
   });
 " %>

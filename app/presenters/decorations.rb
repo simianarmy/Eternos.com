@@ -55,8 +55,10 @@ module BackupSourceHistory
         :conditions => {'activity_streams.id' => user.activity_stream.id})
       data[:rss] = FeedEntry.belonging_to_user(user.id).count
       data[:emails] = BackupEmail.belonging_to_user(user.id).count
+      data[:fb_messages] = user.backup_sources.facebook.map{|bs| bs.message_threads.map(&:message_count).sum }.sum
       data[:total] = data.values.sum
       data[:total_comments] = data[:stream_comments] + data[:media_comments]
+      data[:last_backup_finished_at] = user.backup_state.last_backup_finished_at
     end
   end
 end

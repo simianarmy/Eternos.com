@@ -39,7 +39,7 @@ class ActivityStreamItem < ActiveRecord::Base
     indexes comments(:comment), :as => :comment
     
     # attributes
-    has activity_stream_id, published_at, edited_at
+    has activity_stream_id, published_at, edited_at, created_at
     
     where "deleted_at IS NULL"
   end

@@ -15,10 +15,13 @@ class UserSearch
   # available text content
   # Search backend: Sphinx
   # Rails search interface: thinking_sphinx
+  
+  # => options: alternative attributes search hash
   def execute(terms, options={})
     reset
-    RAILS_DEFAULT_LOGGER.debug "searching with attributes: #{sphinx_attributes}"
-    @results = ThinkingSphinx.search terms, :with => sphinx_attributes
+    search_with = options.any? ? options : sphinx_attributes
+    RAILS_DEFAULT_LOGGER.debug "searching with attributes: #{search_with.inspect}"
+    @results = ThinkingSphinx.search terms, :with => search_with
   end
 
   def reset

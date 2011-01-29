@@ -63,7 +63,7 @@ class BackupEmail < ActiveRecord::Base
     indexes tags(:name), :as => :tags
     
     # attributes
-    has backup_source_id, received_at
+    has backup_source_id, received_at, created_at
     
     where "deleted_at IS NULL"
   end

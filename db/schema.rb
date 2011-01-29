@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "company_name"
     t.string   "phone_number"
     t.string   "state"
+    t.integer  "site_id", :null => false, :default => 0
     t.datetime "deleted_at"
   end
 

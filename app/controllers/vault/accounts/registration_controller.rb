@@ -36,7 +36,8 @@ class Vault::Accounts::RegistrationController < ApplicationController
 
   def create
     @account.affiliate = SubscriptionAffiliate.find_by_token(cookies[:affiliate]) unless cookies[:affiliate].blank?
-
+    @account.site_id = 1  # mark as belonging to Vault
+    
     # Taken from users controller to support email activation
     cookies.delete :auth_token
     # protects against session fixation attacks, wreaks havoc with 
