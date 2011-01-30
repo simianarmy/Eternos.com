@@ -7,7 +7,7 @@ class UserSearch
   attr_accessor :user
    
   SearchObjects = {
-    'ActivityStreamItem'  => :backup_source_id,
+    'ActivityStreamItem'  => :activity_stream_id,
     'Address'             => :user_id,
     'BackupEmail'         => :backup_source_id,
     'BackupPhotoAlbum'    => :backup_source_id,
@@ -66,6 +66,8 @@ class UserSearch
       {:backup_source_id => collect_sphinx_attributes(@bs)}
     when :profile_id
       {:profile_id => @user.profile.id}
+    when :activity_stream_id
+      {:activity_stream_id => @user.activity_stream.id}
     when :feed_id
       {:feed_id => collect_sphinx_attributes(@user.backup_sources.blog.map{|b| b.feed})}
     end

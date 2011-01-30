@@ -56,9 +56,9 @@
   <em>Filters | 
   <%= link_to_function 'Latest', "searchArchive();" %> 
   <%= link_to_function 'All', "searchFilter('all')" %>
-  <%= link_to_function 'Facebook', "searchFilter('fb')" %>
-  <%= link_to_function 'Twitter', "searchFilter('tw')" %>
-  <%= link_to_function 'RSS', "searchFilter('rss')" %>
+  <%= link_to_function 'Facebook', "searchFilter('facebook')" %>
+  <%= link_to_function 'Twitter', "searchFilter('twitter')" %>
+  <%= link_to_function 'RSS', "searchFilter('feed')" %>
   <!--
   <%= link_to_function 'Email', "searchFilter('em')" %>
   -->
@@ -79,6 +79,17 @@
         onComplete:function(request){spinner.unload(); onSearchComplete();}, 
         onLoading:function(request){spinner.load('search-results')}, 
         parameters:'terms=' + t
+    });
+  }
+  
+  // Filters out search results by source
+  function searchFilter(source) {
+    $$('.search_result').each(function(res) {
+      if ((source === 'all' || (res.classNames().grep(source).size() > 0))) {
+        res.show();
+      } else {
+        res.hide();
+      }
     });
   }
   
