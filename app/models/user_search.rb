@@ -33,10 +33,11 @@ class UserSearch
   # Rails search interface: thinking_sphinx
   
   # => options: alternative attributes search hash
-  def execute(terms, options={})
+  def execute(terms, options=nil)
     reset
-    if terms.blank? # Searching with attributes only
-      @results = attribute_search(options)
+    if options # Searching with attributes only
+      RAILS_DEFAULT_LOGGER.debug "searching for attributes #{options.inspect}"
+      @results = ThinkingSphinx.search nil, :with => options
     else
       RAILS_DEFAULT_LOGGER.debug "searching for #{terms}"
       SearchObjects.each do |obj, attribute|
@@ -46,11 +47,6 @@ class UserSearch
     @results
   end
 
-  def attribute_search(attributes)
-    RAILS_DEFAULT_LOGGER.debug "searching for attributes #{attributes.inspect}"
-    @results = ThinkingSphinx.search "", :with => attributes
-  end
-  
   def reset
     @results.clear
   end

@@ -139,10 +139,15 @@ P { line-height: 20px;}
 .sync-report LI { float: left; width: 73px; padding-bottom: 15px; text-align: center; font-weight: bold}
 .sync-report LI STRONG { display: block; background: #F4F4F4; height: 35px; padding-top: 15px; margin-bottom: 12px;}
 
-.home-archive { margin: 0 0 40px 0; padding: 0; list-style: none; font-size: 12px;}
-.home-archive LI { margin-bottom: 15px;}
-.home-archive LI A { color: #0432FF;}
-.home-archive LI EM { color: #4775B9; font-style: normal}
+.summary-stats div.stats-li-title {
+	width: 200px;
+	float: left;
+}
+
+#search-results { margin: 0 0 40px 0; padding: 0; list-style: none; font-size: 12px;}
+.search_result { margin-bottom: 5px;}
+.search_result A { color: #0432FF;}
+.search_result .posted { color: #4775B9; font-style: normal}
 .home P { font-size: 12px;}
 .home .message01 { font-size: 11px; background: #FFFFF1}
 #active_network-add { background: url(/images/icon-add-more.gif) no-repeat center left; color: #000000; font-size: 12px; margin-right: 10px; padding: 5px 0 10px 30px; position: relative; top: -15px;}

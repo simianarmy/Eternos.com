@@ -18,7 +18,7 @@ class Vault::DashboardController < ApplicationController
     search_attributes = {}
     
     if @search_terms.blank?
-      search_attributes.merge!({:created_at => 2.months.ago.utc..Time.now.utc, :user_id=>178})
+      search_attributes.merge!({:created_at => 12.months.ago.utc..Time.now.utc, :user_id=>178})
     end
     BenchmarkHelper.rails_log("sphinx search for #{@search_terms} with #{search_attributes.inspect}") do
       @results = UserSearch.new(current_user).execute(@search_terms, search_attributes).compact

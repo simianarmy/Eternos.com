@@ -2,10 +2,12 @@
   #result-main.res_text[object]
     .res_title
       = image_tag(search_icon(object), :width => 20, :height => 20)
-      %strong= search_title_text(object)
+      = search_title(object)
     .res_body
-      = search_summary(object)
-      %br
+      - desc = search_summary(object)
+      - unless desc.blank?
+        = desc
+        %br
       %span.posted= search_date(object)
   .clearboth
   #full_view.res_full[object]

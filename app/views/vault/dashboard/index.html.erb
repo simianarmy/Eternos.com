@@ -2,11 +2,11 @@
 <%= show_flash_messages :fade => 30 %>
 
 <h1>Vault Backup Summary</h1>
-<div class="gray-rounded-box">
+<div class="gray-rounded-box summary-stats">
   <ul style="list-style: none;">
-    <li>Sites backed up: <%= @dashboard.backup_sites.count %></li>
-    <li>Total Objects Saved: <%= number_with_delimiter(@backup_data[:total]) %></li>
-    <li>Last backup finished at: <%= @backup_data[:last_backup_finished_at].strftime("%c") %></li>
+    <li><div class="stats-li-title">Sites backed up:</div> <%= @dashboard.backup_sites.count %></li>
+    <li><div class="stats-li-title">Total Objects Saved:</div> <%= number_with_delimiter(@backup_data[:total]) %></li>
+    <li><div class="stats-li-title">Last backup finished at:</div> <%= @backup_data[:last_backup_finished_at].strftime("%c") %></li>
   </ul>
 </div>
 <br/>
