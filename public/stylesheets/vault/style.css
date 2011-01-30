@@ -1,7 +1,8 @@
 /* Vault public pages */
 BODY { background: url(/images/vault/bg-body.gif) repeat-x; font: 14px Arial, Helvetica, sans-serif; color: #5B5B5B; margin: 0; padding: 0}
 IMG { border: none;}
-A { outline: none}
+A { outline: none; text-decoration: none;}
+A:hover{ outline: none; }
 FIELDSET { margin: 0; padding: 0; border: none;}
 
 .h3link A:hover, .active A:hover, .inact A:hover, .footer A:hover { text-decoration: underline;}
@@ -43,6 +44,8 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #yellow-button { background: url(/images/vault/bg-yellow-button.gif) no-repeat; display: block; color: #FFFFFF; float: left; text-decoration: none; width: 297px; height: 33px; padding-top: 12px; margin:-7px 25px 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button2 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 36px; padding-top: 12px; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
+.yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
+
 
 .myBox { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 
@@ -159,4 +162,69 @@ P { line-height: 20px;}
 
 .backup-sites-table table thead tr {
 	background: #F2F2F2
+}
+
+/* Forms + billing */
+.billing H1 { background: #F2F2F2; padding: 5px; margin-bottom: 0; border: 1px solid #D6D6D6;}
+.billing .p1 { float: none; padding-top: 0;}
+.form-ul3 { margin: 0 0 35px 0; padding: 0 5px 35px 5px; list-style: none; border: 1px solid #D6D6D6; border-top: none;}
+.form-ul3 LI { font-size: 12px; padding: 15px 0 5px 0}
+.form-ul3 LI INPUT[type=text], .form-ul3 LI INPUT[type=password] { width: 250px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle}
+.form-ul3 LI INPUT[type=password], .form-ul3 LI INPUT#account_phone_number { width: 150px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle}
+
+.form-ul3 LI INPUT[type=radio] { vertical-align: middle}
+.form-ul3 LI .inline-hints { font-size: 10px; font-style: normal}
+.form-ul3 li SELECT { border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; width: 150px; }
+.form-ul3 li LABEL { font-weight: bolder; display: inline-block; width: 150px;}
+.form-ul3 li IMG { vertical-align: middle}
+
+.error { color: #F00;}
+.content-box A { color: #037BBE; font-weight: bold; text-decoration: none;}
+.content-box A:hover { color: #507493; }
+
+.cancel-submit-button {
+	border: 1px solid #DCB5B5;
+	background: #F2F2F2;
+	color: #900;
+}
+
+/* Account admin */
+/* Delete account styles from Github.com */
+.delete-content {
+	border:1px solid #DCB5B5; 
+	border-radius: 5px;
+	margin: 15px 0px;
+	padding: 10px;
+	position: relative;
+}
+.delete-content h3 {
+	color: #900;
+	margin: 0px;
+	font-weight: bold;
+	font-size: 1.17em;
+}
+#delete-warning {
+	border:1px solid #DCB5B5; 
+	border-radius: 5px;
+	margin: 15px 0px;
+	padding: 10px;
+	position: relative;
+	background-color: #FFFEB2;
+	font-weight: bold;
+}
+
+/* Plan status grid */
+#plan-overview {
+	display: block;
+}
+.plan-status {
+	background: white;
+	position: relative;
+}
+.plan-status div {
+	padding: 5px;
+	margin: 10px 0 10px 0;
+	float: left;
+	position: relative;
+	width: 200px;
 }

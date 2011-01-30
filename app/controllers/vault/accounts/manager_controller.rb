@@ -4,12 +4,12 @@ class Vault::Accounts::ManagerController < ApplicationController
   include ModelControllerMethods
 
   require_role "Member", :except => [:billing, :plans, :canceled, :thanks]
-  permit "admin for :account", :only => [:edit, :update, :plan, :cancel, :dashboard]
+  permit "admin for :account", :only => [:edit, :change_password, :update, :plan, :cancel, :dashboard]
 
   before_filter :load_billing, :only => [:billing, :paypal]
-  before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update]
+  before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update, :change_password]
   before_filter :load_discount, :only => [ :plans, :plan]
-  before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
+  before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update, :change_password]
   before_filter :check_logged_in, :only => [:canceled]
   
   #ssl_required :billing, :cancel, :new, :create, :plans
@@ -42,13 +42,39 @@ class Vault::Accounts::ManagerController < ApplicationController
     @user = @account.admin
     @plan = @subscription.subscription_plan
 
-    if @user.update_attributes(params[:account][:user])
-      flash_redirect "Your account has been updated.", edit_account_path
-    else
-      render :action => 'edit'
+    # We must manually update associated user
+    if @account.update_attributes(params[:account]) &&
+      @user.update_attributes(params[:account]['users_attributes']['0'])
+      flash[:notice] = "Your account has been updated."
     end
+    
+    render :action => 'show'
   end
 
+  def change_password
+    @user = @account.admin
+    # Check for password update form
+    pwd = params[:account]['users_attributes']['0']['password']
+    if pwd
+      pwd.strip!
+      if pwd.blank?
+        flash[:error] = "Password cannot be empty"
+      elsif pwd == params[:account]['users_attributes']['0']['password_confirmation']
+        @user.password = @user.password_confirmation = pwd
+        Rails.logger.debug "Saving new password " + pwd
+
+        if @user.save
+          flash[:notice] = "Your password has been updated."
+        else
+          flash[:error] = "There was an error updating your password"
+        end
+      else
+        flash[:error] = "Passwords do not match"
+      end
+    end
+    render :action => 'show'
+  end
+  
   def plans
     @plans = SubscriptionPlan.find(:all, :order => 'amount desc').collect {|p| p.discount = @discount; p }
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users

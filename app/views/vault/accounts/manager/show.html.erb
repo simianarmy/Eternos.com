@@ -1,1 +1,85 @@
-ACCOUNT MANAGEMENT HERE
+<div id="plan-overview" class="billing">
+  <h1>Current Plan</h1>
+  <div class="plan-status">
+    <div> 
+      <strong><%= @plan.to_s %></strong><br/>
+      <%= link_to 'Change plan', url_for(:action=>:plans) %>
+    </div>
+    <div>
+      XGB / XGB<br/>Disk space (soft limit)
+    </div>
+    <div>
+      X / X<br/>Facebook accounts
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<%= show_flash_messages %>
+<div class="account-settings-tab-contents billing">
+  <h1>Account Information</h1>
+  <% semantic_form_for @account, :url => {:action => 'update'}, 
+    :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
+    <% f.semantic_fields_for :users do |user| %>
+      <ul class="form-ul3">
+        <%= user.input 'first_name' %>
+        <%= user.input 'last_name' %>
+        <%= user.input 'email', :hint => 'Your email will be used to login' %>
+        <%= f.input :company_name %>
+        <%= f.input :phone_number %>
+        <%= f.commit_button :button_html => {:value => "Update information", :class => "submit", :id => "yellow-button3"} %>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="account-settings-tab-contents billing"">
+  <h1>Change your password</h1>
+  <% semantic_form_for @account, :url => {:action => 'change_password'}, 
+    :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
+    <% f.semantic_fields_for :users do |user| %>
+      <ul class="form-ul3">
+        <%= user.input 'password' %>
+        <%= user.input 'password_confirmation', :type => 'password' %>
+        <%= f.commit_button :button_html => {:value => "Change password", :class => "submit", :id => "yellow-button3"} %>
+      </ul>
+    <% end %>
+  <% end %>
+  <div id="delete-account" class="delete-content">
+    <h3>Delete your account</h3>
+    <p>
+      Deleting your accout will permanently remove your backup data.
+    </p>  
+    <%= link_to_function "Delete your account and backup data", "showDeleteWarning();" %>
+  </div>
+  <div id="delete-warning" class="delete-content deleting" style="display:none;">
+    <h3>Make sure you want to do this</h3>
+    <p>Please note that deleting your account will delete any and all backup data as well.</p>
+    <p>Review the <%= link_to "Terms of Service", "/about/terms", :target => "_blank" %> regarding account deletion.</p>
+  </div>
+  <div class="deleting alternative" style="display:none;">
+    <div style="float:left;">
+      <%= link_to_function "I changed my mind - I want to keep this account!", "cancelAccountDelete();" %>
+    </div>
+    <div style="float:right;">
+      <% form_for @account, :url => {:action => 'destroy'}, :method => :post do |f| %>
+        <%= f.submit "Cancel plan and delete this account", :class => "cancel-submit-button", 
+          :style => "width: 300px; font-size: 12px;" %>
+      <% end %>
+    </div>
+  </div>
+  <div style="clear:both;"></div>
+  <div class="deleting" style="display:none;">
+    <p>Are you sure you don't want to just <%= link_to 'Downgrade your account',  url_for(:action => :plans) %>
+      to a <strong>FREE</strong> account?  We won't charge your credit card anymore.
+    </p>
+  </div>
+</div>
+<%= javascript_tag "
+  function showDeleteWarning() {
+    jQuery('#delete-account').hide();
+    jQuery('.deleting').show();
+  }
+  function cancelAccountDelete() {
+    jQuery('#delete-account').show();
+    jQuery('.deleting').hide();
+  }
+" %>
