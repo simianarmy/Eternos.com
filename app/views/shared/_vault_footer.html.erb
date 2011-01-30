@@ -9,7 +9,6 @@
 			</li>
 			<li>
 				<ul>
-					<li><%= link_to 'what is eternos?', '/about/what' %></li>
 					<li><%= link_to 'about us', '/about' %></li>
 					<li><a href="http://blog.eternos.com">blog</a></li>
 					<li><%= link_to 'contact us', '/about/contact' %></li>
@@ -18,11 +17,12 @@
 			</li>
 			<li>
 				<ul>
-					<li><a href="/accounts/new">sign-up</a></li>
+					<li><%= link_to 'sign-up', new_account_registration_path %></a></li>
 					<li><%= link_to 'terms of use', '/about/terms' %></li>
 					<li><%= link_to 'privacy policy', '/about/privacy' %></li>
+					<!--
 					<li><a href="#">press release</a></li>
-					<!--<li><a href="#">careers</a></li>-->
+					<li><a href="#">careers</a></li>-->
 				</ul>
 			</li>
 		</ul>
