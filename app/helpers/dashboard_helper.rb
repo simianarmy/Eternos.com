@@ -54,7 +54,7 @@ module DashboardHelper
   end
 
   def formatted_date_or_na(date, format, na="NA")
-    if %W( Date DateTime Time ).include?(date.class.to_s)
+    if date.respond_to?(:strftime)
       date.strftime(format)
     else
       na
