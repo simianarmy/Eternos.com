@@ -1,0 +1,30 @@
+<div id="plan-overview" class="billing">
+  <h1>Current Plan</h1>
+  <div class="plan-status">
+    <div> 
+      <strong><%= @plan.to_s %></strong><br/>
+    </div>
+    <div>
+      0GB / XGB<br/>Disk space (soft limit)
+    </div>
+    <div>
+      <%= current_user.backup_sources.count %> / X<br/>backup accounts
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<%= show_flash_messages %>
+<div class="account-settings-tab-contents billing">
+  <p>
+  Show credit card info popup link.  Show next billing date.  Show credit credit card edit button.
+  <p/>
+  <p>
+  Show plans table.  Each row = one plan.  Each row has "Upgrade", "Your Plan", or "Downgrade" buttons where applicable.
+  </p>
+  <p>Show any coupon, discount, or bulk/large plan info links here</p>
+</div>
+<div class="account-settings-tab-contents billing">
+  Table with columns: Date, Card, Payment, Amount
+  <br/>
+  Payment column = link to download receipt (pdf)
+</div>

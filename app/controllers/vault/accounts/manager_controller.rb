@@ -4,12 +4,12 @@ class Vault::Accounts::ManagerController < ApplicationController
   include ModelControllerMethods
 
   require_role "Member", :except => [:billing, :plans, :canceled, :thanks]
-  permit "admin for :account", :only => [:edit, :change_password, :update, :plan, :cancel, :dashboard]
+  permit "admin for :account", :only => [:edit, :change_password, :update, :plan, :plans, :cancel, :dashboard]
 
   before_filter :load_billing, :only => [:billing, :paypal]
-  before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update, :change_password]
-  before_filter :load_discount, :only => [ :plans, :plan]
-  before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update, :change_password]
+  before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :plans, :paypal, :plan_paypal, :update, :change_password]
+  before_filter :load_discount, :only => [ :plans, :plan, :plans]
+  before_filter :load_object, :only => [:show, :edit, :billing, :plan, :plans, :cancel, :update, :change_password]
   before_filter :check_logged_in, :only => [:canceled]
   
   #ssl_required :billing, :cancel, :new, :create, :plans
@@ -78,6 +78,7 @@ class Vault::Accounts::ManagerController < ApplicationController
   def plans
     @plans = SubscriptionPlan.find(:all, :order => 'amount desc').collect {|p| p.discount = @discount; p }
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
+    render :layout => 'vault/private/billing'
   end
 
   def billing  

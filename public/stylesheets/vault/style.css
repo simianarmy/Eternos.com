@@ -2,7 +2,7 @@
 BODY { background: url(/images/vault/bg-body.gif) repeat-x; font: 14px Arial, Helvetica, sans-serif; color: #5B5B5B; margin: 0; padding: 0}
 IMG { border: none;}
 A { outline: none; text-decoration: none;}
-A:hover{ outline: none; }
+A:hover{ outline: none; text-decoration: underline; }
 FIELDSET { margin: 0; padding: 0; border: none;}
 
 .h3link A:hover, .active A:hover, .inact A:hover, .footer A:hover { text-decoration: underline;}
@@ -77,6 +77,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .content-box H1 , .left H1, .left H2 { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
 .content-box h1 EM { float: right; font-style: normal; font-size: 12px; font-weight: normal; color: #5B5B5B; padding-top: 6px;}
 .content-box h1 EM A { background: #E7E7E7; color: #5B5B5B; text-decoration: none; text-transform: capitalize; padding: 3px 8px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-left: 5px;}
+.content-box A:hover {  text-decoration: underline; }
 .content-box { width: 655px; float: left; margin-left: 15px;}
 .content-box H3 { margin: 30px 0 20px 0; padding: 0 0 0 0; text-transform: uppercase; font-size: 18px; color: #037BBE;}
 P { line-height: 20px;}
@@ -152,6 +153,10 @@ P { line-height: 20px;}
 .summary-stats div.stats-li-title {
 	width: 200px;
 	float: left;
+}
+
+.backup-sites-table table tbody {
+	font-size: 12px;
 }
 
 #search-results { margin: 0 0 40px 0; padding: 0; list-style: none; font-size: 12px;}

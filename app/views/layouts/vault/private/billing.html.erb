@@ -20,8 +20,8 @@
   	<ul>
   		<li class="inact"><%= link_to 'Home', vault_dashboard_path %><span></span></li>
   		<li class="inact"><%= link_to 'Backups', account_setup_path %><span></span></li>
-  		<li class="active"><%= link_to 'Account', account_manager_path %><span></span></li>
-  		<li class="inact"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Account', account_manager_path %><span></span></li>
+  		<li class="active"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
   	</ul>
   </div>
   <fieldset class="content">
@@ -30,10 +30,10 @@
           <h2>Account Settings</h2>
           <ul class="leftnav-tabs">
             <li>
-              <%= link_to "Account Overview", "#" %>
+              <%= link_to "Change Plan", "#" %>
             </li>
             <li>
-              <%= link_to "Account Admin", "#" %>
+              <%= link_to "Payment History", "#" %>
             </li>
           </ul>
       </div>
@@ -54,7 +54,7 @@
   jQuery(function() {
   	// setup ul.tabs to work as tabs for each div directly under div.panes
   	var left_tabs = jQuery('ul.leftnav-tabs').tabs('div.panes > div.account-settings-tab-contents', {
-  	  initialIndex: #{['show', 'update'].include?(controller.action_name) ? 0 : 1},
+  	  initialIndex: #{['plans', 'change_plan'].include?(controller.action_name) ? 0 : 1},
   	  api: true
   	});
   });" %>
