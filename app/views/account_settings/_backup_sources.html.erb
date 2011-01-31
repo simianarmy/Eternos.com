@@ -98,21 +98,23 @@
     <%= render :partial => 'account_settings/gmail', :locals => {:completed_steps => @completed_steps, :current_gmail => settings.current_gmail, :email_accounts => settings.email_accounts} %>
   </div>
   
-  <p class="account-setup-accordion-icon">
-    <%= image_tag '2nd-picasa.gif', :id => "picasa-button", :class => settings.picasa_confirmed ? 'active2' : 'picasa-btn' %> 
-    <strong>Picasa Web Albums:</strong>  Preserve all your Picasa Web photo albums. 
-  </p>			
-  <!-- Picasa Pane -->
-  <div class="pane network-login-box">
-    <div id="picasa-box">
-       <div id="picasa_blurb"></div>
-       <%= link_to 'Click Here', add_picasa_backup_sources_path %> to add a new Picasa Web Albums account
+  <% unless current_subdomain == 'vault' %>
+    <p class="account-setup-accordion-icon">
+      <%= image_tag '2nd-picasa.gif', :id => "picasa-button", :class => settings.picasa_confirmed ? 'active2' : 'picasa-btn' %> 
+      <strong>Picasa Web Albums:</strong>  Preserve all your Picasa Web photo albums. 
+    </p>			
+    <!-- Picasa Pane -->
+    <div class="pane network-login-box">
+      <div id="picasa-box">
+         <div id="picasa_blurb"></div>
+         <%= link_to 'Click Here', add_picasa_backup_sources_path %> to add a new Picasa Web Albums account
 
-       <div id="result-picasa-accounts">
-         <%= render :partial => 'backup_sources/picasa_list', :locals => { :list => settings.picasa_accounts } %>
-       </div>
+         <div id="result-picasa-accounts">
+           <%= render :partial => 'backup_sources/picasa_list', :locals => { :list => settings.picasa_accounts } %>
+         </div>
+      </div>
     </div>
-  </div>
+  <% end %>
 <!-- End accordion -->
 </div>
 <p>Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your Timeline. Easily browse, tag, annotate, remove, and share any of your life's events. </p>
