@@ -58,7 +58,7 @@ module BackupSourceHistory
       data[:fb_messages] = user.backup_sources.facebook.map{|bs| bs.message_threads.map(&:message_count).sum }.sum
       data[:total] = data.values.sum
       data[:total_comments] = data[:stream_comments] + data[:media_comments]
-      data[:last_backup_finished_at] = user.backup_state.last_backup_finished_at
+      data[:last_backup_finished_at] = user.backup_state.last_backup_finished_at  if user.backup_state
     end
   end
 end

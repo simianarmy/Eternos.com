@@ -130,6 +130,12 @@ P { line-height: 20px;}
 .submit-btn5 { background: url(/images/vault/submit2.gif) no-repeat 0 0; border: none; color: black; display: block; font-family: arial; font-size: 11px; height: 20px; margin: 8px 5px 2px 10px; text-align: center; text-decoration: none; cursor: pointer; width: 84px; }
 .submit-btn5:hover { background: url(/images/vault/submit2.gif) no-repeat 0 -20px; color: #fff; cursor: pointer}
 
+/* login 2 - copied from new_design/members.css */
+.login2-mid STRONG { color: #02419E; font-size: 14px;}
+.login2-mid IMG { vertical-align: middle; margin-right: 20px;}
+.login2-mid FORM P { padding: 14px 0;}
+.login2-mid .active2 { background: url(/images/activated2.gif) no-repeat 0px bottom; padding: 0 14px 30px 14px; margin:0 6px 0 -14px;}
+
 /* Signup + billing */
 .billing H1 { background: #F2F2F2; padding: 5px; margin-bottom: 0; border: 1px solid #D6D6D6;}
 .billing .p1 { float: none; padding-top: 0;}

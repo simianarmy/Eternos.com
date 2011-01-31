@@ -6,10 +6,10 @@
       <%= link_to 'Change plan', url_for(:action=>:plans) %>
     </div>
     <div>
-      XGB / XGB<br/>Disk space (soft limit)
+      0GB / XGB<br/>Disk space (soft limit)
     </div>
     <div>
-      X / X<br/>Facebook accounts
+      <%= @account.admin.backup_sources.count %> / X<br/>backup accounts
     </div>
   </div>
 </div>

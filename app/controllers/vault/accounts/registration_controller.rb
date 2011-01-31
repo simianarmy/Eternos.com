@@ -111,7 +111,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
     
   def show
-    return redirect_to(vault_dashboard_path)
+    return redirect_to(account_setup_path)
   end
 
   def choose_plan
