@@ -132,7 +132,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
 
   def billing  
     @user = current_user
-    if request.post?
+    if request.post? || request.put?
       @plan = @subscription.subscription_plan
       if params[:paypal].blank?
         
@@ -146,12 +146,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
 
         if @creditcard.valid? & @address.valid?
           if @subscription.store_card(@creditcard, :billing_address => @address.to_activemerchant, :ip => request.remote_ip)
-            if admin_user_pending?
-              activate_and_redirect_to account_setup_url
-            else
-              flash[:notice] = "Your billing information has been updated."
-              redirect_to :action => "billing"
-            end
+            render :action => :thanks
           end
         end
       else
@@ -181,7 +176,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def thanks
-    redirect_to :action => "plans" and return unless flash[:domain]
+    # redirect_to :action => "plans" and return unless flash[:domain]
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
   end
 

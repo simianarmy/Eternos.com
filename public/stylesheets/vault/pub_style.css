@@ -141,7 +141,9 @@ P { line-height: 20px;}
 .billing .p1 { float: none; padding-top: 0;}
 .form-ul3 { margin: 0 0 35px 0; padding: 0 5px 35px 5px; list-style: none; border: 1px solid #D6D6D6; border-top: none;}
 .form-ul3 LI { font-size: 12px; padding: 15px 0 5px 0}
-.form-ul3 LI INPUT[type=text], .form-ul3 LI INPUT[type=password] { width: 250px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle}
+.form-ul3 LI INPUT[type=text], .form-ul3 LI INPUT[type=password] { 
+	width: 250px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle; font-size: 16px;
+}
 .form-ul3 LI INPUT[type=password], .form-ul3 LI INPUT#account_phone_number { width: 150px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle}
 
 .form-ul3 LI INPUT[type=radio] { vertical-align: middle}

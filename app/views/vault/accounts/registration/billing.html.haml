@@ -14,7 +14,7 @@
       Your account will be billed once per month as a recurring charge.
   = render :partial => 'shared/mcafee_secure'
   
-  - semantic_form_for :creditcard, @creditcard, :url => { :action => 'billing' } do |f|
+  - semantic_form_for @creditcard, :url => { :action => 'billing' } do |f|
     = render :partial => 'credit_card_form', :locals => {:f => f}
     / - submit_or_cancel account_path, 'Update billing information'
     %p.p1
