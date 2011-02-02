@@ -7,7 +7,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
 
   before_filter :build_user, :only => [:new, :create]
   before_filter :build_plan, :only => [:new, :create]
-  before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
+  before_filter :load_billing, :only => [ :new, :create, :choose_plan, :billing, :paypal]
   before_filter :load_subscription, :only => [ :billing, :plan, :choose_plan, :paypal, :plan_paypal, :thanks]
   before_filter :load_discount, :only => [ :plans, :plan, :new, :create]
   before_filter :load_object, :only => [:billing, :choose_plan, :plan, :plans, :thanks]
@@ -119,7 +119,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def choose_plan
-    if @account.reload.needs_payment_info?
+    if @account.needs_payment_info?
       # display billing page
       @subscription = @account.subscription
       flash[:domain] = @account.domain
