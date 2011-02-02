@@ -1,3 +1,4 @@
+<% hide_login_box %>
 <fieldset class="content">
 	<%= render :partial => 'left_content', :locals => {:step => 2} %>
 	<div class="content-box">
@@ -12,9 +13,9 @@
                 <li>Access to Beta Services</li>
                 <li>Priority Support</li>
             </ul>        
-            <p class="myBox account-type-price"><strong>$00.00/month</strong><br />
+            <p class="myBox account-type-price"><strong>$0.00/month</strong><br />
             <em class="px11">Upgrade available after login</em></p>
-            <p><a href="<%= account_setup_path %>" id="yellow-button2">Get Free Account</a>
+            <p><a href="<%= url_for(:action => 'choose_plan', :plan => 'Free') %>" id="yellow-button2">Get Free Account</a>
             	<a href="#">See personal account options</a>
             </p>
         </div>
@@ -29,7 +30,7 @@
                 <li>Priority Support</li>
             </ul>        
             <p class="myBox account-type-price"><strong>$4.95/month</strong></p>
-            <p><a href="<%= url_for(:action => 'billing', :plan => 'Premium') %>" id="yellow-button2">Get Premium Account</a>
+            <p><a href="<%= url_for(:action => 'choose_plan', :plan => 'Premium') %>" id="yellow-button2">Get Premium Account</a>
             	<a href="#">See premium account options</a>
             </p>
         </div>        

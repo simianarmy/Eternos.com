@@ -14,27 +14,24 @@
       <% f.semantic_fields_for :users do |user| %>
       <%= hidden_field_tag 'plan', @plan.name %>
         <ul class="form-ul3">
-          
-            <%= user.input 'email', :hint => 'Your email will be used to login' %>
-            <%= user.input 'password' %>
-            <%= user.input 'password_confirmation', :type => 'password' %>
-            <%= user.input 'first_name' %>
-            <%= user.input 'last_name' %>
-          
+          <%= user.input 'email', :hint => 'Your email will be used to login' %>
+          <%= user.input 'password' %>
+          <%= user.input 'password_confirmation', :type => 'password' %>
+          <%= user.input 'first_name' %>
+          <%= user.input 'last_name' %>
+        
           <%= f.input :company_name, :required => false %>
           <%= f.input :phone_number, :required => false %>
-        
-		    
+
           <li>
             <label></label><br/>
             <%= recaptcha_tags :ssl => request.ssl? %>
             <em></em>
           </li>
           <li>
-      
             <%= check_box_tag 'account[users_attributes][0][terms_of_service]', "1", (@terms_of_service == true), 
               {:id => 'terms_of_service'} %>
-              I accept the 
+            I accept the 
             <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
             <p> 
               <small>*By proceeding, you confirm that your are over 13 years of age and accept the <a href="/about/privacy" target="_new">Privacy</a> and <a href="/about/terms" target="_new">Terms</a> .</small> <br>
@@ -47,7 +44,7 @@
     				  <a href="/login">Already Have An Account? Click Here</a>
     			</li>
         </ul>
-        <% end %>
+      <% end %>
     <% end %>
 	</div>
 </fieldset>

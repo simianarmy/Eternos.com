@@ -3,14 +3,14 @@
 class Vault::Accounts::RegistrationController < ApplicationController
   include ModelControllerMethods
 
-  require_role "Member", :except => [:new, :create, :billing, :plans, :thanks]
+  require_role "Member", :except => [:new, :create, :choose_plan, :billing, :plans, :thanks]
 
   before_filter :build_user, :only => [:new, :create]
   before_filter :build_plan, :only => [:new, :create]
   before_filter :load_billing, :only => [ :new, :create, :billing, :paypal]
-  before_filter :load_subscription, :only => [ :billing, :plan, :paypal, :plan_paypal]
+  before_filter :load_subscription, :only => [ :billing, :plan, :choose_plan, :paypal, :plan_paypal, :thanks]
   before_filter :load_discount, :only => [ :plans, :plan, :new, :create]
-  before_filter :load_object, :only => [:billing, :plan]
+  before_filter :load_object, :only => [:billing, :choose_plan, :plan, :plans, :thanks]
   before_filter :check_logged_in, :only => [:new, :create]
   
   #ssl_required :billing, :cancel, :new, :create, :plans
@@ -19,6 +19,10 @@ class Vault::Accounts::RegistrationController < ApplicationController
   layout 'vault/public/home'
   
   def new
+    # Send them to plans page if they already signed up but didn't complete setup
+    unless @account.new_record? || @user.new_record?
+      redirect_to(url_for(:action => :plans)) and return false
+    end
     session[:account_id] = nil
     @terms_of_service = true
     
@@ -88,11 +92,11 @@ class Vault::Accounts::RegistrationController < ApplicationController
     if @success
       @user.register!
       @user.activate!
-      # Auto-login..this better work as advertised!
-      UserSession.create(@user, true)
+      
       # Set session for choose_plan
       session[:account_id] = @account.id
       flash[:notice] = 'Your account info has been saved.'
+      redirect_to url_for(:action => :plans)
     else # @account not saved
       # Need to reload it otherwise form action will be update!?
       # Happens on transaction ROLLBACK
@@ -115,13 +119,17 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def choose_plan
-    if @account.needs_payment_info?
+    if @account.reload.needs_payment_info?
       # display billing page
       @subscription = @account.subscription
       flash[:domain] = @account.domain
       # Save account id for next action's load_subscription()
       session[:account_id] = @account.id
       render :action => 'billing'
+    else
+      UserSession.create(@account.admin, true)
+      flash[:notice] = 'Your account info has been saved.'
+      redirect_to(account_setup_path) and return false
     end
   end
 
@@ -131,21 +139,20 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def billing  
-    @user = current_user
     if request.post? || request.put?
       @plan = @subscription.subscription_plan
       if params[:paypal].blank?
         
-        #       @address.first_name = @creditcard.first_name
-        #       @address.last_name = @creditcard.last_name
-        #       @account.address = @address
+        #       @subscription_address.first_name = @creditcard.first_name
+        #       @subscription_address.last_name = @creditcard.last_name
+        #       @account.address = @subscription_address
         #       @account.creditcard = @creditcard
         
-        @address.first_name = @creditcard.first_name
-        @address.last_name = @creditcard.last_name
+        @subscription_address.first_name = @creditcard.first_name
+        @subscription_address.last_name = @creditcard.last_name
 
-        if @creditcard.valid? & @address.valid?
-          if @subscription.store_card(@creditcard, :billing_address => @address.to_activemerchant, :ip => request.remote_ip)
+        if @creditcard.valid? & @subscription_address.valid?
+          if @subscription.store_card(@creditcard, :billing_address => @subscription_address.to_activemerchant, :ip => request.remote_ip)
             render :action => :thanks
           end
         end
@@ -178,12 +185,15 @@ class Vault::Accounts::RegistrationController < ApplicationController
   def thanks
     # redirect_to :action => "plans" and return unless flash[:domain]
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
+    UserSession.create(@account.admin, true)
   end
 
   protected
   
   def load_object
     @obj = @account = current_account
+    # Force login if account cannot be found
+    redirect_to login_path unless @obj
   end
 
   def build_user
@@ -211,8 +221,8 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def load_billing
-    @creditcard = ActiveMerchant::Billing::CreditCard.new(params[:creditcard])
-    @address = SubscriptionAddress.new(params[:address])
+    @creditcard = ActiveMerchant::Billing::CreditCard.new(params[:active_merchant_billing_credit_card])
+    @subscription_address = SubscriptionAddress.new(params[:subscription_address])
   end
 
   def load_subscription
@@ -251,7 +261,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       # Could be in 2nd step of account signup where account saved but not active
       # Will raise error if no session id or account not found
-      Account.find(session[:account_id]) 
+      Account.find_by_id(session[:account_id])
     end
   end
 
@@ -264,7 +274,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
       @user = current_user
       @account = @user.account
       if current_user.setup_step == 0
-        render :action => :create
+        redirect_to account_setup_path
       else
         redirect_to vault_dashboard_path
       end

@@ -1,22 +1,20 @@
-= custom_error_messages_for :subscription, :header_message => "Errors encountered with your payment:"
 %p
-/= debug @creditcard.errors
-/= debug @address.errors
 - if @subscription
-  %h1 Payment Type
-  %ul.form-ul3
-    %li.required
-      = radio_button_tag :paypal, "", !@subscription.paypal?
-      Pay with a credit card 
-      = image_tag 'credit-cards.jpg', :id => 'credit-cards'
-    %li.required
-      = radio_button_tag :paypal, "1", @subscription.paypal?, :onclick => "$('cc_info').hide(); $('billing_address').hide();"
-      Pay with PayPal
-      = image_tag 'PayPal_mark_37x23.gif'
-    
+  -#
+    %h1 Payment Type
+    %ul.form-ul3
+      %li.required
+        = radio_button_tag :paypal, "", !@subscription.paypal?
+        Pay with a credit card 
+        = image_tag 'credit-cards.jpg', :id => 'credit-cards'
+      %li.required
+        = radio_button_tag :paypal, "1", @subscription.paypal?, :onclick => "$('cc_info').hide(); $('billing_address').hide();"
+        Pay with PayPal
+        = image_tag 'PayPal_mark_37x23.gif'
+   
   %h1 Credit Card Information
   %ul.form-ul3
-    /-= custom_error_messages_for :creditcard, :header_message => "Errors encountered with your payment information:", :full_messages => true
+    = error_messages_for :creditcard , :header_message => "Errors encountered with your payment information:", :full_messages => true
     = f.input :first_name, :label => 'First name on card'
     = f.input :last_name, :label => 'Last name on card'
     = f.input :type, :label => 'Card Type', :as => 'select', :collection => [['Visa', 'visa'], ['MasterCard', 'master'], ['American Express', 'american_express'], ['Discover', 'discover']]
@@ -34,14 +32,13 @@
       
   %h1 Billing Address
   %ul.form-ul3
-    /-= custom_error_messages_for :address, :header_message => "Errors encountered with your address:", :full_messages => true
-    - f.semantic_fields_for :subscription_address, @address do |address|
+    - semantic_fields_for @subscription_address do |address|
       = address.input :address1, :label => 'Street Address'
       = address.input :address2, :label => 'Street Address 2'
       = address.input :city
       = address.input :state, :label => 'State / Province'
       = address.input :zip, :label => 'Postal Code'
-      = address.input :country, :collection => Country.find(:all)
+      = address.input :country, :as => :select, :collection => Country.find(:all), :include_blank => false
       / = country_select :address, :country, ['United States', 'Canada']  
       = address.input :phone, :required => false
 
