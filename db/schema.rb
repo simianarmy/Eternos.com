@@ -954,7 +954,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.decimal  "amount",          :precision => 10, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_limit"
+    t.integer  "user_limit",  :null => false, :default => 0
+    t.integer  "disk_limit",  :null => false, :default => 0
+    t.integer  "backup_site_limit", :null => false, :default => 0
     t.integer  "renewal_period",                                 :default => 1
     t.decimal  "setup_amount",    :precision => 10, :scale => 2
     t.integer  "trial_period",                                   :default => 1
@@ -971,7 +973,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "state",                                                    :default => "trial"
     t.integer  "subscription_plan_id"
     t.integer  "account_id"
-    t.integer  "user_limit"
+    t.integer  "user_limit",  :null => false, :default => 0
+    t.integer  "disk_limit",  :null => false, :default => 0
+    t.integer  "backup_site_limit", :null => false, :default => 0
     t.integer  "renewal_period",                                           :default => 1
     t.string   "billing_id"
     t.integer  "subscription_affiliate_id"

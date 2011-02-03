@@ -90,7 +90,6 @@ P { line-height: 20px;}
 .service-ul { margin: 0; padding: 0; list-style: none;}
 .service-ul IMG { float: left; margin:0 18px 0 0;}
 
-
 .content-left { width: 315px; float: left;}
 
 .get-started01 { background: #F2F2F2; border-top: 1px solid #E4E4E4; border-right: 1px solid #F2F2F2; border-bottom: 1px solid #F2F2F2; border-left: 1px solid #F2F2F2; width: 283px; padding: 16px; margin:0 0 25px 0; float: left;}
@@ -196,10 +195,31 @@ P { line-height: 20px;}
 .content-box A { color: #037BBE; font-weight: bold; text-decoration: none;}
 .content-box A:hover { color: #507493; }
 
-.cancel-submit-button {
+.bottom_border_line {
+	border-bottom: 1px solid #D6D6D6;
+}
+
+#billing-cc {
+	padding: 10px;
+}
+
+#plans-table {
+	padding: 10px;
+}
+
+#plans-table table {
+	width: 100%;
+}
+
+.grey-button, .cancel-submit-button {
 	border: 1px solid #DCB5B5;
 	background: #F2F2F2;
 	color: #900;
+}
+
+.smalldate {
+	color: gray;
+	font-size: 12px;
 }
 
 /* Account admin */

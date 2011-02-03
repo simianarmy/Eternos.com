@@ -18,13 +18,13 @@ class Vault::Accounts::ManagerController < ApplicationController
   layout :set_layout
     
   def show
-    
     #@plan = @subscription.subscription_plan
   end
 
   def edit
     @user = @account.admin
     @plan = @subscription.subscription_plan
+    render :layout => 'vault/private/billing'
   end
 
   def choose_plan

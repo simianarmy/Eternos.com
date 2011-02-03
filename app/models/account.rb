@@ -46,7 +46,9 @@ class Account < ActiveRecord::Base
   end
   
   Limits = {
-    'user_limit' => Proc.new {|a| a.users.count }
+    'user_limit'        => Proc.new {|a| a.users.count },
+    'disk_limit'        => Proc.new {|a| a.backup_sources.map(&:bytes_backed_up).sum },
+    'backup_site_limit' => Proc.new {|a| a.backup_sources.count }
   }
   
   Limits.each do |name, meth|
