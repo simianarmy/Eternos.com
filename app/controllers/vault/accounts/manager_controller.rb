@@ -6,9 +6,9 @@ class Vault::Accounts::ManagerController < ApplicationController
   require_role "Member", :except => [:billing, :plans, :canceled, :thanks]
   permit "admin for :account", :only => [:edit, :change_password, :update, :plan, :plans, :cancel, :dashboard]
 
-  before_filter :load_billing, :only => [:billing, :paypal]
+  before_filter :load_billing, :only => [:plans, :billing, :paypal]
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :plans, :paypal, :plan_paypal, :update, :change_password]
-  before_filter :load_discount, :only => [ :plans, :plan, :plans]
+  before_filter :load_discount, :only => [ :plans, :plan, :billing]
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :plans, :cancel, :update, :change_password]
   before_filter :check_logged_in, :only => [:canceled]
   
@@ -77,6 +77,8 @@ class Vault::Accounts::ManagerController < ApplicationController
   
   def plans
     @plans = SubscriptionPlan.find(:all, :order => 'amount desc').collect {|p| p.discount = @discount; p }
+    @creditcard = ActiveMerchant::Billing::CreditCard.new(:number => @subscription.card_number)
+    @subscription_address = SubscriptionAddress
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
     render :layout => 'vault/private/billing'
   end

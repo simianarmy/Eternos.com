@@ -178,7 +178,7 @@ P { line-height: 20px;}
 /* Forms + billing */
 .billing H1 { background: #F2F2F2; padding: 5px; margin-bottom: 0; border: 1px solid #D6D6D6;}
 .billing .p1 { float: none; padding-top: 0;}
-.form-ul3 { margin: 0 0 35px 0; padding: 0 5px 35px 5px; list-style: none; border: 1px solid #D6D6D6; border-top: none;}
+.form-ul3 { margin: 0 0 5px 0; padding: 0 5px 35px 5px; list-style: none; border: 1px solid #D6D6D6; border-top: none;}
 .form-ul3 LI { font-size: 12px; padding: 5px 0 5px 0}
 .form-ul3 LI INPUT[type=text], .form-ul3 LI INPUT[type=password] { 
 	width: 250px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle; font-size: 16px;
@@ -200,15 +200,78 @@ P { line-height: 20px;}
 }
 
 #billing-cc {
-	padding: 10px;
+	padding: 0px 0px 15px;
+	margin: 15px 0 10px;
+}
+
+/* Update cc popup */
+
+.update-terms {
+	color: #555;
+	font-size: 12px;
+	padding: 5px;
+}
+
+.update-cc-form #yellow-button3 {
+	margin-top: 10px;
+	float: right;
 }
 
 #plans-table {
 	padding: 10px;
 }
 
-#plans-table table {
+.plans-table {
+	border-spacing: 0px 0px;
+	border-collapse: collapse;
+	margin: 0px;
 	width: 100%;
+}
+
+table.plans-table tbody {
+	border-color: inherit;
+	display: table-row-group;
+	vertical-align: middle;
+}
+
+table.plans-table tr th {
+	border-bottom: 1px solid #D6D6D6;
+	background-color: white;
+	color: #666;
+	font-size: 11px;
+	font-weight: normal;
+	padding: 4px 5px;
+	text-align: left;
+}
+
+table.plans-table tr {
+	background-color: #F5F5F5;
+}
+table.plans-table tr.current {
+	background-color: #D6D6D6;
+}
+
+table.plans-table td.num {
+	text-align: center;
+}
+
+table.plans-table td {
+	border-bottom: 1px solid #D6D6D6;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 8px 5px;
+}
+
+table.plans-table td.action {
+	color: #999;
+	font-size: 11px;
+	text-align: right;
+}
+
+table.plans-table td.custom {
+	color: #555;
+	font-size: 12px;
+	padding: 5px;
 }
 
 .grey-button, .cancel-submit-button {
@@ -221,6 +284,20 @@ P { line-height: 20px;}
 	color: gray;
 	font-size: 12px;
 }
+
+#receipts {
+	margin-top: 10px;
+}
+
+#receipts table{width:100%;border-left:1px solid #ccc;border-top:1px solid #ccc;border-right:1px solid #ccc;}
+#receipts table th{padding:.4em;border-bottom:1px solid #ccc;color:#333;background-color:#eee;}
+#receipts table td{padding:.4em;border-bottom:1px solid #ccc;}
+#receipts table tr.success td{background-color:#EFFFED;}
+#receipts table tr.failure td{background-color:#FFEDED;}
+#receipts table td.empty{color:#a00;font-weight:bold;text-align:center;}
+#receipts table td.date{color:#888;}
+#receipts table tr.success td.amount{color:#0a0;font-weight:bold;}
+#receipts table tr.failure td.amount{color:#a00;font-weight:bold;}
 
 /* Account admin */
 /* Delete account styles from Github.com */

@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title>Home</title>
-  <% stylesheet 'application', 'prototip' %>
+  <% stylesheet 'application', 'prototip', '/javascripts/lightview2.5.2.1/css/lightview.css', 'formtastic_changes' %>
   <% load_jquery_prototype_compat_mode %>
   <%= yield(:head)  %>
   <%= yield(:js_libs) %>
@@ -30,13 +30,10 @@
           <h2>Account Settings</h2>
           <ul class="leftnav-tabs">
             <li>
-              <%= link_to "Change Plan", "#plan" %>
+              <%= link_to "Change your plan", "#plan" %>
             </li>
             <li>
               <%= link_to "Payment History", "#history" %>
-            </li>
-            <li>
-              <%= link_to "Update Credit Card", "#cc" %>
             </li>
           </ul>
       </div>
@@ -50,7 +47,7 @@
   </fieldset>
   <%= render :partial => 'shared/vault_footer' %>
   <%= javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery" %>
-  <%= javascript_include_tag "lowpro", "defaultvalueactsashint", "behaviors" 
+  <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "effects", "controls", "lightview2.5.2.1/js/lightview", "lowpro", "defaultvalueactsashint", "behaviors" 
   %>
   <%= javascript_tag "
   // perform JavaScript after the document is scriptable.
