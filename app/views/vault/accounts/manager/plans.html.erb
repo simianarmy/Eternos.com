@@ -5,10 +5,10 @@
       <strong><%= @plan.to_s %></strong><br/>
     </div>
     <div>
-      0GB / XGB<br/>Disk space (soft limit)
+      0GB / <%= number_to_human_size(@plan.disk_limit.gigabytes) %><br/>Disk space (soft limit)
     </div>
     <div>
-      <%= current_user.backup_sources.count %> / X<br/>backup accounts
+      <%= current_user.backup_sources.count %> / <%= @plan.backup_site_limit %><br/>backup accounts
     </div>
   </div>
 </div>
@@ -37,7 +37,7 @@
     <% @plans.each do |plan| %>
       <tr class="<%= 'current' if plan == @plan %>">
         <td class="name"><%= plan.to_s %></td>
-        <td class="num"><%= plan.disk_limit %></td>
+        <td class="num"><%= number_to_human_size plan.disk_limit.gigabytes %></td>
         <td class="num"><%= plan.backup_site_limit %></d>
         <td class="action">
           <% if plan == @plan %>
