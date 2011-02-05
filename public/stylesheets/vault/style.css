@@ -1,5 +1,10 @@
-/* Vault public pages */
-BODY { background: url(/images/vault/bg-body.gif) repeat-x; font: 14px Arial, Helvetica, sans-serif; color: #5B5B5B; margin: 0; padding: 0}
+/* Vault private pages */
+BODY { 
+	background: url(/images/vault/bg-body.gif) repeat-x; 
+	/*font: 14px Arial, Helvetica, sans-serif; */
+	font: normal normal normal 13.34px/normal helvetica, arial, freesans, clean, sans-serif;
+	color: #5B5B5B; margin: 0; padding: 0
+}
 IMG { border: none;}
 A { outline: none; text-decoration: none;}
 A:hover{ outline: none; text-decoration: underline; }
@@ -8,6 +13,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .h3link A:hover, .active A:hover, .inact A:hover, .footer A:hover { text-decoration: underline;}
 .px11 { font-size: 11px;}
 
+/* Header */
 .header { width: 988px; height: 100px; margin: 0 auto 25px auto; background: url(/images/vault/bg-header.jpg) no-repeat top right;}
 .header IMG { float: left; margin-top: 39px;}
 .header FORM { margin: 23px 10px 0 0; padding: 0; float: right; font-size: 12px; color: #507493;}
@@ -25,6 +31,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .active A { color: #507493; font-size: 22px; text-decoration: none; background: url(/images/vault/nav-left02.png); display: block; height: 29px; padding: 4px 10px 0 15px; float: left; white-space: nowrap; letter-spacing: -1px;}
 .active SPAN { display: block; float: left; width: 10px; background: url(/images/vault/nav-right02.png); height: 33px;}
 
+/* Footer */
 .footer { background: #fff url(/images/vault/bg-footer.gif) repeat-x; margin: 44px 0 0 0; clear: both; float: none; padding-top: 25px;}
 .footer FIELDSET { width: 988px; margin: 0 auto; padding-bottom: 20px;}
 .footer UL { margin: 0 12px 0 40px; padding: 0; list-style: none; float: left}
@@ -46,17 +53,18 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
 .yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
 
-
 .myBox { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 
 .content { width: 988px; margin: 0 auto}
-.left { margin:0 0 25px 0; float: left; width: 315px}
+.left { margin:0 0 25px 0; float: left; width: 280px}
 
 .h3link { background: #F1F6FB; border: 1px solid #E4E4E4; margin: 0 0 25px 0; padding: 15px 0; text-align: center; text-transform: uppercase; font-size: 22px;}
 .h3link A { text-decoration: none; color: #797979;}
 
 .content .mid { margin: 0 17px 0;}
-.box01 { background: #F2F2F2; border-top: 1px solid #E4E4E4; border-right: 1px solid #F2F2F2; border-bottom: 1px solid #F2F2F2; border-left: 1px solid #F2F2F2; width: 283px; height: 308px; padding: 16px; margin:0 0 25px 0; float: left;}
+.box01 { background: #F2F2F2; border-top: 1px solid #E4E4E4; border-right: 1px solid #F2F2F2; border-bottom: 1px solid #F2F2F2; border-left: 1px solid #F2F2F2; 
+	width: 234px; height: 308px; padding: 16px; margin:0 0 25px 0; float: left;
+}
 .box01 A { color: #037BBE; font-weight: bold; font-size: 12px;}
 .box01 A:hover { color: #0033CC}
 .box01 H2, .content-box H1 { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
@@ -74,7 +82,9 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 .protect { border-top: 1px solid #D6D6D6; clear: both; float: none; padding: 35px 0 10px 85px; font-size: 13px; background: url(/images/vault/bg-protect.gif) no-repeat top left;}
 
-.content-box H1 , .left H1, .left H2 { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
+.content-box H1 , .left H1, .left H2 { 
+	margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;
+}
 .content-box h1 EM { float: right; font-style: normal; font-size: 12px; font-weight: normal; color: #5B5B5B; padding-top: 6px;}
 .content-box h1 EM A { background: #E7E7E7; color: #5B5B5B; text-decoration: none; text-transform: capitalize; padding: 3px 8px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-left: 5px;}
 .content-box A:hover {  text-decoration: underline; }
@@ -149,10 +159,35 @@ P { line-height: 20px;}
 .sync-report LI { float: left; width: 73px; padding-bottom: 15px; text-align: center; font-weight: bold}
 .sync-report LI STRONG { display: block; background: #F4F4F4; height: 35px; padding-top: 15px; margin-bottom: 12px;}
 
-.summary-stats div.stats-li-title {
-	width: 200px;
-	float: left;
+.summary-table {
+	border-spacing: 0px 0px;
+	border-collapse: collapse;
+	margin: 0px;
+	width: 100%;
+	border-top: 1px solid #D6D6D6;
 }
+
+table.summary-table tr {
+	background-color: #F5F5F5;
+}
+
+table.summary-table td.num, table.summary-table td.date {
+	text-align: center;
+}
+
+table.summary-table td {
+	border-bottom: 1px solid #D6D6D6;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 5px 5px;
+}
+
+.grey-button, .cancel-submit-button {
+	border: 1px solid #DCB5B5;
+	background: #F2F2F2;
+	color: #900;
+}
+
 
 .backup-sites-table table tbody {
 	font-size: 12px;
@@ -166,8 +201,12 @@ P { line-height: 20px;}
 .home .message01 { font-size: 11px; background: #FFFFF1}
 #active_network-add { background: url(/images/icon-add-more.gif) no-repeat center left; color: #000000; font-size: 12px; margin-right: 10px; padding: 5px 0 10px 30px; position: relative; top: -15px;}
 
+.search-box {
+	margin-top: 26px;
+	width: 260px; 
+}
 .search LABEL { font-size: 16px; font-weight: bold}
-.search input[type="text"] { border: 2px solid #D3D3D3; width: 301px; padding: 5px 2px; margin: 15px 0}
+.search input[type="text"] { border: 2px solid #D3D3D3; width: 250px; padding: 5px 2px; margin: 15px 0}
 .search input[type="submit"] { background: url("/images/vault/bg_login-button.gif") no-repeat 0 0; border: none; color: #FFFFFF; cursor: pointer; font: bold 16px Arial,Helvetica,sans-serif; height: 30px; padding: 0; width: 76px; cursor: pointer; float: right}
 .search EM { font-size: 10px; font-style: normal}
 
@@ -215,10 +254,6 @@ P { line-height: 20px;}
 .update-cc-form #yellow-button3 {
 	margin-top: 10px;
 	float: right;
-}
-
-#plans-table {
-	padding: 10px;
 }
 
 .plans-table {

@@ -27,19 +27,18 @@
   <fieldset class="content">
   	<div class="left">	
       <%= render :partial => 'shared/leftnav_backup_services', :locals => {:settings => @settings} %>       
-	    
-    	<p>&nbsp;</p>
-    	<h2>Search your archive</h2>
-    	<% form_tag "javascript:void(0);", :class => 'search', :onsubmit => "searchArchive(this.terms.value); return false" do %>
-        <%= text_field_tag :terms, params[:terms], :class => 'search-input withHint', :defaultValue => 'Search' %>
-        <%= submit_tag("Search", :class => 'search-button') %>
-        <em>You can search your entire archive by keyword<br/> from here</em>
-      <% end %>
-      
+      <div class="search-box">
+    	  <h2 style="margin: 0;">Search your archive</h2>
+      	<% form_tag "javascript:void(0);", :class => 'search', :onsubmit => "searchArchive(this.terms.value); return false" do %>
+          <%= text_field_tag :terms, params[:terms], :class => 'search-input withHint', :defaultValue => 'Search' %>
+          <%= submit_tag("Search", :class => 'search-button') %>
+          <em>Search your entire archive by keyword</em>
+        <% end %>
+      </div>
       <p>&nbsp;</p>
       <div class="myBox box01">
           <h2>Welcome to Vault</h2>
-          <p>Copy here</p>
+          <p>Copy here </p>
       </div>
     </div>
 

@@ -168,7 +168,7 @@ class Vault::Accounts::ManagerController < ApplicationController
       else
         flash[:error] = "Error updating your plan: #{@subscription.errors.full_messages.to_sentence}"
       end
-      redirect_to :action => "plan"
+      redirect_to :action => "plans"
     else
       @plans = SubscriptionPlan.find(:all, :conditions => ['id <> ?', @subscription.subscription_plan_id], :order => 'amount desc').collect {|p| p.discount = @subscription.discount; p }
     end

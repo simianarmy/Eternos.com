@@ -8,7 +8,7 @@
 #results-config
 #search-results
   - if @results.any?
-    = render :partial => 'search_item', :collection => @results
+    = render :partial => 'search_item', :collection => @results.compact
   - else
     No data found
 #search-results-footer

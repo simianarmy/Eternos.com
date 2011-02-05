@@ -1,16 +1,5 @@
 <div id="plan-overview" class="billing">
-  <h1>Current Plan</h1>
-  <div class="plan-status">
-    <div> 
-      <strong><%= @plan.to_s %></strong><br/>
-    </div>
-    <div>
-      0GB / <%= number_to_human_size(@plan.disk_limit.gigabytes) %><br/>Disk space (soft limit)
-    </div>
-    <div>
-      <%= current_user.backup_sources.count %> / <%= @plan.backup_site_limit %><br/>backup accounts
-    </div>
-  </div>
+  <%= render :partial => 'plan_header_summary' %>
 </div>
 <div style="clear:both;" class="bottom_border_line"></div>
 <%= show_flash_messages %>
@@ -43,8 +32,9 @@
           <% if plan == @plan %>
             Your plan
           <% else %>
-            <%= link_to change_plan_button_text(@plan, plan), 
-              plan_account_manager_path(:plan_id => plan.id) %>
+            <% form_tag plan_account_manager_path(:plan_id => plan.id), :method => :post do %>
+              <input type="submit" value="<%= change_plan_button_text(@plan, plan) %>" class="grey-button">
+            <% end %>
           <% end %>
         </td> 
       </tr>
@@ -71,17 +61,17 @@
           <th>Amount</th>
         </tr>
         <tr class="success">
-          <td class="date">sample date</td>
-          <td class="card">sample card</td>
-          <td class="receipt"><a href="#">download me</a></td>
-          <td class="amount">USD $9999.99</td>
+          <td class="date"><%= Date.today.to_s(:short_day) %></td>
+          <td class="card">xxxx</td>
+          <td class="receipt"><a href="#">Download Receipt</a></td>
+          <td class="amount">USD <%= number_to_currency(0, :locale => I18n.locale) %></td>
         </tr>
         <% @account.subscription_payments.each do |receipt| %>
           <tr class="success">
             <td class="date"><%= receipt.created_at.to_s(:db) %></td>
             <td class="card"><%= receipt.subscription.card_number %></td>
             <td class="receipt"><%= link_to 'Download Receipt', '#' %></td>
-            <td class="amount"><%= receipt.amount %></td>
+            <td class="amount">USD <%= number_to_currency(receipt.amount, :locale => I18n.locale) %></td>
           </tr>
         <% end %>
       </tbody>

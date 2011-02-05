@@ -72,9 +72,9 @@ module UserSearchHelper
   end
   
   def search_date(obj)
-    if obj.respond_to?(:start_date)
+    if obj.respond_to?(:start_date) && obj.start_date
       obj.start_date.strftime("%c")
-    elsif obj.respond_to?(:created_at)
+    elsif obj.respond_to?(:created_at) && obj.created_at
       obj.created_at.strftime("%c")
     else
       ""

@@ -2,12 +2,27 @@
 <%= show_flash_messages :fade => 30 %>
 
 <h1>Vault Backup Summary</h1>
-<div class="gray-rounded-box summary-stats">
-  <ul style="list-style: none;">
-    <li><div class="stats-li-title">Sites backed up:</div> <%= @dashboard.backup_sites.count %></li>
-    <li><div class="stats-li-title">Total Objects Saved:</div> <%= number_with_delimiter(@backup_data[:total]) %></li>
-    <li><div class="stats-li-title">Last backup finished at:</div> <%= formatted_date_or_na(@backup_data[:last_backup_finished_at], "%c") %></li>
-  </ul>
+<div class="bottom_border_line">
+  <table class="summary-table">
+    <tbody>
+    <tr>
+      <th></th>
+      <th class="num"></th>
+    </tr>
+    <tr>
+      <td class="name">Sites backed up</td>
+      <td class="num"><%= @dashboard.backup_sites.count %></td>
+    </tr>
+    <tr>
+      <td class="name">Items saved</td>
+      <td class="num"><%= number_with_delimiter(@backup_data[:total]) %></td>
+    </tr>
+    <tr>
+      <td class="name">Last backed up on</td>
+      <td class="date"><%= formatted_date_or_na(@backup_data[:last_backup_finished_at], "%c") %></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 <br/>
 <h1>Backup Status</h1>
@@ -35,7 +50,7 @@
         </div>
       <% end %>
       <%= content_tag(:td, formatted_date_or_na(bs[:created_at], "%x"), :align => 'center') %>
-      <%= content_tag(:td, formatted_date_or_na(bs[:last_backup_at], "%x"), :align => 'center') %>
+      <%= content_tag(:td, formatted_date_or_na(bs[:last_backup_at],"%x"), :align => 'center') %>
       <%= content_tag(:td, bs[:status], :align => 'center') %>
       <%= content_tag(:td, (bs[:status] == 'OK') ? '' : 
         link_to('Settings', account_setup_path(:step => 0, :site => bs[:site])) ) %>

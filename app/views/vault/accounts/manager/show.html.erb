@@ -1,17 +1,5 @@
 <div id="plan-overview" class="billing">
-  <h1>Current Plan</h1>
-  <div class="plan-status">
-    <div> 
-      <strong><%= @plan.to_s %></strong><br/>
-      <%= link_to 'Change plan', url_for(:action=>:plans) %>
-    </div>
-    <div>
-      0GB / XGB<br/>Disk space (soft limit)
-    </div>
-    <div>
-      <%= @account.admin.backup_sources.count %> / X<br/>backup accounts
-    </div>
-  </div>
+  <%= render :partial => 'plan_header_summary' %>
 </div>
 <div style="clear:both;"></div>
 <%= show_flash_messages %>
