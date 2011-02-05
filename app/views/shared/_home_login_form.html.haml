@@ -1,15 +1,10 @@
 - if current_user
   = render :partial => 'shared/header_logout'
 - else
-  - form_for user_session, :url => login_path, :html => {:class => @hide_login_box ? 'hidden' : 'login-form'} do |f|
+  - form_for user_session, :url => get_login_path, :html => {:class => @hide_login_box ? 'hidden' : 'login-form'} do |f|
     /= link_to 'Login', login_path
     = hidden_field_tag :home_login, "1"
     No account yet? &nbsp;
     = link_to 'Sign-Up Now!', new_account_url(:plan => AppConfig.default_plan)
     &nbsp; &nbsp;
     = submit_tag 'submit', :value => 'login'
-    -#
-      - form_for_using_ssl user_session, :url => {:controller => 'user_sessions', :action => 'create'} do |f|
-        = text_field_tag :login, "Email"
-        = password_field_tag :password, "Password"
-        = submit_tag 'submit', :value => 'login'

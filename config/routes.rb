@@ -192,6 +192,8 @@ ActionController::Routing::Routes.draw do |map|
     sub.resource :vault_dashboard, :controller => 'vault/dashboard', :member => { :search => :get }
     sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'
     sub.root :controller => 'vault/home', :action => :show
+    sub.vlogin 'vlogin', :controller => 'vault/user_sessions', :action => 'new', :secure => true
+    sub.vlogout 'vlogout', :controller => 'vault/user_sessions', :action => 'destroy'
   end
   
   # Static partials for WordPress blog

@@ -1,0 +1,33 @@
+- hide_login_box
+- stylesheet 'application'
+
+.login-message
+  - if params[:home_login]
+    - flash.discard
+  - else
+    = show_flash_messages
+.clearboth
+.login  
+  - form_for_using_ssl user_session, :url => {:controller => 'vault/user_sessions', :action => 'create'} do |f|
+    %h3 Sign In 
+    %ul
+      %li
+        %label Email
+        = f.text_field :login, {:id => "username", :class => 'withHint', :defaultValue => 'email address'}
+      %li
+        %label Password
+        = f.password_field :password, {:id => "password-created2"}
+      %li
+        .remember
+          = check_box_tag 'user_session[remember_me]'
+          Remember me
+        .submit
+          %label
+          = submit_tag 'submit', :value => 'login', :class => 'yellow-button3'        
+
+.forgot
+  = link_to 'Forgot password?', new_password_reset_path
+  |
+  Not a member?  
+  = link_to "Signup now", new_account_registration_path
+      

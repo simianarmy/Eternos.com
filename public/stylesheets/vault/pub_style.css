@@ -1,8 +1,16 @@
 /* Vault public pages */
-BODY { background: url(/images/vault/bg-body.gif) repeat-x; font: 14px Arial, Helvetica, sans-serif; color: #5B5B5B; margin: 0; padding: 0}
+BODY { background: url(/images/vault/bg-body.gif) repeat-x; 
+	/* font: 14px Arial, Helvetica, sans-serif; */
+	font: normal normal normal 13.34px/normal helvetica, arial, freesans, clean, sans-serif;
+	color: #5B5B5B; margin: 0; padding: 0}
 IMG { border: none;}
-A { outline: none}
+A { outline: none; text-decoration: none;}
+A:hover{ outline: none; text-decoration: underline; }
 FIELDSET { margin: 0; padding: 0; border: none;}
+
+.clearboth {
+	clear: both;
+}
 
 .h3link A:hover, .active A:hover, .inact A:hover, .footer A:hover { text-decoration: underline;}
 .px11 { font-size: 11px;}
@@ -44,6 +52,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #yellow-button { background: url(/images/vault/bg-yellow-button.gif) no-repeat; display: block; color: #FFFFFF; float: left; text-decoration: none; width: 297px; height: 33px; padding-top: 12px; margin:-7px 25px 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button2 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 36px; padding-top: 12px; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
+.yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
 
 .myBox { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 
@@ -117,25 +126,66 @@ P { line-height: 20px;}
 .account-type-price STRONG { background: #D6D6D6; padding: 10px 15px; font-size: 20px; font-weight: bold; line-height: 50px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;}
 .featured-account-type .account-type-price STRONG { line-height: 69px;}
 
-/* accordion stuffs */
-#accordion { font-size: 12px;}
-#accordion p.account-setup-accordion-icon IMG { margin-right: 20px;}
-#accordion p.account-setup-accordion-icon STRONG { font-size: 14px; color: #02419E;}
-#accordion p.account-setup-accordion-icon {cursor:pointer; }
-#facebook-box, #twitter-box, #gmail-box, #rss-box, #picasa-box { background: none repeat scroll 0 0 #F0F7F9; margin: 0 0 0 65px; padding: 20px; width: 440px; }
-#facebook-box IMG { margin-right: 20px; vertical-align: middle;}
-.rss-box { background: url(/images/vault/fb-box.gif) repeat-y scroll 0 0 transparent; height: 50px; padding: 20px 0 0; width: 451px; }
-.table1 { background: #E0ECFF; border: 2px solid #6694E3; height: auto; width: 440px; }
-.coll-form7 { color: #393B3E; font:11px arial; ; height: 30px; padding-left: 65px; text-align: left; width: 90px; }
-.titlebox1 { background: #6694E3; color: white; font:bold 12px arial; ; height: 20px; padding: 2px 0 0 5px; width: 100%; }
-.submit-btn5 { background: url(/images/vault/submit2.gif) no-repeat 0 0; border: none; color: black; display: block; font-family: arial; font-size: 11px; height: 20px; margin: 8px 5px 2px 10px; text-align: center; text-decoration: none; cursor: pointer; width: 84px; }
-.submit-btn5:hover { background: url(/images/vault/submit2.gif) no-repeat 0 -20px; color: #fff; cursor: pointer}
 
 /* login 2 - copied from new_design/members.css */
+/* ARE WE USING THIS ??? */
 .login2-mid STRONG { color: #02419E; font-size: 14px;}
 .login2-mid IMG { vertical-align: middle; margin-right: 20px;}
 .login2-mid FORM P { padding: 14px 0;}
-.login2-mid .active2 { background: url(/images/activated2.gif) no-repeat 0px bottom; padding: 0 14px 30px 14px; margin:0 6px 0 -14px;}
+.login2-mid .active2 { background: url(/images/activated2.gif) no-repeat 0px bottom; }
+
+/* Login page */
+.login {
+	margin: 4px 20px 15px 230px;
+	width: 450px;
+	height: 200px;
+	border: 4px solid #D6D6D6;
+	background: #F5F5F5; /* white smoke */
+}
+/* Customization for login page form */
+.login form { padding-left: 10px; margin-bottom: 10px;}
+.login h3 { color: #507493; }
+.login form ul { list-style: none; padding: 0px; }
+.login form LI { font-size: 16px; padding: 5px 0 5px 0}
+.login form LI INPUT[type=text], .login form LI INPUT[type=password] { 
+	width: 300px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 3px; vertical-align: middle; font-size: 16px;
+	height: 20px;
+	border-bottom-left-radius: 5px 5px;
+	border-bottom-right-radius: 5px 5px;
+	border-top-left-radius: 5px 5px;
+	border-top-right-radius: 5px 5px;
+}
+.login form LI LABEL { font-weight: bolder; display: inline-block; width: 100px;}
+.login .remember {
+	float: left;
+	padding-left: 100px;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+.login form .submit {
+	float: right;
+	padding-right: 4px;
+}
+.login form INPUT[type=submit] {
+	background: url(/images/vault/bg_login-button.gif) no-repeat; 
+	width: 76px; height: 30px; 
+	padding: 0; border: none; 
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 14px; color: #FFFFFF; cursor: pointer;
+}
+.login-message {
+	margin: 0 0px 0 230px;
+	width: 456px;
+	float: left;
+}
+.forgot {
+	margin: 0 65px 0 0;
+	width: 450px;
+	float: right;
+}
+.bottom_border_line {
+	border-bottom: 1px solid #D6D6D6;
+}
 
 /* Signup + billing */
 .billing H1 { background: #F2F2F2; padding: 5px; margin-bottom: 0; border: 1px solid #D6D6D6;}
