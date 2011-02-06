@@ -377,8 +377,10 @@ class ApplicationController < ActionController::Base
       'dialog'
     elsif current_user && !current_user.role.nil?
       current_user.role.downcase
+    elsif controller_name == 'about'
+      'about'
     else
-      'home'
+      controller_name
     end
     return nil unless @layout
     Rails.logger.debug "Dyamic layout = #{@layout}"
