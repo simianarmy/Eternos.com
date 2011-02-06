@@ -20,7 +20,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   
   def new
     # Send them to plans page if they already signed up but didn't complete setup
-    unless @account.new_record? || @user.new_record?
+    unless params[:force] || @account.new_record? || @user.new_record?
       redirect_to(url_for(:action => :plans)) and return false
     end
     session[:account_id] = nil

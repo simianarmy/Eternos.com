@@ -151,6 +151,17 @@ P { line-height: 20px;}
 	font-weight: bold;
 }
 
+/* Services */
+.services .subtitle {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.service-ul LI {
+	padding: 10px;
+	font-size: 14px;
+}
+
 /* login 2 - copied from new_design/members.css */
 /* ARE WE USING THIS ??? */
 .login2-mid STRONG { color: #02419E; font-size: 14px;}

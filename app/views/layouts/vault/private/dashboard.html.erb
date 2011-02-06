@@ -24,7 +24,7 @@
   		<li class="inact"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
   	</ul>
   </div>
-  <fieldset class="content">
+  <div class="content">
   	<div class="left">	
       <%= render :partial => 'shared/leftnav_backup_services', :locals => {:settings => @settings} %>       
       <div class="search-box">
@@ -45,7 +45,7 @@
   	<div class="content-box home">
   		<%= yield %>
   	</div>
-  </fieldset>
+  </div>
   <%= render :partial => 'shared/vault_footer' %>
   <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2', 'inlineplayer', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'login', 'cvi_busy_lib', :cache => 'cache/vault_dashboard' %>
   <%= javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds}; ETERNOS.debug = #{Rails.env == 'development' ? 'true' : 'false'};" %>

@@ -1,12 +1,19 @@
-<fieldset class="content">
-	
+<% cache "home_services" do %>
+<fieldset class="content">	
   <%= render :partial => 'signup_today_box' %>
-	<div class="content-box">
+	<div class="content-box services">
 		<h1>Vault Services</h1>
 		<p><%= image_tag "vault/services.jpg" %></p>
-		
+		<p>
+		  <span class="subtitle">Vault currently supports the archiving of the following popular online services:</span>
+		</p>
 		<ul class="service-ul">
-		  copy?
+  		  <li><img src="/images/vault/icon-gmail.gif" /> <a href="#">Gmail</a> <small>(including Gmail for business)</small></li>		
+  			<li><img src="/images/vault/icon-facebook.gif" /> <a href="#">Facebook</a> <small>(status, comments, notes, media)</small></li>
+  			<li><img src="/images/vault/icon-twitter.gif" /> <a href="#">Twitter</a></li>
+  			<li><img src="/images/vault/icon-rss.gif" /> <a href="#">RSS Feeds</a> <small>(any blog/feed)</small></li>
+  	</ul>
+
 		  <!--
 		  <li>
   			<h3>Google Gmail backup service</h3>
@@ -39,3 +46,4 @@
 	  COPY
 	</p>		
 </fieldset>
+<% end %>

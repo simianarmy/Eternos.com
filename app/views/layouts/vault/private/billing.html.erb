@@ -24,7 +24,7 @@
   		<li class="active"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
   	</ul>
   </div>
-  <fieldset class="content">
+  <div class="content">
     <div class="left">	
       <div class="myBox box01">
           <h2>Account Settings</h2>
@@ -44,7 +44,7 @@
   		  <%= yield %>
   		</div>
   	</div>
-  </fieldset>
+  </div>
   <%= render :partial => 'shared/vault_footer' %>
   <%= javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery" %>
   <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "effects", "controls", "lightview2.5.2.1/js/lightview", "lowpro", "defaultvalueactsashint", "behaviors" 
