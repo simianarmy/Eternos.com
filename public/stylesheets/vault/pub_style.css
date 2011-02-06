@@ -138,6 +138,18 @@ P { line-height: 20px;}
 .account-type-price STRONG { background: #D6D6D6; padding: 10px 15px; font-size: 20px; font-weight: bold; line-height: 50px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;}
 .featured-account-type .account-type-price STRONG { line-height: 69px;}
 
+/* Why */
+.why-vault-list LI {
+	font-size: 16px;
+}
+
+.about-why .how-list {
+	list-style:none;
+}
+.about-why .how-list LI {
+	padding: 10px;
+	font-weight: bold;
+}
 
 /* login 2 - copied from new_design/members.css */
 /* ARE WE USING THIS ??? */
