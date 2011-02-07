@@ -6,7 +6,7 @@
       %strong= pluralize(@results.size, 'hit')
     %p
 #results-config
-#search-results
+.search-results
   - if @results.any?
     = render :partial => 'search_item', :collection => @results.compact
   - else

@@ -1,15 +1,16 @@
-#search-result.search_result[object]
-  #result-main.res_text[object]
+#search-result{:id=>dom_id(object, 'result_container'), :class=>"#{object.to_str} search_result"}
+  .result-main.res_text
     .res_title
       = image_tag(search_icon(object), :width => 20, :height => 20)
-      = search_title(object)
+      = link_to_function search_title_text(object), "$('#{dom_id(object, 'detail_container')}').toggle();"
     .res_body
       - desc = search_summary(object)
       - unless desc.blank?
-        = desc
+        = truncate(desc, :length => 100, :separator => ' ')
         %br
       %span.posted= search_date(object)
   .clearboth
-  #full_view.res_full[object]
+  .full_view{:style => "display:none;", :id => dom_id(object, 'detail_container')}
+    .res_full= render :partial => "#{object.to_str.pluralize}/#{object.to_str}", :object => object
   %br
 .result_sep

@@ -16,13 +16,23 @@ class Vault::DashboardController < ApplicationController
     @search_terms = params[:terms]
     @results = []
     search_attributes = {}
+    refresh = params[:no_cache] || force_cache_reload?(:timeline) || false
+    md5 = [Digest::MD5.hexdigest(request.url), current_user.id].join(':')
     
-    if @search_terms.blank?
-      search_attributes.merge!({:created_at => 12.months.ago.utc..Time.now.utc, :user_id=>current_user.id})
+    # Cache search results for 10 minutes
+    @results += Rails.cache.fetch(md5, :force => refresh, :expires_in => 10.minutes) do
+      # Date-based search uses TimelineSearch module (db search)
+      if @search_terms.blank?
+        TimelineSearch.new(current_user.id, [4.months.ago, Date.today], :raw_results => true).results
+      else # Term-based search uses UserSearch module (sphinx search)
+        UserSearch.new(current_user).execute(@search_terms, search_attributes).compact
+      end
     end
-    BenchmarkHelper.rails_log("sphinx search for #{@search_terms} with #{search_attributes.inspect}") do
-      @results = UserSearch.new(current_user).execute(@search_terms, search_attributes).compact
-    end
+    @results.sort! {|a,b| b.start_date <=> a.start_date }
+    
+    # View hacks
+    @readonly = true # Instruct views not to make data editable
+    @hide_close = true # Do not show close button in search result details view
     
     respond_to do |format|
       format.html { 

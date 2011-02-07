@@ -27,7 +27,7 @@ module UserSearchHelper
 
   def search_icon(obj)
     icon = case obj
-    when FacebookActivityStreamItem
+    when FacebookActivityStreamItem, Comment
       'fb.png'
     when TwitterActivityStreamItem
       'twitter.png'
@@ -46,9 +46,9 @@ module UserSearchHelper
   
   def search_title_text(obj)
     if obj.respond_to?(:title) && !obj.title.blank?
-      obj.excerpts.title
+      obj_text_helper(obj, :title)
     elsif obj.respond_to?(:name) && !obj.name.blank?
-      obj.excerpts.name
+      obj_text_helper(obj, :name)
     else
       obj.to_str.humanize.singularize    
     end
@@ -59,15 +59,18 @@ module UserSearchHelper
   end
   
   def search_summary(obj)
+    Rails.logger.debug "summary for search object #{obj.inspect}"
     case obj
     when Feed
-      obj.excerpts.title
+      obj_text_helper(obj, :title)
     when FeedEntry
-      obj.excerpts.preview
+      obj_text_helper(obj, :preview)
     when Content
-      obj.excerpts.description
+      obj_text_helper(obj, :description)
     when ActivityStreamItem
-      obj.excerpts.message
+      obj_text_helper(obj, :message)
+    when Comment
+      obj_text_helper(obj, :comment)
     end
   end
   
@@ -100,6 +103,14 @@ module UserSearchHelper
       :events => obj.id), :target => '_new', :update => dom_id(obj, 'full_view'), 
       :loading => "spinner.load('#{spinner_dom}')", 
       :complete => "spinner.unload()"
+  end
+  
+  protected
+  
+  # Allows callers to send both regular objects and ThinkingSphinx search result objects
+  # that don't have the excerpts method
+  def obj_text_helper(obj, txt_attribute)
+    obj.excerpts.nil? ? obj.send(txt_attribute) : obj.excerpts.send(txt_attribute)
   end
 end
       

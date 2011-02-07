@@ -1,6 +1,6 @@
 #item_details_content.item_details_content[item]
   .details_head
-    %p=item_details_close_button(dom_id(item, 'item_details_content'))
+    %p=item_details_close_button(dom_id(item, 'item_details_content')) unless @hide_close
     %p.posted= yield :date_author
   .image_post
     = yield :icon
@@ -13,7 +13,7 @@
   .clearboth
   %p
   %br
-  = render :partial => 'shared/common_settings', :locals => {:object => item}
+  = render :partial => 'shared/common_settings', :locals => {:object => item} unless @readonly
 %p
 %br
 .clearboth
