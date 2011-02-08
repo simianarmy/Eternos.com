@@ -2,7 +2,7 @@
 <% javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" %>
 <% hide_login_box %>
 
-<fieldset class="content">
+<div class="content">
 	<%= render :partial => 'left_content', :locals => {:step => 1} %>
 	<div class="content-box billing">
 	
@@ -47,4 +47,4 @@
       <% end %>
     <% end %>
 	</div>
-</fieldset>
+</div>

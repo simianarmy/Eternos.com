@@ -1,29 +1,35 @@
 <% cache "homepage" do %>
-<fieldset class="sub-header">
-	<p class="flash"><img src="/images/vault/flash.jpg" /></p>
+<div class="fieldset">
+<div class="sub-header">
+	<p class="flash"><%= image_tag "vault/flash.jpg" %></p>
+	
 	<h2>
 Complete archiving of your Gmail and social media activity. Always secure. Readily
 available. No worries.
 </h2>
   <p>
 The more your company relies on Gmail and social media sites, the more complicated
-your archiving challenge becomes. But now there?s a simple, reliable solution: Eternos
+your archiving challenge becomes. But now there's a simple, reliable solution: Eternos
 Vault.
-
+</p>
+<p>
 Eternos Vault is an SAAS (software as a service) application that automatically archives
 your activity on Gmail, Facebook, Twitter and other social media sites, as well as your
 RSS feeds and various other web-based venues.
-
-It?s simple ? and always secure. Eternos Vault. It?s all right here.
-
+</p>
+<p>
+It's simple and always secure. Eternos Vault. It's all right here.
+</p>
+<p>
 We maintain your archives in a single location, without requiring you to install new
 software or take up internal server space. You are protected against attacks on your
 accounts. You can easily achieve compliance with FINRA, SEC, IIROC, and FSA
 archiving requirements.
-
   </p>
-</fieldset>
-<fieldset class="content">
+</div>
+<div class="clearboth"></div>
+<div class="fieldset">
+<div class="content">
 	<h3 class="myBox h3link"><a href="<% new_account_registration_path %>">30 day free trial - no credit cards required - sign up in 60 seconds!</a></h3>
 	
     <div class="myBox box01">
@@ -44,22 +50,12 @@ We maintain your archives in a single location, without requiring you to install
 software or take up internal server space. You are protected against attacks on your
 accounts. You can easily achieve compliance with FINRA, SEC, IIROC, and FSA
 archiving requirements.</p>
-<!--
-		<p>Eternos Vault is a SAAS (software as a service)
-    social web archiving application. Businesses and
-    indiviuals alike have their hands full staying on
-    top of an ever-expanding portfolio of social web
-    accounts. If you're in a regulated industry Vault
-    is a major part of ensuring compliance with
-    FINRA, SEC, IIROC, and FSA archiving requirements.
-    Both social networking pros and beginners can rest
-    easy knowing their data is safe and secure on Vault.
-    </p>
--->
+
 	</div>
   <%= render :partial => 'signup_today_box' %>
 	<p class="protect">
     SECURITY / STORAGE COPY 
 	</p>		
-</fieldset>
+</div>
+</div>
 <% end %>
