@@ -1,5 +1,5 @@
 class AdminsController < ApplicationController
-  #require_role "Admin"
+  require_role "Admin"
   layout 'admin'
   
   protected
