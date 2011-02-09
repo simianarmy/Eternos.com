@@ -7,7 +7,7 @@
 <%= render :partial => 'account_settings/backup_sources', :locals => {:settings => @settings, :completed_steps => @completed_steps, :setup => true} %>
 <p>&nbsp;</p>
 <% form_tag url_for(:controller => 'account_setup', :action => 'show', :step => 2) do %>
-  <input type="submit" value="Save & Continue"/>
+  <input type="submit" value="Save & Continue" id="yellow-button3"/>
 <% end %>
 <!-- Google Website Optimizer Conversion Script -->
 <script type="text/javascript">

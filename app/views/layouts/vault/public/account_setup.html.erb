@@ -4,13 +4,14 @@
 <meta content='IE=8' http-equiv='X-UA-Compatible' /> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Eternos Account Setup</title>
-<% stylesheet '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip' %>
-<link href="/stylesheets/vault/style.css" rel="stylesheet" type="text/css" />
+<% stylesheet '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'account_settings' %>
+<%= yield(:head) %>
+<link href="/stylesheets/vault/pub_style.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
-<%= yield(:head) %>
+
 </head>
 <body>
 
@@ -21,12 +22,12 @@
 			<li class="<%= public_tab_class_active?('index') %>"><%= link_to 'Overview', vault_home_path %><span></span></li>
   		<li class="<%= public_tab_class_active?('why') %>"><%= link_to 'Why Vault', why_vault_home_path %><span></span></li>
   		<li class="<%= public_tab_class_active?('services') %>"><%= link_to 'Services', services_vault_home_path %><span></span></li>
-		<li class="active"><%= link_to 'Getting Started', new_vault_account_path %><span></span></li>
+		<li class="active"><%= link_to 'Getting Started', new_account_registration_path %><span></span></li>
 	  </ul>
 </div>
 
 <fieldset class="content">
-  <%= render :partial => 'vault/accounts/left_content', :locals => {:step => 3} %>
+  <%= render :partial => 'vault/accounts/registration/left_content', :locals => {:step => 3} %>
   <div class="content-box">
     <h1>Choose your services to backup</h1>
     <%= yield %>

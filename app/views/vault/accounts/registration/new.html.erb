@@ -1,0 +1,50 @@
+<% stylesheet 'application' %>
+<% javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" %>
+<% hide_login_box %>
+
+<div class="content">
+	<%= render :partial => 'left_content', :locals => {:step => 1} %>
+	<div class="content-box billing">
+	
+		<h1>Create Your Account</h1>
+		
+		<% semantic_form_for @account, :url => {:action => 'create'}, 
+		  :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
+		  <%= show_flash_messages %>
+      <% f.semantic_fields_for :users do |user| %>
+      <%= hidden_field_tag 'plan', @plan.name %>
+        <ul class="form-ul3">
+          <%= user.input 'email', :hint => 'Your email will be used to login' %>
+          <%= user.input 'password' %>
+          <%= user.input 'password_confirmation', :type => 'password' %>
+          <%= user.input 'first_name' %>
+          <%= user.input 'last_name' %>
+        
+          <%= f.input :company_name, :required => false %>
+          <%= f.input :phone_number, :required => false %>
+
+          <li>
+            <label></label><br/>
+            <%= recaptcha_tags :ssl => request.ssl? %>
+            <em></em>
+          </li>
+          <li>
+            <%= check_box_tag 'account[users_attributes][0][terms_of_service]', "1", (@terms_of_service == true), 
+              {:id => 'terms_of_service'} %>
+            I accept the 
+            <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
+            <p> 
+              <small>*By proceeding, you confirm that your are over 13 years of age and accept the <a href="/about/privacy" target="_new">Privacy</a> and <a href="/about/terms" target="_new">Terms</a> .</small> <br>
+          	<br>
+          	<%= render :partial => 'shared/mcafee_secure' %>
+          </li>
+          <li>
+    				<label></label>
+    				  <input class="submit" name="commit" value="Sign Up" type="submit"  id="yellow-button3"/>
+    				  <a href="/login">Already Have An Account? Click Here</a>
+    			</li>
+        </ul>
+      <% end %>
+    <% end %>
+	</div>
+</div>

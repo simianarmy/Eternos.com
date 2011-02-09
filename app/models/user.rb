@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_one :profile, :dependent => :destroy
   has_many :comments
   
+  accepts_nested_attributes_for :profile
+  
   # Authentication: AuthLogic
   acts_as_authentic do |c|
     c.validate_login_field = false

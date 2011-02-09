@@ -1,4 +1,4 @@
-- form_for :user_session, current_user, :url => logout_path, :method => :get do |f|
+- form_for :user_session, current_user, :url => get_logout_path, :method => :get do |f|
   Welcome,
   %strong= link_to current_user.full_name, member_home_path
   - if @facebook_session

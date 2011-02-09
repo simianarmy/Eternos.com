@@ -1051,13 +1051,13 @@ var ETimeline = function(opts) {
 };
 
 // Helper to create & draw timeline 
-function drawETimeline() {
-	// Create timeline 
-  ETERNOS.timeline = new ETimeline({month_selector_id: 'month-selector',
-    artifact_section_id: 'artifacts-header',
-    events_section_id: 'events',
-    timeline_section_id: 'my-timeline',
-    timeline: {
+function drawETimeline(opts) {
+	opts = Object.extend({
+		month_selector_id: 		'month-selector',
+		artifact_section_id: 	'artifacts-header',
+    events_section_id: 		'events',
+    timeline_section_id: 	'my-timeline',
+		timeline: {
       memberID: ETERNOS.user_id, 
       startDate: ETERNOS.tl_start_date, 
       endDate: ETERNOS.tl_end_date, 
@@ -1066,6 +1066,8 @@ function drawETimeline() {
         fake: ETERNOS.fake_timeline
       }
     }
-  });
+	}, opts||{});
+	// Create timeline 
+  ETERNOS.timeline = new ETimeline(opts)
   ETERNOS.timeline.draw();
 }

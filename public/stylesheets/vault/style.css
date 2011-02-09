@@ -1,12 +1,21 @@
-/* Vault public pages */
-BODY { background: url(/images/vault/bg-body.gif) repeat-x; font: 14px Arial, Helvetica, sans-serif; color: #5B5B5B; margin: 0; padding: 0}
+/* Vault private pages */
+BODY { 
+	background: url(/images/vault/bg-body.gif) repeat-x; 
+	/*font: 14px Arial, Helvetica, sans-serif; */
+	font: normal normal normal 13.34px/normal helvetica, arial, freesans, clean, sans-serif;
+	color: #5B5B5B; margin: 0; padding: 0
+}
 IMG { border: none;}
-A { outline: none}
-FIELDSET { margin: 0; padding: 0; border: none;}
+A { outline: none; text-decoration: none;}
+A:hover{ outline: none; text-decoration: underline; }
 
+.clearboth {
+	clear: both;
+}
 .h3link A:hover, .active A:hover, .inact A:hover, .footer A:hover { text-decoration: underline;}
 .px11 { font-size: 11px;}
 
+/* Header */
 .header { width: 988px; height: 100px; margin: 0 auto 25px auto; background: url(/images/vault/bg-header.jpg) no-repeat top right;}
 .header IMG { float: left; margin-top: 39px;}
 .header FORM { margin: 23px 10px 0 0; padding: 0; float: right; font-size: 12px; color: #507493;}
@@ -24,8 +33,11 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .active A { color: #507493; font-size: 22px; text-decoration: none; background: url(/images/vault/nav-left02.png); display: block; height: 29px; padding: 4px 10px 0 15px; float: left; white-space: nowrap; letter-spacing: -1px;}
 .active SPAN { display: block; float: left; width: 10px; background: url(/images/vault/nav-right02.png); height: 33px;}
 
-.footer { background: #fff url(/images/vault/bg-footer.gif) repeat-x; margin: 44px 0 0 0; clear: both; float: none; padding-top: 25px;}
-.footer FIELDSET { width: 988px; margin: 0 auto; padding-bottom: 20px;}
+/* Footer */
+.footer { background: #fff url(/images/vault/bg-footer.gif) repeat-x; 
+	margin: 44px 0 0 0; clear: both; float: none; padding-top: 25px;
+	width: 988px; height: 100px; margin: 0 auto; padding-bottom: 20px;
+}
 .footer UL { margin: 0 12px 0 40px; padding: 0; list-style: none; float: left}
 .footer UL UL { margin: 0;}
 .footer UL LI { width: 170px; float: left;}
@@ -43,17 +55,20 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 #yellow-button { background: url(/images/vault/bg-yellow-button.gif) no-repeat; display: block; color: #FFFFFF; float: left; text-decoration: none; width: 297px; height: 33px; padding-top: 12px; margin:-7px 25px 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button2 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 36px; padding-top: 12px; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center}
 #yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
+.yellow-button3 { background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: block; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;}
 
 .myBox { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 
-.content { width: 988px; margin: 0 auto}
-.left { margin:0 0 25px 0; float: left; width: 315px}
+.content { width: 988px; margin: 0 auto; border: none; padding-left: 5px;}
+.left { margin:0 0 25px 0; float: left; width: 280px}
 
 .h3link { background: #F1F6FB; border: 1px solid #E4E4E4; margin: 0 0 25px 0; padding: 15px 0; text-align: center; text-transform: uppercase; font-size: 22px;}
 .h3link A { text-decoration: none; color: #797979;}
 
 .content .mid { margin: 0 17px 0;}
-.box01 { background: #F2F2F2; border-top: 1px solid #E4E4E4; border-right: 1px solid #F2F2F2; border-bottom: 1px solid #F2F2F2; border-left: 1px solid #F2F2F2; width: 283px; height: 308px; padding: 16px; margin:0 0 25px 0; float: left;}
+.box01 { background: #F2F2F2; border-top: 1px solid #E4E4E4; border-right: 1px solid #F2F2F2; border-bottom: 1px solid #F2F2F2; border-left: 1px solid #F2F2F2; 
+	width: 234px; height: 308px; padding: 16px; margin:0 0 25px 0; float: left;
+}
 .box01 A { color: #037BBE; font-weight: bold; font-size: 12px;}
 .box01 A:hover { color: #0033CC}
 .box01 H2, .content-box H1 { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
@@ -71,17 +86,23 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 
 .protect { border-top: 1px solid #D6D6D6; clear: both; float: none; padding: 35px 0 10px 85px; font-size: 13px; background: url(/images/vault/bg-protect.gif) no-repeat top left;}
 
-.content-box H1 , .left H1, .left H2 { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
+.content-box H1 , .left H1, .left H2 { 
+	margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;
+}
 .content-box h1 EM { float: right; font-style: normal; font-size: 12px; font-weight: normal; color: #5B5B5B; padding-top: 6px;}
 .content-box h1 EM A { background: #E7E7E7; color: #5B5B5B; text-decoration: none; text-transform: capitalize; padding: 3px 8px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-left: 5px;}
+.content-box A:hover {  text-decoration: underline; }
 .content-box { width: 655px; float: left; margin-left: 15px;}
 .content-box H3 { margin: 30px 0 20px 0; padding: 0 0 0 0; text-transform: uppercase; font-size: 18px; color: #037BBE;}
 P { line-height: 20px;}
 .content-box-IMG { margin: 0 15px 5px 0}
 
+.gray-rounded-box {
+	background:#F2F2F2; border:1px solid; border-radius: 5px;
+}
+
 .service-ul { margin: 0; padding: 0; list-style: none;}
 .service-ul IMG { float: left; margin:0 18px 0 0;}
-
 
 .content-left { width: 315px; float: left;}
 
@@ -130,21 +151,230 @@ P { line-height: 20px;}
 .submit-btn5 { background: url(/images/vault/submit2.gif) no-repeat 0 0; border: none; color: black; display: block; font-family: arial; font-size: 11px; height: 20px; margin: 8px 5px 2px 10px; text-align: center; text-decoration: none; cursor: pointer; width: 84px; }
 .submit-btn5:hover { background: url(/images/vault/submit2.gif) no-repeat 0 -20px; color: #fff; cursor: pointer}
 
+/* login 2 - copied from new_design/members.css */
+.login2-mid STRONG { color: #02419E; font-size: 14px;}
+.login2-mid IMG { vertical-align: middle; margin-right: 20px;}
+.login2-mid FORM P { padding: 14px 0;}
+.login2-mid .active2 { background: url(/images/activated2.gif) no-repeat 0px bottom; padding: 0 14px 30px 14px; margin:0 6px 0 -14px;}
+
+
 /* Dashboard */
 .sync-report { margin: 0; padding: 0; list-style: none; display: table; width: 660px; border-bottom: 1px dotted #DDDDDD; font-size: 12px;}
 .sync-report LI { float: left; width: 73px; padding-bottom: 15px; text-align: center; font-weight: bold}
 .sync-report LI STRONG { display: block; background: #F4F4F4; height: 35px; padding-top: 15px; margin-bottom: 12px;}
 
-.home-archive { margin: 0 0 40px 0; padding: 0; list-style: none; font-size: 12px;}
-.home-archive LI { margin-bottom: 15px;}
-.home-archive LI A { color: #0432FF;}
-.home-archive LI EM { color: #4775B9; font-style: normal}
+.summary-table {
+	border-spacing: 0px 0px;
+	border-collapse: collapse;
+	margin: 0px;
+	width: 100%;
+	border-top: 1px solid #D6D6D6;
+}
+
+table.summary-table tr {
+	background-color: #F5F5F5;
+}
+
+table.summary-table td.num, table.summary-table td.date {
+	text-align: center;
+}
+
+table.summary-table td {
+	border-bottom: 1px solid #D6D6D6;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 5px 5px;
+}
+
+.grey-button, .cancel-submit-button {
+	border: 1px solid #DCB5B5;
+	background: #F2F2F2;
+	color: #900;
+}
+
+
+.backup-sites-table table tbody {
+	font-size: 12px;
+}
+
+#search-results { margin: 0 0 40px 0; padding: 0; list-style: none; font-size: 12px;}
+.search_result { margin-bottom: 5px;}
+.search_result A { color: #0432FF;}
+.search_result .posted { color: #4775B9; font-style: normal}
 .home P { font-size: 12px;}
 .home .message01 { font-size: 11px; background: #FFFFF1}
 #active_network-add { background: url(/images/icon-add-more.gif) no-repeat center left; color: #000000; font-size: 12px; margin-right: 10px; padding: 5px 0 10px 30px; position: relative; top: -15px;}
 
+.search-box {
+	margin-top: 26px;
+	width: 260px; 
+}
 .search LABEL { font-size: 16px; font-weight: bold}
-.search input[type="text"] { border: 2px solid #D3D3D3; width: 301px; padding: 5px 2px; margin: 15px 0}
+.search input[type="text"] { border: 2px solid #D3D3D3; width: 250px; padding: 5px 2px; margin: 15px 0}
 .search input[type="submit"] { background: url("/images/vault/bg_login-button.gif") no-repeat 0 0; border: none; color: #FFFFFF; cursor: pointer; font: bold 16px Arial,Helvetica,sans-serif; height: 30px; padding: 0; width: 76px; cursor: pointer; float: right}
 .search EM { font-size: 10px; font-style: normal}
 
+.backup-sites-table table thead tr {
+	background: #F2F2F2
+}
+
+/* Forms + billing */
+.billing H1 { background: #F2F2F2; padding: 5px; margin-bottom: 0; border: 1px solid #D6D6D6;}
+.billing .p1 { float: none; padding-top: 0;}
+.form-ul3 { margin: 0 0 5px 0; padding: 0 5px 35px 5px; list-style: none; border: 1px solid #D6D6D6; border-top: none;}
+.form-ul3 LI { font-size: 12px; padding: 5px 0 5px 0}
+.form-ul3 LI INPUT[type=text], .form-ul3 LI INPUT[type=password] { 
+	width: 250px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle; font-size: 16px;
+}
+.form-ul3 LI INPUT[type=password], .form-ul3 LI INPUT#account_phone_number { width: 150px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle}
+
+.form-ul3 LI INPUT[type=radio] { vertical-align: middle}
+.form-ul3 LI .inline-hints { font-size: 10px; font-style: normal}
+.form-ul3 li SELECT { border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; width: 150px; }
+.form-ul3 li LABEL { font-weight: bolder; display: inline-block; width: 150px;}
+.form-ul3 li IMG { vertical-align: middle}
+
+.error { color: #F00;}
+.content-box A { color: #037BBE; font-weight: bold; text-decoration: none;}
+.content-box A:hover { color: #507493; }
+
+.bottom_border_line {
+	border-bottom: 1px solid #D6D6D6;
+}
+
+#billing-cc {
+	padding: 0px 0px 15px;
+	margin: 15px 0 10px;
+}
+
+/* Update cc popup */
+
+.update-terms {
+	color: #555;
+	font-size: 12px;
+	padding: 5px;
+}
+
+.update-cc-form #yellow-button3 {
+	margin-top: 10px;
+	float: right;
+}
+
+.plans-table {
+	border-spacing: 0px 0px;
+	border-collapse: collapse;
+	margin: 0px;
+	width: 100%;
+}
+
+table.plans-table tbody {
+	border-color: inherit;
+	display: table-row-group;
+	vertical-align: middle;
+}
+
+table.plans-table tr th {
+	border-bottom: 1px solid #D6D6D6;
+	background-color: white;
+	color: #666;
+	font-size: 11px;
+	font-weight: normal;
+	padding: 4px 5px;
+	text-align: left;
+}
+
+table.plans-table tr {
+	background-color: #F5F5F5;
+}
+table.plans-table tr.current {
+	background-color: #D6D6D6;
+}
+
+table.plans-table td.num {
+	text-align: center;
+}
+
+table.plans-table td {
+	border-bottom: 1px solid #D6D6D6;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 8px 5px;
+}
+
+table.plans-table td.action {
+	color: #999;
+	font-size: 11px;
+	text-align: right;
+}
+
+table.plans-table td.custom {
+	color: #555;
+	font-size: 12px;
+	padding: 5px;
+}
+
+.grey-button, .cancel-submit-button {
+	border: 1px solid #DCB5B5;
+	background: #F2F2F2;
+	color: #900;
+}
+
+.smalldate {
+	color: gray;
+	font-size: 12px;
+}
+
+#receipts {
+	margin-top: 10px;
+}
+
+#receipts table{width:100%;border-left:1px solid #ccc;border-top:1px solid #ccc;border-right:1px solid #ccc;}
+#receipts table th{padding:.4em;border-bottom:1px solid #ccc;color:#333;background-color:#eee;}
+#receipts table td{padding:.4em;border-bottom:1px solid #ccc;}
+#receipts table tr.success td{background-color:#EFFFED;}
+#receipts table tr.failure td{background-color:#FFEDED;}
+#receipts table td.empty{color:#a00;font-weight:bold;text-align:center;}
+#receipts table td.date{color:#888;}
+#receipts table tr.success td.amount{color:#0a0;font-weight:bold;}
+#receipts table tr.failure td.amount{color:#a00;font-weight:bold;}
+
+/* Account admin */
+/* Delete account styles from Github.com */
+.delete-content {
+	border:1px solid #DCB5B5; 
+	border-radius: 5px;
+	margin: 15px 0px;
+	padding: 10px;
+	position: relative;
+}
+.delete-content h3 {
+	color: #900;
+	margin: 0px;
+	font-weight: bold;
+	font-size: 1.17em;
+}
+#delete-warning {
+	border:1px solid #DCB5B5; 
+	border-radius: 5px;
+	margin: 15px 0px;
+	padding: 10px;
+	position: relative;
+	background-color: #FFFEB2;
+	font-weight: bold;
+}
+
+/* Plan status grid */
+#plan-overview {
+	display: block;
+}
+.plan-status {
+	background: white;
+	position: relative;
+}
+.plan-status div {
+	padding: 5px;
+	margin: 10px 0 10px 0;
+	float: left;
+	position: relative;
+	width: 200px;
+}

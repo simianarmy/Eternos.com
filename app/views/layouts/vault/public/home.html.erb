@@ -3,12 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Home</title>
-<link href="/stylesheets/vault/style.css" rel="stylesheet" type="text/css" />
+<%= stylesheet_link_tag "vault/pub_style", "formtastic_changes", :cache => 'home_css' %>
+<%= yield(:head) %>
 <!--[if lte IE 7]>
 	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
-<%= yield(:head) %>
+
 </head>
 <body>
   <div class="header">
@@ -18,7 +19,7 @@
   		<li class="<%= public_tab_class_active?('show') %>"><%= link_to 'Overview', vault_home_path %><span></span></li>
   		<li class="<%= public_tab_class_active?('why') %>"><%= link_to 'Why Vault', why_vault_home_path %><span></span></li>
   		<li class="<%= public_tab_class_active?('services') %>"><%= link_to 'Services', services_vault_home_path %><span></span></li>
-  		<li class="<%= members_tab_class_active?('accounts') %>"><%= link_to 'Getting Started', new_vault_account_path %><span></span></li>
+  		<li class="<%= members_tab_class_active?('accounts') %>"><%= link_to 'Getting Started', new_account_registration_path %><span></span></li>
   	  </ul>
   </div>
 

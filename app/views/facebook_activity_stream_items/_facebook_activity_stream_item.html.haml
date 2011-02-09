@@ -1,42 +1,32 @@
 - stylesheet 'timeline'
 
 - item = facebook_activity_stream_item
-#item_details_content.item_details_content[item]
-  .details_head
-    %p=item_details_close_button(dom_id(item, 'item_details_content'))
-    %p.posted
-      == Posted on #{item.published_at.to_s(:long)}
-      - if item.author
-        == by #{item.author}
-      \:
-  .image_post
-    = image_tag 'fb.png'
+- set_content_for :date_author do
+  == Posted on #{item.published_at.to_s(:long)}
+  - if item.author
+    == by #{item.author}
+  \:
+- set_content_for :icon do
+  = image_tag 'fb.png'
+- set_content_for :body do
+  - if item.thumbnail_url
+    = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
+  - elsif item.url
+    = link_to item.url, item.url, :target => '_new'
   .clearboth
-  %br
-  .message_content
-    - if item.thumbnail_url
-      = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
-    - elsif item.url
-      = link_to item.url, item.url, :target => '_new'
-    .clearboth
-    %p== #{h item.message}  
-    - if item.has_comments?
-      .comment_thread[item]
-        %span.detail Comments:
-        %br
-        = render :partial => 'facebook_activity_stream_items/comment_thread_item', :collection => item.get_comments
-  %p.detail
-    - if item.liked_by
-      == Liked by: #{item.liked_by.join(', ')}
+  %p== #{h item.message}  
+  - if item.has_comments?
+    .comment_thread[item]
+      %span.detail Comments:
       %br
-    - if item.published_at != item.edited_at
-      == Updated: #{item.edited_at.to_s(:long)}
-      %br
-    = link_to item.source_url, item.source_url, :target => '_new' if item.source_url
-  .clearboth
-  %p
-  %br
-  = render :partial => 'shared/common_settings', :locals => {:object => item}
-%p
-%br
-.clearboth
+      = render :partial => 'facebook_activity_stream_items/comment_thread_item', :collection => item.get_comments
+- set_content_for :details do
+  - if item.liked_by
+    == Liked by: #{item.liked_by.join(', ')}
+    %br
+  - if item.published_at != item.edited_at
+    == Updated: #{item.edited_at.to_s(:long)}
+    %br
+  = link_to item.source_url, item.source_url, :target => '_new' if item.source_url
+  
+= render :partial => 'shared/item_details', :locals => {:item => item}

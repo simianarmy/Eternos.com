@@ -9,12 +9,6 @@ class FacebookThread < ActiveRecord::Base
   serialize :recipients
   validates_presence_of :backup_source_id, :message_thread_id
   
-  # thinking_sphinx
-  define_index do
-    indexes :subject
-    has created_at
-  end
-  
   # Creates thread and associated messages from FacebookMessageThread data
   def self.save_thread!(account_id, message_thread)
     Rails.logger.debug "Creating thread from: #{message_thread.inspect}"
@@ -70,7 +64,7 @@ class FacebookThread < ActiveRecord::Base
     thread_messages.each do |msg|
       Rails.logger.debug "Checking message: #{msg.message_id}"
       unless existing_ids.include?(msg.message_id.to_s)
-        self.messages << FacebookMessage.build_from_proxy(msg)
+        self.messages << FacebookMessage.build_from_proxy(backup_source_id, msg)
       end
     end
   end

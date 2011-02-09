@@ -19,6 +19,6 @@ class Relationship < ActiveRecord::Base
     indexes notes
     indexes person(:name), :as => :person_name
     
-    has profile_id, start_at, end_at
+    has profile_id, start_at, end_at, created_at
   end
 end

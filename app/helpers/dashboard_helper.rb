@@ -53,6 +53,14 @@ module DashboardHelper
     title_tag + content_info
   end
 
+  def formatted_date_or_na(date, format, na="NA")
+    if date.respond_to?(:strftime)
+      date.strftime(format)
+    else
+      na
+    end
+  end
+  
   def update_regions_js(value)
     remote_function(
             :update => 'address_region',

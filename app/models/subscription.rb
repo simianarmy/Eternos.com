@@ -45,7 +45,7 @@ class Subscription < ActiveRecord::Base
       self.state = 'active' if new_record?
     end
     
-    [:amount, :user_limit, :renewal_period].each do |f|
+    [:amount, :user_limit, :disk_limit, :backup_site_limit, :renewal_period].each do |f|
       self.send("#{f}=", plan.send(f))
     end
     

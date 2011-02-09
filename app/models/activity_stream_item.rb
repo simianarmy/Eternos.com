@@ -39,7 +39,7 @@ class ActivityStreamItem < ActiveRecord::Base
     indexes comments(:comment), :as => :comment
     
     # attributes
-    has activity_stream_id, published_at, edited_at
+    has activity_stream_id, published_at, edited_at, created_at
     
     where "deleted_at IS NULL"
   end
@@ -115,7 +115,7 @@ class ActivityStreamItem < ActiveRecord::Base
   
   # Helpers to handle dual comments storage structure (comment_thread col. & comments has_many assoc.)
   def has_comments?
-    comments.any? || comment_thread
+    comments.any? || (comment_thread['count'].to_i > 0)
   end
   
   def get_comments

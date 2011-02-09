@@ -1,16 +1,20 @@
 - item = feed_entry
-- content_for :date_author do
+
+- set_content_for :date_author do
   == Posted on #{item.published_at.to_s(:long)}
   - if item.author
     == by #{item.author}
   \:
-- content_for :icon do
+- set_content_for :icon do
   = image_tag 'rss.png'
-- content_for :body do
+- set_content_for :body do
   %h3= item.feed.title
   %p= link_to item.feed.url, item.feed.url, :target => '_new'
   %br
-  = restful_in_place_editor 'span', item, :name, :value => item.name.empty? ? 'Enter Title' : item.name
+  - if @readonly
+    = item.name
+  - else
+    = restful_in_place_editor 'span', item, :name, :value => item.name.empty? ? 'Enter Title' : item.name
   %br
   - unless feed_entry.screencap_url.blank?
     = link_to image_tag(feed_entry.screencap_thumb_url), feed_entry.screencap_url, :class => 'lightview'
@@ -19,8 +23,7 @@
     .feed_entry_text_pane
       = text_area_tag 'feed_text', feed_entry.preview, :rows => 20, :cols => 60
     
-- content_for :details do
+- set_content_for :details do
   = link_to item.url, item.url, :target => '_new'
 
 = render :partial => 'shared/item_details', :locals => {:item => item}
-

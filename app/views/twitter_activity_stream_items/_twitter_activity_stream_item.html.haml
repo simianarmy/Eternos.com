@@ -1,15 +1,15 @@
 - item = twitter_activity_stream_item
-- content_for :date_author do
+- set_content_for :date_author do
   == On #{item.published_at.to_s(:long)}, #{item.author} tweeted: 
-- content_for :icon do
+- set_content_for :icon do
   = image_tag 'twitter.png'
-- content_for :body do
+- set_content_for :body do
   - if item.thumbnail_url
     = link_to image_tag(item.thumbnail_url, :class => 'pic_message'), item.url
   - elsif item.url
     = link_to item.url, item.url
   %p== "#{h item.message}"
-- content_for :details do
+- set_content_for :details do
   == Source: #{item.source}
 
 = render :partial => 'shared/item_details', :locals => {:item => item}

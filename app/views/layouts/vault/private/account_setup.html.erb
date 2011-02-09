@@ -4,13 +4,14 @@
 <meta content='IE=8' http-equiv='X-UA-Compatible' /> 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Eternos Account Setup</title>
-<% stylesheet '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip' %>
+<% stylesheet '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'account_settings' %>
+<%= yield(:head) %>
 <link href="/stylesheets/vault/style.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
-<%= yield(:head) %>
+
 </head>
 <body>
   <div class="header">
@@ -18,15 +19,23 @@
     <%= link_to image_tag('vault/logo.png'), root_path %>
   	<ul>
   		<li class="inact"><%= link_to 'Home', vault_dashboard_path %><span></span></li>
-  		<li class="active"><%= link_to 'Account Setup', account_setup_path %><span></span></li>
-  		<li class="inact"><%= link_to 'Billing', billing_vault_account_path %><span></span></li>
+  		<li class="active"><%= link_to 'Backups', account_setup_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Account', account_manager_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
   	</ul>
   </div>
-  <fieldset class="content">
+  <div class="content">
+    <div class="left">	
+      <div class="myBox box01">
+          <h2>Backup Services</h2>
+          <p>Copy here</p>
+      </div>
+    </div>
+  
   	<div class="content-box home">
   		<%= yield %>
   	</div>
-  </fieldset>
+  </div>
 
 <%= render :partial => 'shared/vault_footer' %>
 <%= javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery" %>

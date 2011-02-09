@@ -1,41 +1,61 @@
-<fieldset class="sub-header">
-	<p class="flash"><img src="/images/vault/flash.jpg" /></p>
-	<h2>Tagline</h2>
-  <p>Copy needed here</p>
-	<p>
-		<a href="<%= new_vault_account_path %>" id="yellow-button">Sign Up Now</a>
-		<a href="https://www.mcafeesecure.com/RatingVerify?ref=beta.eternos.com" target="_blank"><img width="115" height="32" border="0" oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;" alt="McAfee Secure sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" src="http://images.scanalert.com/meter/beta.eternos.com/12.gif"></a><br />
-	<em><a href="getting-started.html">See personal account options (what will this do?)</a></em></p>
-</fieldset>
-<fieldset class="content">
-	<h3 class="myBox h3link"><a href="<% new_vault_account_path %>">30 day free trial - no credit cards required - sign up in 60 seconds!</a></h3>
+<% cache "homepage" do %>
+<div class="fieldset">
+<div class="sub-header">
+	<p class="flash"><%= image_tag "vault/flash.jpg" %></p>
+	
+	<h2>
+Complete archiving of your Gmail and social media activity. Always secure. Readily
+available. No worries.
+</h2>
+  <p>
+The more your company relies on Gmail and social media sites, the more complicated
+your archiving challenge becomes. But now there's a simple, reliable solution: Eternos
+Vault.
+</p>
+<p>
+Eternos Vault is an SAAS (software as a service) application that automatically archives
+your activity on Gmail, Facebook, Twitter and other social media sites, as well as your
+RSS feeds and various other web-based venues.
+</p>
+<p>
+It's simple and always secure. Eternos Vault. It's all right here.
+</p>
+<p>
+We maintain your archives in a single location, without requiring you to install new
+software or take up internal server space. You are protected against attacks on your
+accounts. You can easily achieve compliance with FINRA, SEC, IIROC, and FSA
+archiving requirements.
+  </p>
+</div>
+<div class="clearboth"></div>
+<div class="fieldset">
+<div class="content">
+	<h3 class="myBox h3link"><a href="<% new_account_registration_path %>">30 day free trial - no credit cards required - sign up in 60 seconds!</a></h3>
 	
     <div class="myBox box01">
 		<h2>Quick Simple Backup</h2>
 		<ul>
+		  <li><img src="/images/vault/icon-gmail.gif" /> <a href="#">Gmail</a> <small>(including Gmail for business)</small></li>		
 			<li><img src="/images/vault/icon-facebook.gif" /> <a href="#">Facebook</a> <small>(status, comments, notes, media)</small></li>
 			<li><img src="/images/vault/icon-twitter.gif" /> <a href="#">Twitter</a></li>
 			<li><img src="/images/vault/icon-rss.gif" /> <a href="#">RSS Feeds</a> <small>(any blog/feed)</small></li>
-			<li><img src="/images/vault/icon-picasa.gif" /> <a href="#">Picasa</a></li>
-			<li><img src="/images/vault/icon-gmail.gif" /> <a href="#">Gmail</a> <small>(including Gmail for business)</small></li>		
 		</ul>
 		<p class="spacer01">&nbsp;</p>
-		<p><a href="#">View All Services In Details</a></p>
+		<p><a href="<%= services_vault_home_path %>">View All Services In Details</a></p>
     </div>
     <div class="myBox box01 mid">	
 		<h2>About vault.eternos</h2>
-		<p>Vault.eternos.com is an e-discovery, legal, and regulatory archiving compliance solution. we archive customer facing social media channels.</p>
-		<p class="spacer02">&nbsp;</p>
-		<p><a href="<%= new_vault_account_path %>">Learn More About Vault
-		 &amp; Eternos</a></p>
+<p>
+We maintain your archives in a single location, without requiring you to install new
+software or take up internal server space. You are protected against attacks on your
+accounts. You can easily achieve compliance with FINRA, SEC, IIROC, and FSA
+archiving requirements.</p>
+
 	</div>
-    <div class="myBox box01">
-		<h2>Sign up Today!</h2>
-		<p>Backing up your Google Apps data is easy. Just enter your Google Apps Domain and login credentials. Next select which accounts you want to backup and an email is sent to confirm participation. We take it from there. You will get regular emails confirming when</p>
-		<p class="spacer03">&nbsp;</p>
-		<p><a href="<%= new_vault_account_path %>" id="yellow-button2">Sign Up Now</a> <a href="#">See personal account options</a></p>
-	</div>
+  <%= render :partial => 'signup_today_box' %>
 	<p class="protect">
     SECURITY / STORAGE COPY 
 	</p>		
-</fieldset>
+</div>
+</div>
+<% end %>

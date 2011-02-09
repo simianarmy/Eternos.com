@@ -19,7 +19,7 @@ module Facebooker
     populating_attr_accessor :username
   end
   class Group
-    populating_attr_accessor :icon, :pic_square, :version
+    populating_attr_accessor :icon, :pic_square, :version, :email
   end
   class MessageThread
     populating_attr_accessor :folder_id, :viewer_id

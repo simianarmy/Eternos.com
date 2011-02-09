@@ -18,10 +18,14 @@ module CommentsHelper
   end
   
   def comment_author_link(comment)
-    if comment.author == current_user
-      'You'
-    else 
-      comment.author.full_name.blank? ? comment.author.email : comment.author.full_name
+    if comment.author
+      if comment.author == current_user
+        'You'
+      else
+        comment.author.full_name.blank? ? comment.author.email : comment.author.full_name
+      end
+    elsif !comment.commenter_data.nil? 
+      comment.commenter_data['username']
     end
   end
 end

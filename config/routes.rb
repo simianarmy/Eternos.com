@@ -187,9 +187,13 @@ ActionController::Routing::Routes.draw do |map|
   # vault subdomain routes
   map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
     sub.resource :vault_home, :controller => 'vault/home', :collection => { :why => :get, :services => :get }
-    sub.resource :vault_account, :controller => 'vault/accounts', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
+    sub.resource :account_registration, :controller => 'vault/accounts/registration', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any}
+    sub.resource :account_manager, :controller => 'vault/accounts/manager', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
+    sub.resource :vault_dashboard, :controller => 'vault/dashboard', :member => { :search => :get }
     sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'
-    sub.root :controller => 'vault/home', :action => :index
+    sub.root :controller => 'vault/home', :action => :show
+    sub.vlogin 'vlogin', :controller => 'vault/user_sessions', :action => 'new', :secure => true
+    sub.vlogout 'vlogout', :controller => 'vault/user_sessions', :action => 'destroy'
   end
   
   # Static partials for WordPress blog

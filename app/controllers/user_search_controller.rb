@@ -19,11 +19,11 @@ class UserSearchController < ApplicationController
         @results = UserSearch.new(current_user).execute(params[:terms]).compact
       end
     end
-    
+
     RAILS_DEFAULT_LOGGER.debug "sphinx results: #{@results.inspect}"
     respond_to do |format|
       format.html
-      format.js
+      format.js 
     end
   end
   

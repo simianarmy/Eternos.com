@@ -163,6 +163,14 @@ en:
         # Will define custom blank validation message for User model and 
         # custom blank validation message for login attribute of User model.
         models:
+          account:
+            attributes:
+              base: "hello"
+              password:
+                too_short: "Password must be at least 6 characters long"
+                confirmation: "Passwords do not match"
+              password_confirmation:
+                blank: "Password confirmation is required"
           user:
             attributes:
               first_name:

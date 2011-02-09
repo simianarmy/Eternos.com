@@ -1,24 +1,26 @@
-<fieldset class="content">
+<% cache "home_why" do %>
+<div class="content">
 	
-    <div class="myBox box01">
-		<h2>Sign up Today!</h2>
-		<p>Backing up your Google Apps data is easy. Just enter your Google Apps Domain and login credentials. Next select which accounts you want to backup and an email is sent to confirm participation. We take it from there. You will get regular emails confirming when</p>
-		<p class="spacer03">&nbsp;</p>
-		<p><a href="<%= new_vault_account_path %>" id="yellow-button2">Sign Up Now</a> <a href="#">See personal account options</a></p>
-    </div>
-	<div class="content-box">
-		<h1>Why choose vault</h1>
+  <%= render :partial => 'signup_today_box' %>
+	<div class="content-box about-why">
+		<h1>Why Vault is the right archiving solution for your business</h1>
 		<p><img src="/images/vault/why.jpg" /></p>
-		<h3>Vault.eternos.com Summary</h3>
-		<p>The copy here was filler - from another site...</p>
-		<h3>How it works</h3>
-		<p><img src="/images/vault/how-it-works.gif" align="left" class="content-box-IMG" /> 
-    Copy needed here
-		</p>
-		<p>&nbsp;</p>
-	</div>
 
-	<p class="protect">
-		Copy needed here...
-	</p>		
-</fieldset>
+    <p>
+    When you choose Eternos Vault, you choose reliability, cost savings and ease of use.
+    </p>
+    <p>
+    Since going live in early 2009, Eternos (our consumer targeted archiving solution) has 
+    delivered 100 percent up-time and zero data loss. You simply can't get reliability any 
+    better than that.
+    </p>
+    <p>
+    At just $9.99 a month, it's a small investment in important protection you need to have.
+    And the system is so simple to use, you'll hardly have to give it a thought. And that's the
+    whole idea. We take the time, expense and worry out of the process.
+    </p>
+
+  </div>
+	
+</div>
+<% end %>

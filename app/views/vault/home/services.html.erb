@@ -1,49 +1,46 @@
-<fieldset class="content">
-	
-    <div class="myBox box01">
-		<h2>Sign up Today!</h2>
-		<p>Backing up your Google Apps data is easy. Just enter your Google Apps Domain and login credentials. Next select which accounts you want to backup and an email is sent to confirm participation. We take it from there. You will get regular emails confirming when</p>
-		<p class="spacer03">&nbsp;</p>
-		<p><a href="<%= new_vault_account_path %>" id="yellow-button2">Sign Up Now</a> <a href="#">See personal account options</a></p>
-    </div>
-	<div class="content-box">
+<% cache "home_services" do %>
+<div class="content">	
+  <%= render :partial => 'signup_today_box' %>
+	<div class="content-box services">
 		<h1>Vault Services</h1>
 		<p><%= image_tag "vault/services.jpg" %></p>
+    <p>
+      <span class="subtitle">
+Eternos Vault offers a full slate of archiving services for the leading social media and
+web-based mail servers, including:
+</p>
+
 		<ul class="service-ul">
-			<li>
-				<h3>Facebook backup service</h3>
-				<%= image_tag 'vault/big-facebook.gif' %>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, dolor vel posuere faucibus, dolor ligula vulputate nulla, nec dignissim ligula neque quis urna. Vivamus elementum, justo eget ornare eleifend, turpis arcu vulputate neque, a tincidunt nulla libero at massa. Vestibulum ornare aliquam tincidunt. Phasellus fermentum, nunc et consectetur ornare, mi justo venenatis nisi, eu consectetur</p>
-			</li>
-			<li>
-				<h3>twitter backup service</h3>
-				<%= image_tag 'vault/big-twitter.gif' %>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, dolor vel posuere faucibus, dolor ligula vulputate nulla, nec dignissim ligula neque quis urna. Vivamus elementum, justo eget ornare eleifend, turpis arcu vulputate neque, a tincidunt nulla libero at massa. Vestibulum ornare aliquam tincidunt. Phasellus fermentum, nunc et consectetur ornare, mi justo venenatis nisi, eu consectetur</p>
-        
-			</li>
-			<li>
-				<h3>RSS backup service</h3>
-				<%= image_tag 'vault/big-rss.gif' %>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, dolor vel posuere faucibus, dolor ligula vulputate nulla, nec dignissim ligula neque quis urna. Vivamus elementum, justo eget ornare eleifend, turpis arcu vulputate neque, a tincidunt nulla libero at massa. Vestibulum ornare aliquam tincidunt. Phasellus fermentum, nunc et consectetur ornare, mi justo venenatis nisi, eu consectetur</p>
-        
-			</li>
-			<li>
-				<h3>picasa backup service</h3>
-				<%= image_tag 'vault/big-picasa.gif' %>
-		    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, dolor vel posuere faucibus, dolor ligula vulputate nulla, nec dignissim ligula neque quis urna. Vivamus elementum, justo eget ornare eleifend, turpis arcu vulputate neque, a tincidunt nulla libero at massa. Vestibulum ornare aliquam tincidunt. Phasellus fermentum, nunc et consectetur ornare, mi justo venenatis nisi, eu consectetur</p>
-        
-			</li>
-			<li>
-				<h3>Google Gmail backup service</h3>
-				<%= image_tag 'vault/big-gmail.gif' %>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, dolor vel posuere faucibus, dolor ligula vulputate nulla, nec dignissim ligula neque quis urna. Vivamus elementum, justo eget ornare eleifend, turpis arcu vulputate neque, a tincidunt nulla libero at massa. Vestibulum ornare aliquam tincidunt. Phasellus fermentum, nunc et consectetur ornare, mi justo venenatis nisi, eu consectetur</p>
-        
-			</li>													
-		</ul>
+  		  <li><img src="/images/vault/icon-gmail.gif" /> 
+  		    <ul>
+<strong>Gmail</strong>: All content encrypted in storage, including Gmail for Google Apps.
+  		    </ul>
+  		  </li>		
+  			<li><img src="/images/vault/icon-facebook.gif" /> 
+          <ul>
+          <strong>Facebook</strong>: Full archiving of all activity, including mail, status updates, posts on other
+          walls, comments, media, profile and friends.
+          </ul>
+  			</li>
+  			<li><img src="/images/vault/icon-twitter.gif" /> 
+  			  <ul>
+<strong>Twitter</strong>: Full archiving of all tweets.
+          </ul>
+  			</li>
+  			<li><img src="/images/vault/icon-rss.gif" /> 
+  		    <ul>
+<strong>RSS Feeds</strong>: Full archiving of all content from blogs and feeds, including full-page
+screenshots.
+  		    </ul>
+  			</li>
+        <li>
+        All your archived content (excluding Gmail) is searchable with Eternos Vault, and you
+
+        can download material any time you like.
+        </li>
+  	</ul>
+
 		<p>&nbsp;</p>
 	</div>
-
-	<p class="protect">
-	  COPY
-	</p>		
-</fieldset>
+</div>
+<% end %>
