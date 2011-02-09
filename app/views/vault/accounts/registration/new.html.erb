@@ -23,26 +23,21 @@
           <%= f.input :company_name, :required => false %>
           <%= f.input :phone_number, :required => false %>
 
-          <li>
-            <label></label><br/>
-            <%= recaptcha_tags :ssl => request.ssl? %>
-            <em></em>
-          </li>
-          <li>
+          <li><label></label>
             <%= check_box_tag 'account[users_attributes][0][terms_of_service]', "1", (@terms_of_service == true), 
               {:id => 'terms_of_service'} %>
             I accept the 
             <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
-            <p> 
-              <small>*By proceeding, you confirm that your are over 13 years of age and accept the <a href="/about/privacy" target="_new">Privacy</a> and <a href="/about/terms" target="_new">Terms</a> .</small> <br>
-          	<br>
-          	<%= render :partial => 'shared/mcafee_secure' %>
+            
           </li>
           <li>
-    				<label></label>
-    				  <input class="submit" name="commit" value="Sign Up" type="submit"  id="yellow-button3"/>
-    				  <a href="/login">Already Have An Account? Click Here</a>
+    				<label>&nbsp;</label>
+    				  <input class="submit yellow-button3" name="commit" value="Sign Up" type="submit" /><br/>
     			</li>
+    			<li><label></label>
+    			  <a href="/login">Already Have An Account? Click Here</a>
+    			</li>
+    			<li><label></label><%= render :partial => 'shared/mcafee_secure' %></li>
         </ul>
       <% end %>
     <% end %>
