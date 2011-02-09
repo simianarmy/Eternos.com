@@ -9,6 +9,7 @@ class UserSessionsController < ApplicationController
   before_filter :require_no_user, :only => [:new, :create, :choose_password, :save_password]
   before_filter :require_user, :only => :destroy
   
+  layout 'home'
   
   def new
     @user_session    = UserSession.new

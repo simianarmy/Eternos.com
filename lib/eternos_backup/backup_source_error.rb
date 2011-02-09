@@ -66,12 +66,12 @@ module EternosBackup
     
     # Error message for humans
     def short_error
-      backup_error_obj.description rescue t("Unknown error (#{code})")
+      backup_error_obj.description rescue "Unknown error (#{code})"
     end
     
     # Fix suggestions for humans
     def fix_suggestion
-      backup_error_obj.fix_hint rescue t('Please help us debug this error by forwarding this email to backup-errors@eternos.com')
+      backup_error_obj.fix_hint rescue 'Please help us debug this error by forwarding this email to backup-errors@eternos.com'
     end
     
     protected
