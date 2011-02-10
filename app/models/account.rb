@@ -58,6 +58,22 @@ class Account < ActiveRecord::Base
     end
   end
 
+  # Site (subdomain) to ID lookup class
+  class Site
+    SubdomainMap = {
+      'www'   => 0,
+      'vault' => 1
+    }.freeze
+    
+    def self.default_id
+      SubdomainMap['www']
+    end
+    
+    def self.id_from_subdomain(sub)
+      SubdomainMap[sub] || default_id
+    end
+  end
+    
   # Returns admin user Member object
   def admin
     has_admins.first

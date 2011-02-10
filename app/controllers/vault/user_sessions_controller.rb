@@ -36,7 +36,9 @@ class Vault::UserSessionsController < ApplicationController
     end
 
     sanitize_credentials
-    @user_session    = UserSession.new(params[:user_session])
+    UserSession.with_scope(:find_options => {:conditions => "site_id = 1", :joins => :account}) do
+      @user_session = UserSession.new(params[:user_session])
+    end
     
     if @user_session.save
       # 1st time logged in - send to account setup with welcome message

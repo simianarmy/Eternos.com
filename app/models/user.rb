@@ -15,11 +15,11 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.validate_login_field = false
     c.login_field = :login
+    c.validations_scope = :account_id # Scope all validations to the parent account
     c.logged_in_timeout = SESSION_DURATION_SECONDS
     c.validates_length_of_password_field_options :minimum => 6, :if => :require_password?
     c.validates_length_of_password_field_options = c.validates_length_of_password_field_options.merge(
       :message => 'Password is too short')
-    
     # All this just to avoid email length errors - redundant if with the email format validation
     c.merge_validates_length_of_email_field_options :allow_nil => true, :within => 0..255
   end

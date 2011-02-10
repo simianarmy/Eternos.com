@@ -37,6 +37,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :check_enable_maintenaince_mode
   before_filter :clear_js_include_cache
+  before_filter :set_site_id
   
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -52,6 +53,10 @@ class ApplicationController < ActionController::Base
   
   layout :dynamic_layout
 
+  def set_site_id
+    @siteID = Account::Site.id_from_subdomain(current_subdomain)
+  end
+  
   def invalid_facebook_signature
     redirect_to logout_url 
   end
@@ -302,7 +307,13 @@ class ApplicationController < ActionController::Base
     
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
+    # Lookup user using current siteID as scope
+    site_id = Account::Site.id_from_subdomain(current_subdomain)
+    UserSession.with_scope(:find_options => {:conditions => "account_id = 1"}, 
+      :id => "account_1") do
+      @current_user_session = UserSession.find
+    end
+    @current_user_session
   end
 
   def current_user
