@@ -35,7 +35,7 @@
     				  <input class="submit yellow-button3" name="commit" value="Sign Up" type="submit" /><br/>
     			</li>
     			<li><label></label>
-    			  <a href="/login">Already Have An Account? Click Here</a>
+    			  <%= link_to 'Already Have An Account? Click Here', get_login_path %>
     			</li>
     			<li><label></label><%= render :partial => 'shared/mcafee_secure' %></li>
         </ul>

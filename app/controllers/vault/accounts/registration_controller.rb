@@ -76,10 +76,6 @@ class Vault::Accounts::RegistrationController < ApplicationController
       Account.transaction do
         @user.profile ||= Profile.new
         @account.save!
-        unless verify_recaptcha(:model => @user)
-          flash[:error] = "Invalid CAPTCHA entry.  Please try again."
-          raise "Captcha error"
-        end
         @success = true
       end
     rescue ActiveRecord::RecordInvalid => e
