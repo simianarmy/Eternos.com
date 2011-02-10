@@ -212,8 +212,8 @@ class ApplicationController < ActionController::Base
     session[:original_uri] = nil
     
     # AVOID REDIRECTING BACK IF BACK = PUBLIC AREA - IT WILL CONFUSE THE SHIT OUT OF USERS!
-    unless uri.nil? || uri.match(/about|user_sessions|logout|signup/)
-      RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{uri}"
+    unless uri.nil? || uri.match(/about|user_sessions|login|logout|signup|vlogin|vlogout/)
+      RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{uri} from #{uri}"
       redirect_to uri
     else
       RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{params.to_s}" 
@@ -307,13 +307,7 @@ class ApplicationController < ActionController::Base
     
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
-    # Lookup user using current siteID as scope
-    site_id = Account::Site.id_from_subdomain(current_subdomain)
-    UserSession.with_scope(:find_options => {:conditions => "account_id = 1"}, 
-      :id => "account_1") do
-      @current_user_session = UserSession.find
-    end
-    @current_user_session
+    @current_user_session = UserSession.find
   end
 
   def current_user

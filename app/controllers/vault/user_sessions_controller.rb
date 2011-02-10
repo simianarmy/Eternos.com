@@ -36,7 +36,7 @@ class Vault::UserSessionsController < ApplicationController
     end
 
     sanitize_credentials
-    UserSession.with_scope(:find_options => {:conditions => "site_id = 1", :joins => :account}) do
+    UserSession.with_scope(:find_options => {:conditions => "accounts.site_id = 1", :include => :account}) do
       @user_session = UserSession.new(params[:user_session])
     end
     
