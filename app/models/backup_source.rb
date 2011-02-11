@@ -210,7 +210,7 @@ class BackupSource < ActiveRecord::Base
   
   # Returns string description of current backup status
   def backup_status_desc
-    status = if auth_required?
+    status = if !confirmed?
       'Authentication Required'
     elsif active?
       if lb = latest_backup
