@@ -305,9 +305,22 @@ class ApplicationController < ActionController::Base
     load_facebook_session
   end
     
+  # Scoped session helper method.  Will wrap a block inside UserSession.with_scope 
+  # used to scope accounts to a site
+  def session_scoped_by_site
+    site_id = Account::Site.id_from_subdomain current_subdomain
+    UserSession.with_scope(:find_options => {:conditions => "site_id = #{site_id}"}, :id => "account_#{site_id}") do
+      yield
+    end
+  end
+  
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
+  
+    session_scoped_by_site do
+      @current_user_session = UserSession.find
+    end
+    @current_user_session
   end
 
   def current_user

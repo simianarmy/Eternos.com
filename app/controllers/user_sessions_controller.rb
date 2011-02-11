@@ -12,7 +12,9 @@ class UserSessionsController < ApplicationController
   layout 'home'
   
   def new
-    @user_session    = UserSession.new
+    session_scoped_by_site do
+      @user_session    = UserSession.new
+    end
   end
 
   # User gets routed here sometimes from improper request methods
@@ -36,7 +38,9 @@ class UserSessionsController < ApplicationController
     end
 
     sanitize_credentials
-    @user_session    = UserSession.new(params[:user_session])
+    session_scoped_by_site do
+      @user_session    = UserSession.new(params[:user_session])
+    end
     
     if @user_session.save
       # 1st time logged in - send to account setup with welcome message
@@ -59,7 +63,7 @@ class UserSessionsController < ApplicationController
             render(:action => :new) && return 
           end
           # Otherwise auto-login with user matching facebook session
-          UserSession.create(user)
+          session_scoped_by_site { UserSession.create(user) }
           if user.has_backup_data?
             redirect_to member_home_url
           else
@@ -77,13 +81,15 @@ class UserSessionsController < ApplicationController
   end
 
   def destroy
-    current_user_session.try(:destroy)
+    session_scoped_by_site { current_user_session.try(:destroy) }
     redirect_to new_user_session_url
   end
   
   # Should only be called from co-reg email links
   def choose_password
-    @user_session    = UserSession.new
+    session_scoped_by_site do
+      @user_session = UserSession.new
+    end
   end
   
   # Called from choose password form
@@ -96,8 +102,9 @@ class UserSessionsController < ApplicationController
         (params[:user_session][:password] == params[:password_confirmation])
         @user.password = @user.password_confirmation = params[:user_session][:password]
         @user.save
-        
-        @user_session = UserSession.new(@user.reload)
+        session_scoped_by_site do
+          @user_session = UserSession.new(@user.reload)
+        end
         if @user_session.save
           flash[:notice] = "Welcome, #{@user.name}"
           redirect_to account_setup_url
@@ -106,7 +113,9 @@ class UserSessionsController < ApplicationController
         end
       end    
     end
-    @user_session = UserSession.new
+    session_scoped_by_site do
+      @user_session = UserSession.new
+    end
     
     flash[:error] = "Invalid login or passwords do not match.  Please check your input and try again."
     render :action => :choose_password

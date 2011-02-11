@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.validate_login_field = false
     c.login_field = :login
-    c.validations_scope = :account_id # Scope all validations to the parent account
+    c.validations_scope = :site_id # Scope all validations to the site
     c.logged_in_timeout = SESSION_DURATION_SECONDS
     c.validates_length_of_password_field_options :minimum => 6, :if => :require_password?
     c.validates_length_of_password_field_options = c.validates_length_of_password_field_options.merge(

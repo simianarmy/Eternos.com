@@ -1081,6 +1081,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.integer  "invitation_limit",                        :default => 0,         :null => false
     t.string   "type"
     t.integer  "account_id"
+    t.integer  "site_id",                    :default => 0, :null => false
     t.string   "last_name"
     t.string   "first_name"
     t.string   "password_salt"

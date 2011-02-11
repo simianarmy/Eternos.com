@@ -12,7 +12,9 @@ class Vault::UserSessionsController < ApplicationController
   layout 'vault/public/home'
   
   def new
-    @user_session    = UserSession.new
+    session_scoped_by_site do
+      @user_session    = UserSession.new
+    end
   end
 
   # User gets routed here sometimes from improper request methods
@@ -36,7 +38,8 @@ class Vault::UserSessionsController < ApplicationController
     end
 
     sanitize_credentials
-    UserSession.with_scope(:find_options => {:conditions => "accounts.site_id = 1", :include => :account}) do
+    
+    session_scoped_by_site do
       @user_session = UserSession.new(params[:user_session])
     end
     
@@ -60,7 +63,10 @@ class Vault::UserSessionsController < ApplicationController
   end
 
   def destroy
-    current_user_session.try(:destroy)
+    session_scoped_by_site do
+      current_user_session.try(:destroy)
+    end
+    flash[:notice] = "You are logged out"
     redirect_to vlogin_path
   end
 

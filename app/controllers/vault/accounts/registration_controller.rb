@@ -51,6 +51,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
 
     # Using email registration?
     @user.registration_required = false
+    @user.site_id = Account::Site.id_from_subdomain current_subdomain
     
     # Some subscriptions use Captcha in signup form
     @hide_errors = params[:hide_errors]

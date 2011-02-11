@@ -60,10 +60,10 @@ class Account < ActiveRecord::Base
 
   # Site (subdomain) to ID lookup class
   class Site
-    SubdomainMap = {
+    SubdomainMap = HashWithIndifferentAccess.new({
       'www'   => 0,
       'vault' => 1
-    }.freeze
+    }).freeze
     
     def self.default_id
       SubdomainMap['www']
