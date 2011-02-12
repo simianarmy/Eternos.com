@@ -5,7 +5,12 @@
 .content-box.billing
   %h1 Payment Information
   /%h3= "You have selected " + site_account_plan(@plan)
-  %h2 Your account details has been saved.
+  %h2.flash_notice Your account details have been saved.
+  %p.flash_notice
+    Adding billing for account:
+    %strong= @account.admin.login
+    (Account will expire in 10 minutes if not completed.)
+    /-= link_to '(Not you?  Click here)', new_account_registration_path(:force=>true)
   %p 
     Simply enter your payment details below to finish creating your Eternos account.
   %h1
@@ -17,7 +22,6 @@
   = render :partial => 'shared/mcafee_secure'
   
   - semantic_form_for @creditcard, :url => { :action => 'billing' } do |f|
-    = show_flash_messages
     = render :partial => 'credit_card_form', :locals => {:f => f}
     / - submit_or_cancel account_path, 'Update billing information'
     %p.p1
@@ -30,7 +34,7 @@
       Any questions before you sign up?
     %br
     If you have questions about Eternos or the sign up process just 
-    = link_to 'submit a support request', '/support'
+    = mail_to 'support@eternos.com', 'submit a support request'
     and we’ll get right back to you.
   %p
     %strong

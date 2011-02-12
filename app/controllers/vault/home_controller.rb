@@ -23,6 +23,9 @@ class Vault::HomeController < ApplicationController
   def getting_started
   end
   
+  def sitemap
+  end
+  
   private
       
   def redirect_if_logged_in

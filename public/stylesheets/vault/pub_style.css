@@ -38,7 +38,7 @@ fieldset { margin: 0; padding: 0; border: none;}
 .active SPAN { display: block; float: left; width: 10px; background: url(/images/vault/nav-right02.png); height: 33px;}
 
 .footer { background: #fff url(/images/vault/bg-footer.gif) repeat-x; margin: 44px 0 0 0; clear: both; float: none; padding-top: 25px;}
-.footer { width: 988px; height: 60px; margin: 0 auto; padding-bottom: 20px;}
+.footer { width: 100%; height: 60px; margin: 0 auto; padding-bottom: 20px;}
 .footer UL { margin: 0 12px 0 40px; padding: 0; list-style: none; float: left}
 .footer UL UL { margin: 0;}
 .footer UL LI { width: 170px; float: left;}
