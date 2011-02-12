@@ -23,6 +23,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
     unless params[:force] || @account.new_record? || @user.new_record?
       redirect_to(url_for(:action => :plans)) and return false
     end
+    
     session[:account_id] = nil
     @terms_of_service = true
     
@@ -92,7 +93,6 @@ class Vault::Accounts::RegistrationController < ApplicationController
       
       # Set session for choose_plan
       session[:account_id] = @account.id
-      flash[:notice] = 'Your account info has been saved.'
       redirect_to url_for(:action => :plans)
     else # @account not saved
       # Need to reload it otherwise form action will be update!?
@@ -116,19 +116,20 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def choose_plan
+    flash[:notice] = 'Your account details have been saved.'
     if @account.needs_payment_info?
       # display billing page
       @subscription = @account.subscription
-      flash[:domain] = @account.domain
+      
       # Save account id for next action's load_subscription()
       session[:account_id] = @account.id
+      
       render :action => 'billing'
     else
-      send_activation_mail
+      session[:account_id] = nil
       session_scoped_by_site do
         UserSession.create(@account.admin, true)
       end
-      flash[:notice] = 'Your account info has been saved.'
       redirect_to(account_setup_path) and return false
     end
   end
@@ -153,6 +154,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
 
         if @creditcard.valid? & @subscription_address.valid?
           if @subscription.store_card(@creditcard, :billing_address => @subscription_address.to_activemerchant, :ip => request.remote_ip)
+            login_and_email
             render :action => :thanks
           end
         end
@@ -168,12 +170,8 @@ class Vault::Accounts::RegistrationController < ApplicationController
   def paypal
     if params[:token]
       if @subscription.complete_paypal(params[:token])
-        if admin_user_pending?
-          redirect_to activate_path(@user.activation_code)
-        else
-          flash[:notice] = 'Your billing information has been updated'
-          redirect_to :action => "billing"
-        end
+        login_and_email
+        render :action => :thanks
       else
         render :action => 'billing'
       end
@@ -183,10 +181,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def thanks
-    send_activation_mail
-    session_scoped_by_site do
-      UserSession.create(@account.admin, true)
-    end
+    
   end
 
   protected
@@ -201,6 +196,13 @@ class Vault::Accounts::RegistrationController < ApplicationController
     if session[:account_id]
       @account = Account.find_by_id(session[:account_id])
       Rails.logger.debug "Got account from session id: #{@account.inspect}"
+      # If force option set and there is a session set, delete the temp account associated 
+      # with the session
+      if @account && params[:force]
+        flash[:notice] = "Deleted temporary account for #{@account.admin.email}"
+        @account.destroy
+        @account = nil
+      end
     end
     @account ||= Account.new(params[:account])
     
@@ -224,6 +226,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   def load_billing
     @creditcard = ActiveMerchant::Billing::CreditCard.new(params[:active_merchant_billing_credit_card])
     @subscription_address = SubscriptionAddress.new(params[:subscription_address])
+    @subscription_address.country ||= Country.find_by_alpha_2_code('US').id
   end
 
   def load_subscription
@@ -284,6 +287,16 @@ class Vault::Accounts::RegistrationController < ApplicationController
   
   def using_captcha_in_signup?(account)
     true
+  end
+  
+  def login_and_email
+    # If all went well, send activation email & log them in
+    # Make sure to forget this account in case user returns to signup pages!
+    session[:account_id] = nil
+    send_activation_mail
+    session_scoped_by_site do
+      UserSession.create(@account.admin, true)
+    end
   end
   
   def send_activation_mail

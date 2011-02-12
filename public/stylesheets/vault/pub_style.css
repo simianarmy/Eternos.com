@@ -239,12 +239,40 @@ P { line-height: 20px;}
 .form-ul3 LI INPUT[type=submit].yellow-button3 { 
 	background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: inline; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;
 }
+#creditcard_expdate_input select {
+	width: 80px;
+}
 .form-ul3 LI .inline-hints { font-size: 10px; font-style: normal}
 .form-ul3 li SELECT { border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; width: 150px; }
 .form-ul3 li LABEL { text-align: right; padding-right: 5px; font-weight: bolder; display: inline-block; width: 150px;}
 .form-ul3 li IMG { vertical-align: middle}
 
+.form-ul3 #errorExplanation {
+	width: 100%;
+}
 .error { color: #F00;}
 .content-box A { color: #037BBE; font-weight: bold}
 .content-box A:hover { color: #507493;}
 
+/* Forgot password */
+
+.forgot-password form { margin: 0 0 35px 0; padding: 0 5px 35px 5px; list-style: none; border: 1px solid #D6D6D6; border-top: none;}
+.forgot-password form p { font-size: 14px; font-weight: bold; padding: 5px 0 5px 0}
+.forgot-password form INPUT[type=text] { 
+	width: 250px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle; font-size: 16px;
+}
+.forgot-password form INPUT[type=submit] { 
+	background: url(/images/vault/bg-yellow-button2.gif) no-repeat; 
+	display: inline; 
+	color: #FFFFFF; 
+	text-decoration: none; 
+	width: 275px; 
+	height: 47px; 
+	padding: 0;
+	margin: 0 0 0 0; 
+	font-size: 20px; 
+	font-weight: bold; 
+	text-align: center; 
+	border: none; 
+	cursor: pointer;
+}

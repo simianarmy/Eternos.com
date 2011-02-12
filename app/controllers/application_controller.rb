@@ -388,20 +388,30 @@ class ApplicationController < ActionController::Base
     return false
   end
   
+  # Default controller method for determining what view layout to use 
+  # when rendering action.  Applies to public & logged in users, 
+  # www and vault subdomains, and ajax/popup actions!
   def dynamic_layout
     # ALL THIS SUCKS, I KNOW..
+    
+    # No layout for AJAX calls
     @layout = if request.xhr? 
       nil
+    # dialog param = lightview popup
     elsif params[:dialog]
       'dialog'
+    # uses user 'role' name for layout ... bad
     elsif current_user && !current_user.role.nil?
       current_user.role.downcase
+    # no user, check for 'about' action
     elsif controller_name == 'about'
       'about'
+    # none of the above, use Rails default
     else
-      controller_name
+      'home'
     end
     return nil unless @layout
+    
     Rails.logger.debug "Dyamic layout = #{@layout}"
     # Layouts further divided by site subdomain: www vs vault
     if current_subdomain == 'vault'

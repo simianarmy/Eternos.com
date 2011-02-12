@@ -47,13 +47,5 @@ class SetupPresenter < AccountPresenter
     end
   end
   
-  def create_fb_login_url(request)
-    # Desktop login url 
-    # Using url described on http://wiki.developers.facebook.com/index.php/Authorization_and_Authentication_for_Desktop_Applications#Prompting_for_Permissions
-    @fb_login_url = @fb_session.login_url_with_perms(
-      :next => authorized_facebook_backup_url(:host => request.host), 
-      :next_cancel => cancel_facebook_backup_url(:host => request.host)
-      )
-  end
 end
   

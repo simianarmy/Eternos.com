@@ -3,6 +3,7 @@ Feature: Manage vault_dashboards
   As a member
   I want a summary of their account on a single page
   
+  @javascript
   Scenario: Logged out member accessing the dashboard
     Given the user "ass@grass.com" exists
     And I am on the vault dashboard page

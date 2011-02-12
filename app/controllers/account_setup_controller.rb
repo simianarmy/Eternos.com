@@ -141,7 +141,12 @@ class AccountSetupController < ApplicationController
 
   def load_online
     @settings.load_facebook_user_info
-    @settings.create_fb_login_url(request)
+    # Set the facebook action url with permissions & callbacks
+    # Using url described on http://wiki.developers.facebook.com/index.php/Authorization_and_Authentication_for_Desktop_Applications#Prompting_for_Permissions
+    @settings.fb_login_url = @facebook_session.login_url_with_perms(
+        :next => authorized_facebook_backup_url(:host => request.host),
+        :next_cancel => cancel_facebook_backup_url(:host => request.host)
+        )
   end
 
   def respond_to_ajax_remove(obj)

@@ -5,7 +5,7 @@
 .content-box.billing
   %h1 Payment Information
   /%h3= "You have selected " + site_account_plan(@plan)
-  %h2#flash_notice Your account details have been saved.
+  %h2= show_flash_messages
   %p
     Adding billing for account:
     %strong= @account.admin.login

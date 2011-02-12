@@ -49,8 +49,8 @@ group :cucumber do
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'capybara'
-  gem 'celerity'
-  gem 'culerity'
+  #gem 'celerity'
+  #gem 'culerity'
   gem 'database_cleaner'
 end
 

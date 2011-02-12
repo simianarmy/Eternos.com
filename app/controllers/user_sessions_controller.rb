@@ -12,6 +12,9 @@ class UserSessionsController < ApplicationController
   layout 'home'
   
   def new
+    if current_subdomain == 'vault'
+      redirect_to vlogin_path and return false
+    end
     session_scoped_by_site do
       @user_session    = UserSession.new
     end

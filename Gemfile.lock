@@ -243,11 +243,9 @@ DEPENDENCIES
   capistrano (= 2.5.10)
   capistrano-ext (= 1.2.1)
   capybara
-  celerity
   crack
   cucumber
   cucumber-rails
-  culerity
   daemons
   database_cleaner
   deadweight
