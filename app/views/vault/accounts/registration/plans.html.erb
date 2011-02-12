@@ -22,17 +22,17 @@
         </div>
         -->
         <div class="myBox account-types featured-account-type">
-            <h2>Premium Account</h2>
+        <% plan = @plans.find{|p| p.name == 'Premium'} %>
+            <h2><%= plan.name %> Account</h2>
             <ul>
-                <li>500GB Storage</li>
-                <li>25 Backup Accounts</li>
+                <li><%= number_to_human_size(plan.disk_limit.gigabytes) %> Storage</li>
+                <li><%= plan.backup_site_limit %> Backup Accounts</li>
                 <li>Access to Beta Services</li>
-                <li>Upgrade to Premium</li>
                 <li>Priority Support</li>
             </ul>        
-            <p class="myBox account-type-price"><strong>$4.95/month</strong></p>
-            <p><a href="<%= url_for(:action => 'choose_plan', :plan => 'Premium') %>" id="yellow-button2">Get Premium Account</a>
-            	<a href="#">See premium account options</a>
+            <p class="myBox account-type-price"><strong>$9.95/month</strong></p>
+            <p>
+              <a href="<%= url_for(:action => 'choose_plan', :plan => plan.name) %>" id="yellow-button2">Get Premium Account</a>            	
             </p>
         </div>        
     <div class="clearboth"></div>

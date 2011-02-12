@@ -26,19 +26,19 @@
   </div>
   <div class="content">
   	<div class="left">	
-      <%= render :partial => 'shared/leftnav_backup_services', :locals => {:settings => @settings} %>       
+      <%= render :partial => 'shared/vault/leftnav_backup_services', :locals => {:settings => @settings} %>       
       <div class="search-box">
     	  <h2 style="margin: 0;">Search your archive</h2>
       	<% form_tag "javascript:void(0);", :class => 'search', :onsubmit => "searchArchive(this.terms.value); return false" do %>
           <%= text_field_tag :terms, params[:terms], :class => 'search-input withHint', :defaultValue => 'Search' %>
           <%= submit_tag("Search", :class => 'search-button') %>
-          <em>Search your entire archive by keyword</em>
+          <em>This function allows you to find any word or phrase in your backup archive. </em>
         <% end %>
       </div>
       <p>&nbsp;</p>
       <div class="myBox box01">
           <h2>Welcome to Vault</h2>
-          <p>Copy here </p>
+          <p><strong>===>Still no Copy here<===</strong></p>
       </div>
     </div>
 

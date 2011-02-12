@@ -389,6 +389,7 @@ class ApplicationController < ActionController::Base
   end
   
   def dynamic_layout
+    # ALL THIS SUCKS, I KNOW..
     @layout = if request.xhr? 
       nil
     elsif params[:dialog]

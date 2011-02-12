@@ -124,7 +124,10 @@ class Vault::Accounts::RegistrationController < ApplicationController
       session[:account_id] = @account.id
       render :action => 'billing'
     else
-      UserSession.create(@account.admin, true)
+      send_activation_mail
+      session_scoped_by_site do
+        UserSession.create(@account.admin, true)
+      end
       flash[:notice] = 'Your account info has been saved.'
       redirect_to(account_setup_path) and return false
     end
@@ -180,9 +183,10 @@ class Vault::Accounts::RegistrationController < ApplicationController
   end
 
   def thanks
-    # redirect_to :action => "plans" and return unless flash[:domain]
-    # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
-    UserSession.create(@account.admin, true)
+    send_activation_mail
+    session_scoped_by_site do
+      UserSession.create(@account.admin, true)
+    end
   end
 
   protected
@@ -277,8 +281,13 @@ class Vault::Accounts::RegistrationController < ApplicationController
       end
     end
   end
-
+  
   def using_captcha_in_signup?(account)
     true
+  end
+  
+  def send_activation_mail
+    # Send welcome email
+    Vault::UserMailer.deliver_activation(@account.admin)
   end
 end

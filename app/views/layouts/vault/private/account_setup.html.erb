@@ -28,12 +28,22 @@
     <div class="left">	
       <div class="myBox box01">
           <h2>Backup Services</h2>
-          <p>Copy here</p>
+          <p>Backing up your Gmail, social media and RSS Feed activity is easy.<br/>
+           Just click each of
+          the icons to the right and enter the required information.
+          <br/>
+            <br/>
+          <br/>
+          <strong>Important</strong> - If you change your authentication settings on any 
+          of the sites listed, make sure that you update the credentials here too, or we will not 
+          be able to continute backing up your data.
+          </p>
       </div>
     </div>
   
   	<div class="content-box home">
   		<%= yield %>
+  		<%= render :partial => 'account_settings/security_blurb', :locals => {:closed => true} %>
   	</div>
   </div>
 
