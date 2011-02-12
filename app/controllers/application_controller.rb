@@ -405,7 +405,12 @@ class ApplicationController < ActionController::Base
     Rails.logger.debug "Dyamic layout = #{@layout}"
     # Layouts further divided by site subdomain: www vs vault
     if current_subdomain == 'vault'
-      @layout = 'vault/public/' + @layout
+      # Then public vs logged in...ugh
+      if current_user
+        @layout = 'vault/private/' + @layout
+      else
+        @layout = 'vault/public/' + @layout
+      end
     end
     @layout
   end

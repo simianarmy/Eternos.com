@@ -193,7 +193,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   
   def load_object
     @obj = @account = current_account
-    # Force login if account cannot be found
+    # Force login if account cannot be found or if account has already paid..phew!
     redirect_to vlogin_path unless @obj
   end
 

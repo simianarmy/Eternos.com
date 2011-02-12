@@ -44,6 +44,7 @@ class Vault::UserSessionsController < ApplicationController
     end
     
     if @user_session.save
+      session[:account_id] = nil # Clear from signup wizard
       # 1st time logged in - send to account setup with welcome message
       if @user_session.user && (@user_session.user.login_count <= 1)
         Rails.logger.debug "User logged in, redirecting to account setup"
