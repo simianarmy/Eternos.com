@@ -115,7 +115,7 @@ class ActivityStreamItem < ActiveRecord::Base
   
   # Helpers to handle dual comments storage structure (comment_thread col. & comments has_many assoc.)
   def has_comments?
-    comments.any? || (comment_thread['count'].to_i > 0)
+    comments.any? || (comment_thread && (comment_thread['count'].to_i > 0))
   end
   
   def get_comments
