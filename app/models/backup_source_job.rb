@@ -1,10 +1,9 @@
 # $Id$
 
 class BackupSourceJob < ActiveRecord::Base
-  #establish_connection "backup_#{RAILS_ENV}"
-  
   belongs_to :backup_source
-  belongs_to :backup_job
+  # DEPRECATED
+  #belongs_to :backup_job
   
   validates_presence_of :backup_source_id
   validates_presence_of :backup_job_id

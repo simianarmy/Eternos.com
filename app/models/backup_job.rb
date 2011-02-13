@@ -2,9 +2,12 @@
 
 # Table for backup process info
 
+# DEPRECATED!
+# TODO: REMOVE DATA & CODE 
+
 class BackupJob < ActiveRecord::Base
   belongs_to :member, :foreign_key => 'user_id'
-  has_many :backup_source_jobs
+  #has_many :backup_source_jobs
   
   serialize :error_messages
   xss_terminate :except => [:error_messages]
