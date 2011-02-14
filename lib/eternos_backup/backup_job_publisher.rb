@@ -54,6 +54,12 @@ module EternosBackup
         end
       end
 
+      # run without mq wrapper
+      def run_inside_mq(member, sources)
+        member.backup_in_progress! 
+        publish_sources member, *sources
+      end
+      
       # Adds backup job request to backup queue for one or more backup sources
       def add_source(*backup_sources)
         options = backup_sources.extract_options!
