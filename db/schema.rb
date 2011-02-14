@@ -241,7 +241,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   add_index "backup_source_days", ["backup_day"], :name => "backup_dates", :unique => true
 
   create_table "backup_source_jobs", :force => true do |t|
-    t.integer  "backup_job_id",                     :null => false
+    t.string  "backup_job_id",                     :null => false, :limit => 36
     t.integer  "size"
     t.integer  "days"
     t.datetime "created_at"
