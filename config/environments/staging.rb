@@ -15,12 +15,11 @@ config.whiny_nils = true
 config.action_controller.consider_all_requests_local = false
 config.action_controller.perform_caching             = true
 
-# Use a different cache store in production
-# config.cache_store = :mem_cache_store
+config.action_controller.session_store = :mem_cache_store
 
 ASSET_HOST              = "staging.eternos.com"
 
-#config.log_level = :debug
+config.log_level = :debug
 
 #Disable delivery errors, bad email addresses will be ignored
 config.action_mailer.raise_delivery_errors = true

@@ -115,11 +115,11 @@ module FacebookBackup
     # Returns login url + required permissions code
     def login_url_with_perms(options={})
       # If oauth-style authentication
-      if self.access_token
-        "https://www.facebook.com/dialog/oauth?client_id=#{app_id}&redirect_uri=#{CGI::escape(options[:next])}&scope=#{FacebookBackup.all_permissions.join(',')}"
-      else # old-school authentication
-        "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookBackup.all_permissions.join(',')}#{add_next_parameters(options).join}"
-      end
+      #if self.access_token
+      #  "https://www.facebook.com/dialog/oauth?client_id=#{app_id}&redirect_uri=#{CGI::escape(options[:next])}&scope=#{FacebookBackup.all_permissions.join(',')}"
+      #else # old-school authentication
+      "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookBackup.all_permissions.join(',')}#{add_next_parameters(options).join}"
+      #end
     end
     
     # Checks if associated user can query 'friends' list.  If not, then session 

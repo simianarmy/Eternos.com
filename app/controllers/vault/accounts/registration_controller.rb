@@ -13,6 +13,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
   before_filter :load_object, :only => [:billing, :choose_plan, :plan, :plans, :thanks]
   before_filter :check_logged_in, :only => [:new, :create]
   
+  ssl_required :all
   #ssl_required :billing, :cancel, :new, :create, :plans
   #ssl_allowed :thanks, :canceled, :paypal
 
