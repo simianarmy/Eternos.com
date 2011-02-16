@@ -74,6 +74,7 @@ module FacebookDesktopApp
   class << self
     def load_config(path=nil)
       path = config_path if path.nil? || path.blank?
+
       raise "Unable to load #{path}" unless File.exist? path
       Facebooker.load_configuration(path)
     end

@@ -272,8 +272,20 @@ class ApplicationController < ActionController::Base
     Facebooker.load_configuration(File.join(RAILS_ROOT, 'config', 'facebooker.yml'))
   end
   
+  # Creates facebook session from custom backup app.
   def load_facebook_desktop
-    Facebooker::Session.current = FacebookDesktopApp::Session.create
+    Facebooker::Session.current = FacebookBackup::Session.create(facebook_app_config_path)
+  end
+  
+  # Returns app-specific facebook config (yml) path
+  # App used is based on app subdomain (defaults to 'www' app)
+  def facebook_app_config_path
+    case current_subdomain
+    when 'vault'
+      FacebookBackup::Vault.config_path
+    else
+      FacebookBackup.config_path
+    end
   end
   
   def load_facebook_session

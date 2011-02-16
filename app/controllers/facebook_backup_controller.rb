@@ -157,7 +157,7 @@ class FacebookBackupController < ApplicationController
   def has_permissions?
     begin
       login_facebook_account
-      @facebook_session.user.has_permissions? FacebookDesktopApp.backup_permissions
+      @facebook_session.user.has_permissions? FacebookBackup.backup_permissions
     rescue
       false
     end
