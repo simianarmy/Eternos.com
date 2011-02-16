@@ -28,6 +28,7 @@ class Vault::DashboardController < ApplicationController
         UserSearch.new(current_user).execute(@search_terms, search_attributes).compact
       end
     end
+    @results.reject!{ |r| r.class == BackupEmail }
     @results.sort! {|a,b| b.start_date <=> a.start_date }
     
     # View hacks
