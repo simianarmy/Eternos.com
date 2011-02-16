@@ -23,7 +23,7 @@ class Vault::UserSessionsController < ApplicationController
     if request.method == :get
       redirect_to login_path
     else
-      redirect_to member_home_path
+      redirect_to vault_dashboard_path
     end
   end
 
@@ -52,8 +52,7 @@ class Vault::UserSessionsController < ApplicationController
         redirect_to account_setup_url
       else # otherwise redirect back to last url, or member home
         flash[:notice] = "Welcome back, #{@user_session.user.name}"
-        redirect_back member_home_url
-        #redirect_to member_home_path
+        redirect_to vault_dashboard_path
       end
     else
       Rails.logger.error "Login failed! #{params.inspect}"

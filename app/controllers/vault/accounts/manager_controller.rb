@@ -12,6 +12,7 @@ class Vault::Accounts::ManagerController < ApplicationController
   before_filter :load_object, :only => [:show, :edit, :billing, :plan, :plans, :cancel, :update, :change_password]
   before_filter :check_logged_in, :only => [:canceled]
   
+  ssl_required :all
   #ssl_required :billing, :cancel, :new, :create, :plans
   #ssl_allowed :thanks, :canceled, :paypal
 
