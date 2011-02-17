@@ -45,6 +45,7 @@ fieldset { margin: 0; padding: 0; border: none;}
 .footer, .footer A { color: #507492; text-decoration: none}
 .footer UL LI LI { margin-bottom: 4px;}
 .footer P { margin: 0; padding: 0;}
+.footer fieldset { margin: 0 auto; padding-bottom: 20px; width: 988px;}
 
 .sub-header { width: 988px; margin:0 auto 20px auto;}
 .sub-header H2 { margin: 35px 0 25px 0; padding: 0; font-size: 26px; color: #507492; float: left; clear: right;}
@@ -60,7 +61,7 @@ fieldset { margin: 0; padding: 0; border: none;}
 
 .myBox { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 
-.content { width: 988px; margin: 0 auto}
+.content { width: 988px; margin: 0 auto;}
 .left { margin:0 0 25px 0; float: left; width: 315px}
 
 .h3link { background: #F1F6FB; border: 1px solid #E4E4E4; margin: 0 0 25px 0; padding: 15px 0; text-align: center; text-transform: uppercase; font-size: 22px;}
@@ -93,7 +94,7 @@ fieldset { margin: 0; padding: 0; border: none;}
 .spacer02 { margin: 0; padding: 0; height: 108px;}
 .spacer03 { margin: 0; padding: 0; height: 20px;}
 
-.protect { border-top: 1px solid #D6D6D6; clear: both; float: none; padding: 35px 0 10px 85px; font-size: 13px; background: url(/images/vault/bg-protect.gif) no-repeat top left;}
+.protect { min-height: 50px; border-top: 1px solid #D6D6D6; clear: both; float: none; padding: 35px 0 10px 85px; font-size: 13px; background: url(/images/vault/bg-protect.gif) no-repeat top left;}
 
 .content-box H1 , .left H1, .left H2 { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
 .content-box h1 EM { float: right; font-style: normal; font-size: 12px; font-weight: normal; color: #5B5B5B; padding-top: 6px;}
@@ -169,7 +170,7 @@ P { line-height: 20px;}
 .login2-mid STRONG { color: #02419E; font-size: 14px;}
 .login2-mid IMG { vertical-align: middle; margin-right: 20px;}
 .login2-mid FORM P { padding: 14px 0;}
-.login2-mid .active2 { background: url(/images/activated2.gif) no-repeat 0px bottom; }
+.login2-mid .active2 { background: ur/images/vault/activated2.gif) no-repeat 0px bottom; }
 
 /* Login page */
 .login {
@@ -276,3 +277,7 @@ P { line-height: 20px;}
 	border: none; 
 	cursor: pointer;
 }
+
+.about-why { padding-bottom: 100px;}
+.h1variant { margin: 0 0 20px 0; padding: 0 0 12px 0; text-transform: uppercase; font-size: 18px; color: #037BBE; border-bottom: 1px solid #D6D6D6;}
+.sitemap H2 { font-size: 14px; text-transform: uppercase}

@@ -30,7 +30,7 @@
                 <li>Access to Beta Services</li>
                 <li>Priority Support</li>
             </ul>        
-            <p class="myBox account-type-price"><strong>$9.95/month</strong></p>
+            <p class="myBox account-type-price"><strong>$<%= plan.amount %>/month</strong></p>
             <p>
               <a href="<%= url_for(:action => 'choose_plan', :plan => plan.name) %>" id="yellow-button2">Get Premium Account</a>            	
             </p>
