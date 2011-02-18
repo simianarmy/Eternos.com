@@ -107,6 +107,8 @@ gem 'thinking-sphinx'
 gem 'twitter'
 gem 'uuidtools'
 gem 'tzinfo'
+gem  'linkedin2'
+gem 'cobravsmongoose'
 
 
 

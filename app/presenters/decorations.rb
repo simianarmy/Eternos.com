@@ -32,7 +32,11 @@ module BackupSourceActivation
       @current_gmail = @email_accounts.first
       @gmail_confirmed = @email_accounts && @email_accounts.any? {|t| t.confirmed?}
       
-      @any_activated = @facebook_confirmed || @twitter_confirmed || @picasa_confirmed || @rss_confirmed || @gmail_confirmed
+      @linkedin_accounts = backup_sources.linkedin
+      @current_linkedin = @linkedin_accounts.first
+      @linkedin_confirmed = @linkedin_accounts && @linkedin_accounts.any? {|t| t.confirmed?}
+      
+      @any_activated = @facebook_confirmed || @twitter_confirmed || @picasa_confirmed || @rss_confirmed || @gmail_confirmed || @linkedin_confirmed
     end
   end
 end

@@ -8,6 +8,7 @@
 <br/>
 <p>Eternos currently provides backup services for:</p>
 
+<div id="linkedin_notice" class="flash_notice"></div>
 <div id="twitter_notice" class="flash_notice"></div>
 <div id="facebook_notice" class="flash_notice"></div>
 <div id="rss_notice" class="flash_notice"></div>
@@ -34,6 +35,25 @@
           <%= render :partial => 'backup_sources/facebook_list', :locals => {:settings => settings, :list => settings.facebook_accounts } %>
         </div>
     </div>
+  </div>
+
+  <p class="account-setup-accordion-icon">
+    <%= image_tag '2nd-linkedin.gif', :id => "linkedin-button", :class => settings.linkedin_confirmed ? 'active2' : 'linkedin-btn'%>
+    <strong>Linked In:</strong> Back up all your Linked In.
+  </p>
+  <!-- LinkedIn Pane -->
+  <div class="pane network-login-box">
+      <div id="linkedin-box">
+        <div id="linkedin_blurb">
+          Simply click the "Sign in with Linked In" button below to begin saving your Linked In. 
+          <br/>
+        </div>
+        <%= link_to image_tag('linkedin_button.gif'), add_linkedin_backup_sources_path%>
+		
+        <div id="result-linkedin-accounts">
+          <%= render :partial => 'backup_sources/linkedin_list', :locals => { :list => settings.linkedin_accounts } %>
+        </div>
+      </div>
   </div>
   
   <p class="account-setup-accordion-icon">

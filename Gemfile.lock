@@ -54,6 +54,7 @@ GEM
       ffi (~> 0.6.3)
     chronic (0.2.3)
       hoe (>= 1.2.1)
+    cobravsmongoose (0.0.2)
     columnize (0.3.1)
     crack (0.1.8)
     cucumber (0.8.5)
@@ -106,6 +107,7 @@ GEM
       highline (~> 1.5.0)
       trollop (~> 1.13)
     linecache (0.43)
+    linkedin2 (1.0.1)
     lockfile (1.4.3)
     markevans-block_helpers (0.2.11)
       activesupport (>= 2.0)
@@ -238,6 +240,7 @@ DEPENDENCIES
   capistrano-ext (= 1.2.1)
   capybara
   celerity
+  cobravsmongoose
   crack
   cucumber
   cucumber-rails
@@ -261,6 +264,7 @@ DEPENDENCIES
   jnunemaker-columbus
   json_pure (= 1.4.6)
   larch
+  linkedin2
   lockfile
   markevans-block_helpers
   mash
