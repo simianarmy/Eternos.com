@@ -16,7 +16,10 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "full_domain"
+    t.string   "company_name"
+    t.string   "phone_number"
     t.string   "state"
+    t.integer  "site_id", :null => false, :default => 0
     t.datetime "deleted_at"
   end
 
@@ -238,7 +241,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   add_index "backup_source_days", ["backup_day"], :name => "backup_dates", :unique => true
 
   create_table "backup_source_jobs", :force => true do |t|
-    t.integer  "backup_job_id",                     :null => false
+    t.string  "backup_job_id",                     :null => false, :limit => 36
     t.integer  "size"
     t.integer  "days"
     t.datetime "created_at"
@@ -491,6 +494,36 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.integer "facebook_account_id", :null => false
   end
   add_index "facebook_page_admins", ["facebook_account_id"]
+  
+  create_table "facebook_threads", :force => true do |t|
+    t.integer :backup_source_id, :null => false
+    t.integer :message_thread_id, :limit => 8, :null => false
+    t.integer :folder_id, :null => false
+    t.integer :parent_thread_id
+    t.string :parent_message_id
+    t.integer :fb_object_id, :limit => 8, :null => false, :default => 0
+    t.string :subject 
+    t.text :recipients
+    t.boolean :unread, :null => false, :default => true
+    t.integer :message_count, :null => false, :default => 0
+    t.datetime :last_message_at
+    t.timestamps
+  end
+  add_index :facebook_threads, [:message_thread_id]
+  add_index :facebook_threads, [:backup_source_id, :folder_id, :message_thread_id], :unique => true, 
+    :name => 'index_facebook_threads_on_backup_source_folder_message_thread'
+  
+  create_table "facebook_messages", :force => true do |t|
+    t.integer :facebook_thread_id, :null => false
+    t.string :message_id, :null => false
+    t.integer :author_id, :limit => 8, :null => false
+    t.text :body
+    t.text :attachment
+    t.integer :backup_source_id
+    t.timestamps
+  end
+  add_index :facebook_messages, [:message_id]
+  add_index :facebook_messages, [:facebook_thread_id]
   
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
@@ -921,7 +954,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.decimal  "amount",          :precision => 10, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_limit"
+    t.integer  "user_limit",  :null => false, :default => 0
+    t.integer  "disk_limit",  :null => false, :default => 0
+    t.integer  "backup_site_limit", :null => false, :default => 0
     t.integer  "renewal_period",                                 :default => 1
     t.decimal  "setup_amount",    :precision => 10, :scale => 2
     t.integer  "trial_period",                                   :default => 1
@@ -938,7 +973,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "state",                                                    :default => "trial"
     t.integer  "subscription_plan_id"
     t.integer  "account_id"
-    t.integer  "user_limit"
+    t.integer  "user_limit",  :null => false, :default => 0
+    t.integer  "disk_limit",  :null => false, :default => 0
+    t.integer  "backup_site_limit", :null => false, :default => 0
     t.integer  "renewal_period",                                           :default => 1
     t.string   "billing_id"
     t.integer  "subscription_affiliate_id"
@@ -969,6 +1006,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string "name", :null => false
   end
 
+  
   create_table "time_locks", :force => true do |t|
     t.integer "lockable_id"
     t.string  "lockable_type"
@@ -1043,6 +1081,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.integer  "invitation_limit",                        :default => 0,         :null => false
     t.string   "type"
     t.integer  "account_id"
+    t.integer  "site_id",                    :default => 0, :null => false
     t.string   "last_name"
     t.string   "first_name"
     t.string   "password_salt"

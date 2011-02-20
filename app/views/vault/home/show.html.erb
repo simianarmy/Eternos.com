@@ -1,0 +1,63 @@
+<% cache "homepage" do %>
+<div class="fieldset">
+  <div class="sub-header">
+	  <p class="flash"><%= image_tag "vault/flash.jpg" %></p>
+	
+	  <h2>
+  Complete archiving of your Gmail and social media activity. Always secure. Readily
+  available. No worries.
+    </h2>
+    <div style="margin-left: 200px">
+      <p>
+        <strong>The more your company relies on Gmail and social media sites, the more complicated
+your archiving challenge becomes. But now there's a simple, reliable solution: Eternos
+Vault.</strong>
+      </p>
+
+      <p>
+      <strong>
+      Eternos Vault is an SAAS (software as a service) application that automatically archives
+      your activity on Gmail, Facebook, Twitter and other social media sites, as well as your
+      RSS feeds and various other web-based venues.
+      </strong>
+      </p>
+    </div>
+    <div style="margin-left: 392px">
+      <p>
+      <strong>It's simple and always secure. Eternos Vault. It's all right here.</strong>
+      </p>
+    </div>
+  </div>
+</div>
+<div class="clearboth"></div>
+<div class="fieldset">
+<div class="content">
+	<h3 class="myBox h3link"><a href="<% new_account_registration_path %>">30 day free trial - sign up in 60 seconds!</a></h3>
+	
+    <div class="myBox box01">
+		<h2>Quick Simple Backup</h2>
+		<ul>
+		  <li><img src="/images/vault/icon-gmail.gif" /> <a href="#">Gmail</a> <small>(including Gmail for business)</small></li>		
+			<li><img src="/images/vault/icon-facebook.gif" /> <a href="#">Facebook</a></li>
+			<li><img src="/images/vault/icon-twitter.gif" /> <a href="#">Twitter</a></li>
+			<li><img src="/images/vault/icon-rss.gif" /> <a href="#">RSS Feeds</a> <small>(any blog/feed)</small></li>
+		</ul>
+		<p class="spacer01">&nbsp;</p>
+		<p><a href="<%= services_vault_home_path %>">View All Services In Details</a></p>
+    </div>
+    <div class="myBox box01 mid">	
+		<h2>About vault.eternos</h2>
+<p>
+We maintain your archives in a single location, without requiring you to install new
+software or take up internal server space. <br/>You are protected against attacks on your
+accounts. You can easily achieve compliance with <strong>FINRA, SEC, IIROC, and FSA</strong>
+archiving requirements.</p>
+
+	</div>
+  <%= render :partial => 'signup_today_box' %>
+	<p class="protect">
+    SECURITY / STORAGE COPY 
+	</p>		
+</div>
+</div>
+<% end %>

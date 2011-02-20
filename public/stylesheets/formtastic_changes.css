@@ -1,0 +1,39 @@
+/* -------------------------------------------------------------------------------------------------
+
+Load this stylesheet after formtastic.css in your layouts to override the CSS to suit your needs.
+This will allow you to update formtastic.css with new releases without clobbering your own changes.
+
+For example, to make the inline hint paragraphs a little darker in color than the standard #666:
+
+form.formtastic fieldset > ol > li p.inline-hints { color:#333; }
+
+HINT:
+The following style may be *conditionally* included for improved support on older versions of IE(<8)
+form.formtastic fieldset ol li fieldset legend { margin-left: -6px;}
+
+--------------------------------------------------------------------------------------------------*/
+form.formtastic > ul > li p.inline-errors { color:#cc0000; margin:0.5em 0 0 25%; line-height: 10px;}
+
+form.formtastic li.half,
+form.formtastic li.float {
+
+}
+form.formtastic li.first.half,
+form.formtastic li.first.float {
+  padding-left: 0;
+}
+form.formtastic li.half {
+  width: 190px; /* half of width above */
+}
+form.formtastic li.half input[type=text],
+form.formtastic li.half input[type=password],
+form.formtastic li.half textarea {
+  width: 180px; /* width above - (5px left-padding + 5px right-padding) */
+}
+form.formtastic .security-code input {
+	width: 10em;
+}
+form.formtastic li.security-code {
+	background: url('/images/cvv.gif') no-repeat 320px 15px;
+}
+form.formtastic fieldset li p.inline-hints { color:#666; margin:0.5em 0 0 25%; }

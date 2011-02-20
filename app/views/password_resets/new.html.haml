@@ -1,4 +1,4 @@
-.content.what
+.content.what.forgot-password
   %fieldset
     .what01
       %h1 Forgot Password
@@ -6,7 +6,9 @@
       = show_flash_messages
       %p
         If you've forgotten your password, you can submit your email address
-        here to request a password reset.  A confirmation email will be sent to
+        here to request a password reset.  
+      %p 
+        A confirmation email will be sent to
         you which will contain a link you can use to reset your password.
       %br
       - form_tag password_resets_path do

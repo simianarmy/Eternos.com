@@ -1,0 +1,19 @@
+.content-box.about
+  .what01 Site Map
+  #links
+    %p Public
+    %li= link_to 'Home', '/'
+    %li= link_to 'About', about_path
+    %li= link_to 'Terms of service', '/about/terms'
+    %li= link_to 'Privacy policy', '/about/privacy'
+    %li= link_to 'Contact us', '/about/contact'
+    %br
+    %p Private
+    %li= link_to 'Member Home', vault_dashboard_path
+    %li= link_to 'Account setup', account_setup_path
+    %li= link_to 'Account management', account_manager_path
+    %li= link_to 'Plans & Billing', plans_account_manager_path
+  %p
+    %br
+.clearboth
+    

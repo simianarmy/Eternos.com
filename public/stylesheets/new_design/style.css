@@ -9,6 +9,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .header FORM { margin: 23px 10px 0 0; padding: 0; float: right; font-size: 12px; color: #02419E;}
 .header FORM DIV { width: auto; margin: 0;}
 .header FORM A { color: #02419E;}
+.header FORM.hidden { display: block; visibility:hidden; }
 .header INPUT[type=text] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777;}
 .header INPUT[type=submit] { background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer;}
 .header UL { margin: 15px -10px 0 0px; padding: 0; float: right; width: 710px; white-space: nowrap;}
@@ -32,7 +33,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .footer .p3 { width: 90px;}
 
 /* content */
-.content { width: 988px; margin: 0 auto; padding: 25px 0;}
+.content { width: 988px; margin: 0 auto; padding: 25px 0; margin-left: 10px;}
 
 /* home */
 .home, .what { color: #666666;}

@@ -1,0 +1,116 @@
+<div class='flash_notice' id='notice'></div>
+<%= show_flash_messages :fade => 30 %>
+
+<h1>Vault Backup Summary</h1>
+<div class="bottom_border_line">
+  <table class="summary-table">
+    <tbody>
+    <tr>
+      <th></th>
+      <th class="num"></th>
+    </tr>
+    <tr>
+      <td class="name">Sites backed up</td>
+      <td class="num"><%= @dashboard.backup_sites.count %></td>
+    </tr>
+    <tr>
+      <td class="name">Items saved</td>
+      <td class="num"><%= number_with_delimiter(@backup_data[:total]) %></td>
+    </tr>
+    <tr>
+      <td class="name">Last backed up on</td>
+      <td class="date"><%= formatted_date_or_na(@backup_data[:last_backup_finished_at], "%c") %></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<br/>
+<h1>Backup Status</h1>
+<% if @dashboard.backup_sites.any? %>
+<div class="backup-sites-table">
+  <table border="0" cellpadding="5" cellspacing="0" width="100%"> 
+    <thead>
+      <tr> 
+      <th align="center" class="thead" width="30%"><strong>Backup Site</strong></td> 
+      <th align="center" class="thead"><strong>Added</strong></td> 
+      <th align="center" class="thead"><strong>Last Backup</strong></td> 
+      <th align="center" class="thead"><strong>Status</strong></td> 
+      <th align="center" class="thead"><strong>Options</strong></td> 
+      </tr>
+    </thead>
+    <tbody>
+  <% @dashboard.backup_sites.each do |bs| %>
+    <tr>
+      <% content_tag(:td, :align => 'left') do %>
+        <div style="float:left; padding-right:3px;">
+          <%= backup_icon(bs[:site], '16x16', true) %>
+        </div>
+        <div>
+          <%= bs[:description] %>
+        </div>
+      <% end %>
+      <%= content_tag(:td, formatted_date_or_na(bs[:created_at], "%x"), :align => 'center') %>
+      <%= content_tag(:td, formatted_date_or_na(bs[:last_backup_at],"%x"), :align => 'center') %>
+      <%= content_tag(:td, bs[:status], :align => 'center') %>
+      <%= content_tag(:td, (bs[:status] == 'OK') ? '' : 
+        link_to('Settings', account_setup_path(:step => 0, :site => bs[:site])) ) %>
+    </tr>
+  <% end %>
+    </tbody>
+  </table>
+</div>
+<% end %>
+<p>
+<%= link_to('Add More Accounts', account_setup_path(:step => 0)) %>
+</p>
+<p>&nbsp;</p>
+<div id="back-to-events-button" class="back-events" style="display:none;"><a href="javascript:void(0);" onclick="onShowEvents();">Show Events</a></div>
+
+<div id="monthly-archive">    
+  <h1>Latest archived items 
+  <em>Filters | 
+  <%= link_to_function 'Latest', "searchArchive();" %> 
+  <%= link_to_function 'All', "searchFilter('all')" %>
+  <%= link_to_function 'Facebook', "searchFilter('facebook')" %>
+  <%= link_to_function 'Twitter', "searchFilter('twitter')" %>
+  <%= link_to_function 'RSS', "searchFilter('feed')" %>
+  <!--
+  <%= link_to_function 'Email', "searchFilter('em')" %>
+  -->
+  </em>
+  </h1>
+  <div id="search-results">
+  </div>
+</div>
+<%= javascript_tag "
+  // Search the archive for latest or by term
+  function searchArchive(terms) {
+    var t = terms || '';
+    new Ajax.Updater('search-results', 
+      '#{search_vault_dashboard_path}', {
+        asynchronous:true, 
+        evalScripts:true, 
+        method:'get', 
+        onComplete:function(request){spinner.unload(); onSearchComplete();}, 
+        onLoading:function(request){spinner.load('search-results')}, 
+        parameters:'terms=' + t
+    });
+  }
+  
+  // Filters out search results by source
+  function searchFilter(source) {
+    $$('.search_result').each(function(res) {
+      if ((source === 'all' || (res.classNames().grep(source).size() > 0))) {
+        res.show();
+      } else {
+        res.hide();
+      }
+    });
+  }
+  
+  document.observe('dom:loaded', function() {
+    searchArchive();
+  });
+" %>
+
+

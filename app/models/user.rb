@@ -9,15 +9,17 @@ class User < ActiveRecord::Base
   has_one :profile, :dependent => :destroy
   has_many :comments
   
+  accepts_nested_attributes_for :profile
+  
   # Authentication: AuthLogic
   acts_as_authentic do |c|
     c.validate_login_field = false
     c.login_field = :login
+    c.validations_scope = :site_id # Scope all validations to the site
     c.logged_in_timeout = SESSION_DURATION_SECONDS
     c.validates_length_of_password_field_options :minimum => 6, :if => :require_password?
     c.validates_length_of_password_field_options = c.validates_length_of_password_field_options.merge(
       :message => 'Password is too short')
-    
     # All this just to avoid email length errors - redundant if with the email format validation
     c.merge_validates_length_of_email_field_options :allow_nil => true, :within => 0..255
   end
@@ -50,7 +52,6 @@ class User < ActiveRecord::Base
     u.validates_uniqueness_of   :invitation_id, :if => :invitation_id
   end
   before_create :set_invitation_limit, :make_activation_code
-  after_create :register_user_to_fb
   after_create :initialize_address_book
   
   acts_as_state_machine :initial => :pending
@@ -132,6 +133,7 @@ class User < ActiveRecord::Base
     end
   end
 
+  # DEPRECATED!  NOT SUPPORTED BY FACEBOOK ANY MORE!
   # The Facebook registers user method is going to send the users email hash and our account id to Facebook
   # We need this so Facebook can find friends on our local application even if they have not connect through connect
   # We hen use the email hash in the database to later identify a user from Facebook with a local user

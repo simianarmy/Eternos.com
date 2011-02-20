@@ -35,7 +35,7 @@
         <%= td_thead_tag(116, 'Feed Items', true) %>
         <%= td_thead_tag(116, 'Facebook Items', true) %>
         <%= td_thead_tag(116, 'Twitter Items', true) %>
-        <%= td_thead_tag(116, 'Media Comments', true) %>
+        <%= td_thead_tag(116, 'Comments', true) %>
         <%= td_thead_tag(105, 'Total', true) %>
     <% end %>
     <% content_tag(:tr) do %>
@@ -47,7 +47,7 @@
         <%= content_tag(:td, number_with_delimiter(@backup_data[:rss]), :align => 'center') %>
         <%= content_tag(:td, number_with_delimiter(@backup_data[:fb]), :align => 'center') %>
         <%= content_tag(:td, number_with_delimiter(@backup_data[:tweets]), :align => 'center') %>
-        <%= content_tag(:td, number_with_delimiter(@backup_data[:media_comments]), :align => 'center') %>
+        <%= content_tag(:td, number_with_delimiter(@backup_data[:total_comments]), :align => 'center') %>
         <%= content_tag(:td, number_with_delimiter(@backup_data[:total]), :align => 'center') %>
     <% end %>
 <% end %>

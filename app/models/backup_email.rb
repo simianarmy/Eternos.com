@@ -37,7 +37,6 @@ class BackupEmail < ActiveRecord::Base
   #     only :id, :sender
   #     methods :start_date, :subject
   #   end
-  acts_as_archivable :on => :received_at
   acts_as_saved_to_cloud
   
   before_destroy :delete_s3_contents
@@ -64,7 +63,7 @@ class BackupEmail < ActiveRecord::Base
     indexes tags(:name), :as => :tags
     
     # attributes
-    has backup_source_id, received_at
+    has backup_source_id, received_at, created_at
     
     where "deleted_at IS NULL"
   end

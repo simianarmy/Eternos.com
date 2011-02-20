@@ -1,4 +1,4 @@
-class SubscriptionAdmin::AccountsController < ApplicationController
+class SubscriptionAdmin::AccountsController < AdminsController
   include ModelControllerMethods
   include AdminControllerMethods
   

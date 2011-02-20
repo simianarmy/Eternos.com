@@ -8,5 +8,7 @@ class MemberHomeController < ApplicationController
   def index
     @name = current_user.name
   end
-    
+  
+  protected
+  
 end

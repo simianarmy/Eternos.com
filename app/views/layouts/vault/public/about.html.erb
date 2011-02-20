@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Home</title>
+<%= stylesheet_link_tag "vault/pub_about", "formtastic_changes", :cache => "pub_about" %>
+<%= yield(:head) %>
+<!--[if lte IE 7]>
+	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+
+</head>
+<body>
+<div class="header">
+    <%= render :partial => 'shared/home_login_form' %>
+    <%= link_to image_tag('vault/logo.png'), vault_home_path %>
+	  <ul>
+			<li class="<%= public_tab_class_active?('index') %>"><%= link_to 'Overview', vault_home_path %><span></span></li>
+  		<li class="<%= public_tab_class_active?('why') %>"><%= link_to 'Why Vault', why_vault_home_path %><span></span></li>
+  		<li class="<%= public_tab_class_active?('services') %>"><%= link_to 'Services', services_vault_home_path %><span></span></li>
+		<li class="active"><%= link_to 'Getting Started', new_account_registration_path %><span></span></li>
+	  </ul>
+</div>
+<% cache(:action => controller.action_name) do %>
+<div class="content"> 
+<!--
+  <div class="myBox box01 signupbox01"> 
+    <h2>Left box</h2>
+    Lorem Ipsum
+  </div>
+  -->
+  <%= yield %>
+</div>
+<% end %>
+<%= render :partial => 'shared/vault/footer' %>
+</body>
+</html>

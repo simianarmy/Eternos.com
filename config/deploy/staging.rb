@@ -10,7 +10,7 @@ role :web, "184.106.217.211"
 role :db, "184.106.217.211", :primary => true
 
 set :bundle_cmd, "/usr/local/bin/bundle"
-set :branch, "dev"
+set :branch, ENV['branch'] || :dev
 
 namespace :deploy do
   task :restart do
@@ -22,7 +22,7 @@ end
 #after "deploy:symlink_shared", "deploy:minify_js"
 #after "deploy:symlink", "deploy:publish_robots_file"
 #after "deploy:symlink", "deploy:google_analytics"
-#after "deploy:symlink", "deploy:cleanup" # Messes with backup daemons
+after "deploy:restart", "deploy:cleanup" # Messes with backup daemons
 #after "deploy:symlink", "deploy:update_crontab"
 
 after "deploy:symlink", "deploy:symlink_shared"

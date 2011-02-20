@@ -32,7 +32,7 @@ class Family < ActiveRecord::Base
     indexes person(:name), :as => :person_name
     
     # attributes
-    has profile_id, birthdate, died_at
+    has profile_id, birthdate, died_at, created_at
   end
 
 end   

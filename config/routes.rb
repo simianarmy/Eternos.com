@@ -2,7 +2,6 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :backup_error_codes
-
   
   # Singleton resources
   map.resource :account_setup, :controller => 'account_setup', :member => {
@@ -185,15 +184,26 @@ ActionController::Routing::Routes.draw do |map|
   end
   # End SaaS Kit routes
   
+  # vault subdomain routes
+  map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
+    sub.resource :vault_home, :controller => 'vault/home', :collection => { :why => :get, :services => :get, :sitemap => :get }
+    sub.resource :account_registration, :controller => 'vault/accounts/registration', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any}
+    sub.resource :account_manager, :controller => 'vault/accounts/manager', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
+    sub.resource :vault_dashboard, :controller => 'vault/dashboard', :member => { :search => :get }
+    sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'
+    sub.root :controller => 'vault/home', :action => :show
+    sub.vlogin 'vlogin', :controller => 'vault/user_sessions', :action => 'new', :secure => true
+    sub.vlogout 'vlogout', :controller => 'vault/user_sessions', :action => 'destroy'
+  end
+  
   # Static partials for WordPress blog
   map.header_partial 'static/blog_header', :controller => 'home', :action => 'blog_header_partial'
   map.footer_partial 'static/blog_footer', :controller => 'home', :action => 'blog_footer_partial'
   
+  # encoding.com routes
   map.encoding_callback 'encoding_cb', :controller => 'encodings', :action => 'callback'
   
   # Facebook routes
-    
-  # FUCKING BULLSHIT
   #map.facebook_home '', :controller => 'facebook', :action => 'index', :conditions=>{:canvas=>true}  
   map.facebook_home '/', :controller => 'home', :action => 'index'
   map.home ':page', :controller => 'home', :action => 'show'

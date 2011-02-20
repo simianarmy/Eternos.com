@@ -75,6 +75,9 @@ namespace :db do
     BackupSite.create(:name => 'flickr')
     BackupSite.create(:name => 'blog')
     BackupSite.create(:name => 'picasa')
+    
+    # Populate countries & regions tables
+    Rake::Task["db:dataset:load_fixtures"].invoke
   end
 
   desc "Fill subscription related tables"

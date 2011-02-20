@@ -7,6 +7,7 @@ require 'facebooker'
 
 module FacebookProxyObjects
   
+  # Proxy for Facebooker::Album object
   class FacebookPhotoAlbum < BackupPhotoAlbumProxy
     attr_reader :album
 
@@ -24,6 +25,7 @@ module FacebookProxyObjects
     end
   end
 
+  # Proxy for Facebooker::Photo object
   class FacebookPhoto < BackupPhotoProxy
     attr_reader :photo, :comments
     attr_accessor :tags
@@ -83,5 +85,33 @@ module FacebookProxyObjects
     def external_id
       @comment.xid
     end
+  end
+  
+  # Proxy for Facebooker::MessageThread object
+  class FacebookMessageThread
+    include BackupContentProxy
+    class InvalidMessageThreadClassError < StandardError; end
+    
+    def initialize(obj)
+      raise InvalidMessageThreadClassError unless obj.class == Facebooker::MessageThread
+      @thread = obj
+    end
+    
+    def obj
+      @thread
+    end
+    
+    def id
+      @thread.id
+    end
+    
+    def updated_at
+      Time.at(@thread.updated_time.to_i)
+    end
+    
+    def fb_object_id
+      @thread.object_id
+    end
+    
   end
 end

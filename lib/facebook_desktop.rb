@@ -19,7 +19,14 @@ module Facebooker
     populating_attr_accessor :username
   end
   class Group
-    populating_attr_accessor :icon, :pic_square, :version
+    populating_attr_accessor :icon, :pic_square, :version, :email
+  end
+  class MessageThread
+    populating_attr_accessor :folder_id, :viewer_id
+    
+    class Message::Attachment
+      populating_attr_accessor :media, :tagged_ids, :properties, :fb_object_id, :fb_object_type
+    end
   end
 end
 
@@ -67,6 +74,7 @@ module FacebookDesktopApp
   class << self
     def load_config(path=nil)
       path = config_path if path.nil? || path.blank?
+
       raise "Unable to load #{path}" unless File.exist? path
       Facebooker.load_configuration(path)
     end

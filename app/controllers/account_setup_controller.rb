@@ -8,6 +8,8 @@ class AccountSetupController < ApplicationController
   before_filter :load_completed_steps
   before_filter :load_facebook_app_session
   before_filter :load_presenter
+   
+  layout :subdomain_layout
   
   ssl_required :all
   
@@ -20,7 +22,7 @@ class AccountSetupController < ApplicationController
     if @active_step <= 1
       load_online
       @content_page = 'backup_sources'
-    elsif @active_step == 2
+    elsif @active_step == 2 && current_subdomain != 'vault'
       # Get list of facebook ids of friends that have joined after invites from this user
       @already_invited = current_user.facebook_id ? 
         Member.find_all_by_facebook_referrer(current_user.facebook_id).map(&:facebook_id).compact : []
@@ -101,7 +103,18 @@ class AccountSetupController < ApplicationController
   end
 
   protected
-
+  
+  # Determine layout for public or corporate user
+  def subdomain_layout
+    # Layouts further divided by site subdomain: www vs vault
+    if current_subdomain == 'vault'
+      @layout = 'vault/private/account_setup'
+    else
+      @layout = 'account_setup'
+    end
+    @layout
+  end
+  
   # Check for one-time access token in user account & logs in user if found
   # Used for Facebook app Canvas / App server single-sign on
   def load_fb_user_using_perishable_token
@@ -128,7 +141,12 @@ class AccountSetupController < ApplicationController
 
   def load_online
     @settings.load_facebook_user_info
-    @settings.create_fb_login_url(request)
+    # Set the facebook action url with permissions & callbacks
+    # Using url described on http://wiki.developers.facebook.com/index.php/Authorization_and_Authentication_for_Desktop_Applications#Prompting_for_Permissions
+    @settings.fb_login_url = @facebook_session.login_url_with_perms(
+        :next => authorized_facebook_backup_url(:host => request.host),
+        :next_cancel => cancel_facebook_backup_url(:host => request.host)
+        )
   end
 
   def respond_to_ajax_remove(obj)

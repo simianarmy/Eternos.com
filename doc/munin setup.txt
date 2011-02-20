@@ -1,0 +1,54 @@
+Help sources:
+http://www.railsfire.com/article/installing-munin-engineyard
+http://agiletesting.blogspot.com/2010/08/visualizing-mysql-metrics-with-munin.html
+https://github.com/kjellm/munin-mysql
+
+=== On each EY slice:
+sudo emerge munin
+
+After about 15 minutes of compiling, we're good to go. You'll want to edit the /etc/munin/munin-node.conf file and add the hostname of your main munin machine as a regex. This will (hopefully) prevent bad guys from seeing your load charts.
+ie: allow ^74\.123\.111\.100$
+
+# munin-node-configure --shell
+
+sudo ln -s /usr/libexec/munin/plugins/cpu /etc/munin/plugins/cpu
+sudo ln -s /usr/libexec/munin/plugins/df /etc/munin/plugins/df
+sudo ln -s /usr/libexec/munin/plugins/df_inode /etc/munin/plugins/df_inode
+sudo ln -s /usr/libexec/munin/plugins/entropy /etc/munin/plugins/entropy
+sudo ln -s /usr/libexec/munin/plugins/forks /etc/munin/plugins/forks
+sudo ln -s /usr/libexec/munin/plugins/fw_packets /etc/munin/plugins/fw_packets
+sudo ln -s /usr/libexec/munin/plugins/if_ /etc/munin/plugins/if_eth0
+sudo ln -s /usr/libexec/munin/plugins/if_err_ /etc/munin/plugins/if_err_eth0
+sudo ln -s /usr/libexec/munin/plugins/interrupts /etc/munin/plugins/interrupts
+sudo ln -s /usr/libexec/munin/plugins/irqstats /etc/munin/plugins/irqstats
+sudo ln -s /usr/libexec/munin/plugins/load /etc/munin/plugins/load
+sudo ln -s /usr/libexec/munin/plugins/memory /etc/munin/plugins/memory
+sudo ln -s /usr/libexec/munin/plugins/netstat /etc/munin/plugins/netstat
+sudo ln -s /usr/libexec/munin/plugins/open_files /etc/munin/plugins/open_files
+sudo ln -s /usr/libexec/munin/plugins/open_inodes /etc/munin/plugins/open_inodes
+sudo ln -s /usr/libexec/munin/plugins/proc_pri /etc/munin/plugins/proc_pri
+sudo ln -s /usr/libexec/munin/plugins/processes /etc/munin/plugins/processes
+sudo ln -s /usr/libexec/munin/plugins/swap /etc/munin/plugins/swap
+sudo ln -s /usr/libexec/munin/plugins/threads /etc/munin/plugins/threads
+sudo ln -s /usr/libexec/munin/plugins/users /etc/munin/plugins/users
+sudo ln -s /usr/libexec/munin/plugins/vmstat /etc/munin/plugins/vmstat
+sudo ln -s /usr/libexec/munin/plugins/mysql_bytes /etc/munin/plugins/mysql_bytes
+sudo ln -s /usr/libexec/munin/plugins/mysql_isam_space_ /etc/munin/plugins/mysql_isam_space_
+sudo ln -s /usr/libexec/munin/plugins/mysql_queries /etc/munin/plugins/mysql_queries
+sudo ln -s /usr/libexec/munin/plugins/mysql_slowqueries /etc/munin/plugins/mysql_slowqueries
+sudo ln -s /usr/libexec/munin/plugins/mysql_threads /etc/munin/plugins/mysql_threads
+
+=== Install munin-mysql plugins
+  Download & install from: https://github.com/kjellm/munin-mysql
+  Follow instructions!
+  Make sure perl module IPC::ShareLite installed before Cache::Cache!
+  
+  Run script: script/create_mysql_symlinks.sh from plugins dir (as sudo)
+  
+sudo /etc/init.d/munin-node start
+
+# cd /etc/runlevels/default
+# ln -s /etc/init.d/munin-node ./
+
+To add master munin host crons:
+sudo emerge --config netanalyzer/munin

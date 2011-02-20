@@ -19,4 +19,10 @@ McAfee Alert Items:
     You must reconfigure the SSLCipherSuite directive in the httpd.conf or ssl.conf file as such:
     SSLCipherSuite ALL:-ADH:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
 
+  Nginx:
+    In /etc/nginx/servers/keep.Eternos_www.ssl.conf:
+    ssl_protocols SSLv3 TLSv1;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:!MEDIUM;
+      
 BBB Online Reliability Program: http://www.bbbonline.org/reliability/requirement_small.asp
