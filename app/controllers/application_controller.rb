@@ -47,9 +47,7 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
-  filter_parameter_logging "password", "password_confirmation", "cc_number", "creditcard"
-  # prevent a violation of Facebook Terms of Service while reducing log bloat
-  filter_parameter_logging :fb_sig_friends
+  filter_parameter_logging "password", "password_confirmation", "number", "cc_number", "creditcard", "fb_sig_friends"
   
   layout :dynamic_layout
 

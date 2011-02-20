@@ -52,7 +52,6 @@ class User < ActiveRecord::Base
     u.validates_uniqueness_of   :invitation_id, :if => :invitation_id
   end
   before_create :set_invitation_limit, :make_activation_code
-  after_create :register_user_to_fb
   after_create :initialize_address_book
   
   acts_as_state_machine :initial => :pending
@@ -134,6 +133,7 @@ class User < ActiveRecord::Base
     end
   end
 
+  # DEPRECATED!  NOT SUPPORTED BY FACEBOOK ANY MORE!
   # The Facebook registers user method is going to send the users email hash and our account id to Facebook
   # We need this so Facebook can find friends on our local application even if they have not connect through connect
   # We hen use the email hash in the database to later identify a user from Facebook with a local user
