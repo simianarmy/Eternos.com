@@ -22,6 +22,9 @@ module NavigationHelpers
     when /the vault home page/
       root_path(:subdomain=>'vault')
       
+    when /the vault login page/
+      vlogin_path
+      
     when /the login page/
       login_path
     

@@ -36,3 +36,4 @@ form.formtastic .security-code input {
 form.formtastic li.security-code {
 	background: url('/images/cvv.gif') no-repeat 320px 15px;
 }
+form.formtastic fieldset li p.inline-hints { color:#666; margin:0.5em 0 0 25%; }

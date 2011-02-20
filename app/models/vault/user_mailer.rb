@@ -5,11 +5,12 @@ class Vault::UserMailer < UserMailer
   include MailHistory
   include EternosMailer::Subjects
   
-  def activation(user)
+  def activation(user, home_url)
     setup_email(user)
     @subject          += subject_from_sym :activation
     base_domain       = "http://vault.eternos.com"
     body[:login]      = user.login
+    body[:home_url]   = home_url
     add_category_header "Activation Confirmation"
   end
   

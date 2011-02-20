@@ -23,44 +23,44 @@ Object.const_set(name, Class.new(ActiveRecord::Base))
 end
 
 module SaasSpecHelper
-def valid_address(attributes = {})
-  {
-    :first_name => 'John',
-    :last_name => 'Doe',
-    :address1 => '2010 Cherry Ct.',
-    :city => 'Mobile',
-    :state => 'AL',
-    :zip => '36608',
-    :country => 'US'
-  }.merge(attributes)
-end
+  def valid_address(attributes = {})
+    {
+      :first_name => 'John',
+      :last_name => 'Doe',
+      :address1 => '2010 Cherry Ct.',
+      :city => 'Mobile',
+      :state => 'AL',
+      :zip => '36608',
+      :country => 'US'
+    }.merge(attributes)
+  end
 
-def valid_card(attributes = {})
-  { :first_name => 'Joe', 
-    :last_name => 'Doe',
-    :month => 2, 
-    :year => Time.now.year + 1, 
-    :number => '1', 
-    :type => 'bogus', 
-    :verification_value => '123' 
-  }.merge(attributes)
-end
+  def valid_card(attributes = {})
+    { :first_name => 'Joe', 
+      :last_name => 'Doe',
+      :month => 2, 
+      :year => Time.now.year + 1, 
+      :number => '1', 
+      :type => 'bogus', 
+      :verification_value => '123' 
+    }.merge(attributes)
+  end
 
-def valid_user(attributes = {})
-  { :login => 'foobar',
-    :password => 'foobarass', 
-    :password_confirmation => 'foobarass',
-    :email => "bubba@hotmail.com",
-    :first_name => "dr",
-    :last_name => "no"
-  }.merge(attributes)
-end
+  def valid_user(attributes = {})
+    { :login => 'foobar',
+      :password => 'foobarass', 
+      :password_confirmation => 'foobarass',
+      :email => "bubba@hotmail.com",
+      :first_name => "dr",
+      :last_name => "no"
+    }.merge(attributes)
+  end
 
-def valid_subscription(attributes = {})
-  { :plan => subscription_plans(:basic),
-    :account => accounts(:localhost)
-  }.merge(attributes)
-end
+  def valid_subscription(attributes = {})
+    { :plan => subscription_plans(:basic),
+      :account => accounts(:localhost)
+    }.merge(attributes)
+  end
 end
 
 def skip_email_validation
@@ -118,24 +118,23 @@ def date_select_attributes(t, attr)
 end
 
 module UserSpecHelper
-
- # Work around Fixjour shit not adding passwords
-def valid_user_attributes_with_password(attributes={})
-  returning valid_user_attributes(attributes) do |a|
-    a[:password] = a[:password_confirmation] = 'fuckthisshit'
+  # Work around Fixjour shit not adding passwords
+  def valid_user_attributes_with_password(attributes={})
+    returning valid_user_attributes(attributes) do |a|
+      a[:password] = a[:password_confirmation] = 'fuckthisshit'
+    end
   end
-end
 
-def make_member(attributes={})
-  set_mailer_in_test
-  user = create_user(attributes)
-  user.activate!
-  User.find(user)
-end
+  def make_member(attributes={})
+    set_mailer_in_test
+    user = create_user(attributes)
+    user.activate!
+    User.find(user)
+  end
 
-def make_user_account_admin(user, account)
-  user.is_admin_for account
-end
+  def make_user_account_admin(user, account)
+    user.is_admin_for account
+  end
 end
 
 module GuestSpecHelper

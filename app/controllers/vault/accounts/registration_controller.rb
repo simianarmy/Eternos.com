@@ -41,8 +41,9 @@ class Vault::Accounts::RegistrationController < ApplicationController
   #   save payment info
 
   def create
+    @site_id = Account::Site.id_from_subdomain(current_subdomain)  # mark as belonging to *Vault
     @account.affiliate = SubscriptionAffiliate.find_by_token(cookies[:affiliate]) unless cookies[:affiliate].blank?
-    @account.site_id = 1  # mark as belonging to Vault
+    @account.site_id = @user.site_id = @site_id
     
     # Taken from users controller to support email activation
     cookies.delete :auth_token
@@ -53,7 +54,6 @@ class Vault::Accounts::RegistrationController < ApplicationController
 
     # Using email registration?
     @user.registration_required = false
-    @user.site_id = Account::Site.id_from_subdomain current_subdomain
     
     # Some subscriptions use Captcha in signup form
     @hide_errors = params[:hide_errors]
@@ -107,7 +107,7 @@ class Vault::Accounts::RegistrationController < ApplicationController
         end
       end
       @terms_of_service = @user.terms_of_service == "1"
-      @invitation_token = params[:user][:invitation_token] rescue nil
+      @invitation_token = params[:invitation_token] rescue nil
       render :action => :new
     end
   end
@@ -221,7 +221,6 @@ class Vault::Accounts::RegistrationController < ApplicationController
     end
     @plan.discount = load_discount
     @account.plan = @plan
-    @use_captcha = using_captcha_in_signup?(@account)
   end
 
   def load_billing
@@ -286,10 +285,6 @@ class Vault::Accounts::RegistrationController < ApplicationController
     end
   end
   
-  def using_captcha_in_signup?(account)
-    true
-  end
-  
   def login_and_email
     # If all went well, send activation email & log them in
     # Make sure to forget this account in case user returns to signup pages!
@@ -302,6 +297,6 @@ class Vault::Accounts::RegistrationController < ApplicationController
   
   def send_activation_mail
     # Send welcome email
-    Vault::UserMailer.deliver_activation(@account.admin)
+    Vault::UserMailer.deliver_activation(@account.admin, vault_dashboard_url)
   end
 end

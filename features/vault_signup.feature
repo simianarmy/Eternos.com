@@ -1,7 +1,7 @@
 Feature: Membership
   In order to become a vault member
-  As a public user
-  I want to signup
+  a public user
+  wants to signup
   
   # Before do
   #     create_subscription_plans
