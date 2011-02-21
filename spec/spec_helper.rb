@@ -82,7 +82,7 @@ Spork.prefork do
     # RSpec uses its own mocking framework by default. If you prefer to
     # use mocha, flexmock or RR, uncomment the appropriate line:
     #
-    config.mock_with :mocha
+    # config.mock_with :mocha
     # config.mock_with :flexmock
     # config.mock_with :rr
     #
@@ -99,8 +99,6 @@ Spork.prefork do
     config.include(Fixjour) # This will add the builder methods to your ExampleGroups and not pollute Object
     config.include(EmailSpec::Helpers)
     config.include(EmailSpec::Matchers)
-    # Trying to keep mock_model!
-    config.include RSpec::Rails::Mocha
   end
 end
 

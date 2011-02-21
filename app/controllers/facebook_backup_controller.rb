@@ -11,6 +11,7 @@ class FacebookBackupController < ApplicationController
   layout 'dialog'
     
   #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
+  ssl_allowed :check_auth, :authorized, :cancel, :destroy
   
   # For js ajax requests to check user's auth status
   # Wonder if it will work w/out cookies

@@ -54,6 +54,12 @@ class BackupSource < ActiveRecord::Base
       :conditions => {'backup_sites.name' => BackupSite::Picasa}
     }
   }
+  named_scope :linkedin, lambda {
+    {
+      :joins => :backup_site,
+      :conditions => {'backup_sites.name' => BackupSite::Facebook}
+    }
+  }
   named_scope :active, :conditions => {
     :auth_confirmed => true, :backup_state => [:pending, :backed_up], :deleted_at => nil
   }
