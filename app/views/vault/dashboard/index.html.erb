@@ -68,9 +68,10 @@
 
 <div id="monthly-archive">    
   <h1>Latest archived items 
-  <em>Filters | 
+  <em>
   <%= link_to_function 'Latest', "searchArchive();" %> 
   <%= link_to_function 'All', "searchFilter('all')" %>
+  <%= link_to_function 'Mail', "searchFilter('facebook_message')" %>
   <%= link_to_function 'Facebook', "searchFilter('facebook')" %>
   <%= link_to_function 'Twitter', "searchFilter('twitter')" %>
   <%= link_to_function 'RSS', "searchFilter('feed')" %>

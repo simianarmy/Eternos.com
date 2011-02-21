@@ -27,8 +27,7 @@ class SetupPresenter < AccountPresenter
         Rails.logger.debug "FETCHING FACEBOOK ACCOUNT USERNAMES.."
         @facebook_accounts.each do |fb|
           Rails.logger.debug "fetching name for account #{fb.account_id}"
-          FacebookAccountManager.login_with_session(@fb_session, @user, 
-          fb.account_id)
+          FacebookAccountManager.login_with_session(@fb_session, @user, fb.account_id)
 
           if @fb_session.verify_permissions
             @fb_session.user.populate(:pic_small, :name) 

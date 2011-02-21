@@ -14,7 +14,7 @@ unless defined? DaemonKit
 
   begin
     require 'rubygems'
-    require "bundler"
+    require "bundler/setup"
   rescue LoadError
     raise "YOU'RE FUCKED!  BUNDLER HATES YOU!!!"
   end
@@ -26,8 +26,8 @@ unless defined? DaemonKit
 
   begin
     # Set up load paths for all bundled gems
-    ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
-    Bundler.setup
+    #ENV["BUNDLE_GEMFILE"] = File.expand_path("../../Gemfile", __FILE__)
+    #Bundler.setup
     puts "*** Bundler.setup called with Gemfile at #{ENV["BUNDLE_GEMFILE"]}"
   rescue Bundler::GemNotFound
     raise RuntimeError, "Bundler couldn't find some gems." +
