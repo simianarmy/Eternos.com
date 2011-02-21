@@ -77,7 +77,9 @@ namespace :fix do
   desc 'Fills in backup source id value into facebook message records'
   task :populate_facebook_message_backup_source_ids => :environment do
     FacebookMessage.backup_source_id_null.find_each do |fm|
-      fm.update_attribute(:backup_source_id, fm.message_thread.backup_source_id)
+      bsid = fm.facebook_thread.backup_source_id
+      puts "would update message #{fm.id} with backup source = #{bsid}"
+      #fm.update_attribute(:backup_source_id, bsid)
     end
   end
 end
