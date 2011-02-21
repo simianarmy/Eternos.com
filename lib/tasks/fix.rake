@@ -73,4 +73,11 @@ namespace :fix do
       puts "Saved fb account with fb creds: #{bs.inspect}"
     end
   end
+  
+  desc 'Fills in backup source id value into facebook message records'
+  task :populate_facebook_message_backup_source_ids => :environment do
+    FacebookMessage.backup_source_id_null.find_each do |fm|
+      fm.update_attribute(:backup_source_id, fm.message_thread.backup_source_id)
+    end
+  end
 end
