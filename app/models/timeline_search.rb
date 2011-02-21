@@ -85,7 +85,11 @@ class TimelineSearch
   end
   
   def get_facebook_items
-    query @member.activity_stream.items.facebook.searchlogic
+    items = query(@member.activity_stream.items.facebook.searchlogic)
+    if facebook_source
+      items += query(FacebookMessage.backup_source_id_eq(facebook_source.id).searchlogic)
+    end
+    items
   end
   
   def get_twitter_items

@@ -153,6 +153,10 @@ P { line-height: 20px;}
 	padding: 10px;
 	font-weight: bold;
 }
+.about-why p {
+	line-height: 20px;
+	font-size: 14px;
+}
 
 /* Services */
 .services .subtitle {

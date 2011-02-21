@@ -18,7 +18,7 @@ class Vault::DashboardController < ApplicationController
     search_attributes = {}
     refresh = params[:no_cache] || force_cache_reload?(:timeline) || false
     md5 = [Digest::MD5.hexdigest(request.url), current_user.id].join(':')
-    
+
     # Cache search results for 10 minutes
     @results += Rails.cache.fetch(md5, :force => refresh, :expires_in => 10.minutes) do
       # Date-based search uses TimelineSearch module (db search)

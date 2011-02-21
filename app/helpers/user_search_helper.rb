@@ -59,7 +59,7 @@ module UserSearchHelper
   end
   
   def search_summary(obj)
-    Rails.logger.debug "summary for search object #{obj.inspect}"
+#    Rails.logger.debug "summary for search object #{obj.inspect}"
     case obj
     when Feed
       obj_text_helper(obj, :title)
@@ -71,6 +71,8 @@ module UserSearchHelper
       obj_text_helper(obj, :message)
     when Comment
       obj_text_helper(obj, :comment)
+    when FacebookMessage
+      obj_text_helper(obj, :body)
     end
   end
   

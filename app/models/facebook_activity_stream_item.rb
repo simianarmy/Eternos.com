@@ -60,6 +60,8 @@ class FacebookActivityStreamItem < ActivityStreamItem
       else 
         d['video']['source_url']
       end
+    else
+      d['src'] if d.has_key?('src') && d['src']
     end
   end
     
