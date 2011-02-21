@@ -105,10 +105,12 @@ module FacebookBackup
       if method == 'facebook.profile.getFBML' || method == 'facebook.profile.setFBML'
         raise NonSessionUser.new("User #{@uid} is not the logged in user.") unless @uid == params[:uid]
       end
+      Rails.logger.debug "Facebooker::Session::Desktop::post use_session=true"
       super(method, params, true)
     end
     
     def connect(session, uid, timeout, secret)
+      Rails.logger.debug "Facebooker::Session::Desktop::connect with #{session}, #{uid}, #{timeout}, #{secret}"
       secure_with!(session, uid, timeout, secret)
     end
 

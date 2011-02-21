@@ -521,6 +521,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.text :attachment
     t.integer :backup_source_id
     t.timestamps
+    t.datetime :deleted_at
   end
   add_index :facebook_messages, [:message_id]
   add_index :facebook_messages, [:facebook_thread_id]

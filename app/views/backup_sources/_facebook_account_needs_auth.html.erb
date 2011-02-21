@@ -1,6 +1,9 @@
 <td>
-  <font style="font-weight: bold"><%= account.title %></font> 
+  <font style="font-weight: bold"><%= account.title || 'Unknown user' %></font> 
 </td>
 <td>
   <span style="color:red;">Requires Authorization</span> - <%= link_to 'Enable', settings.fb_login_url %>
+  <% if account.account_id %>
+    - <%= link_to 'Remove', facebook_backup_path(:account_id => account.account_id), :method => :delete %>
+  <% end %>
 </td>
