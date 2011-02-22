@@ -7,7 +7,7 @@
   %br
   Subject: 
   %strong= item.facebook_thread.subject
-  - unless item.attachment.nil?
+  - unless item.attachment.nil? || (item.attachment == "")
     %br
     Attachment:
     %br
