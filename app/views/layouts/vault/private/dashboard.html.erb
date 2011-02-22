@@ -3,15 +3,14 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title>Home</title>
-  <% stylesheet 'application', 'timeline', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'soundmanager-ui', 'inlineplayer', :cache => "cache/vault_dashboard" %>
-  <% load_jquery_prototype_compat_mode %>
+  <% stylesheet 'application', 'timeline', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'soundmanager-ui', 'inlineplayer', 'vault/style', :cache => "cache/vault_dashboard" %>
   <%= yield(:head)  %>
-  <%= yield(:js_libs) %>
-  <link href="/stylesheets/vault/style.css" rel="stylesheet" type="text/css" />
   <!--[if lte IE 7]>
   	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
   <![endif]-->
   <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+  <% load_jquery_prototype_compat_mode %>
+  <%= yield(:js_libs) %>
 </head>
 <body>
   <div class="header">
@@ -51,7 +50,7 @@
   	</div>
   </div>
   <%= render :partial => 'shared/vault/footer' %>
-  <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'inlineplayer', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'login', 'cvi_busy_lib', :cache => 'cache/vault_dashboard' %>
+  <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'inlineplayer', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'login', 'cvi_busy_lib', :cache => 'cache/vault_dashboard' %>
   <%= javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds}; ETERNOS.debug = #{Rails.env == 'development' ? 'true' : 'false'};" %>
 </body>
 </html>

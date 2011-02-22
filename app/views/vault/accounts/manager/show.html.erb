@@ -15,11 +15,12 @@
         <%= f.input :company_name %>
         <%= f.input :phone_number %>
         <%= f.commit_button :button_html => {:value => "Update information", :class => "submit", :id => "yellow-button3"} %>
+      </ul>
     <% end %>
   <% end %>
 </div>
 
-<div class="account-settings-tab-contents billing"">
+<div class="account-settings-tab-contents billing">
   <h1>Change your password</h1>
   <% semantic_form_for @account, :url => {:action => 'change_password'}, 
     :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>

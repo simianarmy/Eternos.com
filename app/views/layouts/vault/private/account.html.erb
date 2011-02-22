@@ -3,15 +3,13 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <title>Home</title>
-  <% stylesheet 'application', 'prototip' %>
-  <% load_jquery_prototype_compat_mode %>
-  <%= yield(:head)  %>
-  <%= yield(:js_libs) %>
-  <link href="/stylesheets/vault/style.css" rel="stylesheet" type="text/css" />
+  <%= stylesheet_link_tag 'application', 'prototip', 'vault/style', :cache => 'priv_account' %>
   <!--[if lte IE 7]>
   	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
   <![endif]-->
   <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+  <% load_jquery_prototype_compat_mode %>
+  <%= yield(:js_libs)  %>
 </head>
 <body>
   <div class="header">
@@ -46,9 +44,7 @@
   	</div>
   </div>
   <%= render :partial => 'shared/vault/footer' %>
-  <%= javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery" %>
-  <%= javascript_include_tag "lowpro", "defaultvalueactsashint", "behaviors" 
-  %>
+  <%= javascript_include_tag "lowpro", "defaultvalueactsashint", "behaviors", :cache => 'cache/vault_account' %>
   <%= javascript_tag "
   // perform JavaScript after the document is scriptable.
   jQuery(function() {
