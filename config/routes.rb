@@ -22,6 +22,10 @@ ActionController::Routing::Routes.draw do |map|
   # Unsubscribe route for mailer sites like Sendgrid
   map.connect 'sg_unsubscribe', :controller => 'unsubscribe', :action => 'create'
   
+  # Facebook oauth
+  map.resource :facebook_oauth, :controller => "facebook_oauth"
+  map.facebook_oauth_callback "/facebook_oauth/create", :controller=>"facebook_oauth", :action=>"create"
+  
   # regular resources
   map.resources :timeline_events, :collection => {
     :events => :get
@@ -112,6 +116,8 @@ ActionController::Routing::Routes.draw do |map|
     :privacy => :get, :terms => :get, :press => :get, :what => :get, :contact => :get, 
     :sitemap => :get, :careers => :get
   }
+  
+  
   #map.resources :prelaunch, :controller => "prelaunch"
   #map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
   #map.connect 'fb/*keywords', :controller => 'prelaunch', :action => 'index'

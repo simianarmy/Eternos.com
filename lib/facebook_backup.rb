@@ -87,15 +87,16 @@ module FacebookBackup
   end
   
   class Session < Facebooker::Session::Desktop
-    attr_reader :config, :errors, :app_id, :access_token
+    attr_reader :config, :errors, :app_id, :access_token, :api
     
     def self.create(config=nil)
       conf = FacebookBackup.load_config(config)
       
       me = super(conf['api_key'], conf['secret_key'])
       # Add additional config values
-      me.instance_variable_set("@app_id", conf['app_id'])
-      me.instance_variable_set("@access_token", conf['access_token'])
+      me.instance_variable_set("@app_id", conf['app_id']||'')
+      me.instance_variable_set("@access_token", conf['access_token']||'')
+      me.instance_variable_set("@api", conf['api']||'')
       me
     end
     
@@ -117,11 +118,12 @@ module FacebookBackup
     # Returns login url + required permissions code
     def login_url_with_perms(options={})
       # If oauth-style authentication
-      #if self.access_token
-      #  "https://www.facebook.com/dialog/oauth?client_id=#{app_id}&redirect_uri=#{CGI::escape(options[:next])}&scope=#{FacebookBackup.all_permissions.join(',')}"
-      #else # old-school authentication
-      "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookBackup.all_permissions.join(',')}#{add_next_parameters(options).join}"
-      #end
+      if self.api == 'oauth'
+        "/facebook_oauth/new"
+        #"https://www.facebook.com/dialog/oauth?client_id=#{app_id}&redirect_uri=#{CGI::escape(options[:next])}&scope=#{FacebookBackup.all_permissions.join(',')}"
+      else # old-school authentication
+        "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookBackup.all_permissions.join(',')}#{add_next_parameters(options).join}"
+      end
     end
     
     # Checks if associated user can query 'friends' list.  If not, then session 

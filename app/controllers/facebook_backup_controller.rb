@@ -1,7 +1,9 @@
 # $Id$
 
-require 'facebook_desktop'
 require 'facebook_account_manager'
+
+# FacebookBackup Controller
+# Uses Facebooker gem for authentication / authorization (Connect)
 
 class FacebookBackupController < ApplicationController
   before_filter :login_required
