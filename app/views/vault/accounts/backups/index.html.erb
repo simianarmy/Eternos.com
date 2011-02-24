@@ -1,0 +1,11 @@
+<div class="login1_right login1-mid login2-mid">
+  <h1>Add accounts to backup</h1>
+
+  <%= render :partial => 'account_settings/backup_sources', :locals => {
+    :settings => @settings, :completed_steps => @completed_steps, :setup => true} %>
+  <p>&nbsp;</p>
+  <% form_tag url_for(:action => 'update', :step => 2) do %>
+    <input type="submit" value="Save & Continue" id="yellow-button3"/>
+  <% end %>
+  <%= render :partial => 'account_settings/security_blurb', :locals => {:closed => true} %>
+</div>

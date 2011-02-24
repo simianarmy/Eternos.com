@@ -1,9 +1,6 @@
-<% if @layout['vault'] %>
-  <h1>Add your accounts to backup</h1>
-<% else %>
-  <h1>Add the online accounts that you would like us to backup for you.</h1>
-  <%= render :partial => 'account_settings/security_blurb' %>
-<% end %>
+<h1>Add the online accounts that you would like us to backup for you.</h1>
+<%= render :partial => 'account_settings/security_blurb' %>
+
 <div class="clear:both;></div>
 <br/>
 <%= render :partial => 'account_settings/backup_sources', :locals => {:settings => @settings, :completed_steps => @completed_steps, :setup => true} %>
@@ -11,6 +8,14 @@
 <% form_tag url_for(:controller => 'account_setup', :action => 'show', :step => 2) do %>
   <input type="submit" value="Save & Continue" id="yellow-button3"/>
 <% end %>
+<p>Once your data is saved to our secure storage, you will be able to browse all of your backup contents from your Timeline. Easily browse, tag, annotate, remove, and share any of your life's events. </p>
+
+<!-- 
+<div class="feedback-text">
+	  * If you have an online account that you would like Eternos to backup but is not one of our supported accounts, please let us know!  Use the FEEDBACK button on the right hand side of the page and add your suggestions.
+</div>
+-->
+
 <!-- Google Website Optimizer Conversion Script -->
 <script type="text/javascript">
 if(typeof(_gat)!='object')document.write('<sc'+'ript src="http'+

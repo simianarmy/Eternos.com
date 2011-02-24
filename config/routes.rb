@@ -195,6 +195,7 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
     sub.resource :vault_home, :controller => 'vault/home', :collection => { :why => :get, :services => :get, :sitemap => :get }
     sub.resource :account_registration, :controller => 'vault/accounts/registration', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any}
+    sub.resources :account_backups, :controller => 'vault/accounts/backups', :collection => {:set_feed_rss_url => :get, :backup_sources => :get}
     sub.resource :account_manager, :controller => 'vault/accounts/manager', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
     sub.resource :vault_dashboard, :controller => 'vault/dashboard', :member => { :search => :get }
     sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'

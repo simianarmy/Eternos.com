@@ -16,24 +16,22 @@ class FacebookOauthController < ApplicationController
     Rails.logger.debug "#{self.class.to_s}:create called by Facebook OAuth"
     
     begin
-      mogli_client = Mogli::Client.create_from_code_and_authenticator(params[:code], authenticator)
-      session[:at] = token = mogli_client.access_token
-      Rails.logger.debug "Got access token #{token}!"
+      client = Mogli::Client.create_from_code_and_authenticator(params[:code], authenticator)
+      session[:at] = token = client.access_token
     
       # If perms = nil, app authorization was not 'allowed'
       if token.nil?
         Rails.logger.error "Facebook backup not authorized! #{params.inspect}"
         flash[:error] = "The Eternos Backup Facebook app was not authorized.  You must press 'Allow' in the popup dialog."
       else
-        load_facebook_account_backup_source(current_user)
-          
+        bs = load_facebook_account_backup_source(current_user)
+        fb_user = Mogli::User.find("me", client)  
         # Save access token to facebook account record
         if token
-          @backup_source.update_attribute(:auth_token, token)
+          bs.update_attributes(:auth_token => token, :title => fb_user.name, :auth_login => fb_user.id)
         else  
-          @backup_source.save! if @backup_source.new_record?
+          bs.save! if bs.new_record?
         end
-        
         save_authorization 
         flash[:notice] = "Your Facebook account has authorized Eternos Backup!"
       end
@@ -45,7 +43,7 @@ class FacebookOauthController < ApplicationController
     
     respond_to do |format|
       format.html {
-        redirect_to account_setup_url(:protocol => 'https')
+        redirect_to account_backups_path
       }
       format.js {
         render :nothing => true, :status => 200

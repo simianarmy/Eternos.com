@@ -1,9 +1,9 @@
-<% unless list.blank? %>
+<% unless list.empty? %>
   <div id="result-facebook-account">
     <br/>
     <b>Accounts Added:</b>
     <table>
-      <% fb = list.first %>
+      <% list.each do |fb| %>
         <tr>
         <% if fb.active? %>
           <% # We need to check both the session & the backup source record 
@@ -18,6 +18,7 @@
           <%= render :partial => 'backup_sources/facebook_account_needs_activation', :locals => {:settings => settings, :account => fb} %>
         <% end %>
       </tr>
+      <% end %>
     </table>
   </div>
 <% end %>
