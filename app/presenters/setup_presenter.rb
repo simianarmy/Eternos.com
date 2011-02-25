@@ -7,7 +7,8 @@ require 'facebook_account_manager'
 
 class SetupPresenter < AccountPresenter
   attr_accessor :active_step, :completed_steps, :any_activated,
-    :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, :fb_login_url,
+    :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, 
+    :fb_login_url, :fb_disable_url, :fb_remove_url,
     :facebook_accounts, 
     :twitter_accounts, :twitter_account, :twitter_confirmed,
     :picasa_accounts, :picasa_account, :picasa_confirmed,

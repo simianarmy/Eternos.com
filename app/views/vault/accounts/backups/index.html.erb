@@ -1,6 +1,6 @@
 <div class="login1_right login1-mid login2-mid">
   <h1>Add accounts to backup</h1>
-
+  <%= show_flash_messages %>
   <%= render :partial => 'account_settings/backup_sources', :locals => {
     :settings => @settings, :completed_steps => @completed_steps, :setup => true} %>
   <p>&nbsp;</p>

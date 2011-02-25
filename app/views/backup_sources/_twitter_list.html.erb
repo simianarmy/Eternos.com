@@ -11,7 +11,7 @@
         <td class="coll-form12" valign="center"><%= twitter.title %></td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
         :html => {:class => 'blue-btn4'},
-        :url => {:controller => 'backup_sources', :action => 'remove_twitter_account', :id => twitter},
+        :url => remove_twitter_account_backup_sources_path(:id => twitter.id),
         :confirm => 'Are you sure?',
         :with => "'method=delete'", 
         :loading => "$('progress-bar').show();",

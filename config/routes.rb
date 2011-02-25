@@ -23,7 +23,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'sg_unsubscribe', :controller => 'unsubscribe', :action => 'create'
   
   # Facebook oauth
-  map.resource :facebook_oauth, :controller => "facebook_oauth"
+  map.resource :facebook_oauth, :controller => "facebook_oauth", :member => {:cancel => :get, :destroy => :get}
   map.facebook_oauth_callback "/facebook_oauth/create", :controller=>"facebook_oauth", :action=>"create"
   
   # regular resources
@@ -40,7 +40,10 @@ ActionController::Routing::Routes.draw do |map|
     :add_twitter => :get,
     :add_picasa => :get,
     :twitter_auth => :get,
-    :picasa_auth => :get
+    :picasa_auth => :get,
+    :remove_url => :get,
+    :remove_picasa_account => :get,
+    :remove_twitter_account => :get
   }
   map.resources :backup_source_jobs, :member => { :progress => :get }
   map.resources :account_settings, :member => {

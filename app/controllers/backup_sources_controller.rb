@@ -56,7 +56,7 @@ class BackupSourcesController < ApplicationController
         params[:oauth_verifier]
         )
         @access_token = TwitterBackup::OAuth.access_token
-        RAILS_DEFAULT_LOGGER.debug "Twitter access_token = #{@access_token.inspect}"
+        Rails.logger.debug "Twitter access_token = #{@access_token.inspect}"
         backup_source = current_user.backup_sources.twitter.find_by_auth_token(@access_token.token)
         if backup_source.nil?
           # Try to get twitter screen name for backup source title
@@ -83,7 +83,7 @@ class BackupSourcesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        redirect_to account_setup_path
+        redirect_to (current_subdomain == 'vault') ? account_backups_path : account_setup_path
       }
     end
   end
@@ -98,12 +98,12 @@ class BackupSourcesController < ApplicationController
       # Upgrade single-use token to permanent token
       if session[:token] = gdata_client.auth_handler.upgrade()
         gdata_client.authsub_token = auth_token = session[:token] 
-        RAILS_DEFAULT_LOGGER.debug "AuthSub token upgraded to #{auth_token}"
+         Rails.logger.debug "AuthSub token upgraded to #{auth_token}"
         
         # Fetch the account title from google, using new client object
         info_client = GoogleBackup::Auth::Picasa.new :auth_token => auth_token
         title = info_client.account_title
-        RAILS_DEFAULT_LOGGER.debug "Account title from google: #{title}"
+         Rails.logger.debug "Account title from google: #{title}"
         
         #Create new backup source
         backup_source = current_user.backup_sources.picasa.find_by_title(title)
@@ -127,12 +127,12 @@ class BackupSourcesController < ApplicationController
       end
     rescue 
       flash[:error] = "Unexpected error adding the #{PicasaWebAccount.display_title} account"
-      RAILS_DEFAULT_LOGGER.error "Exception in picasa_auth: " + $!
+       Rails.logger.error "Exception in picasa_auth: " + $!
     end
     
     respond_to do |format|
       format.html {
-        redirect_to account_setup_path
+        redirect_to (current_subdomain == 'vault') ? account_backups_path : account_setup_path
       }
     end
   end

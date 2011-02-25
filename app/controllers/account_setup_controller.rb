@@ -147,6 +147,8 @@ class AccountSetupController < ApplicationController
         :next => authorized_facebook_backup_url(:host => request.host),
         :next_cancel => cancel_facebook_backup_url(:host => request.host)
         )
+    @settings.fb_disable_url  = cancel_facebook_backup_url
+    @settings.fb_remove_url   = remove_facebook_oauth_path
   end
 
   def respond_to_ajax_remove(obj)

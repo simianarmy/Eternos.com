@@ -5,25 +5,18 @@ class Vault::Accounts::BackupsController < ApplicationController
   require_role "Member"
   
   before_filter :load_completed_steps
-  before_filter :load_facebook_app_session
   before_filter :load_presenter
-   
+
   layout 'vault/private/account_setup'
   
   ssl_required :all
   
   def index
     session[:setup_account] = true
-
-    # Dynamic action view based on current setup step - stupid
-    Rails.logger.debug "ACTIVE STEP = #{@active_step}"
-    
     load_online
-    @content_page = 'backup_sources'
   
     respond_to do |format|
       format.html
-      format.js
     end
   end
 
@@ -57,17 +50,15 @@ class Vault::Accounts::BackupsController < ApplicationController
 
   protected
   
-  def load_facebook_app_session
-    set_facebook_desktop_session
-  end
-  
   def load_completed_steps
     @completed_steps = current_user.setup_step
   end
 
   def load_online
-    @settings.load_facebook_user_info
-    @settings.fb_login_url = @facebook_session.login_url_with_perms
+    @settings.load_backup_sources
+    @settings.fb_login_url    = new_facebook_oauth_path
+    @settings.fb_disable_url  = cancel_facebook_oauth_path
+    @settings.fb_remove_url   = destroy_facebook_oauth_path
   end
 
   def respond_to_ajax_remove(obj)
@@ -82,7 +73,6 @@ class Vault::Accounts::BackupsController < ApplicationController
 
   def load_presenter
     Rails.logger.debug "Creating Vault Backup Presenter"
-    @settings = Vault::BackupPresenter.new(current_user, @facebook_session, params)
-    @settings.load_backup_sources
+    @settings = Vault::BackupPresenter.new(current_user, params)
   end
 end

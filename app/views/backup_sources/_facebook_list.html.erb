@@ -1,23 +1,22 @@
 <% unless list.empty? %>
   <div id="result-facebook-account">
+    
     <br/>
-    <b>Accounts Added:</b>
-    <table>
+    <table id="facebook-accounts-table">
+      <tr>
+        <th>Owner</th>
+        <th>Authorization Status</th>
+        <th>Actions</th>
+      </tr>
+    
       <% list.each do |fb| %>
         <tr>
-        <% if fb.active? %>
-          <% # We need to check both the session & the backup source record 
-          # TODO: SUPPORT MULTIPLE FACEBOOK ACCOUNTS - THIS ASSUMES ONLY ONE PER MEMBER!
-          %>
           <% if settings.facebook_confirmed && fb.confirmed? %>
             <%= render :partial => 'backup_sources/facebook_account_active', :locals => {:settings => settings, :account => fb} %>
           <% else %>
             <%= render :partial => 'backup_sources/facebook_account_needs_auth', :locals => {:settings => settings, :account => fb} %>
           <% end %>
-        <% else %>
-          <%= render :partial => 'backup_sources/facebook_account_needs_activation', :locals => {:settings => settings, :account => fb} %>
-        <% end %>
-      </tr>
+        </tr>
       <% end %>
     </table>
   </div>

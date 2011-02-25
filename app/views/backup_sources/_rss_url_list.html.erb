@@ -12,7 +12,7 @@
         <td class="coll-form12" valign="center">
         <%= link_to_remote 'Remove', 
         :html => {:class => 'blue-btn4'},
-        :url => {:controller => 'backup_sources', :action => 'remove_url', :id => @feed},
+        :url => remove_url_backup_sources_path(:id => @feed.id),
         :confirm => 'Are you sure?',
         :loading => "$('progress-bar').show();",
         :complete => "$('progress-bar').hide();" %>    

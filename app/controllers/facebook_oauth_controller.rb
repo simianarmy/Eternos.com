@@ -24,8 +24,8 @@ class FacebookOauthController < ApplicationController
         Rails.logger.error "Facebook backup not authorized! #{params.inspect}"
         flash[:error] = "The Eternos Backup Facebook app was not authorized.  You must press 'Allow' in the popup dialog."
       else
-        bs = load_facebook_account_backup_source(current_user)
         fb_user = Mogli::User.find("me", client)  
+        bs = load_facebook_account_backup_source(current_user, fb_user.id)
         # Save access token to facebook account record
         if token
           bs.update_attributes(:auth_token => token, :title => fb_user.name, :auth_login => fb_user.id)
@@ -53,19 +53,58 @@ class FacebookOauthController < ApplicationController
   
   def show
     redirect_to new_facebook_oauth_path and return unless session[:at]
-    user = Mogli::User.find("me", Mogli::Client.new(session[:at]))
-    @user = user
-    @posts = user.posts
+    #user = Mogli::User.find("me", Mogli::Client.new(session[:at]))
+  end
+  
+  def cancel
+    # Remove session keys
+    if bs = load_facebook_account_backup_source(current_user, params[:account_id])
+      bs.reset_authorization
+    end
+    flash[:notice] = "Your Facebook account will no longer be backed up.  Click 'Enable' to reauthorize it anytime."
+    
+    respond_to do |format|
+      format.html {
+        redirect_to account_backups_path    
+      }
+      format.js {
+        render :nothing => true, :status => 200
+      }
+    end
+  end
+  
+  def destroy
+    # Remove session keys
+    if bs = load_facebook_account_backup_source(current_user, params[:account_id])
+      bs.reset_authorization
+      # Don't remove yet.  They may change their minds
+      bs.touch(:deleted_at)
+    end
+    flash[:notice] = "Your Facebook account and all its data has been disabled." <<
+      "  All of its related data will be removed from our systems within 24 hours."
+
+    respond_to do |format|
+      format.html { redirect_to account_backups_path }
+      format.js
+    end
   end
   
   def authenticator
-    @authenticator ||= Mogli::Authenticator.new('193664657324382', 
-                                         '58413dcf7978877179669e798643b6c4', 
-                                         facebook_oauth_callback_url)
+    conf = load_facebooker_yaml
+    @authenticator ||= Mogli::Authenticator.new(conf['app_id'], 
+      conf['secret_key'],
+      facebook_oauth_callback_url)
   end
-  
+
   private
-  
+
+  # Helper to read vault facebook app settings.  Will be moved to lib once I figure out 
+  # organization
+  def load_facebooker_yaml
+    config = YAML.load(ERB.new(File.read(File.join(Rails.root,"config","facebooker_vault.yml"))).result)[::Rails.env]
+    @fb_config ||= config.with_indifferent_access
+  end
+    
   def save_authorization
     # Not the right place for this but oh well
     current_user.completed_setup_step(2)
@@ -74,15 +113,14 @@ class FacebookOauthController < ApplicationController
     @backup_source.reload # Make sure views can see updates
   end
   
-  def load_facebook_account_backup_source(user)
-    sources = user.backup_sources.facebook
-    if sources.any?
-      # If we match more than one backup source for an account id - we gotta find the right user!
-      # If there is no user...use most recent?
-      @backup_source = sources.detect {|s| s.user_id == user.id }
+  def load_facebook_account_backup_source(user, account_id)
+    # Avoid readonly trap, load from id once found
+    if bs = user.backup_sources.facebook.find_by_auth_login(account_id)
+      @backup_source = FacebookAccount.find(bs.id)
     end
     # Create new source if none found
     @backup_source ||= FacebookAccount.new(:user_id => user.id,
-      :backup_site_id => BackupSite.find_by_name(BackupSite::Facebook).id)
+      :backup_site_id => BackupSite.find_by_name(BackupSite::Facebook).id,
+      :auth_login => account_id)
   end
 end
