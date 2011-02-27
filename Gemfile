@@ -60,6 +60,7 @@ group :production do
 end
 
 gem 'active_presenter'
+gem 'acts_as_audited', '1.1.1'
 gem 'after_commit'
 gem 'amqp', '0.6.7'
 gem 'aws-s3'

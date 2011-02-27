@@ -3,6 +3,8 @@
 class FacebookContent < ActiveRecord::Base
   belongs_to :profile
   
+  acts_as_audited
+  
   serialize :friends
   serialize :groups
   xss_terminate :except => [ :friends, :groups ]

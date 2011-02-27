@@ -90,9 +90,9 @@ class FacebookOauthController < ApplicationController
   end
   
   def authenticator
-    conf = load_facebooker_yaml
-    @authenticator ||= Mogli::Authenticator.new(conf['app_id'], 
-      conf['secret_key'],
+    fb_app = load_facebook_app
+    @authenticator ||= Mogli::Authenticator.new(fb_app.app_id, 
+      fb_app.app_secret,
       facebook_oauth_callback_url)
   end
 
@@ -100,9 +100,8 @@ class FacebookOauthController < ApplicationController
 
   # Helper to read vault facebook app settings.  Will be moved to lib once I figure out 
   # organization
-  def load_facebooker_yaml
-    config = YAML.load(ERB.new(File.read(File.join(Rails.root,"config","facebooker_vault.yml"))).result)[::Rails.env]
-    @fb_config ||= config.with_indifferent_access
+  def load_facebook_app
+    FacebookBackup::OpenGraphApp.new(:vault)
   end
     
   def save_authorization
