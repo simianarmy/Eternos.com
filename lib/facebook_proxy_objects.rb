@@ -1,6 +1,6 @@
 # $Id$
 
-require 'lib/backup_content_proxy'
+require 'backup_content_proxy'
 require 'facebooker'
 
 # Facebook proxy objects for data from backup daemons
@@ -87,6 +87,25 @@ module FacebookProxyObjects
     end
   end
   
+  # Proxy for Facebooker::Page object
+  class FacebookerPageProxy
+    include BackupContentProxy
+    IGNORE_PROXY_ATTRIBUTES = %w( session )
+    
+    # We need to return a hashie object from the facebooker object data
+    def initialize(fb_page)
+      res = (fb_page.methods.grep(/\w=$/).map(&:chop) - IGNORE_PROXY_ATTRIBUTES).inject({}) do |res, attr|
+        res[attr] = fb_page.send(attr) if fb_page.respond_to?(attr)
+        res
+      end
+      @page = Hashie::Mash.new(res)
+    end
+    
+    def obj
+      @page
+    end
+  end
+  
   # Proxy for Facebooker::MessageThread object
   class FacebookMessageThread
     include BackupContentProxy
@@ -112,6 +131,5 @@ module FacebookProxyObjects
     def fb_object_id
       @thread.object_id
     end
-    
   end
 end

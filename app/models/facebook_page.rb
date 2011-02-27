@@ -6,8 +6,7 @@ class FacebookPage < ActiveRecord::Base
   validates_presence_of :url
   validates_uniqueness_of :page_id
   
-  # Attributes to ignore in the Facebooker::Page (or other page proxy) class
-  IGNORE_PROXY_ATTRIBUTES = %W( session )
+  acts_as_audited
   
   # @@min_synch_delay
   # Set this to minimum amount of time between synchs for a single page
@@ -38,14 +37,8 @@ class FacebookPage < ActiveRecord::Base
     
     self.name = fb_page.name
     self.url  = fb_page.page_url
-    
-    # Save attributes as hash for serialization by using metaprogramming to 
-    # find proxy object's attr_writer methods
-    data = (fb_page.methods.grep(/\w=$/).map(&:chop) - IGNORE_PROXY_ATTRIBUTES).inject({}) do |res, attr|
-      res[attr] = fb_page.send(attr) if fb_page.respond_to?(attr)
-      res
-    end
-    self.page_data  = data
+    # Save the whole thing
+    self.page_data  = fb_page
     self.save
   end
   
