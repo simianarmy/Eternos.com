@@ -1,3 +1,9 @@
+PATH
+  remote: /Users/marcmauger/Documents/code/EDP/eternos/mogli
+  specs:
+    mogli (0.0.25)
+      httparty (>= 0.4.3)
+
 GEM
   remote: http://rubygems.org/
   remote: http://gemcutter.org/
@@ -123,8 +129,6 @@ GEM
     mime-types (1.16)
     mocha (0.9.9)
       rake
-    mogli (0.0.25)
-      httparty (>= 0.4.3)
     moomerman-twitter_oauth (0.2.1)
       json (>= 1.1.2)
       mime-types (>= 1.15)
@@ -278,7 +282,7 @@ DEPENDENCIES
   memcache-client
   mime-types
   mocha
-  mogli (~> 0.0.25)
+  mogli!
   moomerman-twitter_oauth
   moqueue
   mysqlplus
