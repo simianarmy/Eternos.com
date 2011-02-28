@@ -1,5 +1,6 @@
-PATH
-  remote: /Users/marcmauger/Documents/code/EDP/eternos/mogli
+GIT
+  remote: git@github.com:simianarmy/mogli.git
+  revision: 49756cc0da5bf91af3e8d8a8f07a2100f032d02f
   specs:
     mogli (0.0.25)
       httparty (>= 0.4.3)
