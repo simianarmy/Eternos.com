@@ -6,7 +6,8 @@
 
 module BackupObjectComment
   
-  # Synchs existing comments with those in array arg
+  # Synchs existing comments with those in array arg.
+  # WE NEVER DELETE A COMMENT!
   def synch_backup_comments(new_comments)
     return if new_comments.nil? || new_comments.empty?
     
@@ -35,4 +36,5 @@ module BackupObjectComment
   def convert_backup_comment(comm)
     Comment.new(comm.to_h.merge(:commentable => self))
   end
+    
 end

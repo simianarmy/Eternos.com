@@ -1,6 +1,7 @@
 # $Id$
 
 # ActivityStreamItem STI base class
+require 'digest/md5'
 
 class ActivityStreamItem < ActiveRecord::Base
   belongs_to :activity_stream
@@ -11,7 +12,8 @@ class ActivityStreamItem < ActiveRecord::Base
   acts_as_taggable_on :tags
   acts_as_restricted :owner_method => :member
   acts_as_commentable
-  acts_as_time_locked
+  # ENABLE THIS IF SOMEOME CARES
+  #acts_as_time_locked
   
   include TimelineEvents
   include CommonDateScopes
@@ -57,10 +59,16 @@ class ActivityStreamItem < ActiveRecord::Base
     synch_backup_comments(p.comments) if p.comments && p.comments.any?
   end
   
+  # Determine if backup data is newer than existing data
   def needs_sync?(p)
     #self.comment_thread != p.comments || 
-    self.comments != p.comments ||
+    (p.comments && comments_need_sync?(p.comments)) ||
     self.liked_by != p.likers
+  end
+  
+  # Helper for needs_sync?
+  def comments_need_sync?(proxy_comments)
+    hash_comments(self.comments) != hash_comments(proxy_comments)
   end
   
   def self.create_from_proxy!(activity_stream_id, proxy)
@@ -130,5 +138,14 @@ class ActivityStreamItem < ActiveRecord::Base
   def parsed_attachment_data
     d = self.attachment_data
   end
+  
+  protected
+  
+  # Generates md5 of comments array text.
+  # Each item must respond to :comment
+  def hash_comments(comments)
+    Digest::MD5.hexdigest(comments.map(&:comment).to_s)
+  end
+    
 end
 
