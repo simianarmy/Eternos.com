@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe FacebookPage do
   let ( :fb_page_proxy ) {
-    FacebookProxyObjects::FacebookerPageProxy.new(
+    FacebookProxyObjects::Rest::FacebookerPageProxy.new(
       Facebooker::Page.new(:page_id => 1, :name => 'some page', :page_url => 'some url'))
   }
   let ( :user ) { create_member }

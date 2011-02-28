@@ -29,15 +29,15 @@ end
 
 module FacebookProxyObjectSpecHelper
   def new_album(album=new_facebooker_album)
-    FacebookProxyObjects::FacebookPhotoAlbum.new(album)
+    FacebookProxyObjects::Rest::FacebookPhotoAlbum.new(album)
   end
 
   def new_photo(photo=new_facebooker_photo)
-    FacebookProxyObjects::FacebookPhoto.new(photo)
+    FacebookProxyObjects::Rest::FacebookPhoto.new(photo)
   end
   
   def new_proxy_fb_comment(comm)
-    FacebookProxyObjects::FacebookObjectComment.new(comm)
+    FacebookProxyObjects::Rest::FacebookObjectComment.new(comm)
   end
 end
 

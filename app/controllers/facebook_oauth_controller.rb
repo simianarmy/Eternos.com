@@ -28,7 +28,7 @@ class FacebookOauthController < ApplicationController
         bs = load_facebook_account_backup_source(current_user, fb_user.id)
         # Save access token to facebook account record
         if token
-          bs.update_attributes(:auth_token => token, :title => fb_user.name, :auth_login => fb_user.id)
+          bs.update_attributes(:auth_secret => token, :title => fb_user.name, :auth_login => fb_user.id)
         else  
           bs.save! if bs.new_record?
         end
