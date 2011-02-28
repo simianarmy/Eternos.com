@@ -20,10 +20,11 @@ class Profile < ActiveRecord::Base
   validates_associated :careers, :message => 'Some required career fields are missing'
   validates_associated :schools, :messages => 'Some required education fields are missing'
   
+  # TODO: MOVE THIS DATA TO MONGODB DOCUMENT STORAGE
   serialize :facebook_data
   xss_terminate :except => [ :facebook_data ]
     
-  acts_as_audited :except => [:user_id, :always_sync_with_facebook]
+  acts_as_audited :except => [:user_id, :always_sync_with_facebook, :facebook_data]
 
   include Addressable
   after_update :save_associations
