@@ -143,7 +143,7 @@ require 'load_email_configuration'
 # custom libs
 require 's3_helper'
 require 'timeline_events'
-require 'facebook_desktop'
+require 'facebook_backup'
 require 'facebook_user_profile'
 require 'message_queue'
 require 'mail_history'

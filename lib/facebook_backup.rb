@@ -1,7 +1,9 @@
 # Support files for backup daemons
 require File.join(File.dirname(__FILE__), 'facebook_user_profile')
 require File.join(File.dirname(__FILE__), 'facebook_proxy_objects')
-require 'facebooker' # Shouln't be necesary...
+# Requires necessary for backup app
+require 'facebooker'
+require 'mogli'
 
 # Add missing attributes to Facebooker models
 module Facebooker
@@ -87,15 +89,16 @@ module FacebookBackup
   end
   
   class Session < Facebooker::Session::Desktop
-    attr_reader :config, :errors, :app_id, :access_token
+    attr_reader :config, :errors, :app_id, :access_token, :api
     
     def self.create(config=nil)
       conf = FacebookBackup.load_config(config)
       
       me = super(conf['api_key'], conf['secret_key'])
       # Add additional config values
-      me.instance_variable_set("@app_id", conf['app_id'])
-      me.instance_variable_set("@access_token", conf['access_token'])
+      me.instance_variable_set("@app_id", conf['app_id']||'')
+      me.instance_variable_set("@access_token", conf['access_token']||'')
+      me.instance_variable_set("@api", conf['api']||'')
       me
     end
     
@@ -117,11 +120,12 @@ module FacebookBackup
     # Returns login url + required permissions code
     def login_url_with_perms(options={})
       # If oauth-style authentication
-      #if self.access_token
-      #  "https://www.facebook.com/dialog/oauth?client_id=#{app_id}&redirect_uri=#{CGI::escape(options[:next])}&scope=#{FacebookBackup.all_permissions.join(',')}"
-      #else # old-school authentication
-      "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookBackup.all_permissions.join(',')}#{add_next_parameters(options).join}"
-      #end
+      if self.api == 'oauth'
+        "/facebook_oauth/new"
+        #"https://www.facebook.com/dialog/oauth?client_id=#{app_id}&redirect_uri=#{CGI::escape(options[:next])}&scope=#{FacebookBackup.all_permissions.join(',')}"
+      else # old-school authentication
+        "http://www.facebook.com/login.php?api_key=#{self.class.api_key}&connect_display=popup&v=1.0&return_session=true&fbconnect=true&req_perms=#{FacebookBackup.all_permissions.join(',')}#{add_next_parameters(options).join}"
+      end
     end
     
     # Checks if associated user can query 'friends' list.  If not, then session 
@@ -135,10 +139,65 @@ module FacebookBackup
     end
   end
   
-  class VaultSession < Session
-    # Returns login url + required permissions code
-    def login_url_with_perms(options={})
-      "https://www.facebook.com/dialog/oauth?client_id=#{@app_id}&redirect_uri=#{options[:next]}&scope=#{FacebookBackup.all_permissions.join(',')}"
+  # Helper class for Facebook apps that use the OpenGraph API
+  # Uses Mogli gem for opengraph communication with facebook
+  class OpenGraphApp
+    attr_reader :app_id, :app_secret, :fb_config, :session, :user
+
+    class InvalidClientException < Exception; end
+    
+    # Helper for profile value fetching
+    # TODO: Fork mogli & add there
+    def self.user_profile_value(user, attribute)
+      if user.respond_to?(attribute)
+        val = user.send(attribute) 
+        # val itself could be a Mogli::Page object
+        val.class == Mogli::Page ? val.to_s : val
+      end
+    end
+    
+    # Call with application id so that proper facebook configuration file will be used
+    def initialize(app)
+      config = load_facebook_yaml(app)
+      @app_id     = config['app_id']
+      @app_secret = config['secret_key']
+      @session    = nil
+      @user       = nil
+    end
+
+    # Creates 'session' for user's access token.  Recreates if token has changed. 
+    # Caches if unchanged.
+    def session(access_token)
+      if @session.nil? || (@session.access_token != access_token)
+        @session = ::Mogli::Client.new access_token
+        @user = ::Mogli::User.find("me", @session)
+      end
+      @session
+    end
+
+    # Returns Mogli user for an authenticated user's access token.
+    # If no access token passed, returns previously fetched user, or raises error
+    def user(access_token=nil)
+      # create client from access token if passed
+      session(access_token) if access_token
+      @user
+    end
+    
+    # Checks if associated user has offline permissions
+    def verify_permissions
+      user.has_permission? :offline_access
+    rescue 
+      @errors = $!
+      false
+    end
+    
+    protected
+    
+    # Helper to read vault facebook app settings.  Will be moved to lib once I figure out 
+    # organization
+    def load_facebook_yaml(app)
+      config = YAML.load(ERB.new(File.read(File.join(Rails.root,"config","facebook.#{app.to_s}.yml"))).result)[Rails.env]
+      @fb_config ||= config.with_indifferent_access
     end
   end
 end

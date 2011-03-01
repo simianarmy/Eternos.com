@@ -22,6 +22,10 @@ ActionController::Routing::Routes.draw do |map|
   # Unsubscribe route for mailer sites like Sendgrid
   map.connect 'sg_unsubscribe', :controller => 'unsubscribe', :action => 'create'
   
+  # Facebook oauth
+  map.resource :facebook_oauth, :controller => "facebook_oauth", :member => {:cancel => :get, :destroy => :get}
+  map.facebook_oauth_callback "/facebook_oauth/create", :controller=>"facebook_oauth", :action=>"create"
+  
   # regular resources
   map.resources :timeline_events, :collection => {
     :events => :get
@@ -36,7 +40,10 @@ ActionController::Routing::Routes.draw do |map|
     :add_twitter => :get,
     :add_picasa => :get,
     :twitter_auth => :get,
-    :picasa_auth => :get
+    :picasa_auth => :get,
+    :remove_url => :get,
+    :remove_picasa_account => :get,
+    :remove_twitter_account => :get
   }
   map.resources :backup_source_jobs, :member => { :progress => :get }
   map.resources :account_settings, :member => {
@@ -112,6 +119,8 @@ ActionController::Routing::Routes.draw do |map|
     :privacy => :get, :terms => :get, :press => :get, :what => :get, :contact => :get, 
     :sitemap => :get, :careers => :get
   }
+  
+  
   #map.resources :prelaunch, :controller => "prelaunch"
   #map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
   #map.connect 'fb/*keywords', :controller => 'prelaunch', :action => 'index'
@@ -189,6 +198,7 @@ ActionController::Routing::Routes.draw do |map|
   map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
     sub.resource :vault_home, :controller => 'vault/home', :collection => { :why => :get, :services => :get, :sitemap => :get }
     sub.resource :account_registration, :controller => 'vault/accounts/registration', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any}
+    sub.resources :account_backups, :controller => 'vault/accounts/backups', :collection => {:set_feed_rss_url => :get, :backup_sources => :get}
     sub.resource :account_manager, :controller => 'vault/accounts/manager', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
     sub.resource :vault_dashboard, :controller => 'vault/dashboard', :member => { :search => :get }
     sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'

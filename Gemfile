@@ -60,6 +60,7 @@ group :production do
 end
 
 gem 'active_presenter'
+gem 'acts_as_audited', '1.1.1'
 gem 'after_commit'
 gem 'amqp', '0.6.7'
 gem 'aws-s3'
@@ -86,7 +87,7 @@ gem 'mash'
 gem 'mdalessio-dryopteris'
 gem 'memcache-client'
 gem 'mime-types'
-gem 'mogli'
+gem 'mogli', :git => 'git@github.com:simianarmy/mogli.git'
 gem 'moomerman-twitter_oauth'
 gem 'mysqlplus'
 gem 'nokogiri'

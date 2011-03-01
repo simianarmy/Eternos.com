@@ -10,7 +10,7 @@
     </div>
 
   <% form_remote_for :email,
-      :url => {:controller => 'gmail_accounts', :method => :post, :protocol => 'https', :only_path => false},
+      :url => gmail_accounts_url(:protocol => 'https'),
       :html => {:id => "backup_email_address"},
       :loading => "$('progress-bar').show();",
       :complete => "$('progress-bar').hide(); updateStep('#{completed_steps_account_setting_path(current_user)}', #{completed_steps});" do |f| -%>

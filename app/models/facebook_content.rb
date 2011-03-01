@@ -3,9 +3,14 @@
 class FacebookContent < ActiveRecord::Base
   belongs_to :profile
   
+  acts_as_audited
+  
   serialize :friends
   serialize :groups
   xss_terminate :except => [ :friends, :groups ]
   
-  # TODO: Version (vestal_versions?) to keep track of changes by date
+  # Helper for update with acts_as_audited helper specifying the user making changes.
+  def save_audited(attribute, user, val)
+    self.class.audit_as(user) { update_attribute(attribute, val) }
+  end
 end
