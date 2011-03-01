@@ -59,6 +59,11 @@ class BackupPhoto < ActiveRecord::Base
     photo ? photo.size : 0
   end
   
+  def temp_filename(source_path)
+    f = File.join(AppConfig.s3_staging_dir, URI::parse(source_path).path.split('/').last)
+    f.first == '/' ? f : File.join(Rails.root, f)
+  end
+  
   # Downloads from source & create new Content object with data
   # Returns photo object on success
   def download
@@ -68,7 +73,7 @@ class BackupPhoto < ActiveRecord::Base
       # Sanity check
       @member = backup_photo_album.backup_source.member 
       
-      @filename = File.join(Rails.root, AppConfig.s3_staging_dir, URI::parse(source_url).path.split('/').last)
+      @filename = temp_filename source_url
       @img = rio(@filename)
       
       # Don't download if already on filesystem
