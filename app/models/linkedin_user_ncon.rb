@@ -15,7 +15,9 @@ class LinkedinUserNcon < ActiveRecord::Base
     return ncon
   end
   def self.from_ncons(ncon)
+    
     ncon = self.process_hash(ncon)
+    RAILS_DEFAULT_LOGGER.info "\n------NCON-----------------------#{ncon.inspect}-------------NCON--------------------------\n"
     li = self.new(ncon)
     li
   end

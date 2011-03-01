@@ -72,10 +72,10 @@ class BackupSourcesController < ApplicationController
     @secret_token = consumer.get_secret_access_token
     backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
 	
-	@comment_like = nil #consumer.get_network_update('STAT')
+	@comment_like = consumer.get_network_update('STAT')
     @info = consumer.get_profile('all')
-    @cmpies = nil #consumer.get_network_update('CMPY')
-	@ncons = nil#consumer.get_network_update('NCON')
+    @cmpies = consumer.get_network_update('CMPY')
+	@ncons = consumer.get_network_update('NCON')
 	
 	tilte = consumer.get_first_name.to_s + ' ' + consumer.get_last_name.to_s
 	if backup_source.nil?
@@ -85,7 +85,7 @@ class BackupSourcesController < ApplicationController
             :title =>  tilte,
             :auth_token => @access_token,
             :auth_secret => @secret_token
-			 )
+		 )
           if backup_source.save
             backup_source.confirmed!
             current_user.completed_setup_step(1)            

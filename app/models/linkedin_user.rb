@@ -285,10 +285,13 @@ class LinkedinUser < ActiveRecord::Base
   end
 
   def add_ncon_from_people(ncons)
-    if ncons.nil? || ncons['update'].nil?
-      return
+    
+    if ncons.nil? || ncons['updates'].nil?
+     return
     end
+    #RAILS_DEFAULT_LOGGER.info "#{ncons.inspect}"
     li = LinkedinUserNcon.from_ncons(ncons['update'])
+
     linkedin_user_ncons << li
 
   end
@@ -456,7 +459,7 @@ class LinkedinUser < ActiveRecord::Base
     end
 
     if !ncons.nil?
-      @ncons_hash = Hash.from_xml ncons 
+      ncons_hash = Hash.from_xml ncons 
     end
     #change key 'id' to 'linkedin_id'
     if !@hash['id'].nil?
@@ -542,25 +545,26 @@ class LinkedinUser < ActiveRecord::Base
     
     people = LinkedinUser.new(@hash)
     people.save
-    people.add_skills_from_people(skills)
-    people.add_certifications_from_people(certifications)
-    people.add_connections_from_people(connections)
-    people.add_past_postions_from_people(three_past_positions)
-    people.add_current_positions_from_people(three_current_positions)
-    people.add_educations_from_people(educations)
-    people.add_im_account_from_people(im_accounts)
-    people.add_languages_from_people(languages)
-    people.add_patents_from_people(patents)
-    people.add_positions_from_people(positions)
-    people.add_publications_from_people(publications)
-    people.add_recommendations_receiveds_from_people(recommendations_receiveds)
-    people.add_twitter_accounts_from_people(twitter_accounts)
-    people.add_member_urls_from_people(member_url_resources)
-    people.add_curent_share_from_people(current_share)
-    people.add_phone_numbers_from_people(phone_numbers)
-    people.add_comment_likes_from_people(@comment_like_hash)
-    people.add_cmpy_from_people(@cmpies_hash)
-    people.add_ncon_from_people(@ncons_hash)
+#    people.add_skills_from_people(skills)
+#    people.add_certifications_from_people(certifications)
+#    people.add_connections_from_people(connections)
+#    people.add_past_postions_from_people(three_past_positions)
+#    people.add_current_positions_from_people(three_current_positions)
+#    people.add_educations_from_people(educations)
+#    people.add_im_account_from_people(im_accounts)
+#    people.add_languages_from_people(languages)
+#    people.add_patents_from_people(patents)
+#    people.add_positions_from_people(positions)
+#    people.add_publications_from_people(publications)
+#    people.add_recommendations_receiveds_from_people(recommendations_receiveds)
+#    people.add_twitter_accounts_from_people(twitter_accounts)
+#    people.add_member_urls_from_people(member_url_resources)
+#    people.add_curent_share_from_people(current_share)
+#    people.add_phone_numbers_from_people(phone_numbers)
+#    people.add_comment_likes_from_people(@comment_like_hash)
+#    people.add_cmpy_from_people(@cmpies_hash)
+
+    people.add_ncon_from_people(ncons_hash)
    
   end
   
