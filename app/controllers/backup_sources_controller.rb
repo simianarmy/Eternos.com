@@ -2,6 +2,7 @@
 
 require 'twitter_backup'
 require 'google_backup'
+#require 'linkedin2'
 require 'nokogiri'
 
 class BackupSourcesController < ApplicationController
@@ -71,16 +72,16 @@ class BackupSourcesController < ApplicationController
     @secret_token = consumer.get_secret_access_token
     backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
 	
-	@comment_like = consumer.get_network_update('STAT')
+	@comment_like = nil #consumer.get_network_update('STAT')
     @info = consumer.get_profile('all')
-    @cmpies = consumer.get_network_update('CMPY')
-	#@ncons = consumer.get_network_update('NCON')
-	@ncons = nil
+    @cmpies = nil #consumer.get_network_update('CMPY')
+	@ncons = nil#consumer.get_network_update('NCON')
+	
 	tilte = consumer.get_first_name.to_s + ' ' + consumer.get_last_name.to_s
 	if backup_source.nil?
           # Try to get twitter screen name for backup source title
           backup_source = current_user.backup_sources.new(
-            :backup_site_id => BackupSite.find_by_name(BackupSite::Linkedin2).id,
+            :backup_site_id => BackupSite.find_by_name(BackupSite::Linkedin).id,
             :title =>  tilte,
             :auth_token => @access_token,
             :auth_secret => @secret_token
@@ -93,9 +94,9 @@ class BackupSourcesController < ApplicationController
     else
           flash[:error] = "Linkedin account is already activated"
     end 
-	
-	LinkedinPeople.insert(@info,@comment_like,@cmpies, @ncons, backup_source.id)    	
-    
+
+	#LinkedinUser.insert(@info,@comment_like,@cmpies, @ncons, backup_source.id)    	
+    LinkedinUser.update_profile(@info,@comment_like,@cmpies, @ncons, backup_source.id) 
     respond_to do |format|
       format.html {
         redirect_to account_setup_path
@@ -105,7 +106,7 @@ class BackupSourcesController < ApplicationController
 # Remove Linked In Account
   def remove_linkedin_account
     begin
-      remove_account(BackupSite::Linkedin2, params[:id])
+      remove_account(BackupSite::Linkedin, params[:id])
       flash[:notice] = "Linked In account removed"
     rescue
       flash[:error] = "Could not find Linked In account to remove"
@@ -267,6 +268,7 @@ class BackupSourcesController < ApplicationController
       format.js
     end
   end 
+  
   
   def remove_url
     begin

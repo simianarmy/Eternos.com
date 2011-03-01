@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100924120713) do
+ActiveRecord::Schema.define(:version => 20110217085045) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -139,11 +139,11 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   add_index "backup_emails", ["backup_source_id"], :name => "index_backup_emails_on_backup_source_id"
 
   create_table "backup_error_codes", :force => true do |t|
-    t.integer "code", :null => false
-    t.string "description", :null => false
-    t.text "fix_hint"
+    t.integer "code",        :null => false
+    t.string  "description", :null => false
+    t.text    "fix_hint"
   end
-  
+
   create_table "backup_job_archives", :force => true do |t|
     t.datetime "started_at"
     t.datetime "finished_at"
@@ -180,10 +180,10 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   add_index "backup_jobs", ["user_id"], :name => "index_backup_jobs_on_user_id"
 
   create_table "backup_photo_albums", :force => true do |t|
-    t.integer  "backup_source_id",                :null => false
-    t.string   "source_album_id",                 :null => false
+    t.integer  "backup_source_id",                    :null => false
+    t.string   "source_album_id",                     :null => false
     t.string   "cover_id"
-    t.integer  "size",             :default => 0, :null => false
+    t.integer  "size",                 :default => 0, :null => false
     t.string   "name"
     t.text     "description"
     t.datetime "created_at"
@@ -261,7 +261,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "auth_login"
     t.string   "auth_password"
     t.string   "rss_url"
-    t.boolean  "auth_confirmed",         :default => false,     :null => false
+    t.boolean  "auth_confirmed",           :default => false,     :null => false
     t.string   "auth_error"
     t.datetime "last_backup_at"
     t.date     "latest_day_backed_up"
@@ -269,9 +269,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.integer  "backup_site_id"
-    t.boolean  "skip_video",             :default => false,     :null => false
+    t.boolean  "skip_video",               :default => false,     :null => false
     t.date     "earliest_day_backed_up"
-    t.boolean  "needs_initial_scan",     :default => true,      :null => false
+    t.boolean  "needs_initial_scan",       :default => true,      :null => false
     t.datetime "last_login_attempt_at"
     t.datetime "last_login_at"
     t.string   "title"
@@ -281,8 +281,8 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.binary   "auth_secret_enc"
     t.string   "auth_password2_enc"
     t.string   "auth_login2_enc"
-    t.string   "backup_state",           :default => "pending", :null => false
-    t.integer  "error_notifications_sent", :null => false, :default => 0
+    t.string   "backup_state",             :default => "pending", :null => false
+    t.integer  "error_notifications_sent", :default => 0,         :null => false
   end
 
   add_index "backup_sources", ["backup_site_id"], :name => "index_backup_sources_on_backup_site_id"
@@ -345,9 +345,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "external_id"
   end
 
-  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable"
-  
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
   create_table "content_accessors", :force => true do |t|
     t.integer  "content_authorization_id"
     t.integer  "user_id"
@@ -393,8 +393,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.datetime "deleted_at"
     t.string   "encodingid"
   end
-  add_index "contents", ["type"], :contents => "index_contents_on_type"
-  add_index "contents", ["user_id"], :contents => "index_contents_on_user"
+
+  add_index "contents", ["type"], :name => "index_contents_on_type"
+  add_index "contents", ["user_id"], :name => "index_contents_on_user_id"
 
   create_table "countries", :force => true do |t|
     t.string "name"
@@ -446,19 +447,18 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   add_index "elements", ["story_id"], :name => "index_elements_on_story_id"
 
   create_table "email_blacklists", :force => true do |t|
-    t.text     "email", :null => false
+    t.text     "email",      :null => false
     t.datetime "created_at", :null => false
   end
-  # TODO: add fulltext index in migration
-  #add_index "email_blacklists", ["email"], :name => "index_email_blacklists_on_email"
-  
+
   create_table "email_lists", :force => true do |t|
-    t.integer  "user_id", :null => false
-    t.string   "name", :null => false
-    t.boolean  "is_enabled", :null => false, :default => false
+    t.integer "user_id",                       :null => false
+    t.string  "name",                          :null => false
+    t.boolean "is_enabled", :default => false, :null => false
   end
-  add_index "email_lists", "user_id"
-  
+
+  add_index "email_lists", ["user_id"], :name => "index_email_lists_on_user_id"
+
   create_table "facebook_contents", :force => true do |t|
     t.integer  "profile_id", :null => false
     t.text     "friends"
@@ -477,21 +477,24 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
 
   add_index "facebook_ids", ["facebook_uid"], :name => "index_facebook_ids_on_facebook_uid"
 
-  create_table "facebook_pages", :force => true do |t|
-    t.string "page_id", :null => false
-    t.string "name", :null => false
-    t.text "url", :null => false
-    t.text "page_data"
-    t.timestamps
-  end
-  add_index "facebook_pages", ["page_id"]
-  
-  create_table "facebook_page_admins", :force => true, :id => false do |t|
-    t.integer "facebook_page_id", :null => false
+  create_table "facebook_page_admins", :id => false, :force => true do |t|
+    t.integer "facebook_page_id",    :null => false
     t.integer "facebook_account_id", :null => false
   end
-  add_index "facebook_page_admins", ["facebook_account_id"]
-  
+
+  add_index "facebook_page_admins", ["facebook_account_id"], :name => "index_facebook_page_admins_on_facebook_account_id"
+
+  create_table "facebook_pages", :force => true do |t|
+    t.string   "page_id",    :null => false
+    t.string   "name",       :null => false
+    t.text     "url",        :null => false
+    t.text     "page_data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "facebook_pages", ["page_id"], :name => "index_facebook_pages_on_page_id"
+
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
     t.string   "name"
@@ -596,6 +599,355 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
   end
 
   add_index "jobs", ["profile_id"], :name => "index_jobs_on_profile_id"
+
+  create_table "linkedin_user_certifications", :force => true do |t|
+    t.string   "name"
+    t.string   "authority_name"
+    t.string   "number"
+    t.string   "certification_id"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "linkedin_user_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_cmpies", :force => true do |t|
+    t.text     "job_request_url"
+    t.text     "job_update_description"
+    t.text     "person_update_headline"
+    t.text     "person_update_picture_url"
+    t.integer  "company_id"
+    t.integer  "update_type"
+    t.integer  "job_update_id"
+    t.integer  "job_update_company_id"
+    t.integer  "new_position_company_id"
+    t.integer  "linkedin_user_id"
+    t.string   "company_name"
+    t.string   "profile_update_id"
+    t.string   "profile_update_first_name"
+    t.string   "profile_update_last_name"
+    t.string   "profile_update_headline"
+    t.string   "profile_update_api_standard"
+    t.string   "profile_update_site_standard"
+    t.string   "profile_update_action_code"
+    t.string   "profile_update_field_code"
+    t.string   "job_update_title"
+    t.string   "job_update_company_name"
+    t.string   "job_update_location_description"
+    t.string   "job_update_action_code"
+    t.string   "person_update_id"
+    t.string   "person_update_first_name"
+    t.string   "person_update_last_name"
+    t.string   "person_update_api_standard"
+    t.string   "person_update_site_standard"
+    t.string   "person_update_action_code"
+    t.string   "old_position_title"
+    t.string   "old_position_company_name"
+    t.string   "new_position_title"
+    t.string   "new_position_company_name"
+    t.boolean  "is_commentable"
+    t.boolean  "is_likable"
+    t.datetime "timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_comment_likes", :force => true do |t|
+    t.string   "update_key"
+    t.string   "update_type"
+    t.string   "linkedin_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "api_standard_profile_request"
+    t.string   "site_standard_profile_request"
+    t.integer  "num_likes"
+    t.integer  "linkedin_user_id"
+    t.boolean  "is_commentable"
+    t.boolean  "is_likable"
+    t.boolean  "is_liked"
+    t.text     "headline"
+    t.text     "current_status"
+    t.text     "picture_url"
+    t.datetime "timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_companies", :force => true do |t|
+    t.text     "name"
+    t.text     "industry"
+    t.text     "ticker"
+    t.integer  "size"
+    t.boolean  "type"
+    t.integer  "linkedin_user_id",                         :null => false
+    t.integer  "linkedin_user_positions_linkedin_user_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_connections", :force => true do |t|
+    t.string   "linkedin_id",                   :null => false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "industry"
+    t.string   "location_code"
+    t.integer  "linkedin_user_id",              :null => false
+    t.text     "site_standard_profile_request"
+    t.text     "headline"
+    t.text     "api_standard_profile_request"
+    t.text     "picture_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_current_positions", :force => true do |t|
+    t.integer  "linkedin_user_id", :null => false
+    t.text     "title"
+    t.text     "summary"
+    t.boolean  "is_current"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "company_name"
+    t.string   "company_id"
+    t.string   "company_industry"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_current_shares", :force => true do |t|
+    t.text     "comment"
+    t.datetime "timestamp"
+    t.string   "linkedin_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "source"
+    t.string   "visibility"
+    t.string   "current_share_id"
+    t.integer  "linkedin_user_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_educations", :force => true do |t|
+    t.integer  "linkedin_user_id", :null => false
+    t.string   "school_name"
+    t.string   "field_of_study"
+    t.string   "education_id"
+    t.text     "degree"
+    t.text     "activities"
+    t.text     "notes"
+    t.integer  "start_date"
+    t.integer  "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_im_accounts", :force => true do |t|
+    t.string   "im_account_type"
+    t.string   "im_account_name"
+    t.integer  "linkedin_user_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_languages", :force => true do |t|
+    t.string   "language_name"
+    t.string   "proficiency_level"
+    t.string   "proficiency_name"
+    t.integer  "linkedin_user_id",  :null => false
+    t.integer  "language_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_member_url_resources", :force => true do |t|
+    t.string   "name"
+    t.text     "url"
+    t.integer  "linkedin_user_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_ncons", :force => true do |t|
+    t.string   "linkedin_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.text     "headline"
+    t.text     "picture_url"
+    t.text     "api_standard_profile_request"
+    t.text     "site_standard_profile_request"
+    t.integer  "is_commentable"
+    t.integer  "is_likable"
+    t.integer  "linkedin_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_past_positions", :force => true do |t|
+    t.integer  "linkedin_user_id", :null => false
+    t.text     "title"
+    t.text     "summary"
+    t.boolean  "is_current"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "company_name"
+    t.string   "company_id"
+    t.string   "company_industry"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_patent_inventors", :force => true do |t|
+    t.string   "linkedin_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "linkedin_user_patents_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_patents", :force => true do |t|
+    t.integer  "linkedin_user_id", :null => false
+    t.text     "title"
+    t.text     "summary"
+    t.text     "status_name"
+    t.text     "office_name"
+    t.text     "url"
+    t.text     "patent_id"
+    t.string   "number"
+    t.string   "status_id"
+    t.date     "date_of_issue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_phone_numbers", :force => true do |t|
+    t.string   "phone_type"
+    t.string   "phone_number"
+    t.integer  "linkedin_user_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_positions", :force => true do |t|
+    t.integer  "linkedin_user_id", :null => false
+    t.text     "title"
+    t.text     "summary"
+    t.boolean  "is_current"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "company_name"
+    t.string   "company_id"
+    t.string   "company_industry"
+    t.string   "position_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_publication_authors", :force => true do |t|
+    t.string   "linkedin_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "linkedin_user_publications_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_publications", :force => true do |t|
+    t.integer  "linkedin_user_id", :null => false
+    t.text     "title"
+    t.text     "publisher_name"
+    t.text     "summary"
+    t.text     "url"
+    t.date     "date_of_issue"
+    t.string   "publication_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_recommendations_receiveds", :force => true do |t|
+    t.string   "linkedin_id"
+    t.string   "last_name"
+    t.string   "first_name"
+    t.string   "recommendation_type"
+    t.string   "recommendation_id"
+    t.integer  "linkedin_user_id",    :null => false
+    t.text     "recommendation_text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_skills", :force => true do |t|
+    t.integer  "linkedin_user_id",  :null => false
+    t.string   "name"
+    t.string   "proficiency_level"
+    t.string   "skill_id"
+    t.integer  "yeard_experience"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_twitter_accounts", :force => true do |t|
+    t.string   "provider_account_name"
+    t.string   "provider_account_id"
+    t.integer  "linkedin_user_id",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_update_comments", :force => true do |t|
+    t.string   "linkedin_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "api_standard_profile_request"
+    t.string   "site_standard_profile_request"
+    t.integer  "sequence_number"
+    t.integer  "linkedin_user_comment_like_id"
+    t.text     "comment"
+    t.text     "headline"
+    t.datetime "timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_user_update_likes", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "linkedin_id"
+    t.text     "headline"
+    t.text     "picture_url"
+    t.integer  "linkedin_user_comment_like_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "linkedin_users", :force => true do |t|
+    t.string   "linkedin_id",              :null => false
+    t.string   "first_name",               :null => false
+    t.string   "last_name",                :null => false
+    t.integer  "backup_source_id",         :null => false
+    t.string   "location_code"
+    t.text     "headline"
+    t.text     "industry"
+    t.text     "current_status"
+    t.text     "summary"
+    t.text     "specialties"
+    t.text     "proposal_comments"
+    t.text     "associations"
+    t.text     "honors"
+    t.text     "interests"
+    t.text     "main_address"
+    t.text     "picture_url"
+    t.date     "date_of_birth"
+    t.boolean  "num_connections_capped"
+    t.integer  "distance"
+    t.integer  "num_connections"
+    t.integer  "num_recommenders"
+    t.datetime "current_status_timestamp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "medical_conditions", :force => true do |t|
     t.integer  "profile_id",         :null => false
@@ -719,6 +1071,7 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "s3_key"
     t.string   "state"
   end
+
   add_index "photo_thumbnails", ["parent_id"], :name => "index_photo_thumbnails_on_parent_id"
 
   create_table "plugin_schema_info", :id => false, :force => true do |t|
@@ -1026,8 +1379,9 @@ ActiveRecord::Schema.define(:version => 20100924120713) do
     t.string   "subject",    :null => false
     t.datetime "sent_at",    :null => false
   end
+
   add_index "user_mailings", ["recipients"], :name => "index_user_mailings_on_recipients"
-  
+
   create_table "users", :force => true do |t|
     t.string   "login",                                                          :null => false
     t.string   "email",                                                          :null => false

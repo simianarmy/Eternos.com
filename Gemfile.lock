@@ -108,6 +108,7 @@ GEM
       trollop (~> 1.13)
     linecache (0.43)
     linkedin2 (1.0.1)
+      cobravsmongoose (= 0.0.2)
     lockfile (1.4.3)
     markevans-block_helpers (0.2.11)
       activesupport (>= 2.0)

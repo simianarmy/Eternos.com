@@ -1,8 +1,0 @@
-.top-rightbox
-  = render :partial => 'fb_sync_button', :locals => { :active_step => @active_step, :checked => @always_sync_account_info_with_facebook }
-      
-.clearboth
-%center
-  = image_tag 'progress-bar.gif', {:style => "display:none", :id => 'progress-bar'}
-      
-= render :partial => @content_page, :locals => {:settings => @settings}
