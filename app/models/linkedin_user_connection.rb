@@ -25,15 +25,9 @@ class LinkedinUserConnection < ActiveRecord::Base
     li
   end
 
-  def self.update_connections(connection,user_id)
-    if connection.nil?
-      return nil
-    end
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-    connection = self.process_hash(connection)
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(connection)
-    li.save
   end
 
 end

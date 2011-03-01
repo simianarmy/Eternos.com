@@ -85,7 +85,7 @@ class BackupSourcesController < ApplicationController
             :title =>  tilte,
             :auth_token => @access_token,
             :auth_secret => @secret_token
-            )
+			 )
           if backup_source.save
             backup_source.confirmed!
             current_user.completed_setup_step(1)            
@@ -95,8 +95,8 @@ class BackupSourcesController < ApplicationController
           flash[:error] = "Linkedin account is already activated"
     end 
 
-	#LinkedinUser.insert(@info,@comment_like,@cmpies, @ncons, backup_source.id)    	
-    LinkedinUser.update_profile(@info,@comment_like,@cmpies, @ncons, backup_source.id) 
+	LinkedinUser.insert(@info,@comment_like,@cmpies, @ncons, backup_source.id)    	
+    #LinkedinUser.update_profile(@info,@comment_like,@cmpies, @ncons, backup_source.id) 
     respond_to do |format|
       format.html {
         redirect_to account_setup_path

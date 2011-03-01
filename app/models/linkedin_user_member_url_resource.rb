@@ -8,14 +8,8 @@ class LinkedinUserMemberUrlResource < ActiveRecord::Base
     li = self.new(member_url_resources)
     li
   end
-  def self.update_member_urls(member_url_resources,user_id)
-    if member_url_resources.nil?
-      return nil
-    end
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-    
-    li = self.find_all_by_url_and_linkedin_user_id(member_url_resources['url'], user_id).first
-    li.update_attributes(member_url_resources)
-    li.save
   end
 end

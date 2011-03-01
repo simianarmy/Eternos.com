@@ -9,14 +9,8 @@ class LinkedinUserImAccount < ActiveRecord::Base
     li = self.new(im_account)
     li
   end
-  def self.update_im_accounts(im_account,user_id)
-    if im_account.nil?
-      return nil
-    end
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-   
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(im_account)
-    li.save
   end
 end

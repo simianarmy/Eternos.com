@@ -19,14 +19,8 @@ class LinkedinUserNcon < ActiveRecord::Base
     li = self.new(ncon)
     li
   end
-  def self.update_ncons(ncon,user_id)
-    if ncon.nil?
-      return nil
-    end
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-    ncon = self.process_hash(ncon)
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(ncon)
-    li.save
   end
 end

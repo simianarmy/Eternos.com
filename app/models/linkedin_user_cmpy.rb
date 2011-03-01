@@ -52,15 +52,8 @@ class LinkedinUserCmpy < ActiveRecord::Base
     li = self.new(cmpy)
    
   end
-  def self.update_cmpys(cmpy,user_id)
-    cmpy = self.process_hash(cmpy)
-    if cmpy.nil?
-      return nil
-    end
-    cmpy = self.process_hash(cmpy)
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(cmpy)
-    li.save
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
   end
 

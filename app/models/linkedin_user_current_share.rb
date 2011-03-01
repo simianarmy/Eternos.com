@@ -21,15 +21,8 @@ class LinkedinUserCurrentShare < ActiveRecord::Base
     li = self.new(current_share)
     li
   end
-  def self.update_current_shares(current_share,user_id)
-    if current_share.nil?
-      return nil
-    end
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-    current_share = self.process_hash(current_share)
-	RAILS_DEFAULT_LOGGER.info "AAAAAAAAAAAAAAAAAA:\n #{current_share.inspect}"
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(current_share)
-    li.save
   end
 end

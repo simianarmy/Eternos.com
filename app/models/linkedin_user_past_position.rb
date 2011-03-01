@@ -24,14 +24,8 @@ class LinkedinUserPastPosition < ActiveRecord::Base
     li = self.new(position)
     li
   end
-  def self.update_positions(position,user_id)
-    if position.nil?
-      return nil
-    end
+ def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-    position = self.process_hash(position)
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(position)
-    li.save
   end
 end

@@ -11,14 +11,8 @@ class LinkedinUserPhoneNumber < ActiveRecord::Base
 
     li
   end
-  def self.update_phone_numbers(phone_number,user_id)
-    if phone_number.nil?
-      return nil
-    end
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(phone_number)
-    li.save
   end
 end

@@ -29,17 +29,8 @@ class LinkedinUserPosition < ActiveRecord::Base
     li = self.new(position)
     li
   end
-  def self.update_positions(position,user_id)
-    if position.nil?
-      return nil
-    end
-    position.delete('company')
-	#position.delete('start_date')
-	#RAILS_DEFAULT_LOGGER.info "\n before hash process:#{position.inspect} \n"
-    position = self.process_hash(position)
-    
-	#li = self.find_all_by_position_id_and_linkedin_user_id(position['position_id'],user_id).first
-    #li.update_attributes(position)
-    #li.save
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
+
   end
 end

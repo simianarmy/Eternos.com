@@ -118,12 +118,12 @@ class LinkedinUser < ActiveRecord::Base
       patents['patent'].each { |patent|
         li = LinkedinUserPatent.from_patents(patent)
         linkedin_user_patents << li
-		#li.add_patent_inventors_from_people(patent.delete('inventors'),li.id)
+        #li.add_patent_inventors_from_people(patent.delete('inventors'),li.id)
       }
     else
       li  = LinkedinUserPatent.from_patents(patents['patent'])
       linkedin_user_patents << li
-	  #li.add_patent_inventors_from_people(patents['patent'].delete('inventors'),li.id)
+      #li.add_patent_inventors_from_people(patents['patent'].delete('inventors'),li.id)
     end
   end
 
@@ -298,215 +298,116 @@ class LinkedinUser < ActiveRecord::Base
     if certifications.nil?
       return
     end
-    if Integer(certifications['total']) > 1
-      certifications['certification'].each { |certification|
-        LinkedinUserCertification.update_certification(certification,user_id)
-        
-      }
-    else
-      LinkedinUserCertification.update_certification(certifications['certification'],user_id)
-     
-    end
+    LinkedinUserCertification.delete(user_id)
+    add_certifications_from_people(certifications)
   end
 
   def update_skills_from_people(skills,user_id)
     if skills.nil?
       return
     end
-    if Integer(skills['total']) > 1
-      skills['skill'].each { |skill|
-         LinkedinUserSkill.update_skills(skill,user_id)
-        
-      }
-    else
-       LinkedinUserSkill.update_skills(skills['skill'],user_id)
-     
-    end
+    LinkedinUserSkill.delete(user_id)
+    add_skills_from_people(skills)
   end
 
   def update_connections_from_people(connections,user_id)
     if connections.nil? || connections['connection'].nil?
       return
     end
-    if Integer(connections['total']) > 1
-      connections['connection'].each { |connection|
-         LinkedinUserConnection.update_connections(connection,user_id)
-        
-      }
-    else
-      LinkedinUserConnection.update_connections(connections['connection'],user_id)
-      
-    end
+    LinkedinUserConnection.delete(user_id)
+    add_connections_from_people(connections)
   end
 
   def update_educations_from_people(educations,user_id)
     if educations.nil? || educations['education'].nil?
       return
     end
-    if Integer(educations['total']) > 1
-      educations['education'].each { |education|
-         LinkedinUserEducation.update_educations(education,user_id)
-      
-      }
-    else
-      LinkedinUserEducation.update_educations(educations['education'],user_id)
-      
-    end
+    LinkedinUserEducation.delete(user_id)
+    add_educations_from_people(educations)
   end
 
   def update_im_accounts_from_people(im_accounts,user_id)
     if im_accounts.nil? || im_accounts['im_account'].nil?
       return
     end
-    if Integer(im_accounts['total']) > 1
-      im_accounts['im_account'].each { |im_account|
-         LinkedinUserImAccount.update_im_account(im_account,user_id)
-       
-      }
-    else
-     LinkedinUserImAccount.update_im_accounts(im_accounts['im_account'],user_id)
-      
-    end
+    LinkedinUserImAccount.delete(user_id)
+    add_im_account_from_people(im_accounts)
   end
 
   def update_languages_from_people(languages,user_id)
     if languages.nil? || languages['language'].nil?
       return
     end
-    if Integer(languages['total']) > 1
-      languages['language'].each { |language|
-         LinkedinUserLanguage.update_languages(language,user_id)
-        
-      }
-    else
-       LinkedinUserLanguage.update_languages(languages['language'],user_id)
-      
-    end
+    LinkedinUserLanguage.delete(user_id)
+    add_languages_from_people(languages)
   end
 
   def update_patents_from_people(patents,user_id)
     if patents.nil? || patents['patent'].nil?
       return
     end
-    if Integer(patents['total']) > 1
-      patents['patent'].each { |patent|
-         LinkedinUserPatent.update_patents(patent,user_id)
-        
-      }
-    else
-       LinkedinUserPatent.update_patents(patents['patent'],user_id)
-      
-    end
+    LinkedinUserPatent.delete(user_id)
+    add_patents_from_people(patents)
   end
 
   def update_positions_from_people(positions,user_id)
     if positions.nil? || positions['position'].nil?
       return
     end
-    if Integer(positions['total']) > 1
-      positions['position'].each { |position|
-         LinkedinUserPosition.update_positions(position,user_id)
-        
-      }
-    else
-       LinkedinUserPosition.update_positions(positions['position'],user_id)
-     
-    end
+    LinkedinUserPosition.delete(user_id)
+    add_positions_from_people(positions)
   end
   def update_past_postions_from_people(positions,user_id)
     if positions.nil? || positions['position'].nil?
       return
     end
-    if Integer(positions['total']) > 1
-      positions['position'].each { |position|
-         LinkedinUserPastPosition.update_positions(position,user_id)
-       
-      }
-    else
-      LinkedinUserPastPosition.update_positions(positions['position'],user_id)
-     
-    end
+    LinkedinUserPastPosition.delete(user_id)
+    add_past_postions_from_people(positions)
   end
   def update_current_positions_from_people(positions,user_id)
     if positions.nil? || positions['position'].nil?
       return
     end
-    if Integer(positions['total']) > 1
-      positions['position'].each { |position|
-         LinkedinUserCurrentPosition.update_positions(position,user_id)
-      
-      }
-    else
-      LinkedinUserCurrentPosition.update_positions(positions['position'],user_id)
-      
-    end
+    LinkedinUserCurrentPosition.delete(user_id)
+    add_current_positions_from_people(positions)
   end
 
   def update_publications_from_people(publications,user_id)
     if publications.nil? || publications['publication'].nil?
       return
     end
-    if Integer(publications['total']) > 1
-      publications['publication'].each { |publication|
-         LinkedinUserPublication.update_publications(publication,user_id)
-       
-      }
-    else
-     LinkedinUserPublication.update_publications(publications['publication'],user_id)
-     
-    end
+    LinkedinUserPublication.delete(user_id)
+    add_publications_from_people(publications)
   end
 
   def update_recommendations_receiveds_from_people(recommendations,user_id)
     if recommendations.nil? || recommendations['recommendation'].nil?
       return
     end
-    if Integer(recommendations['total']) > 1
-      recommendations['recommendation'].each { |recommendations_received|
-         LinkedinUserRecommendationsReceived.update_recommendations_receiveds(recommendations_received,user_id)
-       
-      }
-    else
-      LinkedinUserRecommendationsReceived.update_recommendations_receiveds(recommendations['recommendation'],user_id)
-      
-    end
+    LinkedinUserRecommendationsReceived.delete(user_id)
+    add_recommendations_receiveds_from_people(recommendations)
   end
   def update_twitter_accounts_from_people(twitter_accounts,user_id)
     if twitter_accounts.nil? || twitter_accounts['twitter_account'].nil?
       return
     end
-    if Integer(twitter_accounts['total']) > 1
-      twitter_accounts['twitter_account'].each { |twitter_account|
-         LinkedinUserTwitterAccount.update_twitter_accounts(twitter_account,user_id)
-       
-      }
-    else
-      LinkedinUserTwitterAccount.update_twitter_accounts(twitter_accounts['twitter_account'],user_id)
-      
-    end
+    LinkedinUserTwitterAccount.delete(user_id)
+    add_twitter_accounts_from_people(twitter_accounts)
   end
 
   def update_member_url_resources_from_people(member_urls,user_id)
     if member_urls.nil? || member_urls['member_url'].nil?
       return
     end
-    if Integer(member_urls['total']) > 1
-      member_urls['member_url'].each { |member_url|
-         LinkedinUserMemberUrlResource.update_member_urls(member_url,user_id)
-     
-      }
-    else
-      LinkedinUserMemberUrlResource.update_member_urls(member_urls['member_url'],user_id)
-     
-    end
+    LinkedinUserMemberUrlResource.delete(user_id)
   end
   def update_current_shares_from_people(current_share,user_id)
     if current_share.nil?
       return
     end
 
-   LinkedinUserCurrentShare.update_current_shares(current_share,user_id)
-    
+    LinkedinUserCurrentShare.delete(user_id)
+    add_curent_share_from_people(current_share)
 
   end
 
@@ -514,46 +415,24 @@ class LinkedinUser < ActiveRecord::Base
     if phone_numbers.nil? || phone_numbers['phone_number'].nil?
       return
     end
-    if Integer(phone_numbers['total']) > 1
-      phone_numbers['phone_number'].each { |phone_number|
-         LinkedinUserPhoneNumber.update_phone_numbers(phone_number,user_id)
-        
-      }
-    else
-     LinkedinUserPhoneNumber.update_phone_numbers(phone_numbers['phone_number'],user_id)
-      
-    end
+    LinkedinUserPhoneNumber.delete(user_id)
+    add_phone_numbers_from_people(phone_numbers)
   end
 
   def update_comment_likes_from_people(comment_likes,user_id)
     if comment_likes.nil? || comment_likes['update'].nil?
       return
     end
-    if Integer(comment_likes['total']) > 1
-      comment_likes['update'].each { |comment_like|
-         LinkedinUserCommentLike.update_comment_likes(comment_like,user_id)
-       
-      }
-    else
-      LinkedinUserCommentLike.update_comment_likes(comment_likes['update'],user_id)
-     
-    end
+    LinkedinUserCommentLike.delete(user_id)
+    add_comment_likes_from_people(comment_likes)
   end
 
   def update_cmpy_from_people(cmpies,user_id)
     if cmpies.nil? || cmpies['update'].nil?
       return
     end
-    if Integer(cmpies['total'])>1
-      cmpies ['update'].each { |update|
-
-         LinkedinUserCmpy.update_cmpys(update,user_id)
-       
-      }
-    else
-      LinkedinUserCmpy.update_cmpys(cmpies['update'],user_id)
-     
-    end
+    LinkedinUserCmpy.delete(user_id)
+    add_cmpy_from_people(cmpies)
   end
 
   def update_ncon_from_people(ncons,user_id)
@@ -561,7 +440,7 @@ class LinkedinUser < ActiveRecord::Base
       return
     end
     LinkedinUserNcon.update_ncons(ncons['update'],user_id)
-  
+    add_ncon_from_people(ncons)
 
   end
 
@@ -787,7 +666,7 @@ class LinkedinUser < ActiveRecord::Base
     user.update_educations_from_people(educations, user.id)
     user.update_im_accounts_from_people(im_accounts, user.id)
     user.update_languages_from_people(languages, user.id)
-	#user.update_member_url_resources_from_people(member_url_resources, user.id)
+    user.update_member_url_resources_from_people(member_url_resources, user.id)
     user.update_positions_from_people(three_past_positions, user.id)
     user.update_patents_from_people(patents, user.id)
     user.update_phone_numbers_from_people(phone_numbers, user.id)
@@ -796,7 +675,12 @@ class LinkedinUser < ActiveRecord::Base
     user.update_recommendations_receiveds_from_people(recommendations_receiveds, user.id)
     user.update_skills_from_people(skills, user.id)
     user.update_twitter_accounts_from_people(twitter_accounts, user.id)
-	user.update_current_positions_from_people(three_current_positions, user.id)
+    user.update_current_positions_from_people(three_current_positions, user.id)
+
+    user.update_comment_likes_from_people(@comment_like_hash)
+    user.update_cmpy_from_people(@cmpies_hash)
+    user.update_ncon_from_people(@ncons_hash)
+
   end
 
 end

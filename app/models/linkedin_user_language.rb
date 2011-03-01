@@ -5,11 +5,14 @@ class LinkedinUserLanguage < ActiveRecord::Base
     if (language.nil?)
       return nil
     end
-	RAILS_DEFAULT_LOGGER.info "hash : \n#{language.inspect}"
+    RAILS_DEFAULT_LOGGER.info "hash : \n#{language.inspect}"
     language['language_name']        = language.delete('language')['name']
-    language['proficiency_name']     = language['proficiency']['name']
-    language['proficiency_level']    = language['proficiency']['level']
-    language.delete('proficiency')
+    if (!language['proficiency'].nil?)
+      language['proficiency_name']     = language['proficiency']['name']
+      language['proficiency_level']    = language['proficiency']['level']
+      language.delete('proficiency')
+    end
+    
     language['language_id'] = language['id']
     return language
   end
@@ -22,14 +25,8 @@ class LinkedinUserLanguage < ActiveRecord::Base
 
     li
   end
-  def self.update_languages(language,user_id)
-    if language.nil?
-      return nil
-    end
-
-    language = self.process_hash(language)
-    li = self.find_all_by_language_id_and_linkedin_user_id(language['language_id'],user_id).first
-    li.update_attributes(language)
-    li.save
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
+    
   end
 end

@@ -5,14 +5,10 @@ class LinkedinUserCertification < ActiveRecord::Base
     if (hash.nil?)
       return nil
     end
-	
-		
-	
-	
-    hash['authority_name'] = hash['authority']['name']
+	  hash['authority_name'] = hash['authority']['name']
     hash['certification_id'] = hash['id']
-	hash.delete('authority')
-	hash.delete('id')
+    hash.delete('authority')
+    hash.delete('id')
     return hash
   end
 
@@ -33,7 +29,12 @@ class LinkedinUserCertification < ActiveRecord::Base
     certification = self.process_hash(certification)
 	
     li = self.find_all_by_certification_id_and_linkedin_user_id(certification['certification_id'], user_id).first
-    li.update_attributes(certification)
+    if (li.nil?)
+      self.
+    else
+      li.update_attributes(certification)
+    end
+    
     li.save
     
   end

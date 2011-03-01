@@ -9,14 +9,8 @@ class LinkedinUserTwitterAccount < ActiveRecord::Base
    
     li
   end
-  def self.update_twitter_accounts(twitter_account,user_id)
-    if twitter_account.nil?
-      return nil
-    end
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-    RAILS_DEFAULT_LOGGER.info "\n #{twitter_account.inspect} \n"
-    li = self.find_all_by_provider_account_id_and_linkedin_user_id(twitter_account['provider_account_id'],user_id).first
-    li.update_attributes(twitter_account)
-    li.save
   end
 end

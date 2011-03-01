@@ -44,19 +44,8 @@ class LinkedinUserPatent < ActiveRecord::Base
     #li.add_patent_inventors_from_people(inventors)
     li
   end
-  def self.update_patents(patent,user_id)
-    if patent.nil?
-      return nil
-    end
-    inventors = patent.delete('inventors')
-    patent = self.process_hash(patent)
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
 
-    li = self.find_all_by_patent_id_and_linkedin_user_id(patent['patent_id'],user_id).first
-    li.update_attributes(patent)
-    li.save
-
-    #li_inventor = LinkedinUserPatentInventor.find_all_by_linkedin_user_patents_id(li.id).first
-    #li_inventor.update_attributes(inventors)
-    #li_inventor.save
   end
 end

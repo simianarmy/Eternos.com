@@ -25,14 +25,9 @@ class LinkedinUserUpdateComment < ActiveRecord::Base
     li
   end
   
-  def self.update_comments(comment,linkedin_user_comment_like_id)
-    if (comment.nil?)
-      return nil
-    end
-    comment = self.process_hash(comment)
-    li = self.find_all_by_linkdin_id_and_linkedin_user_comment_like_id(comment['linkedin_id'],linkedin_user_comment_like_id).first
-    li.update_attributes(comment)
-    li.save
+def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
+
   end
 
 
