@@ -114,16 +114,19 @@ class LinkedinUser < ActiveRecord::Base
     if patents.nil? || patents['patent'].nil?
       return
     end
+   
     if Integer(patents['total']) > 1
       patents['patent'].each { |patent|
+        inventors = patent['inventors']
         li = LinkedinUserPatent.from_patents(patent)
         linkedin_user_patents << li
-        #li.add_patent_inventors_from_people(patent.delete('inventors'),li.id)
+        li.add_patent_inventors_from_people(inventors)
       }
     else
+      inventors = patents['patent']['inventors']
       li  = LinkedinUserPatent.from_patents(patents['patent'])
       linkedin_user_patents << li
-      #li.add_patent_inventors_from_people(patents['patent'].delete('inventors'),li.id)
+      li.add_patent_inventors_from_people(inventors)
     end
   end
 
@@ -174,14 +177,19 @@ class LinkedinUser < ActiveRecord::Base
     if publications.nil? || publications['publication'].nil?
       return
     end
+
     if Integer(publications['total']) > 1
       publications['publication'].each { |publication|
+        authors = publication['authors']
         li = LinkedinUserPublication.from_publications(publication)
         linkedin_user_publications << li
+        li.add_publication_authors_from_people(authors)
       }
     else
+      authors = publication['authors']
       li  = LinkedinUserPublication.from_publications(publications['publication'])
       linkedin_user_publications << li
+      li.add_publication_authors_from_people(authors)
     end
   end
 
@@ -287,7 +295,7 @@ class LinkedinUser < ActiveRecord::Base
   def add_ncon_from_people(ncons)
     
     if ncons.nil? || ncons['updates'].nil?
-     return
+      return
     end
     #RAILS_DEFAULT_LOGGER.info "#{ncons.inspect}"
     li = LinkedinUserNcon.from_ncons(ncons['update'])
@@ -545,24 +553,24 @@ class LinkedinUser < ActiveRecord::Base
     
     people = LinkedinUser.new(@hash)
     people.save
-#    people.add_skills_from_people(skills)
-#    people.add_certifications_from_people(certifications)
-#    people.add_connections_from_people(connections)
-#    people.add_past_postions_from_people(three_past_positions)
-#    people.add_current_positions_from_people(three_current_positions)
-#    people.add_educations_from_people(educations)
-#    people.add_im_account_from_people(im_accounts)
-#    people.add_languages_from_people(languages)
-#    people.add_patents_from_people(patents)
-#    people.add_positions_from_people(positions)
-#    people.add_publications_from_people(publications)
-#    people.add_recommendations_receiveds_from_people(recommendations_receiveds)
-#    people.add_twitter_accounts_from_people(twitter_accounts)
-#    people.add_member_urls_from_people(member_url_resources)
-#    people.add_curent_share_from_people(current_share)
-#    people.add_phone_numbers_from_people(phone_numbers)
-#    people.add_comment_likes_from_people(@comment_like_hash)
-#    people.add_cmpy_from_people(@cmpies_hash)
+    people.add_skills_from_people(skills)
+    people.add_certifications_from_people(certifications)
+    people.add_connections_from_people(connections)
+    people.add_past_postions_from_people(three_past_positions)
+    people.add_current_positions_from_people(three_current_positions)
+    people.add_educations_from_people(educations)
+    people.add_im_account_from_people(im_accounts)
+    people.add_languages_from_people(languages)
+    people.add_patents_from_people(patents)
+    people.add_positions_from_people(positions)
+    people.add_publications_from_people(publications)
+    people.add_recommendations_receiveds_from_people(recommendations_receiveds)
+    people.add_twitter_accounts_from_people(twitter_accounts)
+    people.add_member_urls_from_people(member_url_resources)
+    people.add_curent_share_from_people(current_share)
+    people.add_phone_numbers_from_people(phone_numbers)
+    people.add_comment_likes_from_people(@comment_like_hash)
+    people.add_cmpy_from_people(@cmpies_hash)
 
     people.add_ncon_from_people(ncons_hash)
    
