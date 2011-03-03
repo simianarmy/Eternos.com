@@ -5,17 +5,6 @@ require 'rubygems'
 require 'activesupport'
 require 'optparse'
 
-# SET ABSOLUTE PATH TO THE RAILS APP HERE
-RAILS_ROOT =  '/var/www/eternos'
-
-$: << RAILS_ROOT
-
-Dir[File.expand_path(File.join(File.dirname(__FILE__), 'workers', '**','*.rb'))].each {|f| require f}
-
-Workers = {
-  'linkedin'   => BackupWorker::Linkedin
-}
-
 # This hash will hold all of the options
 # parsed from the command-line by
 # OptionParser.
@@ -29,17 +18,18 @@ optparse = OptionParser.new do|opts|
   # Define the options, and what they do
   options[:verbose] = false
   opts.on( '-v', '--verbose', 'Output more information' ) do
-    options[:verbose] = true
+    @verbose = options[:verbose] = true
   end
 
   options[:logfile] = nil
   opts.on( '-l', '--logfile FILE', 'Write log to FILE' ) do |file|
     options[:logfile] = file
+    @logger = Logger.new(file)
   end
 
   options[:rails_root] = nil
   opts.on( '-r', '--rails-root DIR', 'Path to Rails app') do |root|
-    options[:rails_root] = root
+    RAILS_ROOT = options[:rails_root] = root
   end
   
   options[:backup_site] = nil
@@ -68,14 +58,20 @@ unless options[:rails_root] && options[:backup_site] && options[:user_id]
 end
 
 # Run the backup
-require File.join(options[:rails_root], 'config/environment.rb')
+$: << RAILS_ROOT
+Dir[File.expand_path(File.join(File.dirname(__FILE__), 'workers', '**','*.rb'))].each {|f| require f}
+require File.join(RAILS_ROOT, 'config/environment.rb')
+
+Workers = {
+  'linkedin'   => BackupWorker::Linkedin
+}
 
 user = nil
 unless user = User.find_by_id(options[:user_id])
   puts "Could not find user with ID = #{options[:user_id]}"
   exit
 end
-puts "Running backup for #{options[:backup_site]} site, user #{user.id}"
+say "Running backup for #{options[:backup_site]} site, user #{user.id}"
 # Get user's backup source object
 backup_source = nil
 case options[:backup_site]
@@ -99,7 +95,12 @@ worker = Workers[options[:backup_site]].new(job)
 mark = Benchmark.measure do
   worker.run
 end
-puts "Backup time: #{mark}"
+say "Backup time: #{mark}"
+say "Done."
 
+### 
 
-puts "Done."
+def say(msg)
+  puts msg, "\n" if @verbose
+  @logger.info(msg) if @logger
+end
