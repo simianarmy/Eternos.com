@@ -2,6 +2,7 @@
 
 require 'twitter_backup'
 require 'google_backup'
+#require 'linkedin2'
 require 'nokogiri'
 
 class BackupSourcesController < ApplicationController
@@ -10,7 +11,8 @@ class BackupSourcesController < ApplicationController
   
   ssl_allowed :add_twitter, :remove_twitter_account,
     :add_picasa, :remove_picasa_account,
-    :add_feed_url, :remove_url, :picasa_auth, :twitter_auth
+    :add_feed_url, :remove_url, :picasa_auth, :twitter_auth,
+	:add_linkedin, :remove_linkedin_account
     
   def index
     @need_setup = current_user.need_backup_setup?
@@ -47,7 +49,75 @@ class BackupSourcesController < ApplicationController
       }
     end
   end
+  def add_linkedin
+    @key ='a9JjbI-dYf91dFUXbtcYEIXDwf8w_BLDnCgijGd7KHGSpaMnv_2MhgbHZaTcsY1w'
+    @secret = 'qVrrdR09jGwMlsiEnOfI5IMVIrT2bgC8rAsKi8gFhaliI8o5P9fI2KPko8lFAPD2'
+    @oauth_callback = root_url + 'backup_sources/linkedin_callback'
+    @userID = '123'
+    consumer = Linkedin2::Consumer.new(@key, @secret,{
+        :oauth_callback=>@oauth_callback
+      })
     
+    session[:consumer] = consumer;
+	@URL_redirect = consumer.request_token
+	redirect_to @URL_redirect
+	
+  end 
+  
+  def linkedin_callback
+    @oauth_verifier = params[:oauth_verifier]
+    consumer = session[:consumer]
+    consumer.access_token(@oauth_verifier.to_s)
+	@access_token = consumer.get_access_token
+    @secret_token = consumer.get_secret_access_token
+    backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
+	
+	@comment_like = consumer.get_network_update('STAT')
+    @info = consumer.get_profile('all')
+    @cmpies = consumer.get_network_update('CMPY')
+	@ncons = consumer.get_network_update('NCON')
+	
+	tilte = consumer.get_first_name.to_s + ' ' + consumer.get_last_name.to_s
+	if backup_source.nil?
+          # Try to get twitter screen name for backup source title
+          backup_source = current_user.backup_sources.new(
+            :backup_site_id => BackupSite.find_by_name(BackupSite::Linkedin).id,
+            :title =>  tilte,
+            :auth_token => @access_token,
+            :auth_secret => @secret_token
+		 )
+          if backup_source.save
+            backup_source.confirmed!
+            current_user.completed_setup_step(1)            
+            flash[:notice] = "Linkedin account successfully saved"
+          end
+    else
+          flash[:error] = "Linkedin account is already activated"
+    end 
+
+	LinkedinUser.insert(@info,@comment_like,@cmpies, @ncons, backup_source.id)    	
+    #LinkedinUser.update_profile(@info,@comment_like,@cmpies, @ncons, backup_source.id) 
+    respond_to do |format|
+      format.html {
+        redirect_to account_setup_path
+      }
+      end
+  end
+# Remove Linked In Account
+  def remove_linkedin_account
+    begin
+      remove_account(BackupSite::Linkedin, params[:id])
+      flash[:notice] = "Linked In account removed"
+    rescue
+      flash[:error] = "Could not find Linked In account to remove"
+    end
+    find_linkedin_accounts
+    find_linkedin_confirmed
+
+    respond_to do |format|
+      format.js
+    end
+  end
   # Twitter OAuth authentication callback url
   def twitter_auth
     begin
@@ -199,6 +269,7 @@ class BackupSourcesController < ApplicationController
     end
   end 
   
+  
   def remove_url
     begin
       remove_account(BackupSite::Blog, params[:id])
@@ -237,6 +308,15 @@ class BackupSourcesController < ApplicationController
     @rss_url = current_user.backup_sources.blog.first
     @rss_confirmed = @rss_url && @rss_url.confirmed?
   end
+  
+  def find_linkedin_accounts
+    @linkedin_accounts = current_user.backup_sources.linkedin
+  end
+  
+  def find_linkedin_confirmed
+    @linkedin_account   = current_user.backup_sources.linkedin.first
+    @linkedin_confirmed = @linkedin_account && @linkedin_account.confirmed?
+  end 
   
   def remove_account(type, id)
     # Soft delete backup source?

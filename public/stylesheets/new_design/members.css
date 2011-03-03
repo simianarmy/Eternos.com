@@ -124,7 +124,7 @@ FIELDSET { margin: 0; padding: 0; border: none;}
 .back-events { float: right; }
 .back-events A {background: url(/images/button-back-events.gif) no-repeat; display: block; width: 76px; height: 22px; padding: 8px 0 0 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; text-align: center; text-decoration: none;}
 .back-events A:hover { background: url(/images/bg_login-button.gif) no-repeat;}
-#facebook-box, #twitter-box, #gmail-box, #rss-box, #picasa-box { background: #F0F7F9; padding: 20px; margin: 0 0 0 65px; width: 440px;}
+#facebook-box, #twitter-box, #gmail-box, #rss-box, #picasa-box, #linkedin-box { background: #F0F7F9; padding: 20px; margin: 0 0 0 65px; width: 440px;}
 #twitter-box IMG { border: none; margin: 5px 0;}
 #rss-box INPUT[type=submit] {background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer; vertical-align: middle; margin-top: 3px;}
 #rss-box INPUT[type=text], #gmail-box INPUT[type=text], #gmail-box INPUT[type=password] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #666666; font-weight: bold; width: 245px;}

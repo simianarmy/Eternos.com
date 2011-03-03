@@ -1,0 +1,5 @@
+page.flash_and_fade :linkedin_notice
+
+page.replace_html('result-linkedin-accounts', :partial => 'backup_sources/linkedin_list',
+    :locals => {:list => @linkedin_accounts})
+page.call 'updateSourceActivationIcon', 'linkedin', (@linkedin_accounts && @linkedin_accounts.any?) ? 'true' : 'false'

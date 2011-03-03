@@ -4,7 +4,7 @@
 
 class MemberHomePresenter < Presenter
   attr_accessor :facebook_confirmed, :twitter_confirmed, :picasa_confirmed,
-    :rss_confirmed, :gmail_confirmed
+    :rss_confirmed, :gmail_confirmed, :linkedin_confirmed
     
   include BackupSourceActivation
   
