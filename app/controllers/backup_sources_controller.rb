@@ -72,11 +72,6 @@ class BackupSourcesController < ApplicationController
     @secret_token = consumer.get_secret_access_token
     backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
 	
-	@comment_like = consumer.get_network_update('STAT')
-    @info = consumer.get_profile('all')
-    @cmpies = consumer.get_network_update('CMPY')
-	@ncons = consumer.get_network_update('NCON')
-	
 	tilte = consumer.get_first_name.to_s + ' ' + consumer.get_last_name.to_s
 	if backup_source.nil?
           # Try to get twitter screen name for backup source title
@@ -95,9 +90,7 @@ class BackupSourcesController < ApplicationController
           flash[:error] = "Linkedin account is already activated"
     end 
 
-	LinkedinUser.insert(@info,@comment_like,@cmpies, @ncons, backup_source.id)    	
-    #LinkedinUser.update_profile(@info,@comment_like,@cmpies, @ncons, backup_source.id) 
-    respond_to do |format|
+	respond_to do |format|
       format.html {
         redirect_to account_setup_path
       }
