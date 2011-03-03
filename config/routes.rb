@@ -44,7 +44,7 @@ ActionController::Routing::Routes.draw do |map|
     :picasa_auth => :get,
     :remove_url => :get,
     :remove_picasa_account => :get,
-    :remove_twitter_account => :get
+    :remove_twitter_account => :get,
 	  :linkedin_callback => :get
   }
   map.resources :backup_source_jobs, :member => { :progress => :get }
@@ -184,7 +184,7 @@ ActionController::Routing::Routes.draw do |map|
   map.forgot_password '/account/forgot', :controller => 'sessions', :action => 'forgot'
   map.reset_password '/account/reset/:token', :controller => 'sessions', :action => 'reset'
   
-  map.with_options(:conditions => {:subdomain => AppConfig['admin_subdomain']}) do |subdom|
+  map.with_options(:conditions => {:subdomain => 'admin'}) do |subdom|
     subdom.root :controller => 'subscription_admin/subscriptions', :action => 'index'
     subdom.with_options(:namespace => 'subscription_admin/', :name_prefix => 'admin_', :path_prefix => nil) do |admin|
       admin.resources :subscriptions, :member => { :charge => :post }
