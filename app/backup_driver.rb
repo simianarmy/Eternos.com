@@ -50,7 +50,6 @@ optparse = OptionParser.new do|opts|
   end
 end
 optparse.parse!
-
 puts options.inspect
 unless options[:rails_root] && options[:backup_site] && options[:user_id]
   puts "Missing args.  Run with -h for options." 

@@ -15,14 +15,8 @@ class LinkedinUserPublicationAuthor < ActiveRecord::Base
     li = self.new(author)
     li
   end
-  def self.update_authors(author,user_id)
-    if author.nil?
-      return nil
-    end
+ def self.delete(publication_id)
+    self.delete_all(["linkedin_user_patents_id = ?" , publication_id])
 
-    author = self.process_hash(author)
-    li = self.find_all_by_linkedin_id_and_linkedin_user_id(author['linkedin_id'],user_id).first
-    li.update_attributes(author)
-    li.save
   end
 end
