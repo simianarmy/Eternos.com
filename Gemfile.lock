@@ -5,6 +5,11 @@ GIT
     mogli (0.0.25)
       httparty (>= 0.4.3)
 
+PATH
+  remote: vendor/linkedin2-1.0.1
+  specs:
+    linkedin2 (1.0.1)
+
 GEM
   remote: http://rubygems.org/
   remote: http://gemcutter.org/
@@ -123,8 +128,6 @@ GEM
       sequel (~> 3.14)
       trollop (~> 1.13)
     linecache (0.43)
-    linkedin2 (1.0.1)
-      cobravsmongoose (= 0.0.2)
     lockfile (1.4.3)
     markevans-block_helpers (0.2.11)
       activesupport (>= 2.0)
@@ -279,7 +282,7 @@ DEPENDENCIES
   jnunemaker-columbus
   json_pure (= 1.4.6)
   larch
-  linkedin2
+  linkedin2 (= 1.0.1)!
   lockfile
   markevans-block_helpers
   mash
