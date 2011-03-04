@@ -1,0 +1,20 @@
+- stylesheet 'application'
+- hide_login_box
+= render :partial => 'left_content', :locals => {:step => 2}
+
+.content-box.billing
+  %h1 Payment Submitted!
+  %h2 Your payment has been submitted and will be processed in the next 24 hours.
+  %p 
+    An order receipt will be sent to 
+    %strong= @account.admin.email
+  %h1
+    Subscription Plan: 
+    = @plan.to_s
+  %p
+    %strong
+      Your account will be billed once per month as a recurring charge.
+  = render :partial => 'shared/mcafee_secure'
+  
+  %p
+    = link_to 'Proceed to Account Setup', account_setup_path, :id => "yellow-button2"

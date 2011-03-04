@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang='en' xml:lang='en' xmlns:fb='http://www.facebook.com/2008/fbml' xmlns='http://www.w3.org/1999/xhtml'> 
+<head>
+<meta content='IE=8' http-equiv='X-UA-Compatible' /> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Eternos Account Setup</title>
+<%= stylesheet_link_tag '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'application', 'account_settings', 'vault/style', :cache => 'priv_account_setup' %>
+<!--[if lte IE 7]>
+	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+<% load_jquery_prototype_compat_mode %>
+<%= yield(:js_libs)  %>
+</head>
+<body>
+  <div class="header">
+    <%= render :partial => 'shared/home_login_form' %>
+    <%= link_to image_tag('vault/logo.png'), root_path %>
+  	<ul>
+  		<li class="inact"><%= link_to 'Home', vault_dashboard_path %><span></span></li>
+  		<li class="active"><%= link_to 'Backups', account_backups_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Account', account_manager_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
+  	</ul>
+  </div>
+  <div class="content">
+    <div class="left">	
+      <div class="myBox box01">
+          <h2>Backup Services</h2>
+          <p>Backing up your Gmail, social media and RSS Feed activity is easy.<br/>
+           Just click each of
+          the icons to the right and enter the required information.
+          <br/>
+            <br/>
+          <br/>
+          <strong>Important</strong> - If you change your authentication settings on any 
+          of the sites listed, make sure that you update the credentials here too, or we will not 
+          be able to continute backing up your data.
+          </p>
+      </div>
+    </div>
+  
+  	<div class="content-box home">
+  		<%= yield %>
+  	</div>
+  </div>
+
+<%= render :partial => 'shared/vault/footer' %>
+<%= javascript_tag "
+  // Accordion  setup 
+  jQuery(function() { 
+    jQuery('#accordion').tabs('#accordion div.pane', {tabs: 'p', effect: 'slide', initialIndex: 0});
+  });"
+%>
+<%= javascript_include_tag "lightview2.5.2.1/js/lightview", 'application', 'login', 'lowpro', 'behaviors', 'account_setup', :cache => "cache/vault_account_setup" %>
+<%= fb_connect_javascript_tag %>
+<%= init_fb_connect "XFBML" %>
+</body>
+</html>

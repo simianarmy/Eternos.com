@@ -1,0 +1,48 @@
+!!!
+%html{html_attrs('en'), 'xmlns:fb' => "http://www.facebook.com/2008/fbml"}
+  %head
+    <!-- Google Website Optimizer Control Script -->
+    <script>
+    function utmx_section(){}function utmx(){}
+    (function(){var k='3026038930',d=document,l=d.location,c=d.cookie;function f(n){
+    if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.indexOf(';',i);return escape(c.substring(i+n.
+    length+1,j<0?c.length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;
+    d.write('<sc'+'ript src="'+
+    'http'+(l.protocol=='https:'?'s://ssl':'://www')+'.google-analytics.com'
+    +'/siteopt.js?v=1&utmxkey='+k+'&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='
+    +new Date().valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
+    '" type="text/javascript" charset="utf-8"></sc'+'ript>')})();
+    </script>
+    <!-- End of Google Website Optimizer Control Script -->
+    %link{:rel=>"shortcut icon", :type=>"image/vnd.microsoft.icon", :href=>"#{image_path 'favicon.ico'}"}
+    %link{:rel=>"icon", :type=>"image/png", :href=>"#{image_path 'favico.png'}"}
+    %meta{:'http-equiv' => "X-UA-Compatible", :content => "IE=8"}
+    %meta{:'http-equiv'=>"Content-Type", :content=>"text/html; charset=iso-8859-1"}
+    %meta{:name=>"keywords", :content=>"#{meta_keywords}"}
+    %meta{:name=>"description", :content=>"#{meta_descriptions}"}
+    %title= "Eternos | Start Saving Your Life's Moments - " + h(yield(:title) || "Home")
+    /[if lte IE 7]
+      = stylesheet_link_tag "new_design/styleie7.css"
+    /[if lte IE 6]
+      = stylesheet_link_tag "new_design/styleie6.css"
+
+    - stylesheet 'new_design/style.css', '/javascripts/lightview2.5.2.1/css/lightview.css'
+    = yield(:head)
+    
+    :javascript
+      var FlowplayerSwfUrl = '#{video_player_swf_url}';
+      var FLOWPLAYER_PRODUCT_KEY = '#{FLOWPLAYER_PRODUCT_KEY}';
+  %body
+    .header
+      %div
+        = render :partial => 'shared/home_login_form', :locals => {:hide => @hide_login}
+        = render :partial => 'shared/public_header'
+        
+    = yield
+    
+    = render :partial => 'shared/site_footer' unless @hide_footer
+    = render :partial => 'shared/get_satisfaction' unless @hide_feedback
+
+    = javascript_include_tag "jQuery/jquerytools-1.1.2.min", "application_jquery", "prototype", "scriptaculous", "effects", "controls", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", "lowpro", "defaultvalueactsashint", "behaviors", "facebook", :cache => "cache/public"
+    = fb_connect_javascript_tag
+    = init_fb_connect "XFBML"

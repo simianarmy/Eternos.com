@@ -1,0 +1,45 @@
+<% stylesheet 'application' %>
+<% javascript "#{request.protocol}api.recaptcha.net/js/recaptcha_ajax.js" %>
+<% hide_login_box %>
+
+<div class="content">
+	<%= render :partial => 'left_content', :locals => {:step => 1} %>
+	<div class="content-box billing">
+	
+		<h1>Create Your Account</h1>
+		
+		<% semantic_form_for @account, :url => {:action => 'create'}, 
+		  :method => :post, :html => {:class => 'form_with_terms', :id => "new_account_form"} do |f| %>
+		  <%= show_flash_messages %>
+      <% f.semantic_fields_for :users do |user| %>
+      <%= hidden_field_tag 'plan', @plan.name %>
+        <ul class="form-ul3">
+          <%= user.input 'email', :hint => 'Your email will be used to login' %>
+          <%= user.input 'password' %>
+          <%= user.input 'password_confirmation', :type => 'password' %>
+          <%= user.input 'first_name' %>
+          <%= user.input 'last_name' %>
+        
+          <%= f.input :company_name, :required => false %>
+          <%= f.input :phone_number, :required => false %>
+
+          <li><label></label>
+            <%= check_box_tag 'account[users_attributes][0][terms_of_service]', "1", (@terms_of_service == true), 
+              {:id => 'terms_of_service'} %>
+            I accept the 
+            <%= link_to 'Terms and Conditions', '/about/terms', :target => '_new' %>
+            
+          </li>
+          <li>
+    				<label>&nbsp;</label>
+    				  <input class="submit yellow-button3" name="commit" value="Sign Up" type="submit" /><br/>
+    			</li>
+    			<li><label></label>
+    			  <%= link_to 'Already Have An Account? Click Here', get_login_path %>
+    			</li>
+    			<li><label></label><%= render :partial => 'shared/mcafee_secure' %></li>
+        </ul>
+      <% end %>
+    <% end %>
+	</div>
+</div>

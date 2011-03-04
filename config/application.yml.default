@@ -1,0 +1,93 @@
+# $Id: application.yml 1064 2010-07-10 06:24:54Z marc $
+#
+# CREATE REQUIRED PATHS ON YOUR FILESYSTEM SO THAT YOU DON'T HAVE TO EDIT THESE SETTING!
+
+common: &default_settings
+  invitation_required: false
+  email_registration_required: false 
+  support_email: support@eternos.com
+  reports_email: reports@eternos.com
+  # Set this to true if you want to require CC info when creating a trial account for a paid plan
+  require_payment_info_for_trials: true
+  # Credit card gateway: One of brain_tree, authorize_net_cim, payment_express, or trust_commerce
+  gateway: brain_tree
+  google_api_key: ABQIAAAAZPXQb6LGyRfyadFTEMyJIRSBkZHnxytVLIqnmhvWs6MeAadaiRQtxqlrdL3Mp_y0DANZxt-5Npq0dA
+  base_domain: eternos.com
+  # Used for accessing the site admin controllers, to manage plans,
+  # discounts, etc.  This is prepended to base_domain, so 'admin'
+  # here will allow admin.example.com to serve the admin interface.
+  admin_subdomain: admin
+  default_plan: Free
+  
+development:
+  <<: *default_settings
+  invitation_required: false 
+  email_registration_required: false
+  app_name: Eternos Dev
+  from_email: support@eternos.com
+  reports_email: marc@eternos.com 
+  base_domain: dev.eternos.com
+  FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
+  s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false
+  timeline_fb_comment_accounts:
+    - 178
+  
+test:
+  <<: *default_settings
+  FlashRecordingPath: /Users/marcmauger/Documents/costasoft/projects/eternos.com/spec/fixtures
+  app_name: Eternos Test
+  from_email: test@eternos.com
+  reports_email: marc@eternos.com
+  base_domain: localhost
+  s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false
+  
+cucumber: &cuke
+  <<: *default_settings
+  app_name: Eternos Test
+  from_email: test@eternos.com
+  reports_email: marc@eternos.com
+  base_domain: localhost
+  s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false
+  
+culerity:
+  <<: *cuke
+  
+production:
+  <<: *default_settings
+  app_name: Eternos.com
+  from_email: support@eternos.com
+  reports_email: reports@eternos.com
+  base_domain: eternos.com
+  FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
+  s3_staging_dir: tmp/cloud_staging
+  invitation_required: false
+  ffmpeg_path: /usr/local/bin/ffmpeg
+  register_users_to_facebook: true
+    
+staging:
+  <<: *default_settings
+  app_name: Eternos.com
+  from_email: support@eternos.com
+  reports_email: marc@eternos.com
+  base_domain: staging.eternos.com
+  FlashRecordingPath: /opt/red5/webapps/messageRecorder/streams
+  s3_staging_dir: tmp/cloud_staging
+  ffmpeg_path: /usr/local/bin/ffmpeg
+  register_users_to_facebook: true
+
+local_production:
+  <<: *default_settings
+  invitation_required: false 
+  app_name: Eternos
+  from_email: dev@eternos.com
+  base_domain: dev.eternos.com
+  FlashRecordingPath: /Applications/Red5/webapps/messageRecorder/streams
+  s3_staging_dir: /tmp
+  ffmpeg_path: /opt/local/bin/ffmpeg
+  register_users_to_facebook: false

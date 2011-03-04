@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>Home</title>
+  <%= stylesheet_link_tag 'application', 'prototip', '/javascripts/lightview2.5.2.1/css/lightview.css', 'formtastic_changes', 'vault/style', :cache => 'priv_billing' %>
+  <!--[if lte IE 7]>
+  	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
+  <![endif]-->
+  <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+  <% load_jquery_prototype_compat_mode %>
+  <%= yield(:js_libs) %>
+</head>
+<body>
+  <div class="header">
+    <%= render :partial => 'shared/home_login_form' %>
+    <%= link_to image_tag('vault/logo.png'), root_path %>
+  	<ul>
+  		<li class="inact"><%= link_to 'Home', vault_dashboard_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Backups', account_backups_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Account', account_manager_path %><span></span></li>
+  		<li class="active"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
+  	</ul>
+  </div>
+  <div class="content">
+    <div class="left">	
+      <div class="myBox box01">
+          <h2>Account Settings</h2>
+          <ul class="leftnav-tabs">
+            <li>
+              <%= link_to "Change your plan", "#plan" %>
+            </li>
+            <li>
+              <%= link_to "Payment History", "#history" %>
+            </li>
+          </ul>
+      </div>
+    </div>
+  	<div class="content-box home">
+  	  <!-- tab "panes" -->
+      <div class="panes">
+  		  <%= yield %>
+  		</div>
+  	</div>
+  </div>
+  <%= render :partial => 'shared/vault/footer' %>
+  <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "lightview2.5.2.1/js/lightview", "lowpro", "defaultvalueactsashint", "behaviors", :cache => 'cache/vault_billing' %>
+  <%= javascript_tag "
+  // perform JavaScript after the document is scriptable.
+  jQuery(function() {
+  	// setup ul.tabs to work as tabs for each div directly under div.panes
+  	var left_tabs = jQuery('ul.leftnav-tabs').tabs('div.panes > div.account-settings-tab-contents', {
+  	  initialIndex: #{['plans', 'change_plan'].include?(controller.action_name) ? 0 : 1},
+  	  api: true
+  	});
+  });" %>
+</body>
+</html>

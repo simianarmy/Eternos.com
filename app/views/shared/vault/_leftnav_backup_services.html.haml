@@ -1,0 +1,9 @@
+%h1 Backup Services
+Manage the accounts Eternos Vault will archive for you!
+%p
+  = backup_icon('facebook', '36x36', settings.facebook_confirmed)
+  = backup_icon('twitter', '36x36', settings.twitter_confirmed)
+  = backup_icon('gmail', '36x36', settings.gmail_confirmed)
+  = backup_icon('rss', '36x36', settings.rss_confirmed)
+  
+= link_to 'Add More', account_backups_path, :id => "active_network-add"

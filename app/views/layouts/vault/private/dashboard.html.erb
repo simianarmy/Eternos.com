@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>Home</title>
+  <% stylesheet 'application', 'timeline', 'media', '/javascripts/lightview2.5.2.1/css/lightview.css', 'prototip', 'soundmanager-ui', 'inlineplayer', 'vault/style', :cache => "cache/vault_dashboard" %>
+  <%= yield(:head)  %>
+  <!--[if lte IE 7]>
+  	<link href="stylesheets/vault/style-ie7.css" rel="stylesheet" type="text/css" />
+  <![endif]-->
+  <script type="text/javascript" src="/javascripts/curvycorners.js"></script>
+  <% load_jquery_prototype_compat_mode %>
+  <%= yield(:js_libs) %>
+</head>
+<body>
+  <div class="header">
+    <%= render :partial => 'shared/home_login_form' %>
+    <%= link_to image_tag('vault/logo.png'), vault_home_path %>
+  	<ul>
+  		<li class="active"><%= link_to 'Home', vault_dashboard_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Backups', account_backups_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Account', account_manager_path %><span></span></li>
+  		<li class="inact"><%= link_to 'Plans &amp; Billing', plans_account_manager_path %><span></span></li>
+  	</ul>
+  </div>
+  <div class="content">
+  	<div class="left">	
+      <%= render :partial => 'shared/vault/leftnav_backup_services', :locals => {:settings => @settings} %>       
+      <div class="search-box">
+    	  <h2 style="margin: 0;">Search your archive</h2>
+      	<% form_tag "javascript:void(0);", :class => 'search', :onsubmit => "searchArchive(this.terms.value); return false" do %>
+          <%= text_field_tag :terms, params[:terms], :class => 'search-input withHint', :defaultValue => 'Search' %>
+          <%= submit_tag("Search", :class => 'search-button') %>
+          <em>This function allows you to find any word or phrase in your backup archive. </em>
+        <% end %>
+      </div>
+      <p>&nbsp;</p>
+      <div class="myBox box01">
+          <h2>Additional Services</h2>
+          <p><%= link_to 'Download data', '#' %></p>
+          <p><%= link_to 'Backup statistics', '#' %></p>
+          <p><%= link_to 'Moderate content', '#' %></p>
+          <p><%= link_to 'Live support chat', '#' %></p>
+          <p><%= link_to 'Request new backup site', '#' %></p>
+      </div>
+    </div>
+
+  	<div class="content-box home">
+  		<%= yield %>
+  	</div>
+  </div>
+  <%= render :partial => 'shared/vault/footer' %>
+  <%= javascript_include_tag "prototip2.1.0.1/js/prototip", "lightview2.5.2.1/js/lightview", "flowplayer-3.1.4.min", "flowplayer.playlist-3.0.7", 'soundmanager2-nodebug-jsmin', 'inlineplayer', 'application', "lowpro", "defaultvalueactsashint", "behaviors", 'login', 'cvi_busy_lib', :cache => 'cache/vault_dashboard' %>
+  <%= javascript_tag "ETERNOS.session_timeout_seconds = #{session_timeout_seconds}; ETERNOS.debug = #{Rails.env == 'development' ? 'true' : 'false'};" %>
+</body>
+</html>
+  
+

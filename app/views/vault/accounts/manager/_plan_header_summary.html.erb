@@ -1,0 +1,12 @@
+<h1>Current Plan</h1>
+<div class="plan-status">
+  <div> 
+    <strong><%= @plan.to_s %></strong><br/>
+  </div>
+  <div>
+    0GB / <%= number_to_human_size(@plan.disk_limit.gigabytes) %><br/>Disk space (soft limit)
+  </div>
+  <div>
+    <%= current_user.backup_sources.count %> / <%= @plan.backup_site_limit %><br/>backup accounts
+  </div>
+</div>

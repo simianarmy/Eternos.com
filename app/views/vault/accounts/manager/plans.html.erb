@@ -1,0 +1,111 @@
+<div id="plan-overview" class="billing">
+  <%= render :partial => 'plan_header_summary' %>
+</div>
+<div style="clear:both;" class="bottom_border_line"></div>
+<%= show_flash_messages %>
+<div class="account-settings-tab-contents billing">
+  <div id="billing-cc" class="bottom_border_line">
+    <span><strong>Credit card on file.</strong> 
+      <%= link_to 'Show card', '#cc-info', :class => 'lightview', :title => "Your credit card" %>
+    </span>
+    <div style="float:right;">
+      <span class="smalldate">Next billed on <%= @subscription.next_renewal_at.to_s(:short_day) %></span>
+      <span><%= link_to 'Update credit card', "#cc-update", :class => 'lightview', 
+        :title => "Credit Card Information :: :: width: 530, height: 340" %></span>
+    </div>
+  </div>
+  <div class="bottom_border_line">
+    <table class="plans-table">
+      <tbody>
+        <tr>
+          <th>Plan</th>
+          <th class="num">Disk Space</th>
+          <th class="num">Accounts</th>
+          <th></th>
+        </tr>
+    <% @plans.each do |plan| %>
+      <tr class="<%= 'current' if plan == @plan %>">
+        <td class="name"><%= plan.to_s %></td>
+        <td class="num"><%= number_to_human_size plan.disk_limit.gigabytes %></td>
+        <td class="num"><%= plan.backup_site_limit %></d>
+        <td class="action">
+          <% if plan == @plan %>
+            Your plan
+          <% else %>
+            <% form_tag plan_account_manager_path(:plan_id => plan.id), :method => :post do %>
+              <input type="submit" value="<%= change_plan_button_text(@plan, plan) %>" class="grey-button">
+            <% end %>
+          <% end %>
+        </td> 
+      </tr>
+    <% end %>
+      <tr>
+        <td class="custom" colspan="4">
+          Larger plans availabe on request - contact <%= mail_to 'support@eternos.com' %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <!--<p>Show any coupon, discount, or bulk/large plan info links here</p>-->
+  </div>
+</div>
+<div class="account-settings-tab-contents billing">
+  <h1>Past payments</h1>
+  <div id="receipts">
+    <table cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>
+          <th>Date</th>
+          <th>Card</th>
+          <th>Payment</th>
+          <th>Amount</th>
+        </tr>
+        <tr class="success">
+          <td class="date"><%= Date.today.to_s(:short_day) %></td>
+          <td class="card">xxxx</td>
+          <td class="receipt"><a href="#">Download Receipt</a></td>
+          <td class="amount">USD <%= number_to_currency(0, :locale => I18n.locale) %></td>
+        </tr>
+        <% @account.subscription_payments.each do |receipt| %>
+          <tr class="success">
+            <td class="date"><%= receipt.created_at.to_s(:db) %></td>
+            <td class="card"><%= receipt.subscription.card_number %></td>
+            <td class="receipt"><%= link_to 'Download Receipt', '#' %></td>
+            <td class="amount">USD <%= number_to_currency(receipt.amount, :locale => I18n.locale) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div id="cc-info" class="billing" style="display: none;">
+  <h1>Your credit card </h1>
+  <ul class="form-ul3">
+    <li><strong>Card: </strong><%= @subscription.card_number %></li>
+    <li><strong>Exp: </strong><%= @subscription.card_expiration %></li>
+  </ul>
+</div>
+<div id="cc-update" class="billing" style="display: none;">
+  <div class="update-cc-form">
+    <h1>Update your card information</h1>
+    <p class="bottom_border_line"/>
+    <% semantic_form_for :creditcard, :url => { :action => 'billing' } do |f| %>
+      <ul class="form-ul3">
+        <li><%= image_tag 'credit-cards.jpg', :id => 'credit-cards' %></li>
+        <%= f.input :number, :label => 'Card Number' %>
+        <li id="creditcard_expdate_input" class="float required">
+          <%= f.label :month, "Expiration Date" %>
+          <%= f.select :month, (1..12) %>
+          <%= f.select :year, ((y = Date.today.year) .. y+10) %>
+        </li>
+        <li class="update-terms">
+        Please review the <%= link_to 'terms of service', '/about/terms', :target => '_new' %>, 
+        and <%= link_to 'privacy policy', '/about/privacy', :target => '_new' %>. 
+        All sales are final — <strong>no refunds</strong>.
+        </li>
+      </ul>
+      
+      <%= submit_tag :submit, :value => "Update Credit Card", :class => "submit sign-up", :id => "yellow-button3" %>
+    <% end %>
+  </div>
+</div>
