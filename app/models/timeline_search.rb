@@ -4,6 +4,7 @@
 
 class TimelineSearch
   cattr_reader :max_results, :type_action_map, :filter_action_map
+
   @@max_results = 50
   @@type_action_map = {
     :email      => :get_emails,
@@ -55,18 +56,17 @@ class TimelineSearch
   # Performs search and returns results as collection of TimelineEvents
   def results
     # do search 
-    events = []
+    found = []
     search_methods.each do |meth|
-      RAILS_DEFAULT_LOGGER.debug "calling #{meth}..."
+      Rails.logger.debug "calling #{meth}..."
       if res = self.send(meth)
-        RAILS_DEFAULT_LOGGER.debug "#{meth} returned #{res.size} items"
-        events += res
+        Rails.logger.debug "#{meth} returned #{res.size} items"
+        found += res
       end
     end
-    RAILS_DEFAULT_LOGGER.debug "Done fetching items."
+    Rails.logger.debug "Done fetching items."
     # Conver to unique list of timeline event objects
-    post_process_results(events)
-    @events
+    post_process_results(found)
   end
   
   def num_results
@@ -85,7 +85,11 @@ class TimelineSearch
   end
   
   def get_facebook_items
-    query @member.activity_stream.items.facebook.searchlogic
+    items = query(@member.activity_stream.items.facebook.searchlogic)
+    if facebook_source
+      items += query(FacebookMessage.backup_source_id_eq(facebook_source.id).searchlogic)
+    end
+    items
   end
   
   def get_twitter_items
@@ -250,17 +254,21 @@ class TimelineSearch
     # Check for dups in facebook attachments & photo objects
     if search_types.include?(:facebook) && search_types.include?(:photos)
       fb_photo_urls = collect_facebook_attachment_urls
-      RAILS_DEFAULT_LOGGER.debug "fb photo url hash: #{fb_photo_urls.keys.inspect}"
-      RAILS_DEFAULT_LOGGER.debug "events before rejecting: #{@events.size}"
+      Rails.logger.debug "fb photo url hash: #{fb_photo_urls.keys.inspect}"
+      Rails.logger.debug "events before rejecting: #{@events.size}"
       @events.reject!{|e| (e.type == 'photo') && fb_photo_urls[e.event.url]}
-      RAILS_DEFAULT_LOGGER.debug "events after rejecting: #{@events.size}"
+      Rails.logger.debug "events after rejecting: #{@events.size}"
     end
-    @events
   end
   
   def post_process_results(results)
-    results.uniq.each {|res| add_events(res)}
-    remove_duplicates
+    if @options[:raw_results]
+      @events = results.compact.flatten.uniq
+    else
+      results.uniq.each {|res| add_events(res)}
+      remove_duplicates
+      @events
+    end
   end
   
   private

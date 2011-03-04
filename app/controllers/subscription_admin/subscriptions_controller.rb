@@ -1,4 +1,4 @@
-class SubscriptionAdmin::SubscriptionsController < ApplicationController
+class SubscriptionAdmin::SubscriptionsController < AdminsController
   include ModelControllerMethods
   include AdminControllerMethods
   
@@ -20,9 +20,9 @@ class SubscriptionAdmin::SubscriptionsController < ApplicationController
   end
   
   protected
-    
-    def redirect_url
-      action_name == 'destroy' ? { :action => 'index'} : [:admin, @subscription]
-    end
-  
+
+  def redirect_url
+    action_name == 'destroy' ? { :action => 'index'} : [:admin, @subscription]
+  end
+
 end

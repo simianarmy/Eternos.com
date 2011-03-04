@@ -7,7 +7,8 @@ require 'facebook_account_manager'
 
 class SetupPresenter < AccountPresenter
   attr_accessor :active_step, :completed_steps, :any_activated,
-    :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, :fb_login_url,
+    :facebook_account, :facebook_confirmed, :facebook_user, :facebook_pic, 
+    :fb_login_url, :fb_disable_url, :fb_remove_url,
     :facebook_accounts, 
     :twitter_accounts, :twitter_account, :twitter_confirmed,
     :picasa_accounts, :picasa_account, :picasa_confirmed,
@@ -28,8 +29,7 @@ class SetupPresenter < AccountPresenter
         Rails.logger.debug "FETCHING FACEBOOK ACCOUNT USERNAMES.."
         @facebook_accounts.each do |fb|
           Rails.logger.debug "fetching name for account #{fb.account_id}"
-          FacebookAccountManager.login_with_session(@fb_session, @user, 
-          fb.account_id)
+          FacebookAccountManager.login_with_session(@fb_session, @user, fb.account_id)
 
           if @fb_session.verify_permissions
             @fb_session.user.populate(:pic_small, :name) 
@@ -50,13 +50,5 @@ class SetupPresenter < AccountPresenter
     end
   end
   
-  def create_fb_login_url(request)
-    # Desktop login url 
-    # Using url described on http://wiki.developers.facebook.com/index.php/Authorization_and_Authentication_for_Desktop_Applications#Prompting_for_Permissions
-    @fb_login_url = @fb_session.login_url_with_perms(
-      :next => authorized_facebook_backup_url(:host => request.host), 
-      :next_cancel => cancel_facebook_backup_url(:host => request.host)
-      )
-  end
 end
   

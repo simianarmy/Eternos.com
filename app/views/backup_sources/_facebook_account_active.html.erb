@@ -3,7 +3,11 @@
 </td>
 <td>
   <span style="color:green;">Active</span>
+</td>
+<td>
   <% if account.account_id %>
-    <%= link_to 'Disable', cancel_facebook_backup_path(:account_id => account.account_id) %>
+    <%= link_to 'Disable', settings.fb_disable_url << "?account_id=#{account.account_id}" %> |
+    <%= link_to 'Remove', settings.fb_remove_url << "?account_id=#{account.account_id}", 
+      :confirm => "Your Faceboook backup data will be permanently removed!  Are you sure you want to remove this account and all of its associated data?" %>
   <% end %>
 </td>

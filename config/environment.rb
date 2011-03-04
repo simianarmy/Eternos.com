@@ -128,21 +128,22 @@ Rails::Initializer.run do |config|
     end
     
     # Set ActionMailer host for url_for
-    ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
+    # DEPRECATED WITH MULTIPLE SUBDOMAINS POSSIBLE!
+    #ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
     
     # Need this to prevent the following in Renderer classes:
     # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
-    include ActionController::UrlWriter
-    default_url_options[:host] = AppConfig.base_domain
+    #include ActionController::UrlWriter
+    #default_url_options[:host] = #AppConfig.base_domain
   end
 end
-
+      
 # Load email config
 require 'load_email_configuration'
 # custom libs
 require 's3_helper'
 require 'timeline_events'
-require 'facebook_desktop'
+require 'facebook_backup'
 require 'facebook_user_profile'
 require 'message_queue'
 require 'mail_history'
@@ -159,9 +160,7 @@ require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
 require 'thinking_sphinx'
-require 'linkedin2'
 require 'workling'
-
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|

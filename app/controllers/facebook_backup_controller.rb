@@ -1,7 +1,9 @@
 # $Id$
 
-require 'facebook_desktop'
 require 'facebook_account_manager'
+
+# FacebookBackup Controller
+# Uses Facebooker gem for authentication / authorization (Connect)
 
 class FacebookBackupController < ApplicationController
   before_filter :login_required
@@ -11,6 +13,7 @@ class FacebookBackupController < ApplicationController
   layout 'dialog'
     
   #rescue_from Facebooker::Session::SessionExpired, :with => :create_new_session
+  ssl_allowed :check_auth, :authorized, :cancel, :destroy
   
   # For js ajax requests to check user's auth status
   # Wonder if it will work w/out cookies
@@ -95,21 +98,25 @@ class FacebookBackupController < ApplicationController
     end
   end
   
-  # What is this for?
-  def canvas
-    render :nothing => true, :status => 200
-  end
-  
+  # This method allows member to completely remove a backup source!
   def destroy
     revoke_permissions
     
     @backup_source.reset_authorization
-
+    
+    # Don't physically delete it, just mark it
+    @backup_source.touch(:deleted_at)
+    
     flash[:notice] = "Successfully removed from Facebook backup."
     respond_to do |format|
       format.html { redirect_to member_home_path }
       format.js
     end
+  end
+  
+  # What is this for?
+  def canvas
+    render :nothing => true, :status => 200
   end
   
   private
@@ -157,7 +164,7 @@ class FacebookBackupController < ApplicationController
   def has_permissions?
     begin
       login_facebook_account
-      @facebook_session.verify_permissions
+      @facebook_session.user.has_permissions? FacebookBackup.backup_permissions
     rescue
       false
     end

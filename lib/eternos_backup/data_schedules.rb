@@ -8,14 +8,14 @@ module EternosBackup
   module DataSchedules
     # Minimum backup intervals times for each data set
     MinDataBackupIntervals = {
-      EternosBackup::SiteData::General                 => 5.minutes,#1.hours, # default backup interval
-      EternosBackup::SiteData::FacebookOtherWallPosts  => 1.hours,
-      EternosBackup::SiteData::FacebookPhotoComments   => 1.hours
+      EternosBackup::SiteData::General                 => 24.hours, # default backup interval
+      EternosBackup::SiteData::FacebookOtherWallPosts  => 24.hours,
+      EternosBackup::SiteData::FacebookPhotoComments   => 24.hours
     }
     # Minium backup intervals times for failed backups for each data set 
     MinDataBackupRetryIntervals = {
-      EternosBackup::SiteData::General                 => 5.minutes,#1.hours, 
-      EternosBackup::SiteData::FacebookOtherWallPosts  => 1.hours
+      EternosBackup::SiteData::General                 => 4.hours, 
+      EternosBackup::SiteData::FacebookOtherWallPosts  => 12.hours
     }
     
     class << self

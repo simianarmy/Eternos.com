@@ -6,6 +6,7 @@ require 'benchmark_helper'
 class TimelinesController < ApplicationController
   before_filter :login_required, :except => [:search, :tag_cloud]
   require_role ['Guest', 'Member'], :for_all_except => [:search, :tag_cloud]
+  before_filter :ensure_subdomain
   before_filter :set_facebook_connect_session, :except => [:search, :tag_cloud]
   before_filter :load_member_home_presenter, :except => [:search, :tag_cloud]
   
@@ -85,7 +86,8 @@ class TimelinesController < ApplicationController
       filters = parse_search_filters params[:filters]
       Rails.logger.debug "searching with params => #{params.inspect}"
       Rails.logger.debug "searching with filters => #{filters.inspect}"
-      refresh = filters[:no_cache] || force_cache_reload?(:timeline) #|| current_user.refresh_timeline?
+      
+      refresh = filters[:no_cache] || force_cache_reload?(:timeline) || false#|| current_user.refresh_timeline?
       uid = current_user ? current_user.id : 0
       md5 = Digest::MD5.hexdigest(request.url)
       
@@ -147,6 +149,9 @@ class TimelinesController < ApplicationController
   #       super
   #     end
   #   end
+  def ensure_subdomain
+    redirect_to vault_dashboard_path if current_subdomain == 'vault'
+  end
   
   def find_host
     @host = current_user.get_host

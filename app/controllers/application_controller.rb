@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
       ActionController::UnknownAction, ActionController::UnknownController,
       ActionController::InvalidAuthenticityToken, :with => :render_404
     rescue_from ActionController::MethodNotAllowed, :with => :invalid_method
+    rescue_from Facebooker::Session::IncorrectSignature, :with => :invalid_facebook_signature
     rescue_from RuntimeError, :with => :render_500
   end
   
@@ -36,6 +37,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :check_enable_maintenaince_mode
   before_filter :clear_js_include_cache
+  before_filter :set_site_id
   
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -45,11 +47,17 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
-  filter_parameter_logging "password", "password_confirmation", "cc_number", "creditcard"
-  # prevent a violation of Facebook Terms of Service while reducing log bloat
-  filter_parameter_logging :fb_sig_friends
+  filter_parameter_logging "password", "password_confirmation", "number", "cc_number", "creditcard", "fb_sig_friends"
   
   layout :dynamic_layout
+
+  def set_site_id
+    @siteID = Account::Site.id_from_subdomain(current_subdomain)
+  end
+  
+  def invalid_facebook_signature
+    redirect_to logout_url 
+  end
 
   # Required for Facebooker integration
   def verify_authenticity_token
@@ -202,8 +210,8 @@ class ApplicationController < ActionController::Base
     session[:original_uri] = nil
     
     # AVOID REDIRECTING BACK IF BACK = PUBLIC AREA - IT WILL CONFUSE THE SHIT OUT OF USERS!
-    unless uri.nil? || uri.match(/about|user_sessions|logout|signup/)
-      RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{uri}"
+    unless uri.nil? || uri.match(/about|user_sessions|login|logout|signup|vlogin|vlogout/)
+      RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{uri} from #{uri}"
       redirect_to uri
     else
       RAILS_DEFAULT_LOGGER.debug "Redirecting back to #{params.to_s}" 
@@ -250,7 +258,7 @@ class ApplicationController < ActionController::Base
     include DecorationsHelper
   end
   
-  private
+  protected
   
   def clear_js_include_cache
     LayoutHelper.clear_js_cache
@@ -262,8 +270,20 @@ class ApplicationController < ActionController::Base
     Facebooker.load_configuration(File.join(RAILS_ROOT, 'config', 'facebooker.yml'))
   end
   
+  # Creates facebook session from custom backup app.
   def load_facebook_desktop
-    Facebooker::Session.current = FacebookDesktopApp::Session.create
+    Facebooker::Session.current = FacebookBackup::Session.create(facebook_app_config_path)
+  end
+  
+  # Returns app-specific facebook config (yml) path
+  # App used is based on app subdomain (defaults to 'www' app)
+  def facebook_app_config_path
+    case current_subdomain
+    when 'vault'
+      FacebookBackup::Vault.config_path
+    else
+      FacebookBackup.config_path
+    end
   end
   
   def load_facebook_session
@@ -295,9 +315,22 @@ class ApplicationController < ActionController::Base
     load_facebook_session
   end
     
+  # Scoped session helper method.  Will wrap a block inside UserSession.with_scope 
+  # used to scope accounts to a site
+  def session_scoped_by_site
+    site_id = Account::Site.id_from_subdomain current_subdomain
+    UserSession.with_scope(:find_options => {:conditions => "site_id = #{site_id}"}, :id => "account_#{site_id}") do
+      yield
+    end
+  end
+  
   def current_user_session
     return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
+  
+    session_scoped_by_site do
+      @current_user_session = UserSession.find
+    end
+    @current_user_session
   end
 
   def current_user
@@ -365,16 +398,41 @@ class ApplicationController < ActionController::Base
     return false
   end
   
+  # Default controller method for determining what view layout to use 
+  # when rendering action.  Applies to public & logged in users, 
+  # www and vault subdomains, and ajax/popup actions!
   def dynamic_layout
+    # ALL THIS SUCKS, I KNOW..
+    
+    # No layout for AJAX calls
     @layout = if request.xhr? 
       nil
+    # dialog param = lightview popup
     elsif params[:dialog]
       'dialog'
+    # uses user 'role' name for layout ... bad
     elsif current_user && !current_user.role.nil?
       current_user.role.downcase
+    # no user, check for 'about' action
+    elsif controller_name == 'about'
+      'about'
+    # none of the above, use Rails default
     else
-      'public'
+      'home'
     end
+    return nil unless @layout
+    
+    Rails.logger.debug "Dyamic layout = #{@layout}"
+    # Layouts further divided by site subdomain: www vs vault
+    if current_subdomain == 'vault'
+      # Then public vs logged in...ugh
+      if current_user
+        @layout = 'vault/private/' + @layout
+      else
+        @layout = 'vault/public/' + @layout
+      end
+    end
+    @layout
   end
   
   def localize

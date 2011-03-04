@@ -1,10 +1,11 @@
 <%= form.error_messages %>
 <fieldset>
-  <%= form.text_field :name %>
-  <%= form.text_field :amount %>
-  <%= form.text_field :setup_amount %>
-  <%= form.text_field :renewal_period %>
-  <%= form.text_field :trial_period %>
-  <%= form.text_field :user_limit %>
+  Name: <%= form.text_field :name %>
+  <br/>Amount: $<%= form.text_field :amount %>
+  <br/>Setup Amount: $<%= form.text_field :setup_amount %>
+  <br/>Renewal Period: <%= form.text_field :renewal_period %>
+  <br/>Trial Period: <%= form.text_field :trial_period %>
+  <br/>Disk Limit: <%= form.text_field :disk_limit %> (GB)
+  <br/>Backup Site Limit: <%= form.text_field :backup_site_limit %>
 </fieldset>
 <%= submit_tag %>

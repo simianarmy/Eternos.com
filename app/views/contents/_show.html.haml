@@ -1,31 +1,38 @@
 - stylesheet 'timeline'
 - use_busy
 
-- content_for :date_author do
+- set_content_for :date_author do
   = item.filename
-- content_for :icon do
+- set_content_for :icon do
   = image_tag item.content_icon
-- content_for :body do
-  = restful_in_place_editor 'span', item, 'title', :object => 'content', :url => content_url(item)
+- set_content_for :body do
+  - if @readonly
+    = item.title
+  - else 
+    = restful_in_place_editor 'span', item, 'title', :object => 'content', :url => content_url(item)
   %p
   %br
   = link_to_content(item)
   %p
   %br
-  = restful_in_place_editor 'span', item, 'description', :object => 'content', :url => content_url(item), :value => (item.description && !item.description.blank?) ? item.description : link_to('Add Description', '#'), :rows => 4
+  - if @readonly
+    = item.description
+  - else
+    = restful_in_place_editor 'span', item, 'description', :object => 'content', :url => content_url(item), :value => (item.description && !item.description.blank?) ? item.description : link_to('Add Description', '#'), :rows => 4    
   
-- content_for :details do
+- set_content_for :details do
   #content_date
     .date_label
       = content_creation_date_label(item) + ':'
     #date_taken= item.start_date.to_s(:long)
     #date_taken_form{:style => style_hidden_if(true)}
-      - remote_form_for :content, item, :url => content_path(item), :html => {:method => :put, :class => "submit_on_change", :id => "content_date_form"} do |f|
-        = hidden_field_tag 'date_select', true
-        = f.datetime_select_with_datepicker :taken_at, {:start_year => 1900, :end_year => Date.today.year}
-        = submit_tag 'Update'
-        = link_to_function 'close', "$('date_taken_form').hide(); $('date_taken').show();"
+      - unless @readonly
+        - remote_form_for :content, item, :url => content_path(item), :html => {:method => :put, :class => "submit_on_change", :id => "content_date_form"} do |f|
+          = hidden_field_tag 'date_select', true
+          = f.datetime_select_with_datepicker :taken_at, {:start_year => 1900, :end_year => Date.today.year}
+          = submit_tag 'Update'
+          = link_to_function 'close', "$('date_taken_form').hide(); $('date_taken').show();"
 
 = render :partial => 'shared/item_details', :locals => {:item => item}
-
-= javascript_tag "$('date_taken').observe('click', function() { $('date_taken').hide(); $('date_taken_form').show()});"
+- unless @readonly
+  = javascript_tag "$('date_taken').observe('click', function() { $('date_taken').hide(); $('date_taken_form').show()});"

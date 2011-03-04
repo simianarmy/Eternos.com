@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110217085045) do
+ActiveRecord::Schema.define(:version => 20110215065615) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -18,14 +18,16 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "full_domain"
     t.string   "state"
     t.datetime "deleted_at"
+    t.string   "company_name"
+    t.string   "phone_number"
+    t.integer  "site_id",      :default => 0, :null => false
   end
 
   add_index "accounts", ["full_domain"], :name => "index_accounts_on_full_domain"
 
   create_table "activity_stream_items", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.datetime "published_at"
+    t.datetime "edited_at"
     t.string   "guid"
     t.text     "message"
     t.text     "attachment_data"
@@ -33,7 +35,8 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "activity_type"
     t.string   "type"
     t.integer  "activity_stream_id"
-    t.datetime "edited_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "author"
     t.datetime "deleted_at"
     t.text     "comment_thread"
@@ -113,6 +116,22 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.binary "master_c"
   end
 
+  create_table "audits", :force => true do |t|
+    t.integer  "auditable_id"
+    t.string   "auditable_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.string   "username"
+    t.string   "action"
+    t.text     "changes"
+    t.integer  "version",        :default => 0
+    t.datetime "created_at"
+  end
+
+  add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
+  add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
+  add_index "audits", ["user_id", "user_type"], :name => "user_index"
+
   create_table "av_attachments", :force => true do |t|
     t.integer  "av_attachable_id"
     t.string   "av_attachable_type"
@@ -124,15 +143,15 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
   create_table "backup_emails", :force => true do |t|
     t.integer  "backup_source_id",  :null => false
     t.string   "message_id"
+    t.string   "mailbox"
+    t.binary   "subject_encrypted"
     t.string   "sender"
+    t.string   "s3_key"
+    t.integer  "size"
     t.datetime "received_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "mailbox"
-    t.integer  "size"
-    t.string   "s3_key"
     t.string   "state"
-    t.binary   "subject_encrypted"
     t.datetime "deleted_at"
   end
 
@@ -198,7 +217,7 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
   add_index "backup_photo_albums", ["source_album_id"], :name => "index_backup_photo_albums_on_source_album_id"
 
   create_table "backup_photos", :force => true do |t|
-    t.integer  "backup_photo_album_id"
+    t.integer  "backup_photo_album_id", :null => false
     t.string   "source_photo_id",       :null => false
     t.integer  "content_id"
     t.datetime "created_at"
@@ -206,10 +225,10 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.text     "source_url"
     t.string   "caption"
     t.string   "tags"
-    t.text     "download_error"
     t.string   "state"
-    t.string   "title"
+    t.text     "download_error"
     t.datetime "added_at"
+    t.string   "title"
     t.datetime "deleted_at"
     t.datetime "modified_at"
   end
@@ -238,17 +257,17 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
   add_index "backup_source_days", ["backup_day"], :name => "backup_dates", :unique => true
 
   create_table "backup_source_jobs", :force => true do |t|
-    t.integer  "backup_job_id",                     :null => false
+    t.string   "backup_job_id",      :limit => 36,                :null => false
+    t.integer  "backup_source_id",                                :null => false
     t.integer  "size"
     t.integer  "days"
     t.datetime "created_at"
-    t.integer  "status",             :default => 0, :null => false
+    t.integer  "status",                           :default => 0, :null => false
     t.text     "messages"
-    t.integer  "backup_source_id",                  :null => false
     t.text     "error_messages"
     t.datetime "finished_at"
-    t.integer  "percent_complete",   :default => 0, :null => false
-    t.integer  "backup_data_set_id", :default => 0, :null => false
+    t.integer  "percent_complete",                 :default => 0, :null => false
+    t.integer  "backup_data_set_id",               :default => 0, :null => false
   end
 
   add_index "backup_source_jobs", ["backup_job_id", "backup_source_id", "backup_data_set_id"], :name => "backup_job_source_data_set", :unique => true
@@ -274,10 +293,10 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.boolean  "needs_initial_scan",       :default => true,      :null => false
     t.datetime "last_login_attempt_at"
     t.datetime "last_login_at"
-    t.string   "title"
-    t.datetime "deleted_at"
     t.string   "auth_token"
     t.string   "auth_secret"
+    t.string   "title"
+    t.datetime "deleted_at"
     t.binary   "auth_secret_enc"
     t.string   "auth_password2_enc"
     t.string   "auth_login2_enc"
@@ -341,8 +360,8 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.integer  "commentable_id"
     t.string   "commentable_type"
     t.integer  "user_id",                        :default => 0,  :null => false
-    t.text     "commenter_data"
     t.string   "external_id"
+    t.text     "commenter_data"
   end
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable"
@@ -388,8 +407,8 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.boolean  "is_recording",             :default => false,      :null => false
     t.string   "s3_key"
     t.string   "collection_type"
-    t.integer  "parent_id"
     t.integer  "collection_id"
+    t.integer  "parent_id"
     t.datetime "deleted_at"
     t.string   "encodingid"
   end
@@ -477,6 +496,21 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
 
   add_index "facebook_ids", ["facebook_uid"], :name => "index_facebook_ids_on_facebook_uid"
 
+  create_table "facebook_messages", :force => true do |t|
+    t.integer  "facebook_thread_id",              :null => false
+    t.string   "message_id",                      :null => false
+    t.integer  "author_id",          :limit => 8, :null => false
+    t.text     "body"
+    t.text     "attachment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "backup_source_id"
+    t.datetime "deleted_at"
+  end
+
+  add_index "facebook_messages", ["facebook_thread_id"], :name => "index_facebook_messages_on_facebook_thread_id"
+  add_index "facebook_messages", ["message_id"], :name => "index_facebook_messages_on_message_id"
+
   create_table "facebook_page_admins", :id => false, :force => true do |t|
     t.integer "facebook_page_id",    :null => false
     t.integer "facebook_account_id", :null => false
@@ -494,6 +528,25 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
   end
 
   add_index "facebook_pages", ["page_id"], :name => "index_facebook_pages_on_page_id"
+
+  create_table "facebook_threads", :force => true do |t|
+    t.integer  "folder_id",                                        :null => false
+    t.integer  "parent_thread_id"
+    t.string   "parent_message_id"
+    t.string   "subject"
+    t.boolean  "unread",                         :default => true, :null => false
+    t.integer  "message_count",                  :default => 0,    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "fb_object_id",      :limit => 8, :default => 0,    :null => false
+    t.integer  "message_thread_id", :limit => 8,                   :null => false
+    t.datetime "last_message_at"
+    t.text     "recipients"
+    t.integer  "backup_source_id",                                 :null => false
+  end
+
+  add_index "facebook_threads", ["backup_source_id", "folder_id", "message_thread_id"], :name => "index_facebook_threads_on_backup_source_folder_message_thread", :unique => true
+  add_index "facebook_threads", ["message_thread_id"], :name => "index_facebook_threads_on_message_thread_id"
 
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
@@ -514,8 +567,8 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.integer  "feed_entry_id",                         :null => false
     t.text     "html_content"
     t.string   "screencap_file_name"
-    t.string   "screencap_content_type"
     t.datetime "created_at"
+    t.string   "screencap_content_type"
     t.datetime "screencap_updated_at"
     t.integer  "size",                   :default => 0, :null => false
   end
@@ -531,8 +584,8 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.text     "categories"
     t.string   "url"
     t.datetime "published_at"
-    t.string   "guid"
     t.datetime "created_at"
+    t.string   "guid"
     t.datetime "deleted_at"
   end
 
@@ -608,68 +661,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "linkedin_user_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "linkedin_user_cmpies", :force => true do |t|
-    t.text     "job_request_url"
-    t.text     "job_update_description"
-    t.text     "person_update_headline"
-    t.text     "person_update_picture_url"
-    t.integer  "company_id"
-    t.integer  "update_type"
-    t.integer  "job_update_id"
-    t.integer  "job_update_company_id"
-    t.integer  "new_position_company_id"
-    t.integer  "linkedin_user_id"
-    t.string   "company_name"
-    t.string   "profile_update_id"
-    t.string   "profile_update_first_name"
-    t.string   "profile_update_last_name"
-    t.string   "profile_update_headline"
-    t.string   "profile_update_api_standard"
-    t.string   "profile_update_site_standard"
-    t.string   "profile_update_action_code"
-    t.string   "profile_update_field_code"
-    t.string   "job_update_title"
-    t.string   "job_update_company_name"
-    t.string   "job_update_location_description"
-    t.string   "job_update_action_code"
-    t.string   "person_update_id"
-    t.string   "person_update_first_name"
-    t.string   "person_update_last_name"
-    t.string   "person_update_api_standard"
-    t.string   "person_update_site_standard"
-    t.string   "person_update_action_code"
-    t.string   "old_position_title"
-    t.string   "old_position_company_name"
-    t.string   "new_position_title"
-    t.string   "new_position_company_name"
-    t.boolean  "is_commentable"
-    t.boolean  "is_likable"
-    t.datetime "timestamp"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "linkedin_user_comment_likes", :force => true do |t|
-    t.string   "update_key"
-    t.string   "update_type"
-    t.string   "linkedin_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "api_standard_profile_request"
-    t.string   "site_standard_profile_request"
-    t.integer  "num_likes"
-    t.integer  "linkedin_user_id"
-    t.boolean  "is_commentable"
-    t.boolean  "is_likable"
-    t.boolean  "is_liked"
-    t.text     "headline"
-    t.text     "current_status"
-    t.text     "picture_url"
-    t.datetime "timestamp"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -769,21 +760,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.datetime "updated_at"
   end
 
-  create_table "linkedin_user_ncons", :force => true do |t|
-    t.string   "linkedin_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.text     "headline"
-    t.text     "picture_url"
-    t.text     "api_standard_profile_request"
-    t.text     "site_standard_profile_request"
-    t.integer  "is_commentable"
-    t.integer  "is_likable"
-    t.integer  "linkedin_user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "linkedin_user_past_positions", :force => true do |t|
     t.integer  "linkedin_user_id", :null => false
     t.text     "title"
@@ -794,15 +770,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "company_name"
     t.string   "company_id"
     t.string   "company_industry"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "linkedin_user_patent_inventors", :force => true do |t|
-    t.string   "linkedin_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.integer  "linkedin_user_patents_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -845,15 +812,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.datetime "updated_at"
   end
 
-  create_table "linkedin_user_publication_authors", :force => true do |t|
-    t.string   "linkedin_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.integer  "linkedin_user_publications_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "linkedin_user_publications", :force => true do |t|
     t.integer  "linkedin_user_id", :null => false
     t.text     "title"
@@ -892,32 +850,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "provider_account_name"
     t.string   "provider_account_id"
     t.integer  "linkedin_user_id",      :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "linkedin_user_update_comments", :force => true do |t|
-    t.string   "linkedin_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "api_standard_profile_request"
-    t.string   "site_standard_profile_request"
-    t.integer  "sequence_number"
-    t.integer  "linkedin_user_comment_like_id"
-    t.text     "comment"
-    t.text     "headline"
-    t.datetime "timestamp"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "linkedin_user_update_likes", :force => true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "linkedin_id"
-    t.text     "headline"
-    t.text     "picture_url"
-    t.integer  "linkedin_user_comment_like_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -981,10 +913,10 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "title",                      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uuid",                       :null => false
+    t.text     "slides",                     :null => false
     t.string   "version",                    :null => false
     t.string   "soundtrack", :default => "", :null => false
-    t.text     "slides",                     :null => false
+    t.string   "uuid",                       :null => false
   end
 
   create_table "messages", :force => true do |t|
@@ -1068,8 +1000,8 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.integer  "height"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "s3_key"
     t.string   "state"
+    t.string   "s3_key"
   end
 
   add_index "photo_thumbnails", ["parent_id"], :name => "index_photo_thumbnails_on_parent_id"
@@ -1248,9 +1180,9 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.date     "end_on"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "apply_to_setup",                                       :default => true
-    t.boolean  "apply_to_recurring",                                   :default => true
     t.integer  "trial_period_extension",                               :default => 0
+    t.boolean  "apply_to_recurring",                                   :default => true
+    t.boolean  "apply_to_setup",                                       :default => true
   end
 
   create_table "subscription_payments", :force => true do |t|
@@ -1271,14 +1203,16 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
 
   create_table "subscription_plans", :force => true do |t|
     t.string   "name"
-    t.decimal  "amount",          :precision => 10, :scale => 2
+    t.decimal  "amount",            :precision => 10, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_limit"
-    t.integer  "renewal_period",                                 :default => 1
-    t.decimal  "setup_amount",    :precision => 10, :scale => 2
-    t.integer  "trial_period",                                   :default => 1
-    t.boolean  "allow_subdomain",                                :default => false
+    t.integer  "user_limit",                                       :default => 0,     :null => false
+    t.integer  "renewal_period",                                   :default => 1
+    t.decimal  "setup_amount",      :precision => 10, :scale => 2
+    t.integer  "trial_period",                                     :default => 1
+    t.boolean  "allow_subdomain",                                  :default => false
+    t.integer  "backup_site_limit",                                :default => 0,     :null => false
+    t.integer  "disk_limit",                                       :default => 0,     :null => false
   end
 
   create_table "subscriptions", :force => true do |t|
@@ -1291,11 +1225,13 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "state",                                                    :default => "trial"
     t.integer  "subscription_plan_id"
     t.integer  "account_id"
-    t.integer  "user_limit"
+    t.integer  "user_limit",                                               :default => 0,       :null => false
     t.integer  "renewal_period",                                           :default => 1
     t.string   "billing_id"
-    t.integer  "subscription_affiliate_id"
     t.integer  "subscription_discount_id"
+    t.integer  "subscription_affiliate_id"
+    t.integer  "backup_site_limit",                                        :default => 0,       :null => false
+    t.integer  "disk_limit",                                               :default => 0,       :null => false
   end
 
   add_index "subscriptions", ["account_id"], :name => "account_id"
@@ -1362,22 +1298,22 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "relationship"
     t.string   "name"
     t.string   "contact_method"
-    t.string   "state"
-    t.string   "security_code"
-    t.string   "security_question"
-    t.string   "security_answer"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "confirmed"
     t.datetime "confirmed_at"
+    t.boolean  "confirmed"
     t.datetime "last_inquiry_at"
+    t.string   "security_answer"
+    t.string   "security_code"
+    t.string   "security_question"
+    t.string   "state"
   end
 
   create_table "user_mailings", :force => true do |t|
-    t.string   "recipients", :null => false
     t.string   "mailer",     :null => false
-    t.string   "subject",    :null => false
     t.datetime "sent_at",    :null => false
+    t.string   "recipients", :null => false
+    t.string   "subject",    :null => false
   end
 
   add_index "user_mailings", ["recipients"], :name => "index_user_mailings_on_recipients"
@@ -1400,7 +1336,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.string   "last_name"
     t.string   "first_name"
     t.string   "password_salt"
-    t.integer  "facebook_uid",              :limit => 8
     t.datetime "last_request_at"
     t.string   "current_login_ip"
     t.datetime "current_login_at"
@@ -1416,7 +1351,9 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
     t.boolean  "always_sync_with_facebook"
     t.integer  "setup_step",                              :default => 0,         :null => false
     t.integer  "facebook_referrer",         :limit => 8
+    t.integer  "facebook_uid",              :limit => 8
     t.datetime "last_reported"
+    t.integer  "site_id",                                 :default => 0,         :null => false
   end
 
   add_index "users", ["email"], :name => "users_email_index"

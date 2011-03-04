@@ -192,8 +192,14 @@ class BackupSource < ActiveRecord::Base
   end
   
   # ABSTRACT CLASS - BACKUP SOURCES SHOULD IMPLEMENT
+  
+  # STORAGE METRIC METHODS
   def num_items
     backup_photo_albums.size
+  end
+  
+  def bytes_backed_up
+    0
   end
     
   # Descriptive title for source

@@ -23,6 +23,8 @@ class AccountsController < ApplicationController
   ssl_required :billing, :cancel, :new, :create, :plans
   ssl_allowed :thanks, :canceled, :paypal
 
+  layout 'public_notabs'
+  
   def new
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
     @terms_accepted = true
@@ -41,6 +43,7 @@ class AccountsController < ApplicationController
     rescue
       # Nothing to say..
     end
+
   end
 
   # 1 or 2-step process
@@ -296,6 +299,7 @@ class AccountsController < ApplicationController
         end
       end
     end
+    render :layout => 'public'
   end
 
   # Handle the redirect return from PayPal

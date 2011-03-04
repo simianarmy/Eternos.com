@@ -21,6 +21,9 @@ config.action_mailer.raise_delivery_errors = true
 # Use SMTP protocol to deliver emails
 config.action_mailer.delivery_method = :smtp
 
+# Use memcache for session store in production environments!  db is too slow
+config.action_controller.session_store = :mem_cache_store
+
 # Setup memcached connection
 config.after_initialize do
   # So that Passenger can find the identify command
@@ -29,4 +32,4 @@ config.after_initialize do
   Paperclip.options[:swallow_stderr] = false
 end
 
-#config.log_level = :debug
+config.log_level = :debug

@@ -10,11 +10,20 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+    when /the new vault_dashboard page/
+      new_vault_dashboard_path
+
     when /the new co_registration page/
       new_co_registration_path
 
     when /the home\s?page/
       root_path
+      
+    when /the vault home page/
+      root_path(:subdomain=>'vault')
+      
+    when /the vault login page/
+      vlogin_path
       
     when /the login page/
       login_path
@@ -39,6 +48,9 @@ module NavigationHelpers
 
     when /the member homepage/
       member_home_path
+      
+    when /the vault dashboard page/
+      vault_dashboard_path
 
     when /the upload file page/
       new_content_path

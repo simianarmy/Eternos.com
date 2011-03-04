@@ -13,6 +13,10 @@ module BackupContentProxy
   def method_missing(sym, *args, &block)
     obj.send sym, *args, &block
   end
+  
+  def obj
+    raise "Implement me!"
+  end
 end
 
 class BackupPhotoAlbumProxy
@@ -53,3 +57,4 @@ class BackupObjectCommentProxy
     @comment
   end
 end
+

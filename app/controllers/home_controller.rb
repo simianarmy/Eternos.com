@@ -3,13 +3,12 @@ class HomeController < ApplicationController
   #before_filter :redirect_if_logged_in, :only => :index
   caches_page :blog_header_partial, :blog_header_footer
   
-  layout 'public'
-  
   def new
     @user = User.new
   end
   
   def index
+    Rails.logger.debug "subdomain = #{request.subdomains.first}"
     @hide_feedback = true
     
     if request_comes_from_facebook?

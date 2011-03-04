@@ -1,66 +1,88 @@
+Eternos.com Software Stack Installation Instructions
+
 Dependencies:
 
 ruby 1.8.7
 rubygems 1.3.5+
-rails 2.3.4
 mysql 5.x
-apache 2.x + mod_rails (Passenger)
+apache 2.x compiled with: 
+  mod_rails (Passenger 2.x)
+  mod_porter (https://github.com/actionrails/modporter)
+  mod_apreq2
+memcached
+
+Target build OS:
+  Gentoo
+  CentOS
+
+Supported Development OS:
+  OS X
+  Ubuntu
+  Gentoo
+  CentOS
+  
+Some required packages depending on your dev os:
+
 RHEL Unix packages: libxml2-dev, libxslt-dev, readline-devel, curl-devel
 Ubuntu:  libcurl4-openssl-dev, libxslt-devel, libopenssl-ruby, libfreeimage-dev
-
-Gems:
-bundler 0.9.25
+If error on taf2-curb install on Ubuntu, see:
+ http://ruby.zigzo.com/2009/02/15/feedzirra-installation-errors/
+ 
+Required RubyGems:
+bundler
 daemons
+require
 
-Apache:
-  Add local site to /etc/hosts
+Apache setup for development:
+  Add local site to /etc/hosts, ie: 127.0.0.1 www.eternos.local
   Create SSL keys
   Create VirtualHosts
     Example VirtualHosts:
+    
     <VirtualHost *:80>
-       ServerName dev.eternos.com
-       DocumentRoot /Users/marcmauger/Documents/code/EDP/eternos/eternos.com/public
+       ServerName www.eternos.local
+       DocumentRoot /Users/me/Documents/code/EDP/eternos/eternos.com/public
        RailsEnv development
 
-       #ProxyPass / http://127.0.0.1:3000/
-       #ProxyPassReverse / http://127.0.0.1:3000/
-       #ProxyPreserveHost on
        Porter On
        PorterSharedSecret sh4mAlam4d1nGd0ng
        PorterPermission 0x0666
-
-       RewriteEngine on
-       RewriteRule ^/blog$ /Users/marcmauger/Documents/code/EDP/eternos/blog/blog/index.php [QSA]
-       RewriteRule ^(/blog.*/$)$ /Users/marcmauger/Documents/code/EDP/eternos/blog/blog/index.php [QSA]
-       RewriteRule ^/blog/?(.*)$ /Users/marcmauger/Documents/code/EDP/eternos/blog/blog/$1 [NC,QSA,L]
     </VirtualHost>
     
     <VirtualHost *:443>
       SSLEngine On
-      ServerName dev.eternos.com
+      ServerName www.eternos.local
       RailsEnv development
 
       Porter On
       PorterSharedSecret sh4mAlam4d1nGd0ng
       PorterPermission 0x0666
 
-      DocumentRoot /Users/marcmauger/Documents/code/EDP/eternos/eternos.com/public
+      DocumentRoot /Users/me/Documents/code/EDP/eternos/eternos.com/public
     </VirtualHost>
     
+  Support SSL testing:
   http://www.subelsky.com/2007/11/testing-rails-ssl-requirements-on-your.html
   
-  
-- Checkout source
-- cd source dir
+
+Checkout source from Github:
+> git clone git@github.com:simianarmy/Eternos.com.git
+
+> cd <src dir>
+
+Install gem dependencies using Bundler
+> sudo gem install bundler
 > bundle install
 
-If error on taf2-curb install on Ubuntu, see:
- http://ruby.zigzo.com/2009/02/15/feedzirra-installation-errors/
- 
-- Copy config/*.yml.default to config/ & populate
-- Create database.yml & workling.yml
 - Create dev & test dbs
 - Grant permissions on dbs
+ 
+- Copy config/*.yml.default to config/ & populate
+
+Test environment loads succesfully:
+./script/console
+
+Create db structure:
 > rake db:auto:migrate
 
 

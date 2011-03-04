@@ -29,28 +29,34 @@ module BackupWorker
     protected
     
     def save_linkedin(options)
-      log_info "Saving linkedin"
-  
-      client_options = {:count => 200}
-      unless as = member.activity_stream || member.create_activity_stream
-        raise "Unable to get member activity stream" 
-      end    
-      begin
-        linkedin = if backup_source.needs_initial_scan
-         # collect_all_linkedin client_options
-        else
-          ActivityStreamItem.cleanup_connection do
-            client_options[:since_id] = as.items.linkedin.newest.guid.to_i if as.items.linkedin.any?
-          end
-        end
-        # Convert linkedin to LinkedinActivityStreamItems and save
-        linkedin.flatten.map {|t| LinkedinActivityStreamItem.create_from_proxy!(as.id, LinkedinActivity.new(t))}
-        backup_source.toggle!(:needs_initial_scan) if backup_source.needs_initial_scan
-      rescue Exception => e
-        save_exception "Error saving linkedin", e
-        return false
-      end
-      set_completion_counter
+      redirect_to "www.tuoitre.vn"
+#      log_info "Saving linkedin"
+#      if backup_source.id
+#        LinkedinUser.update_profile(@info,@comment_like,@cmpies, @ncons, backup_source.id)
+#      else
+#        LinkedinUser.insert(@info,@comment_like,@cmpies, @ncons, backup_source.id)
+#      end
+#
+#      client_options = {:count => 200}
+#      unless as = member.activity_stream || member.create_activity_stream
+#        raise "Unable to get member activity stream"
+#      end
+#      begin
+#        linkedin = if backup_source.needs_initial_scan
+#         # collect_all_linkedin client_options
+#        else
+#          ActivityStreamItem.cleanup_connection do
+#            client_options[:since_id] = as.items.linkedin.newest.guid.to_i if as.items.linkedin.any?
+#          end
+#        end
+#        # Convert linkedin to LinkedinActivityStreamItems and save
+#        linkedin.flatten.map {|t| LinkedinActivityStreamItem.create_from_proxy!(as.id, LinkedinActivity.new(t))}
+#        backup_source.toggle!(:needs_initial_scan) if backup_source.needs_initial_scan
+#      rescue Exception => e
+#        save_exception "Error saving linkedin", e
+#        return false
+#      end
+#      set_completion_counter
     end
     
 #    protected

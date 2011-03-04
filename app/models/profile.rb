@@ -20,9 +20,12 @@ class Profile < ActiveRecord::Base
   validates_associated :careers, :message => 'Some required career fields are missing'
   validates_associated :schools, :messages => 'Some required education fields are missing'
   
+  # TODO: MOVE THIS DATA TO MONGODB DOCUMENT STORAGE
   serialize :facebook_data
   xss_terminate :except => [ :facebook_data ]
     
+  acts_as_audited :except => [:user_id, :always_sync_with_facebook, :facebook_data]
+
   include Addressable
   after_update :save_associations
   
@@ -76,7 +79,12 @@ class Profile < ActiveRecord::Base
     #     end
     save
   end
-    
+  
+  # Helper for saving facebook data with auditing enabled  
+  def save_facebook_audited(fb_info)
+    self.class.audit_as(member) { update_attribute(:facebook_data, fb_info) }
+  end
+     
   protected
     
   def save_associations

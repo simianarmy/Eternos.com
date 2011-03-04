@@ -1,9 +1,3 @@
-# DEPRECATED in 0.9 BUT 0.9 IS FUCKED - USE 0.8.x
-# You can specify this setting when installing via bundle install /path/to/bundle
-#bundle_path "vendor/bundled_gems"
-#clear_sources
-
-#source :gemcutter
 source "http://rubygems.org"
 source 'http://gemcutter.org'
 source "http://gems.github.com"
@@ -26,6 +20,7 @@ group :test do
   # bundler requires these gems while running tests
   gem 'rspec', '1.3.1'
   gem 'rspec-rails', '1.3.3'
+  gem 'rspec-rails-mocha', '~> 0.2.2'
   gem 'mocha'
   gem 'ruby-debug'
   gem 'faker'
@@ -49,8 +44,8 @@ group :cucumber do
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'capybara'
-  gem 'celerity'
-  gem 'culerity'
+  #gem 'celerity'
+  #gem 'culerity'
   gem 'database_cleaner'
 end
 
@@ -59,6 +54,7 @@ group :production do
 end
 
 gem 'active_presenter'
+gem 'acts_as_audited', '1.1.1'
 gem 'after_commit'
 gem 'amqp', '0.6.7'
 gem 'aws-s3'
@@ -67,6 +63,7 @@ gem 'daemons'
 gem 'eventmachine'
 gem 'ezcrypto'
 gem 'facebooker'
+gem 'formtastic', '~> 1.1.0'
 gem 'gdata'
 gem 'haml'
 gem 'hashie'
@@ -84,7 +81,7 @@ gem 'mash'
 gem 'mdalessio-dryopteris'
 gem 'memcache-client'
 gem 'mime-types'
-gem 'mogli'
+gem 'mogli'#, :git => 'git@github.com:simianarmy/mogli.git'
 gem 'moomerman-twitter_oauth'
 gem 'mysqlplus'
 gem 'nokogiri'
@@ -101,9 +98,10 @@ gem 'rvideo'
 gem 'searchlogic', '2.3.16' # Can't go higher than this without breaking timeline search
 gem 'shared-mime-info'
 gem 'shuber-attr_encrypted'
+gem 'subdomain-fu'
 gem 'SystemTimer'
 gem 'taf2-curb'
-gem 'thinking-sphinx'
+gem 'thinking-sphinx', '~> 1.3.20', :require => 'thinking_sphinx'
 gem 'twitter'
 gem 'uuidtools'
 gem 'tzinfo'

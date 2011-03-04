@@ -6,9 +6,17 @@
 require 'facebooker'
 
 module FacebookUserProfile
+  # REST API fields
   Fields = Facebooker::User::FIELDS
   
-  # Wrapper for Facebooker's profile populate() method.
+  # OpenGraph fields.  Unfortunately not enumerated in Mogli
+  OpenGraphFields = %w(id name first_name last_name gender locale link third_party_id timezone
+    updated_time verified about bio birthday education email hometown interested_in location
+    meeting_for political quotes relationship_status religion significant_other website work
+  )
+  OpenGraphAssociations = %w(activities interests music books movies television)
+  
+  # Wrapper for Facebooker's profile populate() method
   # Returns hash containing values for all user profile fields as defined in Fields array.
   
   def self.populate(facebook_user)

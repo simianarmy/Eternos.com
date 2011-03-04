@@ -42,11 +42,14 @@ var on_facebook_backup_auth_close = function(check_url) {
 
 function updateSourceActivationIcon(button, activate) {
 	var buttonEl = $(button + '-button');
-
+	if (!buttonEl) return;
+	
 	if (activate == 'true') {
 		//alert('activating button ' + button);
 		buttonEl.addClassName('active2');
-		$('step1').addClassName('signup-active');
+		if ($('step1')) {
+			$('step1').addClassName('signup-active');
+		}
 	} else {
 		//alert('deactivating button ' + button);
 		buttonEl.removeClassName('active2');
@@ -85,8 +88,10 @@ function updateStep(check_url, completed_steps) {
 
 function highlightStep(step_id) {
   //var step = 'step' + stepNum;
-  $(step_id).down('a').addClassName(step_id + '-active').removeClassName(step_id + '-btn');
-  
+	var step = $(step_id);
+	if (step && step.down('a')) {
+  	step.down('a').addClassName(step_id + '-active').removeClassName(step_id + '-btn');
+  }
   $$('.step').each(function(div) {
     if ((div.id !== step_id) && div.down('a').hasClassName(div.id + '-active')) {
       div.down('a').removeClassName(div.id + '-active');
@@ -98,13 +103,17 @@ function highlightStep(step_id) {
 // Activate next step
 function activateStep(stepNum) {
 	var step = 'step' + stepNum;
-	$(step + '-disabled').hide();
-	$(step).show();
+	if ($(step + '-disabled')) {
+		$(step + '-disabled').hide();
+		$(step).show();
+	}
 }
 
 function showCompleteStep(stepNum) {
-	var step = 'step' + stepNum;
-	$(step).down('a').addClassName(step + 'complete-btn');
+	var step = $('step' + stepNum);
+	if (step && step.down('a')) {
+		step.down('a').addClassName(step + 'complete-btn');
+	}
 }
 
 function activatedFb(){

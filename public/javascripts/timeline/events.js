@@ -425,6 +425,21 @@ var ETLEmailEventSource = Class.create(ETLEventSource, {
 		});
 	}
 });
+// Facebook message event (facebook mail)
+var ETLFacebookMessageSource = Class.create(ETLEventSource, {
+	initialize: function($super, s) {
+		this.previewTemplate = ETemplates.tooltipTemplates.email;
+		$super(s);
+	},
+	getPreviewHtml: function() {
+		return this._evalTemplate({
+			subject: this.attributes.subject,
+			body: this.attributes.body,
+			time: this.getEventTimeHtml()
+		});
+	}
+});
+
 // Video event
 var ETLVideoEventSource = Class.create(ETLEventSource, {
 	initialize: function($super, s) {
@@ -628,6 +643,7 @@ var ETEvent = {
 		{type: "twitter_activity_stream_item", display_text: "Tweet", display_text_plural: "Tweets", icon: "twitter.gif"}, 
 		{type: "feed_entry", display_text: "Blog&nbsp;Post", display_text_plural: "Blog&nbsp;Posts", icon: "rss.png"}, 
 		{type: "backup_email", display_text: "Email", display_text_plural: "Emails", icon: "email.png"}, 
+		{type: "facebook_message", display_text: "Facebook&nbsp;Message", display_text_plural: "Facebook&nbsp;Messages", icon: "facebook_message.png"}, 
 		{type: "photo", display_text: "Image", display_text_plural: "Images", icon: "photo.png"},
 		{type: "video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
 		{type: "web_video", display_text: "Video", display_text_plural: "Videos", icon: "movie.png"},
@@ -658,6 +674,8 @@ var ETEvent = {
 			return new ETLFeedEventSource(data);
 		} else if (type === "backup_email") {
 			return new ETLEmailEventSource(data);
+		} else if (type === "facebook_message") {
+			return new ETLFacebookMessageSource(data);
 		} else if (type === "photo") {
 			return new ETLPhotoEventSource(data);
 		} else if (type === "video" || type === "web_video") {

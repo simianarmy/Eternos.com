@@ -2,7 +2,6 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :backup_error_codes
-
   
   # Singleton resources
   map.resource :account_setup, :controller => 'account_setup', :member => {
@@ -23,6 +22,10 @@ ActionController::Routing::Routes.draw do |map|
   # Unsubscribe route for mailer sites like Sendgrid
   map.connect 'sg_unsubscribe', :controller => 'unsubscribe', :action => 'create'
   
+  # Facebook oauth
+  map.resource :facebook_oauth, :controller => "facebook_oauth", :member => {:cancel => :get, :destroy => :get}
+  map.facebook_oauth_callback "/facebook_oauth/create", :controller=>"facebook_oauth", :action=>"create"
+  
   # regular resources
   map.resources :timeline_events, :collection => {
     :events => :get
@@ -36,10 +39,13 @@ ActionController::Routing::Routes.draw do |map|
     :add_feed_url => :post,
     :add_twitter => :get,
     :add_picasa => :get,
-	:add_linkedin => :get,
+	  :add_linkedin => :get,
     :twitter_auth => :get,
     :picasa_auth => :get,
-	:linkedin_callback => :get
+    :remove_url => :get,
+    :remove_picasa_account => :get,
+    :remove_twitter_account => :get,
+	  :linkedin_callback => :get
   }
   map.resources :backup_source_jobs, :member => { :progress => :get }
   map.resources :account_settings, :member => {
@@ -63,6 +69,7 @@ ActionController::Routing::Routes.draw do |map|
   #map.resources :email_accounts
   map.resources :gmail_accounts
   map.resources :backup_emails, :member => {:body => :get}
+  map.resources :facebook_messages
   map.resources :feed_entries
   map.resources :albums
   map.resources :backup_photo_albums
@@ -114,6 +121,8 @@ ActionController::Routing::Routes.draw do |map|
     :privacy => :get, :terms => :get, :press => :get, :what => :get, :contact => :get, 
     :sitemap => :get, :careers => :get
   }
+  
+  
   #map.resources :prelaunch, :controller => "prelaunch"
   #map.connect 'prelaunch/*keywords', :controller => 'prelaunch', :action => 'index'
   #map.connect 'fb/*keywords', :controller => 'prelaunch', :action => 'index'
@@ -166,7 +175,7 @@ ActionController::Routing::Routes.draw do |map|
     :conditions => { :method => :get }
   
   # Begin SaaS Kit routes
-  map.plans '/signup', :controller => 'accounts', :action => 'plans', :requirements => { :method => :get }
+  
   map.connect '/signup/d/:discount', :controller => 'accounts', :action => 'plans'
   map.thanks '/signup/thanks', :controller => 'accounts', :action => 'thanks'
   map.create '/signup/create/:discount', :controller => 'accounts', :action => 'create', :discount => nil
@@ -175,7 +184,7 @@ ActionController::Routing::Routes.draw do |map|
   map.forgot_password '/account/forgot', :controller => 'sessions', :action => 'forgot'
   map.reset_password '/account/reset/:token', :controller => 'sessions', :action => 'reset'
   
-  map.with_options(:conditions => {:subdomain => AppConfig['admin_subdomain']}) do |subdom|
+  map.with_options(:conditions => {:subdomain => 'admin'}) do |subdom|
     subdom.root :controller => 'subscription_admin/subscriptions', :action => 'index'
     subdom.with_options(:namespace => 'subscription_admin/', :name_prefix => 'admin_', :path_prefix => nil) do |admin|
       admin.resources :subscriptions, :member => { :charge => :post }
@@ -187,15 +196,27 @@ ActionController::Routing::Routes.draw do |map|
   end
   # End SaaS Kit routes
   
+  # vault subdomain routes
+  map.with_options(:conditions => {:subdomain => 'vault'}) do |sub|
+    sub.resource :vault_home, :controller => 'vault/home', :collection => { :why => :get, :services => :get, :sitemap => :get }
+    sub.resource :account_registration, :controller => 'vault/accounts/registration', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any}
+    sub.resources :account_backups, :controller => 'vault/accounts/backups', :collection => {:set_feed_rss_url => :get, :backup_sources => :get}
+    sub.resource :account_manager, :controller => 'vault/accounts/manager', :collection => { :thanks => :get, :plans => :get, :billing => :any, :paypal => :any, :plan => :any, :cancel => :any, :canceled => :get}
+    sub.resource :vault_dashboard, :controller => 'vault/dashboard', :member => { :search => :get }
+    sub.vault_dashboard '/vdashboard', :controller => 'vault/dashboard'
+    sub.root :controller => 'vault/home', :action => :show
+    sub.vlogin 'vlogin', :controller => 'vault/user_sessions', :action => 'new', :secure => true
+    sub.vlogout 'vlogout', :controller => 'vault/user_sessions', :action => 'destroy'
+  end
+  
   # Static partials for WordPress blog
   map.header_partial 'static/blog_header', :controller => 'home', :action => 'blog_header_partial'
   map.footer_partial 'static/blog_footer', :controller => 'home', :action => 'blog_footer_partial'
   
+  # encoding.com routes
   map.encoding_callback 'encoding_cb', :controller => 'encodings', :action => 'callback'
   
   # Facebook routes
-    
-  # FUCKING BULLSHIT
   #map.facebook_home '', :controller => 'facebook', :action => 'index', :conditions=>{:canvas=>true}  
   map.facebook_home '/', :controller => 'home', :action => 'index'
   map.home ':page', :controller => 'home', :action => 'show'

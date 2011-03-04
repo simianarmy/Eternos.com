@@ -17,10 +17,12 @@ module EternosBackup
       # Run in EM reactor to publish pending backup jobs to MQ
       def run(options={})
         @@cutoff = options[:cutoff] || cutoff_time
-
-        run_backup_job do
+        
+        run_backup_job do          
           # Get members that qualify for backup
-          member_sources = get_pending_backups(@@cutoff, options)
+          member_sources = BenchmarkHelper.rails_log("BackupScheduler: get_pending_backups") do
+            get_pending_backups(@@cutoff, options)
+          end
           count = 0
           
           # Using member.backup_state.last_successful_backup_at as sort key
@@ -31,7 +33,7 @@ module EternosBackup
           }.each do |member|
             sources = member_sources[member]
             # Send sources to job publisher
-            EternosBackup::BackupJobPublisher.run(member, sources) 
+            EternosBackup::BackupJobPublisher.run_inside_mq(member, sources) 
             count += 1
             break if options[:max_jobs] && (count >= options[:max_jobs])
           end
@@ -44,13 +46,14 @@ module EternosBackup
       #   
       def get_pending_backups(cutoff=nil, options={})
         returning({}) do |member_sources|
-          # Do all members needing a backup
+          # Do all members needing a backup - having backup sources is a requirement, obviously
           members = if options[:member_created_after] 
             Member.created_at_gt(options[:member_created_after]).with_sources
           else
-            Member.needs_backup(cutoff)
+            Member.with_sources.needs_backup(cutoff)
           end
-          members.each do |member|
+          # Batch mode possible with scope?
+          members.find_each do |member|
             # Get all backup sources,datatypes that should be backed up          
             member.backup_sources.active.each do |bs|
               bs.backup_data_sets.each do |ds|

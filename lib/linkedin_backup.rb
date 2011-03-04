@@ -5,7 +5,6 @@ require 'rubygems'
 require 'linkedin2'
 
 module LinkedinBackup
-  # Uses TwitterOAuth::Client object from twitter_oauth gem
   class << self
     def load_config
       YAML.load_file(File.join(RAILS_ROOT, 'config', 'linkedin.yml')) rescue nil || {}

@@ -62,12 +62,12 @@ module ModelControllerMethods
     end
     
     def load_object
-      @obj = self.instance_variable_set('@' + cname,  scoper.find(params[:id]))
+      @obj = self.instance_variable_set('@' + cname,  scoper.find(params[:id])) 
     end
     
     def build_object
       @obj = self.instance_variable_set('@' + cname,
-        scoper.is_a?(Class) ? scoper.new(params[cname]) : scoper.build(params[cname]))
+        scoper.is_a?(Class) ? scoper.new(params[cname]) : scoper.build(params[cname])) rescue nil
     end
     
     def scoper

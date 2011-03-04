@@ -1,6 +1,6 @@
 <% unless list.blank? %>
   <br>
-  <div class="title7">Twitter accounts to Backup</div>
+  <div class="title7"><b>Accounts Added</b>:</div>
   <table class="table-form8" border="0" cellpadding="0" cellspacing="0">
       <tr bgcolor="#b3ecef">
         <td class="coll-form15" bgcolor="#94e4e8" align="center">Screen name</td>
@@ -11,7 +11,7 @@
         <td class="coll-form12" valign="center"><%= twitter.title %></td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
         :html => {:class => 'blue-btn4'},
-        :url => {:controller => 'backup_sources', :action => 'remove_twitter_account', :id => twitter},
+        :url => remove_twitter_account_backup_sources_path(:id => twitter.id),
         :confirm => 'Are you sure?',
         :with => "'method=delete'", 
         :loading => "$('progress-bar').show();",

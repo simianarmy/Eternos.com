@@ -75,6 +75,9 @@ namespace :db do
     BackupSite.create(:name => 'flickr')
     BackupSite.create(:name => 'blog')
     BackupSite.create(:name => 'picasa')
+    
+    # Populate countries & regions tables
+    Rake::Task["db:dataset:load_fixtures"].invoke
   end
 
   desc "Fill subscription related tables"
@@ -85,7 +88,7 @@ namespace :db do
     plans = [
       { 'name' => 'Free', 'amount' => 0, 'user_limit' => 1 },
       { 'name' => 'Basic', 'amount' => 9.99, 'user_limit' => 1, 'renewal_period' => 1, 'trial_period' => 1 },
-      { 'name' => 'Premium', 'amount' => 30, 'user_limit' => nil, 'renewal_period' => 1, 'trial_period' => 1  }
+      { 'name' => 'Premium', 'amount' => 30, 'user_limit' => 1, 'renewal_period' => 1, 'trial_period' => 1  }
     ].collect do |plan|
       SubscriptionPlan.create(plan)
     end
