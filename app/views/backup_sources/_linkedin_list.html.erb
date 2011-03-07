@@ -1,0 +1,24 @@
+<% unless list.blank? %>
+  <br>
+  <div class="title7">Linked In accounts to Backup</div>
+  <table class="table-form8" border="0" cellpadding="0" cellspacing="0">
+      <tr bgcolor="#b3ecef">
+        <td class="coll-form15" bgcolor="#94e4e8" align="center">Screen name</td>
+        <td class="coll-form15" bgcolor="#94e4e8" align="center">Action</td>
+      </tr>
+    <% list.each do |linkedin| -%>
+      <tr id="linkedin-list-<%= linkedin.id %>">
+        <td class="coll-form12" valign="center"><%= linkedin.title %></td>
+        <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
+        :html => {:class => 'blue-btn4'},
+        :url => {:controller => 'backup_sources', :action => 'remove_linkedin_account', :id => linkedin},
+        :confirm => 'Are you sure?',
+        :with => "'method=delete'", 
+        :loading => "$('progress-bar').show();",
+        :complete => "$('progress-bar').hide();" %>    
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <br>
+<% end %>

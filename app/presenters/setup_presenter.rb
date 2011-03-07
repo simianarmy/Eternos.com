@@ -13,8 +13,9 @@ class SetupPresenter < AccountPresenter
     :twitter_accounts, :twitter_account, :twitter_confirmed,
     :picasa_accounts, :picasa_account, :picasa_confirmed,
     :feed_urls, :feed_url, :rss_url, :rss_confirmed,
-    :email_accounts, :current_gmail, :gmail_confirmed
-   
+    :email_accounts, :current_gmail, :gmail_confirmed,
+    :linkedin_accounts, :linkedin_account, :linkedin_confirmed 
+	
   include BackupSourceActivation
   
   def load_backup_sources

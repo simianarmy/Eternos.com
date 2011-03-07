@@ -57,7 +57,11 @@ class BackupSource < ActiveRecord::Base
   named_scope :linkedin, lambda {
     {
       :joins => :backup_site,
+<<<<<<< HEAD
       :conditions => {'backup_sites.name' => BackupSite::Facebook}
+=======
+      :conditions => {'backup_sites.name' => BackupSite::Linkedin}
+>>>>>>> e2aee4dac70a995cb506125a7c390b2483e4fcbf
     }
   }
   named_scope :active, :conditions => {

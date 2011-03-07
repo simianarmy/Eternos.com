@@ -1,9 +1,3 @@
-# DEPRECATED in 0.9 BUT 0.9 IS FUCKED - USE 0.8.x
-# You can specify this setting when installing via bundle install /path/to/bundle
-#bundle_path "vendor/bundled_gems"
-#clear_sources
-
-#source :gemcutter
 source "http://rubygems.org"
 source 'http://gemcutter.org'
 source "http://gems.github.com"
@@ -87,7 +81,11 @@ gem 'mash'
 gem 'mdalessio-dryopteris'
 gem 'memcache-client'
 gem 'mime-types'
+<<<<<<< HEAD
 gem 'mogli', :git => 'git@github.com:simianarmy/mogli.git'
+=======
+gem 'mogli'#, :git => 'git@github.com:simianarmy/mogli.git'
+>>>>>>> e2aee4dac70a995cb506125a7c390b2483e4fcbf
 gem 'moomerman-twitter_oauth'
 gem 'mysqlplus'
 gem 'nokogiri'
@@ -111,6 +109,8 @@ gem 'thinking-sphinx', '~> 1.3.20', :require => 'thinking_sphinx'
 gem 'twitter'
 gem 'uuidtools'
 gem 'tzinfo'
+gem 'linkedin2'
+gem 'cobravsmongoose'
 
 
 

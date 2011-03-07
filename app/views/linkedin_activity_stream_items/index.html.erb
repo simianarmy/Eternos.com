@@ -1,0 +1,35 @@
+<% title "Linked In Activity Stream Items" %>
+
+<table>
+  <tr>
+    <th>Published At</th>
+    <th>Edited At</th>
+    <th>Guid</th>
+    <th>Message</th>
+    <th>Attachment Data</th>
+    <th>Attachment Type</th>
+    <th>Activity Type</th>
+    <th>Type</th>
+    <th>Activity Stream</th>
+    <th>Author</th>
+  </tr>
+  <% for linkedin_activity_stream_item in @linkedin_activity_stream_items %>
+    <tr>
+      <td><%=h linkedin_activity_stream_item.published_at %></td>
+      <td><%=h linkedin_activity_stream_item.edited_at %></td>
+      <td><%=h linkedin_activity_stream_item.guid %></td>
+      <td><%=h linkedin_activity_stream_item.message %></td>
+      <td><%=h linkedin_activity_stream_item.attachment_data %></td>
+      <td><%=h linkedin_activity_stream_item.attachment_type %></td>
+      <td><%=h linkedin_activity_stream_item.activity_type %></td>
+      <td><%=h linkedin_activity_stream_item.type %></td>
+      <td><%=h linkedin_activity_stream_item.activity_stream_id %></td>
+      <td><%=h linkedin_activity_stream_item.author %></td>
+      <td><%= link_to "Show", linkedin_activity_stream_item %></td>
+      <td><%= link_to "Edit", edit_linkedin_activity_stream_item_path(linkedin_activity_stream_item) %></td>
+      <td><%= link_to "Destroy", linkedin_activity_stream_item, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Linked In Activity Stream Item", new_linkedin_activity_stream_item_path %></p>

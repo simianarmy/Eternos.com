@@ -39,11 +39,17 @@ ActionController::Routing::Routes.draw do |map|
     :add_feed_url => :post,
     :add_twitter => :get,
     :add_picasa => :get,
+	  :add_linkedin => :get,
     :twitter_auth => :get,
     :picasa_auth => :get,
     :remove_url => :get,
     :remove_picasa_account => :get,
+<<<<<<< HEAD
     :remove_twitter_account => :get
+=======
+    :remove_twitter_account => :get,
+	  :linkedin_callback => :get
+>>>>>>> e2aee4dac70a995cb506125a7c390b2483e4fcbf
   }
   map.resources :backup_source_jobs, :member => { :progress => :get }
   map.resources :account_settings, :member => {
@@ -173,7 +179,7 @@ ActionController::Routing::Routes.draw do |map|
     :conditions => { :method => :get }
   
   # Begin SaaS Kit routes
-  map.plans '/signup', :controller => 'accounts', :action => 'plans', :requirements => { :method => :get }
+  
   map.connect '/signup/d/:discount', :controller => 'accounts', :action => 'plans'
   map.thanks '/signup/thanks', :controller => 'accounts', :action => 'thanks'
   map.create '/signup/create/:discount', :controller => 'accounts', :action => 'create', :discount => nil
@@ -182,7 +188,7 @@ ActionController::Routing::Routes.draw do |map|
   map.forgot_password '/account/forgot', :controller => 'sessions', :action => 'forgot'
   map.reset_password '/account/reset/:token', :controller => 'sessions', :action => 'reset'
   
-  map.with_options(:conditions => {:subdomain => AppConfig['admin_subdomain']}) do |subdom|
+  map.with_options(:conditions => {:subdomain => 'admin'}) do |subdom|
     subdom.root :controller => 'subscription_admin/subscriptions', :action => 'index'
     subdom.with_options(:namespace => 'subscription_admin/', :name_prefix => 'admin_', :path_prefix => nil) do |admin|
       admin.resources :subscriptions, :member => { :charge => :post }
