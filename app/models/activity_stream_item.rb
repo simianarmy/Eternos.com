@@ -19,6 +19,7 @@ class ActivityStreamItem < ActiveRecord::Base
   include CommonDateScopes
   include BackupObjectComment
   
+  named_scope :linkedin, :conditions => {:type => 'LinkedinActivityStreamItem'} 
   named_scope :facebook, :conditions => {:type => 'FacebookActivityStreamItem'}
   named_scope :twitter, :conditions => {:type => 'TwitterActivityStreamItem'}
   named_scope :with_attachment, :conditions => ['attachment_data IS NOT ?', nil]

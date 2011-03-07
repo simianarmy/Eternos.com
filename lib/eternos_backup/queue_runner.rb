@@ -4,7 +4,7 @@
 
 module EternosBackup
   module QueueRunner
-    AMQP_BACKUP_CONFIG = 'amqp-backup.yml'
+    AMQP_BACKUP_CONFIG = 'amqp.yml'
     
     # Run block inside EM reactor and connected to backup AMQP server
     def run_backup_job(&block)

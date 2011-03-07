@@ -1,0 +1,27 @@
+# $Id$
+
+# DO NOT EDIT - TEMPLATE ONLY!
+# CREATE LOCAL COPY at config/facebooker_desktop.yml
+
+# The api key, secret key, and canvas page name are required to get started
+# Tunnel configuration is only needed if you are going to use the facebooker:tunnel Rake tasks
+# Your callback url in Facebook should be set to http://public_host:public_port
+# The api key, secret key, and canvas page name are required to get started
+# Tunnel configuration is only needed if you are going to use the facebooker:tunnel Rake tasks
+# Your callback url in Facebook should be set to http://public_host:public_port
+
+common: &default_settings
+  api_key:  
+  secret_key: 
+  canvas_page_name:  
+  pretty_errors: true
+  set_asset_host_to_callback_url: false
+  
+development:
+  <<: *default_settings
+  callback_url: 
+     
+test:
+  <<: *default_settings 
+  callback_url: 
+
