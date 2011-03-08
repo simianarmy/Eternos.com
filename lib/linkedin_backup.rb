@@ -5,7 +5,6 @@ require 'rubygems'
 require 'linkedin2'
 
 module LinkedinBackup
-  # Uses TwitterOAuth::Client object from twitter_oauth gem
   class << self
     def load_config
       YAML.load_file(File.join(RAILS_ROOT, 'config', 'linkedin.yml')) rescue nil || {}
@@ -27,7 +26,7 @@ module LinkedinBackup
         
         #@client = TwitterOAuth::Client.new(opts)
         @client = Linkedin2::Consumer.new(@key, @secret,options )
-       # @client
+        return @client
       end
 
       # Using oauth method
@@ -49,9 +48,9 @@ module LinkedinBackup
       end
 
       def authorization(access_token,secret_access_token,options={})
-        @client = Linkedin2::Consumer.new(@key, @secret,options)
-		@client.set_access_token(access_token,secret_access_token)
-        @client
+	@client  = oauth_client()
+ 	@client.set_access_token(access_token,secret_access_token)
+        return @client
       end
     end
   end

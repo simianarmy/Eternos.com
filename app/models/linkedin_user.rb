@@ -689,9 +689,9 @@ class LinkedinUser < ActiveRecord::Base
     user.update_twitter_accounts_from_people(twitter_accounts, user.id)
     user.update_current_positions_from_people(three_current_positions, user.id)
 
-    user.update_comment_likes_from_people(@comment_like_hash)
-    user.update_cmpy_from_people(@cmpies_hash)
-    user.update_ncon_from_people(@ncons_hash)
+    user.update_comment_likes_from_people(@comment_like_hash, user.id)
+    user.update_cmpy_from_people(@cmpies_hash, user.id)
+    user.update_ncon_from_people(@ncons_hash, user.id)
 
   end
 

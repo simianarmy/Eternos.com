@@ -160,9 +160,7 @@ require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
 require 'thinking_sphinx'
-require 'linkedin2'
 require 'workling'
-
 ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|

@@ -29,46 +29,27 @@ module BackupWorker
     protected
     
     def save_linkedin(options)
-      log_info "Saving linkedin"
-  
-      client_options = {:count => 200}
-      unless as = member.activity_stream || member.create_activity_stream
-        raise "Unable to get member activity stream" 
-      end    
-      begin
-        linkedin = if backup_source.needs_initial_scan
-         # collect_all_linkedin client_options
-        else
-          ActivityStreamItem.cleanup_connection do
-            client_options[:since_id] = as.items.linkedin.newest.guid.to_i if as.items.linkedin.any?
-          end
+     puts "linkedin ........................................\n"
+       # backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
+        self.linkedin_client = if backup_source.auth_token && backup_source.auth_secret
+          consumer = LinkedinBackup::OAuth.authorization(backup_source.auth_token, backup_source.auth_secret)
+	  #puts "auth_token #{backup_source.auth_token}\n"
+	 # puts "auth_token #{backup_source.auth_secret}\n"	
+	@comment_like = consumer.get_network_update('STAT')
+        @info = consumer.get_profile('all')
+        @cmpies = consumer.get_network_update('CMPY')
+	@ncons = consumer.get_network_update('NCON')
         end
-        # Convert linkedin to LinkedinActivityStreamItems and save
-        linkedin.flatten.map {|t| LinkedinActivityStreamItem.create_from_proxy!(as.id, LinkedinActivity.new(t))}
-        backup_source.toggle!(:needs_initial_scan) if backup_source.needs_initial_scan
-      rescue Exception => e
-        save_exception "Error saving linkedin", e
-        return false
-      end
-      set_completion_counter
+
+       
+       #puts "info: #{@info}\n"
+        
+	if LinkedinUser.find_all_by_backup_source_id(backup_source.id).first
+ 	    LinkedinUser.update_profile(@info, @comment_like, @cmpies, @ncons, backup_source.id)
+	else
+	    LinkedinUser.insert(@info, @comment_like, @cmpies, @ncons, backup_source.id)
+	end
     end
-    
-#    protected
-#
-#    # Helper method to retrieve as many linkedin as possible from user timeline
-#    # starting from beginning to end
-#    def collect_all_linkedin(client_options)
-#      page = 1
-#      found = []
-#      while true
-#        client_options[:page] = page
-#        res = user_timeline client_options
-#        break unless res && res.any?
-#        found << res
-#        page += 1
-#      end
-#      found
-#    end
 
   end
 end

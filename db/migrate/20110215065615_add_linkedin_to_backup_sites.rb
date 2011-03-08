@@ -1,6 +1,6 @@
 class AddLinkedinToBackupSites < ActiveRecord::Migration
   def self.up
-    #BackupSite.create(:name => BackupSite::Linkedin)
+    BackupSite.create(:name => BackupSite::Linkedin)
   end
 
   def self.down

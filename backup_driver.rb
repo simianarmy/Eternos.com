@@ -5,6 +5,12 @@ require 'rubygems'
 require 'activesupport'
 require 'optparse'
 
+
+def say(msg)
+  puts msg, "\n" if @verbose
+  @logger.info(msg) if @logger
+end
+
 # This hash will hold all of the options
 # parsed from the command-line by
 # OptionParser.
@@ -100,7 +106,4 @@ say "Done."
 
 ### 
 
-def say(msg)
-  puts msg, "\n" if @verbose
-  @logger.info(msg) if @logger
-end
+

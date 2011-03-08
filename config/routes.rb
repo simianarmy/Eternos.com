@@ -175,7 +175,7 @@ ActionController::Routing::Routes.draw do |map|
     :conditions => { :method => :get }
   
   # Begin SaaS Kit routes
-  map.plans '/signup', :controller => 'accounts', :action => 'plans', :requirements => { :method => :get }
+  
   map.connect '/signup/d/:discount', :controller => 'accounts', :action => 'plans'
   map.thanks '/signup/thanks', :controller => 'accounts', :action => 'thanks'
   map.create '/signup/create/:discount', :controller => 'accounts', :action => 'create', :discount => nil

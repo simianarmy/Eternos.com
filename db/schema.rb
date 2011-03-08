@@ -496,7 +496,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
 
   add_index "facebook_ids", ["facebook_uid"], :name => "index_facebook_ids_on_facebook_uid"
 
-
   create_table "facebook_messages", :force => true do |t|
     t.integer  "facebook_thread_id",              :null => false
     t.string   "message_id",                      :null => false
@@ -511,7 +510,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
 
   add_index "facebook_messages", ["facebook_thread_id"], :name => "index_facebook_messages_on_facebook_thread_id"
   add_index "facebook_messages", ["message_id"], :name => "index_facebook_messages_on_message_id"
-
 
   create_table "facebook_page_admins", :id => false, :force => true do |t|
     t.integer "facebook_page_id",    :null => false
@@ -549,7 +547,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
 
   add_index "facebook_threads", ["backup_source_id", "folder_id", "message_thread_id"], :name => "index_facebook_threads_on_backup_source_folder_message_thread", :unique => true
   add_index "facebook_threads", ["message_thread_id"], :name => "index_facebook_threads_on_message_thread_id"
-
 
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false
