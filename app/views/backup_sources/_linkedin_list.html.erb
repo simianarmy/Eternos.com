@@ -11,7 +11,7 @@
         <td class="coll-form12" valign="center"><%= linkedin.title %></td>
         <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
         :html => {:class => 'blue-btn4'},
-        :url => {:controller => 'backup_sources', :action => 'remove_linkedin_account', :id => linkedin},
+        :url => {:controller => 'backup_sources', :action => 'remove_linkedin_account', :id => linkedin.id},
         :confirm => 'Are you sure?',
         :with => "'method=delete'", 
         :loading => "$('progress-bar').show();",

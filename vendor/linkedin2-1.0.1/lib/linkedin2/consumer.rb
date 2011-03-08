@@ -234,6 +234,13 @@ module Linkedin2
       }
     end
 
+    def get_name
+      get_profile 'id,first-name,last-name'
+      if @profile
+        get_first_name << " " << get_last_name
+      end
+    end
+    
     def get_first_name
       if @profile.nil?
         return nil

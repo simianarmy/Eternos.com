@@ -44,7 +44,7 @@
         <div id="linkedin_blurb">
           Simply <b>click on the button</b> below to begin saving your Linked In account. 
         </div>
-        <%= link_to image_tag('linkedin_button.gif'), add_linkedin_backup_sources_path%>
+        <%= link_to image_tag('linkedin_button.gif'), add_linkedin_backup_sources_path %>
 		
         <div id="result-linkedin-accounts">
           <%= render :partial => 'backup_sources/linkedin_list', :locals => { :list => settings.linkedin_accounts } %>

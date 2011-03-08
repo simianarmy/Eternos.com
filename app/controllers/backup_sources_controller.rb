@@ -51,16 +51,17 @@ class BackupSourcesController < ApplicationController
   end
   
   def add_linkedin
-    @key ='a9JjbI-dYf91dFUXbtcYEIXDwf8w_BLDnCgijGd7KHGSpaMnv_2MhgbHZaTcsY1w'
-    @secret = 'qVrrdR09jGwMlsiEnOfI5IMVIrT2bgC8rAsKi8gFhaliI8o5P9fI2KPko8lFAPD2'
-    @oauth_callback = linkedin_callback_backup_sources_url
+    config = Linkedin2.load_config
     #@userID = '123' # ??
-    consumer = Linkedin2::Consumer.new(@key, @secret, {
-        :oauth_callback => @oauth_callback
-    }
+    consumer = Linkedin2::Consumer.new(config['consumer_key'], config['secret_key'], 
+      :oauth_callback => linkedin_callback_backup_sources_url
+    )
     session[:consumer] = consumer
-    
     redirect_to consumer.request_token
+  rescue Exception => e
+    Rails.logger.error "Error in add_linkedin: #{e.class} #{e.message}"
+    flash[:error] = "Unable to complete request!  Please try again or contact support."
+    redirect_to account_setup_path
   end
 
   def linkedin_callback
@@ -71,16 +72,14 @@ class BackupSourcesController < ApplicationController
     @secret_token = consumer.get_secret_access_token
     backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
 
-    title = consumer.get_first_name.to_s + ' ' + consumer.get_last_name.to_s
-    Rails.logger.info "Linkedin callback------------\n#{consumer.inspect}"
-    Rails.logger.info "#{consumer.get_first_name.to_s}\n"
-    Rails.logger.info "#{consumer.get_last_name.to_s}\n"
+    title = consumer.get_name
+    Rails.logger.info "Linkedin returned name: #{title}"
 
     if backup_source.nil?
       # Try to get twitter screen name for backup source title
       backup_source = LinkedinAccount.new(
         :user_id => @current_user.id,
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Twitter).id,
+        :backup_site_id => BackupSite.find_by_name(BackupSite::Linkedin).id,
         :title =>  title,
         :auth_token => @access_token,
         :auth_secret => @secret_token
@@ -88,10 +87,11 @@ class BackupSourcesController < ApplicationController
       if backup_source.save
         backup_source.confirmed!
         current_user.completed_setup_step(1)
-        flash[:notice] = "Linkedin account successfully saved"
+        flash[:notice] = "Linkedin account successfully added"
       end
     else
-      flash[:error] = "Linkedin account is already activated"
+      backup_source.update_attribute(:title, title)
+      flash[:notice] = "Linkedin account is already activated"
     end
 
     respond_to do |format|
@@ -129,8 +129,7 @@ class BackupSourcesController < ApplicationController
         backup_source = current_user.backup_sources.twitter.find_by_auth_token(@access_token.token)
         if backup_source.nil?
           # Try to get twitter screen name for backup source title
-          backup_source = LinkedinAccount.new(
-            :user_id => @current_user.id,
+          backup_source = current_user.backup_sources.new(
             :backup_site_id => BackupSite.find_by_name(BackupSite::Twitter).id,
             :title => TwitterBackup::OAuth.screen_name || '',
             :auth_token => @access_token.token,
