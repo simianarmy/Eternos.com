@@ -12,7 +12,7 @@ class BackupSourcesController < ApplicationController
   ssl_allowed :add_twitter, :remove_twitter_account,
     :add_picasa, :remove_picasa_account,
     :add_feed_url, :remove_url, :picasa_auth, :twitter_auth,
-    :add_linkedin, :remove_linkedin_account
+    :add_linkedin, :remove_linkedin_account, :linkedin_callback
 
   def index
     @need_setup = current_user.need_backup_setup?
@@ -49,19 +49,18 @@ class BackupSourcesController < ApplicationController
       }
     end
   end
+  
   def add_linkedin
     @key ='a9JjbI-dYf91dFUXbtcYEIXDwf8w_BLDnCgijGd7KHGSpaMnv_2MhgbHZaTcsY1w'
     @secret = 'qVrrdR09jGwMlsiEnOfI5IMVIrT2bgC8rAsKi8gFhaliI8o5P9fI2KPko8lFAPD2'
-    @oauth_callback = root_url + 'backup_sources/linkedin_callback'
-    @userID = '123'
-    consumer = Linkedin2::Consumer.new(@key, @secret,{
-        :oauth_callback=>@oauth_callback
-      })
-
-    session[:consumer] = consumer;
-    @URL_redirect = consumer.request_token
-    redirect_to @URL_redirect
-
+    @oauth_callback = linkedin_callback_backup_sources_url
+    #@userID = '123' # ??
+    consumer = Linkedin2::Consumer.new(@key, @secret, {
+        :oauth_callback => @oauth_callback
+    }
+    session[:consumer] = consumer
+    
+    redirect_to consumer.request_token
   end
 
   def linkedin_callback
@@ -72,17 +71,17 @@ class BackupSourcesController < ApplicationController
     @secret_token = consumer.get_secret_access_token
     backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
 
-
-    tilte = consumer.get_first_name.to_s + ' ' + consumer.get_last_name.to_s
-    RAILS_DEFAULT_LOGGER.info "debug------------"
-    RAILS_DEFAULT_LOGGER.info "#{consumer.get_first_name.to_s}\n"
-    RAILS_DEFAULT_LOGGER.info "#{consumer.get_last_name.to_s}\n"
+    title = consumer.get_first_name.to_s + ' ' + consumer.get_last_name.to_s
+    Rails.logger.info "Linkedin callback------------\n#{consumer.inspect}"
+    Rails.logger.info "#{consumer.get_first_name.to_s}\n"
+    Rails.logger.info "#{consumer.get_last_name.to_s}\n"
 
     if backup_source.nil?
       # Try to get twitter screen name for backup source title
-      backup_source = current_user.backup_sources.new(
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Linkedin).id,
-        :title =>  tilte,
+      backup_source = LinkedinAccount.new(
+        :user_id => @current_user.id,
+        :backup_site_id => BackupSite.find_by_name(BackupSite::Twitter).id,
+        :title =>  title,
         :auth_token => @access_token,
         :auth_secret => @secret_token
       )
@@ -95,13 +94,13 @@ class BackupSourcesController < ApplicationController
       flash[:error] = "Linkedin account is already activated"
     end
 
-
     respond_to do |format|
       format.html {
         redirect_to account_setup_path
       }
     end
   end
+  
   # Remove Linked In Account
   def remove_linkedin_account
     begin
@@ -117,6 +116,7 @@ class BackupSourcesController < ApplicationController
       format.js
     end
   end
+  
   # Twitter OAuth authentication callback url
   def twitter_auth
     begin
@@ -129,7 +129,8 @@ class BackupSourcesController < ApplicationController
         backup_source = current_user.backup_sources.twitter.find_by_auth_token(@access_token.token)
         if backup_source.nil?
           # Try to get twitter screen name for backup source title
-          backup_source = current_user.backup_sources.new(
+          backup_source = LinkedinAccount.new(
+            :user_id => @current_user.id,
             :backup_site_id => BackupSite.find_by_name(BackupSite::Twitter).id,
             :title => TwitterBackup::OAuth.screen_name || '',
             :auth_token => @access_token.token,

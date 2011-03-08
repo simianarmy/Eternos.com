@@ -105,7 +105,7 @@ gem 'thinking-sphinx', '~> 1.3.20', :require => 'thinking_sphinx'
 gem 'twitter'
 gem 'uuidtools'
 gem 'tzinfo'
-gem 'linkedin2'
+gem 'linkedin2', '1.0.1', :path => 'vendor/linkedin2-1.0.1'
 gem 'cobravsmongoose'
 
 
