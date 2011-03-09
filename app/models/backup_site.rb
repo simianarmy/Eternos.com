@@ -32,5 +32,4 @@ class BackupSite < ActiveRecord::Base
   def blog?; name == Blog end
   def picasa?; name == Picasa end
   def linkedin?; name == Linkedin end
-  
 end

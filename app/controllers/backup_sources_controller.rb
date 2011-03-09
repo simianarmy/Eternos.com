@@ -90,7 +90,9 @@ class BackupSourcesController < ApplicationController
         flash[:notice] = "Linkedin account successfully added"
       end
     else
-      backup_source.update_attribute(:title, title)
+      # Stupid read-only activerecord workaround
+      bs = LinkedinAccount.find(backup_source.id)
+      bs.update_attribute(:title, title)
       flash[:notice] = "Linkedin account is already activated"
     end
 

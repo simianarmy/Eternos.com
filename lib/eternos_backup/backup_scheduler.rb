@@ -79,7 +79,7 @@ module EternosBackup
         if bs.active?
           scheduled = if bs.last_backup_at
             bs.last_backup_at + default_run_interval
-          elsif source_scheduled_for_backup?(bs, ds)
+          elsif source_scheduled_for_backup?(nil, bs, ds)
             next_run_time
           end
           # Don't schedule for sometime in the past

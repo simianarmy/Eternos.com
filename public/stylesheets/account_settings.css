@@ -1565,26 +1565,44 @@ h5{
 	_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/errors/popup-top.png',sizingMethod='scale');
 }
 
-/* Facebook accounts table */
-#facebook-accounts-table {
-	width: 400px;
+/* Account setup */
+#accordion p.account-setup-accordion-icon {
+	cursor:pointer;
+}
+
+/* Account listing tables */
+table.backup-accounts-table {
+	width: 440px;
 	border-collapse: collapse;
 }
 
-#facebook-accounts-table th, #facebook-accounts-table td {
+table.backup-accounts-table th, #facebook-accounts-table td {
 	border: none;
 }
 
-#facebook-accounts-table th {
+table.backup-accounts-table th {
 	background-color: #ddd;
 	
 }
 
-#facebook-accounts-table tr:nth-of-type(even) {
+table.backup-accounts-table tr:nth-of-type(even) {
 	background-color: #F3F3F3;
 }
 
-#facebook-accounts-table td {
+table.backup-accounts-table td {
+	padding: 10px;
 	text-align: center;
+}
+
+table.backup-accounts-table td:nth-of-type(0n+1) {
+	font-weight: bold;
+}
+
+table.backup-accounts-table td.active {
+	color: green;
+}
+
+table.backup-accounts-table td.inactive {
+	color: red;
 }
 
