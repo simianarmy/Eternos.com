@@ -1,8 +1,6 @@
 # $Id$
 
-# Supports number of twitter gems 
-require 'rubygems'
-require 'linkedin2'
+#require 'linkedin2'
 
 module LinkedinBackup
   class << self
@@ -12,8 +10,6 @@ module LinkedinBackup
   end
   
   module OAuth
-    #    require 'twitter_oauth'
-    
     class << self
       attr_reader :access_token
 
@@ -24,16 +20,13 @@ module LinkedinBackup
         @key = @@linkedin_config['consumer_key']
         @secret = @@linkedin_config['consumer_secret']
         
-        #@client = TwitterOAuth::Client.new(opts)
         @client = Linkedin2::Consumer.new(@key, @secret,options )
-        return @client
       end
 
       # Using oauth method
       def account_authenticated(consumer, oauth_verifier)
         # Exchange the request token for an access token.
         @client = consumer.access_token(oauth_verifier.to_s)
-        @client
       end
 
       def screen_name(consumer)
@@ -48,12 +41,10 @@ module LinkedinBackup
       end
 
       def authorization(access_token,secret_access_token,options={})
-	@client  = oauth_client()
- 	@client.set_access_token(access_token,secret_access_token)
-        return @client
+	      @client  = oauth_client()
+ 	      @client.set_access_token(access_token,secret_access_token)
+        @client
       end
     end
   end
-  
- 
 end
