@@ -3,11 +3,6 @@ PATH
   specs:
     linkedin2 (1.0.1)
 
-PATH
-  remote: vendor/linkedin2-1.0.1
-  specs:
-    linkedin2 (1.0.1)
-
 GEM
   remote: http://rubygems.org/
   remote: http://gemcutter.org/
