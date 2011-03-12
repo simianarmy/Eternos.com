@@ -27,7 +27,8 @@ module ContentUploader
             end
           end
           # Look for files in cloud staging directory
-          Dir.glob(File.join(Rails.root, AppConfig.s3_staging_dir, '*.jpg')).each do |f|
+          
+          Dir.glob(File.join(cloud_staging_dir, '*.jpg')).each do |f|
             fname = File.basename(f)
             logit "Looking for #{fname} in db..."
             if c = Content.filename_eq(fname).first
@@ -62,6 +63,12 @@ module ContentUploader
         puts "Out of thread...stopping EM"
         MessageQueue.stop
       end
+    end
+    
+    def cloud_staging_dir
+      AppConfig.s3_staging_dir.first == '/' ? 
+        AppConfig.s3_staging_dir : 
+        File.join(Rails.root, AppConfig.s3_staging_dir)
     end
     
     def logit(msg)
