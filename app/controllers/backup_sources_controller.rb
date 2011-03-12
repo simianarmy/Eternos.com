@@ -8,6 +8,7 @@ require 'nokogiri'
 class BackupSourcesController < ApplicationController
   before_filter :login_required
   require_role "Member"
+  before_filter :gen_setup_url
 
   ssl_allowed :add_twitter, :remove_twitter_account,
     :add_picasa, :remove_picasa_account,
@@ -61,7 +62,7 @@ class BackupSourcesController < ApplicationController
   rescue Exception => e
     Rails.logger.error "Error in add_linkedin: #{e.class} #{e.message}"
     flash[:error] = "Unable to complete request!  Please try again or contact support."
-    redirect_to account_setup_path
+    redirect_to @account_setup_path
   end
 
   def linkedin_callback
@@ -98,7 +99,7 @@ class BackupSourcesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        redirect_to account_setup_path
+        redirect_to @account_setup_path
       }
     end
   end
@@ -154,7 +155,7 @@ class BackupSourcesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        redirect_to (current_subdomain == 'vault') ? account_backups_path : account_setup_path
+        redirect_to @account_setup_path
       }
     end
   end
@@ -203,7 +204,7 @@ class BackupSourcesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        redirect_to (current_subdomain == 'vault') ? account_backups_path : account_setup_path
+        redirect_to @account_setup_path
       }
     end
   end
@@ -291,6 +292,11 @@ class BackupSourcesController < ApplicationController
 
   private
 
+  # Determine proper redirect url back to account setup page for each subdomain
+  def gen_setup_url
+    @account_setup_path = (current_subdomain == 'vault') ? account_backups_path : account_setup_path
+  end
+  
   def find_twitter_accounts
     @twitter_accounts = current_user.backup_sources.twitter
   end
