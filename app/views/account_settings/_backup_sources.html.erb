@@ -12,13 +12,13 @@
 <div id="accordion">
   <p class="current account-setup-accordion-icon">
     <%= image_tag '2nd-facebook.gif', :id => "fb-button", :class => settings.facebook_confirmed ? 'active2' : "" %> 
-    <strong>Facebook:</strong> Back up everything in your account
+    <strong>Facebook:</strong> Back up everything in your account and Pages
   </p>
   <!-- Facebook Pane -->
   <div class="pane network-login-box" id="facebook-form-box" style="display:block">
     <div id="facebook-box">
         <div id="facebook_blurb">
-          Simply <b>click on the button</b> below to backup up your entire Facebook account.
+          Simply <b>click on the button</b> below to add your account
         </div>
         <%= render :partial => "backup_sources/authorize_fb_account_button", :locals => {
           :auth_url => settings.fb_login_url} %>
@@ -36,16 +36,15 @@
 
   <p class="account-setup-accordion-icon">
     <%= image_tag '2nd-linkedin.gif', :id => "linkedin-button", :class => settings.linkedin_confirmed ? 'active2' : 'linkedin-btn'%>
-    <strong>Linked In:</strong> Back up all your Linked In.
+    <strong>Linked In:</strong>Back up your Linkedin account
   </p>
   <!-- LinkedIn Pane -->
   <div class="pane network-login-box">
       <div id="linkedin-box">
         <div id="linkedin_blurb">
-          Simply click the "Sign in with Linked In" button below to begin saving your Linked In. 
-          <br/>
+          Simply <b>click on the button</b> below to begin saving your Linked In account. 
         </div>
-        <%= link_to image_tag('linkedin_button.gif'), add_linkedin_backup_sources_path%>
+        <%= link_to image_tag('linkedin_button.gif'), add_linkedin_backup_sources_path %>
 		
         <div id="result-linkedin-accounts">
           <%= render :partial => 'backup_sources/linkedin_list', :locals => { :list => settings.linkedin_accounts } %>
@@ -55,7 +54,7 @@
   
   <p class="account-setup-accordion-icon">
     <%= image_tag '2nd-twitter.gif', :id => "twitter-button", :class => settings.twitter_confirmed ? 'active2' : 'twitter-btn' %>
-    <strong>Twitter:</strong> Back up all your tweets.
+    <strong>Twitter:</strong> Back up all your Twitter accounts
   </p>
   <!-- Twitter Pane -->
   <div class="pane network-login-box">

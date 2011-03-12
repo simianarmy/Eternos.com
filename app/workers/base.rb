@@ -46,7 +46,7 @@ module BackupWorker
       
       # Run actions in random order, using EM reactor queue to schedule actions
       @run_actions = get_dataset_actions(opts).sort_by { rand }
-      log_debug "ACTIONS TO RUN: #{@run_actions.join(' ')}"
+      #log_debug "ACTIONS TO RUN: #{@run_actions.join(' ')}"
       @run_actions.each do |action| 
         send("save_#{action}", opts)
         # We can sleep safely if we are in a real thread

@@ -1,4 +1,5 @@
 class LinkedinUser < ActiveRecord::Base
+  belongs_to :linkedin_account
   has_many  :linkedin_user_certifications,:class_name => "LinkedinUserCertification"
   has_many  :linkedin_user_connections, :class_name => "LinkedinUserConnection"
   has_many  :linkedin_user_educations, :class_name => "LinkedinUserEducation"
@@ -293,7 +294,6 @@ class LinkedinUser < ActiveRecord::Base
   end
 
   def add_ncon_from_people(ncons)
-    
     if ncons.nil? || ncons['updates'].nil?
       return
     end
@@ -301,9 +301,7 @@ class LinkedinUser < ActiveRecord::Base
     li = LinkedinUserNcon.from_ncons(ncons['update'])
 
     linkedin_user_ncons << li
-
   end
-  
     
   def update_certifications_from_people(certifications,user_id)
     if certifications.nil?
@@ -531,12 +529,9 @@ class LinkedinUser < ActiveRecord::Base
       certifications = @hash.delete('certifications')
     end
 
-
     if !@hash['languages'].nil?
       languages = @hash.delete('languages')
     end
-
-
 
     if !@hash['publications'].nil?
       publications = @hash.delete('publications')
@@ -576,7 +571,7 @@ class LinkedinUser < ActiveRecord::Base
    
   end
   
-  def self.update_profile(peopleprofile,comment_like, cmpies, ncons,backup_source_id)
+  def update_profile(peopleprofile,comment_like, cmpies, ncons)
     @hash = (Hash.from_xml peopleprofile)['person']
     if !comment_like.nil?
 	    @comment_like_hash = (Hash.from_xml comment_like)['updates']
@@ -659,7 +654,7 @@ class LinkedinUser < ActiveRecord::Base
     end
     @hash['current_status_timestamp'] = Time.at(Integer(@hash['current_status_timestamp']) / 1000)
     @hash['location_code']  = location['country']['code']
-    @hash['backup_source_id'] = backup_source_id
+
     if !@hash['date_of_birth'].nil?
       @hash['date_of_birth'] = date_of_birth['year'] + '-' + date_of_birth['month'] + '-' + date_of_birth['day']
     end
@@ -667,32 +662,29 @@ class LinkedinUser < ActiveRecord::Base
     connections['total'] = @hash['num_connections']
     connections['connection'] = connections['person']
 
+    update_attributes(@hash)
     
-    user = LinkedinUser.find_all_by_backup_source_id(backup_source_id).first
-    user.update_attributes(@hash);
-    user.save
-    user.update_certifications_from_people(certifications, user.id)
-    user.update_connections_from_people(connections, user.id)
-    user.update_positions_from_people(positions , user.id)
-    user.update_current_shares_from_people(current_share, user.id)
-    user.update_educations_from_people(educations, user.id)
-    user.update_im_accounts_from_people(im_accounts, user.id)
-    user.update_languages_from_people(languages, user.id)
-    user.update_member_url_resources_from_people(member_url_resources, user.id)
-    user.update_positions_from_people(three_past_positions, user.id)
-    user.update_patents_from_people(patents, user.id)
-    user.update_phone_numbers_from_people(phone_numbers, user.id)
-    user.update_positions_from_people(positions, user.id)
-    user.update_publications_from_people(publications, user.id)
-    user.update_recommendations_receiveds_from_people(recommendations_receiveds, user.id)
-    user.update_skills_from_people(skills, user.id)
-    user.update_twitter_accounts_from_people(twitter_accounts, user.id)
-    user.update_current_positions_from_people(three_current_positions, user.id)
-
-    user.update_comment_likes_from_people(@comment_like_hash)
-    user.update_cmpy_from_people(@cmpies_hash)
-    user.update_ncon_from_people(@ncons_hash)
-
+    # Update the associations
+    update_certifications_from_people(certifications)
+    update_connections_from_people(connections)
+    update_positions_from_people(positions )
+    update_current_shares_from_people(current_share)
+    update_educations_from_people(educations)
+    update_im_accounts_from_people(im_accounts)
+    update_languages_from_people(languages)
+    update_member_url_resources_from_people(member_url_resources)
+    update_positions_from_people(three_past_positions)
+    update_patents_from_people(patents)
+    update_phone_numbers_from_people(phone_numbers)
+    update_positions_from_people(positions)
+    update_publications_from_people(publications)
+    update_recommendations_receiveds_from_people(recommendations_receiveds)
+    update_skills_from_people(skills)
+    update_twitter_accounts_from_people(twitter_accounts)
+    update_current_positions_from_people(three_current_positions)
+    update_comment_likes_from_people(@comment_like_hash)
+    update_cmpy_from_people(@cmpies_hash)
+    update_ncon_from_people(@ncons_hash)
   end
 
 end

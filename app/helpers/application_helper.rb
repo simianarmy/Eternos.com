@@ -6,7 +6,7 @@ module ApplicationHelper
     returning String.new do |html|
       [:notice, :error].collect do |type| 
         if flash[type]
-          html << content_tag('div', flash[type], :id => "flash_#{type}")
+          html << content_tag(:div, flash[type], :id => "flash_#{type}")
           if options.key?(:fade)
             html << javascript_tag("setTimeout(function() { new Effect.Fade('flash_#{type}') }, #{options[:fade]*1000});")
           end

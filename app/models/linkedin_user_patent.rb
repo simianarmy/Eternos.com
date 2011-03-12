@@ -11,24 +11,28 @@ class LinkedinUserPatent < ActiveRecord::Base
     patent['office_name'] = patent.delete('office')['name']
     patent['status_name'] = patent['status']['name']
     patent['status_id'] = patent['status']['id']
-	patent['patent_id'] = patent.delete('id');
+    patent['patent_id'] = patent.delete('id');
     patent.delete('status')
 
     return patent
   end
 
-  def add_patent_inventors_from_people(patent_inventors,linkedin_user_patents_id)
+  def add_patent_inventors_from_people(patent_inventors)
     if patent_inventors.nil? || patent_inventors['inventor'].nil?
       return
     end
     if Integer(patent_inventors['total']) > 1
       patent_inventors['inventor'].each { |patent_inventor|
-        LinkedinUserPatentInventor.from_authors(patent_inventor)
-        
+        li = LinkedinUserPatentInventor.from_authors(patent_inventor['person'])
+        li.linkedin_user_patents_id = self.id
+        linkedin_user_patent_inventors << li
+    
       }
     else
-       LinkedinUserPatentInventor.from_authors(patent_inventors['inventor']['person'])
-     
+      li = LinkedinUserPatentInventor.from_authors(patent_inventors['inventor']['person'])
+      li.linkedin_user_patents_id = self.id
+      linkedin_user_patent_inventors << li
+    
     end
   end
 
@@ -36,16 +40,13 @@ class LinkedinUserPatent < ActiveRecord::Base
     if patent.nil?
       return nil
     end
-     
     inventors = patent.delete('inventors')
     patent = self.process_hash(patent)
-
     li = self.new(patent)
-    #li.add_patent_inventors_from_people(inventors)
     li
   end
   def self.delete(user_id)
     self.delete_all(["linkedin_user_id = ?" , user_id])
-
+    LinkedinUserPatentInventor.delete(self.id)
   end
 end

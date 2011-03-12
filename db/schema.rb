@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110217085045) do
+ActiveRecord::Schema.define(:version => 20110308054854) do
 
   create_table "accounts", :force => true do |t|
     t.string   "name"
@@ -479,11 +479,11 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
   add_index "email_lists", ["user_id"], :name => "index_email_lists_on_user_id"
 
   create_table "facebook_contents", :force => true do |t|
-    t.integer  "profile_id", :null => false
     t.text     "friends"
     t.text     "groups"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "profile_id", :null => false
   end
 
   add_index "facebook_contents", ["profile_id"], :name => "index_facebook_contents_on_profile_id"
@@ -495,7 +495,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
   end
 
   add_index "facebook_ids", ["facebook_uid"], :name => "index_facebook_ids_on_facebook_uid"
-
 
   create_table "facebook_messages", :force => true do |t|
     t.integer  "facebook_thread_id",              :null => false
@@ -511,7 +510,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
 
   add_index "facebook_messages", ["facebook_thread_id"], :name => "index_facebook_messages_on_facebook_thread_id"
   add_index "facebook_messages", ["message_id"], :name => "index_facebook_messages_on_message_id"
-
 
   create_table "facebook_page_admins", :id => false, :force => true do |t|
     t.integer "facebook_page_id",    :null => false
@@ -549,7 +547,6 @@ ActiveRecord::Schema.define(:version => 20110217085045) do
 
   add_index "facebook_threads", ["backup_source_id", "folder_id", "message_thread_id"], :name => "index_facebook_threads_on_backup_source_folder_message_thread", :unique => true
   add_index "facebook_threads", ["message_thread_id"], :name => "index_facebook_threads_on_message_thread_id"
-
 
   create_table "families", :force => true do |t|
     t.integer  "profile_id",                    :null => false

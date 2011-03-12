@@ -1,18 +1,18 @@
 <% unless feed_urls.blank? %>
-  <br>
-  <div class="title7"><b>Accounts Added</b>:</div>
-  <table class="table-form7" border="0" cellpadding="0" cellspacing="0">
-      <tr bgcolor="#ff984e">
-        <td class="coll-form10" bgcolor="#ff984e" align="center">URL</td>
-        <td class="coll-form10" bgcolor="#ff984e" align="center">Action</td>
-      </tr>
-    <% feed_urls.each do |@feed| -%>
-      <tr id="url-list-<%= @feed.id %>">
-        <td class="coll-form12" valign="center"><%= in_place_editor_field(:feed, :rss_url) %></td>
-        <td class="coll-form12" valign="center">
+  <br/>
+  <table class="backup-accounts-table">
+    <tr>
+      <th>Name</th>
+      <th>Authorization Status</th>
+      <th>Actions</th>
+    </tr>
+    <% feed_urls.each do |feed| -%>
+      <tr id="url-list-<%= feed.id %>">
+        <td><%= feed.name %></td>
+        <td><%= feed.active? ? 'Active' : 'Inactive' %></td>
+        <td>
         <%= link_to_remote 'Remove', 
-        :html => {:class => 'blue-btn4'},
-        :url => remove_url_backup_sources_path(:id => @feed.id),
+        :url => remove_url_backup_sources_path(:id => feed.id),
         :confirm => 'Are you sure?',
         :loading => "$('progress-bar').show();",
         :complete => "$('progress-bar').hide();" %>    

@@ -34,7 +34,7 @@ optparse = OptionParser.new do|opts|
   
   options[:backup_site] = nil
   opts.on( '-b', '--site SITE', 'Select backup site.  One of [email|facebook|picasa|rss|twitter|linkedin]') do |site|
-    options[:backup_site] = site if Workers.has_key?(site)
+    options[:backup_site] = site # if Workers.has_key?(site)
   end
   
   options[:user_id] = nil

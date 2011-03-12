@@ -1,16 +1,16 @@
 <% unless list.blank? %>
-  <br>
-  <div class="title7"><b>Accounts Added</b>:</div>
-  <table class="table-form8" border="0" cellpadding="0" cellspacing="0">
-      <tr bgcolor="#b3ecef">
-        <td class="coll-form15" bgcolor="#94e4e8" align="center">Account</td>
-        <td class="coll-form15" bgcolor="#94e4e8" align="center">Action</td>
-      </tr>
+  <br/>
+  <table class="backup-accounts-table">
+    <tr>
+      <th>Owner</th>
+      <th>Authorization Status</th>
+      <th>Actions</th>
+    </tr>
     <% list.each do |picasa| -%>
       <tr id="picasa-list-<%= picasa.id %>">
-        <td class="coll-form12" valign="center"><%= picasa.title %></td>
-        <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
-        :html => {:class => 'blue-btn4'},
+        <td><%= picasa.title %></td>
+        <td><%= picasa.active? ? 'Active' : 'Inactive' %></td>
+        <td><%= link_to_remote 'Remove', 
         :url => {:controller => 'backup_sources', :action => 'remove_picasa_account', :id => picasa},
         :confirm => 'Are you sure?',
         :with => "'method=delete'", 

@@ -6,32 +6,40 @@ class LinkedinUserPublication < ActiveRecord::Base
     if (publication.nil?)
       return nil
     end
-	if !publication['date_of_issue'].nil?
-		publication['date_of_issue']  = publication['date']['year'] + '-' + publication['date']['month']+ '-' + publication['date']['day']
-	end
+    if !publication['date_of_issue'].nil?
+      publication['date_of_issue']  = publication['date']['year'] + '-' + publication['date']['month']+ '-' + publication['date']['day']
+    end
 	
 	
     publication.delete('date')
     publication['publisher_name'] = publication['publisher']['name']
     publication.delete('publisher')
-	publication['publication_id'] = publication.delete('id')
+    publication['publication_id'] = publication.delete('id')
     return publication
   end
 
+  
+
   def add_publication_authors_from_people(publication_authors)
-    if publication_authors.nil? || publication_authors['publication_author'].nil?
+    if publication_authors.nil? || publication_authors['author'].nil?
       return
     end
     if Integer(publication_authors['total']) > 1
-      publication_authors['author'].each { |publication_author|
-        li = LinkedinUserPublicationAuthor.from_authors(publication_author)
+      publication_authors['author'].each { |patent_inventor|
+        li = LinkedinUserPublicationAuthor.from_authors(patent_inventor['person'])
+        #li.linkedin_user_publications_id = self.id
         linkedin_user_publication_authors << li
+
       }
     else
-      li  = LinkedinUserPublicationAuthor.from_authors(publication_authors['author'])
+      li  = LinkedinUserPublicationAuthor.from_authors(publication_authors['author']['person'])
+      #li.linkedin_user_publications_id = self.id
       linkedin_user_publication_authors << li
+
     end
   end
+
+  
   def self.from_publications(publication)
     if publication.nil?
       return nil
@@ -40,11 +48,11 @@ class LinkedinUserPublication < ActiveRecord::Base
     authors = publication.delete('authors')
     publication = self.process_hash(publication)
     li = self.new(publication)
-    #li.add_publication_authors_from_people(authors)
+    
     li
   end
- def self.delete(user_id)
+  def self.delete(user_id)
     self.delete_all(["linkedin_user_id = ?" , user_id])
-
+    LinkedinUserPublicationAuthor.delete(self.id)
   end
 end
