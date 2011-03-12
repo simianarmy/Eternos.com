@@ -1,7 +1,5 @@
 # $Id$
 
-#require 'linkedin2'
-
 module LinkedinBackup
   class << self
     def load_config
