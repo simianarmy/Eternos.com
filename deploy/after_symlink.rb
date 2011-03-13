@@ -1,5 +1,6 @@
-SharedConfigs = %w[ amazon_s3.yml amqp.yml amqp-backup.yml application.yml database.yml email.yml facebooker.yml 
- facebooker_desktop.yml facebook.vault.yml gateway.yml key.yml paypal.yml twitter_oauth.yml workling.yml ]
+SharedConfigs = %w[ amazon_s3.yml amqp.yml amqp-backup.yml application.yml database.yml email.yml 
+  facebooker.yml facebooker_desktop.yml facebook.vault.yml gateway.yml linkedin.yml key.yml 
+  paypal.yml twitter_oauth.yml workling.yml ]
 
 on_app_servers do
   SharedConfigs.each do |config|
