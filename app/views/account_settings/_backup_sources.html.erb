@@ -17,7 +17,7 @@
   <!-- Facebook Pane -->
   <div class="pane network-login-box" id="facebook-form-box" style="display:block">
     <div id="facebook-box">
-        <div id="facebook_blurb">
+        <div class="add-account-blurb">
           Simply <b>click on the button</b> below to add your account
         </div>
         <%= render :partial => "backup_sources/authorize_fb_account_button", :locals => {
@@ -36,12 +36,12 @@
 
   <p class="account-setup-accordion-icon">
     <%= image_tag '2nd-linkedin.gif', :id => "linkedin-button", :class => settings.linkedin_confirmed ? 'active2' : 'linkedin-btn'%>
-    <strong>Linked In:</strong>Back up your Linkedin account
+    <strong>Linked In:</strong> Back up your Linkedin account
   </p>
   <!-- LinkedIn Pane -->
   <div class="pane network-login-box">
       <div id="linkedin-box">
-        <div id="linkedin_blurb">
+        <div class="add-account-blurb">
           Simply <b>click on the button</b> below to begin saving your Linked In account. 
         </div>
         <%= link_to image_tag('linkedin_button.gif'), add_linkedin_backup_sources_path %>
@@ -59,9 +59,8 @@
   <!-- Twitter Pane -->
   <div class="pane network-login-box">
       <div id="twitter-box">
-        <div id="twitter_blurb">
+        <div class="add-account-blurb">
           Simply click the "Sign in with Twitter" button below to begin saving your Tweets.  Add as many Twitter accounts as you want.    
-          <br/>
         </div>
         <%= link_to image_tag('twitter_button_3_lo.gif'), add_twitter_backup_sources_path %>
 
@@ -78,11 +77,10 @@
   <!-- RSS Pane -->
   <div class="pane network-login-box">
     <div id="rss-box">
-      <div id="rss_blurb">
+      <div class="add-account-blurb">
           Add your blogs here and we will begin backing them up every day.
           <br/>
           If you don't have a blog of your own, we recommend that you add your favorite blog here in order to put your life in context to current events.
-          <br/><br/>
       </div>
       <%= image_tag "errors/rss-top.png" %>
       <div class="rss-box">

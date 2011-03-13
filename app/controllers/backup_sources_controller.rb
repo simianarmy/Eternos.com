@@ -8,6 +8,7 @@ require 'nokogiri'
 class BackupSourcesController < ApplicationController
   before_filter :login_required
   require_role "Member"
+  before_filter :gen_setup_url
 
   ssl_allowed :add_twitter, :remove_twitter_account,
     :add_picasa, :remove_picasa_account,
@@ -51,54 +52,56 @@ class BackupSourcesController < ApplicationController
   end
   
   def add_linkedin
-    config = Linkedin2.load_config
-    #@userID = '123' # ??
-    consumer = Linkedin2::Consumer.new(config['consumer_key'], config['secret_key'], 
-      :oauth_callback => linkedin_callback_backup_sources_url
-    )
+    consumer = linkedin_consumer
+    # Save consumer object to session...probably not safe.  Should save id instead
     session[:consumer] = consumer
     redirect_to consumer.request_token
   rescue Exception => e
     Rails.logger.error "Error in add_linkedin: #{e.class} #{e.message}"
     flash[:error] = "Unable to complete request!  Please try again or contact support."
-    redirect_to account_setup_path
+    redirect_to @account_setup_path
   end
 
   def linkedin_callback
-    @oauth_verifier = params[:oauth_verifier]
-    consumer = session[:consumer]
-    consumer.access_token(@oauth_verifier.to_s)
-    @access_token = consumer.get_access_token
-    @secret_token = consumer.get_secret_access_token
-    backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
+    if oauth_verifier = params[:oauth_verifier]
+      consumer = session[:consumer]
+      consumer.access_token(oauth_verifier.to_s)
+      access_token = consumer.get_access_token
+      secret_token = consumer.get_secret_access_token
+      
+      # Fetch linkedin user name from api to verify authorization
+      title = consumer.get_name
+      Rails.logger.info "Linkedin returned name: #{title}"
 
-    title = consumer.get_name
-    Rails.logger.info "Linkedin returned name: #{title}"
-
-    if backup_source.nil?
-      # Try to get twitter screen name for backup source title
-      backup_source = LinkedinAccount.new(
-        :user_id => @current_user.id,
-        :backup_site_id => BackupSite.find_by_name(BackupSite::Linkedin).id,
-        :title =>  title,
-        :auth_token => @access_token,
-        :auth_secret => @secret_token
-      )
-      if backup_source.save
-        backup_source.confirmed!
-        current_user.completed_setup_step(1)
-        flash[:notice] = "Linkedin account successfully added"
+      # Create or update backup source
+      backup_source = current_user.backup_sources.linkedin.find_by_auth_token(access_token)
+      if backup_source.nil?
+        # Try to get twitter screen name for backup source title
+        backup_source = LinkedinAccount.new(
+          :user_id => @current_user.id,
+          :backup_site_id => BackupSite.find_by_name(BackupSite::Linkedin).id,
+          :title =>  title,
+          :auth_token => access_token,
+          :auth_secret => secret_token
+        )
+        if backup_source.save
+          backup_source.confirmed!
+          current_user.completed_setup_step(1)
+          flash[:notice] = "Linkedin account successfully added"
+        end
+      else
+        # Stupid read-only activerecord workaround
+        bs = LinkedinAccount.find(backup_source.id)
+        bs.update_attribute(:title, title)
+        flash[:notice] = "Linkedin account is already activated"
       end
     else
-      # Stupid read-only activerecord workaround
-      bs = LinkedinAccount.find(backup_source.id)
-      bs.update_attribute(:title, title)
-      flash[:notice] = "Linkedin account is already activated"
+      flash[:error] = "Linkedin authentication failed!"
     end
-
+    
     respond_to do |format|
       format.html {
-        redirect_to account_setup_path
+        redirect_to @account_setup_path
       }
     end
   end
@@ -154,7 +157,7 @@ class BackupSourcesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        redirect_to (current_subdomain == 'vault') ? account_backups_path : account_setup_path
+        redirect_to @account_setup_path
       }
     end
   end
@@ -203,7 +206,7 @@ class BackupSourcesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        redirect_to (current_subdomain == 'vault') ? account_backups_path : account_setup_path
+        redirect_to @account_setup_path
       }
     end
   end
@@ -291,6 +294,11 @@ class BackupSourcesController < ApplicationController
 
   private
 
+  # Determine proper redirect url back to account setup page for each subdomain
+  def gen_setup_url
+    @account_setup_path = (current_subdomain == 'vault') ? account_backups_path : account_setup_path
+  end
+  
   def find_twitter_accounts
     @twitter_accounts = current_user.backup_sources.twitter
   end
@@ -323,5 +331,12 @@ class BackupSourcesController < ApplicationController
     # Soft delete backup source?
     #current_user.backup_sources.by_site(type).find(id).update_attribute(:deleted_at, true)
     current_user.backup_sources.by_site(type).find(id).destroy
+  end
+  
+  def linkedin_consumer
+    @linkedin_config ||= LinkedinBackup.load_config
+    @consumer ||= Linkedin2::Consumer.new(@linkedin_config['consumer_key'], @linkedin_config['consumer_secret'], 
+      :oauth_callback => linkedin_callback_backup_sources_url
+    )
   end
 end

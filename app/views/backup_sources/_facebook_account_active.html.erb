@@ -1,13 +1,13 @@
 <td>
   <%= account.title %>
 </td>
-<td class="active">
+<td class="status-active">
   Active
 </td>
 <td>
   <% if account.account_id %>
     <%= link_to 'Disable', settings.fb_disable_url << "?account_id=#{account.account_id}" %> |
     <%= link_to 'Remove', settings.fb_remove_url << "?account_id=#{account.account_id}", 
-      :confirm => "Your Faceboook backup data will be permanently removed!  Are you sure you want to remove this account and all of its associated data?" %>
+      :confirm => account_delete_confirmation %>
   <% end %>
 </td>

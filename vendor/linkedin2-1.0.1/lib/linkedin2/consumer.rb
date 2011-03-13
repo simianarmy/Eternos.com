@@ -41,7 +41,7 @@ module Linkedin2
       @oauth_nonce = random_number
       @oauth_timestamp = Time.now.to_i;
       # ensure that keys are symbols
-      @@default_options = @@default_options.merge(options.inject({}) do |opts, (key, value)|
+      @@default_options.merge!(options.inject({}) do |opts, (key, value)|
         opts[key.to_sym] = value
         opts
       end)
@@ -241,7 +241,8 @@ module Linkedin2
     
     def get_first_name
       if @profile.nil?
-        return nil
+        get_name
+        return if @profile.nil?
       end
       doc = REXML::Document.new(@profile)
       doc.elements.each('person') do |ele|
@@ -251,7 +252,8 @@ module Linkedin2
 
     def get_last_name
       if @profile.nil?
-        return nil
+        get_name
+        return if @profile.nil?
       end
       doc = REXML::Document.new(@profile)
       doc.elements.each('person') do |ele|

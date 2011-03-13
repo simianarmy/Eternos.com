@@ -106,7 +106,16 @@ P { line-height: 20px;}
 
 .service-ul { margin: 0; padding: 0; list-style: none;}
 .service-ul IMG { float: left; margin:0 18px 0 0;}
+.service-ul li {
+	display: block;
+	width: 100%;
+	margin: 0 0 10px 0;
+}
 
+.service-ul li div {
+	float: left;
+	margin: 0;
+}
 
 .content-left { width: 315px; float: left;}
 
