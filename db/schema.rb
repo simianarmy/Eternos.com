@@ -977,9 +977,9 @@ ActiveRecord::Schema.define(:version => 20110308054854) do
 
   create_table "linkedin_users", :force => true do |t|
     t.string   "linkedin_id",              :null => false
-    t.string   "first_name",               :null => false
-    t.string   "last_name",                :null => false
     t.integer  "backup_source_id",         :null => false
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "location_code"
     t.text     "headline"
     t.text     "industry"

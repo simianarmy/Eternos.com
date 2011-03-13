@@ -303,272 +303,153 @@ class LinkedinUser < ActiveRecord::Base
     linkedin_user_ncons << li
   end
     
-  def update_certifications_from_people(certifications,user_id)
+  def update_certifications_from_people(certifications)
     if certifications.nil?
       return
     end
-    LinkedinUserCertification.delete(user_id)
+    linkedin_user_certifications.destroy_all
     add_certifications_from_people(certifications)
   end
 
-  def update_skills_from_people(skills,user_id)
+  def update_skills_from_people(skills)
     if skills.nil?
       return
     end
-    LinkedinUserSkill.delete(user_id)
+    linkedin_user_skills.destroy_all
     add_skills_from_people(skills)
   end
 
-  def update_connections_from_people(connections,user_id)
+  def update_connections_from_people(connections)
     if connections.nil? || connections['connection'].nil?
       return
     end
-    LinkedinUserConnection.delete(user_id)
+    linkedin_user_connections.destroy_all
     add_connections_from_people(connections)
   end
 
-  def update_educations_from_people(educations,user_id)
+  def update_educations_from_people(educations)
     if educations.nil? || educations['education'].nil?
       return
     end
-    LinkedinUserEducation.delete(user_id)
+    linkedin_user_educations.destroy_all
     add_educations_from_people(educations)
   end
 
-  def update_im_accounts_from_people(im_accounts,user_id)
+  def update_im_accounts_from_people(im_accounts)
     if im_accounts.nil? || im_accounts['im_account'].nil?
       return
     end
-    LinkedinUserImAccount.delete(user_id)
+    linkedin_user_accounts.destroy_all
     add_im_account_from_people(im_accounts)
   end
 
-  def update_languages_from_people(languages,user_id)
+  def update_languages_from_people(languages)
     if languages.nil? || languages['language'].nil?
       return
     end
-    LinkedinUserLanguage.delete(user_id)
+    LinkedinUserLanguage.delete(linkedin_id)
     add_languages_from_people(languages)
   end
 
-  def update_patents_from_people(patents,user_id)
+  def update_patents_from_people(patents)
     if patents.nil? || patents['patent'].nil?
       return
     end
-    LinkedinUserPatent.delete(user_id)
+    LinkedinUserPatent.delete(linkedin_id)
     add_patents_from_people(patents)
   end
 
-  def update_positions_from_people(positions,user_id)
+  def update_positions_from_people(positions)
     if positions.nil? || positions['position'].nil?
       return
     end
-    LinkedinUserPosition.delete(user_id)
+    LinkedinUserPosition.delete(linkedin_id)
     add_positions_from_people(positions)
   end
-  def update_past_postions_from_people(positions,user_id)
+  def update_past_postions_from_people(positions)
     if positions.nil? || positions['position'].nil?
       return
     end
-    LinkedinUserPastPosition.delete(user_id)
+    LinkedinUserPastPosition.delete(linkedin_id)
     add_past_postions_from_people(positions)
   end
-  def update_current_positions_from_people(positions,user_id)
+  def update_current_positions_from_people(positions)
     if positions.nil? || positions['position'].nil?
       return
     end
-    LinkedinUserCurrentPosition.delete(user_id)
+    LinkedinUserCurrentPosition.delete(linkedin_id)
     add_current_positions_from_people(positions)
   end
 
-  def update_publications_from_people(publications,user_id)
+  def update_publications_from_people(publications)
     if publications.nil? || publications['publication'].nil?
       return
     end
-    LinkedinUserPublication.delete(user_id)
+    LinkedinUserPublication.delete(linkedin_id)
     add_publications_from_people(publications)
   end
 
-  def update_recommendations_receiveds_from_people(recommendations,user_id)
+  def update_recommendations_receiveds_from_people(recommendations)
     if recommendations.nil? || recommendations['recommendation'].nil?
       return
     end
-    LinkedinUserRecommendationsReceived.delete(user_id)
+    LinkedinUserRecommendationsReceived.delete(linkedin_id)
     add_recommendations_receiveds_from_people(recommendations)
   end
-  def update_twitter_accounts_from_people(twitter_accounts,user_id)
+  def update_twitter_accounts_from_people(twitter_accounts)
     if twitter_accounts.nil? || twitter_accounts['twitter_account'].nil?
       return
     end
-    LinkedinUserTwitterAccount.delete(user_id)
+    LinkedinUserTwitterAccount.delete(linkedin_id)
     add_twitter_accounts_from_people(twitter_accounts)
   end
 
-  def update_member_url_resources_from_people(member_urls,user_id)
+  def update_member_url_resources_from_people(member_urls)
     if member_urls.nil? || member_urls['member_url'].nil?
       return
     end
-    LinkedinUserMemberUrlResource.delete(user_id)
+    LinkedinUserMemberUrlResource.delete(linkedin_id)
   end
-  def update_current_shares_from_people(current_share,user_id)
+  def update_current_shares_from_people(current_share)
     if current_share.nil?
       return
     end
 
-    LinkedinUserCurrentShare.delete(user_id)
+    LinkedinUserCurrentShare.delete(linkedin_id)
     add_curent_share_from_people(current_share)
 
   end
 
-  def update_phone_numbers_from_people(phone_numbers,user_id)
+  def update_phone_numbers_from_people(phone_numbers)
     if phone_numbers.nil? || phone_numbers['phone_number'].nil?
       return
     end
-    LinkedinUserPhoneNumber.delete(user_id)
+    LinkedinUserPhoneNumber.delete(linkedin_id)
     add_phone_numbers_from_people(phone_numbers)
   end
 
-  def update_comment_likes_from_people(comment_likes,user_id)
+  def update_comment_likes_from_people(comment_likes)
     if comment_likes.nil? || comment_likes['update'].nil?
       return
     end
-    LinkedinUserCommentLike.delete(user_id)
+    LinkedinUserCommentLike.delete(linkedin_id)
     add_comment_likes_from_people(comment_likes)
   end
 
-  def update_cmpy_from_people(cmpies,user_id)
+  def update_cmpy_from_people(cmpies)
     if cmpies.nil? || cmpies['update'].nil?
       return
     end
-    LinkedinUserCmpy.delete(user_id)
+    LinkedinUserCmpy.delete(linkedin_id)
     add_cmpy_from_people(cmpies)
   end
 
-  def update_ncon_from_people(ncons,user_id)
+  def update_ncon_from_people(ncons)
     if ncons.nil? || ncons['update'].nil?
       return
     end
-    LinkedinUserNcon.update_ncons(ncons['update'],user_id)
+    LinkedinUserNcon.update_ncons(ncons['update'])
     add_ncon_from_people(ncons)
-
-  end
-
-  def self.insert (peopleprofile,comment_like, cmpies, ncons, backup_source_id)
- 
-    @hash = (Hash.from_xml peopleprofile)['person']
-    if !comment_like.nil?
-	    @comment_like_hash = (Hash.from_xml comment_like)['updates']
-    end
-
-    if !cmpies.nil?
-	    @cmpies_hash = (Hash.from_xml cmpies)['updates']
-    end
-
-    if !ncons.nil?
-      ncons_hash = Hash.from_xml ncons 
-    end
-    #change key 'id' to 'linkedin_id'
-    if !@hash['id'].nil?
-      @hash['linkedin_id'] = @hash['id']
-      @hash.delete('id')
-    end
-
-    if !@hash['im_accounts'].nil?
-      im_accounts = @hash.delete('im_accounts')
-    end
-
-    if !@hash['location'].nil?
-      location = @hash.delete('location')
-    end
-    if !@hash['positions'].nil?
-      positions = @hash.delete('positions')
-    end
-    if !@hash['educations'].nil?
-      educations = @hash.delete('educations')
-    end
-    if !@hash['three_current_positions'].nil?
-      three_current_positions = @hash.delete('three_current_positions')
-    end
-    if !@hash['three_past_positions'].nil?
-      three_past_positions = @hash.delete('three_past_positions')
-    end
-    if !@hash['recommendations_received'].nil?
-      recommendations_receiveds = @hash.delete('recommendations_received')
-    end
-
-    if !@hash['member_url_resources'].nil?
-      member_url_resources = @hash.delete('member_url_resources')
-    end
-    if !@hash['relation_to_viewer'].nil?
-      @hash.delete('relation_to_viewer')
-    end
-    if !@hash['date_of_birth'].nil?
-      date_of_birth = @hash.delete('date_of_birth')
-    end
-    if !@hash['connections'].nil?
-      connections = @hash.delete('connections')
-    end
-    if !@hash['current_share'].nil?
-      current_share = @hash.delete('current_share')
-    end
-    if !@hash['phone_numbers'].nil?
-      phone_numbers = @hash.delete('phone_numbers')
-    end
-    if !@hash['twitter_accounts'].nil?
-      twitter_accounts = @hash.delete('twitter_accounts')
-    end
-    if !@hash['skills'].nil?
-      skills = @hash.delete('skills')
-    end
-
-    if !@hash['patents'].nil?
-      patents = @hash.delete('patents')
-    end
-
-    if !@hash['certifications'].nil?
-      certifications = @hash.delete('certifications')
-    end
-
-    if !@hash['languages'].nil?
-      languages = @hash.delete('languages')
-    end
-
-    if !@hash['publications'].nil?
-      publications = @hash.delete('publications')
-    end
-    @hash['current_status_timestamp'] = Time.at(Integer(@hash['current_status_timestamp']) / 1000)
-    @hash['location_code']  = location['country']['code']
-    @hash['backup_source_id'] = backup_source_id
-    if !@hash['date_of_birth'].nil?
-      @hash['date_of_birth'] = date_of_birth['year'] + '-' + date_of_birth['month'] + '-' + date_of_birth['day']
-    end
-    
-    connections['total'] = @hash['num_connections']
-    connections['connection'] = connections['person']
-    
-    people = LinkedinUser.new(@hash)
-    people.save
-    people.add_skills_from_people(skills)
-    people.add_certifications_from_people(certifications)
-    people.add_connections_from_people(connections)
-    people.add_past_postions_from_people(three_past_positions)
-    people.add_current_positions_from_people(three_current_positions)
-    people.add_educations_from_people(educations)
-    people.add_im_account_from_people(im_accounts)
-    people.add_languages_from_people(languages)
-    people.add_patents_from_people(patents)
-    people.add_positions_from_people(positions)
-    people.add_publications_from_people(publications)
-    people.add_recommendations_receiveds_from_people(recommendations_receiveds)
-    people.add_twitter_accounts_from_people(twitter_accounts)
-    people.add_member_urls_from_people(member_url_resources)
-    people.add_curent_share_from_people(current_share)
-    people.add_phone_numbers_from_people(phone_numbers)
-    people.add_comment_likes_from_people(@comment_like_hash)
-    people.add_cmpy_from_people(@cmpies_hash)
-
-    people.add_ncon_from_people(ncons_hash)
-   
   end
   
   def update_profile(peopleprofile,comment_like, cmpies, ncons)
