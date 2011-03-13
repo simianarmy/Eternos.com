@@ -11,8 +11,8 @@
         <td><%= linkedin.title %></td>
         <td><%= linkedin.active? ? 'Active' : 'Inactive' %></td>
         <td><%= link_to_remote 'Remove', 
-        :url => {:controller => 'backup_sources', :action => 'remove_linkedin_account', :id => linkedin.id},
-        :confirm => 'Are you sure?',
+        :url => remove_linkedin_account_backup_sources_path(:id => linkedin.id),
+        :confirm => account_delete_confirmation,
         :with => "'method=delete'", 
         :loading => "$('progress-bar').show();",
         :complete => "$('progress-bar').hide();" %>    

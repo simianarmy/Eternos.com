@@ -42,10 +42,11 @@ ActionController::Routing::Routes.draw do |map|
 	  :add_linkedin => :get,
     :twitter_auth => :get,
     :picasa_auth => :get,
+    :linkedin_callback => :get,
     :remove_url => :get,
     :remove_picasa_account => :get,
     :remove_twitter_account => :get,
-	  :linkedin_callback => :get
+    :remove_linkedin_account => :get
   }
   map.resources :backup_source_jobs, :member => { :progress => :get }
   map.resources :account_settings, :member => {

@@ -3,7 +3,7 @@
 module LinkedinBackup
   class << self
     def load_config
-      YAML.load_file(File.join(RAILS_ROOT, 'config', 'linkedin.yml')) rescue nil || {}
+      YAML.load_file(File.join(Rails.root, 'config', 'linkedin.yml'))[Rails.env] rescue nil || {}
     end
   end
   
@@ -28,7 +28,8 @@ module LinkedinBackup
       end
 
       def screen_name(consumer)
-
+        # How will calling these methods twice do anything??
+        # Did you mean unless ...?
         if (consumer.get_first_name.nil?)
           first_name = consumer.get_first_name
         end

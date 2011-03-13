@@ -8,6 +8,6 @@
   <%= link_to 'Enable', settings.fb_login_url %> |
   <% if account.account_id %>
     <%= link_to 'Remove', settings.fb_remove_url << "?account_id=#{account.account_id}", 
-      :confirm => "Your Faceboook backup data will be permanently removed!  Are you sure you want to remove this account and all of its associated data?" %>
+      :confirm => account_delete_confirmation %>
   <% end %>
 </td>

@@ -12,7 +12,7 @@
         <td><%= picasa.active? ? 'Active' : 'Inactive' %></td>
         <td><%= link_to_remote 'Remove', 
         :url => {:controller => 'backup_sources', :action => 'remove_picasa_account', :id => picasa},
-        :confirm => 'Are you sure?',
+        :confirm => account_delete_confirmation,
         :with => "'method=delete'", 
         :loading => "$('progress-bar').show();",
         :complete => "$('progress-bar').hide();" %>    

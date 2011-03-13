@@ -10,4 +10,7 @@ module AccountSetupHelper
     is_active ? 'signup-active' : 'signup-inactive'
   end
   
+  def account_delete_confirmation
+    'Are you sure?  All data and documents related to this account will be deleted permanently!'
+  end
 end

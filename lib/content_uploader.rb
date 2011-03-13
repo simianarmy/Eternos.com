@@ -64,6 +64,9 @@ module ContentUploader
       end
     end
     
+    def staging_dir
+    end
+    
     def logit(msg)
       Rails.logger.info msg
       puts "ContentUploader: #{Time.now.utc}: #{msg}"
