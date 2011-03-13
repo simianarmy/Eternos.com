@@ -2,6 +2,7 @@ class LinkedinUserCommentLike < ActiveRecord::Base
   belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
   has_many 	 :linkedin_user_update_likes, :class_name  => "LinkedinUserUpdateLike"
   has_many 	 :linkedin_user_update_comments, :class_name  => "LinkedinUserUpdateComment"
+  
   def add_likes_from_comment_likes(likes)
     if likes.nil? || likes['like'].nil?
       return
