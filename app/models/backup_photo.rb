@@ -60,8 +60,7 @@ class BackupPhoto < ActiveRecord::Base
   end
   
   def temp_filename(source_path)
-    f = File.join(AppConfig.s3_staging_dir, URI::parse(source_path).path.split('/').last)
-    f.first == '/' ? f : File.join(Rails.root, f)
+    File.join(cloud_staging_dir, URI::parse(source_path).path.split('/').last)
   end
   
   # Downloads from source & create new Content object with data

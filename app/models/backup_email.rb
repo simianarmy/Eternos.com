@@ -119,9 +119,7 @@ class BackupEmail < ActiveRecord::Base
   # Returns full path to tempfile containing raw email contents
   # Required to store on disk while waiting for asynchronous upload to cloud
   def temp_filename
-    f = File.join(AppConfig.s3_staging_dir, [self.message_id, self.backup_source_id].join(':') + '.email')
-    # Prepend rails root if path is not absolute
-    f.first == '/' ? f : File.join(Rails.root, f)
+    File.join(cloud_staging_dir, [self.message_id, self.backup_source_id].join(':') + '.email')
   end
     
   # Called on after_commit to send uploading job to asynchronous queue

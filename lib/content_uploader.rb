@@ -65,12 +65,6 @@ module ContentUploader
       end
     end
     
-    def cloud_staging_dir
-      AppConfig.s3_staging_dir.first == '/' ? 
-        AppConfig.s3_staging_dir : 
-        File.join(Rails.root, AppConfig.s3_staging_dir)
-    end
-    
     def logit(msg)
       Rails.logger.info msg
       puts "ContentUploader: #{Time.now.utc}: #{msg}"
