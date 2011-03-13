@@ -10,6 +10,7 @@ role :db,  '184.73.167.220'
 set :user, "deploy" 
 
 set :rails_env, "production"
+set :shared_drive_path, "/mnt"
 
 namespace :deploy do
   task :restart do
@@ -32,10 +33,16 @@ namespace :deploy do
   
   task :migrate, :roles => [:db] do
   end
+  
+  task :symlink_sphinx, :roles => [:app] do
+    run "mkdir -p #{shared_drive_path}/sphinx"
+    run "ln -s #{shared_drive_path}/sphinx #{release_path}/db/sphinx"
+  end
 end
 
 #before "deploy:update_code", "deploy:stop_daemons"
 after "deploy:symlink", "deploy:symlink_shared"
+after "deploy:symlink", "deploy:symlink_sphinx"
 #after "deploy:symlink", "deploy:start_daemons"
 #after "deploy:symlink_shared", "deploy:build_sphinx_index"
 after "deploy:symlink", "deploy:cleanup"

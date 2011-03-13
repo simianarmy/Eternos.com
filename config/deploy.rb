@@ -48,7 +48,7 @@ set :bundle_without,      [:development, :test, :cucumber]
 
 set :shared_configs, %w[ amazon_s3.yml amqp.yml amqp-backup.yml application.yml database.yml email.yml 
   facebooker.yml facebooker_desktop.yml facebook.vault.yml gateway.yml key.yml 
-  linkedin.yml paypal.yml twitter_oauth.yml workling.yml ]
+  linkedin.yml paypal.yml sphinx.yml twitter_oauth.yml workling.yml ]
 
 namespace :deploy do
   task :start do
