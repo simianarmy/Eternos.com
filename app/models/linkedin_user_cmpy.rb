@@ -1,6 +1,6 @@
 class LinkedinUserCmpy < ActiveRecord::Base
   belongs_to :linkedin_user, :foreign_key =>"linkedin_user_id"
-  def self.process_hash(cmpy)
+  def process_hash(cmpy)
     if cmpy.nil?
       return nil
     end
@@ -47,14 +47,27 @@ class LinkedinUserCmpy < ActiveRecord::Base
     return cmpy
   end
 
-  def self.from_cmpys(cmpy)
-    cmpy = self.process_hash(cmpy)
-    li = self.new(cmpy)
-   
+  
+  def initialize(hash)
+    hash = process_hash(hash)	
+    super(hash)
+    
   end
-  def self.delete(user_id)
-    self.delete_all(["linkedin_user_id = ?" , user_id])
-
+ 	
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
+ 
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 
 end

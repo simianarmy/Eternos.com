@@ -30,22 +30,19 @@ module BackupWorker
     
     def save_linkedin(options)
      puts "linkedin ........................................\n"
-       # backup_source = current_user.backup_sources.linkedin.find_by_auth_token(@access_token)
-        self.linkedin_client = if backup_source.auth_token && backup_source.auth_secret
-          consumer = LinkedinBackup::OAuth.authorization(backup_source.auth_token, backup_source.auth_secret)
-	  #puts "auth_token #{backup_source.auth_token}\n"
-	 # puts "auth_token #{backup_source.auth_secret}\n"	
+       self.linkedin_client = if backup_source.auth_token && backup_source.auth_secret
+       consumer = LinkedinBackup::OAuth.authorization(backup_source.auth_token, backup_source.auth_secret)
+		
 	@comment_like = consumer.get_network_update('STAT')
         @info = consumer.get_profile('all')
         @cmpies = consumer.get_network_update('CMPY')
-	@ncons = consumer.get_network_update('NCON')
+	@ncons = nil #consumer.get_network_update('NCON')
         end
 
-       
-       #puts "info: #{@info}\n"
+      
         
-	if LinkedinUser.find_all_by_backup_source_id(backup_source.id).first
- 	    LinkedinUser.update_profile(@info, @comment_like, @cmpies, @ncons, backup_source.id)
+	if record = LinkedinUser.find_all_by_backup_source_id(backup_source.id).first
+ 	     record.update_profile(@info, @comment_like, @cmpies, @ncons)
 	else
 	    LinkedinUser.insert(@info, @comment_like, @cmpies, @ncons, backup_source.id)
 	end
