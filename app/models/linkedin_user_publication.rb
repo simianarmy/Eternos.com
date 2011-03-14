@@ -9,21 +9,19 @@ class LinkedinUserPublication < ActiveRecord::Base
     if Integer(publication_authors['total']) > 1
       publication_authors['author'].each { |patent_inventor|
         li = LinkedinUserPublicationAuthor.new(patent_inventor['person'])
+        linkedin_user_publication_authors << li	
         print "id="
         print self.id 
         print "\n"
-        li.linkedin_user_publications_id = self.id
-        li.save
-
+        
       }
     else
       li  = LinkedinUserPublicationAuthor.new(publication_authors['author']['person'])
+      linkedin_user_publication_authors << li	
       print "id="
       print self.id 
       print "\n"
-	
-      li.linkedin_user_publications_id = self.id
-      li.save
+	    
 
     end
   end

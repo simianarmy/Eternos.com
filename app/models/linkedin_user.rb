@@ -123,15 +123,13 @@ class LinkedinUser < ActiveRecord::Base
         inventors = patent['inventors']
         li = LinkedinUserPatent.new(patent)
         linkedin_user_patents << li
-        # li.add_patent_inventors_from_people(inventors)
+        li.add_patent_inventors_from_people(inventors)
       }
     else
       inventors = patents['patent']['inventors']
-      print inventors.inspect
-      print "\n"
       li  = LinkedinUserPatent.new(patents['patent'])
       linkedin_user_patents << li
-      #li.add_patent_inventors_from_people(inventors)
+      li.add_patent_inventors_from_people(inventors)
     end
   end
 
@@ -188,13 +186,15 @@ class LinkedinUser < ActiveRecord::Base
         authors = publication['authors']
         li = LinkedinUserPublication.new(publication)
         linkedin_user_publications << li
-        #li.add_publication_authors_from_people(authors)
+        li_temp = LinkedinUserPublication.find(li.id)   
+        li_temp.add_publication_authors_from_people(authors)
       }
     else
       authors = publication['authors']
       li  = LinkedinUserPublication.new(publications['publication'])
       linkedin_user_publications << li
-      #li.add_publication_authors_from_people(authors)
+      li_temp = LinkedinUserPublication.find(li.id)   
+      li_temp.add_publication_authors_from_people(authors)
     end
   end
 
@@ -511,8 +511,7 @@ class LinkedinUser < ActiveRecord::Base
 
       positions['position'].each { |position|
      	positions_record = LinkedinUserPosition.find_all_by_position_id_and_linkedin_user_id(position['id'],self.id).first
-	print positions_record.inspect
-	print "\n"	
+	
 	if (positions_record.nil?)
           li  = LinkedinUserPosition.new(position)
           linkedin_user_positions << li
@@ -848,7 +847,6 @@ def self.insert (peopleprofile,comment_like, cmpies, ncons, backup_source_id)
   people.add_phone_numbers_from_people(phone_numbers)
   people.add_comment_likes_from_people(@comment_like_hash)
   people.add_cmpy_from_people(@cmpies_hash)
-
   people.add_ncon_from_people(ncons_hash)
    
 end
