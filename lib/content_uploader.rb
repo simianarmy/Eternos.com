@@ -8,6 +8,8 @@ module ContentUploader
   # Required because AMQP is not good way to pass messages, need 
   # more "robust" (synchronous?) message queue system.
   class << self
+    include CloudStaging
+    
     @@max = 500
     def upload_all
       MessageQueue.start do

@@ -16,7 +16,7 @@ class BackupEmail < ActiveRecord::Base
   
   attr_reader :raw_email
   alias_attribute :bytes, :size
-
+  
   # The new encryption with attr_encrypted gem
   # Using suffix & encode options in order to decode existing Lucifer-encrypted values
   attr_encrypted :subject, :prefix => '', :suffix => '_encrypted', :key => 'i am a key', 
@@ -31,6 +31,7 @@ class BackupEmail < ActiveRecord::Base
   acts_as_time_locked
   
   include TimelineEvents
+  include CloudStaging
   serialize :sender
       
   # serialize_with_options do

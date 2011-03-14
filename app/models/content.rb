@@ -51,6 +51,7 @@ class Content < ActiveRecord::Base
   
   include BackupObjectComment
   include CommonDateScopes
+  include CloudStaging
   
   named_scope :recordings, :conditions => {:is_recording => true}
   named_scope :photos, :conditions => {:type => 'Photo'}
@@ -144,38 +145,6 @@ class Content < ActiveRecord::Base
     "#{filename} (#{help.number_to_human_size(size)})"
   end
     
-  # OVERRIDES FOR attachment_fu
-  # Gets the full path to the filename in this format:
-  #
-  #   # This assumes a model name like MyModel
-  #   # public/#{table_name} is the default filesystem path 
-  #   RAILS_ROOT/public/my_models/5/blah.jpg
-  #
-  # Overwrite this method in your model to customize the filename.
-  # The optional thumbnail argument will output the thumbnail's filename.
-  def full_filename(thumbnail = nil)
-    file_system_path = (thumbnail ? thumbnail_class : self).attachment_options[:path_prefix].to_s
-    File.join(fs_root, file_system_path, *partitioned_path(thumbnail_name_for(thumbnail)))
-  end
-
-  # Used as the base path that #public_filename strips off full_filename to create the public path
-  def base_path
-    @base_path ||= File.join(fs_root, 'public')
-  end
-  
-  # Custom helper to generate base filesystem path to file.
-  # Needed to override attachment_fu's use of RAILS_ROOT
-  def fs_root
-    # Requirement: s3_staging_dir exists and uses an absolute path
-    if AppConfig.s3_staging_dir && !AppConfig.s3_staging_dir.blank? && 
-      (AppConfig.s3_staging_dir.first == '/')
-      AppConfig.s3_staging_dir
-    else
-      # This is problematic due to changing release directory names from deployment strategy
-      Rails.root
-    end
-  end
-  
   def recording?
     read_attribute(:is_recording) == true
   end

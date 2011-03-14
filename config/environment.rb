@@ -142,6 +142,7 @@ end
 require 'load_email_configuration'
 # custom libs
 require 's3_helper'
+require 'cloud_staging'
 require 'timeline_events'
 require 'facebook_backup'
 require 'facebook_user_profile'

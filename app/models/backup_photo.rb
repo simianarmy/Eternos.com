@@ -36,6 +36,7 @@ class BackupPhoto < ActiveRecord::Base
   include BackupObjectComment
   include TimelineEvents
   include CommonDateScopes
+  include CloudStaging
   
   named_scope :needs_download, :conditions => { :state => ['pending_download', 'failed_download'] }
   named_scope :belonging_to_source, lambda { |id| 
