@@ -41,6 +41,7 @@ GEM
       builder
       mime-types
       xml-simple
+    btelles-faker (0.3.3)
     builder (3.0.0)
     bullet (2.0.1)
       uniform_notifier (~> 1.0.0)
@@ -86,8 +87,6 @@ GEM
     ezcrypto (0.7.2)
     facebooker (1.0.75)
       json_pure (>= 1.0.0)
-    faker (0.9.5)
-      i18n (~> 0.4)
     fastercsv (1.5.4)
     ffi (0.6.3)
       rake (>= 0.8.7)
@@ -249,6 +248,7 @@ DEPENDENCIES
   autotest-growl
   autotest-rails
   aws-s3
+  btelles-faker
   bullet
   capistrano (= 2.5.10)
   capistrano-ext (= 1.2.1)
@@ -263,7 +263,6 @@ DEPENDENCIES
   eventmachine
   ezcrypto
   facebooker
-  faker
   formtastic (~> 1.1.0)
   gdata
   haml

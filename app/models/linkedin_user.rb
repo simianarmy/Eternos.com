@@ -1,25 +1,25 @@
 class LinkedinUser < ActiveRecord::Base
   belongs_to :linkedin_account
-  has_many  :linkedin_user_certifications,:class_name => "LinkedinUserCertification"
-  has_many  :linkedin_user_connections, :class_name => "LinkedinUserConnection"
-  has_many  :linkedin_user_educations, :class_name => "LinkedinUserEducation"
-  has_many  :linkedin_user_im_accounts, :class_name => "LinkedinUserImAccount"
-  has_many  :linkedin_user_languages, :class_name => "LinkedinUserLanguage"
-  has_many  :linkedin_user_patents, :class_name => "LinkedinUserPatent"
-  has_many  :linkedin_user_positions, :class_name => "LinkedinUserPosition"
+  has_many  :linkedin_user_certifications
+  has_many  :linkedin_user_connections
+  has_many  :linkedin_user_educations 
+  has_many  :linkedin_user_im_accounts 
+  has_many  :linkedin_user_languages 
+  has_many  :linkedin_user_patents 
+  has_many  :linkedin_user_positions 
   has_many  :linkedin_past_people_positions, :class_name => "LinkedinUserPastPosition"
   has_many  :linkedin_current_people_positions, :class_name => "LinkedinUserCurrentPosition"
   has_many  :linkedin_user_publications, :class_name => "LinkedinUserPublication"
   has_many  :linkedin_user_recommendations_receiveds, :class_name => "LinkedinUserRecommendationsReceived"
-  has_many  :linkedin_user_relation_to_viewer
-  has_many  :linkedin_user_skills,:class_name => "LinkedinUserSkill"
-  has_many  :linkedin_user_twitter_accounts, :class_name => "LinkedinUserTwitterAccount"
-  has_many  :linkedin_user_member_url_resources, :class_name => "LinkedinUserMemberUrlResource"
-  has_many  :linkedin_user_current_share, :class_name => "LinkedinUserCurrentShare"
-  has_many  :linkedin_user_phone_numbers, :class_name => "LinkedinUserPhoneNumber"
-  has_many  :linkedin_user_comment_likes, :class_name => "LinkedinUserCommentLike"
+  #has_many  :linkedin_user_relation_to_viewer # WHAT IS THIS?
+  has_many  :linkedin_user_skills 
+  has_many  :linkedin_user_twitter_accounts
+  has_many  :linkedin_user_member_url_resources
+  has_many  :linkedin_user_current_share
+  has_many  :linkedin_user_phone_numbers
+  has_many  :linkedin_user_comment_likes
   has_many  :linkedin_user_cmpies, :class_name => "LinkedinUserCmpy"
-  has_many  :linkedin_user_ncons, :class_name => "LinkedinUserNcon"
+  has_many  :linkedin_user_ncons
 
   def add_certifications_from_people(certifications)
     if certifications.nil?
@@ -864,23 +864,25 @@ class LinkedinUser < ActiveRecord::Base
 
   end
 
-  def update_profile(peopleprofile,comment_like, cmpies, ncons)
-    puts "update_profile"
-    @hash = (Hash.from_xml peopleprofile)['person']
-
+  def update_profile(peopleprofile, comment_like, cmpies, ncons)    
     if !comment_like.nil?
-      @comment_like_hash = (Hash.from_xml comment_like)['updates']
-
+      update_comment_likes_from_people (Hash.from_xml comment_like)['updates']
     end
 
     if !cmpies.nil?
-      @cmpies_hash = (Hash.from_xml cmpies)['updates']
+      update_cmpy_from_people (Hash.from_xml cmpies)['updates']
     end
 
     if !ncons.nil?
-      @ncons_hash = Hash.from_xml ncons
+      update_ncon_from_people Hash.from_xml ncons
     end
-    #change key 'id' to 'linkedin_id'
+    
+    unless @hash = (Hash.from_xml peopleprofile)['person']
+      Rails.logger.warn "Nil value returned from linkedin profile!"
+      return false
+    end
+    
+      #change key 'id' to 'linkedin_id'
     if !@hash['id'].nil?
       @hash['linkedin_id'] = @hash['id']
       @hash.delete('id')
@@ -961,7 +963,6 @@ class LinkedinUser < ActiveRecord::Base
     update_attributes(@hash)
 
     # Update the associations
-
     update_certifications_from_people(certifications)
     update_connections_from_people(connections)
     update_positions_from_people(positions )
@@ -979,9 +980,6 @@ class LinkedinUser < ActiveRecord::Base
     update_skills_from_people(skills)
     update_twitter_accounts_from_people(twitter_accounts)
     update_current_positions_from_people(three_current_positions)
-    update_comment_likes_from_people(@comment_like_hash)
-    update_cmpy_from_people(@cmpies_hash)
-    update_ncon_from_people(@ncons_hash)
   end
 
 end

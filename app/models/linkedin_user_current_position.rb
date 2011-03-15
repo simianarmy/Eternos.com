@@ -1,18 +1,20 @@
 class LinkedinUserCurrentPosition < ActiveRecord::Base
   belongs_to :linkedin_user, :foreign_key => "linkedin_user_id"
 
-  def self.build_date_from_year_month(data)
-    dt = data['year']
-    if data['month']
-      dt +=  '-' + data['month'] + '-1'
-    end
-    dt
+  def self.delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
   end
-
-   def process_hash(position)
+  
+  def initialize(hash)
+     hash = process_hash(hash)	
+     super(hash)
+   end
+   
+  def process_hash(position)
     if (position.nil?)
       return nil
     end
+    
     if !position['start_date'].nil?
       position['start_date'] = build_date_from_year_month position['start_date']
     end
@@ -26,12 +28,7 @@ class LinkedinUserCurrentPosition < ActiveRecord::Base
     position.delete('company')
     position
   end
-  
-  def initialize(hash)
-    hash = process_hash(hash)	
-    super(hash)
-  end
- 	
+
   def compare_hash(hash_from_database,hash_from_server)
     result = Hash.new
     hash_from_database.each { |key,value|
@@ -41,15 +38,21 @@ class LinkedinUserCurrentPosition < ActiveRecord::Base
     }
     return result
   end
- 
+
   def update_attributes(hash)
     hash = process_hash(hash)
     hash = compare_hash(self.attributes,hash)
     super(hash)
   end
   
-  def self.delete(user_id)
-    self.delete_all(["linkedin_user_id = ?" , user_id])
+  protected 
+  
+  def build_date_from_year_month(data)
+    dt = data['year']
+    if data['month']
+      dt +=  '-' + data['month'] + '-1'
+    end
+    dt
   end
 
 end
