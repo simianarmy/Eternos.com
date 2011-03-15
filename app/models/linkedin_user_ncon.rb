@@ -1,6 +1,6 @@
 class LinkedinUserNcon < ActiveRecord::Base
   belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
-   def self.process_hash(ncon)
+   def process_hash(ncon)
     if (ncon.nil?)
       return nil
     end
@@ -14,15 +14,26 @@ class LinkedinUserNcon < ActiveRecord::Base
     ncon.delete('update-content')
     return ncon
   end
-  def self.from_ncons(ncon)
+  def initialize(hash)
+    hash = process_hash(hash)	
+    super(hash)
     
-    ncon = self.process_hash(ncon)
-    RAILS_DEFAULT_LOGGER.info "\n------NCON-----------------------#{ncon.inspect}-------------NCON--------------------------\n"
-    li = self.new(ncon)
-    li
   end
-  def self.delete(user_id)
-    self.delete_all(["linkedin_user_id = ?" , user_id])
+ 	
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
 
+    
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 end

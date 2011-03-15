@@ -9,7 +9,7 @@ class LinkedinUserCurrentPosition < ActiveRecord::Base
     dt
   end
 
-  def self.process_hash(position)
+   def process_hash(position)
     if (position.nil?)
       return nil
     end
@@ -26,12 +26,28 @@ class LinkedinUserCurrentPosition < ActiveRecord::Base
     position.delete('company')
     position
   end
-
-  def self.from_positions(position)
-    position = self.process_hash(position)
-    self.new(position)
+  
+  def initialize(hash)
+    hash = process_hash(hash)	
+    super(hash)
   end
-
+ 	
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
+ 
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
+  end
+  
   def self.delete(user_id)
     self.delete_all(["linkedin_user_id = ?" , user_id])
   end

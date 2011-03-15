@@ -9,11 +9,11 @@ class LinkedinUserCommentLike < ActiveRecord::Base
     end
     if Integer(likes['total']) > 1
       likes['like'].each { |like|
-        li = LinkedinUserUpdateLike.from_likes(like['person'])
+        li = LinkedinUserUpdateLike.new(like['person'])
         linkedin_user_update_likes << li
       }
     else
-      li  = LinkedinUserUpdateLike.from_likes(likes['like']['person'])
+      li  = LinkedinUserUpdateLike.new(likes['like']['person'])
       linkedin_user_update_likes << li
     end
   end
@@ -24,20 +24,19 @@ class LinkedinUserCommentLike < ActiveRecord::Base
     end
     if Integer(comments['total']) > 1
       comments['update_comment'].each { |update_comment|
-        li = LinkedinUserUpdateComment.from_comments(update_comment)
+        li = LinkedinUserUpdateComment.new(update_comment)
         linkedin_user_update_comments << li
       }
     else
-      li  = LinkedinUserUpdateComment.from_comments(comments['update_comment'])
+      li  = LinkedinUserUpdateComment.new(comments['update_comment'])
       linkedin_user_update_comments << li
     end
   end
 
-  def self.process_hash(comment_like)
+  def process_hash(comment_like)
     if (comment_like.nil?)
       return nil
     end
-
     comment_like['linkedin_id'] = comment_like['update_content']['person']['id']
     comment_like['first_name'] = comment_like['update_content']['person']['first_name']
     comment_like['last_name'] = comment_like['update_content']['person']['last_name']
@@ -47,42 +46,36 @@ class LinkedinUserCommentLike < ActiveRecord::Base
     comment_like['api_standard_profile_request'] = comment_like['update_content']['person']['api_standard_profile_request']['url']
     comment_like.delete('update_content')
     comment_like['timestamp'] = Time.at(Integer( comment_like.delete('timestamp')) / 1000)
+    if !comment_like['likes'].nil?
+       comment_like.delete('likes')   
+    end
+    if !comment_like['comments'].nil?
+       comment_like.delete('comments')   
+    end
     return comment_like
   end
   
-  def self.from_comment_likes(comment_like)
-    if comment_like.nil?
-      return nil
-    end
-    update_comments = comment_like.delete('update_comments')
-    likes = comment_like.delete('likes')
-    comment_like = self.process_hash(comment_like)
-    li = self.new(comment_like)
-		li.add_likes_from_comment_likes(likes)
-		li.add_comments_from_comment_likes(update_comments)
-    li
+  def initialize(hash)
+    hash = process_hash(hash)
+    super(hash)
+
   end
 
-  def self.update_comment_likes(comment_like,user_id)
-    if comment_like.nil?
-      return nil
-    end
-    update_comments = comment_like.delete('update_comments')
-    likes = comment_like.delete('likes')
-    comment_like = self.process_hash(comment_like)
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
 
-    li = self.find_all_by_linkedin_user_id(user_id).first
-    li.update_attributes(comment_like)
-    li.save
-    
-		li_comment = LinkedinUserUpdateComment.find_all_by_linkedin_user_comment_like_id(li.id).first
-		li_comment.update_attributes(update_comments)
-    li_comment.save
 
-    li_like = LinkedinUserUpdateLike.find_all_by_linkedin_user_comment_like_id(li.id).first
-    li_like.update_attributes(likes)
-    li_like.save
-    
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 
 end

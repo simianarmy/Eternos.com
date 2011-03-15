@@ -1,26 +1,43 @@
 class LinkedinUserEducation < ActiveRecord::Base
   belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
-  def self.process_hash(education)
+  def process_hash(education)
     if (education.nil?)
       return nil
     end
     education['start_date'] = education.delete('start_date')['year']
     education['end_date']   = education.delete('end_date')['year']
-	education['education_id'] = education['id']
+    education['education_id'] = education['id']
     return education
   end
 
 
-  def self.from_educations(education)
-    if education.nil?
-      return nil
-    end
-    li = self.process_hash(education)
-    li = self.new(education)
-    li
+  def initialize(hash)
+    print "before:"
+    print hash.inspect 
+    print "\n"		
+    hash = process_hash(hash)	
+    print "after:"
+    print hash.inspect 
+    print "\n"
+    super(hash)
+    
   end
-  def self.delete(user_id)
-    self.delete_all(["linkedin_user_id = ?" , user_id])
+ 	
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
 
+ 
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
+
 end

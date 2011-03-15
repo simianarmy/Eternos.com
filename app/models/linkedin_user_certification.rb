@@ -1,41 +1,37 @@
 class LinkedinUserCertification < ActiveRecord::Base
   belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
 
-  def self.process_hash(hash)
+  def process_hash(hash)
     if (hash.nil?)
       return nil
     end
-	  hash['authority_name'] = hash['authority']['name']
+    hash['authority_name'] = hash['authority']['name']
     hash['certification_id'] = hash['id']
     hash.delete('authority')
     hash.delete('id')
     return hash
   end
 
-  def self.from_certification(certification)
-    if certification.nil?
-      return nil
-    end
-	
-    certification = self.process_hash(certification)
-    li = self.new(certification)
-    li
+  def initialize(hash)
+    hash = process_hash(hash)	
+    super(hash)
+    
   end
-  
-  def self.update_certification(certification,user_id)
-    if certification.nil?
-      return nil
-    end
-    certification = self.process_hash(certification)
-	
-    li = self.find_all_by_certification_id_and_linkedin_user_id(certification['certification_id'], user_id).first
-    if (li.nil?)
-      self.
-    else
-      li.update_attributes(certification)
-    end
+ 	
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
+
     
-    li.save
-    
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 end

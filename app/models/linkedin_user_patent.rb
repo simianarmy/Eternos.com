@@ -2,7 +2,7 @@ class LinkedinUserPatent < ActiveRecord::Base
   belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
   has_many   :linkedin_user_patent_inventors, :class_name  => "LinkedinUserPatentInventor"
 
-  def self.process_hash(patent)
+  def process_hash(patent)
     if (patent.nil?)
       return nil
     end
@@ -13,7 +13,9 @@ class LinkedinUserPatent < ActiveRecord::Base
     patent['status_id'] = patent['status']['id']
     patent['patent_id'] = patent.delete('id');
     patent.delete('status')
-
+    if (!patent['inventors'].nil?)
+       patent.delete('inventors')
+    end	
     return patent
   end
 
@@ -23,30 +25,40 @@ class LinkedinUserPatent < ActiveRecord::Base
     end
     if Integer(patent_inventors['total']) > 1
       patent_inventors['inventor'].each { |patent_inventor|
-        li = LinkedinUserPatentInventor.from_authors(patent_inventor['person'])
-        li.linkedin_user_patents_id = self.id
+        
+        li = LinkedinUserPatentInventor.new(patent_inventor['person'])
         linkedin_user_patent_inventors << li
     
       }
     else
-      li = LinkedinUserPatentInventor.from_authors(patent_inventors['inventor']['person'])
-      li.linkedin_user_patents_id = self.id
+      li = LinkedinUserPatentInventor.new(patent_inventors['inventor']['person'])
       linkedin_user_patent_inventors << li
     
     end
   end
 
-  def self.from_patents(patent)
-    if patent.nil?
-      return nil
-    end
-    inventors = patent.delete('inventors')
-    patent = self.process_hash(patent)
-    li = self.new(patent)
-    li
+ def initialize(hash)
+    
+    hash = process_hash(hash)	
+    
+    super(hash)
+    
   end
-  def self.delete(user_id)
-    self.delete_all(["linkedin_user_id = ?" , user_id])
-    LinkedinUserPatentInventor.delete(self.id)
+ 	
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
+
+ 
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 end

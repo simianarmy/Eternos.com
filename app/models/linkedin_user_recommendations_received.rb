@@ -1,7 +1,7 @@
 class LinkedinUserRecommendationsReceived < ActiveRecord::Base
   belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
 
-   def self.process_hash(recommendations_received)
+  def process_hash(recommendations_received)
     if (recommendations_received.nil?)
       return nil
     end
@@ -9,22 +9,33 @@ class LinkedinUserRecommendationsReceived < ActiveRecord::Base
     recommendations_received['last_name'] = recommendations_received['recommender'].delete('last_name')
     recommendations_received['first_name'] = recommendations_received['recommender'].delete('first_name')
     recommendations_received.delete('recommender')
-    recommendations_received['recommendation_type'] = recommendations_received['recommendation_type'].delete('code')
+    recommendations_received['recommendation_type'] = recommendations_received['recommendation_type']['code']
+    recommendations_received['recommendation_id']   = recommendations_received['id']
+    recommendations_received.delete('id')
     recommendations_received.delete('recommendation_type')
-
     return recommendations_received
   end
 
-  def self.from_recommendations_receiveds(recommendations_received)
-    if recommendations_received.nil?
-      return nil
-    end
-    recommendations_received = self.process_hash(recommendations_received)
-    li = self.new(recommendations_received)
-    li
+  def initialize(hash)
+    hash = process_hash(hash)	
+    super(hash)
+    
   end
-  def self.delete(user_id)
-    self.delete_all(["linkedin_user_id = ?" , user_id])
+ 	
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
 
+    
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 end
