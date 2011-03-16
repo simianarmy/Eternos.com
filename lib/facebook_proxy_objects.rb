@@ -132,6 +132,21 @@ module FacebookProxyObjects
         @thread.object_id
       end
     end
+    
+    # Converts everything to hashie::mash object for max compatibility with 
+    # Mogli
+    class FacebookUserProfile
+      include BackupContentProxy
+      
+      def initialize(data)
+        @data = Hashie::Mash.new(data)
+      end
+      
+      def obj
+        @data
+      end
+    end
+        
   end
 
   module OpenGraph

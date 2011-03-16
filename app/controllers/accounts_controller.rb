@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
   before_filter :load_billing, :only => [ :new, :create, :fb_create, :aff_create, :billing, :paypal]
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update]
   before_filter :load_discount, :only => [ :plans, :plan, :new, :create, :fb_create ]
-  before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
+  before_filter :load_object, :only => [:edit, :billing, :plan, :cancel, :update]
 
   before_filter :require_no_user, :only => [:new, :create, :fb_create, :aff_create, :canceled]
   before_filter :require_no_fb_user, :only => [:create, :fb_create, :aff_create]
@@ -250,7 +250,6 @@ class AccountsController < ApplicationController
     
   def show
     return redirect_to(member_home_path)
-    #@plan = @subscription.subscription_plan
   end
 
   def edit
@@ -464,7 +463,7 @@ class AccountsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       # Could be in 2nd step of account signup where account saved but not active
       # Will raise error if no session id or account not found
-      Account.find(session[:account_id]) 
+      Account.find(session[:account_id]) if session[:account_id]
     end
   end
 
