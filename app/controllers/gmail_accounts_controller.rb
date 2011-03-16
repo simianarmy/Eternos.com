@@ -40,7 +40,11 @@ class GmailAccountsController < EmailAccountsController
       else
         flash[:error] = "Error authenticating to your Gmail account.  Make sure you have IMAP enabled in your Gmail account."
       end 
+    rescue Net::IMAP::NoResponseError => e
+      flash[:error] = e.message
     rescue Exception => message
+      Rails.logger.warn "Error adding gmail: #{message.to_s} #{message.backtrace}"
+      notify_about_exception(message)
       flash[:error] = message.to_s
     end
     

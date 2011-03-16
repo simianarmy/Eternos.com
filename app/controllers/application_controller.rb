@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
   include RoleRequirementSystem
-  include ExceptionNotifiable
+  include ExceptionNotification::Notifiable
   include SslRequirement
   
   #RAILS_ENV = 'maintenance'

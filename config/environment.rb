@@ -162,7 +162,8 @@ require 'feedzirra'
 require 'right_aws'
 require 'thinking_sphinx'
 require 'workling'
-ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
+
+ExceptionNotification::Notifier.exception_recipients = %w( simianarmy@gmail.com )
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
   "#{html_tag}<span class='field_error'></span>"

@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/smartinez87/exception_notification.git
+  revision: f9865f54b415e4f87e582f6256a811d5c5f54d7b
+  branch: 2-3-stable
+  specs:
+    exception_notification (2.3.3.0)
+
 PATH
   remote: vendor/linkedin2-1.0.1
   specs:
@@ -28,12 +35,8 @@ GEM
       activerecord (>= 2.1)
     after_commit (1.0.8)
       activerecord (< 3.0.0)
-    amalgalite (1.0.0)
-      arrayfields (~> 4.7.4)
-      fastercsv (~> 1.5.4)
     amqp (0.6.7)
       eventmachine (>= 0.12.4)
-    arrayfields (4.7.4)
     autotest-growl (0.2.9)
     autotest-rails (4.1.0)
       ZenTest
@@ -41,6 +44,7 @@ GEM
       builder
       mime-types
       xml-simple
+    btelles-faker (0.3.3)
     builder (3.0.0)
     bullet (2.0.1)
       uniform_notifier (~> 1.0.0)
@@ -86,9 +90,6 @@ GEM
     ezcrypto (0.7.2)
     facebooker (1.0.75)
       json_pure (>= 1.0.0)
-    faker (0.9.5)
-      i18n (~> 0.4)
-    fastercsv (1.5.4)
     ffi (0.6.3)
       rake (>= 0.8.7)
     formtastic (1.1.0)
@@ -115,10 +116,8 @@ GEM
     jnunemaker-columbus (0.1.2)
     json (1.4.6)
     json_pure (1.4.6)
-    larch (1.1.0)
-      amalgalite (~> 1.0.0)
+    larch (1.0.2)
       highline (~> 1.5.0)
-      sequel (~> 3.14)
       trollop (~> 1.13)
     linecache (0.43)
     lockfile (1.4.3)
@@ -205,7 +204,6 @@ GEM
       ffi (~> 0.6.3)
       json_pure
       rubyzip
-    sequel (3.21.0)
     shared-mime-info (0.1)
     shuber-attr_encrypted (1.0.8)
       shuber-eigenclass (>= 1.0.1)
@@ -249,6 +247,7 @@ DEPENDENCIES
   autotest-growl
   autotest-rails
   aws-s3
+  btelles-faker
   bullet
   capistrano (= 2.5.10)
   capistrano-ext (= 1.2.1)
@@ -261,9 +260,9 @@ DEPENDENCIES
   database_cleaner
   deadweight
   eventmachine
+  exception_notification!
   ezcrypto
   facebooker
-  faker
   formtastic (~> 1.1.0)
   gdata
   haml
@@ -276,7 +275,7 @@ DEPENDENCIES
   javan-whenever
   jnunemaker-columbus
   json_pure (= 1.4.6)
-  larch
+  larch (= 1.0.2)
   linkedin2 (= 1.0.1)!
   lockfile
   markevans-block_helpers
