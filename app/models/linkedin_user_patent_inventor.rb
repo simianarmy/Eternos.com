@@ -1,7 +1,7 @@
 class LinkedinUserPatentInventor < ActiveRecord::Base
   belongs_to :linkedin_user_patents,:foreign_key => "linkedin_user_patents_id"
 
-   def self.process_hash(author)
+   def process_hash(author)
     if (author.nil?)
       return nil
     end
@@ -10,13 +10,28 @@ class LinkedinUserPatentInventor < ActiveRecord::Base
     return author
   end
 
-  def self.from_authors(author)
-    author = self.process_hash(author)
-    li = self.new(author)
-    li
-  end
- def self.delete(patent_id)
-    self.delete_all(["linkedin_user_patents_id = ?" , patent_id])
+  def initialize(hash)
+    print "aaaaa:"
+    print hash.inspect
+    hash = process_hash(hash)
+    super(hash)
 
+  end
+
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
+
+
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 end

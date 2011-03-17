@@ -4,22 +4,30 @@ class LinkedinUserUpdateLike < ActiveRecord::Base
     if (like.nil?)
       return nil
     end
-	like['linkedin_id'] = like.delete('id')
+    like['linkedin_id'] = like.delete('id')
    
     return like
   end
-  def self.from_likes(like)
-    self.process_hash(like)
-    li = self.new(like)
-    li
+  def initialize(hash)
+    hash = process_hash(hash)
+    super(hash)
+
   end
-  def self.update_likes(like,linkedin_user_comment_like_id)
-    if (like.nil?)
-      return nil
-    end
-    self.process_hash(like)
-    li = self.find_all_by_linkedin_id_and_linkedin_user_comment_like_id(like['linkedin_id'],linkedin_user_comment_like_id).first
-    li.update_attributes(like)
-    li.save
+
+  def compare_hash(hash_from_database,hash_from_server)
+    result = Hash.new
+    hash_from_database.each { |key,value|
+      if key.to_s != 'linkedin_user_id'.to_s && key.to_s != 'created_at'.to_s && key.to_s != 'updated_at'.to_s && value != hash_from_server[key]
+        result[key] = hash_from_server[key]
+      end
+    }
+    return result
+  end
+
+
+  def update_attributes(hash)
+    hash = process_hash(hash)
+    hash = compare_hash(self.attributes,hash)
+    super(hash)
   end
 end
