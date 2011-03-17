@@ -42,9 +42,10 @@ module BackupWorker
       
         
 	if record = LinkedinUser.find_all_by_backup_source_id(backup_source.id).first
- 	     record.update_profile(@info, @comment_like, @cmpies, @ncons)
+ 	     record.update_attributes(@info, @comment_like, @cmpies, @ncons)
 	else
-	    LinkedinUser.insert(@info, @comment_like, @cmpies, @ncons, backup_source.id)
+	    li = LinkedinUser.new(@info, @comment_like, @cmpies, @ncons, backup_source.id)
+	    li.save
 	end
     end
 

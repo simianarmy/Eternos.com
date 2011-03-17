@@ -12,13 +12,8 @@ class LinkedinUserEducation < ActiveRecord::Base
 
 
   def initialize(hash)
-    print "before:"
-    print hash.inspect 
-    print "\n"		
+    	
     hash = process_hash(hash)	
-    print "after:"
-    print hash.inspect 
-    print "\n"
     super(hash)
     
   end

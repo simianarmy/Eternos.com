@@ -48,8 +48,8 @@ class LinkedinUserCommentLike < ActiveRecord::Base
     if !comment_like['likes'].nil?
        comment_like.delete('likes')   
     end
-    if !comment_like['comments'].nil?
-       comment_like.delete('comments')   
+    if !comment_like['update_comments'].nil?
+       comment_like.delete('update_comments')   
     end
     return comment_like
   end
