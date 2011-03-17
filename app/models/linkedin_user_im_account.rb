@@ -37,4 +37,8 @@ class LinkedinUserImAccount < ActiveRecord::Base
     hash = compare_hash(self.attributes,hash)
     super(hash)
   end
+  def delete(user_id)
+    self.delete_all(["linkedin_user_id = ?" , user_id])
+
+  end
 end

@@ -4,8 +4,6 @@ class LinkedinUserSkill < ActiveRecord::Base
     if (skill.nil?)
       return nil
     end
-    print "test:"
-    print skill.inspect
     skill['name'] = skill['skill']['name']
     skill['yeard_experience'] = Integer(skill['years']['id'])
     skill['proficiency_level'] = skill['proficiency']['level']

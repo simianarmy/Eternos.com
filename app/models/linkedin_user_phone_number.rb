@@ -28,7 +28,7 @@ class LinkedinUserPhoneNumber < ActiveRecord::Base
     hash = compare_hash(self.attributes,hash)
     super(hash)
   end
-  def self.delete(user_id)
+  def delete(user_id)
     self.delete_all(["linkedin_user_id = ?" , user_id])
 
   end

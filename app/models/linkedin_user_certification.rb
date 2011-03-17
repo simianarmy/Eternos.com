@@ -28,10 +28,11 @@ class LinkedinUserCertification < ActiveRecord::Base
     return result
   end
 
-    
   def update_attributes(hash)
     hash = process_hash(hash)
     hash = compare_hash(self.attributes,hash)
     super(hash)
   end
+  
+    
 end
