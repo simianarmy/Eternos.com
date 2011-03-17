@@ -484,11 +484,15 @@ class AccountsController < ApplicationController
   # Forces existing user with the same facebook ID to their home page
   def require_no_fb_user
     # If this user has already registered via facebook, redirect to member page
-    if params[:user] && params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
-      if Member.from_facebook(params[:user][:facebook_id])
-        flash[:notice] = "Your Facebook account is already connected to an Eternos account.  If you would like to create a new Eternos account, remove the Eternos application from your Facebook settings first then try again."
-        redirect_to logout_url and return false
+    begin
+      if params[:user] && params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
+        if Member.from_facebook(params[:user][:facebook_id])
+          flash[:notice] = "Your Facebook account is already connected to an Eternos account.  If you would like to create a new Eternos account, remove the Eternos application from your Facebook settings first then try again."
+          redirect_to logout_url and return false
+        end
       end
+    rescue
+      true # Allow them to continue
     end
   end
 end
