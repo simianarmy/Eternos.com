@@ -50,7 +50,7 @@ group :cucumber do
 end
 
 group :production do
-  gem 'newrelic_rpm', '>= 2.9.8'
+  gem 'newrelic_rpm'
 end
 
 gem 'active_presenter'
