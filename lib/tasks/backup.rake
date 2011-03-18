@@ -142,6 +142,7 @@ namespace :backup do
     end
     opts = get_backup_opts
     if bs = BackupSource.find(id)
+      puts "adding source #{bs.description}..."
       EternosBackup::BackupJobPublisher.add_source([bs], opts)
       puts "backup source #{id} added to backup job queue"
     else
