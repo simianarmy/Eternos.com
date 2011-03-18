@@ -288,7 +288,7 @@ DEPENDENCIES
   moomerman-twitter_oauth
   moqueue
   mysqlplus
-  newrelic_rpm (>= 2.9.8)
+  newrelic_rpm
   nokogiri
   oauth
   packr
