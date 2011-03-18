@@ -1,5 +1,5 @@
 class LinkedinUserPatentInventor < ActiveRecord::Base
-  belongs_to :linkedin_user_patents,:foreign_key => "linkedin_user_patents_id"
+  belongs_to :linkedin_user_patent,:foreign_key => "linkedin_user_patent_id"
 
    def process_hash(author)
     if (author.nil?)
@@ -11,8 +11,6 @@ class LinkedinUserPatentInventor < ActiveRecord::Base
   end
 
   def initialize(hash)
-    print "aaaaa:"
-    print hash.inspect
     hash = process_hash(hash)
     super(hash)
 

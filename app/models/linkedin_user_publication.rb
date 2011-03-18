@@ -10,18 +10,12 @@ class LinkedinUserPublication < ActiveRecord::Base
       publication_authors['author'].each { |patent_inventor|
         li = LinkedinUserPublicationAuthor.new(patent_inventor['person'])
         linkedin_user_publication_authors << li	
-        print "id="
-        print self.id 
-        print "\n"
-        
+          
       }
     else
       li  = LinkedinUserPublicationAuthor.new(publication_authors['author']['person'])
       linkedin_user_publication_authors << li	
-      print "id="
-      print self.id 
-      print "\n"
-	    
+       
 
     end
   end
@@ -61,6 +55,7 @@ class LinkedinUserPublication < ActiveRecord::Base
 
 
   def update_attributes(hash)
+    print "test pub"
     hash = process_hash(hash)
     hash = compare_hash(self.attributes,hash)
     super(hash)

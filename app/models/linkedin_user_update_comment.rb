@@ -1,7 +1,7 @@
 class LinkedinUserUpdateComment < ActiveRecord::Base
   belongs_to :linkedin_user_comment_like,:foreign_key => "linkedin_user_comment_like_id"
 
-  def self.process_hash(comment)
+  def process_hash(comment)
     if (comment.nil?)
       return nil
     end

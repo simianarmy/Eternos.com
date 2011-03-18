@@ -1,5 +1,5 @@
 class LinkedinUserPublicationAuthor < ActiveRecord::Base
-  belongs_to :linkedin_user_publication_id,:foreign_key => "linkedin_user_publications_id"
+  belongs_to :linkedin_user_publication,:foreign_key => "linkedin_user_publication_id"
 
   def process_hash(author)
     if (author.nil?)
@@ -9,8 +9,6 @@ class LinkedinUserPublicationAuthor < ActiveRecord::Base
     return author
   end
   def initialize(hash)
-    print "hash:\n"
-    print hash.inspect	
     hash = process_hash(hash)
     super(hash)
 

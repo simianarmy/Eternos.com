@@ -3,7 +3,7 @@ class CreateLinkedinUserPublicationAuthors < ActiveRecord::Migration
   def self.up
     create_table :linkedin_user_publication_authors do |t|
       t.string  :linkedin_id,:first_name,:last_name
-      t.integer :linkedin_user_publications_id
+      t.integer :linkedin_user_publication_id
       t.timestamps
     end
   end

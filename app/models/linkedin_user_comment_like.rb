@@ -1,18 +1,19 @@
 class LinkedinUserCommentLike < ActiveRecord::Base
   belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
-  has_many 	 :linkedin_user_update_likes, :class_name  => "LinkedinUserUpdateLike"
-  has_many 	 :linkedin_user_update_comments, :class_name  => "LinkedinUserUpdateComment"
+  has_many 	 :linkedin_user_update_likes
+  has_many 	 :linkedin_user_update_comments
   def add_likes_from_comment_likes(likes)
     if likes.nil? || likes['like'].nil?
       return
     end
+    
     if Integer(likes['total']) > 1
       likes['like'].each { |like|
-        li = LinkedinUserUpdateLike.new(like['person'])
+        li = linkedin_user_update_likes.new(like['person'])
         linkedin_user_update_likes << li
       }
     else
-      li  = LinkedinUserUpdateLike.new(likes['like']['person'])
+	  li  = linkedin_user_update_likes.new(likes['like']['person'])
       linkedin_user_update_likes << li
     end
   end
@@ -23,11 +24,11 @@ class LinkedinUserCommentLike < ActiveRecord::Base
     end
     if Integer(comments['total']) > 1
       comments['update_comment'].each { |update_comment|
-        li = LinkedinUserUpdateComment.new(update_comment)
+        li = linkedin_user_update_comments.new(update_comment)
         linkedin_user_update_comments << li
       }
     else
-      li  = LinkedinUserUpdateComment.new(comments['update_comment'])
+      li  = linkedin_user_update_comments.new(comments['update_comment'])
       linkedin_user_update_comments << li
     end
   end
@@ -36,6 +37,7 @@ class LinkedinUserCommentLike < ActiveRecord::Base
     if (comment_like.nil?)
       return nil
     end
+    result = Hash.new
     comment_like['linkedin_id'] = comment_like['update_content']['person']['id']
     comment_like['first_name'] = comment_like['update_content']['person']['first_name']
     comment_like['last_name'] = comment_like['update_content']['person']['last_name']
@@ -46,18 +48,22 @@ class LinkedinUserCommentLike < ActiveRecord::Base
     comment_like.delete('update_content')
     comment_like['timestamp'] = Time.at(Integer( comment_like.delete('timestamp')) / 1000)
     if !comment_like['likes'].nil?
-       comment_like.delete('likes')   
+		
+        result['likes'] = comment_like.delete('likes')
+       
     end
     if !comment_like['update_comments'].nil?
-       comment_like.delete('update_comments')   
+        result['update_comments'] = comment_like.delete('update_comments')
     end
-    return comment_like
+    return result
   end
   
   def initialize(hash)
-    hash = process_hash(hash)
-    super(hash)
-
+	@hash = hash
+    temp = process_hash(@hash)
+    super(@hash)
+    add_likes_from_comment_likes(temp['likes'])
+	add_comments_from_comment_likes(temp['update_comments'])
   end
 
   def compare_hash(hash_from_database,hash_from_server)

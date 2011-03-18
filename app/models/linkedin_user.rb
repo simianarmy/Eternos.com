@@ -708,7 +708,6 @@ class LinkedinUser < ActiveRecord::Base
         li = linkedin_user_comment_likes.new(comment_like)
         linkedin_user_comment_likes << li
       else
-
         comment_likes_record.update_attributes(comment_likes['update'])
       end
 

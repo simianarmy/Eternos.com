@@ -1,6 +1,6 @@
 class LinkedinUserUpdateLike < ActiveRecord::Base
   belongs_to :linkedin_user_comment_like,:foreign_key => "linkedin_user_comment_like_id"
-  def self.process_hash(like)
+  def process_hash(like)
     if (like.nil?)
       return nil
     end
@@ -9,7 +9,7 @@ class LinkedinUserUpdateLike < ActiveRecord::Base
     return like
   end
   def initialize(hash)
-    hash = process_hash(hash)
+	hash = process_hash(hash)
     super(hash)
 
   end
