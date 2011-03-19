@@ -1,5 +1,5 @@
 class LinkedinUser < ActiveRecord::Base
-  belongs_to :linkedin_account
+  belongs_to :linkedin_account, :foreign_key => 'backup_source_id'
   has_many :linkedin_user_certifications
   has_many :linkedin_user_connections
   has_many :linkedin_user_educations
