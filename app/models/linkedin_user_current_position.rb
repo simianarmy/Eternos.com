@@ -1,6 +1,6 @@
 class LinkedinUserCurrentPosition < ActiveRecord::Base
-  belongs_to :linkedin_user, :foreign_key => "linkedin_user_id"
-
+  belongs_to :linkedin_user
+  
   def self.delete(user_id)
     self.delete_all(["linkedin_user_id = ?" , user_id])
   end
@@ -16,11 +16,11 @@ class LinkedinUserCurrentPosition < ActiveRecord::Base
     end
     
     if !position['start_date'].nil?
-      position['start_date'] = build_date_from_year_month position['start_date']
+      position['start_date'] = LinkedinBackup.build_date_from_year_month position['start_date']
     end
 
     if !position['end_date'].nil?
-      position['end_date'] = build_date_from_year_month position['end_date']
+      position['end_date'] = LinkedinBackup.build_date_from_year_month position['end_date']
     end
     position['company_name'] = position['company']['name']
     position['company_id'] = position['company']['id']
@@ -46,13 +46,5 @@ class LinkedinUserCurrentPosition < ActiveRecord::Base
   end
   
   protected 
-  
-  def build_date_from_year_month(data)
-    dt = data['year']
-    if data['month']
-      dt +=  '-' + data['month'] + '-1'
-    end
-    dt
-  end
 
 end

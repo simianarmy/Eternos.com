@@ -5,6 +5,15 @@ module LinkedinBackup
     def load_config
       YAML.load_file(File.join(Rails.root, 'config', 'linkedin.yml'))[Rails.env] rescue nil || {}
     end
+    
+    # Date string builder from hash
+    def build_date_from_year_month(data)
+      dt = data['year']
+      if data['month']
+        dt +=  '-' + data['month'] + '-1'
+      end
+      dt
+    end
   end
   
   module OAuth

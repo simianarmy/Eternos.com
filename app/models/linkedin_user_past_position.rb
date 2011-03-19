@@ -1,15 +1,21 @@
 class LinkedinUserPastPosition < ActiveRecord::Base
-  belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
+  belongs_to :linkedin_user
+  
+  def initialize(hash)
+    hash = process_hash(hash)	
+    super(hash)  
+  end
+  
    def process_hash(position)
     if (position.nil?)
       return nil
     end
     if !position['start_date'].nil?
-      position['start_date'] = position['start_date']['year'] +'-'+ position['start_date']['month'] +'-1'
+      position['start_date'] = LinkedinBackup.build_date_from_year_month position['start_date']
     end
 
     if !position['end_date'].nil?
-      position['end_date'] = position['end_date']['year'] +'-'+ position['end_date']['month'] +'-1'
+      position['end_date'] = LinkedinBackup.build_date_from_year_month position['end_date']
     end
     position['company_name'] = position['company']['name']
     position['company_id'] = position['company']['id']
@@ -17,11 +23,6 @@ class LinkedinUserPastPosition < ActiveRecord::Base
     position.delete('company')
 
     return position
-  end
-  def initialize(hash)
-    hash = process_hash(hash)	
-    super(hash)
-    
   end
  	
   def compare_hash(hash_from_database,hash_from_server)
@@ -40,8 +41,8 @@ class LinkedinUserPastPosition < ActiveRecord::Base
     hash = compare_hash(self.attributes,hash)
     super(hash)
   end
+  
   def self.delete(user_id)
     self.delete_all(["linkedin_user_id = ?" , user_id])
-
   end
 end
