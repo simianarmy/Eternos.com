@@ -49,10 +49,6 @@ group :cucumber do
   gem 'database_cleaner'
 end
 
-group :production do
-  gem 'newrelic_rpm'
-end
-
 gem 'active_presenter'
 gem 'acts_as_audited', '1.1.1'
 gem 'after_commit'
