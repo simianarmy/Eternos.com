@@ -1,21 +1,22 @@
 class LinkedinUserEducation < ActiveRecord::Base
-  belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
+  belongs_to :linkedin_user
+  
+  def initialize(hash)
+    super process_hash(hash)	
+  end
+  
   def process_hash(education)
     if (education.nil?)
       return nil
     end
-    education['start_date'] = education.delete('start_date')['year']
-    education['end_date']   = education.delete('end_date')['year']
+    if dt = education.delete('start_date')
+      education['start_date'] = dt['year']
+    end
+    if dt = education.delete('end_date')
+      education['end_date']   = dt['year']
+    end
     education['education_id'] = education['id']
-    return education
-  end
-
-
-  def initialize(hash)
-    	
-    hash = process_hash(hash)	
-    super(hash)
-    
+    education
   end
  	
   def compare_hash(hash_from_database,hash_from_server)
@@ -25,13 +26,13 @@ class LinkedinUserEducation < ActiveRecord::Base
         result[key] = hash_from_server[key]
       end
     }
-    return result
+    result
   end
 
  
   def update_attributes(hash)
     hash = process_hash(hash)
-    hash = compare_hash(self.attributes,hash)
+    hash = compare_hash(self.attributes, hash)
     super(hash)
   end
 

@@ -1,5 +1,6 @@
 class LinkedinUserCmpy < ActiveRecord::Base
-  belongs_to :linkedin_user, :foreign_key =>"linkedin_user_id"
+  belongs_to :linkedin_user
+  
   def process_hash(cmpy)
     if cmpy.nil?
       return nil

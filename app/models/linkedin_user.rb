@@ -238,14 +238,14 @@ class LinkedinUser < ActiveRecord::Base
       linkedin_user_member_url_resources << li
     end
   end
-  def add_curent_share_from_people(current_share)
+  
+  def add_current_share_from_people(current_share)
     if current_share.nil?
       return
     end
 
     li = linkedin_user_current_share.new(current_share)
     linkedin_user_current_share << li
-
   end
 
   def add_phone_numbers_from_people(phone_numbers)
@@ -603,11 +603,10 @@ class LinkedinUser < ActiveRecord::Base
       publications['publication'].each { |publication|
         array.push publication['id']
         publications_record = linkedin_user_publications.find_by_publication_id(publication['id'])
-        if (publications_record.nil?)
+        if publications_record.nil?
           li = linkedin_user_publications.new(publication)
           linkedin_user_publications << li
         else
-          publications_record = linkedin_user_publications.find_by_linkedin_user_id(self.id)
           publications_record.update_attributes(publication)
         end
       }
@@ -634,8 +633,7 @@ class LinkedinUser < ActiveRecord::Base
     end
     array =[]
     if Integer(recommendations['total']) > 1
-
-      recommendations['recommendations'].each { |recommendation|
+      recommendations['recommendation'].each { |recommendation|
         array.push recommendation['id']
         recommendations_receiveds_record = linkedin_user_recommendations_receiveds.find_by_recommendation_id(recommendation['id'])
         if (recommendations_receiveds_record.nil?)
@@ -684,11 +682,12 @@ class LinkedinUser < ActiveRecord::Base
     if current_share.nil?
       return
     end
-
-    current_shares_record = linkedin_user_current_share.find_by_linkedin_user_id(self.id)
-    current_shares_record.update_attributes(current_share)
-
-
+    
+    if current_shares_record = linkedin_user_current_share.find_by_current_share_id(current_share['id'])
+      current_shares_record.update_attributes(current_share)
+    else
+      add_current_share_from_people(current_share)
+    end
   end
 
   def update_phone_numbers_from_people(phone_numbers)
@@ -743,18 +742,23 @@ class LinkedinUser < ActiveRecord::Base
       return
     end
 
-    cmpies_record = linkedin_user_cmpies.find_by_linkedin_user_id(self.id)
-    cmpies_record.update_attributes(cmpies['update'])
-
+    if cmpies_record = linkedin_user_cmpies.find_by_company_id(cmpies['update']['update_content']['company']['id'])
+      cmpies_record.update_attributes(cmpies['update'])
+    else
+      add_cmpy_from_people(cmpies)
+    end
   end
 
   def update_ncon_from_people(ncons)
     if ncons.nil? || ncons['update'].nil?
       return
     end
-
-    ncons_record = linkedin_user_ncons.find_by_linkedin_user_id(self.id)
-    ncons_record.update_attributes(ncons['update'])
+    # Match on linkedin id
+    if ncons_record = linkedin_user_ncons.find_by_linkedin_id(ncons['update']['update_content']['person']['id'])
+      ncons_record.update_attributes(ncons['update'])
+    else
+      add_ncon_from_people(ncons)
+    end
   end
   
   def process_hash (hash)
@@ -881,7 +885,7 @@ class LinkedinUser < ActiveRecord::Base
     add_recommendations_receiveds_from_people(temp['recommendations_receiveds'])
     add_twitter_accounts_from_people(temp['twitter_accounts'])
     add_member_urls_from_people(temp['member_url_resources'])
-    add_curent_share_from_people(temp['current_share'])
+    add_current_share_from_people(temp['current_share'])
     add_phone_numbers_from_people(temp['phone_numbers'])
     add_comment_likes_from_people(@comment_like_hash)
     add_cmpy_from_people(@cmpies_hash)

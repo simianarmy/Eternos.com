@@ -1,5 +1,6 @@
 class LinkedinUserCurrentShare < ActiveRecord::Base
-  belongs_to :linkedin_user,:foreign_key => "linkedin_user_id"
+  belongs_to :linkedin_user
+  
   def process_hash(current_share)
     if (current_share.nil?)
       return nil
@@ -16,10 +17,10 @@ class LinkedinUserCurrentShare < ActiveRecord::Base
 
     return current_share
   end
+  
   def initialize(hash)
     hash = process_hash(hash)	
-    super(hash)
-    
+    super(hash)  
   end
  	
   def compare_hash(hash_from_database,hash_from_server)
