@@ -95,7 +95,7 @@ gem 'rvideo'
 gem 'searchlogic', '2.3.16' # Can't go higher than this without breaking timeline search
 gem 'shared-mime-info'
 gem 'shuber-attr_encrypted'
-gem 'subdomain-fu'
+gem 'subdomain-fu', :git => 'git://github.com/collectiveidea/subdomain-fu.git'
 gem 'SystemTimer'
 gem 'taf2-curb'
 gem 'thinking-sphinx', '~> 1.3.20', :require => 'thinking_sphinx'

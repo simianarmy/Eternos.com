@@ -232,36 +232,37 @@ namespace :analysis do
     @conn = ActiveRecord::Base.connection
     # Text frequency counter object
     @freq_analyzer = FullText::Frequency.new
-      
-    users = if ENV['USER_ID']
-      [ User.find(ENV['USER_ID']) ]
-    else
-      User.active.all
-    end
+    
+    query = Member.active.with_sources.scoped
+    query.id_eq(ENV['USER_ID']) if ENV['USER_ID']
+
+    idx = 0
     # Per-user task
-    users.each do |u|
+    query.find_each do |u|
       # Don't do the work if recently updated .. too expensive to run more than a few times 
       # per month
-      if rt = RawText.find_by_user_id(u.id)
+      
+      begin
+        rt = RawText.find_or_create_by_user_id(u.id)
         if (Time.now - rt.updated_at) < @expiration_days.days
           puts "Updated < #{@expiration_days} days ago...skipping"
           next
         end
-      end
-      text = user_text_dump(u)
-      unless text.blank?
-        # stats = analyze_myisam_fulltext(text)
-        stats = @freq_analyzer.generate_hash(text)
-        puts stats.sort{|a,b| b[1] <=> a[1]}.inspect
-        # Add word stats to user text table
-        if rt = RawText.find_or_create_by_user_id(u.id)
-          begin
-            rt.update_attribute(:word_counts, stats)
-          rescue Exception => e
-            puts e.message 
-          end
+        text = user_text_dump(u)
+        unless text.blank?
+          # stats = analyze_myisam_fulltext(text)
+          stats = @freq_analyzer.generate_hash(text)
+          puts stats.sort{|a,b| b[1] <=> a[1]}.inspect
+          # Add word stats to user text table
+          rt.update_attributes(:word_counts => stats)
+          rt.touch(:updated_at)
         end
+        idx += 1
+      rescue Exception => e
+        puts e.message 
       end
+      
+      break if ENV['MAX'] && (idx >= ENV['MAX'].to_i)
     end
     
   end
