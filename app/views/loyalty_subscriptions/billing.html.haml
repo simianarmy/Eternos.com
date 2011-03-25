@@ -2,15 +2,15 @@
 - hide_login_box
 
 .content-box.billing
-  %h1 Payment Information
+  %h1== Account Subscription : #{@account.admin.login}
   /%h3= "You have selected " + site_account_plan(@plan)
   %h2= show_flash_messages
   %p
     Adding billing for account:
     %strong= @account.admin.login
-    = link_to '(Not you?  Click here)', new_account_registration_path(:force=>true)
+    = mail_to 'support@eternos.com', '(Not you?  Click here and send us your login email)', :subject => 'Payment page link'
   %p 
-    Simply enter your payment details below to .
+    Simply enter your payment details below.
   %h1
     Subscription Plan: 
     = @plan.to_s
@@ -34,7 +34,9 @@
       Any questions before you sign up?
     %br
     If you have questions about Eternos or the sign up process just 
-    = mail_to 'support@eternos.com', 'submit a support request'
+    = mail_to 'support@eternos.com', 'contact us via email', :subject => 'Payment page questions'
+    or Skype: Eternos.com
+    %br
     and we’ll get right back to you.
   %p
     %strong

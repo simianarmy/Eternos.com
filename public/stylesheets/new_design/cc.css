@@ -1,6 +1,7 @@
 /* Signup + billing */
 .billing {
 	width: 80%;
+	margin: 0 auto;
 }
 .billing H1 { background: #F2F2F2; padding: 5px; margin-bottom: 0; border: 1px solid #D6D6D6;
 	font-size: 20px; font-weight: normal; color: #02419E; 

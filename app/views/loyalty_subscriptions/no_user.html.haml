@@ -2,8 +2,11 @@
 - hide_login_box
 
 .content-box.billing
-  %h1 Sorry, we could not find any user matching this link ID!
+  %h1 Sorry, we could not find your account!
   
   %h2 
-    Please ...
+    Please contact us:
+    = mail_to 'support@eternos.com', 'support@eternos.com', :subject => 'Payment page account not found'
+    %p
+    or via Skype: Eternos.com
   
