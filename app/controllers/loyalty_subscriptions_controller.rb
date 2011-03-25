@@ -1,17 +1,22 @@
 # For last-ditch effort to get paying accounts
 class LoyaltySubscriptionsController < ApplicationController
   layout 'public_notabs'
+  ssl_required :all
   TESTING = true
   
   def upgrade
-    @user = User.find_by_persistence_token(params[:pt])
-    @obj = @account = @user.account
-    load_subscription
-    load_billing
+    if @user = User.find_by_persistence_token(params[:pt])
+      @obj = @account = @user.account
+      load_subscription
+      load_billing
     
-    render :action => 'billing'
+      render :action => 'billing'
+    else
+      render :action => 'no_user'
+    end
   rescue Exception => e
     notify_about_exception(e)
+    redirect_to root_url 
   end
   
   def billing  
