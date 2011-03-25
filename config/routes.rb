@@ -33,6 +33,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'tl_details/:id/:type/:events', :controller => 'timeline_events', :action => 'index'
   map.item_details 'tl_details/:id/:type/:events', :controller => 'timeline_events', :action => 'index'
   
+  map.resources :loyalty_subscriptions, :collection => {
+    :thanks => :get, :upgrade => :any, :billing => :any
+  }
   map.resources :dev_staging_maps
   map.resources :backup_sites
   map.resources :backup_sources, :collection => {

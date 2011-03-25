@@ -1,0 +1,49 @@
+/* Signup + billing */
+.billing {
+	width: 80%;
+}
+.billing H1 { background: #F2F2F2; padding: 5px; margin-bottom: 0; border: 1px solid #D6D6D6;
+	font-size: 20px; font-weight: normal; color: #02419E; 
+}
+.billing .p1 { float: none; padding-top: 0;}
+.form-ul3 { margin: 0 0 35px 0; padding: 0 5px 35px 5px; 
+	border: 1px solid #D6D6D6; border-top: none;
+}
+.form-ul3 LI { font-size: 12px; padding: 15px 0 5px 0; display: block; list-style: none;}
+.form-ul3 LI INPUT[type=text], .form-ul3 LI INPUT[type=password] { 
+	width: 250px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle; font-size: 16px;
+
+}
+.form-ul3 LI INPUT[type=password], .form-ul3 LI INPUT#account_phone_number { width: 150px; border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; vertical-align: middle}
+
+.form-ul3 LI INPUT[type=radio] { vertical-align: middle}
+.form-ul3 LI INPUT[type=submit].yellow-button3 { 
+	background: url(/images/vault/bg-yellow-button2.gif) no-repeat; display: inline; color: #FFFFFF; text-decoration: none; width: 275px; height: 47px; padding-top: 0; margin:0 0 0 0; font-size: 20px; font-weight: bold; text-align: center; border: none; cursor: pointer;
+}
+#creditcard_expdate_input select {
+	width: 80px;
+}
+.form-ul3 LI .inline-hints { font-size: 10px; font-style: normal}
+.form-ul3 li SELECT { border: 2px solid #D3D3D3; margin: 0; padding: 5px 0; width: 150px; }
+.form-ul3 li LABEL { 
+	text-align: right; padding-right: 5px; font-weight: bolder; display: inline-block; width: 150px;
+}
+.form-ul3 li IMG { vertical-align: middle}
+
+.form-ul3 #errorExplanation {
+	margin: 0 40px;
+}
+.error { color: #F00;}
+form p.inline-errors {
+	display: inline;
+	width: 200px;
+	padding-left: 5px;
+}
+.content-box A { color: #037BBE; font-weight: bold}
+.content-box A:hover { color: #507493;}
+
+input.sign-up { 
+	background: url(/images/button-signup.gif) no-repeat; width: 197px; height: 50px; padding: 0; border: none; 
+	font-family: Arial, Helvetica, sans-serif; 
+	font-size: 20px; color: #FFFFFF; cursor: pointer; font-weight: bold;
+}

@@ -1,0 +1,19 @@
+- stylesheet 'application', 'new_design/cc'
+- hide_login_box
+
+.content-box.billing
+  %h1 Payment Submitted!
+  %h2 Your payment has been submitted and will be processed in the next 24 hours.
+  %p 
+    An order receipt will be sent to 
+    %strong= @user.email
+  %h1
+    Subscription Plan: 
+    = @plan.to_s
+  %p
+    %strong
+      Your account will be billed once per month as a recurring charge.
+  = render :partial => 'shared/mcafee_secure'
+  
+  %p
+    = link_to 'Proceed to Member Home', member_home_path, :id => "yellow-button2"

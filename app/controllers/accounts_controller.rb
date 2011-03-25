@@ -274,8 +274,9 @@ class AccountsController < ApplicationController
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
   end
 
-  def billing  
-    @user = current_user
+  def billing
+   
+    @user ||= current_user
     if request.post?
       @plan = @subscription.subscription_plan
       if params[:paypal].blank?
@@ -396,6 +397,7 @@ class AccountsController < ApplicationController
     render :text => 'Dashboard action, engage!', :layout => true
   end
 
+  
   protected
 
   def load_object
@@ -463,7 +465,9 @@ class AccountsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       # Could be in 2nd step of account signup where account saved but not active
       # Will raise error if no session id or account not found
-      Account.find(session[:account_id]) if session[:account_id]
+      if session[:account_id]
+        Account.find(session[:account_id]) 
+      end
     end
   end
 
