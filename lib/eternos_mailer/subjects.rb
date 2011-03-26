@@ -12,7 +12,8 @@ module EternosMailer
       :account_setup_reminder => 'Complete your Eternos.com Account Setup',
       :friend_invitation      => 'Invitation to Eternos.com',
       :timeline_ready         => 'Your Eternos Timeline is ready!',
-      :backup_errors          => 'Problems archiving your data'
+      :backup_errors          => 'Problems archiving your data',
+      :loyalty_signup         => 'Your Eternos Social Media Archive'
     }
     
     def subjects

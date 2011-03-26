@@ -30,9 +30,8 @@ class LoyaltySubscriptionsController < ApplicationController
       @subscription_address.first_name = @creditcard.first_name
       @subscription_address.last_name = @creditcard.last_name
       
-      if TESTING || (@creditcard.valid? & @subscription_address.valid?)
-        if TESTING || 
-          @subscription.store_card(@creditcard, :billing_address => @subscription_address.to_activemerchant, :ip => request.remote_ip)
+      if @creditcard.valid? & @subscription_address.valid?
+        if @subscription.store_card(@creditcard, :billing_address => @subscription_address.to_activemerchant, :ip => request.remote_ip)
           login_and_email
           render :action => :thanks
         end
