@@ -2,7 +2,7 @@
 - if @subscription 
   %h1 Credit Card Information
   %ul.form-ul3
-    /-= error_messages_for :creditcard , :header_message => "Errors encountered with your payment information:", :full_messages => true
+    = error_messages_for :creditcard , :header_message => "Errors encountered with your payment information:", :full_messages => true
     
     = f.input :first_name, :label => 'First name on card'
     = f.input :last_name, :label => 'Last name on card'
