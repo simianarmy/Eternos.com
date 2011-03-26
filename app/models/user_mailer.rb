@@ -110,7 +110,6 @@ class UserMailer < ActionMailer::Base
   
   def loyalty_signup_request(user)
     setup_email(user)
-    ActionMailer::Base.default_url_options[:host] = 'www'
     
     @subject            = subject_from_sym :loyalty_signup
     @body[:name]        = user.full_name
@@ -122,6 +121,9 @@ class UserMailer < ActionMailer::Base
   protected
   
   def setup_email(user)
+    # REQUIRED FOR SUBDOMAIN-FU MULTIPLE SUBDOMAINS!
+    ActionMailer::Base.default_url_options[:host] = 'www'
+    
     @user = user
     @recipients  = "#{user.email}"
     @from        = AppConfig.from_email

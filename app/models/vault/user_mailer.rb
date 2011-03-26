@@ -17,6 +17,8 @@ class Vault::UserMailer < UserMailer
   protected
   
   def setup_email(user)
+    ActionMailer::Base.default_url_options[:host] = 'vault'
+    
     @user = user
     @recipients  = "#{user.email}"
     @from        = AppConfig.from_email
