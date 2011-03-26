@@ -10,15 +10,13 @@ class Vault::UserMailer < UserMailer
     @subject          += subject_from_sym :activation
     base_domain       = "http://vault.eternos.com"
     body[:login]      = user.login
-    body[:home_url]   = home_url
+    body[:home_url]   = home_url(:subdomain => 'vault')
     add_category_header "Activation Confirmation"
   end
   
   protected
   
   def setup_email(user)
-    ActionMailer::Base.default_url_options[:host] = 'vault'
-    
     @user = user
     @recipients  = "#{user.email}"
     @from        = AppConfig.from_email

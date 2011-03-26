@@ -128,8 +128,8 @@ Rails::Initializer.run do |config|
     end
     
     # Set ActionMailer host for url_for
-    # DEPRECATED WITH MULTIPLE SUBDOMAINS POSSIBLE!
-    #ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
+    # MAKE SURE TO SET SUBDOMAIN IN URL ROUTES FOR VAULT!
+    ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
     
     # Need this to prevent the following in Renderer classes:
     # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]

@@ -5,7 +5,7 @@ class LoyaltySubscriptionsController < ApplicationController
   TESTING = true
   
   def upgrade
-    if @user = User.find_by_persistence_token(params[:pt])
+    if @user = User.find(:first, :conditions => ["MD5(persistence_token) = ?", params[:pt]])
       @obj = @account = @user.account
       load_subscription
       load_billing

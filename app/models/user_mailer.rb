@@ -113,7 +113,8 @@ class UserMailer < ActionMailer::Base
     
     @subject            = subject_from_sym :loyalty_signup
     @body[:name]        = user.full_name
-    @body[:billing_url] = upgrade_loyalty_subscriptions_url(:pt => user.persistence_token)
+    # Shorten persistence_token to prevent bad email formatting of url
+    @body[:billing_url] = upgrade_loyalty_subscriptions_url(:pt => Digest::MD5.hexdigest(user.persistence_token))
     
     render :layout => false
   end
@@ -121,9 +122,6 @@ class UserMailer < ActionMailer::Base
   protected
   
   def setup_email(user)
-    # REQUIRED FOR SUBDOMAIN-FU MULTIPLE SUBDOMAINS!
-    ActionMailer::Base.default_url_options[:host] = 'www'
-    
     @user = user
     @recipients  = "#{user.email}"
     @from        = AppConfig.from_email
