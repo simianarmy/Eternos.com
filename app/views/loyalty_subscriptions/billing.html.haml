@@ -1,0 +1,50 @@
+- stylesheet 'application', 'new_design/cc'
+- hide_login_box
+
+.content-box.billing
+  %h1== Account Subscription : #{@account.admin.login}
+  /%h3= "You have selected " + site_account_plan(@plan)
+  %h2= show_flash_messages
+  %p
+    Adding billing for account:
+    %strong= @account.admin.login
+    = mail_to 'support@eternos.com', '(Not you?  Click here and send us your login email)', :subject => 'Payment page link'
+  %p 
+    Simply enter your payment details below.
+  %h1
+    Subscription Plan: 
+    = @plan.to_s
+  %p
+    %strong
+      Your account will be billed once per month as a recurring charge.
+  = render :partial => 'shared/mcafee_secure'
+  
+  - semantic_form_for @creditcard, :url => { :action => 'billing' } do |f|
+    = hidden_field_tag 'user_id', @user.id
+    = render :partial => 'credit_card_form', :locals => {:f => f}
+    / - submit_or_cancel account_path, 'Update billing information'
+    %p.p1
+      = submit_tag :submit, :value => "Submit Payment", :class => "submit sign-up"
+      %br
+      %em * Payments will appear as EON Digital Preservation, INC. on your billing statement.
+  
+  %p &nbsp;
+  %p
+    %strong
+      Any questions before you sign up?
+    %br
+    If you have questions about Eternos or the sign up process just 
+    = mail_to 'support@eternos.com', 'contact us via email', :subject => 'Payment page questions'
+    or Skype: Eternos.com
+    %br
+    and we’ll get right back to you.
+  %p
+    %strong
+      Got terms of service and privacy policies?
+    %br
+    Here are our 
+    = link_to 'Terms of Service', '/about/terms', :target => '_new'
+    , 
+    = link_to 'Refund Policy', '/about/refund', :target => '_new'
+    , and our
+    = link_to 'Privacy Policy', '/about/privacy', :target => '_new'

@@ -1,9 +1,3 @@
-# DEPRECATED in 0.9 BUT 0.9 IS FUCKED - USE 0.8.x
-# You can specify this setting when installing via bundle install /path/to/bundle
-#bundle_path "vendor/bundled_gems"
-#clear_sources
-
-#source :gemcutter
 source "http://rubygems.org"
 source 'http://gemcutter.org'
 source "http://gems.github.com"
@@ -29,7 +23,7 @@ group :test do
   gem 'rspec-rails-mocha', '~> 0.2.2'
   gem 'mocha'
   gem 'ruby-debug'
-  gem 'faker'
+  gem 'btelles-faker' 
   gem 'spork'
   gem 'database_cleaner'
   gem 'autotest-growl'
@@ -43,7 +37,7 @@ group :cucumber do
   gem 'rspec-rails', '1.3.3'
   gem 'mocha'
   gem 'ruby-debug'
-  gem 'faker'
+  gem 'btelles-faker' 
   gem 'spork'
   gem 'database_cleaner'
   gem 'webrat'
@@ -55,10 +49,6 @@ group :cucumber do
   gem 'database_cleaner'
 end
 
-group :production do
-  gem 'newrelic_rpm', '>= 2.9.8'
-end
-
 gem 'active_presenter'
 gem 'acts_as_audited', '1.1.1'
 gem 'after_commit'
@@ -67,6 +57,7 @@ gem 'aws-s3'
 gem 'crack'
 gem 'daemons'
 gem 'eventmachine'
+gem 'exception_notification', :git => 'git://github.com/smartinez87/exception_notification.git', :branch => '2-3-stable'
 gem 'ezcrypto'
 gem 'facebooker'
 gem 'formtastic', '~> 1.1.0'
@@ -80,14 +71,14 @@ gem 'image_science'
 gem 'javan-whenever'
 gem 'jnunemaker-columbus'
 gem 'json_pure', '1.4.6'
-gem 'larch'
+gem 'larch', '1.0.2'
 gem 'lockfile'
 gem 'markevans-block_helpers'
 gem 'mash'
 gem 'mdalessio-dryopteris'
 gem 'memcache-client'
 gem 'mime-types'
-gem 'mogli', :git => 'git@github.com:simianarmy/mogli.git'
+gem 'mogli'#, :git => 'git@github.com:simianarmy/mogli.git'
 gem 'moomerman-twitter_oauth'
 gem 'mysqlplus'
 gem 'nokogiri'
@@ -104,14 +95,13 @@ gem 'rvideo'
 gem 'searchlogic', '2.3.16' # Can't go higher than this without breaking timeline search
 gem 'shared-mime-info'
 gem 'shuber-attr_encrypted'
-gem 'subdomain-fu'
+gem 'subdomain-fu', :git => 'git://github.com/collectiveidea/subdomain-fu.git'
 gem 'SystemTimer'
 gem 'taf2-curb'
 gem 'thinking-sphinx', '~> 1.3.20', :require => 'thinking_sphinx'
 gem 'twitter'
 gem 'uuidtools'
 gem 'tzinfo'
-
-
-
+gem 'linkedin2', '1.0.1', :require => 'linkedin2', :path => 'vendor/linkedin2-1.0.1'
+gem 'cobravsmongoose'
 

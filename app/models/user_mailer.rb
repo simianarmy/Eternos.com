@@ -108,6 +108,17 @@ class UserMailer < ActionMailer::Base
     @num_rss_items = backups[:rss]
   end
   
+  def loyalty_signup_request(user)
+    setup_email(user)
+    
+    @subject            = subject_from_sym :loyalty_signup
+    @body[:name]        = user.full_name
+    # Shorten persistence_token to prevent bad email formatting of url
+    @body[:billing_url] = upgrade_loyalty_subscriptions_url(:pt => Digest::MD5.hexdigest(user.persistence_token))
+    
+    render :layout => false
+  end
+  
   protected
   
   def setup_email(user)

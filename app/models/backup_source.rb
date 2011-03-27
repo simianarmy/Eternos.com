@@ -57,7 +57,7 @@ class BackupSource < ActiveRecord::Base
   named_scope :linkedin, lambda {
     {
       :joins => :backup_site,
-      :conditions => {'backup_sites.name' => BackupSite::Facebook}
+      :conditions => {'backup_sites.name' => BackupSite::Linkedin}
     }
   }
   named_scope :active, :conditions => {
@@ -178,6 +178,7 @@ class BackupSource < ActiveRecord::Base
     member.backup_finished!(info)
   end
   
+  # TODO: MOVE TO MIX-IN MODULE
   # These photo methods should not be here
   def photo_album(id)
     backup_photo_albums.find_by_source_album_id(id)

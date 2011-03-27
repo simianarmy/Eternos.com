@@ -1,0 +1,25 @@
+# $Id: amazon_s3.yml 78 2009-06-25 18:36:33Z marc $
+common: &default_settings
+  # Eternos Test oauth keys
+  consumer_key: a9JjbI-dYf91dFUXbtcYEIXDwf8w_BLDnCgijGd7KHGSpaMnv_2MhgbHZaTcsY1w
+  secret_key: qVrrdR09jGwMlsiEnOfI5IMVIrT2bgC8rAsKi8gFhaliI8o5P9fI2KPko8lFAPD2
+  
+development:
+  <<: *default_settings
+  
+test:
+  <<: *default_settings
+
+cucumber:
+  <<: *default_settings
+
+culerity:
+  <<: *default_settings
+  
+staging:
+  <<: *default_settings
+  
+production:
+  
+local_production:
+  <<: *default_settings

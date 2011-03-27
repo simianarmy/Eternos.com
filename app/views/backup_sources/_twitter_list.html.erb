@@ -1,18 +1,18 @@
 <% unless list.blank? %>
   <br>
-  <div class="title7"><b>Accounts Added</b>:</div>
-  <table class="table-form8" border="0" cellpadding="0" cellspacing="0">
-      <tr bgcolor="#b3ecef">
-        <td class="coll-form15" bgcolor="#94e4e8" align="center">Screen name</td>
-        <td class="coll-form15" bgcolor="#94e4e8" align="center">Action</td>
-      </tr>
+  <table class="backup-accounts-table">
+  <tr>
+    <th>Owner</th>
+    <th>Authorization Status</th>
+    <th>Actions</th>
+  </tr>
     <% list.each do |twitter| -%>
       <tr id="twitter-list-<%= twitter.id %>">
-        <td class="coll-form12" valign="center"><%= twitter.title %></td>
-        <td class="coll-form12" valign="center"><%= link_to_remote 'Remove', 
-        :html => {:class => 'blue-btn4'},
+        <td><%= twitter.title %></td>
+        <td><%= twitter.active? ? 'Active' : 'Inactive' %></td>
+        <td><%= link_to_remote 'Remove', 
         :url => remove_twitter_account_backup_sources_path(:id => twitter.id),
-        :confirm => 'Are you sure?',
+        :confirm => account_delete_confirmation,
         :with => "'method=delete'", 
         :loading => "$('progress-bar').show();",
         :complete => "$('progress-bar').hide();" %>    

@@ -90,7 +90,7 @@ Rails::Initializer.run do |config|
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
   # (create the session table with "rake db:sessions:create")
-  config.action_controller.session_store = :active_record_store
+  config.action_controller.session_store = :mem_cache_store
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -128,8 +128,8 @@ Rails::Initializer.run do |config|
     end
     
     # Set ActionMailer host for url_for
-    # DEPRECATED WITH MULTIPLE SUBDOMAINS POSSIBLE!
-    #ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
+    # MAKE SURE TO SET SUBDOMAIN IN URL ROUTES FOR VAULT!
+    ActionMailer::Base.default_url_options[:host] = AppConfig.base_domain
     
     # Need this to prevent the following in Renderer classes:
     # ActionView::TemplateError: Missing host to link to! Please provide :host parameter or set default_url_options[:host]
@@ -142,6 +142,7 @@ end
 require 'load_email_configuration'
 # custom libs
 require 's3_helper'
+require 'cloud_staging'
 require 'timeline_events'
 require 'facebook_backup'
 require 'facebook_user_profile'
@@ -160,8 +161,9 @@ require 'rio' # Fast IO
 require 'feedzirra'
 require 'right_aws'
 require 'thinking_sphinx'
+require 'workling'
 
-ExceptionNotifier.exception_recipients = %w( marc@eternos.com )
+ExceptionNotification::Notifier.exception_recipients = %w( simianarmy@gmail.com )
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance_tag|
   "#{html_tag}<span class='field_error'></span>"

@@ -192,6 +192,23 @@ class Member < User
     end
   end
    
+  # Returns # of bytes used by backup data
+  def s3_storage_used
+    bytes = contents.sum(:size)
+    backup_sources.gmail.each do |gmail|
+      bytes += gmail.backup_emails.sum(:size)
+    end
+    # TODO: move size calculations to each source
+    backup_sources.blog.each do |blog|
+      blog.feed.entries.each do |entry|
+	if entry.feed_content
+	  bytes += entry.feed_content.size
+	end
+      end
+    end
+    bytes
+  end
+
   private
     
 end

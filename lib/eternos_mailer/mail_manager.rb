@@ -82,9 +82,9 @@ module EternosMailer
             end
             @sent += 1
           rescue Timeout::Error => e
-            Rails.logger.error e.message
+            Rails.logger.error "#{e.message} #{e.backtrace}"
           rescue Exception => e
-            Rails.logger.error e.message
+            Rails.logger.error "#{e.class} #{e.message} #{e.backtrace}"
           end
           break if (@limit > 0) && (@sent >= @limit)
         end

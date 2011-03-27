@@ -2,9 +2,8 @@
 
 # Downloads images from network sources
 
-require 'workling_helper'
+#require 'workling_helper'
 require 'benchmark'
-
 class ImageDownloadWorker < Workling::Base
   include WorklingHelper
   

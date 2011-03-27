@@ -19,6 +19,8 @@ class PhotoThumbnail < ActiveRecord::Base
     only :size, :width, :height, :content_type
   end
   
+  include CloudStaging
+  
   def cdn_url
     S3Buckets::MediaBucket.url(s3_key) if s3_key
   end

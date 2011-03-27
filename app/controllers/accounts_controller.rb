@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
   before_filter :load_billing, :only => [ :new, :create, :fb_create, :aff_create, :billing, :paypal]
   before_filter :load_subscription, :only => [ :show, :edit, :billing, :plan, :paypal, :plan_paypal, :update]
   before_filter :load_discount, :only => [ :plans, :plan, :new, :create, :fb_create ]
-  before_filter :load_object, :only => [:show, :edit, :billing, :plan, :cancel, :update]
+  before_filter :load_object, :only => [:edit, :billing, :plan, :cancel, :update]
 
   before_filter :require_no_user, :only => [:new, :create, :fb_create, :aff_create, :canceled]
   before_filter :require_no_fb_user, :only => [:create, :fb_create, :aff_create]
@@ -250,7 +250,6 @@ class AccountsController < ApplicationController
     
   def show
     return redirect_to(member_home_path)
-    #@plan = @subscription.subscription_plan
   end
 
   def edit
@@ -275,8 +274,9 @@ class AccountsController < ApplicationController
     # render :layout => 'public' # Uncomment if your "public" site has a different layout than the one used for logged-in users
   end
 
-  def billing  
-    @user = current_user
+  def billing
+   
+    @user ||= current_user
     if request.post?
       @plan = @subscription.subscription_plan
       if params[:paypal].blank?
@@ -397,6 +397,7 @@ class AccountsController < ApplicationController
     render :text => 'Dashboard action, engage!', :layout => true
   end
 
+  
   protected
 
   def load_object
@@ -464,7 +465,9 @@ class AccountsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       # Could be in 2nd step of account signup where account saved but not active
       # Will raise error if no session id or account not found
-      Account.find(session[:account_id]) 
+      if session[:account_id]
+        Account.find(session[:account_id]) 
+      end
     end
   end
 
@@ -484,11 +487,15 @@ class AccountsController < ApplicationController
   # Forces existing user with the same facebook ID to their home page
   def require_no_fb_user
     # If this user has already registered via facebook, redirect to member page
-    if params[:user] && params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
-      if Member.from_facebook(params[:user][:facebook_id])
-        flash[:notice] = "Your Facebook account is already connected to an Eternos account.  If you would like to create a new Eternos account, remove the Eternos application from your Facebook settings first then try again."
-        redirect_to logout_url and return false
+    begin
+      if params[:user] && params[:user][:facebook_id] && !params[:user][:facebook_id].blank?
+        if Member.from_facebook(params[:user][:facebook_id])
+          flash[:notice] = "Your Facebook account is already connected to an Eternos account.  If you would like to create a new Eternos account, remove the Eternos application from your Facebook settings first then try again."
+          redirect_to logout_url and return false
+        end
       end
+    rescue
+      true # Allow them to continue
     end
   end
 end

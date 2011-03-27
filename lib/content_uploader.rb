@@ -8,13 +8,17 @@ module ContentUploader
   # Required because AMQP is not good way to pass messages, need 
   # more "robust" (synchronous?) message queue system.
   class << self
+    include CloudStaging
+    
     @@max = 500
     def upload_all
       MessageQueue.start do
         Thread.abort_on_exception = true
         t1 = Thread.new do
           i = 0
+          logit "Checking for content with missing s3 keys..."
           Content.deleted_at_nil.s3_key_nil.find(:all, :readonly => false, :joins => :member, :conditions => ['users.state = ?', 'live']).each do |c|
+            logit "Checking object #{c.id} filepath #{c.full_filename}..."
             if File.exists? c.full_filename
               logit "Queuing for upload: #{c.full_filename}"
               c.update_attribute(:state, 'pending')
@@ -27,7 +31,10 @@ module ContentUploader
             end
           end
           # Look for files in cloud staging directory
-          Dir.glob(File.join(Rails.root, AppConfig.s3_staging_dir, '*.jpg')).each do |f|
+          
+          Dir.glob(File.join(cloud_staging_dir, '**', '*.jpg')).each do |f|
+            next if f =~ /thumb\.jpg$/
+            logit "Processing #{f}..."
             fname = File.basename(f)
             logit "Looking for #{fname} in db..."
             if c = Content.filename_eq(fname).first

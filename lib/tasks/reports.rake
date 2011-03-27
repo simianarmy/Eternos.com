@@ -70,5 +70,9 @@ STATS
     end
   end
   
-  
+  desc "Displays member s3 storage use" 
+  task :member_s3_size => :environment do
+    u = Member.find(ENV['ID'])
+    puts "Member #{u.name} S3 storage use: " << u.s3_storage_used
+  end 
 end

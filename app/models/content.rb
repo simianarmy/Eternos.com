@@ -51,6 +51,7 @@ class Content < ActiveRecord::Base
   
   include BackupObjectComment
   include CommonDateScopes
+  include CloudStaging
   
   named_scope :recordings, :conditions => {:is_recording => true}
   named_scope :photos, :conditions => {:type => 'Photo'}

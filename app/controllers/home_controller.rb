@@ -12,8 +12,12 @@ class HomeController < ApplicationController
     @hide_feedback = true
     
     if request_comes_from_facebook?
-      ensure_application_is_installed_by_facebook_user or return false
-
+      begin
+        ensure_application_is_installed_by_facebook_user or return false
+      rescue Facebooker::Session::MissingOrInvalidParameter => e
+        Rails.logger.warn e.message
+        flash[:error] = "There was an error verifying your facebook account."
+      end
       if facebook_session && facebook_session.secured?
         @fb_user_info = FacebookUserProfile.populate(facebook_session.user)
         @fb_user_id = facebook_session.user.id

@@ -89,6 +89,20 @@ DESC
       end
       mailer.print_summary
     end
+    
+    desc "Sends email begging for money"
+    task :send_loyalty_payment_requests => :environment do
+      require 'eternos_mailer/mail_manager'
+
+      mailing = EternosMailer::MailManager::Mailing.new(:loyalty_signup)
+      mailer = EternosMailer::MailManager::BatchMailer.new parse_env
+      # Send to active members only
+      #mailer.recipients = Member.active.with_sources.emailable
+      mailer.recipients = Member.email_eq('simianarmy@gmail.com')
+      puts "Found #{mailer.recipients.size} recipients"
+      mailer.send { |user| UserMailer.deliver_loyalty_signup_request!(user) }
+      mailer.print_summary
+    end
   end
   
   desc "run housekeeping tasks on accounts (run daily)"

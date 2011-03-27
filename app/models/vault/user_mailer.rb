@@ -10,7 +10,7 @@ class Vault::UserMailer < UserMailer
     @subject          += subject_from_sym :activation
     base_domain       = "http://vault.eternos.com"
     body[:login]      = user.login
-    body[:home_url]   = home_url
+    body[:home_url]   = home_url(:subdomain => 'vault')
     add_category_header "Activation Confirmation"
   end
   

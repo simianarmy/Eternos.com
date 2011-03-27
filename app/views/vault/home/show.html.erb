@@ -37,22 +37,33 @@ Vault.</strong>
     <div class="myBox box01">
 		<h2>Quick Simple Backup</h2>
 		<ul>
-		  <li><img src="/images/vault/icon-gmail.gif" /> <a href="#">Gmail</a> <small>(including Gmail for business)</small></li>		
-			<li><img src="/images/vault/icon-facebook.gif" /> <a href="#">Facebook</a></li>
-			<li><img src="/images/vault/icon-twitter.gif" /> <a href="#">Twitter</a></li>
-			<li><img src="/images/vault/icon-rss.gif" /> <a href="#">RSS Feeds</a> <small>(any blog/feed)</small></li>
+		  <li><img src="/images/vault/icon-gmail.gif" /> <%= link_to 'Gmail', services_vault_home_path %> <small>(including Gmail for business)</small></li>		
+		  <li><%= image_tag "icon-linkedin-small.png" %> <%= link_to 'Linkedin', services_vault_home_path %></li>
+			<li><img src="/images/vault/icon-facebook.gif" /> <%= link_to 'Facebook', services_vault_home_path %></li>
+			<li><img src="/images/vault/icon-twitter.gif" /> <%= link_to 'Twitter', services_vault_home_path %></li>
+			<li><img src="/images/vault/icon-rss.gif" /> <%= link_to 'RSS Feeds', services_vault_home_path %> <small>(any blog/feed)</small></li>
 		</ul>
 		<p class="spacer01">&nbsp;</p>
-		<p><a href="<%= services_vault_home_path %>">View All Services In Details</a></p>
+		<p><%= link_to 'View All Services In Details', services_vault_home_path %></p>
     </div>
     <div class="myBox box01 mid">	
 		<h2>About vault.eternos</h2>
-<p>
-We maintain your archives in a single location, without requiring you to install new
-software or take up internal server space. <br/>You are protected against attacks on your
-accounts. You can easily achieve compliance with <strong>FINRA, SEC, IIROC, and FSA</strong>
-archiving requirements.</p>
-
+    <ul>
+      <li>Vault is a unified archive of your email and social web
+      communications, no installation or technical know-how
+      is required.
+      </li>
+      <li>
+      You are protected against attacks on your accounts,
+      accidental or malicious deletion of important data, and
+      service provider data loss.
+      </li>
+      <li>
+      It's a regulated world we live in. Vault helps ensure
+      you comply with FINRA, SEC, IIROC, and FSA archiving
+      requirements.
+      </li>
+    </ul>
 	</div>
   <%= render :partial => 'signup_today_box' %>
 	<p class="protect">
