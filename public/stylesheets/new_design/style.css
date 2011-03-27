@@ -180,4 +180,182 @@ text-align:left;
 
 
 
+=======
+>>>>>>> cff8bd5f023512a541fa60947b606755de5e1168
+BODY { margin: 0; padding: 0; background: #fff url(/images/bg_header.gif) repeat-x; font-family: Arial, Helvetica, sans-serif; font-size: 14px;}
+FIELDSET { margin: 0; padding: 0; border: none;}
+.clear-both { float: none; clear: both;}
+
+/* header */
+.header { width: 100%; height: 100px; border-bottom: 1px solid #CCCCCC; background: url(/images/clouds.gif) top right no-repeat;}
+.header DIV { width: 988px; margin: 0 auto;}
+.header IMG { float: left;}
+.header FORM { margin: 23px 10px 0 0; padding: 0; float: right; font-size: 12px; color: #02419E;}
+.header FORM DIV { width: auto; margin: 0;}
+.header FORM A { color: #02419E;}
+.header FORM.hidden { display: block; visibility:hidden; }
+.header INPUT[type=text] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777;}
+.header INPUT[type=submit] { background: url(/images/bg_login-button.gif) no-repeat; width: 76px; height: 30px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; cursor: pointer;}
+.header UL { margin: 15px -10px 0 0px; padding: 0; float: right; width: 710px; white-space: nowrap;}
+.header LI { display: inline; margin-left: 5px;}
+.inact { margin: 0 0 0 13px; height: 32px; float: left;}
+.inact A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left01.png); display: block; height: 26px; padding: 6px 20px 0 30px; float: left; white-space: nowrap;}
+.inact SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right01.png); height: 32px;}
+.active { margin: 0 0 0 16px; height: 32px; float: left;}
+.active A { color: #02419E; font-size: 18px; text-decoration: none; background: url(/images/nav-left02.png); display: block; height: 27px; padding: 6px 20px 0 30px; float: left; white-space: nowrap;}
+.active SPAN { display: block; float: left; width: 10px; background: url(/images/nav-right02.png); height: 33px;}
+.active A:hover, .inact A:hover { text-decoration: underline;}
+
+/* footer */
+.footer { height: 137px; background: url(/images/bg_footer.gif) repeat-x; border-top: 4px solid #CCCCCC; padding-top: 22px;}
+.footer DIV { width: 988px; margin: 0 auto;}
+.footer A { color: #02419E; text-decoration: none;}
+.footer A:hover { text-decoration: underline;}
+.footer P { margin: 0; padding: 0 35px; color: #02419E; float: left; line-height: 18px;}
+.footer .p1 { width: 125px;}
+.footer .p2 { width: 105px;}
+.footer .p3 { width: 90px;}
+
+/* content */
+.content { width: 988px; margin: 0 auto; padding: 25px 0; margin-left: 10px;}
+
+/* home */
+.home, .what { color: #666666;}
+.what IMG, .home IMG { float: left; margin:0 15px 23px 0;}
+.what H1, .home H1 { margin: 0 0 18px 0; padding: 0 0 20px 0; font-size: 26px; font-weight: normal; border-bottom: 1px dashed #CCCCCC; width: 470px; float: left; color: #000000;}
+.what FORM, .home FORM { margin: 0 20px 0 0; padding: 0; width: 275px; float: left; color: #666666;}
+.what FORM P, .home FORM P { margin: 0; padding: 5px 0;}
+.what P IMG, .home P IMG { float: none; margin-bottom: 0;}
+.what LABEL, .home LABEL { display: block; float: left; width: 65px; font-size: 12px; font-weight: bold; margin-right: 12px; padding-top: 6px;}
+.what FORM EM, .home FORM EM { font-style: normal; text-align: right; font-size: 11px;}
+.what INPUT[type=text], .what INPUT[type=password], .home INPUT[type=text], .home INPUT[type=password] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777; width: 185px;}
+.what INPUT[type=submit], .home INPUT[type=submit] { background: url(/images/button-signup.gif) no-repeat; width: 197px; height: 50px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #FFFFFF; cursor: pointer; font-weight: bold;}
+
+/* paul fix 4/18/10 */
+.what h1, .home h1 {
+border-bottom:1px dashed #CCCCCC;
+color:#000000;
+float:left;
+font-size:26px;
+font-weight:normal;
+margin:-5px 0 10px 0;
+padding:0 0 8px 0;
+width:470px;
+}
+
+/* signup */
+.signup01 EM, .home01 EM { font-style: normal; font-size: 11px;}
+.signup01 A, .home01 A { color: #5EC0EA;}
+.home FIELDSET FIELDSET { clear: both;}
+
+.home-flash { width: 493px; height: 289px; float: left; margin:0 15px 25px 0;}
+
+.home02 { width: 249px; height: 158px; padding: 0 40px 0 40px; background: url(/images/home02.gif) no-repeat; float: left}
+.home03 { width: 256px; height: 158px; padding: 0 32px 0 32px; background: url(/images/home03.gif) no-repeat; float: left}
+.home04 { width: 263px; height: 158px; padding: 0 38px 0 38px; background: url(/images/home04.gif) no-repeat; float: left;}
+.home02 H2 { padding: 12px 0 5px 18px; }
+.home03 H2 { padding: 12px 0 5px 22px; }
+.home04 H2 { padding: 12px 0 5px 18px; }
+.home02 H2, .home03 H2, .home04 H2 { margin: 0; font-size: 20px; color: #02419E; font-weight: normal;}
+.home02, .home03, .home04 { color: #02419E;}
+.home02 P, .home03 P, .home04 P { margin: 0; padding: 3px 0;}
+.home02 A, .home03 A, .home04 A { display: block; width: 115px; height: 21px; padding-top: 4px; text-align: center; background: url(/images/blue-button.png) no-repeat; color: #FFFFFF; text-decoration: none; margin-top: 8px;}
+
+/* what */
+.what H1 { font-size: 22px; color: #000000; width: 480px;}
+.what01 {width: 493px; padding-right: 8px; float: left; color: #02419E; margin-bottom: 10px;}
+.what01 H1 { color: #000000; border-bottom: none; margin: 0 0 0 0;}
+.what01 P { clear: both; width: 470px;}
+
+.what HR, .about HR { clear: both;  margin: 10px 0; padding: 0; border: none; border-top: 1px dashed #cccccc; height: 1px;}
+.what FIELDSET FIELDSET { clear: both; color: #02419E;}
+.what FIELDSET FIELDSET H2 { font-size: 26px; color: #000000;  font-weight: normal;}
+.what FIELDSET FIELDSET A{ color: #339933; font-weight: bold; font-size: 14px; text-decoration: none;}
+.what FIELDSET FIELDSET A:hover { text-decoration: underline;}
+
+/* about */
+.about01 { float: right; text-align: left; width: 546px; color: #02419E;}
+.about01 H1 { font-size: 26px; font-weight: normal; color: #000000; border-bottom: 1px dashed #CCCCCC; margin: 0 0 15px 0; padding: 0 0 8px 0;}
+
+.about02 { width: 390px; height: 238px; margin-bottom: 25px; padding: 15px 8px 0 8px; background: url(/images/about01.gif) no-repeat; text-align: center;}
+.about02 H2 { color: #02419E; font-size: 23px; font-weight: normal;}
+
+
+.about03 H3 { font-size: 26px; font-weight: normal; color: #000000;}
+.about03 { width: 408px; color: #02419E; float: left;} 
+.about03 STRONG { font-size: 18px; font-weight: normal; display: block; margin-bottom: -10px;}
+.about03 IMG { float: left; margin: 0 22px 50px 0;}
+.about03 P { clear: both;}
+
+.about04 { width: 496px; padding: 80px 0 0 50px; float: left;}
+.about04 IMG { margin-bottom: 2px;}
+
+/* terms */
+.terms { color: #02419E;}
+.terms H1 { margin: 0 0 18px 0; padding: 0 0 20px 0; font-size: 26px; font-weight: normal; color: #000000;}
+
+
+/* signup */
+.signup H1 { font-size: 20px; font-weight: normal; color: #02419E; border-bottom: 1px dashed #CCCCCC; margin: 0 0 15px 0; padding: 0 0 8px 0;}
+.signup-left { width: 250px; float: left; margin-right: 15px;}
+.signup-right { width: 715px; float: left;}
+.signup-right FORM { margin: 0 20px 0 0; padding: 0; width: 380px; float: left; color: #666666;}
+.signup-right FORM P { margin: 0; padding: 5px 0;}
+
+.signup-right P IMG { float: none; margin-bottom: 0;}
+.signup-right LABEL { display: block; float: left; width: 110px; font-size: 12px; font-weight: bold; margin-right: 15px; padding-top: 6px;}
+.signup-right FORM EM { font-style: normal; text-align: right; font-size: 11px;}
+.signup-right INPUT[type=text], .signup-right INPUT[type=password] { background: url(/images/bg_input.gif) repeat-x; border: 1px solid #CCCCCC; padding: 5px; font-family: Arial, Helvetica, sans-serif; color: #907777; width: 240px;}
+.signup-right INPUT[type=submit] { background: url(/images/button-signup.gif) no-repeat; width: 197px; height: 50px; padding: 0; border: none; font-family: Arial, Helvetica, sans-serif; font-size: 20px; color: #FFFFFF; cursor: pointer; font-weight: bold;}
+.signup01 { width: 160px; float: left; margin: 0; padding: 5px 0;}
+
+.signup-left UL { margin: 0; padding: 0; list-style: none; font-size: 18px; color: #9D9D9D; line-height: 16px;}
+.signup-left UL SPAN { font-size: 12px;}
+.signup-left UL STRONG { color: #2EA4FF; font-weight: normal;}
+.signup-left UL LI { margin-bottom: 25px; padding-left: 35px;}
+
+#grey { color: #9D9D9D;}
+.signup-active { background: url(/images/signup-active.gif) no-repeat;}
+.signup-inactive { background: url(/images/signup-inactive.gif) no-repeat;}
+.signup-terms { font-size: 11px;}
+.signup-terms INPUT { vertical-align: bottom; margin: 0; padding: 0;}
+.signup-terms A { color: #0A31FF;}
+
+.signup02, .signup02 A { color: #02419E;}
+.signup02 { background: url(/images/icon-email.gif) no-repeat; padding:0 0 0 50px;}
+
+/* fix 2-25-09 */
+.footer .p4 { width: 350px; white-space: nowrap;}
+.footer .p5 { clear: both; float: none; text-align: center;}
+.what01 {width: 490px; padding-right: 11px;}
+.what FIELDSET FIELDSET P { width: 550px; float: left;}
+.height01 { height: 65px;}
+
+/* 3-3-10 update */
+#errorExplanation {
+background-color:#F0F0F0;
+border:2px solid #CF0000;
+margin-bottom:20px;
+padding:0 0 12px; font-size: 12px;
+}
+#errorExplanation h2 {
+background-color:#CC0000;
+color:#FFFFFF;
+font-size:12px;
+font-weight:bold;
+margin:0;
+padding:5px 5px 5px 15px;
+text-align:left;
+}
+#errorExplanation P { padding: 8px;}
+.error { color: #ff0000}
+.signup-right FORM .error SPAN { display: block; font-size: 11px; padding-left: 125px;}
+
+/* 3-17-10 update */
+.login { width: 280px; margin: 0 auto;}
+.login P { clear: both;}
+.login #flash_error { font-size: 11px; color: #FF0000; font-weight: bold;}
+.login A { color: #02419E; font-weight: normal; text-transform: capitalize; text-decoration: none;}
+.login #RES_ID_fb_login_image { margin-left: 73px;}
+.login #fb-login { margin-left: 73px;}
 
