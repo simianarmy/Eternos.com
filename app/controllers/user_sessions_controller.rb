@@ -46,9 +46,17 @@ class UserSessionsController < ApplicationController
     end
     
     if @user_session.save
+      # REDIRECT EVERYONE TO PAY PAGE UNLESS ALREADY PAID
+      begin
+        unless @user_session.user.account.subscription.billing_id
+          redirect_to(upgrade_loyalty_subscriptions_path) and return false
+        end
+      rescue
+      end
       # 1st time logged in - send to account setup with welcome message
       if @user_session.user && (@user_session.user.login_count <= 1)
         Rails.logger.debug "User logged in, redirecting to account setup"
+        # Redirect everyone to pay up page
         flash[:notice] = "Welcome, #{@user_session.user.name}"
         redirect_to account_setup_url
       else # otherwise redirect back to last url, or member home
@@ -67,6 +75,12 @@ class UserSessionsController < ApplicationController
           end
           # Otherwise auto-login with user matching facebook session
           session_scoped_by_site { UserSession.create(user) }
+          begin
+            unless user.account.subscription.billing_id
+              redirect_to(upgrade_loyalty_subscriptions_path) and return false
+            end
+          rescue
+          end
           if user.has_backup_data?
             redirect_to member_home_url
           else

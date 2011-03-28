@@ -25,6 +25,12 @@ class TimelinesController < ApplicationController
   # Collect any other data that the timeline page needs on load.
   # All other requests will be done via AJAX queries.0
   def show
+    begin
+      unless current_user.account.subscription.billing_id
+        redirect_to(upgrade_loyalty_subscriptions_path) and return false
+      end
+    rescue
+    end
     @member = current_user
     @member_name = @member.full_name
     @tl_start_date, @tl_end_date = Rails.cache.fetch("tl_date_range:#{@member.id}", :force => session[:refresh_timeline]) { 
